@@ -345,3 +345,12 @@ html[lang^="en"] svg text{font-family:"HandEn","Kalam","Comic Sans MS",cursive}
 @media print{.cc-card{box-shadow:none;transform:none;break-inside:avoid}}
 
 select{max-width:100%}
+
+/* ---- 英文正文用清晰字体（手写体只留给标题、按钮、图中文字） ---- */
+html[lang^="en"] main p, html[lang^="en"] main li, html[lang^="en"] main td, html[lang^="en"] main th,
+html[lang^="en"] .egt, html[lang^="en"] .why, html[lang^="en"] .src, html[lang^="en"] .small, html[lang^="en"] .msg,
+html[lang^="en"] .cc-card p, html[lang^="en"] .q .qt, html[lang^="en"] .qz-card, html[lang^="en"] textarea{
+  font-family:"Segoe UI","Helvetica Neue",Arial,"Noto Sans",system-ui,sans-serif}
+html[lang^="en"] body{font-size:18px;line-height:1.75}
+html[lang^="en"] .tbl th, html[lang^="en"] .tbl td{font-size:.9em}
+@media(max-width:520px){html[lang^="en"] .tbl th, html[lang^="en"] .tbl td{font-size:.82em;padding-left:5px;padding-right:5px}}
