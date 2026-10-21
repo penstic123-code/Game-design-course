@@ -10,7 +10,7 @@
   .hb .nm{width:90px;flex:none}
   .hb .bar{flex:1;height:26px;border:2.5px solid var(--ink);border-radius:14px 8px 14px 8px;background:#fff;overflow:hidden;position:relative}
   .hb .bar i{display:block;height:100%;transition:width .3s}
-  .hb .bar::after{content:"";position:absolute;left:33.3%;top:0;bottom:0;border-left:3px dashed var(--ink)}
+  .hb .bar::after{content:"";position:absolute;left:50%;top:0;bottom:0;border-left:3px dashed var(--ink)}
   .hb .pc{width:60px;text-align:right;font-family:var(--hand);font-size:1.3rem}
   .two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
   @media(max-width:700px){.two{grid-template-columns:1fr}}
@@ -59,7 +59,7 @@
   <div class="withimg">
     <span data-illus="c15_scale"></span>
     <div>
-      <p>假设做了一款对战游戏，三个角色的数值有高有低。上线第一周，论坛里吵翻了：“A 太强了，削它！”于是把三个角色的数值全改成一模一样。吵架确实停了，可几天后，几乎没人再认真选角色了。</p>
+      <p>假设做了一款对战游戏，三个角色的数值有高有低。上线第一周，论坛里吵翻了：“A 太强了，削它！”于是把三个角色的数值全改成一模一样。吵架是停了，可几天后，几乎没人再认真选角色了。</p>
       <p>原因不难想：选谁都一样，选择就没有意义了。平衡的意思是<b>每个选择都有自己的用处，没有哪个永远最好</b>，数值一样强不是平衡。</p>
       <p>最常见的办法有两种：一种让选项互相克制，一种管住资源的进出。先看第一种。</p>
     </div>
@@ -72,7 +72,15 @@
 
   <!-- ===================== 2 是什么：水管 ===================== -->
   <div class="sec"><span class="n">2</span><h2><span class="tag what">是什么</span>水龙头、水桶、水槽：钱从哪来，到哪去</h2></div>
-  <p>第二种平衡管的是“东西的进出”。想想钱包：工资进来，房租和饭钱出去，剩下的躺在账户里。游戏里的金币、体力、材料也是这样。有人把它画成水管，进来的叫<span class="term" tabindex="0" data-def="经济系统里让货币或资源进入游戏的来源，如任务奖励、掉落">水龙头</span>，出去的叫<span class="term" tabindex="0" data-def="经济系统里让货币或资源离开游戏的去处，如购买、修理、税收">水槽</span>，中间蓄着的叫<span class="term" tabindex="0" data-def="玩家手里的货币或资源总量，是水龙头流入、水槽流出之后剩下的存量">水桶</span>。</p>
+  <p>第二种办法管的是“东西的进出”。想想钱包：工资进来，房租和饭钱出去，剩下的躺在账户里。游戏里的金币、体力、材料也是这样。有人把它画成水管：进来的是<span class="term" tabindex="0" data-def="水龙头（faucet）：经济系统里让货币或资源进入游戏的来源，如任务奖励、掉落">水龙头</span>，出去的是<span class="term" tabindex="0" data-def="水槽（sink）：经济系统里让货币或资源离开游戏的去处，如购买、修理、税收">水槽</span>，中间蓄着的是<span class="term" tabindex="0" data-def="水桶：玩家手里的货币或资源总量，是水龙头流入、水槽流出之后剩下的存量">水桶</span>。</p>
+  <aside class="cc-card" aria-label="概念卡：水龙头与水槽">
+    <span class="cc-tag">概念卡</span>
+    <p class="cc-name"><span>水龙头与水槽</span></p>
+    <p class="cc-en">Faucets and sinks</p>
+    <p class="cc-by">游戏经济设计的行业用语，没有单一的提出者；背后是存量与流量的系统动力学思想</p>
+    <p class="cc-def">水龙头是让货币或资源进入游戏的来源，水槽是让它离开的去处。两头要对得上，水位才稳。</p>
+    <p class="cc-eg"><span class="cc-k">例子</span>打怪和任务是金币的水龙头，修装备、买药水、交税是水槽。</p>
+  </aside>
   <div class="card">
     <svg viewBox="0 0 700 240" width="100%" role="img" aria-label="水龙头流进水桶，再从水槽流出；进多于出水位上涨，出多于进水位下降">
       <g class="rough" stroke="#2b2b3a" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -99,13 +107,21 @@
   <div class="sec"><span class="n">3</span><h2><span class="tag origin">发明故事</span>水槽为什么非有不可？</h2></div>
   <div class="story">
     <h3>让玩家有得赚，然后呢？</h3>
-    <p><b>问题。</b>早期做网络游戏的人最先想到的是“让玩家有得赚”：打怪掉金币，做任务给金币，听上去很慷慨。可是金币一旦能买卖东西，它就不再只是分数，而是货币，会遵守货币的规矩。</p>
+    <p>早期做网络游戏的人最先想到的是“让玩家有得赚”：打怪掉金币，做任务给金币，听上去很慷慨。可是金币一旦能买卖东西，它就不再只是分数，而是货币，会遵守货币的规矩。</p>
   </div>
   <div class="timeline">
-    <div class="ev hasimg"><span data-illus="c15_d2"></span><div><b class="yr">2000 年</b>　《暗黑破坏神 II》发行。玩家社区里流传的说法是：金币很快不值钱，大家改用稀有物品（比如一枚叫 Stone of Jordan 的戒指）当通货来交易。后来复制漏洞又让这种“货币”泛滥，价格崩塌，补丁里随之加进了需要消耗这类物品的玩法，等于新开了一个水槽。</div></div>
+    <div class="ev hasimg"><span data-illus="c15_d2"></span><div><b class="yr">2000 年</b>　《暗黑破坏神 II》发行。玩家社区里流传的说法是：金币很快不值钱，大家改用稀有物品当通货来交易，比如一枚叫 Stone of Jordan 的戒指。后来复制漏洞又让这种“货币”泛滥，价格崩塌。据游戏维基，1.10 版补丁加进了需要消耗这类戒指的任务，意在减少存量，等于新开了一个水槽。</div></div>
     <div class="ev hasimg"><span data-illus="c15_castronova"></span><div><b class="yr">2001 年</b>　经济学家爱德华·卡斯特罗诺瓦（Edward Castronova）发表工作论文，把《无尽的任务》（EverQuest）里的世界 Norrath 当作一个真实经济体来估算，得出的人均产出介于俄罗斯和保加利亚之间。估算方法有争议，但它让人们认真对待“虚拟经济是真经济”。</div></div>
     <div class="ev hasimg"><span data-illus="c15_sinks"></span><div><b class="yr">此后</b>　线上游戏里出现了固定的水槽：修理费、拍卖行手续费、强化与洗练的消耗、限时消耗品。设计者不再只盯着“给多少”，而是同时盯着水龙头、水槽和存量三样东西。</div></div>
   </div>
+  <aside class="cc-card" aria-label="概念卡：虚拟经济">
+    <span class="cc-tag">概念卡</span>
+    <p class="cc-name"><span>虚拟经济</span></p>
+    <p class="cc-en">Virtual economy</p>
+    <p class="cc-by">爱德华·卡斯特罗诺瓦（Edward Castronova） · 2001 年工作论文，把《无尽的任务》的世界 Norrath 当作真实经济体来估算</p>
+    <p class="cc-def">游戏里的货币和物品会遵守货币的规矩：有供给、需求、通胀和崩盘，要当作真正的经济来设计。</p>
+    <p class="cc-eg"><span class="cc-k">例子</span>《暗黑破坏神 II》里金币很快不值钱，玩家改用稀有戒指当通货交易。</p>
+  </aside>
   <p><b>先预测，再看结果。</b>设想一个最简单的规则：钱能生钱，每天存量涨 2%，同时每天固定花掉 50。算一算，存量刚好是 2500 的时候，涨的 50 恰好等于花的 50，水位纹丝不动，这就是临界点。现在两位玩家，一个起点 2400，一个 2600，只差 8%。200 天后会怎样？</p>
   <div class="board">
     <div id="c15bchips"></div>
@@ -125,14 +141,14 @@
   <div class="withimg rev">
     <span data-illus="c15_loops"></span>
     <div>
-      <p>刚才两位玩家的故事，背后是系统思考里最基本的一对概念。山坡上滚下来的雪球，越大越容易粘雪，于是更大，这叫<b>强化循环</b>：结果反过来推动原因。“钱越多，产出越多”就是一个强化循环。</p>
-      <p>房间里的温控器正好相反：温度一高，空调就开始降温，温度一低又停下，这叫<b>平衡循环</b>：结果反过来压住原因。“越有钱，收的税越多”是平衡循环，它把水位拉回来。</p>
-      <p>所以水管里的稳定，就是在强化循环旁边，放一个够力气的平衡循环。</p>
+      <p>刚才两位玩家的故事，背后是系统思考里最基本的一对概念。山坡上滚下来的雪球，越大越容易粘雪，于是更大。结果反过来推动原因，这样的<b>强化循环</b>在经济里也有：钱越多，产出越多，于是钱更多。</p>
+      <p>房间里的温控器正好相反：温度一高，空调就降温，温度一低又停下，结果反过来压住原因，这是<b>平衡循环</b>。越有钱，收的税越多，同样是平衡循环，它把水位拉回来。</p>
+      <p>想让水管里的水位稳住，就得在强化循环旁边，放一个够力气的平衡循环。</p>
     </div>
   </div>
   <div class="why-box">
     <h3>存量、流量与反馈循环</h3>
-    <p>把一个系统拆成“存下来的东西（存量）”和“进出的速度（流量）”，再看哪些流量会被存量反过来影响，这是系统动力学的基本功。强化循环会让微小的差别指数式放大，平衡循环会把系统拉向某个目标值。上面的临界点，就是两种力量刚好抵消的位置：存量 = 固定支出 ÷ 增长率。</p>
+    <p>把一个系统拆成“存下来的东西（存量）”和“进出的速度（流量）”，再看哪些流量会被存量反过来影响。这是系统动力学的基本功。强化循环会让微小的差别指数式放大，平衡循环会把系统拉向某个目标值。上面的临界点出现在两种力量刚好抵消的位置：存量 = 固定支出 ÷ 增长率。</p>
     <div class="src">出处：Jay Forrester，《Industrial Dynamics》（MIT Press，1961）；Donella Meadows，《Thinking in Systems》（Chelsea Green，2008）。游戏里的水管是它们的一个教学化应用。</div>
   </div>
 
@@ -140,13 +156,13 @@
     <span data-illus="c15_taxed"></span>
     <div>
       <p>水槽设计好了，还有一个问题：玩家恨它。同样是少 100 金币，系统直接扣走的“修理费”，比“这次任务少给了 100”要难受得多。哪怕金币多到花不完，被强制扣钱的那一下还是会皱眉。</p>
-      <p>心理学家给这个现象起了名字：<span class="term" tabindex="0" data-def="同样大小的损失，带来的痛苦比同样大小的收益带来的快乐更强烈">损失厌恶</span>。</p>
+      <p>这种“失去比得到更疼”的反应，是心理学里研究得很多的<span class="term" tabindex="0" data-def="同样大小的损失，带来的痛苦比同样大小的收益带来的快乐更强烈">损失厌恶</span>。</p>
     </div>
   </div>
   <div class="why-box">
     <h3>损失厌恶</h3>
-    <p>卡尼曼（Daniel Kahneman）和特沃斯基（Amos Tversky）在 1979 年的前景理论里提出：人对损失的敏感度高于对收益的敏感度。1992 年，他们用 25 名研究生的选择数据估计出，损失的分量中位数约是同等收益的 2.25 倍。设计上的启发是：同一个水槽，包装成“花钱买了东西”比包装成“被扣掉了”舒服得多，所以商店、强化、抽成比“罚款”好用。</p>
-    <p>它也有争议。2018 年，加尔（David Gal）和拉克（Derek Rucker）撰文指出，现有证据并不支持“损失一般比收益更重”，很多被归于损失厌恶的现象，也可以用惰性等别的机制解释。比较稳妥的说法是：在“得到某物后又被拿走”这类情境里，疼痛感确实明显。2.25 这个数字不要当成常数。</p>
+    <p>卡尼曼（Daniel Kahneman）和特沃斯基（Amos Tversky）在 1979 年的前景理论里提出，人对损失比对收益更敏感。1992 年，他们用 25 名研究生的选择数据估计出，损失的分量中位数约是同等收益的 2.25 倍。设计上的启发是：同一个水槽，包装成“花钱买了东西”比包装成“被扣掉了”舒服得多。所以商店、强化、抽成比“罚款”好用。</p>
+    <p>不过这个结论有争议。2018 年，加尔（David Gal）和拉克（Derek Rucker）撰文指出，现有证据并不支持“损失一般比收益更重”。很多被归于损失厌恶的现象，也可以用惰性等别的机制解释。在“得到某物后又被拿走”这类情境里，疼痛感很明显。2.25 这个数字不是常数。</p>
     <div class="src">出处：Kahneman &amp; Tversky, “Prospect Theory: An Analysis of Decision under Risk”, <i>Econometrica</i> 47(2), 1979；Tversky &amp; Kahneman, “Advances in Prospect Theory”, <i>Journal of Risk and Uncertainty</i> 5(4), 1992；Gal &amp; Rucker, “The Loss of Loss Aversion”, <i>Journal of Consumer Psychology</i> 28(3), 2018。</div>
   </div>
   <div class="board">
@@ -169,13 +185,13 @@
   </div>
   <div class="why-box">
     <h3>享乐适应</h3>
-    <p>人对反复出现的刺激会逐渐适应，把它当作新的“基线”，之后只有<b>超出基线的部分</b>才被感受为愉悦。这叫<b><span class="term" tabindex="0" data-def="反复获得同一种刺激后，感受强度逐渐下降，把它当作新的常态">享乐适应</span></b>，也常被叫作“享乐跑步机”：跑得再快，快乐的位置却老在原地。</p>
+    <p>人对反复出现的刺激会逐渐适应，把它当作新的“基线”，之后只有<b>超出基线的部分</b>才被感受为愉悦。这种现象是<b><span class="term" tabindex="0" data-def="反复获得同一种刺激后，感受强度逐渐下降，把它当作新的常态">享乐适应</span></b>，形象的说法是“享乐跑步机”：跑得再快，快乐的位置却老在原地。</p>
     <p>下面的图是一个<b>示意模型</b>：期待基线 A 每次向奖励 R 靠近 30%，体验 = R − A（不低于 0），第一次的体验定为 100%。每种奖励各有一条基线，隔一段时间不碰，基线按每个时间单位 10% 回落。</p>
     <div class="c15fig"><svg viewBox="0 0 700 270" width="100%" id="c15hsvg" role="img" aria-label="四条曲线：不做设计时体验迅速衰减；拉大间隔或增加种类衰减变慢；自动加码保持体验但奖励要成倍增长"></svg></div>
-    <p class="small"><b style="color:#555">━ 灰：不做设计</b>　<b style="color:#1d5fc9">━ 蓝：间隔拉大到 5</b>　<b style="color:#1c7a34">━ 绿：轮流 3 种奖励</b>　<b style="color:#c4262c">┅ 红虚线：每次加码</b></p><p class="small" id="c15hcap"></p>
-    <div class="src">出处：布里克曼与坎贝尔（Brickman &amp; Campbell, 1971）提出“享乐跑步机”；布里克曼、科茨与扬诺夫-布尔曼（1978）比较彩票中奖者、事故致残者与对照组，常被引用，但样本小、没有事前基线，作者自己也称是初步研究。后续研究发现适应程度因事件而异，并不总是完全（如 Lucas, 2007 对长期残疾的追踪）。图中模型是教学简化。</div>
+    <p class="small"><b style="color:#555">━ 灰：不做设计</b>　<b style="color:#1d5fc9">━ 蓝：间隔拉大到 5（相邻两次奖励隔 5 个时间单位，其余曲线都是隔 1）</b>　<b style="color:#1c7a34">━ 绿：轮流 3 种奖励</b>　<b style="color:#c4262c">┅ 红虚线：每次加码</b></p><p class="small" id="c15hcap"></p>
+    <div class="src">出处：<br>Brickman 与 Campbell · 1971 · 提出“享乐跑步机”。<br>Brickman、Coates、Janoff-Bulman · 1978 · 比较彩票中奖者、事故致残者与对照组 · 常被引用，但样本小、没有事前基线，作者自己也称是初步研究。<br>Lucas · 2007 · 追踪长期残疾 · 适应程度因事件而异，并不总是完全。图中模型是教学简化。</div>
   </div>
-  <p>图里三条出路都比“加码”便宜：把奖励的间隔拉开，让基线有时间回落；把奖励的种类错开，让每条基线都有休息的机会；再给奖励一个新意义，比如一个只此一件的称号。</p>
+  <p>图里的出路都比“加码”便宜。把奖励的间隔拉开，让基线有时间回落。把奖励的种类错开，让每条基线都有休息的机会。再给奖励一个新意义，比如一个只此一件的称号。</p>
   <div class="eg" data-ic="🍜" data-t="爱吃的菜"><span data-illus="c15_meal"></span><div class="egt"><b>爱吃的菜</b>（日常）：第一天觉得惊艳，连吃一周就腻了；隔一个月再吃，又香了。间隔让基线回落。</div></div>
   <div class="eg" data-ic="📅" data-t="每日登录"><span data-illus="c15_daily"></span><div class="egt"><b>每日登录奖励</b>（游戏）：同一份 100 金币，第 1 天是惊喜，第 30 天变成“点一下的任务”。</div></div>
   <div class="eg" data-ic="🟣" data-t="紫装"><span data-illus="c15_purple"></span><div class="egt"><b>开箱与新装备</b>（游戏）：新手第一件紫装让人欢呼；到后期同样品质的装备，只被当作分解材料。</div></div>
@@ -192,10 +208,14 @@
   </div>
   <div class="why-box">
     <h3>韦伯—费希纳定律</h3>
-    <p>人能察觉到的最小差别，大致和原来的刺激量成比例（韦伯）。于是主观感受大致和刺激量的对数成正比（费希纳）：感受 ≈ k·ln(刺激量)。玩家感受到“强了多少”，看的是相对变化。</p>
+    <p>人能察觉到的最小差别，大致和原来的刺激量成比例（韦伯）。于是主观感受大致和刺激量的对数成正比（费希纳）。玩家感受到“强了多少”，看的是相对变化。</p>
+    <details>
+      <summary>进阶：写成公式</summary>
+      <p class="small">感受 ≈ k·ln(刺激量)，k 是一个常数。刺激量每翻一倍，感受就多固定的一截。</p>
+    </details>
     <div class="c15fig"><svg viewBox="0 0 700 270" width="100%" id="c15wsvg" role="img" aria-label="线性升级与指数升级：每级的相对提升百分比"></svg></div>
     <p class="small">图：起点 10，30 级，两条路线终点相同（都是 155）。蓝：每级固定 +5，红：每级固定 +r%。纵轴是“每一级相对上一级提升了多少 %”。线性升级的相对提升越来越小，玩家感受就越来越平。</p>
-    <p class="small">这是有影响但并非无争议的经验规律：斯蒂文斯（1957）认为幂函数更贴合很多实验，“韦伯分数”也随感官与情境而不同。</p>
+    <p class="small">这是影响很大的经验规律，也有争议：斯蒂文斯（1957）认为幂函数更贴合很多实验，“韦伯分数”也随感官与情境而不同。</p>
     <div class="src">出处：恩斯特·韦伯 19 世纪 30–40 年代关于重量辨别的研究；古斯塔夫·费希纳《心理物理学原理》（<i>Elemente der Psychophysik</i>，1860）；S. S. Stevens（1957）。</div>
   </div>
   <div class="withimg">
@@ -207,7 +227,12 @@
   </div>
   <div class="why-box">
     <h3>指数增长与复利</h3>
-    <p>线性增长每步加固定值。<b><span class="term" tabindex="0" data-def="每一步按当前值的固定比例增长，数量越大增得越快">指数增长</span></b>每步乘固定倍数，也就是“<b><span class="term" tabindex="0" data-def="利息再生利息：增长部分也参与下一轮增长，所以按比例累积">复利</span></b>”。增长率 r 时，翻倍所需步数约 ln2 / ln(1+r)，口诀“72 法则”：约 72 / (r%) 步。年利率 7% 的存款，约 10 年翻一番。</p>
+    <p>线性增长每步加固定值。<b><span class="term" tabindex="0" data-def="指数增长（exponential growth）：每一步按当前值的固定比例增长，数量越大增得越快">指数增长</span></b>每步乘固定倍数，也就是“<b><span class="term" tabindex="0" data-def="复利（compound interest）：利息再生利息，增长部分也参与下一轮增长，所以按比例累积">复利</span></b>”。年利率 7% 的存款，约 10 年翻一番。</p>
+    <p>有个口诀叫“72 法则”：翻倍所需的步数约等于 72 ÷ 增长率（%）。</p>
+    <details>
+      <summary>进阶：翻倍步数的精确算法</summary>
+      <p class="small">每步增长率为 r 时，翻倍所需步数 = ln2 / ln(1+r)。r = 7% 时是 10.2 步，和 72 ÷ 7 ≈ 10.3 很接近。</p>
+    </details>
     <div class="c15fig"><svg viewBox="0 0 700 270" width="100%" id="c15esvg" role="img" aria-label="线性与指数增长曲线，指数在后期远远超过线性"></svg></div>
     <p class="small" id="c15ecap"></p>
     <p class="small">指数不是敌人，成长系统天然是指数形态。要做的是给它配上上限、衰减，或者和存量挂钩的水槽。</p>
@@ -220,12 +245,12 @@
     <span data-illus="c15_bar"></span>
     <div>
       <p>一个酒吧里有 99 个普通人和 1 位亿万富翁。算一算“平均财富”，数字高得吓人，可酒吧里没有一个普通人接近这个平均。</p>
-      <p>游戏里的消费也常常是这样：少数玩家贡献了大部分收入，多数人一分钱不花。用“人均付费”去判断多数玩家的体验，就像用酒吧的平均财富去判断普通人。这种“少数巨大、多数很小”的分布，叫<b><span class="term" tabindex="0" data-def="大值出现得虽少，但比钟形分布多得多：少数极端大值占据总量的大头">幂律</span></b>。</p>
+      <p>游戏里的消费也常常是这样：少数玩家贡献了大部分收入，多数人一分钱不花。用“人均付费”去判断多数玩家的体验，就像用酒吧的平均财富去判断普通人。这种“少数巨大、多数很小”的分布，在数学上是<b><span class="term" tabindex="0" data-def="大值出现得虽少，但比钟形分布多得多：少数极端大值占据总量的大头">幂律</span></b>。</p>
     </div>
   </div>
   <div class="story">
     <h3>人们是怎么发现“少数拿走大头”的？</h3>
-    <p><b>问题。</b>19 世纪末的经济学家想弄清楚，一个国家的财富是怎么分在人群里的。当时人们习惯的想象是<b>钟形曲线</b>：大多数人在中间，极富和极穷的都很少，就像身高。如果真是这样，“平均财富”就能代表大部分人。</p>
+    <p>19 世纪末的经济学家想弄清楚，一个国家的财富是怎么分在人群里的。当时人们习惯的想象是<b>钟形曲线</b>：大多数人在中间，极富和极穷的都很少，就像身高。如果真是这样，“平均财富”就能代表大部分人。</p>
     <p><b>先自己猜一猜。</b>把一个社会的财富从高到低排队，最富的 20% 的人大约拥有总财富的百分之几？（如果是钟形分布，大约是 35%～40%。）</p>
     <div class="board">
       <div class="guessrow">
@@ -247,8 +272,12 @@
       </div>
     </div>
     <div class="sticky" id="c15_task3">试试看：先把 α 拖到 1.16 附近，看最富 20% 占多少；再点一次“随机抽 1000 名玩家”，对比平均值和中位数差了几倍。</div>
-    <p class="small">说明：这是用<b>帕累托分布</b>生成的“1000 名虚拟玩家的消费/游戏时长”，是示意，不是某款游戏的真实数据。默认是“理想分布”（取分位数，没有随机性）；点“随机抽”会看到真实样本的波动，α 越小，波动越大。理论：前 q 比例的人占总量的 q<sup>(α−1)/α</sup>；α≈1.16 时，前 20% 约占 80%。</p>
-    <p><b>关键洞察与演化。</b>下面是比较稳妥的时间线。“80/20”这个数字在各种二手资料里说法并不一致，所以它只是口诀：实际可能是 70/30，也可能是 90/10，两个数字也不必加起来等于 100。</p>
+    <p class="small">说明：这是用<b>帕累托分布</b>生成的“1000 名虚拟玩家的消费/游戏时长”，是示意，不是某款游戏的真实数据。默认是“理想分布”（取分位数，没有随机性）；点“随机抽”会看到真实样本的波动，α 越小，波动越大。α≈1.16 时，前 20% 约占 80%。</p>
+    <details>
+      <summary>进阶：占比怎么算</summary>
+      <p class="small">帕累托分布里，最富的前 q 比例的人占总量的 q<sup>(α−1)/α</sup>。比如 α = 1.16、q = 0.2 时，0.2<sup>0.138</sup> ≈ 0.80，也就是前 20% 占约 80%。</p>
+    </details>
+    <p>下面是比较稳妥的时间线。“80/20”只是个口诀，各种二手资料里的说法不一，实际可能是 70/30，也可能是 90/10。</p>
   </div>
   <div class="timeline">
     <div class="ev hasimg"><span data-illus="c15_pareto"></span><div><b class="yr">1896–1897</b>　维尔弗雷多·帕累托（Vilfredo Pareto）在《政治经济学教程》（<i>Cours d’économie politique</i>）里整理多个国家、多个时期的收入与财产统计，发现“收入越高的人越少”这一关系大致遵循<b>幂函数</b>，不是钟形曲线。常见转述是“意大利约 80% 的土地被约 20% 的人持有”，但这个具体数字的出处在资料里并不统一。</div></div>
@@ -257,17 +286,29 @@
   </div>
   <div class="why-box">
     <h3>幂律与长尾</h3>
-    <p>大多数个体很小，极少数个体巨大，“二八法则”是它的口诀，“<b><span class="term" tabindex="0" data-def="分布右端很长的‘尾巴’：数量少但极端大的个体，或数量多但各自很小的冷门项">长尾</span></b>”是另一种说法。帕累托分布（最小值为 1）中：均值 = α/(α−1)，中位数 = 2<sup>1/α</sup>；α 接近 1 时，样本均值极不稳定。对设计的警示是：看数据时同时看<b>平均值、中位数和分位数</b>。</p>
-    <p class="small">这是常见的经验现象，具体比例因游戏和付费模式而异。也有研究指出许多“看起来像幂律”的数据其实更接近对数正态分布。身高就不是幂律，它是钟形的，平均值就代表典型的人。</p>
-    <div class="src">出处：帕累托（1896–97）；Anderson, “The Long Tail”, <i>Wired</i>（2004）与同名著作（2006）；Clauset, Shalizi &amp; Newman, “Power-law distributions in empirical data”, <i>SIAM Review</i>（2009）。</div>
+    <p>大多数个体很小，极少数个体巨大，“二八法则”是它的口诀，“<b><span class="term" tabindex="0" data-def="长尾（long tail）：分布右端很长的‘尾巴’：数量少但极端大的个体，或数量多但各自很小的冷门项">长尾</span></b>”是另一种说法。对设计的警示是：看数据时同时看<b>平均值、中位数和分位数</b>。</p>
+    <details>
+      <summary>进阶：帕累托分布的平均值和中位数</summary>
+      <p class="small">帕累托分布（最小值为 1）中：均值 = α/(α−1)，中位数 = 2<sup>1/α</sup>。α 接近 1 时，均值被极少数大值拉得很高，样本均值极不稳定，中位数却稳定得多。</p>
+    </details>
+    <p class="small">这是常见的经验现象，具体比例因游戏和付费模式而异。也有研究指出许多“看起来像幂律”的数据其实更接近对数正态分布。身高是钟形的，平均值就代表典型的人。</p>
+    <div class="src">出处：<br>Pareto · 1896–97 · 整理多国收入与财产统计 · 收入越高的人越少，近似幂函数（《政治经济学教程》）。<br>Anderson · 2004、2006 · 用“长尾”描述互联网零售（<i>Wired</i> 文章 “The Long Tail” 与同名著作）。<br>Clauset、Shalizi、Newman · 2009 · 检验经验数据中的幂律（“Power-law distributions in empirical data”，<i>SIAM Review</i>）。</div>
   </div>
+  <aside class="cc-card" aria-label="概念卡：幂律与长尾">
+    <span class="cc-tag">概念卡</span>
+    <p class="cc-name"><span>幂律与长尾</span></p>
+    <p class="cc-en">Power law and long tail</p>
+    <p class="cc-by">维尔弗雷多·帕累托（Vilfredo Pareto） · 1896–1897 年的收入统计研究；克里斯·安德森（Chris Anderson） · 2004 年提出“长尾”</p>
+    <p class="cc-def">少数个体极大、多数个体很小的分布。这时平均值会骗人，中位数才代表典型。</p>
+    <p class="cc-eg"><span class="cc-k">例子</span>少数玩家贡献大部分收入，多数人一分钱不花，人均付费高得吓人，却没有一个普通玩家接近它。</p>
+  </aside>
 
   <!-- ===================== 8 为什么成立（延伸）：定价 ===================== -->
   <div class="sec"><span class="n">8</span><h2><span class="tag why">为什么成立</span>延伸：定价为什么会“看起来划算”？</h2></div>
   <div class="withimg rev">
     <span data-illus="c15_buffet"></span>
     <div>
-      <p>吃自助餐的时候，第一盘最香，第二盘还行，到第四盘只是“不想浪费”。同一样东西，拿到的第一份最有用，越往后越没用，经济学管它叫<b><span class="term" tabindex="0" data-def="每多得到一单位，带来的额外满足感比上一单位少">边际效用递减</span></b>。</p>
+      <p>吃自助餐的时候，第一盘最香，第二盘还行，到第四盘只是“不想浪费”。同一样东西，拿到的第一份最有用，越往后越没用，这在经济学里是<b><span class="term" tabindex="0" data-def="每多得到一单位，带来的额外满足感比上一单位少">边际效用递减</span></b>。</p>
       <p>它解释了为什么药水带三瓶很安心，带二十瓶也不会多用，也解释了为什么背包有上限反而合理。</p>
     </div>
   </div>
@@ -281,7 +322,7 @@
   <p>知道了玩家为什么买到某个数量就停，接下来是价格怎么摆。同一个 ¥68 的礼包，摆在 ¥648 的礼包旁边显得便宜，摆在 ¥6 的小包旁边显得贵。</p>
   <div class="why-box">
     <h3>锚定效应</h3>
-    <p>人在判断一个数值时，会被<b>先看到的数字</b>拉扯，即使那个数字和问题无关。这叫<b><span class="term" tabindex="0" data-def="判断数值时被先出现的参考数字拉向它，即使该数字并不相关">锚定效应</span></b>。商场里“原价划掉、现价 ¥899”，谈判里先开出的报价，用的都是它。</p>
+    <p>人在判断一个数值时，会被<b>先看到的数字</b>拉扯，即使那个数字和问题无关，这是<b><span class="term" tabindex="0" data-def="锚定效应（anchoring effect）：判断数值时被先出现的参考数字拉向它，即使该数字并不相关">锚定效应</span></b>。商场里“原价划掉、现价 ¥899”，谈判里先开出的报价，用的都是它。</p>
     <div class="c15fig"><svg viewBox="0 0 700 250" width="100%" role="img" aria-label="同一个 68 元礼包，摆在 648 元礼包旁显得便宜，摆在 6 元小包旁显得贵">
       <g class="rough" stroke="#2b2b3a" stroke-width="3.5">
         <rect x="20" y="40" width="320" height="150" rx="14" fill="#fff7cf"/><rect x="360" y="40" width="320" height="150" rx="14" fill="#e8f6fc"/>
@@ -296,8 +337,16 @@
       </g>
     </svg></div>
     <p class="small">虚构一个几乎没人买的天价来抬高“划算感”，已经越过了定价技巧，变成误导。</p>
-    <div class="src">出处：特沃斯基与卡尼曼，“Judgment under Uncertainty: Heuristics and Biases”，<i>Science</i>（1974，含“幸运轮”实验）。后续研究大多支持锚定的存在，但效应大小因情境和人而异。</div>
+    <div class="src">出处：Tversky 与 Kahneman · 1974 · “幸运轮”实验 · 无关的数字也会拉动人的估计（“Judgment under Uncertainty: Heuristics and Biases”，<i>Science</i>）。后续研究大多支持锚定的存在，效应大小因情境和人而异。</div>
   </div>
+  <aside class="cc-card" aria-label="概念卡：锚定效应">
+    <span class="cc-tag">概念卡</span>
+    <p class="cc-name"><span>锚定效应</span></p>
+    <p class="cc-en">Anchoring effect</p>
+    <p class="cc-by">特沃斯基（Amos Tversky）、卡尼曼（Daniel Kahneman） · 1974 年《Science》论文，含“幸运轮”实验</p>
+    <p class="cc-def">判断一个数值时，会被先看到的数字拉扯，哪怕那个数字和问题无关。</p>
+    <p class="cc-eg"><span class="cc-k">例子</span>同一个 ¥68 的礼包，摆在 ¥648 的礼包旁边显得便宜，摆在 ¥6 的小包旁边显得贵。</p>
+  </aside>
 
   <!-- ===================== 9 怎么用：水管图 ===================== -->
   <div class="sec"><span class="n">9</span><h2><span class="tag how">怎么用</span>招牌互动：经济水管图</h2></div>
@@ -325,7 +374,7 @@
       <g class="rough"><path d="M298 108 V302 H462 V108" fill="none" stroke="#2b2b3a" stroke-width="5" stroke-linecap="round"/></g>
       <rect x="302" y="205" width="156" height="92" fill="#3aa655" opacity=".14"/>
       <g font-size="16" fill="#2b2b3a">
-        <text x="470" y="204">通胀线 1500</text><text x="470" y="290">枯竭线 40</text>
+        <text x="288" y="204" text-anchor="end">通胀线 1500</text><text x="288" y="290" text-anchor="end">枯竭线 40</text>
         <text x="380" y="140" text-anchor="middle" font-size="18" font-weight="700">玩家钱包总量</text>
         <text id="c15wtxt" x="380" y="190" text-anchor="middle" font-size="26">0</text>
         <text x="40" y="38" font-size="18" font-weight="700">💧 水龙头（每天产出）</text>
@@ -335,8 +384,9 @@
       <g id="c15loop" opacity=".18">
         <path d="M300 170 C 210 170 215 95 170 82" fill="none" stroke="#e5484d" stroke-width="4" stroke-dasharray="8 6"/>
         <path d="M170 82 l12 -2 -6 -9z" fill="#e5484d"/>
-        <text x="150" y="150" font-size="16" fill="#c4262c" text-anchor="middle">钱越多</text><text x="150" y="172" font-size="16" fill="#c4262c" text-anchor="middle">产出越多</text>
+        <text x="150" y="130" font-size="16" fill="#c4262c" text-anchor="middle">钱越多</text><text x="150" y="152" font-size="16" fill="#c4262c" text-anchor="middle">产出越多</text>
       </g>
+      <text x="150" y="176" font-size="15" fill="#444" text-anchor="middle">（开“钱生钱”才生效）</text>
       <g class="valve" id="c15v1" transform="translate(170 70)"><circle r="24" fill="#ffe58a" stroke="#2b2b3a" stroke-width="4"/><g id="c15v1w" stroke="#2b2b3a" stroke-width="5" stroke-linecap="round"><line x1="-16" y1="0" x2="16" y2="0"/><line x1="0" y1="-16" x2="0" y2="16"/></g><text id="c15v1t" y="46" text-anchor="middle" font-size="18" fill="#2b2b3a">100</text></g>
       <g class="valve" id="c15v2" transform="translate(560 262)"><circle r="24" fill="#ffb3c6" stroke="#2b2b3a" stroke-width="4"/><g id="c15v2w" stroke="#2b2b3a" stroke-width="5" stroke-linecap="round"><line x1="-16" y1="0" x2="16" y2="0"/><line x1="0" y1="-16" x2="0" y2="16"/></g><text id="c15v2t" y="-38" text-anchor="middle" font-size="18" fill="#2b2b3a">100</text></g>
       <g class="valve" id="c15v3" transform="translate(240 355)" opacity=".4"><circle r="24" fill="#b6e8a8" stroke="#2b2b3a" stroke-width="4"/><g id="c15v3w" stroke="#2b2b3a" stroke-width="5" stroke-linecap="round"><line x1="-16" y1="0" x2="16" y2="0"/><line x1="0" y1="-16" x2="0" y2="16"/></g><text id="c15v3t" y="-38" text-anchor="middle" font-size="18" fill="#2b2b3a">4%</text></g>
@@ -372,11 +422,15 @@
     <div class="msg" id="c15msg"></div>
   </div>
   <div class="sticky" id="c15_task1">试试看：打开“钱生钱”，再想办法让水位在绿色健康带里稳稳待上一阵子。提示：把“只开水龙头”和“自动回收救场”两个场景各看一遍，想想为什么后者能稳住。</div>
-  <p class="small">模型（示意）：每天 收入 = 水龙头 + [通胀]×存量×2%；实际花费 = min(手头金币, 想花)；回收 = 剩余的存量×回收比例（只在开关打开时）。“自动回收救场”会把水龙头设为 120、开回收，存量稳定在约 1000。<b>让水槽随存量增长，才是稳定的经济</b>。</p>
+  <p class="small">“自动回收救场”会把水龙头设为 120、开回收，存量稳定在约 1000。水槽随存量一起增长，经济才稳得住。</p>
+  <details>
+    <summary>进阶：这个示意模型是怎么算的</summary>
+    <p class="small">每天 收入 = 水龙头 + [通胀]×存量×2%；实际花费 = min(手头金币, 想花)；回收 = 剩余的存量×回收比例（只在开关打开时）。</p>
+  </details>
 
   <!-- ===================== 10 怎么用：兵种调平 ===================== -->
   <div class="sec"><span class="n">10</span><h2><span class="tag how">怎么用</span>辅助互动：调平三个兵种</h2></div>
-  <p>相克的三角看起来很稳，但数值一动，它就会歪。每个兵种的“基础强度”默认都是 1。把某个兵种调高，看看它的平均胜率怎么变。目标：三者都接近 <b>33%</b>（虚线）。</p>
+  <p>相克的三角看起来很稳，但数值一动，它就会歪。每个兵种的“基础强度”默认都是 1。把某个兵种调高，看看它的平均胜率怎么变。每个兵种和三种对手各打一轮，所以平衡时三者的平均胜率都是 <b>50%</b>。目标：三者都靠近这条虚线。</p>
   <div class="board">
     <svg viewBox="0 0 700 290" width="100%" role="img" aria-label="三角相克：骑兵克弓手，弓手克长枪兵，长枪兵克骑兵；圆圈大小随强度变化">
       <g class="rough" stroke="#2b2b3a" stroke-width="4">
@@ -399,7 +453,11 @@
     <button class="btn alt" id="rreset">全部复位</button>
   </div>
   <div class="sticky" id="c15_task2">试试看：先把骑兵调到 1.5 左右，看另外两个兵种被连累；再只动弓手和长枪兵，把三个胜率拉回差距小于 3 个百分点。</div>
-  <p class="small">模型（示意）：被克制时胜率基准 30%，克制时 70%；强度会放大这个优势。只调高一个兵种，另外两个都会被连累；三个一起涨，胜率就回来了，因为相克平衡看的是相对强度。</p>
+  <p class="small">只调高一个兵种，另外两个都会被连累；三个一起涨，胜率就回来了，因为相克平衡看的是相对强度。</p>
+  <details>
+    <summary>进阶：这个示意模型是怎么算的</summary>
+    <p class="small">被克制时胜率基准 30%，克制时 70%；强度会放大这个优势。</p>
+  </details>
 
   <h3>平衡的五条心法</h3>
   <ul>
@@ -413,11 +471,11 @@
   <div class="misc">
     <h3>常见误区</h3>
     <ul>
-      <li>“胜率 50% 就是平衡”：不一定。相克设计里每个选项胜率相同才是目标，还要看玩家实际的选择分布，以及“选择是否有意义”。</li>
+      <li>“胜率 50% 就是平衡”：相克设计里，目标是每个选项胜率相同。除此之外，还要看玩家实际的选择分布，以及“选择是否有意义”。</li>
       <li>“看平均值就够了”：在幂律分布下，平均值被少数极端值拉高，中位数才代表“典型玩家”。</li>
       <li>“奖励不够爽就加大数值”：享乐适应下，加码只能买来短暂的新鲜感，还会推高通胀。</li>
-      <li>“指数增长一定要避免”：不是。指数是成长系统的自然形态，关键是知道它在哪里越界，并配上上限、衰减或水槽。</li>
-      <li>“二八法则是定律”：不是，它只是个口诀，比例因领域而异。</li>
+      <li>“指数增长一定要避免”：指数是成长系统的自然形态，关键是知道它在哪里越界，并配上上限、衰减或水槽。</li>
+      <li>“二八法则是定律”：它是个口诀，比例因领域而异。</li>
     </ul>
   </div>
 
@@ -425,11 +483,11 @@
     <h3>反思与争议</h3>
     <p><b>享乐适应有多彻底？</b>“人总会回到原来的幸福水平”是一种影响很大的观点。后来的研究发现不同事件、不同人的适应并不相同，有些变化是长期的。图里的模型只是教学简化。</p>
     <p><b>虚拟经济的类比有限。</b>游戏里的“货币”受设计者随时修改规则、玩家不是完全理性等因素影响，不能直接套用现实经济学的结论。卡斯特罗诺瓦的估算方法本身也有争议。</p>
-    <p><b>水槽算不算“割韭菜”？</b>把水槽包装成商品能让玩家好受些，但如果包装的目的只是让人察觉不到被扣了钱，它和“透明地扣”之间的界线在哪里？这值得自己想想。</p>
+    <p><b>水槽算不算“割韭菜”？</b>把水槽包装成商品能让玩家好受些，但如果包装的目的只是让人察觉不到被扣了钱，它和“透明地扣”之间的界线在哪里？</p>
   </div>
 
   <div class="key">
-    <h3>本章要点</h3>
+    <h3>要点</h3>
     <ul>
       <li>平衡不等于“一样”，而是每个选择都有存在的价值。相克让“最强”这个位置不存在。</li>
       <li>经济要看水龙头、水桶、水槽是否对应；强化循环会把小差别放大，所以需要随存量增长的水槽来平衡。</li>
@@ -439,7 +497,7 @@
       <li>幂律让平均值误导，要同时看中位数；“二八”只是口诀。</li>
     </ul>
   </div>
-  <div class="tldr">平衡不是把数字调“一样”，而是顺着人的感受调：玩家按比例感知、会适应、更怕失去，而经济里的循环与幂律分布会把一切放大。</div>
+  <div class="tldr">平衡要顺着人的感受调，数字调成“一样”是不够的。玩家按比例感知、会适应、更怕失去，而经济里的循环与幂律分布会把一切放大。</div>
 
   <div class="sec"><span class="n">11</span><h2><span class="tag think">练习</span>小测验</h2></div>
   <div id="quiz"></div>
@@ -582,7 +640,8 @@ GD.mountQuiz(document.getElementById("quiz"), [
     let h = axes(225, "第几次奖励 →", "体验强度 %");
     h += '<line x1="50" y1="' + Y(100) + '" x2="680" y2="' + Y(100) + '" stroke="#bbb" stroke-width="2" stroke-dasharray="3 5"/><text x="38" y="' + (Y(100) + 5) + '" text-anchor="end" font-size="15">100</text>';
     h += poly(base.felt.map((v, k) => [X(k), Y(v)]), "#777", false, 4) + poly(gap.felt.map((v, k) => [X(k), Y(v)]), "#3b82f6", false, 4) + poly(ty.felt.map((v, k) => [X(k), Y(v)]), "#2f9e44", false, 4) + poly(comp.felt.map((v, k) => [X(k), Y(v)]), "#e5484d", true, 4);
-    
+    h += '<text x="38" y="' + (Y(50) + 5) + '" text-anchor="end" font-size="15">50</text><text x="38" y="' + (Y(0) + 5) + '" text-anchor="end" font-size="15">0</text><line x1="46" y1="' + Y(50) + '" x2="50" y2="' + Y(50) + '" stroke="#2b2b3a" stroke-width="3"/>';
+    [["不做设计", base, "#555", 21], ["间隔拉大到 5", gap, "#1d5fc9", -13], ["轮流 3 种奖励", ty, "#1c7a34", 20], ["每次加码", comp, "#c4262c", -13]].forEach(([nm, o, col, dy]) => { h += '<text x="676" y="' + (Y(o.felt[N - 1]) + dy) + '" text-anchor="end" font-size="16" font-weight="700" fill="' + col + '">' + nm + '</text>'; });
     g("c15hsvg").innerHTML = h;
     const avg = a => a.slice(-10).reduce((s, v) => s + v, 0) / 10;
     g("c15hcap").textContent = "最后 10 次平均体验：不做设计 " + avg(base.felt).toFixed(0) + "%，拉大间隔 " + avg(gap.felt).toFixed(0) + "%，3 种奖励 " + avg(ty.felt).toFixed(0) + "%。红线体验始终 100%，但第 30 次的奖励要是第 1 次的 " + (comp.R[29] / comp.R[0]).toFixed(1) + " 倍——这就是“数值通胀”。";
@@ -595,6 +654,8 @@ GD.mountQuiz(document.getElementById("quiz"), [
     let h = axes(225, "等级 →", "每级相对提升（%）");
     h += poly(lin.map((v, i) => [X(i), Y(v)]), "#3b82f6", false, 4.5) + poly(ex.map((v, i) => [X(i), Y(v)]), "#e5484d", false, 4.5);
     h += '<text x="690" y="40" text-anchor="end" font-size="16" fill="#3b82f6">蓝：线性（第 2 级 +' + lin[0].toFixed(0) + '% → 第 30 级只剩 +' + lin[28].toFixed(1) + '%）</text><text x="690" y="62" text-anchor="end" font-size="16" fill="#e5484d">红：指数（每级都是 +' + (r * 100).toFixed(1) + '%）</text>';
+    [0, 25, 50].forEach(t => { h += '<text x="38" y="' + (Y(t) + 5) + '" text-anchor="end" font-size="15">' + t + '</text><line x1="46" y1="' + Y(t) + '" x2="50" y2="' + Y(t) + '" stroke="#2b2b3a" stroke-width="3"/>'; });
+    h += '<text x="540" y="' + (Y(r * 100) - 10) + '" text-anchor="middle" font-size="16" font-weight="700" fill="#c4262c">红线是平的：每级都 +' + (r * 100).toFixed(1) + '%，所以感觉均匀</text>';
     g("c15wsvg").innerHTML = h;
   })();
   (function () {

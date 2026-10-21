@@ -54,8 +54,9 @@
 
   <!-- ===================== 1 五种成长 ===================== -->
   <div class="sec"><span class="n">1</span><h2><span class="tag what">是什么</span>进度：玩家“变强”的五种方式</h2></div>
-  <p>为什么会在一款游戏里多待一小时？很多时候不是因为“这一局特别好玩”，而是因为<b>“再打一只怪就升级了”</b>。这股拉力就是<span class="term" tabindex="0" data-def="游戏里玩家随时间积累下来的、可被看见和保留的变化：数值、能力、物品、知识、解锁内容等。">进度</span>。还记得核心循环吗？做事、得到、做更好的事。进度系统让“得到”不会随着一圈圈循环蒸发，而是一层一层堆起来。</p>
-  <p>“变强”其实是五种不同的东西，混着说就会设计糊涂。</p>
+  <p>玩家在一款游戏里多待一小时，很多时候是因为<b>“再打一只怪就升级了”</b>，不是因为“这一局特别好玩”。这股拉力就是<span class="term" tabindex="0" data-def="进度（progression）：游戏里玩家随时间积累下来的、可被看见和保留的变化：数值、能力、物品、知识、解锁内容等。">进度</span>。</p>
+  <p>第 2 章讲过核心循环：做事、得到、做更好的事。进度系统让“得到”不会随着一圈圈循环蒸发，而是一层一层堆起来。</p>
+  <p>“变强”包含五种不同的东西，混着说就会设计糊涂。</p>
   <div class="card">
     <svg class="c16-svg" id="c16_types" viewBox="0 0 700 340" role="img" aria-label="进度系统类型关系图：中心是进度，周围是数值成长、能力成长、装备与收集、玩家技能成长、元进度，另有声望重置回到起点。">
       <g class="rough" stroke="#2b2b3a" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -82,14 +83,22 @@
   </div>
   <div class="grid2">
     <div class="card b"><h3>数值成长（角色在变强）</h3><p><span class="term" tabindex="0" data-def="经验值（XP）：玩家做事累积的点数，攒够就升级；用它把‘做了很多事’压缩成一个数字。">经验值</span>攒满，<span class="term" tabindex="0" data-def="等级：经验值换来的离散台阶，每一级通常带来属性和解锁。">等级</span>加一，血量攻击上涨。最容易做，也最容易让游戏变成“数字追着数字跑”。</p></div>
-    <div class="card g"><h3>能力成长（角色会新东西）</h3><p>解锁二段跳、钩爪、新技能。它改变的是<b>玩家能做什么</b>，不只是做得多好。“拿到钩爪才过得去”就是把能力当钥匙。</p></div>
+    <div class="card g"><h3>能力成长（角色会新东西）</h3><p>解锁二段跳、钩爪、新技能。它改变的是<b>玩家能做什么</b>，不只是做得多好。像“拿到钩爪才过得去”，能力就成了钥匙。</p></div>
     <div class="card p"><h3>装备与收集</h3><p>换武器、凑套装、集图鉴。成长来自“找到”，不是“攒够”，所以惊喜感更强，但要靠掉落，而掉落是随机的。</p></div>
     <div class="card y"><h3>玩家技能成长</h3><p>角色数值一点没变，但<b>玩家自己</b>学会了看出 Boss 的前摇。魂系游戏、格斗游戏、速通都靠它。这种成长不会被数值膨胀稀释，却看不见，需要设计去“照亮”它。</p></div>
   </div>
   <div class="grid2">
-    <div class="card v"><h3><span class="term" tabindex="0" data-def="元进度：在单局（一次‘跑’）结束后仍然保留的成长，比如解锁新角色、永久加成；它连接一局一局的循环。">元进度</span>（局外成长）</h3><p>一局失败了，但带走了点什么：解锁新角色、永久加成、更多选项。“输”因此不再是纯损失。</p></div>
+    <div class="card v"><h3><span class="term" tabindex="0" data-def="元进度（meta-progression）：在单局（一次‘跑’）结束后仍然保留的成长，比如解锁新角色、永久加成；它连接一局一局的循环。">元进度</span>（局外成长）</h3><p>一局失败了，但带走了点什么：解锁新角色、永久加成、更多选项。“输”因此不再是纯损失。</p></div>
     <div class="card o"><h3><span class="term" tabindex="0" data-def="声望/重置（prestige）：自愿把进度归零，换取永久加成，让玩家重新体验快速成长的前期。">声望 / 重置</span></h3><p>主动归零，换永久加成，再爬一遍。放置类游戏的常用招数。</p></div>
   </div>
+  <aside class="cc-card" aria-label="概念卡：元进度">
+    <span class="cc-tag">概念卡</span>
+    <p class="cc-name"><span>元进度</span></p>
+    <p class="cc-en">Meta-progression</p>
+    <p class="cc-by">肉鸽类（roguelike / roguelite）游戏的行业用语，没有单一的提出者</p>
+    <p class="cc-def">一局结束后仍然保留的成长：解锁新角色、永久加成、更多选项。输一局，也带走点什么。</p>
+    <p class="cc-eg"><span class="cc-k">例子</span>这一局输了，却攒够了解锁点数，下一局可以解锁新角色或新选项。</p>
+  </aside>
   <div class="eg" data-ic="🗡️" data-t="刷宝"><span data-illus="c16_loot"></span><div class="egt"><b>《暗黑破坏神》式刷宝</b>：角色等级只是入场券，真正的追求是掉落的装备。成长主要来自“装备与收集”，再加一点数值。</div></div>
   <div class="eg" data-ic="🪝" data-t="拿到新能力"><span data-illus="c16_ability"></span><div class="egt"><b>《空洞骑士》类银河恶魔城</b>：血量只加一点点，但每拿到一个新能力，地图上从前过不去的地方突然打开。成长主要来自“能力成长”，数值几乎不重要。</div></div>
   <div class="eg" data-ic="🚲" data-t="学骑自行车"><span data-illus="c16_bike"></span><div class="egt"><b>学骑自行车</b>（日常）：“装备”没变，“数值”没有，但今天能骑 100 米不摔了。这是纯粹的玩家技能成长，也是人类最原始、最持久的快乐来源之一。</div></div>
@@ -102,8 +111,12 @@
     <svg class="c16-svg" id="c16_curves" viewBox="0 0 700 330" role="img" aria-label="三种经验曲线对比：线性、多项式、指数，横轴为等级，纵轴为升到下一级所需经验。"></svg>
     <p class="c16-note">示意：三条曲线用同一个“增长率”参数（r=0.10）生成，纵轴是升到下一级所需经验。线性是“匀速加码”，多项式（这里是平方）加码越来越快，指数是“每级是上一级的固定倍数”：一开始比多项式慢，到后面反超并一路冲高。</p>
   </div>
-  <p>线性好理解，节奏稳，缺点是后期显得“没有重量”。多项式（平方、立方）加码逐渐变快，比指数温和，是常见的折中，实际游戏常在此基础上手工修表。指数前几级飞快，随后出现一堵越来越高的墙，多用于“无限成长”的放置类游戏，需要配合重置。</p>
-  <p>曲线之外还有三个旋钮。第一是等级上限：<span class="term" tabindex="0" data-def="硬上限：到了这个值就彻底不能再涨（如满级 60）。">硬上限</span>清清楚楚，<span class="term" tabindex="0" data-def="软上限：不是不能涨，而是越往后涨得越慢、越贵（边际收益递减）。">软上限</span>则是“还能涨，但越来越不划算”，适合让深度玩家有事做又不破坏平衡。第二是收益也在涨：高级区域的怪给更多经验。曲线是分母，收益才是分子，判断升级快慢必须两边一起看。第三是<span class="term" tabindex="0" data-def="力量幻想：玩家想象并感受到‘我变得很强’的体验，是许多游戏的核心卖点。">力量幻想</span>：回到新手村，一刀秒杀曾经让人狼狈的怪，那种爽要求旧内容没有跟着玩家一起变强。</p>
+  <p>线性好理解，节奏稳，缺点是后期显得“没有重量”。多项式（平方、立方）加码逐渐变快，比指数温和，是常见的折中，实际游戏常在此基础上手工修表。</p>
+  <p>指数前几级飞快，随后出现一堵越来越高的墙，多用于“无限成长”的放置类游戏，需要配合重置。</p>
+  <p>曲线之外还有三个旋钮。</p>
+  <p>第一是等级上限：<span class="term" tabindex="0" data-def="硬上限：到了这个值就彻底不能再涨（如满级 60）。">硬上限</span>清清楚楚，<span class="term" tabindex="0" data-def="软上限：不是不能涨，而是越往后涨得越慢、越贵（边际收益递减）。">软上限</span>则是“还能涨，但越来越不划算”，适合让深度玩家有事做又不破坏平衡。</p>
+  <p>第二是收益也在涨：高级区域的怪给更多经验。曲线是分母，收益才是分子，判断升级快慢必须两边一起看。</p>
+  <p>第三是<span class="term" tabindex="0" data-def="力量幻想（power fantasy）：玩家想象并感受到‘我变得很强’的体验，是许多游戏的核心卖点。">力量幻想</span>：回到新手村，一刀秒杀曾经让人狼狈的怪，那种爽要求旧内容没有跟着玩家一起变强。</p>
   <div class="eg" data-ic="🪜" data-t="越升越慢"><span data-illus="c16_stairs"></span><div class="egt"><b>许多日式角色扮演游戏</b>：新手期每级只要几场战斗，后期一级要刷很久，曲线明显弯曲，玩家靠“下一级就在眼前”撑过去（泛指的体验描述，非某作的具体数字）。</div></div>
   <div class="eg" data-ic="🔥" data-t="打卡等级"><span data-illus="c16_streak"></span><div class="egt"><b>学外语 App 的“连续打卡等级”</b>（日常）：前几个等级几天就到，越往后越久，新手有快速成就，老手有长期目标。</div></div>
   <div class="eg bad" data-ic="⚖️" data-t="等级缩放"><span data-illus="c16_scaling"></span><div class="egt"><b>反例：等级缩放</b>。所有敌人随玩家同步变强，看上去“永远有挑战”，却取消了力量幻想：升了 20 级，打小怪依然头疼。很多玩家反感它，正是因为成长被抵消了。</div></div>
@@ -131,8 +144,8 @@
     </svg>
     <p class="c16-note">示意：越短的反馈越“细碎”，越长的越“隆重”。好的进度系统在每个时间尺度上都有东西可看，缺任何一层，玩家就可能在那段时间里“感觉没进步”。</p>
   </div>
-  <p>进度条的魔力在于“离升级只差 5%”让人很难放下手机，这和越接近目标越使劲的目标梯度有关。解锁新功能时一定要<b>告诉玩家</b>，不少游戏里玩家解锁了新技能却没发现，进度就白白浪费了。升级时也别只给数字，要让玩家立刻感受到差别：新招式的演出，敌人被一击击飞。数字是账本，感受才是奖励。</p>
-  <p>进度有一个天然的敌人：<b>走到头</b>。数字涨到一定程度，要么撞上墙，要么遍地是“上亿”，玩家反而没有感觉。设计者想出了两种把“归零”变成奖励的办法：声望让玩家自愿清零、换一个永久倍率，元进度让每局的失败也能换点什么。关键是每一轮都要比上一轮更快，否则归零就只是惩罚。</p>
+  <p>进度条的魔力在于“离升级只差 5%”让人很难放下手机，这和越接近目标越使劲的目标梯度有关。解锁新功能时一定要<b>告诉玩家</b>，不少游戏里玩家解锁了新技能却没发现，进度就白白浪费了。升级时也别只给数字，要让玩家立刻感受到差别：新招式的演出，敌人被一击击飞。</p>
+  <p>进度有一个天然的敌人：<b>走到头</b>。数字涨到很大，要么撞上墙，要么遍地是“上亿”，玩家反而没有感觉。设计者想出了两种把“归零”变成奖励的办法：声望让玩家自愿清零、换一个永久倍率，元进度让每局的失败也能换点什么。关键是每一轮都要比上一轮更快，否则归零就只是惩罚。</p>
   <div class="eg" data-ic="🏔️" data-t="放置游戏飞升"><span data-illus="c16_prestige"></span><div class="egt"><b>放置游戏的“飞升”</b>：数字从个位涨到科学计数法，之后每次飞升都带走一个永久加成，重新开局只要几分钟就追回之前一天的进度，玩家体验到的是“越来越快”。</div></div>
   <div class="eg" data-ic="🗝️" data-t="局外解锁"><span data-illus="c16_meta"></span><div class="egt"><b>肉鸽类游戏的局外解锁</b>：这一局输了，却带走了钥匙，下一局可以解锁新角色或新选项。输不再是纯损失，而是为下一局铺路（泛指这类设计，非某作的具体数字）。</div></div>
   <div class="eg bad" data-ic="🐌" data-t="重置后更慢"><span data-illus="c16_slower"></span><div class="egt"><b>反例：重置后更慢</b>。如果重置后的前期比上一轮还慢，或者永久加成小得察觉不到，玩家就会觉得“白打了”，不会再重置。下一轮必须看得见地更快。</div></div>
@@ -140,9 +153,9 @@
   <!-- ===================== 4 发明故事 ===================== -->
   <div class="sec"><span class="n">4</span><h2><span class="tag origin">发明故事</span>经验值与等级，是怎么“发明”出来的？</h2></div>
   <div class="story">
-    <h3>问题：一场战斗打完，故事还没完</h3>
-    <p>20 世纪 60 年代末到 70 年代初，爱好者们玩的“战争游戏”是在桌上摆小人，一场仗打完就结束，下次重新摆。但有人想：<b>如果每个小人是一个“角色”，要在很多次游戏里持续存在呢？</b>这个角色该怎么“变得更强”？靠什么衡量？什么时候算“升了一格”？</p>
-    <p>先别看历史，自己试试。假设玩家每次游玩平均能攒 100 点经验，设计者想让第 2 级到第 12 级的升级节奏“有点期待感但不太折磨”。拖动滑块决定“每升一级，下一级要求比上一级多多少”，看每一级大约要玩几次。</p>
+    <h3>一场战斗打完，故事还没完</h3>
+    <p>20 世纪 60 年代末到 70 年代初，爱好者们玩的“战争游戏”是在桌上摆小人。一场仗打完就结束，下次重新摆。但有人想：<b>如果每个小人是一个“角色”，要在很多次游戏里持续存在呢？</b>这个角色该怎么“变得更强”？靠什么衡量？什么时候算“升了一格”？</p>
+    <p>先自己试试。假设玩家每次游玩平均能攒 100 点经验，设计者想让第 2 级到第 12 级的升级节奏“有点期待感但不太折磨”。拖动滑块决定“每升一级，下一级要求比上一级多多少”，看每一级大约要玩几次。</p>
     <div class="board">
       <label class="ctl">每级所需经验比上一级多 <output id="c16_or_v">40</output>%（第 1 级升级需要 200 点）</label>
       <input type="range" id="c16_or" min="0" max="120" step="5" value="40">
@@ -160,21 +173,37 @@
     <div class="ev hasimg"><span data-illus="c16_plato"></span><div><b class="yr">1974–75</b>　大型主机上出现了最早的电脑角色扮演游戏（如 PLATO 系统上的 <i>dnd</i> 与 <i>pedit5</i>，哪个更早、细节如何，资料说法不一），它们把“经验与等级”整套搬了过来。电脑替玩家记账，经验曲线从此可以写成公式。</div></div>
   </div>
   <div class="story">
-    <h3>关键洞察：把“做过的事”压成一个能比较的数字</h3>
-    <p>为什么要“点数”？没有数字，就只能靠主持人一句“你升了”。点数让玩家知道自己离目标有多远，也让规则公开，可以争论，可以设计。为什么要“级”？连续的点数太平淡，切成台阶以后，每一台阶带来一次集中的奖励：新属性、新能力，这就是升级的仪式感。</p>
-    <p>为什么门槛越来越高？如果每级都同样容易，高等级角色很快就“成神”。门槛怎样设置，从一开始就是被反复修的参数。刚才在滑块上做的权衡，就是当年设计者做的权衡。</p>
-    <p class="c16-note">核实说明：经验值与等级的“起点”常见叙述是 Arneson 的 Blackmoor 战役，再进入 1974 年的《D&amp;D》。学界与爱好者对“谁的功劳”有争议（Arneson 与 TSR 后来还有版税官司）。这里只写来源一致的部分。</p>
+    <h3>把“做过的事”压成一个能比较的数字</h3>
+    <p>用点数，是因为没有数字，就只能靠主持人一句“你升了”。点数让玩家知道自己离目标有多远，也让规则公开，可以争论，可以设计。再切成“级”，是因为连续的点数太平淡。切成台阶以后，每一台阶带来一次集中的奖励：新属性、新能力。</p>
+    <p>门槛越来越高，是因为如果每级都同样容易，高等级角色很快就“成神”。门槛怎样设置，从一开始就是被反复修的参数。刚才在滑块上做的权衡，当年的设计者也做过。</p>
+    <p class="c16-note">说明：经验值与等级的“起点”常见叙述是 Arneson 的 Blackmoor 战役，再进入 1974 年的《D&amp;D》。学界与爱好者对“谁的功劳”有争议（Arneson 与 TSR 后来还有版税官司），这里只写来源一致的部分。</p>
   </div>
+  <aside class="cc-card" aria-label="概念卡：经验值与等级">
+    <span class="cc-tag">概念卡</span>
+    <p class="cc-name"><span>经验值与等级</span></p>
+    <p class="cc-en">Experience points and levels</p>
+    <p class="cc-by">戴夫·阿内森（Dave Arneson）的 Blackmoor 战役，约 1971–73 年；加里·吉盖克斯（Gary Gygax）与阿内森 · 1974 年《Dungeons &amp; Dragons》写成明文规则</p>
+    <p class="cc-def">把角色“做过的事”压成一个能比较的点数，攒够门槛就升一级，每一级带来一次集中的奖励。</p>
+    <p class="cc-eg"><span class="cc-k">例子</span>杀怪物、取宝藏获得经验，累计到门槛就升级，门槛越往上越高。</p>
+  </aside>
 
   <div class="withimg">
     <span data-illus="c16_techtree"></span>
     <div>
       <p>有了等级，新的麻烦又来了：如果升级只是属性自动涨，那么所有同等级的同职业角色一模一样。设计者想让每次升级带来<b>选择</b>。早先的做法是固定的升级表，到哪级自动学什么。新的想法是给玩家几个点数，让他们自己决定投到哪里，而且技能之间有“先学甲才能学乙”的前置关系，画出来就成了一棵树。</p>
-      <p>策略游戏里早有“科技树”这种前置关系的形态，角色的技能树和它有亲缘关系。1996 年的《暗黑破坏神》给每个职业一页按等级解锁的技能。常被说成现代技能树雏形的，是 2000 年的《暗黑破坏神 II》（设计者的具体功劳，不同资料说法不一，这里不下结论）。之后的多人在线游戏把它发展成“天赋树”，让同一职业也能走出不同流派。“第一棵技能树是谁做的”并无公认答案，这里省略。</p>
+      <p>策略游戏里早有“科技树”这种前置关系的形态，角色的技能树和它有亲缘关系。1996 年的《暗黑破坏神》给每个职业一页按等级解锁的技能。2000 年的《暗黑破坏神 II》常被说成现代技能树的雏形。之后的多人在线游戏把它发展成“天赋树”，让同一职业也能走出不同流派。“第一棵技能树是谁做的”没有公认答案。</p>
     </div>
   </div>
+  <aside class="cc-card" aria-label="概念卡：技能树">
+    <span class="cc-tag">概念卡</span>
+    <p class="cc-name"><span>技能树</span></p>
+    <p class="cc-en">Skill tree</p>
+    <p class="cc-by">游戏行业用语，没有公认的发明者；近亲是策略游戏里的科技树</p>
+    <p class="cc-def">升级给玩家几个点数，让他们自己决定投到哪里。技能之间有“先学甲才能学乙”的前置关系，画出来像一棵树。</p>
+    <p class="cc-eg"><span class="cc-k">例子</span>大学选课的先修关系：先学高数，才能学线性代数和概率，两门都学完才能选机器学习。</p>
+  </aside>
   <div class="story">
-    <h3>重置换奖励：为什么有人想到“归零”</h3>
+    <h3>为什么有人想到让玩家“归零”</h3>
     <p>这一条没有可靠的单一起源，所以只讲动机。放置类游戏的数字沿指数曲线膨胀，进度越来越慢，玩家最终遇到一堵墙。设计者没有把墙拆掉，而是给了玩家一个选择：把自己归零，换一个永久倍率，再用更快的速度爬同一座山。这既重新给了“前期飞速成长”的快感，又让数字的尺度更上一层，同时保住了“越玩越强”的主线。</p>
   </div>
   <div class="card">
@@ -216,20 +245,21 @@
   </div>
   <div class="why-box">
     <h3>目标梯度与“赠予进度”</h3>
-    <p>进度条就是在<b>制造这种看得见的接近</b>：让玩家一开局就有一点进度（新手教程送几级），在升级前给足“差一点”的画面。这个效应在洗车店的实验里很清楚，搬到游戏里的具体效果仍要靠试玩检验。</p>
+    <p>进度条就是在<b>制造这种看得见的接近</b>：让玩家一开局就有一点进度（新手教程送几级），在升级前给足“差一点”的画面。这个效应在洗车店的实验里很清楚。搬到游戏里的具体效果，仍要靠试玩检验。</p>
     <div class="src">出处：Kivetz, R., Urminsky, O., &amp; Zheng, Y. (2006). The goal-gradient hypothesis resurrected. <i>Journal of Marketing Research</i>, 43(1), 39–58；Nunes, J. C., &amp; Drèze, X. (2006). The endowed progress effect. <i>Journal of Consumer Research</i>, 32(4), 504–512（现场实验，约 300 张卡）。</div>
   </div>
   <div class="why-box">
     <h3>成长要和挑战一起往上走</h3>
     <p>心流要求挑战与能力大致匹配，最近发展区则说，刚好够不着、但伸手能够着的任务最利于学习。成长系统的作用，就是玩家能力每升一格，挑战也随之抬高，让两者在“心流通道”里交替前进。</p>
     <svg class="c16-svg" viewBox="0 0 700 300" role="img" aria-label="成长与挑战同步：玩家能力呈台阶式上升，挑战平滑上升，两者保持在心流通道内；升级时玩家能力跳一格。">
+      <polygon points="60,190 240,130 420,70 600,16 680,16 680,68 600,90 420,150 240,210 60,250" fill="#fff0b0" opacity=".85"/>
       <g class="rough" stroke="#2b2b3a" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round">
         <path d="M60 250 L60 20"/><path d="M60 250 H680"/>
         <path d="M60 230 L240 170 L420 110 L600 50 L680 28" stroke="#e5484d" stroke-dasharray="10 8"/>
         <path d="M60 235 H150 V190 H260 V145 H370 V100 H480 V58 H590 V25 H680" stroke="#3b82f6"/>
       </g>
       <g font-size="17" fill="#2b2b3a">
-        <text x="70" y="26">能力 / 挑战</text><text x="600" y="282" text-anchor="end">时间 →</text>
+        <text x="70" y="26">能力 / 挑战</text><text x="200" y="26" fill="#7a5a00">淡黄色带：心流通道</text><text x="600" y="282" text-anchor="end">时间 →</text>
         <text x="410" y="205" fill="#c4262c">挑战（平滑上升）</text>
         <text x="90" y="130" fill="#1d5fc9">玩家能力（升级时跳一格）</text>
       </g>
@@ -242,17 +272,17 @@
   <div class="withimg">
     <span data-illus="c16_monkey"></span>
     <div>
-      <p>还记得舒尔茨的猴子吗？它们学会“灯亮就有果汁”以后，果汁本身不再让多巴胺神经元兴奋，意外多给的那一份才会。搬到升级上，有一件扎心的事：当升级变得完全可预期，第 30 次叮的一声，就像第 30 次的果汁。</p>
-      <p>这就是进度系统常常要“掺点意外”的原因：偶尔多掉一件好装备，偶尔触发一个暴击，让预测出点误差。它也是一把双刃剑，因为同样的机制，正是老虎机留住人的办法。</p>
+      <p>第 2 章讲过舒尔茨的猴子：它们学会“灯亮就有果汁”以后，果汁本身不再让多巴胺神经元兴奋，意外多给的那一份才会。搬到升级上，有一件扎心的事：当升级变得完全可预期，第 30 次叮的一声，就像第 30 次的果汁。</p>
+      <p>进度系统因此常常要“掺点意外”：偶尔多掉一件好装备，偶尔触发一个暴击，让预测出点误差。这也是一把双刃剑，同样的机制，正是老虎机留住人的办法。</p>
     </div>
   </div>
   <div class="why-box">
     <h3>奖励预测误差，以及享乐适应的另一面</h3>
     <p>Schultz、Dayan 与 Montague（1997）总结认为，猴子的多巴胺神经元报告的是“预测误差”：比预期好就放电增强，和预期一样就几乎没反应，比预期差则低于基线。所以<b>完全可预期的奖励会越来越没劲</b>，这和上一章的享乐适应是同一件事的两种讲法：基线在上移。反过来，每一级都让玩家学到新东西，才能持续制造“超出预期”的部分。</p>
-    <p>这里要提醒一句：把神经科学的发现直接换算成设计法则，是设计界的常见做法，但并不是公认的一对一对应。</p>
+    <p>把神经科学的发现直接换算成设计法则，是设计界的常见做法，两者并不是公认的一一对应。</p>
     <div class="src">出处：Schultz, W., Dayan, P., &amp; Montague, P. R. (1997). A neural substrate of prediction and reward. <i>Science</i>, 275(5306), 1593–1599。享乐适应见 Brickman &amp; Campbell（1971）。</div>
   </div>
-  <p>数字膨胀还牵出一层感知问题。人对变化的感受大致取决于相对变化：从 10 点攻击涨到 15 点，和从 1000 涨到 1005，感受天差地别。想让每一级都“有感”，就得按比例增长。按比例增长就是指数形状，数字于是一路翻上去，这就是数值通胀的根源。</p>
+  <p>数字膨胀还牵出一层感知问题。人对变化的感受大致取决于相对变化：从 10 点攻击涨到 15 点，和从 1000 涨到 1005，感受天差地别。想让每一级都“有感”，就得按比例增长。按比例增长是指数形状，数字于是一路翻上去，数值通胀由此而来。</p>
   <div class="withimg rev">
     <span data-illus="c16_farm"></span>
     <div>
@@ -262,9 +292,17 @@
   </div>
   <div class="why-box">
     <h3>古德哈特定律：指标一旦成了目标</h3>
-    <p>英国经济学家查尔斯·古德哈特（Charles Goodhart）在 1975 年谈货币政策时指出，一个统计规律一旦被拿来做控制的依据，就会失效。人类学家玛丽莲·斯特拉森（Marilyn Strathern）1997 年把它概括成广为流传的说法：“当一个指标变成目标，它就不再是个好指标。”经验值是“玩家有多投入、多熟练”的代理指标，一旦玩家直接为它而玩，它和真实的玩法就分家了。对策是让经验来自设计者<b>真正想鼓励的行为</b>，并对重复刷同一件事收益递减。</p>
-    <div class="src">出处：Goodhart, C. A. E. (1975), “Problems of Monetary Management: The UK Experience”, <i>Papers in Monetary Economics</i>（澳大利亚储备银行）；Strathern, M. (1997), “‘Improving ratings’: audit in the British University system”, <i>European Review</i> 5(3)：305–321。</div>
+    <p>英国经济学家查尔斯·古德哈特（Charles Goodhart）在 1975 年谈货币政策时指出，一个统计规律一旦被拿来做控制的依据，就会失效。人类学家玛丽莲·斯特拉森（Marilyn Strathern）1997 年把它概括成广为流传的说法：“当一个指标变成目标，它就不再是个好指标。”经验值是“玩家有多投入、多熟练”的代理指标。一旦玩家直接为它而玩，它和真实的玩法就分家了。对策是让经验来自设计者<b>真正想鼓励的行为</b>，并对重复刷同一件事收益递减。</p>
+    <div class="src">出处：<br>Goodhart · 1975 · 谈英国货币政策 · 统计规律一旦被拿来做控制的依据，就会失效（“Problems of Monetary Management: The UK Experience”，<i>Papers in Monetary Economics</i>，澳大利亚储备银行）。<br>Strathern · 1997 · 把它概括成“当一个指标变成目标，它就不再是个好指标”（“‘Improving ratings’: audit in the British University system”，<i>European Review</i> 5(3)：305–321）。</div>
   </div>
+  <aside class="cc-card" aria-label="概念卡：古德哈特定律">
+    <span class="cc-tag">概念卡</span>
+    <p class="cc-name"><span>古德哈特定律</span></p>
+    <p class="cc-en">Goodhart’s law</p>
+    <p class="cc-by">查尔斯·古德哈特（Charles Goodhart） · 1975 年谈英国货币政策；玛丽莲·斯特拉森（Marilyn Strathern） · 1997 年概括成通行说法</p>
+    <p class="cc-def">当一个指标变成目标，它就不再是个好指标。</p>
+    <p class="cc-eg"><span class="cc-k">例子</span>经验值本来反映“玩得怎么样”，玩家却在洞里反复砍同一只老鼠刷它，数字涨了，玩法没有变好。</p>
+  </aside>
 
   <h3>验证实验：成长到底有没有“被抵消”？数值通胀对照</h3>
   <p>下面是一个示意模型：攻击每级成长 g，当前区域敌人血量每级成长 gz。观察三件事：回到新手区打小怪要几下（力量幻想）；打当前区域敌人要几下（挑战感）；攻击力的数字有多长（通胀）。</p>
@@ -278,12 +316,16 @@
     <div id="c16_irows"></div>
     <div class="c16-diag" id="c16_imsg"></div>
   </div>
-  <p class="c16-note">示意：攻击力 = 10×(1+g)^(等级−1)；新手区敌人血量固定 100；当前区敌人血量 = 100×(1+gz)^(等级−1)。把 gz 调成和 g 相等，就是“等级缩放”：打当前区永远是同样的下数。</p>
+  <p class="c16-note">示意模型里，把 gz 调成和 g 相等，就成了“等级缩放”：打当前区永远是同样的下数。</p>
+  <details>
+    <summary>进阶：模型是怎么算的</summary>
+    <p class="c16-note">攻击力 = 10×(1+g)^(等级−1)；新手区敌人血量固定 100；当前区敌人血量 = 100×(1+gz)^(等级−1)。比如 g = 15%、20 级：攻击力约 10×1.15<sup>19</sup> ≈ 143。</p>
+  </details>
   <p>旧内容“失势”才有力量幻想，当前内容“追上”才有挑战。两者都需要，所以 gz 要略低于 g，但数字也就必然膨胀，可以试试把等级拉到 60。</p>
 
   <!-- ===================== 7 招牌：设计器 ===================== -->
   <div class="sec"><span class="n">7</span><h2><span class="tag how">怎么用</span>招牌互动：经验曲线设计器</h2></div>
-  <p>现在是这款游戏的数值策划。选曲线类型，调基础经验、增长率、等级上限，再设定玩家<b>每天</b>能获得的经验。页面实时画出每一级所需经验和每级耗时，并标出：<span style="color:#1d6a2c"><b>绿</b></span>＝正常，<span style="color:#8a5d00"><b>黄</b></span>＝变陡，<span style="color:#b3261e"><b>红</b></span>＝“墙”（耗时突然暴增），同时给出“通关前就满级”的诊断。</p>
+  <p>这次换成这款游戏的数值策划。选曲线类型，调基础经验、增长率、等级上限，再设定玩家<b>每天</b>能获得的经验。页面实时画出每一级所需经验和每级耗时，并标出：<span style="color:#1d6a2c"><b>绿</b></span>＝正常，<span style="color:#8a5d00"><b>黄</b></span>＝变陡，<span style="color:#b3261e"><b>红</b></span>＝“墙”（耗时突然暴增），同时给出“通关前就满级”的诊断。</p>
   <div class="board" id="c16_designer">
     <div class="row" id="c16_types_btn">
       <button class="chip on" data-t="lin">线性</button>
@@ -309,7 +351,11 @@
     <div class="c16-diag" id="c16_ddiag"></div>
   </div>
   <div class="sticky" id="c16_task1">试试看：先选“指数”，把增长率拉高，亲眼看红柱长出来；再想办法让它既没有红色的墙，满级时间又和通关时间大致相当（诊断出现绿色“合理范围”）。提示：加一点收益加成，或者换成线性。</div>
-  <p class="c16-note">示意：线性 need=基础×(1+r×(n−1))；多项式 need=基础×(1+r×(n−1))²；指数 need=基础×(1+r)^(n−1)。第 n 级耗时=need(n)÷(每天经验×(1+加成)^(n−1))。“墙”＝某级耗时超过前三级平均的 2 倍（黄：1.4 倍）。</p>
+  <p class="c16-note">“墙”是某一级的耗时超过前三级平均的 2 倍（黄色是 1.4 倍）。</p>
+  <details>
+    <summary>进阶：三条曲线怎么算（示意）</summary>
+    <p class="c16-note">线性 need=基础×(1+r×(n−1))；多项式 need=基础×(1+r×(n−1))²；指数 need=基础×(1+r)^(n−1)。第 n 级耗时=need(n)÷(每天经验×(1+加成)^(n−1))。</p>
+  </details>
 
   <!-- ===================== 8 辅助：技能树 ===================== -->
   <div class="sec"><span class="n">8</span><h2><span class="tag how">怎么用</span>辅助互动：技能树搭建</h2></div>
@@ -340,6 +386,7 @@
       <span class="stat">机动 <b id="c16_t_m">0</b></span>
     </div>
     <svg class="c16-svg" id="c16_tsvg" viewBox="0 0 700 580" role="img" aria-label="技能树：三条分支和三个汇合节点，点击节点分配技能点。"></svg>
+    <p class="c16-note">图例：蓝＝近战，绿＝远程，橙＝辅助；<b style="color:#6a35c2">紫色边框</b>的三个节点（毒刃、轻灵、铁弩）是汇合节点，夹在两条分支之间，要两边的前置都点亮才能解锁。</p>
     <div class="c16-info" id="c16_tinfo">把鼠标移到节点上看说明，点击分配（再点一次撤销；撤销前置节点时，依赖它的节点会一起收回）。</div>
     <div class="row">
       <button class="btn pink" id="c16_treset">重置</button>
@@ -370,13 +417,13 @@
 
   <div class="reflect">
     <h3>反思与争议</h3>
-    <p><b>外在奖励会不会“挤掉”内在乐趣？</b>这是心理学里讨论很久的“过度理由”问题：给本来有趣的事加上奖励，有时会削弱人原本的兴趣。游戏里的进度条是在放大乐趣，还是在把游戏变成打卡？这是一种有争议的观点，研究条件和结论并不一致，设计者最好自己做试玩。</p>
+    <p><b>外在奖励会不会“挤掉”内在乐趣？</b>这是心理学里讨论很久的“过度理由”问题：给本来有趣的事加上奖励，有时会削弱人原本的兴趣。游戏里的进度条是在放大乐趣，还是在把游戏变成打卡？研究条件和结论并不一致，设计者最好自己做试玩。</p>
     <p><b>“刷”与“肝”算不算好设计？</b>有人认为适度的“数值追求”是让休闲玩家有事做的好东西，也有人认为它是用“时间”冒充“内容”。两个立场都站得住，要看目标玩家。</p>
-    <p>如果原来认为“进度＝升级”，现在不妨换一种想法：进度是一个系统，它让玩家的投入被看见、被保留、被放大。数值是不是主角，则是设计选择。</p>
+    <p>进度并不等于升级，它是一个让玩家的投入被看见、被保留、被放大的系统，数值是不是主角，是设计选择。</p>
   </div>
 
   <div class="key">
-    <h3>本章要点</h3>
+    <h3>要点</h3>
     <ul>
       <li><b>五种成长：</b>数值、能力、装备与收集、玩家技能、元进度，另有声望重置。不要把“进度”只理解为“等级”。</li>
       <li><b>经验曲线</b>决定节奏：线性、多项式、指数各有性格；要同时看所需经验与收益，否则看不出“墙”。</li>
@@ -439,9 +486,10 @@ function fmtDays(d) {
   g += "</g>";
   h += g + '<g font-size="17" fill="#2b2b3a">';
   h += `<text x="470" y="52" fill="${cols.exp}">指数：越来越陡</text>`;
-  h += `<text x="560" y="196" fill="${cols.poly}">多项式</text>`;
-  h += `<text x="640" y="206" fill="${cols.lin}">线性</text>`;
-  h += '<text x="68" y="26">升级所需经验</text><text x="680" y="314" text-anchor="end">等级 →</text>';
+  h += `<text x="560" y="186" fill="${cols.poly}">多项式</text>`;
+  h += `<text x="688" y="214" text-anchor="end" fill="#1d5fc9">线性：每级加固定值</text>`;
+  [10, 20, 30, 40].forEach(v => { h += `<text x="46" y="${(Y(v) + 6).toFixed(1)}" text-anchor="end" font-size="15">${v}</text><line x1="56" y1="${Y(v).toFixed(1)}" x2="60" y2="${Y(v).toFixed(1)}" stroke="#2b2b3a" stroke-width="3"/>`; });
+  h += '<text x="68" y="26">升级所需经验（第 1 级 = 1）</text><text x="680" y="314" text-anchor="end">等级 →</text>';
   h += '<text x="60" y="274">1</text><text x="360" y="274">20</text><text x="640" y="274">40</text></g>';
   $("c16_curves").innerHTML = h;
 })();
@@ -522,7 +570,8 @@ function fmtDays(d) {
     fast: { t: "lin", base: 100, r: 0.05, L: 20, inc: 400, s: 0, D: 30 }
   };
   const need = (n, base, r) => type === "lin" ? base * (1 + r * (n - 1)) : type === "poly" ? base * Math.pow(1 + r * (n - 1), 2) : base * Math.pow(1 + r, n - 1);
-  let touched = false, sawRed = false;
+  let touched = false, sawRed = false, curPre = null;
+  const lvRange = a => { const o = []; for (let i = 0; i < a.length;) { let j = i; while (j + 1 < a.length && a[j + 1] === a[j] + 1) j++; o.push(j - i >= 2 ? a[i] + "–" + a[j] : a.slice(i, j + 1).join("、")); i = j + 1; } return o.join("、"); };
   function run() {
     const base = +$("c16_base").value, r = +$("c16_r").value, L = +$("c16_L").value, inc = +$("c16_inc").value, s = +$("c16_s").value / 100, D = +$("c16_D").value, lg = $("c16_log").checked;
     $("c16_v_base").textContent = base; $("c16_v_r").textContent = r.toFixed(2); $("c16_v_L").textContent = L; $("c16_v_inc").textContent = inc; $("c16_v_s").textContent = Math.round(s * 100); $("c16_v_D").textContent = D;
@@ -572,22 +621,23 @@ function fmtDays(d) {
     if (total < D) msg += `<div class="red">太快：约第 ${Math.round(total)} 天就满级，比通关早 ${Math.round(D - total)} 天。后面的内容没有成长奖励，容易觉得“空”。可以提高增长率、降低收益加成，或加长曲线。</div>`;
     else if (total > D * 3) msg += `<div class="ylw">满级要 ${fmtDays(total)}，是通关时间的 ${(total / D).toFixed(1)} 倍：多数玩家到不了满级。如果这是给硬核玩家留的“长期目标”，没问题；否则曲线偏陡。</div>`;
     else msg += `<div class="grn">满级时间 ${fmtDays(total)}，和通关时间（${D} 天）处于合理范围：玩家通关时接近满级或略低。</div>`;
-    if (reds.length) msg += `<div class="red">墙：第 ${reds.slice(0, 6).join("、")}${reds.length > 6 ? " 等" : ""} 级的耗时是前几级平均的 2 倍以上（最长的一级要 ${fmtDays(Math.max(...reds.map(k => dy[k - 1])))}）。玩家会在这里放缓或流失，除非用“更高收益”“新区域”补偿（试试加一点收益加成）。</div>`;
+    if (reds.length) msg += `<div class="red">墙：第 ${lvRange(reds)} 级的耗时是前几级平均的 2 倍以上（最长的一级要 ${fmtDays(Math.max(...reds.map(k => dy[k - 1])))}）。玩家会在这里放缓或流失，除非用“更高收益”“新区域”补偿（试试加一点收益加成）。</div>`;
     else if (ylws.length) msg += `<div class="ylw">有 ${ylws.length} 处变陡但没有墙：节奏在逐渐变慢，属于正常的“越往后越贵”。</div>`;
     else msg += `<div class="grn">没有墙，节奏平稳。</div>`;
     if (dy[0] > 1) msg += `<div class="ylw">第 1 级就要 ${fmtDays(dy[0])}：太慢，新手缺少早期的快速反馈（见第 10 章）。</div>`;
     if (lg) msg += `<div class="c16-note">对数坐标：柱子高度表示相对大小，不是绝对时间，数值差距会被压缩。</div>`;
+    if (curPre === "calm" || curPre === "dnd" || curPre === "fast") msg += `<div class="c16-note">这个预设是故意留了毛病的起点，上面的黄、红提示就是等你去改的地方。</div>`;
     $("c16_ddiag").innerHTML = msg;
     if (/class="red"/.test(msg)) sawRed = true;
     if (touched && sawRed && !/class="red"/.test(msg) && /class="grn">满级时间/.test(msg)) c16done($("c16_task1"), "没有墙，满级时间也合理。");
   }
-  document.querySelectorAll("#c16_types_btn .chip").forEach(b => b.onclick = () => { touched = true; type = b.dataset.t; run(); });
+  document.querySelectorAll("#c16_types_btn .chip").forEach(b => b.onclick = () => { touched = true; curPre = null; type = b.dataset.t; run(); });
   document.querySelectorAll("#c16_types_btn [data-p]").forEach(b => b.onclick = () => {
-    touched = true; const p = PRE[b.dataset.p]; type = p.t;
+    touched = true; curPre = b.dataset.p; const p = PRE[b.dataset.p]; type = p.t;
     $("c16_base").value = p.base; $("c16_r").value = p.r; $("c16_L").value = p.L; $("c16_inc").value = p.inc; $("c16_s").value = p.s; $("c16_D").value = p.D;
     run();
   });
-  ["c16_base", "c16_r", "c16_L", "c16_inc", "c16_s", "c16_D"].forEach(id => $(id).addEventListener("input", () => { touched = true; run(); }));
+  ["c16_base", "c16_r", "c16_L", "c16_inc", "c16_s", "c16_D"].forEach(id => $(id).addEventListener("input", () => { touched = true; curPre = null; run(); }));
   $("c16_log").addEventListener("change", run);
   run();
 })();
@@ -679,9 +729,10 @@ function fmtDays(d) {
     svg.querySelectorAll(".c16-node").forEach(g => {
       const n = byId[g.dataset.id], c = g.querySelector(".c16-body"), on = sel.has(n.id);
       const avail = !on && reqOK(n, sel) && n.cost <= left;
-      c.setAttribute("fill", on ? (n.root ? "#fff7cf" : COLS[n.br]) : (avail ? "#fff" : "#e9e6dc"));
-      c.setAttribute("stroke-width", on ? 6 : (avail ? 4 : 2));
-      c.setAttribute("stroke", on ? "#2b2b3a" : (avail ? "#2b2b3a" : "#a9a69b"));
+      const hub = n.br === 3;
+      c.setAttribute("fill", on ? (n.root ? "#fff7cf" : COLS[n.br]) : (hub ? (avail ? "#fff" : "#efe6ff") : (avail ? "#fff" : "#e9e6dc")));
+      c.setAttribute("stroke-width", on ? 6 : (avail ? 4 : (hub ? 3 : 2)));
+      c.setAttribute("stroke", on ? "#2b2b3a" : (hub ? "#7a45d6" : (avail ? "#2b2b3a" : "#a9a69b")));
       g.style.opacity = on || avail ? 1 : .55;
       g.querySelector(".c16-must").style.display = analyzed && mustSet.has(n.id) ? "" : "none";
     });

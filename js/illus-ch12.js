@@ -60,7 +60,7 @@
 
   /* ===== 第 5 节 ===== */
   add("c12_landing", "角色起跳时被拉长，落地时被压扁并扬起灰尘，体积保持不变，所以看起来有分量",
-    ground + ell(40, 66, 12, 28, BL) + path("M40 94 V104 M34 100 L40 106 L46 100", "none", 'stroke-width="2.5"') + tx(40, 28, 13, "起跳拉长") +
+    ground + ell(40, 66, 12, 28, BL) + path("M66 90 V50 M60 58 L66 50 L72 58", "none", 'stroke-width="2.5"') + tx(40, 28, 13, "起跳拉长") +
     ell(150, 108, 32, 12, BL) + circ(108, 116, 5, WH) + circ(98, 120, 4, WH) + circ(192, 116, 5, WH) + tx(150, 82, 13, "落地压扁") + tx(100, 18, 13, "体积不变", "middle").replace("", ""));
   add("c12_popup", "手机上的弹窗先快后慢地弹出来，电梯门起步缓、中间快、停时缓：都是缓动",
     rect(18, 24, 56, 92, BL) + rect(26, 52, 40, 30, WH) + path("M30 92 h32", "none", 'stroke-width="2.5"') + path("M46 44 v-8 M40 40 l6 -6 l6 6", "none", 'stroke-width="2.5"') +
@@ -78,7 +78,7 @@
     ground + person(34, 63, { arms: "point", face: "smile" }) + rect(78, 20, 92, 106, Y) + rect(78, 20, 12, 106, OR) + tx(134, 62, 15, "动画") + tx(134, 82, 15, "十二原则") + tx(134, 108, 14, "1981"));
   add("c12_tl_sid", "一块灰色的声音芯片，上面标着 SID 6581，三个声部的声波从它头上冒出来",
     ground + rect(56, 62, 88, 50, GY) + path("M70 112 v10 M90 112 v10 M110 112 v10 M130 112 v10 M70 62 v-8 M90 62 v-8 M110 62 v-8 M130 62 v-8", "none", 'stroke-width="3"') + tx(100, 92, 14, "SID 6581") +
-    path("M60 30 q8 -14 16 0 t16 0", "none", 'stroke-width="2.6"') + tx(100, 18, 13, "3 个声部"));
+    path("M64 29 q6 -7 12 0 t12 0 t12 0 t12 0 t12 0", "none", 'stroke-width="2.2"') + path("M64 39 l6 -6 l6 6 l6 -6 l6 6 l6 -6 l6 6 l6 -6 l6 6 l6 -6", "none", 'stroke-width="2.2"') + path("M64 49 l9 -8 v8 l9 -8 v8 l9 -8 v8 l9 -8 v8 l9 -8", "none", 'stroke-width="2.2"') + tx(100, 15, 13, "3 个声部"));
   add("c12_tl_nes", "红白机的五个声道排成一排：两个脉冲波、一个三角波、一个噪声和一个采样通道",
     rect(7, 38, 34, 62, "#fff7cf") + rect(45, 38, 34, 62, "#fff7cf") + rect(83, 38, 34, 62, "#e8f6fc") + rect(121, 38, 34, 62, "#ffe9ef") + rect(159, 38, 34, 62, "#eaf9e4") +
     path("M12 60 v-10 h8 v10 h8 v-10 h8 M50 60 v-10 h6 v10 h6 v-10 h8 M88 60 l10 -12 l10 12 M126 60 l4 -8 l4 14 l4 -10 l6 6 M164 60 q6 -14 12 0 t12 0", "none", 'stroke-width="2.5"') +

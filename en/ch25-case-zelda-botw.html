@@ -62,9 +62,9 @@
   </div>
 
   <div class="goals"><span class="time">about 40 min</span><h3>Learning goals</h3><ul>
-    <li>Explain the problem the team faced back then (traditional Zelda being “passive”), and what “line-of-sight guidance,” “multiplicative gameplay” and “breakable weapons” each were meant to solve.</li>
-    <li>Use emergence, autonomy, the information gap, opportunity cost and feedback loops to explain “why this design works,” and tell what the developers said from what we infer.</li>
-    <li>Remind yourself that a successful open world doesn’t mean “copy it and it will work,” and write down what a small team borrowing from it should cut first.</li>
+    <li>Explain the problem the team faced back then (traditional Zelda was “passive”), and what “sightline guidance,” “multiplicative gameplay” and “breakable weapons” were each meant to solve.</li>
+    <li>Use emergence, autonomy, information gaps, opportunity cost and feedback loops to explain “why this design works,” and tell which parts are what the developers said and which are inference.</li>
+    <li>Tell a successful case apart from “copy it and it will work,” and write down what a small team should cut first when borrowing from it.</li>
   </ul></div>
 
   
@@ -72,9 +72,9 @@
   <div class="withimg">
     <span data-illus="c25_hill"></span>
     <div>
-      <p>As a child you probably climbed some small hill near home. Nobody asked you to go up; you just saw something at the top and wanted to know what lay beyond.</p>
-      <p><i>The Legend of Zelda: Breath of the Wild</i> (released March 3, 2017 on Wii U and Switch, by Nintendo) wants the player to stay in that state. You set out from a high plateau and can walk almost straight to any place you can see, with nobody pushing you to do a quest. The director was Hidemaro Fujibayashi and the producer Eiji Aonuma.</p>
-      <p>It has three design ideas worth taking apart: <b>draw the player to explore with sight lines and terrain</b>; <b>keep the physics and “chemistry” rules consistent across the whole world</b>, so players come up with plays the designers didn’t write out one by one; and <b>make weapons break</b>, forcing trade-offs. In public talks the developers called the second “multiplicative gameplay.”</p>
+      <p>Many people climbed some little hill near home as kids. Nobody asked them to go up; they just saw something on the top and wanted to know what was on the other side.</p>
+      <p><i>The Legend of Zelda: Breath of the Wild</i> (released on Wii U and Switch on March 3, 2017, by Nintendo) wants to keep the player in this state all the time. Starting from a high platform, the player can walk almost straight to any place in sight, and nobody is rushing them to do quests. The director was Hidemaro Fujibayashi and the producer Eiji Aonuma.</p>
+      <p>Its design rests on three ideas: <b>draw the player to explore with sight lines and terrain</b>; <b>keep the physics and “chemistry” rules consistent across the whole world</b>, so players come up with plays the designers didn’t write out one by one; and <b>make weapons break</b>, forcing trade-offs. In public talks the developers called the second “multiplicative gameplay.”</p>
     </div>
   </div>
   <p>String the player’s ordinary state together and you get a <span class="term" tabindex="0" data-def="Core loop: the smallest closed circle of “action → feedback → reward” that the player repeats over and over.">core loop</span>: <b>see a landmark in the distance → head there → interact with the world’s rules along the way → find something → climb high and look again for the next place you want to go</b>.</p>
@@ -91,6 +91,10 @@
           <path d="M150 115 Q175 75 203 62"/><path d="M335 55 L383 55"/><path d="M515 62 Q545 70 565 93"/>
           <path d="M615 167 Q560 225 437 222"/><path d="M283 222 Q120 235 80 167"/>
         </g>
+        <g fill="#2b2b3a" stroke-width="2">
+          <path d="M205 62 L189 52 L190 71z"/><path d="M386 55 L371 47 L371 63z"/><path d="M567 96 L550 90 L561 77z"/>
+          <path d="M435 222 L452 214 L452 231z"/><path d="M79 164 L94 172 L79 182z"/>
+        </g>
       </g>
       <g font-size="26" text-anchor="middle" fill="#2b2b3a">
         <text x="85" y="130">① See</text><text x="270" y="63">② Go</text><text x="450" y="63">③ Interact</text>
@@ -106,7 +110,16 @@
 
   
   <div class="sec"><span class="n">2</span><h2><span class="tag what">What it is</span>Line-of-sight guidance: the mountain is the cover, the tower tip is the invitation</h2></div>
-  <p>An open world has an old problem: you can go anywhere, and so you don’t know where to go. So designers must let the world itself “speak.” <i>Breath of the Wild</i> does it with terrain: Nintendo developers described a “triangle rule” at CEDEC 2017 in Japan (according to Matt Walker’s English translation and several retellings): think of obstacles as triangles, and the player always has two choices before them: climb over, or go around; and a triangle blocks the view, so what lies behind can be kept as a surprise.</p>
+  <p>Open worlds have an old problem: when you can go anywhere, you don’t know where to go. So the designers have to make the world “speak” for itself. <i>Breath of the Wild</i> does it with terrain.</p>
+  <p>Nintendo developers described a “<b>triangle rule</b>” at CEDEC in Japan in 2017 (according to Matt Walker’s English translation and several retellings): think of obstacles as triangles, and the player always has two choices facing them: climb over, or go around. At the same time a triangle blocks the view, so what is behind it can be kept as a surprise.</p>
+  <aside class="cc-card" aria-label="Concept card: The Triangle Rule">
+    <span class="cc-tag">Concept card</span>
+    <p class="cc-name"><span>The Triangle Rule</span></p>
+    <p class="cc-en">The triangle rule (sightline guidance)</p>
+    <p class="cc-by">Nintendo developers · a talk at CEDEC in Japan, 2017 (according to Matt Walker’s English translation and several retellings)</p>
+    <p class="cc-def">Think of obstacles as triangles: the player can always climb over or go around, and a triangle blocks the view, so what is behind it can be kept as a surprise. Big, medium and small sizes handle landmarks, cover and walking pace.</p>
+    <p class="cc-eg"><span class="cc-k">Example</span>A mountain hides half the view and a tower tip pokes over the crest: the player sees from afar a place they want to go, without knowing what is there.</p>
+  </aside>
   <div class="c25fig">
     <svg viewBox="0 0 700 270" width="100%" role="img" aria-label="The triangle rule: a big triangle is a landmark visible from afar, a medium triangle blocks the view, and a small triangle controls the pace of walking">
       <g class="rough" stroke="#2b2b3a" stroke-width="4" stroke-linejoin="round">
@@ -114,7 +127,6 @@
         <path d="M40 210 L150 70 L260 210z" fill="#a8dcf0"/>
         <path d="M290 210 L360 130 L430 210z" fill="#b6e8a8"/>
         <path d="M470 210 L505 175 L540 210z" fill="#ffe58a"/>
-        <path d="M570 210 L592 188 L614 210z" fill="#ffe9ef"/>
       </g>
       <g font-size="18" fill="#2b2b3a" text-anchor="middle">
         <text x="150" y="28" font-weight="700">Big: landmark</text><text x="150" y="50" font-size="16">Visible from far away</text>
@@ -128,26 +140,34 @@
     <svg viewBox="0 0 700 250" width="100%" role="img" aria-label="Line-of-sight guidance: the player sees a tower tip peeking from behind a mountain">
       <g class="rough" stroke="#2b2b3a" stroke-width="4" stroke-linejoin="round">
         <path d="M20 210 L680 210" fill="none"/>
-        <path d="M150 210 L260 110 L370 210z" fill="#b6e8a8"/>
+        <path d="M150 210 L260 136 L370 210z" fill="#b6e8a8"/>
         <rect x="456" y="65" width="22" height="145" fill="#ffe58a"/><path d="M447 65 L467 35 L487 65z" fill="#ffb3c6"/>
         <path d="M530 210 L600 150 L670 210z" fill="#d8c8ff"/>
         <circle cx="70" cy="190" r="12" fill="#ff8fab"/>
       </g>
       <path d="M82 188 L467 48" stroke="#c4202a" stroke-width="3" stroke-dasharray="8 7" fill="none"/>
       <g font-size="18" fill="#2b2b3a">
-        <text x="30" y="238">Player</text><text x="195" y="198">Cover: mountain</text><text x="520" y="50">Tower tip shows</text><text x="520" y="238">Behind another mountain…</text>
+        <text x="30" y="238">Player</text><text x="260" y="190" text-anchor="middle">Cover: mountain</text><text x="520" y="50">Tower tip shows</text><text x="520" y="238">Behind another mountain…</text>
       </g>
     </svg>
     <p class="small">The terrain rises and falls: it hides the whole answer and leaves a goal tall enough to see.</p>
   </div>
-  <div class="eg" data-ic="🗼"><span data-illus="c25_peek"></span><div class="egt"><b>A tower tip over a hilltop (game)</b> The mountain hides half, the tower tip rises above the hilltop, and you see from afar a place you want to go, not knowing what is there. The goal is one you chose yourself, and no quest is pushing you.</div></div>
-  <div class="eg" data-ic="🌳"><span data-illus="c25_bend"></span><div class="egt"><b>A winding path in a park (daily life)</b> A good garden path won’t let you see the end at a glance: turn a bend, a corner of roof shows behind the trees, and you want to go on. It is the same idea as the tower tip.</div></div>
-  <div class="eg bad" data-ic="🏜️"><span data-illus="c25_flat"></span><div class="egt"><b>Counterexample: seeing it all at once</b> If the terrain is completely flat and every landmark is visible with nothing blocking, there is no suspense and no reason to “go and see.” That is just what the triangle avoids.</div></div>
+  <div class="eg" data-ic="🗼"><span data-illus="c25_peek"></span><div class="egt"><b>A tower tip poking over a hill (in the game)</b>The hill hides half of it, the tower tip rises above the crest, and the player sees from afar a place they want to go, without knowing what is there. The goal is chosen by the player, and no quest is pushing.</div></div>
+  <div class="eg" data-ic="🌳"><span data-illus="c25_bend"></span><div class="egt"><b>A winding path in a park (daily life)</b>A good garden path doesn’t let you see the end at a glance: it bends, a corner of a roof shows behind the trees, and you want to go on. The principle is the same as the tower tip.</div></div>
+  <div class="eg bad" data-ic="🏜️"><span data-illus="c25_flat"></span><div class="egt"><b>Counterexample: seeing it all at once</b> If the terrain is completely flat and every landmark is visible with nothing blocking, there is no suspense and no reason to “go and see.” The triangle exists to avoid exactly this kind of terrain.</div></div>
   <div class="eg bad" data-ic="🚧"><span data-illus="c25_unreach"></span><div class="egt"><b>Counterexample: visible but unreachable</b> A landmark placed far away yet stopped by an invisible wall, and the player quickly realizes the world’s “promise” doesn’t count. A distant goal must have a way to get there, and only then does “see it, go there” hold.</div></div>
 
   
   <div class="sec"><span class="n">3</span><h2><span class="tag what">What it is</span>Multiplicative gameplay: few rules, many combinations</h2></div>
-  <p>The second idea has nothing to do with terrain; it is about “how objects react to each other.” If a game has N kinds of elements (fire, wind, water, electricity…) and M kinds of objects (grass, wood, metal…), and the rules hold <b>everywhere</b> for them, about N×M interactions arise, while the designer needs to make only N+M pieces, with no need to hand-write a contraption for every scene. The developers call this multiplicative gameplay.</p>
+  <p>The second idea has nothing to do with terrain; it is about “how objects react to each other.” If a game has N kinds of elements (fire, wind, water, electricity…) and M kinds of objects (grass, wood, metal…), and the rules hold <b>everywhere</b> for them, about N×M interactions arise, while the designer needs to make only N+M pieces, with no need to hand-write a contraption for every scene.</p>
+  <aside class="cc-card" aria-label="Concept card: Multiplicative Gameplay">
+    <span class="cc-tag">Concept card</span>
+    <p class="cc-name"><span>Multiplicative Gameplay</span></p>
+    <p class="cc-en">Multiplicative gameplay</p>
+    <p class="cc-by">Hidemaro Fujibayashi, Satoru Takizawa, Takuhiro Dohta · GDC talk, 2017</p>
+    <p class="cc-def">A few rules that hold everywhere multiply with one another and produce far more interactions than the designers could list.</p>
+    <p class="cc-eg"><span class="cc-k">Example</span>Fire burns the grass, hot air rises, and opening the paraglider lifts the player into the sky: no special level was built for it, the rules multiplied and it “grew.”</p>
+  </aside>
   <div class="c25fig">
     <svg viewBox="0 0 700 200" width="100%" role="img" aria-label="Multiplicative gameplay: elements times objects gives many combinations">
       <g class="rough" stroke="#2b2b3a" stroke-width="4" stroke-linejoin="round">
@@ -163,25 +183,26 @@
       <g font-size="40" fill="#2b2b3a"><text x="244" y="108">×</text><text x="466" y="108">→</text></g>
     </svg>
   </div>
-  <div class="eg" data-ic="🔥"><span data-illus="c25_updraft"></span><div class="egt"><b>Fire × grass → updraft (game)</b> Fire burns the grass, hot air rises, and open your paraglider and you can fly up. The designers didn’t make a special level for this; it “grew” out of rules multiplying.</div></div>
+  <div class="eg" data-ic="🔥"><span data-illus="c25_updraft"></span><div class="egt"><b>Fire × grass → updraft (in the game)</b>Fire burns the grass, hot air rises, and opening the paraglider lets you fly up. The designers didn’t build a level for this; it “grew” out of rules multiplying.</div></div>
   <div class="eg" data-ic="🧱"><span data-illus="c25_lego"></span><div class="egt"><b>LEGO bricks (daily life)</b> With just a few basic bricks and one rule, “they snap together,” a child builds towers, bridges and houses, none of them prescribed in the instructions.</div></div>
   <div class="eg bad" data-ic="🔑"><span data-illus="c25_oneoff"></span><div class="egt"><b>Counterexample: a one-off contraption</b> “The key opens this door” is a hand-made single puzzle: only one solution, no value once used, so a hundred puzzles take a hundred pieces of work. The narrower the solution, the less room the player has to invent.</div></div>
   <div class="eg bad" data-ic="❓"><span data-illus="c25_inconsistent"></span><div class="egt"><b>Counterexample: inconsistent rules</b> The same grass lights with a touch here and won’t burn however you try there. The player’s guesses then have no value, and so they dare not experiment. Consistent rules are the precondition of this design.</div></div>
 
   
   <div class="sec"><span class="n">4</span><h2><span class="tag what">What it is</span>Weapons break: make every blow worth a thought</h2></div>
-  <p>The third idea is the most controversial: weapons have durability and shatter when used up. If you use one on ordinary monsters, there is less left for strong enemies. Each strike is a trade-off between “use it now” and “use it later,” and so choices carry weight.</p>
+  <p>The third idea is the most controversial: weapons have durability and break when used up. If you use one to cut ordinary monsters, there is less left for tough enemies. Every swing is a trade-off between “use it now” and “use it later,” so choices carry weight.</p>
   <div class="eg" data-ic="🗡️"><span data-illus="c25_weapon"></span><div class="egt"><b>The weapon nearly gone (game)</b> The sword in your hand has a little durability left, and ahead is a stronger enemy. Keep chopping the small fry in front, or save it? No standard answer, and the player must weigh it.</div></div>
-  <div class="eg" data-ic="🎒"><span data-illus="c25_backpack"></span><div class="egt"><b>A backpack that holds only three things (daily life)</b> Going hiking, the pack is limited, and you must decide between water, an umbrella or snacks. Putting one thing in means giving up another.</div></div>
+  <div class="eg" data-ic="🎒"><span data-illus="c25_backpack"></span><div class="egt"><b>A backpack that holds only three things (daily life)</b>Heading out to climb a hill with a limited pack, you must decide whether to bring water, an umbrella or snacks. Putting one in means giving up another.</div></div>
   <div class="eg bad" data-ic="♾️"><span data-illus="c25_infinite"></span><div class="egt"><b>Counterexample: an unbreakable artifact</b> If there were a strongest weapon that never broke, the player would of course use only it, and the choices would vanish. Using the same move against every enemy, after a while only repetition is left.</div></div>
-  <p>How did the developers explain it? In an interview on the <i>Nintendo Power Podcast</i> in late 2017, Fujibayashi said the team wanted players drawn into the open world to adventure, and if players were left to do whatever they liked, they wouldn’t know what to do, so different enemies drop different weapons to guide players to look for them. Aonuma said durability makes combat more strategic, so the player can’t rely only on their favorite move. Players’ reactions split widely: some like the trade-off, some find it annoying, and an article in Game Informer criticized it at the time.</p>
+  <p>The developers’ own explanation comes from interviews in late 2017. On the <i>Nintendo Power Podcast</i>, Fujibayashi said the team wanted players to be drawn into adventuring in this open world. If players are left to do as they please, they often don’t know what to do, so different enemies drop different weapons to steer players into looking for them.</p>
+  <p>Aonuma said durability makes combat more strategic, so players can’t rely only on their favorite move. Players’ reactions were split: some liked this trade-off, some found it annoying, and Game Informer ran a piece criticizing it at the time.</p>
 
   
-  <div class="sec"><span class="n">5</span><h2><span class="tag origin">How it was invented</span>What problem did the team face back then, and why did they change it this way?</h2></div>
+  <div class="sec"><span class="n">5</span><h2><span class="tag origin">How it was invented</span>The problem the team faced back then, and how they changed it</h2></div>
   <div class="story">
     <h3>From “passive” to “active”</h3>
-    <p><b>The problem.</b> Development of <i>Breath of the Wild</i> started after <i>Skyward Sword</i> (2011). At GDC (the Game Developers Conference) in March 2017, Fujibayashi, with art director Satoru Takizawa and technical director Takuhiro Dohta, explained the team’s starting point: the Zelda series was a very “passive” game, with the order of events fixed in advance and walls on the way you couldn’t pass; the player seemed free but was really walking a predetermined route. They wanted to turn it into an “active” game.</p>
-    <p><b>Guess first.</b> To make a team of dozens quickly understand what is fun about “objects react to each other,” what do you think they did first?</p>
+    <p>Development of <i>Breath of the Wild</i> started after <i>Skyward Sword</i> (2011). At GDC (the Game Developers Conference) in March 2017, Fujibayashi, with art director Satoru Takizawa and technical director Takuhiro Dohta, explained the team’s starting point: the Zelda series was a very “passive” game, with the order of events fixed in advance and walls on the way you couldn’t pass; the player seemed free but was really walking a predetermined route. They wanted to turn it into an “active” game.</p>
+    <p><b>Guess first.</b> To get a team of a few dozen people to quickly grasp what is fun about “objects reacting to each other,” what did they do first?</p>
     <div class="c25guess" id="c25g1" data-ok="1">
       <button class="chip" data-fb="No. That would be too slow, and you couldn’t tell yet whether it was fun.">First build a whole finished 3D map</button>
       <button class="chip" data-fb="Right.">Build a small prototype that looks like old 2D Zelda</button>
@@ -193,9 +214,9 @@
       <div class="ev hasimg"><span data-illus="c25_proto"></span><div><b class="yr">The prototype</b> Fujibayashi went back and played the original <i>The Legend of Zelda</i>, and what impressed him most was: “every time the screen scrolls, there is something new to discover.” They made a small 2D prototype that looked like the old 8-bit Zelda, with the aim of quickly showing colleagues that “objects react to each other.” The team later explained that this “2D” prototype actually ran on a 3D engine, with the physics and chemistry systems the game finally used behind it.</div></div>
       <div class="ev hasimg"><span data-illus="c25_chem"></span><div><b class="yr">Multiplication</b> Past puzzles were mostly separate contraptions, made one by one at great labor. What they wanted was a few mechanisms multiplied over and over across the whole world: objects react to the player, and objects react to one another. In the prototype there was just one simple rule: “there is a goal; can you get to it?”</div></div>
       <div class="ev hasimg"><span data-illus="c25_art"></span><div><b class="yr">Art</b> Consistent rules weren’t enough; the player had to “understand them at a glance.” Art director Takizawa changed the style on the basis of <i>The Wind Waker HD</i>, feeling that the original overly exaggerated cartoon look made it harder to think of physics and chemistry play. Some presentations are deliberately not realistic: a log cut through instantly turns into a tied bundle of firewood; food bounces in the pot like a rubber ball. He later said that on seeing such “absurdity” he felt it was fun.</div></div>
-      <div class="ev hasimg"><span data-illus="c25_gravity"></span><div><b class="yr">The world</b> Last was how to lead the player into the vast world. According to a retelling of the CEDEC 2017 talk, the towers at first made it feel like a straight line: players were always pulled along by a tower. The team used heat maps to find where players got stuck or bored, adjusted the towers’ positions, and carefully arranged small structures between towers so they “pull” players deeper into the world. They called this “gravity.”</div></div>
+      <div class="ev hasimg"><span data-illus="c25_gravity"></span><div><b class="yr">The world</b> The last problem to solve was how to lead the player into the vast world. According to a retelling of the CEDEC 2017 talk, the towers at first made it feel like a straight line: players were always pulled along by a tower. The team used heat maps to find where players got stuck or bored, adjusted the towers’ positions, and carefully arranged small structures between towers so they “pull” players deeper into the world. They called this “gravity.”</div></div>
     </div>
-    <p><b>The key insight.</b> They didn’t “design a bigger world.” They thought one thing through: freedom is not opening all the doors, but letting each of the player’s wishes land. A visible goal must be reachable, an experiment you’ve done must give a consistent result, and what you use must have weight. All three designs answer this one question.</p>
+    <p>Taken together, these steps show what the team had worked out: freedom means letting each of the player’s wishes land, and opening all the doors is not enough, nor is a bigger world. A visible goal must be reachable, an experiment you’ve done must give a consistent result, and what you use must have weight. The three designs answer the same question.</p>
   </div>
 
   <div class="card">
@@ -213,9 +234,11 @@
         <path d="M64 246 L370 100" stroke-width="16" opacity=".55"/>
       </g>
       <g id="c25g_b" fill="none" stroke="#c4202a" stroke-linecap="round" style="display:none">
-        <path d="M64 246 Q100 180 160 205" stroke-width="7" opacity=".45"/><path d="M160 205 Q250 130 330 170" stroke-width="7" opacity=".45"/>
-        <path d="M64 252 Q300 296 560 230" stroke-width="7" opacity=".45"/><path d="M330 170 Q360 120 372 102" stroke-width="7" opacity=".45"/>
-        <path d="M560 230 Q520 170 470 150" stroke-width="7" opacity=".45"/>
+        <defs><marker id="c25ga" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="2.6" markerHeight="2.6" orient="auto"><path d="M0 0 L10 5 L0 10z" fill="#c4202a"/></marker></defs>
+        <g stroke-width="6" opacity=".6" marker-end="url(#c25ga)">
+          <path d="M66 244 Q96 226 148 226"/><path d="M168 220 Q262 112 366 104"/>
+          <path d="M66 258 Q300 312 564 268"/><path d="M598 208 Q540 118 396 102"/>
+        </g>
       </g>
       <g font-size="18" fill="#2b2b3a" text-anchor="middle"><text x="50" y="304">Start</text><text x="382" y="80">Tower</text></g>
     </svg>
@@ -241,15 +264,23 @@
       <span data-illus="c25_ants"></span>
       <div>
         <p>Ants are the most common example of emergence: a single ant can only walk, leave a scent and follow scents, and no ant knows the whole foraging route. Yet a colony together “grows” a road to the food. The physicist P. W. Anderson wrote a very short article in 1972 titled “More Is Different”: at each higher level, new properties appear that cannot simply be derived from the level below.</p>
-        <p>It is the same in games: fire, grass, wind and metal each have a few simple rules, and when the rules multiply, plays like “riding an updraft up” pop out that nobody designed specially. But emergence has a precondition: <b>the rules must be consistent</b>. If fire burns here and not there, the player’s guesses have no value. The game scholar Jesper Juul divides game structure into “emergence” and “progression,” and this game is often taken as a representative of the former (a common classification, not the only way to divide).</p>
+        <p>It is the same in games: fire, grass, wind and metal each have a few simple rules, and when the rules multiply, plays like “riding an updraft up” pop out that nobody designed specially. But emergence has a precondition: <b>the rules must be consistent</b>. If fire burns here and not there, the player’s guesses have no value. The game scholar Jesper Juul divides game structure into “emergence” and “progression,” and this game is often taken as a representative of the former.</p>
       </div>
     </div>
-    <p class="src">Sources of the principle: P. W. Anderson, “More Is Different,” <i>Science</i> 177(4047): 393–396 (1972); Jesper Juul, <i>Half-Real</i> (MIT Press, 2005), on the distinction between emergence and progression.</p></div>
+    <p class="src">Sources of the principle: P. W. Anderson · 1972 · “More Is Different” · at each higher level, new properties appear that cannot simply be derived from the level below (<i>Science</i> 177(4047): 393–396). Jesper Juul · 2005 · <i>Half-Real</i> (MIT Press) · distinguishes games of emergence from games of progression.</p></div>
+  <aside class="cc-card" aria-label="Concept card: Games of Emergence and Games of Progression">
+    <span class="cc-tag">Concept card</span>
+    <p class="cc-name"><span>Games of Emergence and Games of Progression</span></p>
+    <p class="cc-en">Games of emergence and games of progression</p>
+    <p class="cc-by">Jesper Juul · <i>The Open and the Closed</i> (2002), <i>Half-Real</i> (2005)</p>
+    <p class="cc-def">Games of emergence get a large amount of variety from the combination of a few rules; games of progression move forward on content the designer has arranged level by level.</p>
+    <p class="cc-eg"><span class="cc-k">Example</span>Chess and <i>Breath of the Wild</i> are often taken as representatives of emergence; an adventure game that advances through its story level by level is closer to progression.</p>
+  </aside>
   <div class="why-box"><h3>② <span class="term" tabindex="0" data-def="Proposed by Deci and Ryan: people have three basic psychological needs, autonomy, competence and relatedness, and when they are met motivation lasts longer.">Self-determination theory</span>: a sense of autonomy</h3>
-    <p>Remember the three needs from the discussion of player motivation? One of them is autonomy: feeling “I chose this myself” makes intrinsic motivation stronger. Seeing a tower, deciding yourself where to go, with no quest list pushing, gives exactly the sense of autonomy. This theory is a framework for explaining motivation, and using it to explain a game’s sales is inference.</p>
+    <p>Chapter 3 covered three basic needs, and one of them is autonomy: feeling “I chose this myself” makes intrinsic motivation stronger. Seeing a tower, deciding yourself where to go, with no quest list pushing, gives exactly the sense of autonomy. This theory explains motivation itself; using it to infer a game’s sales goes beyond what it can account for.</p>
     <p class="src">Source of the principle: Deci &amp; Ryan, <i>Intrinsic Motivation and Self-Determination in Human Behavior</i> (1985).</p></div>
   <div class="why-box"><h3>③ Curiosity’s <span class="term" tabindex="0" data-def="Information gap: proposed by Loewenstein (1994): when people become aware of a gap between what they know and what they want to know, curiosity arises.">information gap</span>: the tower tip behind the mountain</h3>
-    <p>Information-gap theory holds that curiosity comes from “I know a little, but not everything.” The mountain hides half and the tower tip shows half, which is a <b>just-right</b> gap: too small and there is no interest, too big and you don’t know where to begin asking. This theory has fairly good experimental support; when applied to the layout of a particular level, it is interpretation.</p>
+    <p>Information-gap theory holds that curiosity comes from “I know a little, but not everything.” The mountain hides half and the tower tip shows half, which is a <b>just-right</b> gap: too small and there is no interest, too big and you don’t know where to begin asking. This theory has fairly good experimental support, though applied to the layout of a particular level it is only one interpretation.</p>
     <p class="src">Source of the principle: George Loewenstein, “The psychology of curiosity: A review and reinterpretation,” <i>Psychological Bulletin</i> 116(1): 75–98 (1994).</p></div>
   <div class="why-box"><h3>④ <span class="term" tabindex="0" data-def="Opportunity cost: choosing one option means giving up the value the next-best option would have brought.">Opportunity cost</span>: weapons break</h3>
     <p>Weapons have durability: using one on ordinary monsters leaves less for strong enemies. Each strike makes the player weigh “use it now” against “use it later,” and so choices carry weight. As said earlier, players’ reactions to this design split widely, so “effective” depends on the person.</p>
@@ -266,7 +297,7 @@
 
   
   <div class="sec"><span class="n">8</span><h2><span class="tag how">How to use it</span>Signature interactive one: the sight-line sandbox</h2></div>
-  <p>The green circles are hills (the triangle in the middle is the summit; the higher, the more it blocks the view). You are the red dot. Different landmarks have different “heights”: towers and smoke columns can be seen from afar, while trees and ruins show only as you get close. <b>Place a few landmarks, then click the map to let the red dot walk</b>, and watch which are hidden by hills and which make you “want to go and look.”</p>
+  <p>The green round patches are hills (the triangle in the middle is the peak; the higher, the better it blocks sight). The player is the red dot. Different landmarks have different “heights”: towers and smoke columns can be seen from far away, while trees and ruins show only when you get near. <b>Place a few landmarks, then click the map to walk the red dot around</b>, and watch which are hidden by hills and which make you “want to go and see.”</p>
   <div class="board">
     <div class="c25tools" id="tools"></div>
     <canvas id="mc" width="640" height="400" aria-label="Sight-line sandbox"></canvas>
@@ -279,7 +310,7 @@
     </div>
     <div class="msg" id="mmsg"></div>
   </div>
-  <div class="sticky c25task" id="c25task1">Try it: turn off the God’s-eye view and first walk toward a landmark you can see; visit 3 landmarks and see whether new landmarks emerge one after another from behind the hills.</div>
+  <div class="sticky c25task" id="c25task1">Try it: turn off the god’s-eye view. At first you can see nothing; click around the map and walk a few steps, wait until a landmark shows from behind a hill, then head toward it. Visit 3 landmarks and see whether new landmarks appear one after another.</div>
 
   
   <div class="sec"><span class="n">9</span><h2><span class="tag how">How to use it</span>Signature interactive two: the chemistry-engine combiner</h2></div>
@@ -309,7 +340,8 @@
     <label>Element kinds N: <b id="c25n_v">4</b><input type="range" id="c25n" min="1" max="8" value="4"></label>
     <label>Object kinds M: <b id="c25m_v">5</b><input type="range" id="c25m" min="1" max="12" value="5"></label>
     <p>Hand-writing one for each scene: about <span class="big" id="c25add">9</span> pieces. With consistent rules, there are about <span class="big" id="c25mul">20</span> interactions.</p>
-    <p class="small">Illustrative: assuming every combination is meaningful. In the rule table earlier, only 12 of 21 combinations react, and the other 9 are left blank on purpose, since restraint makes the reacting combinations stand out. With every rule added, the combinations to test also grow multiplicatively, and that is its cost.</p>
+    <p class="small">Illustration: assuming every combination is meaningful. In the rules table above, only 12 of the 21 combinations react, and the other 9 were left blank on purpose; restraint makes the combinations that do react stand out more.</p>
+    <p class="small">Each rule added makes the number of combinations to test grow multiplicatively, and that is its cost. In the combiner, elements and objects sit in the same row, so pairing the 7 options two by two gives 21 in all.</p>
   </div>
 
   <h3>Design tricks you can borrow</h3>
@@ -327,7 +359,7 @@
       <li><b>Line-of-sight guidance</b>: with terrain hiding and revealing at different heights, players set goals for themselves, matching the explorer motive, autonomy and the information gap.</li>
       <li><b>Systemic rules</b> produce <b>emergence</b>: the same mechanisms combined in different situations give far more dynamics than the designers’ list; consistent rules are the precondition for players to dare to experiment.</li>
       <li><b>Breakable weapons</b> give choices weight, but players’ reactions are polarized; heat maps and “gravity” spread the crowd across the world, which is a feedback loop.</li>
-      <li>Guidance is not coercion: what designers do is “lay the road and light the lamps,” not “drag you along.”</li>
+      <li>Guidance is not the same as coercion: the designers “lay the road, light the lamps”; they don’t drag the player along.</li>
     </ul>
   </div>
 
@@ -343,19 +375,19 @@
 
   <div class="reflect">
     <h3>Think about it: survivorship bias</h3>
-    <p>What we read is the story of <i>Breath of the Wild</i>’s <b>success</b> (it won Game of the Year at The Game Awards 2017). Countless games that tried “open world + physics and chemistry systems” did not get the same result, and we seldom use them as cases. So “it was designed this way, so it succeeded” may carry <span class="term" tabindex="0" data-def="Survivorship bias: seeing only the successful samples, one overestimates the success rate of some practice, because the failed samples are not told.">survivorship bias</span>: team size, timing, brand and overall polish matter just as much.</p>
-    <p>Write a sentence: <b>if your small team wants to borrow its “systemic rules,” what should you cut or simplify first?</b></p>
+    <p>What you read is the <b>success</b> story of <i>Breath of the Wild</i> (it won Game of the Year at The Game Awards 2017). Countless games that tried “open world + physics and chemistry systems” did not get the same result, and few people take them as cases. So “it was designed this way, therefore it succeeded” may carry <span class="term" tabindex="0" data-def="Survivorship bias: seeing only the successful samples makes you overestimate the success rate of a practice, because the failed samples go untold.">survivorship bias</span>: team size, timing, brand and overall polish matter just as much.</p>
+    <p>Write one sentence: <b>if a small team wanted to borrow its “systemic rules,” what most needs to be cut or simplified in advance?</b></p>
     <textarea rows="3" data-save="ch25reflect" placeholder="E.g. keep only two or three rules and make sure they hold on all objects…"></textarea>
   </div>
 
-  <div class="tldr"><i>Breath of the Wild</i> breeds emergence with “a few consistent rules,” stirs curiosity with sight lines and information gaps, calibrates the world with heat maps, and gives choices weight through autonomy and trade-offs: it is a much-discussed success case, not a universal recipe.</div>
+  <div class="tldr"><i>Breath of the Wild</i> breeds emergence from “a few consistent rules,” sparks curiosity with sightlines and information gaps, calibrates the world with heat maps, and gives choices weight with autonomy and trade-offs. It is a much-discussed success case, not a universal recipe.</div>
 
-  <div class="sec"><span class="n">10</span><h2><span class="tag think">Practice</span>Practice</h2></div>
+  <div class="sec"><span class="n">10</span><h2><span class="tag think">Practice</span>Quiz</h2></div>
   <div id="quiz"></div>
 
   <div class="sec"><span class="n">11</span><h2><span class="tag think">Reflection</span>Your breakdown</h2></div>
   <div class="card o">
-    <p>Think of a game you have played and find in it <b>the example most like “system-driven play”</b> (for example Minecraft’s redstone, or the terrain and resources of Civilization). Write: <b>what rules does it have? Where do these rules “multiply” and produce play you hadn’t expected?</b></p>
+    <p>Think of a game you have played and find in it <b>the example closest to “system-driven play”</b> (for example, redstone in <i>Minecraft</i>, terrain and resources in <i>Civilization</i>). Write down: <b>what rules does it have? Where do those rules “multiply” to produce play nobody expected?</b></p>
     <textarea rows="6" data-save="ch25" placeholder="E.g. Minecraft: blocks have gravity, water flows, redstone carries signals… three rules combined give automatic doors and automatic farms…"></textarea>
   </div>
 </main>
@@ -394,7 +426,7 @@ const DX = [
   ["Rules and MDA", "Rules → emergence", "<b>Mechanics</b>: a few consistent rules of physics and elements. <b>Dynamics</b>: the player burns grass to ride an updraft, draws lightning with metal, pushes a raft with wind… <b>Aesthetics</b>: the joy of discovery, a sense of freedom, a small “I’m clever.” The designers spend their effort at the mechanics layer, and the dynamics “grow” out of the players."],
   ["Flow and difficulty", "Self-chosen difficulty", "In an open world difficulty is not a fixed curve: the player can choose where to go first and what to challenge first, and when meeting an enemy too strong, go around or get stronger first. <b>Letting players adjust the challenge themselves</b> is another way to keep flow."],
   ["Meaningful choice", "Many solutions", "One obstacle has many solutions: climb, fly, freeze, burn, go around. There is no “standard answer” among the choices, each with its own consequences, so it is meaningful. This does not come from hand-written branches but is naturally supplied by the system’s rules."],
-  ["Levels and teaching", "Teaching without text", "The plateau in the starting area is a small teaching ground: you learn to climb, pick things up, and meet small interactions of water and fire. Then terrain and sight lines hint at the next step. “Introduce → practice → vary” is placed inside a very large open space."],
+  ["Levels and teaching", "Teaching without text", "The high platform in the starting area is a small teaching ground: the player learns to climb, pick things up, and meets small interactions of water and fire. Terrain and sightlines then hint at the next step. “Introduce → practice → vary” has been placed into a very large open space."],
 ];
 const seen = new Set();
 DX.forEach((d, i) => {
@@ -494,7 +526,7 @@ function drawMap() {
   g.beginPath(); g.arc(you.x, you.y, 9, 0, 7); g.fillStyle = "#ff5a7a"; g.fill(); g.strokeStyle = "#2b2b3a"; g.lineWidth = 3; g.stroke();
   const nseen = marks.filter(m => m.seen).length;
   $("vis").textContent = nv; $("tot").textContent = marks.length; $("vst").textContent = nseen;
-  if (nseen >= 3) c25done("c25task1", "Visited " + nseen + "  landmarks: you are already being led along by “the visible next goal.”");
+  if (nseen >= 3) c25done("c25task1", "Visited " + nseen + " landmarks: you are already being led along by “the visible next goal.”");
   if (tick % 20 === 0) {
     $("mmsg").textContent = !marks.length ? "No landmarks yet. Pick a kind of landmark and click the map to place it." : nv === 0 ? "You can’t see anything: with no goal, there is no desire to explore." :
       nv < marks.length ? "You see " + nv + "  landmarks, and " + (marks.length - nv) + "  more are blocked, waiting for you to go around and find them." : "All landmarks are visible: there is no suspense left.";
@@ -545,7 +577,7 @@ function evalPick() {
   else {
     triedSet.add(k);
     if (RULES[k]) { foundSet.add(k); html = "<b>A reaction!</b> " + RULES[k]; }
-    else html = "<b>No obvious reaction.</b> Not every combination needs a result: blank space makes the reacting combinations stand out.";
+    else html = "<b>No obvious reaction.</b> Not every combination needs a result; blank space makes the combinations that do react stand out.";
   }
   $("res").innerHTML = html;
   $("found").textContent = foundSet.size; $("tried").textContent = triedSet.size;
@@ -563,7 +595,7 @@ function goalUI() {
     const b = document.createElement("button");
     b.className = "chip" + (goal === G.id ? " on" : "") + (solved[G.id].size ? " done" : "");
     b.textContent = G.name + " (" + solved[G.id].size + "/" + G.sol.length + ")";
-    b.onclick = () => { goal = G.id; $("gm").textContent = "Goal:" + G.name + ". Try it with the combiner above."; goalUI(); };
+    b.onclick = () => { goal = G.id; $("gm").textContent = "Goal: " + G.name + ". Try it with the combiner above."; goalUI(); };
     $("goals").appendChild(b);
   });
   const total = GOALS.reduce((a, G) => a + solved[G.id].size, 0), all = GOALS.reduce((a, G) => a + G.sol.length, 0);
@@ -606,10 +638,10 @@ GD.mountQuiz($("quiz"), [
     var btn = root.querySelector('.it[data-i="' + i + '"]'), fb = document.getElementById("c25fb" + i), it = items[i];
     if (it.a === p) {
       got[i] = true; done++; btn.classList.remove("bad"); btn.classList.add("ok");
-      fb.innerHTML = "✅ <b>" + P[p] + "</b>:" + it.why;
+      fb.innerHTML = "✅ <b>" + P[p] + "</b>: " + it.why;
     } else {
       miss++; btn.classList.remove("bad"); void btn.offsetWidth; btn.classList.add("bad");
-      fb.textContent = "❌ “" + P[p] + "” doesn’t quite fit. Hint:" + it.hint;
+      fb.textContent = "❌ “" + P[p] + "” doesn’t quite fit. Hint: " + it.hint;
     }
     upd();
   }

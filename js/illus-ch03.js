@@ -34,8 +34,8 @@
     T(100, 14, 11, "自己选歌 · 弹完整首 · 一起合奏", "middle"));
   add("c03_tutorial", "反例：火柴人被一只大手牵着往前走，路被围栏封住，头上写着“不能跳过”", ground +
     '<path d="M112 100 H194 M112 116 H194" stroke-width="3"/><path d="M120 100 V126 M146 100 V126 M172 100 V126 M192 100 V126" stroke-width="2.5"/>' +
-    person(60, 62, { arms: "none", face: "sad", legs: "walk", look: 1 }) + '<path d="M60 80 L46 98 M60 80 L96 72 H128" fill="none"/>' +
-    '<path d="M128 56 q18 -2 22 12 l-8 6 q-6 -8 -14 -6 z" fill="#ffd9a8" stroke-width="3"/><path d="M148 60 H196 M142 74 H196" stroke-width="3"/>' + bubble(70, 20, 44, 14), T(70, 25, 12, "不能跳过！", "middle"));
+    person(60, 62, { arms: "none", face: "sad", legs: "walk", look: 1 }) + '<path d="M60 80 L46 98 M60 80 L104 74" fill="none"/>' +
+    '<path d="M126 62 L196 50 M126 82 L196 94" fill="none" stroke-width="3"/><circle cx="116" cy="72" r="12" fill="#ffd9a8" stroke-width="3"/><path d="M108 63 q2 -6 6 -1 M116 61 q3 -6 7 0" fill="none" stroke-width="2.5"/>' + bubble(70, 20, 44, 14), T(70, 25, 12, "不能跳过！", "middle"));
   add("c03_invite", "反例：活动页要求拉三个人才能解锁，火柴人满脸尴尬地举着手机，朋友们摆手后退", ground +
     person(40, 62, { arms: "hold", face: "sad", look: 1 }) + '<rect x="62" y="52" width="30" height="46" rx="5" fill="#fff"/><path d="M68 66 h18 M68 76 h18 M68 86 h10" stroke-width="2"/>' +
     person(130, 64, { s: 0.8, arms: "wave", face: "flat", look: -1 }) + person(172, 64, { s: 0.8, arms: "wave", face: "flat", look: -1 }) +
@@ -78,20 +78,23 @@
     '<rect x="18" y="82" width="22" height="30" fill="#fff"/><path d="M23 92 l3 3 6 -6 M23 102 l3 3 6 -6" fill="none" stroke="#3aa655" stroke-width="2.5"/>');
   add("c03_explorer", "探索者：火柴人举着放大镜，趴在地图边缘的一堵墙前，墙后面藏着一个隐藏房间", ground +
     '<path d="M110 20 V126 H192" fill="none" stroke-width="4"/><rect x="132" y="62" width="48" height="48" fill="#e8e8f0" stroke-dasharray="5 5"/>' + star(156, 92, 1.1) +
-    person(60, 62, { arms: "point", face: "wide", look: 1, legs: "walk" }) + '<circle cx="106" cy="56" r="11" fill="#e8f6fc" stroke-width="3"/><path d="M98 64 L88 72" stroke-width="3.5"/>');
+    person(60, 62, { arms: "point", face: "wide", look: 1, legs: "walk" }) + '<circle cx="106" cy="56" r="11" fill="#e8f6fc" stroke-width="3"/><path d="M98 64 L88 72" stroke-width="3.5"/>', T(156, 56, 11, "隐藏房间", "middle") + T(98, 40, 11, "放大镜", "end"));
   add("c03_socializer", "社交者：两个火柴人并排坐着聊得开心，头顶是互相交叠的对话气泡和爱心", ground +
     person(60, 64, { arms: "wave", legs: "sit", face: "grin", look: 1 }) + person(130, 64, { arms: "hold", legs: "sit", face: "smile", look: -1 }) +
     '<ellipse cx="62" cy="24" rx="34" ry="14" fill="#fff"/><ellipse cx="132" cy="20" rx="34" ry="14" fill="#fff"/>' + E(62, 31, 16, "☺") + E(132, 28, 16, "♥"));
   add("c03_killer", "竞争者：两个火柴人站在擂台上对峙，中间的排名牌写着第一名", ground +
     '<path d="M14 100 H186 M30 100 V126 M170 100 V126" stroke-width="5"/>' + person(46, 36, { arms: "throw", face: "grin", legs: "wide" }) + person(154, 36, { arms: "throw", face: "shout", legs: "wide", look: -1 }) +
     '<path d="M84 30 H116 V54 q0 12 -16 12 q-16 0 -16 -12 Z" fill="#ffd34d" stroke-width="3"/>', T(100, 51, 14, "1", "middle") + T(100, 18, 12, "排名", "middle"));
-  add("c03_tour", "同一个旅行团：四个火柴人各干各的，一个举着手机拍打卡照，一个钻进小巷，一个和同伴聊天，一个抢好位置", ground +
+  add("c03_tour", "同一个旅行团：四个火柴人各干各的，一个举着手机拍打卡照，一个钻进小巷，一个边走边聊天，一个冲向旗子标出的好位置", ground +
     person(24, 71, { s: 0.85, arms: "up", face: "grin" }) + '<rect x="33" y="48" width="14" height="22" fill="#a8dcf0" stroke-width="2"/>' +
-    person(78, 71, { s: 0.85, arms: "point", face: "wide", look: 1, legs: "walk" }) + '<path d="M96 126 V96 H110 V126" fill="#e8e8f0" stroke-width="2.5"/>' +
-    person(130, 71, { s: 0.85, arms: "wave", face: "smile" }) + person(172, 71, { s: 0.85, arms: "wave", face: "grin", look: -1 }) + '<ellipse cx="150" cy="34" rx="22" ry="9" fill="#fff"/>', T(150, 38, 10.5, "聊聊聊", "middle"));
-  add("c03_context", "反例：同一个火柴人在三个场景里戴着三顶不同的帽子，一会儿研究地图，一会儿冲排名，一会儿和朋友闲聊", '<path d="M6 112 H194" stroke-dasharray="2 7" stroke-width="3"/><path d="M68 14 V112 M134 14 V112" stroke-dasharray="4 6" stroke-width="2.5"/>' +
-    person(34, 67, { s: 0.7, arms: "point", face: "wide", hat: "cap", legs: "walk" }) + person(100, 67, { s: 0.7, arms: "throw", face: "grin", hat: "crown", legs: "wide" }) + person(166, 67, { s: 0.7, arms: "wave", face: "smile", hat: "wizard", legs: "stand" }),
-    T(34, 130, 11, "刚入坑", "middle") + T(100, 130, 11, "满级后", "middle") + T(166, 130, 11, "和朋友开黑", "middle"));
+    person(70, 71, { s: 0.85, arms: "point", face: "wide", look: 1, legs: "walk" }) + '<path d="M96 126 V96 H110 V126" fill="#e8e8f0" stroke-width="2.5"/>' +
+    person(128, 71, { s: 0.85, arms: "wave", face: "smile" }) + '<ellipse cx="128" cy="30" rx="24" ry="10" fill="#fff"/>' +
+    person(162, 71, { s: 0.85, arms: "throw", face: "shout", look: 1, legs: "run" }) + '<path d="M190 126 V56" stroke-width="3"/><path d="M190 56 L190 70 L177 63 Z" fill="#ffd34d" stroke-width="2.5"/>', T(128, 34, 11, "聊聊聊", "middle"));
+  add("c03_context", "反例：同一个火柴人在三个场景里，手里拿着不同的东西：研究地图时举着放大镜，冲排名时捧着奖杯，和朋友开黑时说着话", '<path d="M6 112 H194" stroke-dasharray="2 7" stroke-width="3"/><path d="M68 14 V112 M134 14 V112" stroke-dasharray="4 6" stroke-width="2.5"/>' +
+    person(34, 67, { s: 0.7, arms: "point", face: "wide", hair: true, legs: "walk" }) + '<circle cx="53" cy="70" r="6" fill="#e8f6fc" stroke-width="2.5"/><path d="M49 74 L56 73" stroke-width="2"/>' +
+    person(100, 67, { s: 0.7, arms: "throw", face: "grin", hair: true, legs: "stand" }) + '<path d="M114 48 h9 v5 q0 5 -4.5 5 q-4.5 0 -4.5 -5 z M118.5 58 v4 h-4 h8" fill="#ffd34d" stroke-width="2"/>' +
+    person(166, 67, { s: 0.7, arms: "wave", face: "smile", hair: true, legs: "stand" }) + '<ellipse cx="186" cy="40" rx="8" ry="6" fill="#fff" stroke-width="2"/>',
+    T(34, 130, 11, "刚入坑", "middle") + T(100, 130, 11, "满级后", "middle") + T(166, 130, 11, "和朋友开黑", "middle") + E(186, 44, 8, "♥"));
 
   /* ---- 第5节：Bartle 发明故事 ---- */
   add("c03_mud1", "MUD1 的黑色终端屏幕：绿色文字写着“你站在一间昏暗的石室里”，光标在闪", '<rect x="16" y="14" width="168" height="100" rx="8" fill="#1f2937"/><rect x="72" y="118" width="56" height="8" fill="#9aa0ad"/>' +

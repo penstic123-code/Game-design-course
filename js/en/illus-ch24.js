@@ -116,7 +116,7 @@ ILLUS_EN_ADD({
 ]
 },
 "c24_ramp": {
-"a": "Four pipes each taller than the last, a stick figure jumps over them one by one, steadier each time, and the next higher one is on the right",
+"a": "Three pipes, short, medium and tall, a stick figure jumps over them one by one, steadier each time",
 "t": [
 "One notch higher each step"
 ]

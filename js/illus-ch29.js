@@ -93,7 +93,7 @@
     ground +
     person(80, 57, { arms: "stand", legs: "wide", face: "smile" }) + person(176, 70, { s: 0.8, arms: "stand", legs: "walk", face: "smile" }) +
     '<g fill="#2b2b3a" stroke="none"><ellipse cx="12" cy="118" rx="4" ry="2"/><ellipse cx="46" cy="118" rx="4" ry="2"/><ellipse cx="116" cy="118" rx="3" ry="2"/><ellipse cx="126" cy="118" rx="3" ry="2"/><ellipse cx="136" cy="118" rx="3" ry="2"/><ellipse cx="146" cy="118" rx="3" ry="2"/><ellipse cx="156" cy="118" rx="3" ry="2"/></g>',
-    T(60, 24, 12, "步子大，步频慢", "middle") + T(150, 24, 12, "步子小，步频快", "middle") + T(100, 134, 11, "都是每秒 1.4 米", "middle"));
+    T(52, 22, 11, "步子大，步频慢", "middle") + T(154, 22, 11, "步子小，步频快", "middle") + T(52, 37, 11, "每秒 1.4 米", "middle") + T(154, 37, 11, "每秒 1.4 米", "middle"));
 
   illusAdd("c29_knob", "左边一个大旋钮转到了头，苹果变得又密又快，右边的火柴人手忙脚乱，说明数字（机制）改变了体验",
     ground +

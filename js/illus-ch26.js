@@ -70,7 +70,8 @@
 
   /* ---------- 例子：局部最优 ---------- */
   illusAdd("c26_tower", "塔防地图只有一条笔直的路，三座塔的伤害数字不断加一，旁边的设计师挠头",
-    '<path d="M10 102 H190" stroke-dasharray="6 6" stroke-width="3" fill="none"/>' +
+    '<path d="M10 102 H54" stroke-dasharray="6 6" stroke-width="3" fill="none"/>' +
+    '<rect x="58" y="98" width="134" height="12" rx="3" fill="#e9dcc0" stroke-width="2.5"/><path d="M70 104 l6 0 M100 104 l6 0 M130 104 l6 0 M160 104 l6 0 M176 104 l8 0 M180 100 l5 4 l-5 4" stroke-width="2.5" fill="none"/>' +
     person(24, 48, { s: 0.8, arms: "chin", face: "flat" }) +
     '<circle cx="86" cy="76" r="11" fill="#a8dcf0"/><circle cx="122" cy="76" r="11" fill="#a8dcf0"/><circle cx="158" cy="76" r="11" fill="#a8dcf0"/>' +
     '<path d="M86 87 V98 M122 87 V98 M158 87 V98" stroke-width="2.5" fill="none"/>',

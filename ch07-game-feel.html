@@ -55,8 +55,8 @@
     <span class="time">约 40 分钟</span>
     <ul>
       <li>读完能说出“手感”和“果汁”各指什么，并解释为什么开发者得专门发明这两个词。</li>
-      <li>读完能解释反馈为什么要快，以及“约 100 毫秒”为什么只是经验值，不是铁律。</li>
-      <li>读完能区分三种缓动，能按倍数（不是等量）设计效果的强度档位，并解释同一个特效重复多次后为什么会变淡、怎么救。</li>
+      <li>读完能解释反馈为什么要快，以及“约 100 毫秒”为什么只是经验值。</li>
+      <li>读完能区分三种缓动，能按倍数设计效果的强度档位，并解释同一个特效重复多次后为什么会变淡、怎么救。</li>
     </ul>
   </div>
 
@@ -65,11 +65,19 @@
   <div class="withimg">
     <span data-illus="c07_anatomy"></span>
     <div>
-      <p>想象两个打砖块。球、挡板、砖块，规则一个字不差。玩第一个，像在翻幻灯片：球碰到砖块，砖块消失，数字加一，完了。玩第二个，球一碰砖块就“啪”地弹开，砖块先抖一下再碎成几片，挡板接球时还被压扁了一点点。</p>
-      <p>说不上哪里好，只觉得第二个“有劲”。这种有劲，业内叫<span class="term" tabindex="0" data-def="手感（game feel）：玩家操作与游戏回应之间那种好不好打、跟不跟手的主观触感。">手感</span>。其中那些不改规则、只靠即时又夸张的回应让操作变爽的小效果，有个很形象的名字：<span class="term" tabindex="0" data-def="Juice（果汁）：不改变规则、只靠即时、夸张的反馈（动画、声音、粒子等）让操作更爽的小效果。">Juice</span>，果汁。</p>
-      <p>一句话说：玩家做了一个动作，游戏要回应，而且回应要<b>够快、够明显、够有分量</b>。没有这个回应，按钮就只是个切换开关。</p>
+      <p>有两个打砖块游戏，球、挡板、砖块，规则一个字不差。玩第一个，像在翻幻灯片：球碰到砖块，砖块消失，数字加一，完了。玩第二个，球一碰砖块就“啪”地弹开，砖块先抖一下再碎成几片，挡板接球时还被压扁了一点点。</p>
+      <p>说不上哪里好，只觉得第二个“有劲”。业内说的<span class="term" tabindex="0" data-def="手感（game feel）：玩家操作与游戏回应之间那种好不好打、跟不跟手的主观触感。">手感</span>，指的就是这种有劲。其中不改规则、只靠即时又夸张的回应让操作变爽的那些小效果，形象的说法是<span class="term" tabindex="0" data-def="Juice（果汁）：不改变规则、只靠即时、夸张的反馈（动画、声音、粒子等）让操作更爽的小效果。">Juice</span>，果汁。</p>
+      <p>玩家做了一个动作，游戏要回应，而且回应要<b>够快、够明显、够有分量</b>。没有这个回应，按钮就只是个切换开关。</p>
     </div>
   </div>
+  <aside class="cc-card" aria-label="概念卡：手感">
+    <span class="cc-tag">概念卡</span>
+    <p class="cc-name"><span>手感</span></p>
+    <p class="cc-en">Game feel（其中的视听夸张反馈即 Juice，果汁）</p>
+    <p class="cc-by">史蒂夫·斯温克（Steve Swink） · 2008 年《Game Feel: A Game Designer's Guide to Virtual Sensation》</p>
+    <p class="cc-def">玩家操作和游戏回应之间那种“跟不跟手、有没有劲”的触感。规则不变，回应够快、够明显、够有分量，手感就好。</p>
+    <p class="cc-eg"><span class="cc-k">例子</span>打砖块：球一碰砖块，砖块先抖一下再碎成几片，挡板被压扁一点点，比“砖块消失、数字加一”有劲得多。</p>
+  </aside>
   <div class="card">
     <svg viewBox="0 0 700 236" width="100%" role="img" aria-label="没有反馈的方块和有反馈的方块对比：左边按下后方块毫无变化，右边按下后方块变形、冒粒子、发出声音">
       <g class="rough" stroke="#2b2b3a" stroke-width="4">
@@ -89,14 +97,14 @@
   </div>
   <div class="eg" data-ic="🪙"><span data-illus="c07_coinchain"></span><div class="egt"><b>连续吃金币</b>：“叮”的音调一次比一次高，角色轻轻一跳，玩家立刻知道自己正在连续得分。规则没变，只是回应多说了一句话。</div></div>
   <div class="eg" data-ic="🛗"><span data-illus="c07_elevator"></span><div class="egt"><b>电梯按钮的灯</b>：按下去灯亮了，就放心站着等。灯不亮，会忍不住再按一次。那一次多余的按键，就是缺反馈的症状。</div></div>
-  <div class="eg bad" data-ic="💥"><span data-illus="c07_latefire"></span><div class="egt"><b>爆炸很炫，但晚了半秒</b>：按下开火键，过了半秒大爆炸才出来。画面再华丽，操作也还是“软”的。<b>果汁救不了迟钝。</b></div></div>
+  <div class="eg bad" data-ic="💥"><span data-illus="c07_latefire"></span><div class="egt"><b>爆炸很炫，但晚了半秒</b>：按下开火键，过了半秒大爆炸才出来。画面再华丽，操作也还是“软”的。再多的<b>果汁</b>，也救不了迟钝的操作。</div></div>
 
   <!-- ===== 2 是什么：一击的时间线 ===== -->
   <div class="sec"><span class="n">2</span><h2><span class="tag what">是什么</span>一次“命中”，被拆成四小段</h2></div>
-  <p>把一次命中放慢看，它是一条很短的时间线：先是玩家要被“确认”，接着常常有一瞬间的停顿，然后是挤压和回弹，最后是余震和淡出。每一段干的事不一样，出问题的地方也不一样。点点下面的图，看每一段在做什么。</p>
+  <p>把一次命中放慢看，它是一条很短的时间线。先是玩家要被“确认”，接着有一瞬间的停顿，然后是挤压和回弹，最后是余震和淡出。每一段干的事不一样，出问题的地方也不一样。点点下面的图，看每一段在做什么。</p>
   <div class="card">
     <svg viewBox="0 0 700 290" width="100%" role="img" aria-label="一次打击的反馈时间线，可点击：确认、顿帧、挤压回弹、余震淡出四段">
-      <text x="350" y="30" font-size="20" text-anchor="middle" fill="#2b2b3a">一次“命中”的时间线（示意，时长因游戏而异）</text>
+      <text x="350" y="30" font-size="20" text-anchor="middle" fill="#2b2b3a">一次“命中”的时间线（示意，方块宽度不代表时长）</text>
       <g class="c7seg" data-i="0" tabindex="0" role="button" aria-label="确认段"><g class="rough" stroke="#2b2b3a" stroke-width="3.5"><rect class="c7segbox" x="30" y="56" width="130" height="90" fill="#b6e8a8"/></g><text x="95" y="96" font-size="19" text-anchor="middle" fill="#2b2b3a">确认</text><text x="95" y="126" font-size="16" text-anchor="middle" fill="#2b2b3a">约 100ms 内</text></g>
       <g class="c7seg" data-i="1" tabindex="0" role="button" aria-label="顿帧段"><g class="rough" stroke="#2b2b3a" stroke-width="3.5"><rect class="c7segbox" x="160" y="56" width="90" height="90" fill="#ffb3c6"/></g><text x="205" y="96" font-size="19" text-anchor="middle" fill="#2b2b3a">顿帧</text><text x="205" y="126" font-size="16" text-anchor="middle" fill="#2b2b3a">几十 ms</text></g>
       <g class="c7seg" data-i="2" tabindex="0" role="button" aria-label="挤压回弹段"><g class="rough" stroke="#2b2b3a" stroke-width="3.5"><rect class="c7segbox" x="250" y="56" width="200" height="90" fill="#ffe58a"/></g><text x="350" y="96" font-size="19" text-anchor="middle" fill="#2b2b3a">挤压 → 回弹</text><text x="350" y="126" font-size="16" text-anchor="middle" fill="#2b2b3a">缓动 · 过冲</text></g>
@@ -117,22 +125,22 @@
       <span data-illus="c07_twobreak"></span>
       <div>
         <p>想象一个小团队的开发者，和朋友各做了一个打砖块，规则一模一样。朋友那个版本却明显更好玩。问他：“到底改了什么？”他挠挠头：“就是……更爽？”</p>
-        <p>这个问题在很长时间里都没有好答案。“爽”被当成一种玄学：要么留给最后上色的美术和音效去补，要么等玩家抱怨“软”“飘”“没劲”才发现出了问题。没有共同的词，就没法排查，更没法教给新人。</p>
+        <p>这个问题在很长时间里都没有好答案。“爽”被当成一种玄学。要么留给最后上色的美术和音效去补，要么等玩家抱怨“软”“飘”“没劲”，才发现出了问题。没有共同的词，就没法排查，更没法教给新人。</p>
         <p>转机来自一个朴素的想法：手感可以<b>拆开、命名、一项一项叠上去再测</b>。动画行业早就这么干过，人机交互行业也积累了“多久算即时”的经验数字。游戏开发者要做的，是把这两条线接起来。</p>
       </div>
     </div>
     <div class="timeline">
-      <div class="ev hasimg"><span data-illus="c07_disney"></span><div><b class="yr">1930 年代起</b>　迪士尼的动画师摸索出“挤压与拉伸”：球落地时压扁，弹起时拉长，物体立刻显得有重量、有弹性。1981 年，Frank Thomas 与 Ollie Johnston 在《The Illusion of Life》里把这些手法总结成 12 条原则。</div></div>
+      <div class="ev hasimg"><span data-illus="c07_disney"></span><div><b class="yr">1930 年代起</b>　迪士尼的动画师摸索出“挤压与拉伸”。球落地时压扁，弹起时拉长，物体立刻显得有重量、有弹性。1981 年，Frank Thomas 与 Ollie Johnston 在《The Illusion of Life》里把这些手法总结成 12 条原则。</div></div>
       <div class="ev hasimg"><span data-illus="c07_response"></span><div><b class="yr">1968 / 1993</b>　Robert B. Miller 在 1968 年讨论人和计算机对话时该多快回应；Jakob Nielsen 1993 年在《Usability Engineering》里把这类经验总结成 0.1 秒、1 秒、10 秒三个界限。</div></div>
-      <div class="ev hasimg"><span data-illus="c07_swinkbook"></span><div><b class="yr">2008</b>　Steve Swink 出版《Game Feel: A Game Designer's Guide to Virtual Sensation》（Morgan Kaufmann；有的书目标成 2009 年）。书里把手感拆成输入、响应、情境、润色、隐喻、规则六个方面来分析，游戏界第一次有了一套系统的词汇。</div></div>
-      <div class="ev hasimg"><span data-illus="c07_juiceit"></span><div><b class="yr">2012</b>　Martin Jonasson 与 Petri Purho 在 GDC Europe 上做了演讲《Juice it or lose it》：拿一个打砖块克隆，现场一项项叠上缓动、挤压拉伸、震屏、粒子和音效，规则一动不动，体验却完全不同。据报道，更早的版本同年 5 月在 Nordic Game Jam 上讲过。</div></div>
-      <div class="ev hasimg"><span data-illus="c07_shake"></span><div><b class="yr">2013 年前后</b>　Vlambeer 的 Jan Willem Nijman 做了《The Art of Screenshake》，把“屏幕震动”这类细节讲成一份可以照着做的清单：每加一项都让游戏更有冲劲。（具体的演讲场合未能核实。）</div></div>
+      <div class="ev hasimg"><span data-illus="c07_swinkbook"></span><div><b class="yr">2008</b>　Steve Swink 出版《Game Feel: A Game Designer's Guide to Virtual Sensation》（Morgan Kaufmann；有的书目标成 2009 年）。书里把手感拆成输入、响应、情境、润色、隐喻、规则六个方面来分析。游戏界第一次有了一套系统的词汇。</div></div>
+      <div class="ev hasimg"><span data-illus="c07_juiceit"></span><div><b class="yr">2012</b>　Martin Jonasson 与 Petri Purho 在 5 月的 Nordic Game 上做了演讲《Juice it or lose it》，同年稍晚在 GDC Europe 又讲了一次。他们拿一个打砖块克隆，现场一项项叠上缓动、挤压拉伸、震屏、粒子和音效。规则一动不动，体验却完全不同。</div></div>
+      <div class="ev hasimg"><span data-illus="c07_shake"></span><div><b class="yr">2013</b>　Vlambeer 的 Jan Willem Nijman 在 INDIGO Classes 上做了演讲《The Art of Screenshake》，把“屏幕震动”这类细节讲成一份可以照着做的清单。每加一项，游戏都更有冲劲。</div></div>
     </div>
-    <p>有了这些，“手感”和“果汁”才从一句黑话变成可以讨论的工具。顺带一提，“juice”这个词在这些演讲之前就在开发者圈子里流传了，最早出处没查到，这里不下结论。</p>
+    <p>有了这些，“手感”和“果汁”才从一句黑话变成可以讨论的工具。“juice”这个词在这些演讲之前就在开发者圈子里流传了，最早的出处已经难以查清。</p>
   </div>
   <div class="board">
     <b>先自己试，再看历史上的做法</b>
-    <p class="small">这枚金币被拾取时，目前<b>什么也不会发生</b>。请用下面的旋钮，先调到觉得“有手感”，点几次“拾取”感受一下，满意了再点“对照 2012 年的做法”。</p>
+    <p class="small">这枚金币被拾取时，目前<b>什么也不会发生</b>。请用下面的旋钮先调到觉得“有手感”。点几次“拾取”感受一下，满意了再点“对照 2012 年的做法”。</p>
     <label class="ctl">弹跳（挤压+回弹） <output id="c7o_bo">0</output></label><input type="range" id="c7o_b" min="0" max="100" value="0">
     <label class="ctl">粒子数量 <output id="c7o_po">0</output></label><input type="range" id="c7o_p" min="0" max="24" value="0">
     <label class="ctl">屏幕震动 <output id="c7o_so">0</output></label><input type="range" id="c7o_s" min="0" max="12" value="0">
@@ -148,18 +156,18 @@
   <div class="withimg">
     <span data-illus="c07_lightswitch"></span>
     <div>
-      <p>按下开关，灯亮了。从来不会怀疑“刚才那下是不是我按的”。可要是灯过了半秒才亮，多半会下意识再按一次，甚至怀疑是不是坏了。</p>
-      <p>游戏里的“按键 → 反应”是同一回事。反馈一旦拖得太久，玩家就不再觉得“是我让它发生的”，操作也就“软”了。那到底多快才算快？</p>
+      <p>按下开关，灯亮了，从来不会怀疑“刚才那下是不是我按的”。可要是灯过了半秒才亮，多半会下意识再按一次，甚至怀疑是不是坏了。</p>
+      <p>游戏里的“按键 → 反应”是同一回事。反馈一旦拖得太久，玩家就不再觉得“是我让它发生的”，操作也就“软”了。</p>
     </div>
   </div>
   <div class="why-box">
     <h3>大脑会把“我做的”和“它发生的”绑在一起，但只在一个很窄的时间窗里</h3>
-    <p>比利时心理学家 Albert Michotte 在 20 世纪中叶做过一组经典实验：屏幕上一个方块撞向另一个，后者立刻动起来，人们会看成“前一个把它撞飞了”。如果后者晚一点才动，这种“撞”的印象就消失了，变成两个各动各的东西。因果感需要两件事贴得很近。</p>
-    <p>2002 年，Patrick Haggard 等人发现了一个相关的现象：当按键是自己<b>主动</b>做的，会觉得按键和随后的声音靠得比实际更近，这叫“意向绑定”。“是我做的”这个感觉本身会把动作和结果拉到一起。（它的解释和测量方式学界仍有争论。）</p>
-    <p>人机交互里流传最广的数字来自 Miller（1968）和 Nielsen（1993）：约 0.1 秒以内，人觉得是“即时”的；约 1 秒以内，思路不会被打断；到 10 秒左右，注意力就接近极限了。广播行业给口型同步定的 ITU-R BT.1359 建议书，也给出过类似量级的数字：声音比画面早约 45 毫秒、或晚约 125 毫秒，观众就开始察觉（数字来自对该建议书的二手介绍，未核对原文，依据的是新闻播报的画面）。</p>
-    <p>这里有个有意思的点。大规模测量显示，成年人对一个突然出现的光点做出按键反应，平均要花 230 毫秒出头。根本来不及在 100 毫秒内“反应”，却能察觉到动作和结果之间差了 100 毫秒。可见快不快，比的不是反应速度，而是大脑有没有把“我做的”和“它发生的”接上。</p>
+    <p>比利时心理学家 Albert Michotte 在 20 世纪中叶做过一组经典实验。屏幕上一个方块撞向另一个，后者立刻动起来，人们会看成“前一个把它撞飞了”。如果后者晚一点才动，这种“撞”的印象就消失了，变成两个各动各的东西。因果感需要两件事贴得很近。</p>
+    <p>2002 年，Patrick Haggard 等人发现了一个相关的现象。当按键是自己<b>主动</b>做的，会觉得按键和随后的声音靠得比实际更近，这个现象是“意向绑定”。“是我做的”这个感觉本身会把动作和结果拉到一起。（它的解释和测量方式学界仍有争论。）</p>
+    <p>人机交互里流传最广的数字来自 Miller（1968）和 Nielsen（1993）：约 0.1 秒以内，人觉得是“即时”的；约 1 秒以内，思路不会被打断；到 10 秒左右，注意力就接近极限了。广播行业给口型同步定的 ITU-R BT.1359 建议书，也给出过类似量级的数字。声音比画面早约 45 毫秒、或晚约 125 毫秒，观众就开始察觉（这组阈值来自播报员说话的片段）。</p>
+    <p>大规模测量显示，成年人对一个突然出现的光点做出按键反应，平均要花 230 毫秒出头。人根本来不及在 100 毫秒内“反应”，却能察觉动作和结果之间差了 100 毫秒。可见快不快，取决于大脑有没有把“我做的”和“它发生的”接上，和反应速度无关。</p>
     <p><b>100 毫秒是常见的经验值，不是物理定律</b>。节奏游戏和格斗游戏对几十毫秒的差别就很敏感，点一个菜单则宽容得多。屏幕、声音、输入设备的延迟还会一层层叠加。</p>
-    <div class="src">出处：Albert Michotte，《La perception de la causalité》（1946；英译本《The Perception of Causality》，1963）；Haggard, Clark &amp; Kalogeras，“Voluntary action and conscious awareness”，《Nature Neuroscience》5: 382–385（2002）；Miller，AFIPS Fall Joint Computer Conference（1968）；Nielsen，《Usability Engineering》（1993，这些数字也被批评并非来自严格实验）；Woods 等，“Factors influencing the latency of simple reaction time”，《Frontiers in Human Neuroscience》（2015），1469 名 18–65 岁成人，视觉简单反应时平均约 231 ms（扣除设备延迟后约 213 ms）。</div>
+    <div class="src">出处：<br>Michotte · 1946 · 让人看一个方块撞向另一个 · 后者立刻动，人才看成“撞飞”（《La perception de la causalité》，英译本《The Perception of Causality》，1963）。<br>Haggard、Clark、Kalogeras · 2002 · 测主动按键与声音的感知时间 · 意向绑定（《Nature Neuroscience》5: 382–385）。<br>Miller · 1968 · AFIPS Fall Joint Computer Conference · 人机对话的回应时间。Nielsen · 1993 · 《Usability Engineering》 · 0.1、1、10 秒三个界限（这些数字也被批评并非来自严格实验）。<br>Woods 等 · 2015 · 1469 名 18–65 岁成人 · 视觉简单反应时平均约 231 ms，扣除设备延迟后约 213 ms（《Frontiers in Human Neuroscience》）。</div>
   </div>
   <div class="board">
     <b>小实验一：你的反应时间</b>
@@ -197,16 +205,24 @@
     <div>
       <p>拿起一个以为装满了水的杯子，结果它是空的，手会“飘”一下，感觉怪怪的。手事先就为一杯水准备好了力气，现实和准备对不上，这个落差让人心里一惊。</p>
       <p>反过来，东西的反应如果和意图吻合，再带上一点“用力过猛”的味道，会觉得自己在<b>掌控</b>它。那个推一下就“嗖”地冲出去、又稳稳停住的东西，手感就是好。</p>
-      <p>认知科学里有一类理论，可以借来解释这件事。</p>
     </div>
   </div>
   <div class="why-box">
     <h3>大脑一直在预测，缓动函数是把“预期”画成曲线的工具</h3>
-    <p><span class="term" tabindex="0" data-def="预测加工：认知科学中的一类理论，认为大脑不断预测感官输入，并用预测误差来更新自己。">预测加工</span>（预测编码）认为，大脑不是被动接收感官信号，而是不断<b>预测</b>下一刻会感觉到什么，再用“预测误差”修正自己。它和核心循环里讲的预测误差是同一家族的想法。借来解释手感：回应和动作意图吻合，会觉得“它听我的”。再多一点夸张，结果比预期稍微“有劲”一点，常常更让人觉得有分量。</p>
+    <p><span class="term" tabindex="0" data-def="预测加工（predictive processing）：认知科学中的一类理论，认为大脑不断预测感官输入，并用预测误差来更新自己。">预测加工</span>（预测编码）认为，大脑会不断<b>预测</b>下一刻会感觉到什么，再用“预测误差”修正自己。接收感官信号只是这件事的一半。它和核心循环里讲的预测误差是同一家族的想法。</p>
+    <p>借来解释手感：回应和动作意图吻合，会觉得“它听我的”。再多一点夸张，结果比预期稍微“有劲”一点，就更让人觉得有分量。</p>
     <p>要让这份夸张可控，就用<span class="term" tabindex="0" data-def="缓动函数（easing）：规定一个量随时间变化的速度曲线，如先快后慢、冲过头再回弹。">缓动函数</span>，它决定一个动作的速度怎么随时间变化。<b>线性</b>是匀速，像机器。<b>缓出</b>起步就快，快到位时减速。<b>过冲回弹</b>（<span class="term" tabindex="0" data-def="过冲（overshoot）：位置越过目标值再回弹，常用来表现弹性和冲击。">overshoot</span>）会冲过目标再弹回来。动画师说的<span class="term" tabindex="0" data-def="挤压与拉伸（squash and stretch）：让物体在受力时压扁、运动时拉长，表现重量与弹性，是传统动画的基本原则之一。">挤压与拉伸</span>，是同一种思路。</p>
-    <p>预测加工是认知科学里有影响力、但仍有争议的框架。“夸张等于掌控感”是游戏设计者借来的类比和经验，没有被严格证明。</p>
-    <div class="src">出处：预测编码相关研究常提到 Rao &amp; Ballard（1999）、Karl Friston，Andy Clark（2013）做过综述；缓动方程广泛用于动画和交互，常追溯到 Robert Penner 整理的一套公式；挤压与拉伸见 Thomas &amp; Johnston（1981）。</div>
+    <p>预测加工在认知科学里影响很大，也有争议。“夸张等于掌控感”是游戏设计者借来的类比，没有被严格证明。</p>
+    <div class="src">出处：<br>Rao 与 Ballard · 1999 · 提出视觉皮层的预测编码模型。Andy Clark · 2013 · 综述预测加工。Karl Friston 也是这一路研究的代表人物。<br>缓动方程广泛用于动画和交互，常追溯到 Robert Penner 整理的一套公式。<br>Thomas 与 Johnston · 1981 · 《The Illusion of Life》 · 总结挤压与拉伸等动画原则。</div>
   </div>
+  <aside class="cc-card" aria-label="概念卡：预测加工">
+    <span class="cc-tag">概念卡</span>
+    <p class="cc-name"><span>预测加工</span></p>
+    <p class="cc-en">Predictive processing（也叫 predictive coding，预测编码）</p>
+    <p class="cc-by">拉奥（Rajesh Rao）、巴拉德（Dana Ballard） · 1999 年的预测编码模型；安迪·克拉克（Andy Clark） · 2013 年的综述</p>
+    <p class="cc-def">大脑不断预测下一刻会感觉到什么，再用预测和实际之间的差来修正自己。</p>
+    <p class="cc-eg"><span class="cc-k">例子</span>拿起一个以为装满水、其实是空的杯子，手会“飘”一下：手事先准备好的力气，和实际对不上。</p>
+  </aside>
   <div class="board">
     <b>小实验：同一个动作，三种缓动</b>
     <p class="small">三个方块都从左边运动到右边虚线处。点“同时发动”看全景，或单独发动某一条并读说明。也可以调时长和回弹幅度，下面的曲线图会同步变化。</p>
@@ -238,11 +254,24 @@
   </div>
   <div class="why-box">
     <h3>韦伯—费希纳定律（简版）</h3>
-    <p>19 世纪，德国生理学家 Ernst Weber 测量人能察觉的<b>最小变化</b>（<span class="term" tabindex="0" data-def="最小可觉差（JND）：刚好能被察觉的最小刺激变化量。">最小可觉差</span>），发现它大致与原来的刺激强度<b>成正比</b>。这就是<span class="term" tabindex="0" data-def="韦伯定律：ΔI / I ≈ 常数，需要的变化量与原强度成比例（在中等强度附近近似成立）。">韦伯定律</span>：ΔI / I ≈ 常数。Gustav Fechner 在 1860 年进一步提出，感受到的强度大致与刺激强度的<b>对数</b>成正比。</p>
-    <p>对设计的启示是：特效、音量、震动的“档位”应当按<b>倍数</b>递增，不要每档加一个固定量。从 2 到 4 是翻倍，一眼可见。从 20 到 22 只多了 10%，常常看不出来。</p>
-    <p>它只是近似：在很弱或很强的刺激处会偏离。S. S. Stevens 在 1957 年也提出用幂函数描述感受，不少人认为更合适。两者都是“解释”，不是要照抄的公式。</p>
-    <div class="src">出处：Ernst Weber（19 世纪的感觉研究）；Gustav Fechner，《Elemente der Psychophysik》（1860）；S. S. Stevens，“On the psychophysical law”，《Psychological Review》64: 153–181（1957）。</div>
+    <p>19 世纪，德国生理学家 Ernst Weber 测量人能察觉的<b>最小变化</b>（<span class="term" tabindex="0" data-def="最小可觉差（JND，just-noticeable difference）：刚好能被察觉的最小刺激变化量。">最小可觉差</span>），发现它大致与原来的刺激强度<b>成正比</b>。这就是<span class="term" tabindex="0" data-def="韦伯定律（Weber’s law）：ΔI / I ≈ 常数，需要的变化量与原强度成比例（在中等强度附近近似成立）。">韦伯定律</span>。</p>
+    <p>Gustav Fechner 在 1860 年进一步提出，感受到的强度大致与刺激强度的<b>对数</b>成正比。</p>
+    <details>
+      <summary>进阶：写成公式</summary>
+      <p class="small">韦伯定律：ΔI / I ≈ 常数。I 是原来的刺激强度，ΔI 是刚好能察觉的变化量。假设比例是 50%（数字仅为举例）：震屏原来是 2 像素，加 1 像素就能察觉；原来是 20 像素，要加 10 像素才察觉得到。</p>
+    </details>
+    <p>对设计的启示是：特效、音量、震动的“档位”应当按<b>倍数</b>递增，不要每档加一个固定量。从 2 到 4 是翻倍，一眼可见。从 20 到 22 只多了 10%，看不出来。</p>
+    <p>它是近似规律，在很弱或很强的刺激处会偏离。S. S. Stevens 在 1957 年提出用幂函数描述感受，不少人认为更合适。两者都是解释，不是要照抄的公式。</p>
+    <div class="src">出处：<br>Ernst Weber · 19 世纪 · 测量最小可觉差 · 它与原刺激强度大致成正比。<br>Gustav Fechner · 1860 · 《Elemente der Psychophysik》 · 感受强度大致与刺激强度的对数成正比。<br>S. S. Stevens · 1957 · 提出幂函数描述感受（“On the psychophysical law”，《Psychological Review》64: 153–181）。</div>
   </div>
+  <aside class="cc-card" aria-label="概念卡：韦伯—费希纳定律">
+    <span class="cc-tag">概念卡</span>
+    <p class="cc-name"><span>韦伯—费希纳定律</span></p>
+    <p class="cc-en">Weber–Fechner law</p>
+    <p class="cc-by">恩斯特·韦伯（Ernst Weber） · 19 世纪发现韦伯定律；古斯塔夫·费希纳（Gustav Fechner） · 1860 年《心理物理学纲要》</p>
+    <p class="cc-def">人能察觉的变化，要看它占原来强度的比例。刺激本来就强，变化就要更大才看得出。</p>
+    <p class="cc-eg"><span class="cc-k">例子</span>震屏从 2 像素调到 4 像素，一眼看出变强；从 20 像素调到 22 像素，同样多了 2 像素，几乎没人看出。</p>
+  </aside>
   <div class="card">
     <svg viewBox="0 0 700 316" width="100%" role="img" aria-label="震动幅度的两种档位：左边等量递增 2、4、6、8 像素，后几档难分辨；右边倍数递增 2、4、8、16 像素，一眼分清">
       <g class="rough" stroke="#2b2b3a" stroke-width="3.5">
@@ -252,7 +281,7 @@
       </g>
       <g font-size="18" fill="#2b2b3a" text-anchor="middle">
         <text x="180" y="34" font-size="20">等量递增：2、4、6、8 px</text><text x="530" y="34" font-size="20">倍数递增：2、4、8、16 px</text>
-        <text x="180" y="62" font-size="16">后几档只差 33%、25%，难分辨</text><text x="530" y="62" font-size="16">每档是上一档的 2 倍，一眼分清</text>
+        <text x="180" y="62" font-size="16">后几档只多 50%、33%，难分辨</text><text x="530" y="62" font-size="16">每档是上一档的 2 倍，一眼分清</text>
         <text x="80" y="264">2</text><text x="140" y="264">4</text><text x="200" y="264">6</text><text x="260" y="264">8</text>
         <text x="430" y="264">2</text><text x="490" y="264">4</text><text x="550" y="264">8</text><text x="610" y="264">16</text>
         <text x="180" y="292">小 → 大（四档）</text><text x="530" y="292">小 → 大（四档）</text>
@@ -270,17 +299,25 @@
     <div>
       <p>还记得第一次捡到金币时那一声“叮”吗？再想想第一百次。声音一模一样，画面一模一样，却已经没有任何感觉了。</p>
       <p>这对手感设计是个麻烦。辛辛苦苦做了一套漂亮的反馈，玩家玩半小时就对它“免疫”了。再往上加码，只会陷入一场越来越贵的军备竞赛。</p>
-      <p>这不是反馈做得不好，而是人的神经系统天生就这样。</p>
+      <p>这和反馈做得好不好无关，人的神经系统天生就这样。</p>
     </div>
   </div>
   <div class="why-box">
     <h3>习惯化与享乐适应：重复的刺激会变淡，基准线会搬家</h3>
-    <p>最底层的是<b>习惯化</b>：对反复出现、又没有后果的刺激，神经反应会越来越弱。1966 年，Richard Thompson 与 William Spencer 把这类现象系统总结为一组规律，其中包括“刺激越是反复，反应越弱”，以及“换一个新刺激，反应就会回来”。</p>
-    <p>再往上是心理层面的<span class="term" tabindex="0" data-def="享乐适应：人对反复出现的快乐（或痛苦）会逐渐适应，感受回落到接近原来的基准线，也叫“享乐跑步机”。">享乐适应</span>。1971 年，Philip Brickman 和 Donald Campbell 提出“享乐跑步机”的比喻：跑得再快，快乐的基准线也跟着往前挪。1978 年 Brickman 等人对伊利诺伊州彩票得主和事故致残者做了调查，发现几个月后两组人的幸福感都向对照组靠拢，这成了最常被引用的证据。</p>
-    <p>这个结论后来被修正了。Richard Lucas 2007 年利用德国和英国的大规模追踪数据指出，对失业、致残这类重大事件，适应往往并不彻底。所以别把它当成“人什么都能习惯”的铁律。更稳妥的说法是：<b>重复的小刺激，肯定会变淡</b>。</p>
-    <p>对设计者的启示是：别靠加码硬撑。给反馈<b>留变化</b>（音高、火花的样子每次略有不同），让大事件比小事件大得多（上一节的倍数档位），让玩家偶尔歇一下，爽感才会回来。</p>
-    <div class="src">出处：Thompson &amp; Spencer，“Habituation: A model phenomenon for the study of neuronal substrates of behavior”，《Psychological Review》73(1): 16–43（1966）；Brickman &amp; Campbell，“Hedonic relativism and planning the good society”，载 M. H. Appley 编《Adaptation-level theory》，Academic Press（1971）：287–302；Brickman, Coates &amp; Janoff-Bulman，“Lottery winners and accident victims: Is happiness relative?”，《Journal of Personality and Social Psychology》36(8): 917–927（1978，样本很小）；Lucas，“Adaptation and the set-point model of subjective well-being”，《Current Directions in Psychological Science》16: 75–79（2007）。</div>
+    <p>最底层的是<b>习惯化</b>：对反复出现、又没有后果的刺激，神经反应会越来越弱。1966 年，Richard Thompson 与 William Spencer 把这类现象系统总结为一组规律。其中包括“刺激越是反复，反应越弱”，以及“换一个新刺激，反应就会回来”。</p>
+    <p>再往上是心理层面的<span class="term" tabindex="0" data-def="享乐适应：人对反复出现的快乐（或痛苦）会逐渐适应，感受回落到接近原来的基准线，也叫“享乐跑步机”。">享乐适应</span>。1971 年，Philip Brickman 和 Donald Campbell 提出“享乐跑步机”的比喻：跑得再快，快乐的基准线也跟着往前挪。1978 年 Brickman 等人对伊利诺伊州彩票得主和事故致残者做了调查。几个月后，两组人的幸福感都向对照组靠拢，这成了最常被引用的证据。</p>
+    <p>这个结论后来被修正了。Richard Lucas 2007 年利用德国和英国的大规模追踪数据指出，对失业、致残这类重大事件，适应并不彻底。人没法什么都习惯。<b>重复的小刺激</b>则确实会变淡。</p>
+    <p>对设计者来说，别靠加码硬撑。给反馈<b>留变化</b>（音高、火花的样子每次略有不同），让大事件比小事件大得多（上一节的倍数档位）。再让玩家偶尔歇一下，爽感才会回来。</p>
+    <div class="src">出处：<br>Thompson 与 Spencer · 1966 · 总结习惯化的一组规律（“Habituation: A model phenomenon for the study of neuronal substrates of behavior”，《Psychological Review》73(1): 16–43）。<br>Brickman 与 Campbell · 1971 · 提出“享乐跑步机”的比喻（“Hedonic relativism and planning the good society”，载 M. H. Appley 编《Adaptation-level theory》，Academic Press：287–302）。<br>Brickman、Coates、Janoff-Bulman · 1978 · 调查彩票得主和事故致残者 · 几个月后幸福感都向对照组靠拢（《Journal of Personality and Social Psychology》36(8): 917–927，样本很小）。<br>Lucas · 2007 · 大规模追踪数据 · 重大事件的适应并不彻底（《Current Directions in Psychological Science》16: 75–79）。</div>
   </div>
+  <aside class="cc-card" aria-label="概念卡：享乐适应">
+    <span class="cc-tag">概念卡</span>
+    <p class="cc-name"><span>享乐适应</span></p>
+    <p class="cc-en">Hedonic adaptation（又称 hedonic treadmill，享乐跑步机）</p>
+    <p class="cc-by">布里克曼（Philip Brickman）、坎贝尔（Donald Campbell） · 1971 年提出“享乐跑步机”的比喻</p>
+    <p class="cc-def">反复出现的快乐会慢慢变淡，感受回到原来的水平。重复的刺激会让人“免疫”。</p>
+    <p class="cc-eg"><span class="cc-k">例子</span>第一次捡金币的那一声“叮”很爽，第一百次声音一模一样，却已经没感觉了。</p>
+  </aside>
   <div class="board">
     <b>小实验：连续拾取，看爽度怎么掉</b>
     <p class="small">连续点“拾取”，看下面“爽度”怎么变。然后勾上“加变化”，每次音高和火花都略有不同，再继续点。“歇一会儿”会让感觉恢复。<b>这是演示用的示意模型，不是实验数据。</b></p>
@@ -310,34 +347,34 @@
       <button class="btn alt" id="allon">全开！</button><button class="btn pink" id="alloff">全关</button><button class="btn green" id="c7rnd">随机一组</button></div>
     <div class="c7out" id="c7cap">现在全部关闭：点木桩，只有“命中”数字在变，像个切换开关。</div>
   </div>
-  <div class="sticky">试试看：打开至少 5 种效果（记得开“飘字”），连续点木桩，打出第 5 下的暴击。<span class="c7ok" id="c7t5" hidden> ✅ 完成：多层反馈叠在一起，暴击比普通命中更醒目。</span></div>
+  <div class="sticky">试试看：打开至少 5 种效果（记得开“飘字”）。然后连续快速地点木桩（每下间隔不到半秒），打出第 5 下的暴击。<span class="c7ok" id="c7t5" hidden> ✅ 完成：多层反馈叠在一起，暴击比普通命中更醒目。</span></div>
   <div class="grid3">
     <div class="card y mini"><div class="ico">🔊</div><h3>声音</h3><p>最便宜、最有效的反馈。</p></div>
-    <div class="card b mini"><div class="ico">📳</div><h3>震动 / 顿帧</h3><p>让打击有“重量”。<span class="term" tabindex="0" data-def="顿帧（hit stop）：命中瞬间让画面或角色极短暂停顿，强化撞击的分量感。">顿帧</span>：命中时停几十毫秒。</p></div>
+    <div class="card b mini"><div class="ico">📳</div><h3>震动 / 顿帧</h3><p>命中时停几十毫秒的<span class="term" tabindex="0" data-def="顿帧（hit stop）：命中瞬间让画面或角色极短暂停顿，强化撞击的分量感。">顿帧</span>，让打击有“重量”。</p></div>
     <div class="card p mini"><div class="ico">✨</div><h3>粒子 / 飘字</h3><p>把结果“视觉化”，爽。</p></div>
   </div>
 
   <div class="misc">
     <h3>常见误区</h3>
     <ul>
-      <li><b>“特效越多手感越好。”</b>不对：过量会遮挡信息、造成不适；重点是即时、有分量、与事件重要性成比例。</li>
+      <li><b>“特效越多手感越好。”</b>过量的特效会遮挡信息、造成不适；重点是即时、有分量、与事件重要性成比例。</li>
       <li><b>“手感只是美术和音效的事。”</b>输入延迟、帧率、判定宽容度、动作的缓动曲线同样关键。</li>
       <li><b>“100 毫秒是铁律。”</b>它是常见的经验阈值，随任务、设备和玩家而异。</li>
       <li><b>“缓动只是让动画好看。”</b>它直接改变动作给人的重量感和反应速度的感觉。</li>
       <li><b>“特效不够就加码。”</b>重复的刺激本来就会变淡，加码只会更贵；留变化、拉开档位更有效。</li>
-      <li><b>“先做完内容，最后再加果汁。”</b>手感是“玩起来”的基础，晚加往往要改动大量代码与数值；很多团队在原型阶段就先把它做对。</li>
+      <li><b>“先做完内容，最后再加果汁。”</b>手感是“玩起来”的基础，晚加要改动大量代码与数值，很多团队在原型阶段就先把它做对。</li>
     </ul>
   </div>
 
   <div class="reflect">
     <h3>反思与争议</h3>
-    <p>“反馈要快”也有边界：为了表现重量，顿帧恰恰是<b>故意让画面慢一点点</b>，一些游戏还会刻意用延迟来制造紧张或蓄力感。更准确的说法是：<b>玩家的操作要被即时确认，之后的表现节奏可以设计</b>。</p>
-    <p>预测加工的解释是设计者借来的类比，韦伯—费希纳定律只在中等强度附近近似成立，享乐适应的研究也在被修正。这些都是帮忙想问题的解释，不是照抄的公式。</p>
+    <p>“反馈要快”也有边界。为了表现重量，顿帧恰恰是<b>故意让画面慢一点点</b>，一些游戏还会刻意用延迟来制造紧张或蓄力感。更准确的说法是：<b>玩家的操作要被即时确认，之后的表现节奏可以设计</b>。</p>
+    <p>预测加工的解释是设计者借来的类比。韦伯—费希纳定律只在中等强度附近近似成立，享乐适应的研究也在被修正。这些都是帮忙想问题的解释，不是照抄的公式。</p>
     <p>高强度的震动与闪光可能让部分玩家不适，所以要给“减弱动态”之类的选项。玩过的游戏里，有没有“特效很华丽，却一点也不爽”的时刻？缺的是什么？</p>
   </div>
 
   <div class="key">
-    <h3>本章要点</h3>
+    <h3>要点</h3>
     <ul>
       <li>手感来自<b>即时、明显、夸张</b>的反馈：声音、动画、震动、粒子、数字。</li>
       <li>“手感”“果汁”这些词，是为了让一种说不清的差别<b>可以命名、拆开、逐项测试</b>而出现的。</li>
@@ -354,7 +391,7 @@
 
   <div class="sec"><span class="n">10</span><h2><span class="tag how">你的设计</span>给“收集金币”做一套反馈</h2></div>
   <div class="card o">
-    <p>想象一个最简单的动作：“收集一枚金币”。写下 4 种不同的反馈（视觉 / 声音 / 动作 / 数字），再想想：收集到第 100 枚时，怎样不让它变得无聊？</p>
+    <p>想象一个最简单的动作：“收集一枚金币”。写下 4 种不同的反馈（视觉 / 声音 / 动作 / 数字）。再想想，收集到第 100 枚时，怎样不让它变得无聊？</p>
     <textarea rows="5" data-save="ch7" placeholder="例：金币被吸向角色并发出“叮”，音调随连续收集一格格升高；角色轻轻跳一下；计数器弹一下……"></textarea>
     <p class="small">✍️ 自动保存在你的浏览器里。</p>
   </div>
@@ -633,7 +670,7 @@ GD.mountQuiz($("quiz"), [
     shake: "<b>屏幕震动</b>：整个场景抖一下。力度大，但别每次都用，留给重击。",
     squash: "<b>挤压变形</b>：木桩被压扁再弹回，脚下阴影也跟着变。把“受力”画出来，是动画里最古老的办法之一。",
     part: "<b>粒子</b>：碎屑四散。把“命中”这件事变成能看见的物质。",
-    text: "<b>飘字</b>：伤害数字弹出；第 5 下起变成大号暴击。数字把结果量化，让玩家知道“打得怎么样”。",
+    text: "<b>飘字</b>：伤害数字弹出；连续快速地点，第 5 下、第 10 下……变成大号暴击。数字把结果量化，让玩家知道“打得怎么样”。",
     stop: "<b>顿帧</b>：命中瞬间，木桩被钉在被压扁的姿态上，其它效果延后一小会儿再爆开。停顿本身就是力量感。",
     flash: "<b>闪白</b>：整个木桩瞬间过曝变白，立刻告诉玩家“这一下打中了”。很便宜，但闪光要克制。",
     knock: "<b>击退回弹</b>：木桩被推开，再用过冲弹回原位。位移配合缓动，让它像有质量。"

@@ -41,24 +41,24 @@
   <div class="goals">
     <h3>Learning goals</h3>
     <ul>
-      <li>Judge whether the players in a multiplayer game are cooperating, competing or a mix of both, say whether it is zero-sum or non-zero-sum, and why a bad experience like “playing a co-op game alone” appears.</li>
-      <li>Explain why the Elo rating had to be invented, how it turns the gap between “expected” and “result” into points, and then use positive and negative feedback to tune the suspense of a match.</li>
+      <li>Tell whether the relationship between players in a multiplayer game is cooperative, competitive or mixed, say whether it is zero-sum or non-zero-sum, and why a bad experience like “playing a co-op game alone” appears.</li>
+      <li>Explain why Elo rating had to be invented, how it turns the gap between “expected” and “result” into points, and how positive and negative feedback can adjust the suspense of a match.</li>
       <li>Explain why strangers are willing to cooperate (reciprocity, reputation), why a division of labor benefits both sides, and why communities so easily become winner-take-all.</li>
     </ul>
     <span class="time">about 45 min</span>
   </div>
 
   <div class="sec"><span class="n">1</span><h2><span class="tag what">What it is</span>Start with the relationship: cooperation, competition, or both</h2></div>
-  <p>You join a four-person dungeon in a room full of strangers, and no one on the team is someone you know. Halfway through the boss fight, your health is down to a sliver, and the team’s healer throws you a big heal, with his own mana scraped to the bottom. Why would he help you? He will never meet you again, and helping you does him no good at all.</p>
+  <p>You join a four-person dungeon with a team of strangers, nobody you know. Halfway through the boss fight, your health is down to a sliver and the team’s healer throws you a big heal while their own mana hits bottom. Why would they help? He will never meet you again, and helping gets him nothing.</p>
   <p>To answer that, you first have to be clear what the relationship between the players actually is. “Four people playing together” can be quite different things, and each relationship sets the designer a completely different problem.</p>
   <div class="card">
-    <svg viewBox="0 0 700 200" width="100%" role="img" aria-label="A spectrum from pure cooperation to pure competition, with team versus team and cooperation-plus-betrayal in the middle">
+    <svg viewBox="0 -16 700 216" width="100%" role="img" aria-label="A spectrum from pure cooperation to pure competition, with team versus team and cooperation-plus-betrayal in the middle">
       <g class="rough" stroke="#2b2b3a" stroke-width="4" fill="none" stroke-linecap="round">
-        <path d="M40 100 H660"/><path d="M648 90 L662 100 L648 110"/>
+        <path d="M40 100 H660"/><path d="M648 90 L662 100 L648 110"/><path d="M236 33 V27 H464 V33" stroke-width="3"/>
         <circle cx="80" cy="100" r="24" fill="#b6e8a8"/><circle cx="250" cy="100" r="24" fill="#e8f6fc"/><circle cx="450" cy="100" r="24" fill="#fff0dc"/><circle cx="620" cy="100" r="24" fill="#ffb3c6"/>
       </g>
       <g font-size="20" text-anchor="middle" fill="#2b2b3a">
-        <text x="80" y="60" font-weight="700">Pure cooperation</text><text x="80" y="150">Everyone wins or loses</text><text x="80" y="176">together</text>
+        <text x="350" y="16" font-weight="700">Mixed</text><text x="80" y="60" font-weight="700">Pure cooperation</text><text x="80" y="150">Win or lose</text><text x="80" y="176">together</text>
         <text x="250" y="60" font-weight="700">Team versus team</text><text x="250" y="150">Cooperate within</text><text x="250" y="176">Compete between</text>
         <text x="450" y="60" font-weight="700">Cooperation + betrayal</text><text x="450" y="150">Alliances possible</text><text x="450" y="176">Backstabbing too</text>
         <text x="620" y="60" font-weight="700">Pure competition</text><text x="620" y="150">Only one</text><text x="620" y="176">winner</text>
@@ -66,26 +66,35 @@
     </svg>
   </div>
   <div class="grid3">
-    <div class="card g mini"><div class="ico">🤝</div><h3>Cooperation</h3><p>Everyone works against the system (the level, the boss). The hard part is <b>division of labor and communication</b>; the worst case is a strong player “finishing it for everyone else.”</p></div>
-    <div class="card p mini"><div class="ico">⚔️</div><h3>Competition</h3><p>Players are each other’s opponents. It comes down to <b>skill and strategy</b>; the worst case is a newcomer getting crushed, and the loser soon leaving.</p></div>
+    <div class="card g mini"><div class="ico">🤝</div><h3>Cooperation</h3><p>Everyone works together against the system (levels, bosses). The hard parts are <b>division of labor and communication</b>, and the worst case is the strongest player “finishing the fight for everyone else.”</p></div>
+    <div class="card p mini"><div class="ico">⚔️</div><h3>Competition</h3><p>The players are each other’s opponents and compete on <b>skill and strategy</b>. The worst risk is newcomers getting crushed, so the losers leave quickly.</p></div>
     <div class="card v mini"><div class="ico">🎭</div><h3>Mixed</h3><p>Team against team, or “cooperation with betrayal mixed in.” It relies on <b>trust and game theory</b>, and is the likeliest to produce stories.</p></div>
   </div>
-  <p>There is a separate axis too: whether the players are <b>symmetric</b>. In chess both sides have exactly the same rules and resources, which is fair and easy to understand, and the result depends entirely on skill. A one-versus-many hunting game is <b>asymmetric</b>: different roles and different play, a rich experience, but hard to balance, needing repeated testing with real people until each role’s win rate seems acceptable.</p>
+  <p>There is one more independent axis: whether the players are <b>symmetric</b>. In chess both sides have exactly the same rules and resources, which is fair and easy to grasp, and winning or losing comes down to skill. A one-versus-many hunting game is <b>asymmetric</b>: different roles, different ways to play, a richer experience, but hard to balance, and it takes repeated tests with real people until every role’s win rate is acceptable.</p>
 
   <div class="sec"><span class="n">2</span><h2><span class="tag what">What it is</span>Zero-sum, non-zero-sum, and “everyone is clever and everyone loses”</h2></div>
   <div class="grid2">
     <div class="card y"><h3><span class="term" tabindex="0" data-def="What one side gains is exactly what the other loses, and the total is fixed">Zero-sum</span></h3><p>What one side gains is what the other loses, and <b>the total is fixed</b>. Chess and poker are like this: if I win, you lose, and the players’ interests are fully opposed.</p></div>
     <div class="card b"><h3><span class="term" tabindex="0" data-def="The total can change, and the participants can gain together or lose together">Non-zero-sum</span></h3><p><b>The total can change</b>, so both can win, or both can lose. Trade and cooperative missions are like this. Only here is there “the possibility of cooperation,” and also “the temptation to betray.”</p></div>
   </div>
-  <p>The most troublesome kind of non-zero-sum is the <b><span class="term" tabindex="0" data-def="A situation in which the individually best choices add up to something bad for the group, such as the prisoner’s dilemma and the public-goods dilemma">social dilemma</span></b>: everyone makes the choice that is smartest for themselves, and together everyone loses. You will play one yourself later. First, a few concrete examples to see what these words look like in real games.</p>
+  <p>The trickiest kind of non-zero-sum is the <b><span class="term" tabindex="0" data-def="A situation in which each person’s best individual choice adds up to a bad result for the group, such as the prisoner’s dilemma and the public-goods dilemma.">social dilemma</span></b>: everybody makes the choice that is smartest for themselves, and together all of them lose. You will play one by hand further on.</p>
+  <aside class="cc-card" aria-label="Concept card: social dilemmas">
+    <span class="cc-tag">Concept card</span>
+    <p class="cc-name"><span>Social Dilemma</span></p>
+    <p class="cc-en">Social dilemma</p>
+    <p class="cc-by">Robyn Dawes · 1980 review “Social dilemmas” (<i>Annual Review of Psychology</i> 31)</p>
+    <p class="cc-def">Each person picks what pays best for themselves, and together it is bad for everyone. The best choice for the individual is not the best choice for the group.</p>
+    <p class="cc-eg"><span class="cc-k">Example</span>A public fund for a team of four: put in 1 more token and you get back only 0.5, but the team gets 1 more in total. Everyone putting in nothing pays best for each person, and the whole team loses.</p>
+  </aside>
+  <p>The examples below show these terms in real games.</p>
   <div class="eg" data-ic="🦠"><span data-illus="c18_coop"></span><div class="egt"><b><i>Pandemic</i></b>: a cooperative board game designed by Matt Leacock and published by Z-Man Games in 2008. Everyone fights a disease that spreads on its own, winning together or losing together. This is <b>pure cooperation, non-zero-sum</b>: the opponent is the system, not each other.</div></div>
-  <div class="eg" data-ic="♟️"><span data-illus="c18_versus"></span><div class="egt"><b>Chess</b>: if I take one of your pieces, you have one fewer; after a game the winner is +1, the loser −1, and the total is always 0. This is <b>pure competition, zero-sum</b>.</div></div>
-  <div class="eg" data-ic="🐺"><span data-illus="c18_mixed"></span><div class="egt"><b>Werewolf / Mafia</b>: reportedly created by Dmitry Davidoff in the psychology department of Moscow State University (he remembers the first game as the spring of 1987). The good guys must cooperate to find the bad guys, and the bad guys must lie together. <b>Cooperation and betrayal in the same room</b>, so every game is a story.</div></div>
-  <div class="eg" data-ic="🏠"><span data-illus="c18_landlord"></span><div class="egt"><b>The ancestor of Monopoly: <i>The Landlord’s Game</i></b>: Elizabeth Magie patented it in 1904 and gave the same board two sets of rules. Under the “Monopolist” rules, whoever collects the most rent wins and the others go bankrupt; under the “Prosperity” rules, when someone buys land everyone benefits, and the game ends when the poorest player’s wealth has doubled, so <b>everyone wins</b>. One board, one zero-sum rule set and one non-zero-sum. Thirty years later the Parker Brothers bought her patent, and only the first set remained in what we know.</div></div>
+  <div class="eg" data-ic="♟️"><span data-illus="c18_versus"></span><div class="egt"><b>Chess</b>: if I capture one of your pieces, you have one fewer. Over a game, the winner gets +1 and the loser −1, and the total is always 0. This is <b>pure competition, zero-sum</b>.</div></div>
+  <div class="eg" data-ic="🐺"><span data-illus="c18_mixed"></span><div class="egt"><b>Werewolf / Mafia</b>: created by Dmitry Davidoff in the psychology department of Moscow State University, who remembers the first game as spring 1987. The good players must cooperate to find the bad ones, and the bad ones must lie together. <b>Cooperation and betrayal in the same room</b> make every game a story.</div></div>
+  <div class="eg" data-ic="🏠"><span data-illus="c18_landlord"></span><div class="egt"><b>The ancestor of Monopoly: <i>The Landlord’s Game</i></b>: Elizabeth Magie took out a patent in 1904 that gave the same board two sets of rules. Under the “monopolist” rules, whoever collects the most rent wins and everyone else goes bankrupt. Under the “prosperity” rules, when someone buys land everyone benefits, and the game ends when the poorest player’s wealth has doubled, so <b>everyone wins</b>. One board, one zero-sum rule set and one non-zero-sum. Thirty years later the Parker Brothers bought her patent, and only the first set remains in the game we know.</div></div>
   <div class="eg bad" data-ic="🎮"><span data-illus="c18_carry"></span><div class="egt"><b>Counterexample: a co-op game turned into a one-person game</b>: nominally cooperative, but someone knows everything and grabs the commands, and the others can only follow, or only watch. The relationship was designed as “cooperation,” yet the experience is “one player and a few spectators.” What is missing is <b>a decision in every player’s hands that only they can make</b>.</div></div>
 
   <div class="sec"><span class="n">3</span><h2><span class="tag what">What it is</span>Feedback loops: the snowball and catch-up mechanics</h2></div>
-  <p>In the second half of a Monopoly game, everyone knows how it will end: someone owns half the street, and someone pays rent at every step but must keep rolling the dice anyway. This loop of “whoever leads finds it easier to keep leading” is called <b><span class="term" tabindex="0" data-def="A loop in which the result amplifies the cause, so the gap keeps widening">positive feedback</span></b>. Every multiplayer game runs into it, because players compare themselves with each other, and where there is comparison there is “leading.”</p>
+  <p>In the second half of a Monopoly game everyone knows how it will end: one player owns half a street, another pays rent on every step and still has to keep rolling. “Whoever is ahead finds it easier to stay ahead” is a loop called <b><span class="term" tabindex="0" data-def="A loop in which the result amplifies its own cause, so the gap keeps widening.">positive feedback</span></b>. Multiplayer games always run into it, because players compare themselves with each other, and comparison creates a “leader.”</p>
   <div class="card">
     <svg viewBox="0 0 700 270" width="100%" role="img" aria-label="Left: a positive-feedback loop, where leading brings more resources, more resources make you stronger, being stronger wins more, and that leads further ahead; right: a negative-feedback loop, where leading is pulled back by a catch-up mechanism, and the gap shrinks">
       <defs><marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10z" fill="#2b2b3a"/></marker></defs>
@@ -97,29 +106,38 @@
       </g>
       <g stroke="#2b2b3a" stroke-width="3.5" fill="none" marker-end="url(#ah)">
         <path d="M152 75 H186"/><path d="M255 102 V166"/><path d="M188 195 H154"/><path d="M85 168 V104"/>
-        <path d="M512 75 H546"/><path d="M640 102 L600 166"/><path d="M463 195 L420 104"/>
+        <path d="M512 75 H546"/><path d="M640 102 L600 166"/><path d="M463 195 L420 104" stroke-dasharray="9 6"/>
       </g>
       <g font-size="17" text-anchor="middle" fill="#2b2b3a">
         <text x="85" y="81">Leading</text><text x="255" y="81">More resources</text><text x="255" y="201">Stronger</text><text x="85" y="201">Wins more</text>
-        <text x="445" y="81">Leading</text><text x="615" y="81">Catch-up</text><text x="530" y="201">Gap shrinks</text>
+        <text x="445" y="81">Leading</text><text x="615" y="81">Catch-up</text><text x="530" y="201">Fewer leads</text><text x="392" y="158" fill="#b3261e" font-weight="700">− Weaken</text>
         <text x="170" y="30" font-size="20" font-weight="700">Positive feedback: snowball</text>
         <text x="530" y="30" font-size="20" font-weight="700">Negative feedback: pulled back</text>
         <text x="170" y="256">The strong get stronger, the weak weaker</text><text x="530" y="256">Leaders held back, trailers helped</text>
       </g>
     </svg>
   </div>
-  <p>The remedy is to build another loop the other way: restrain the leader a bit and help the trailer a bit, and the gap is pulled back. This is <b><span class="term" tabindex="0" data-def="A loop in which the result suppresses the cause, so the gap shrinks and things tend toward stability">negative feedback</span></b>, popularly the catch-up mechanic. The design goal is not to wipe out one of the two but to tune the knob: reward the winner, but don’t make the reward so large that a comeback is impossible.</p>
+  <p>The remedy is to build a loop the other way: put some limit on the leader and give the trailing player some help, and the gap is pulled back. This loop is <b><span class="term" tabindex="0" data-def="A loop in which the result suppresses its own cause, so the gap narrows and things settle toward stability.">negative feedback</span></b>, usually called a catch-up mechanic in games. Keep both kinds of loop in the design and adjust only the dials: reward the winner, but not so much that a comeback is impossible.</p>
   <div class="eg" data-ic="🏎️"><span data-illus="c18_kart"></span><div class="egt"><b>Items in racing games</b>: the <i>Mario Kart</i> series hands out items by rank, and players further behind are more likely to get a powerful item, so the last lap often turns around. This is <b>negative feedback</b>, and the suspense is preserved.</div></div>
   <div class="eg" data-ic="⛄"><span data-illus="c18_snowball"></span><div class="egt"><b>The snowball and Monopoly</b>: give a push at the top of the hill and the snowball grows as it rolls. Monopoly is the same: more property collects more rent, and more rent buys more. This is <b>positive feedback</b>, and a small early edge is magnified into a foregone conclusion.</div></div>
   <div class="eg bad" data-ic="💥"><span data-illus="c18_toostrong"></span><div class="egt"><b>Counterexample: catch-up tuned too far</b>: the leading car is chased and pelted by items, the player in front feels their skill is being punished, and those behind can catch up without effort. If negative feedback is too strong, “doing well” earns nothing.</div></div>
 
   <div class="sec"><span class="n">4</span><h2><span class="tag what">What it is</span>How to match strong with weak: the Elo rating</h2></div>
-  <p>A catch-up mechanic evens things out within one game. An earlier step is to not seat badly mismatched people at the same table: strong with strong, newcomers with newcomers. That needs a score everyone can compare. The classic approach is <span class="term" tabindex="0" data-def="A rating method designed by Arpad Elo for chess: ratings are adjusted by the difference between expected score and actual score">Elo</span>, used in chess, and the ranked systems of many games were inspired by it, though each implements it differently.</p>
-  <div class="sticky">
-    <b>Expected score</b>: E<sub>A</sub> = 1 / (1 + 10<sup>(R<sub>B</sub> − R<sub>A</sub>)/400</sup>)<br>
-    <b>New rating</b>: R'<sub>A</sub> = R<sub>A</sub> + K × (S − E<sub>A</sub>) (win S=1, draw 0.5, loss 0)
-  </div>
-  <p>The reading is plain: first predict A’s score from the rating gap of the two players (with a gap of 400, the stronger is expected to score about 91%), and after the game see how much the actual result beat the prediction, and adjust by that difference. <span class="term" tabindex="0" data-def="The sensitivity coefficient in the Elo formula: a large K means ratings change fast, and a small K means they are stable">K</span> is the sensitivity: a large K makes scores rise and fall fast, suited to newcomers; a small K keeps scores steady. In each game one side gains and the other loses the same amount, so the total stays the same.</p>
+  <p>A catch-up mechanic evens things out inside a single match. An earlier step is not to seat very unequal players at the same table: strong players meet strong players and newcomers meet newcomers. That calls for a score everyone can be compared by. The classic method is <span class="term" tabindex="0" data-def="Elo rating system: a rating method designed by Arpad Elo for chess, which adjusts ratings by the difference between expected score and actual score.">Elo</span>. Chess uses it, and the ranking systems of many games were inspired by it, though each implements it differently.</p>
+  <aside class="cc-card" aria-label="Concept card: the Elo rating">
+    <span class="cc-tag">Concept card</span>
+    <p class="cc-name"><span>Elo Rating</span></p>
+    <p class="cc-en">Elo rating system</p>
+    <p class="cc-by">Arpad Elo · adopted by the United States Chess Federation (USCF) in 1960; published <i>The Rating of Chessplayers, Past and Present</i> in 1978</p>
+    <p class="cc-def">Treat a rating as a prediction: compare two ratings and each side’s chance of winning can be computed. The amount by which the real result beat or fell short of the prediction is used to adjust the scores.</p>
+    <p class="cc-eg"><span class="cc-k">Example</span>A 1200-rated underdog beats an 1800-rated favorite and gains about 31 points; if the favorite wins, he gains only about 1 point.</p>
+  </aside>
+  <details>
+    <summary>Advanced: the Elo formula</summary>
+    <p class="small"><b>Expected score</b>: E<sub>A</sub> = 1 / (1 + 10<sup>(R<sub>B</sub> − R<sub>A</sub>)/400</sup>)<br>
+    <b>New rating</b>: R'<sub>A</sub> = R<sub>A</sub> + K × (S − E<sub>A</sub>) (win S=1, draw 0.5, loss 0). R<sub>A</sub> and R<sub>B</sub> are the two players’ ratings.</p>
+  </details>
+  <p>The method is straightforward: predict A’s score from the rating difference (with a gap of 400, the stronger player is expected to score about 91%), then after the game see how far the real result beat or missed the prediction, and adjust by that gap. <span class="term" tabindex="0" data-def="The sensitivity coefficient in the Elo formula: a large K makes ratings change fast, and a small K keeps them stable.">K</span> is the sensitivity: with a large K, ratings rise and fall fast, which suits newcomers, and with a small K they stay stable. After each game one side gains what the other loses, so the total is unchanged.</p>
   <div class="card">
     <svg viewBox="0 0 700 290" width="100%" role="img" aria-label="The Elo expected-score curve: rating difference on the horizontal axis, expected score on the vertical; at a difference of 0 the expectation is 50%, and at a difference of 400 about 91%">
       <g class="rough" stroke="#2b2b3a" stroke-width="3.5" fill="none" stroke-linecap="round">
@@ -138,16 +156,16 @@
     </svg>
     <p class="small">The curve is drawn from the formula (K doesn’t affect the curve, only how much each adjustment is).</p>
   </div>
-  <div class="eg" data-ic="🧑‍🦲"><span data-illus="c18_upset"></span><div class="egt"><b>An upset</b>: a 1200-rated small player beats an 1800-rated big one. His expected score was only about 0.03, with K=32 he gains 32×(1−0.03)≈31 points, and the big one loses the same 31. If the big one wins, he gains only about 1 point: winning against someone he should have beaten, the system learns almost nothing.</div></div>
+  <div class="eg" data-ic="🧑‍🦲"><span data-illus="c18_upset"></span><div class="egt"><b>An upset</b>: the 1200-rated underdog beats the 1800-rated favorite. His expected score was only about 0.03, K=32, so he gains 32×(1−0.03)≈31 points, and the favorite loses the same 31. If the favorite had won, he would gain only about 1 point. When the person who should win does win, the system learns almost nothing.</div></div>
   <div class="eg" data-ic="🌱"><span data-illus="c18_newcomer"></span><div class="egt"><b>A new account’s first games</b>: many rating systems give newcomers a larger K, so scores swing wildly in the first few games and quickly approach true level, and then K shrinks and the score settles.</div></div>
-  <div class="eg bad" data-ic="🦹"><span data-illus="c18_smurf"></span><div class="egt"><b>Counterexample: an expert on a fresh account</b>: a rating is an estimate from “past games.” A new account has no past, its score still says “beginner” though the skill is expert, and so it keeps winning in newcomer rooms. Elo is not wrong here, it simply has no data.</div></div>
+  <div class="eg bad" data-ic="🦹"><span data-illus="c18_smurf"></span><div class="egt"><b>Counterexample: a master on a smurf account</b>: a rating is an estimate from “past games.” A new account has no past, so its score still sits at “beginner” while its skill is that of an expert, and it keeps winning in beginner rooms. Elo isn’t wrong here; it just has no data to use.</div></div>
 
   <div class="sec"><span class="n">5</span><h2><span class="tag origin">How it was invented</span>There is no universal ruler: how ratings were invented</h2></div>
   <div class="story">
     <h3>Is an 1800 at club A the same as an 1800 at club B?</h3>
     <p>Chess tournament organizers were once troubled by a plain question: how do you know how strong someone really is? Each club had its own ranking, but it was only the order inside the club and couldn’t be converted elsewhere. To put players from different cities into one tournament, you needed a ruler everyone accepted.</p>
     <p>Around 1950 the United States Chess Federation (USCF) used a rating method designed by Kenneth Harkness, which for the first time made ratings something used nationwide. But Arpad Elo, later asked to examine it, thought its results were unreliable in some cases.</p>
-    <p>Elo was a Hungarian-born American physics professor, and also a chess player. He changed the angle: the point of a rating is not ranking but <b>prediction</b>. Compare two players’ ratings and you should be able to compute each one’s chance of winning; whether the real result is higher or lower than predicted, and by how much, is the amount to correct by. The bigger the surprise, the bigger the change. If you have read the story of dopamine and “prediction error,” this will look familiar: learning runs on the gap between prediction and result.</p>
+    <p>Elo was a Hungarian-born American physics professor, and also a chess player. He changed the angle: the point of a rating is <b>prediction</b>, not ranking. Compare two people’s ratings and you should be able to compute each one’s chance of winning. Whether the real result came out higher or lower than predicted, and by how much, is used to correct the rating. The bigger the surprise, the larger the correction. Prediction error, covered in Chapter 2, works the same way: learning comes from the gap between prediction and result.</p>
   </div>
   <div class="card">
     <h3>🤔 Guess first, then reveal</h3>
@@ -156,7 +174,7 @@
     <div class="msg" id="c18_gmsg"></div>
   </div>
   <div class="timeline">
-    <div class="ev hasimg"><span data-illus="c18_tourn"></span><div><b class="yr">Around 1950</b> The problem: each place computed its own, and scores couldn’t be compared. The USCF adopted Harkness’s rating and for the first time gave players numbers across the country. But Elo later judged that in some cases its results were unreliable.</div></div>
+    <div class="ev hasimg"><span data-illus="c18_tourn"></span><div><b class="yr">Around 1950</b> The problem was that every region calculated on its own and the scores could not be compared. The USCF adopted the Harkness rating, which for the first time gave players numbers nationwide. But Elo later judged that in some cases its results were unreliable.</div></div>
     <div class="ev hasimg"><span data-illus="c18_elo"></span><div><b class="yr">1960</b> The USCF adopted Elo’s method at its annual meeting in St. Louis. The key insight: the rating difference should convert into a win probability, and the gap between actual result and prediction should drive the adjustment.</div></div>
     <div class="ev hasimg"><span data-illus="c18_world"></span><div><b class="yr">1970</b> The International Chess Federation (FIDE) adopted the Elo rating. One ruler, used everywhere: players from different countries could be compared in one table for the first time.</div></div>
     <div class="ev hasimg"><span data-illus="c18_team"></span><div><b class="yr">2006</b> In online games a match is often two teams of several players, with only one team result but a score to give each person. Herbrich, Minka and Graepel of Microsoft Research published TrueSkill, extending Elo’s idea to multiplayer teams and explicitly recording “how uncertain the system is about a person’s skill.” They evaluated it on <i>Halo 2</i> test data and used it on Xbox Live.</div></div>
@@ -167,8 +185,8 @@
   <div class="withimg">
     <span data-illus="c18_strangers"></span>
     <div>
-      <p>Back to that healer at the start. If everyone counted only their own gains and losses, “not giving” would always pay better, everyone would withhold, and the team would collapse. But in reality, strangers cooperate at a rate far higher than this predicts.</p>
-      <p>The first clean study of this contradiction came in 1950. At the RAND Corporation, Merrill Flood and Melvin Dresher designed a two-player game and had colleagues play a hundred rounds to see whether people would betray each other. Later Albert Tucker told it as a story of two prisoners, which is today’s prisoner’s dilemma.</p>
+      <p>Back to the treatment at the start: if everyone counts only their own gains and losses, “not giving” always pays better, nobody gives, and the team collapses. In real life, though, strangers cooperate far more often than that predicts.</p>
+      <p>This contradiction was first studied cleanly in 1950. Merrill Flood and Melvin Dresher at RAND designed a two-player game and had colleagues play it for a hundred rounds. They wanted to see whether people would betray each other. Later Albert Tucker told it as a story of two prisoners, and it became today’s prisoner’s dilemma.</p>
       <p>For cooperation to hold, something has to realign “good for the individual” and “good for everyone.” Researchers found several things.</p>
     </div>
   </div>
@@ -176,11 +194,11 @@
     <h3>Reciprocity, reputation, conditional cooperation and punishment</h3>
     <ul>
       <li><b><span class="term" tabindex="0" data-def="I help you today, expecting you to help me or others later; cooperation pays in repeated interaction">Reciprocity</span></b>: if you will meet again, today’s kindness is repaid tomorrow. “Tit for tat” in the repeated prisoner’s dilemma is this logic.</li>
-      <li><b><span class="term" tabindex="0" data-def="Your reputation affects whether third parties are willing to cooperate with you, so helping others also builds you a good name">Indirect reciprocity and reputation</span></b>: even if I never meet you again, others are watching whether I am reliable. Public ratings, achievements and trust scores let cooperation continue among strangers.</li>
+      <li><b><span class="term" tabindex="0" data-def="Your reputation affects whether third parties are willing to cooperate with you, so helping others also builds you a good name">Indirect reciprocity and reputation</span></b>: even if I will never meet this person again, others are watching whether I am reliable. Public ratings, achievements and trust scores let cooperation continue between strangers.</li>
       <li><b><span class="term" tabindex="0" data-def="I put in as much as you do, and less if you put in less; often found in experiments to be a considerable share of people">Conditional cooperators</span></b>: many people look at how much others put in and then decide how much to put in themselves, which rests on <span class="term" tabindex="0" data-def="People compare themselves with others to judge their own situation and behavior, tending to move toward the level of those around them">social comparison</span>.</li>
       <li><b>Punishment</b>: people willing to pay a cost to punish free-riders make “freeloading” unprofitable. But punishment has costs and side effects.</li>
     </ul>
-    <div class="src">Sources: Flood &amp; Dresher’s 1950 RAND experiment is in Flood (1952), and Tucker’s prison story is in the Stanford Encyclopedia of Philosophy entry “Prisoner’s Dilemma” (the name “prisoner’s dilemma” first appeared in print in Luce &amp; Raiffa, 1957, and the attribution is disputed); Trivers, “reciprocal altruism” (1971); Nowak &amp; Sigmund, “image scoring” and indirect reciprocity (Nature, 1998); Fischbacher, Gächter &amp; Fehr, “Are people conditionally cooperative?” (Economics Letters, 2001), where about half of people are conditional cooperators and about a third free-ride; Fehr &amp; Gächter on punishment in public-goods games (2000, 2002); social comparison: Festinger (1954).</div>
+    <div class="src">Sources:<br>Flood and Dresher · 1950 · had colleagues at RAND play a two-player game for a hundred rounds (see Flood 1952); Tucker told it as a story of two prisoners (see the <i>Stanford Encyclopedia of Philosophy</i>, “Prisoner’s Dilemma”); the name “prisoner’s dilemma” first appears in print in Luce and Raiffa’s 1957 book, and the attribution is disputed.<br>Trivers · 1971 · reciprocal altruism.<br>Nowak and Sigmund · 1998 · indirect reciprocity through “image scoring” (<i>Nature</i>).<br>Fischbacher, Gächter and Fehr · 2001 · about half of people are conditional cooperators and about a third are free riders (“Are people conditionally cooperative?”, <i>Economics Letters</i>).<br>Fehr and Gächter · 2000, 2002 · punishment in public-goods games.<br>Festinger · 1954 · social comparison.</div>
   </div>
   <div class="card">
     <svg viewBox="0 0 700 290" width="100%" role="img" aria-label="The reputation loop: I help a teammate, others see it and note it, my reputation improves, strangers are also willing to help me, and that returns to my willingness to keep helping; the note in the middle: visibility is the key, and if it can’t be seen the loop breaks">
@@ -200,11 +218,13 @@
       </g>
     </svg>
   </div>
-  <p>Words alone won’t do, so here is a small experiment to check it. The rules: groups of 4, each person has 10 tokens each round and decides how much to put into a fund; the tokens in the fund are <b>doubled</b> and shared equally among the 4. Your payoff in one round is 10 − your contribution + 0.5 × (the total of the 4 contributions).</p>
-  <p><b>Work it out: if you put in 1 more, you get back only 0.5 yourself, a loss of 0.5; but each teammate gains 0.5, so the team gains 2 more in all.</b> The individually best choice is to put in nothing and the collectively best is to put in everything, which is the public-goods version of the social dilemma.</p>
+  <p>Words alone are not enough, so here is a small experiment. The rules: groups of 4; each round every person has 10 tokens and decides how many to put into the fund; the tokens in the fund are <b>doubled</b> and shared equally among the 4. A round’s payoff is 10 − your contribution + 0.5 × (the sum of all 4 contributions).</p>
+  <p><b>Work it out: put in 1 more and you get back only 0.5, a loss of 0.5; each of the 3 teammates gains 0.5, +1.5 in all, so the whole team gains 1 more in total.</b> The best choice for the individual is to put in nothing, and the best for the group is for everyone to put in all. This is the social dilemma in its public-goods version.</p>
   <div class="board">
     <b>A public-goods mini game (illustrative)</b>
-    <p class="small">You and 3 virtual players, 10 rounds in all. The virtual players are all “conditional cooperators”: next round’s contribution ≈ a reference value ± a random fluctuation of 1. The reference value: when <b>anonymous</b>, only the fund total is visible, and the reference is the average contribution of all 4 last round; when <b>reputation is visible</b>, each person’s contribution is visible, the reference is the other 3’s average last round, and because they are seen themselves, each puts in about 1 more (this is an <b>assumption we set</b>, and the size in real experiments varies with the situation). <b>Punishment</b>: each virtual player who put in at least 3 more than you pays 1 to make you lose 3 (this requires “reputation visible” first, or you can’t tell who). These are simplified illustrative rules, not real experimental data.</p>
+    <p class="small">The player and 3 virtual players play 10 rounds in total. The virtual players are all “conditional cooperators”: next round’s contribution ≈ the reference value ± a random swing of 1.</p>
+    <p class="small">Reference value: when <b>anonymous</b>, only the fund total is visible, and the reference is the 4-player average contribution of the previous round; when <b>reputation is visible</b>, each person’s contribution can be seen, the reference is the other 3 players’ average contribution in the previous round, and since each is also being watched, each puts in about 1 more (this is an <b>assumption built into the setup</b>; the size in real experiments varies with context).</p>
+    <p class="small"><b>Punishment</b>: any virtual player who put in at least 3 more than the player pays 1 point to make the player lose 3 (this needs “reputation visible” first, otherwise nobody can tell who did it). This is a simplified illustrative rule, not real experimental data.</p>
     <label class="chk"><input type="checkbox" id="g-rep"> Reputation visible (everyone’s contribution is public)</label>
     <label class="chk"><input type="checkbox" id="g-pun" disabled> Allow punishment</label>
     <button class="btn alt" id="g-reset">Restart</button>
@@ -222,23 +242,32 @@
     <div id="g-tbl"></div>
     <div class="msg" id="g-cmsg"></div>
   </div>
-  <p>The conclusion of the experiments is not “the heavier the punishment the better.” In a 2008 paper in <i>Science</i>, Herrmann, Thöni and Gächter repeated the public-goods experiment in 16 groups of participants around the world, and found that in some societies it was the cooperators who put in a lot who got punished (antisocial punishment), strongly enough to cancel the cooperation-promoting effect of punishment. This relates to the local norms of civic cooperation and the strength of the rule of law. So “punishment promotes cooperation” is not a conclusion that holds everywhere.</p>
+  <p>Harsher punishment is not always better either. In their 2008 paper in <i>Science</i>, Herrmann, Thöni and Gächter repeated the public-goods experiment in 16 groups of participants around the world.</p>
+  <p>They found that in some societies the ones punished were actually the generous cooperators (antisocial punishment), strong enough to cancel the cooperation that punishment promotes. It is tied to the local norms of civic cooperation and the strength of the rule of law.</p>
 
   <div class="sec"><span class="n">7</span><h2><span class="tag why">Why it works</span>Why do division of labor and trade make both sides better off? Comparative advantage</h2></div>
   <div class="withimg rev">
     <span data-illus="c18_trade"></span>
     <div>
-      <p>Cooperation depends not only on goodwill but on arithmetic. The strongest player on your team deals more damage than anyone and also gathers faster than anyone. Should he do everything himself?</p>
-      <p>Intuitively yes, but the result is the other way round. Time is limited, and doing A means not doing B. As long as the other person is “relatively not losing out” on some task, letting them do it increases the team’s total output.</p>
-      <p>This is what Ricardo worked out in the early 19th century: what matters is not who is stronger, but who gives up less.</p>
+      <p>Cooperation depends not only on goodwill but also on doing the sums. The strongest player on the team is better than anyone at dealing damage and faster than anyone at gathering. Shouldn’t he just do everything himself?</p>
+      <p>Intuition says yes, but the result is the other way around. Time is limited, and doing A means he cannot do B. As long as the other person is “relatively less badly off” doing a certain task, letting them do it raises the whole team’s total output.</p>
+      <p>This is something David Ricardo worked out in the early 19th century: who gives up less matters more than who is stronger.</p>
     </div>
   </div>
   <div class="why-box">
     <h3>Comparative advantage</h3>
-    <p>The amount of one thing you give up to get a unit of another is called the <b><span class="term" tabindex="0" data-def="The amount of one thing given up to get a unit of another; comparative advantage belongs to the side with the lower opportunity cost">opportunity cost</span></b>. The side with the lower opportunity cost has a <b><span class="term" tabindex="0" data-def="An advantage in opportunity cost: even if worse at everything else, it is worth doing the thing one is “relatively good at”">comparative advantage</span></b> in that thing. Each does the thing with the lower opportunity cost and they swap at a <b>price between the two opportunity costs</b>; total output grows, and both sides get a share of the benefit.</p>
-    <p>You see it everywhere in games: role division in a party, gathering and crafting on an exchange, “who should do what” in co-op games. Trade turns the situation non-zero-sum; how to divide the extra cake is still a game.</p>
-    <div class="src">Sources: Adam Smith on the division of labor (<i>The Wealth of Nations</i>, 1776); David Ricardo used the example of wine and cloth to set out comparative advantage in <i>On the Principles of Political Economy and Taxation</i> (1817).</div>
+    <p>The amount of one thing given up to get one unit of another is the <b><span class="term" tabindex="0" data-def="The amount of one thing given up to get one unit of another; comparative advantage belongs to the side whose opportunity cost is lower.">opportunity cost</span></b>. The side with the lower opportunity cost has the <b><span class="term" tabindex="0" data-def="Having the advantage in opportunity cost: even if worse at everything, it is still worth doing the thing one is “relatively better” at.">comparative advantage</span></b> in that task. If each does the task with the lower opportunity cost and they trade at a <b>price between the two opportunity costs</b>, total output rises and both sides share the gain.</p>
+    <p>You see it everywhere in games: role division on a team, gathering and crafting on an exchange, “who should do what” in a co-op game. Trade turns the situation into non-zero-sum. How the extra cake gets divided is still a game of its own.</p>
+    <div class="src">Sources: Adam Smith · 1776 · <i>The Wealth of Nations</i> · on the division of labor. David Ricardo · 1817 · <i>On the Principles of Political Economy and Taxation</i> · explained comparative advantage with the example of wine and cloth.</div>
   </div>
+  <aside class="cc-card" aria-label="Concept card: comparative advantage">
+    <span class="cc-tag">Concept card</span>
+    <p class="cc-name"><span>Comparative Advantage</span></p>
+    <p class="cc-en">Comparative advantage</p>
+    <p class="cc-by">David Ricardo · 1817 <i>On the Principles of Political Economy and Taxation</i></p>
+    <p class="cc-def">The side with the lower opportunity cost has the comparative advantage in that task. If each does the task with the lower opportunity cost and they then trade, total output rises.</p>
+    <p class="cc-eg"><span class="cc-k">Example</span>Alin is better than Tai at everything, but to produce 1 herb Alin gives up 1 wood while Tai gives up only 0.5, so Tai should make the herbs.</p>
+  </aside>
   <div class="board">
     <b>Work it out by hand: Arin and Moss, 12 days each</b>
     <table class="tbl l">
@@ -246,7 +275,7 @@
       <tr><th>Arin</th><td>6 wood <b>or</b> 6 herbs</td><td>1 wood</td></tr>
       <tr><th>Moss</th><td>2 wood <b>or</b> 4 herbs</td><td>0.5 wood</td></tr>
     </table>
-    <p class="small">Both want “as much wood as herbs” (it is useful only as a set). Arin is better at everything (absolute advantage), but: to make 1 herb Arin gives up 1 wood and Moss only 0.5 wood, so <b>Moss has the comparative advantage in herbs</b>; conversely, to make 1 wood Arin gives up 1 herb and Moss gives up 2, so Arin has the comparative advantage in wood.</p>
+    <p class="small">Both want “as much wood as herbs” (only a matched set is useful). Alin is better at everything (absolute advantage). But to produce 1 unit of herb, Alin gives up 1 wood and Tai only 0.5 wood, so <b>Tai has the comparative advantage in herbs</b>. Conversely, to produce 1 unit of wood Alin gives up 1 herb and Tai gives up 2, so Alin has the comparative advantage in wood.</p>
     <div id="c-chips"></div>
     <div id="c-trade" style="display:none">
       <p class="small">Specialization: Moss spends all 12 days on herbs (48 herbs); Arin spends 10 days on wood (60) and 2 days on herbs (12). Then Arin sells Moss x wood at a price of p herbs per wood.</p>
@@ -264,15 +293,23 @@
     <span data-illus="c18_crowd"></span>
     <div>
       <p>When new players log in, they always crowd toward the servers and guilds with many people, because more people means easier matching and more life, and nobody wants to go somewhere empty.</p>
-      <p>But if every newcomer chooses this way, the crowded ones get more crowded and the sparse ones sparser. This is the social version of the earlier snowball: the probability of being chosen is proportional to existing size (or even stronger), called <b><span class="term" tabindex="0" data-def="Newcomers tend to pick what is already large, so the big get bigger and a few giants form">preferential attachment</span></b>.</p>
-      <p>Remember the power law in the economy chapter? A few giants take most of it: the same shape, from another mechanism.</p>
+      <p>But if every newcomer chooses this way, the crowded places get more crowded and the empty ones emptier. This is the social version of the snowball above: the chance of being chosen is proportional to existing size (or even stronger), and the mechanism is <b><span class="term" tabindex="0" data-def="Preferential attachment: newcomers tend to pick targets that are already large, so the big get bigger and a few giants emerge.">preferential attachment</span></b>.</p>
+      <p>Chapter 15 covered power laws: a few big ones take most of it. This is the same shape, coming from a different mechanism.</p>
     </div>
   </div>
   <div class="why-box">
     <h3>Network effects and “the rich get richer”</h3>
-    <p>As long as “more people means more value” and newcomers follow the crowd, the system produces <b><span class="term" tabindex="0" data-def="“The rich get richer”: advantage accumulates, so a few objects hold the vast majority of the share, often with a power-law-like distribution">winner-take-all</span></b>. Design remedies include splitting or merging servers, cross-server matching, giving small communities distinct features, or letting newcomers into a “newcomer pool” first, rather than simply choosing the largest.</p>
-    <div class="src">Sources: Barabási and Albert (1999, <i>Science</i>) used a “preferential attachment” model to explain power laws in networks; the sociologist Merton (1968) called the way strong players in science accumulate advantage “the Matthew effect.” The simulation below is a highly simplified illustration.</div>
+    <p>As long as “the more people, the more value” holds, and newcomers follow where the crowd is, the system produces <b><span class="term" tabindex="0" data-def="“The rich get richer”: advantages accumulate until a few hold the vast majority of the share, often with a power-law distribution">winner-take-all</span></b>. Design remedies include splitting or merging servers, cross-server matching, giving small communities distinctive features, or letting newcomers into a “rookie pool” first instead of simply choosing the biggest.</p>
+    <div class="src">Sources: Barabási and Albert · 1999 · used the “preferential attachment” model to explain power laws in networks (<i>Science</i>). Merton · 1968 · called the accumulation of advantage by the strong in science the “Matthew effect.” The simulation below is a highly simplified illustration.</div>
   </div>
+  <aside class="cc-card" aria-label="Concept card: preferential attachment">
+    <span class="cc-tag">Concept card</span>
+    <p class="cc-name"><span>Preferential Attachment</span></p>
+    <p class="cc-en">Preferential attachment</p>
+    <p class="cc-by">Albert-László Barabási and Réka Albert · 1999 <i>Science</i> paper; Robert K. Merton · his 1968 “Matthew effect” is a close relative</p>
+    <p class="cc-def">Newcomers tend to pick what is already large, so the large get larger and a few giants take most of it.</p>
+    <p class="cc-eg"><span class="cc-k">Example</span>New players all crowd into the servers and guilds that already have the most people, so the crowded ones get more crowded and the empty ones emptier.</p>
+  </aside>
   <div class="board">
     <b>Illustration: 8 servers, 400 new players joining one after another</b>
     <label class="ctl">“Herding” γ (0 = pick at random; 1 = pick in proportion to head count; 2 = favor the crowded even more) <output id="n-gv">1.0</output></label><input type="range" id="n-g" min="0" max="2" step="0.25" value="1">
@@ -284,7 +321,7 @@
   <p class="small">Try it: drag γ to 0, then to 2, click “Run again” a few times each, and see how the share of the largest server changes.</p>
 
   <div class="sec"><span class="n">9</span><h2><span class="tag how">How to use it</span>Turn the knobs: feedback, matching and trust</h2></div>
-  <p>Now put the pieces in your hands. The first is the most important knob: feedback strength. Two players of <b>exactly equal skill</b> play 20 rounds, the winner of each round scores 1, and the base win rate is 50% each, but the current leader’s win rate is adjusted. Drag right for positive feedback and left for negative feedback, and the program simulates 3000 matches.</p>
+  <p>Three small experiments to put what came before into your hands. The first is the most important dial: feedback strength. Two players of <b>exactly equal skill</b> play 20 rounds; the winner of each round scores 1 point, and each has a base win rate of 50%, but the current leader’s win rate is adjusted. Drag right for positive feedback and left for negative feedback; the program simulates 3000 matches.</p>
   <div class="board">
     <label class="ctl">Feedback strength <output id="fv">0</output>(positive: the leader is stronger; negative: the leader is weakened)</label><input type="range" id="fb" min="-30" max="30" step="5" value="0">
     <div id="fout" style="margin-top:8px"></div>
@@ -310,7 +347,7 @@
   </div>
   <div class="sticky c18try" id="c18_te">Try it: set A to 1800 and B to 1200, click “B wins” (an upset), and see how much B gains in one go. Then click “A wins 10 in a row”: A earns less and less per game, because the system increasingly believes he was supposed to win.</div>
 
-  <p>The third is the repeated prisoner’s dilemma, for feeling reciprocity with your own hands. You play the computer for <b>10 rounds</b>, each round choosing “cooperate” or “defect” at the same time, with scores as follows (your score / the opponent’s):</p>
+  <p>The third is a repeated version of the prisoner’s dilemma, for feeling reciprocity firsthand. The player plays the computer for <b>10 rounds</b>, each round choosing at the same moment to “cooperate” or “defect,” with scores as follows (player’s score / opponent’s score):</p>
   <table class="tbl">
     <tr><th></th><th>Opponent cooperates</th><th>Opponent defects</th></tr>
     <tr><th>You cooperate</th><td>3 / 3</td><td>0 / 5</td></tr>
@@ -329,7 +366,7 @@
     <div class="msg" id="pmsg"></div>
   </div>
   <div class="sticky c18try" id="c18_tp">Try it: choose “Tit for tat” and find a way to score 27 or more. Then switch to “Always defect” and see whether cooperation still means anything.</div>
-  <p>Another classic scenario is the <b>stag hunt</b>: two people must work together to hunt a stag (a high payoff), while each going off to catch a rabbit is safe but pays little. Its problem is not “the temptation to betray” but “do I dare trust you?” Designs like this are solved by communication, commitment and visible signals.</p>
+  <p>Another classic situation is the <b>stag hunt</b>: two people must work together to bring down a stag (high payoff), while each chasing a rabbit alone is safe but pays little. The difficulty is “dare I trust the other?” and there is no temptation to defect. This kind of design is solved with communication, commitment and visible signals.</p>
 
   <div class="key">
     <h3>Key points</h3>
@@ -337,8 +374,8 @@
       <li>First look at the relationship between players: <b>cooperation, competition or mixed</b>; zero-sum (fixed total) leaves no room for cooperation, while non-zero-sum has both cooperation and betrayal.</li>
       <li><b>Social dilemma</b>: individual best ≠ group best. Co-op games must guard against a “one-man show,” and competitive games against newcomers getting crushed.</li>
       <li><b>Positive feedback</b> widens the gap and <b>negative feedback</b> narrows it; design is tuning the knob between “reward the strong” and “keep the suspense,” and a catch-up mechanic that is too strong leaves doing well without reward.</li>
-      <li><b>Elo</b> treats a rating as a prediction: new rating = old rating + K×(actual − expected); an upset earns a lot; new accounts and teams need correction (which is where TrueSkill comes from).</li>
-      <li>Strangers cooperate through <b>reciprocity, reputation and conditional cooperation</b>; punishment helps but has a cost; making “who did what” visible is an important lever in multiplayer design.</li>
+      <li><b>Elo</b> treats a rating as a prediction: new rating = old rating + K×(actual − expected). Upsets add more. New accounts and teams need adjustment (which is what TrueSkill came from).</li>
+      <li>Strangers cooperate through <b>reciprocity, reputation and conditional cooperation</b>; punishment works but has a cost. Making “who did what” visible is an important lever in multiplayer design.</li>
       <li><b>Comparative advantage</b>: each does what has the lower opportunity cost and then they trade, and total output grows; the price must fall between the two opportunity costs.</li>
       <li>“More people is better” makes communities <b>winner-take-all</b> (preferential attachment), which calls for splitting traffic and a newcomer pool.</li>
     </ul>
@@ -348,8 +385,8 @@
   <div class="misc">
     <h3>Common misconceptions</h3>
     <ul>
-      <li>“People are selfish, so co-op games must fall apart”: in experiments many people are conditional cooperators; the problem is often that the mechanism makes free-riding invisible and cost-free.</li>
-      <li>“The heavier the punishment the better”: heavy punishment provokes retaliation, makes players afraid to try, and easily hurts the innocent; before punishing, first make contributions visible and give positive reputation.</li>
+      <li>“Human nature is selfish, so cooperative games must collapse”: in experiments many people are conditional cooperators. The problem is that the mechanism makes free riding invisible and free of cost.</li>
+      <li>“The harsher the punishment the better”: heavy punishment invites retaliation, makes players afraid to try things, and easily hits the innocent. Rather than punishing, first make contributions visible and give positive reputation.</li>
       <li>“I’m stronger than the other, so it’s better if I do everything”: this ignores opportunity cost. Comparative advantage is about being “relatively” good, not “absolutely” good.</li>
       <li>“Elo is a player’s skill”: it is only an estimate of win probability under a particular match structure, and needs correction for multiplayer teams, different roles and new accounts.</li>
     </ul>
@@ -360,17 +397,17 @@
     <ul>
       <li><b>How universal are the conclusions of public-goods experiments?</b> The experiments mostly come from particular groups and money settings; levels of cooperation and the effect of punishment differ greatly across cultures (see the 2008 study above).</li>
       <li><b>The other side of reputation systems:</b> public ratings can bring one-upmanship, pile-ons and score-farming. This is a common worry, and a designer has to weigh it.</li>
-      <li><b>Is comparative advantage a cure-all?</b> It assumes free trade, no transaction costs, and no loss of skill growth from specializing. In a game, “you’ll only ever be the healer” may feel dull to a player. Some argue that game design should give every role a “fun” part, not just the “optimal” one.</li>
-      <li>The mini games here are all <b>illustrative</b>: the virtual players’ rules are ones we set, the results depend on those settings, and they cannot be taken as predictions of real player behavior.</li>
+      <li><b>Is comparative advantage a cure-all?</b> It assumes free trade, no transaction costs, and that division of labor does not cost anyone skill growth. In games, “only letting the player be the healer” may feel boring. Some argue that game design should give every role a part that is “fun,” not just “optimal.”</li>
+      <li>The mini-games here are all <b>illustrative</b>: the virtual players’ rules are set by assumption, the results depend on those assumptions, and they can’t be taken as predictions of real players’ behavior.</li>
     </ul>
   </div>
 
-  <div class="sec"><span class="n">10</span><h2><span class="tag think">Reflection</span>Practice</h2></div>
+  <div class="sec"><span class="n">10</span><h2><span class="tag think">Practice</span>Quick quiz</h2></div>
   <div id="quiz"></div>
 
-  <div class="sec"><span class="n">11</span><h2><span class="tag how">How to use it</span>Your design</h2></div>
+  <div class="sec"><span class="n">11</span><h2><span class="tag how">Your design</span>Design a small multiplayer game</h2></div>
   <div class="card o">
-    <p>Design a small game for 2–4 people: is it cooperative, competitive or mixed? What mechanism will you use to prevent a “snowball”? Write down one example of positive feedback and one of negative feedback.</p>
+    <p>Design a small game for 2–4 players: is it cooperative, competitive or mixed? What mechanism will you use to prevent “snowballing”? Write down one example of positive feedback and one of negative feedback.</p>
     <textarea rows="5" data-save="ch18" placeholder="Example: four players grab territory. The more land, the more income (positive feedback); but the last-place player may place one trap free each round (negative feedback)…"></textarea>
   </div>
 </main>
@@ -402,7 +439,7 @@ function tryDone(id, text) {
     b.onclick = () => {
       [...box.children].forEach(x => x.classList.remove("on")); b.classList.add("on");
       const e = 1 / (1 + Math.pow(10, 600 / 400)), g = 32 * (1 - e);
-      $("c18_gmsg").innerHTML = (v === 31 ? "👍 Right guess." : "The answer is <b>31 points</b>.") + "The small player’s expected score is E≈" + e.toFixed(3) + ", so he gains 32×(1−" + e.toFixed(3) + ")≈<b>" + g.toFixed(1) + "</b> points. The more unexpected the result, the more the system changes, which is exactly “learning from prediction error.”";
+      $("c18_gmsg").innerHTML = (v === 31 ? "👍 Right guess." : "The answer is <b>31 points</b>.") + " The small player’s expected score is E≈" + e.toFixed(3) + ", so he gains 32×(1−" + e.toFixed(3) + ")≈<b>" + g.toFixed(1) + "</b> points. The more surprising the result, the more the system changes, and that is “learning from prediction error.”";
     };
     box.appendChild(b);
   });
@@ -464,7 +501,7 @@ function play(me) {
       if (myS >= 27) tryDone("c18_tp", "You got " + myS + "  points: against an opponent who responds, cooperation pays best in the long run. Now switch to “Always defect.”");
     }
     else if (strat === "allD") t += coopN ? "  Against an always-defector, cooperating is just being exploited every time." : "  When the other side always defects, defecting is self-protection.";
-    else if (strat === "allC") t += "  Against an always-cooperator, defecting scores high, but such a “pushover” tends to be taken advantage of in real life.";
+    else if (strat === "allC") t += " Against someone who always cooperates, defecting scores high, but such a “pushover” gets exploited in real life.";
     else t += "  Against a random opponent it is hard to build trust and hard to predict.";
     $("pmsg").textContent = t;
   }
@@ -551,7 +588,7 @@ fupd();
 GD.mountQuiz($("quiz"), [
   { q: "A 1500-rated A plays a 1500-rated B, K=32, and A wins. What is A’s new rating?", opts: ["1500", "1516", "1532", "1484"], a: 1, why: "E=0.5, new rating = 1500 + 32×(1−0.5) = 1516; B at the same time loses 16 and becomes 1484." },
   { q: "“The leader gets more resources and so finds it easier to keep leading” is?", opts: ["Positive feedback (may snowball)", "Negative feedback", "Symmetric design", "A zero-sum game"], a: 0, why: "A loop that magnifies the gap is positive feedback; it lets the early game decide the late game, and has to be balanced with catch-up mechanics and the like." },
-  { q: "[Why] A public-goods game: 4 people with 10 coins each, and the fund is doubled and shared equally. If you put in 1 more coin, how does your payoff in the round change? And why is this a social dilemma?", opts: ["+1; because the fund is doubled", "−0.5; you get back only half, while the team gains 2 more; individually best is to put in nothing, collectively best is to put in everything", "0; because it is shared equally", "+0.5; because you get half"], a: 1, why: "Put in 1 more coin: you have 1 less, the fund has 2 more, you receive 2÷4 = 0.5, a net −0.5; each of the 3 teammates gains +0.5. It is a loss for you and a gain for the team (+1 in all), which is the conflict between individual and collective rationality." },
+  { q: "[Why] A public-goods game: 4 people with 10 coins each, and the fund is doubled and shared equally. If you put in 1 more coin, how does your payoff in the round change? And why is this a social dilemma?", opts: ["+1; because the fund is doubled", "−0.5; you get back only half, while the team as a whole gains 1 more; the individual optimum is to put in nothing, the collective optimum is to put in everything", "0; because it is shared equally", "+0.5; because you get half"], a: 1, why: "Put in 1 more coin: you have 1 less, the fund has 2 more, you receive 2÷4 = 0.5, a net −0.5; each of the 3 teammates gains +0.5. It is a loss for you and a gain for the team (+1 in all), which is the conflict between individual and collective rationality." },
   { q: "[Why] Arin gives up 1 herb to make 1 wood, and Moss gives up 2 herbs to make 1 wood. Which trade price (herbs per wood) leaves both better off?", opts: ["0.8", "1.5", "2.5", "Any price works"], a: 1, why: "Arin must get back at least 1 herb for selling wood (otherwise he’d rather make herbs himself), and Moss is willing to pay at most 2 herbs. The price must fall between 1 and 2 for both to benefit. At 0.8 Arin loses, and at 2.5 Moss loses." },
   { q: "[Why it was invented] Before Elo, each club computed its own points. What was Elo’s key idea?", opts: ["Rank all players by total wins", "The rating difference should convert into a win probability, and the gap between actual result and prediction should adjust the ratings", "Have referees give each person a subjective score", "Only play within the same club"], a: 1, why: "The point of a rating is prediction. Compare two ratings and you get each one’s expected score, and the amount the result beats the expectation is the amount to adjust; this puts players from different places on the same ruler." },
   { q: "[Why] Why does making everyone’s contribution public (reputation visible) often raise cooperation in public-goods games?", opts: ["Because the rules become simpler once public", "Because others can see who put in how much, helping others earns a good name, and free-riders are easier to spot", "Because the fund doubles more once public", "Because players no longer compare with each other"], a: 1, why: "Visibility turns “good for everyone” into “good for me too” (reputation) and leaves free-riders nowhere to hide. This is the precondition for indirect reciprocity and punishment to work." },
@@ -674,7 +711,7 @@ GD.mountQuiz($("quiz"), [
       out = head + row("Arin", aw, ah, 36) + row("Moss", bw, bh, 16) + "</table>";
       const sa = Math.min(aw, ah) - 36, sb = Math.min(bw, bh) - 16;
       g("c-msg").textContent = (sa > 1e-9 && sb > 1e-9) ? "✅ Both do better than self-sufficiency: total " + (Math.min(aw, ah) + Math.min(bw, bh)).toFixed(1) + "  sets (self-sufficient: 52 sets)." :
-        (sa < -1e-9 || sb < -1e-9) ? "⚠️ One side does worse than self-sufficiency, and he won’t agree to this deal." : "One side gets no benefit (same as self-sufficiency). Set the price between 1 and 2 and use “Pair up automatically” to balance the amount.";
+        (sa < -1e-9 || sb < -1e-9) ? "⚠️ " + (sa < -1e-9 && sb < -1e-9 ? "Arin and Moss both" : sa < -1e-9 ? "Arin" : "Moss") + " would be worse off than under self-sufficiency, so " + (sa < -1e-9 && sb < -1e-9 ? "they" : "he") + " would not agree to this trade." : "One side gets no benefit (same as self-sufficiency). Set the price between 1 and 2 and use “Pair up automatically” to balance the amount.";
       if (sa > 1e-9 && sb > 1e-9) tryDone("c18_tc", "Price " + p.toFixed(1) + ", amount " + x + ": Arin gains " + sa.toFixed(1) + "  sets, Moss gains " + sb.toFixed(1) + "  sets, total " + (Math.min(aw, ah) + Math.min(bw, bh)).toFixed(1) + "  sets.");
     }
     g("c-out").innerHTML = out;
@@ -699,11 +736,11 @@ GD.mountQuiz($("quiz"), [
     let h = '<line x1="50" y1="165" x2="680" y2="165" stroke="#2b2b3a" stroke-width="3"/>';
     size.forEach((v, i) => {
       const x = 70 + i * 76, ht = v / mx * 135;
-      h += '<rect x="' + x + '" y="' + (165 - ht) + '" width="52" height="' + ht + '" fill="' + (v === mx ? "#ffb3c6" : "#8fd3f4") + '" stroke="#2b2b3a" stroke-width="2.5"/><text x="' + (x + 26) + '" y="' + (158 - ht) + '" text-anchor="middle" font-size="16">' + v + '</text><text x="' + (x + 26) + '" y="186" text-anchor="middle" font-size="16">Srv ' + (i + 1) + "</text>";
+      h += '<rect x="' + x + '" y="' + (165 - ht) + '" width="52" height="' + ht + '" fill="' + (v === mx ? "#ffb3c6" : "#8fd3f4") + '" stroke="#2b2b3a" stroke-width="2.5"/><text x="' + (x + 26) + '" y="' + (157 - ht) + '" text-anchor="middle" font-size="16">' + v + '</text><text x="' + (x + 26) + '" y="186" text-anchor="middle" font-size="16">Srv ' + (i + 1) + "</text>";
     });
     g("n-svg").innerHTML = h;
     let avg = 0; const R = 200; for (let i = 0; i < R; i++) { const s = nrun(gm); avg += Math.max(...s) / s.reduce((a, b) => a + b, 0); }
-    g("n-stat").innerHTML = '<span class="stat">Largest server holds <b>' + (mx / tot * 100).toFixed(0) + '%</b></span><span class="stat">Average largest share over 200 runs <b>' + (avg / R * 100).toFixed(0) + '%</b></span><span class="stat">Even split share <b>12.5%</b></span>';
+    g("n-stat").innerHTML = '<span class="stat">Largest server holds <b>' + (mx / tot * 100).toFixed(0) + '%</b></span><span class="stat">Average largest share over 200 runs <b>' + (avg / R * 100).toFixed(0) + '%</b></span><span class="stat">Average even share <b>12.5%</b></span><span class="stat">Pink bar = the largest server this time</span>';
     g("n-msg").textContent = gm === 0 ? "Random choice: the largest is only a little above average." : gm < 1 ? "A slight preference for the crowded: a head is starting to appear." : gm === 1 ? "Pick in proportion to head count: results differ a lot each time, but a head is clear (click “Run again” repeatedly and see who wins)." : "A preference for the crowded stronger than proportional: almost always one server swallows most of the players.";
   }
   g("n-g").oninput = nupd; g("n-go").onclick = nupd; nupd();

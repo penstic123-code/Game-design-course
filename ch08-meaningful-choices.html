@@ -62,17 +62,17 @@
     <span data-illus="c08_fork"></span>
     <div>
       <p>第 2 章讲过，核心循环转得起来，是因为玩家每一圈都在做决定。可是决定也分真假。走进游戏里的药店，货架上摆着一瓶红药水和一瓶蓝药水。红的回血 50，蓝的也回血 50，价钱一样，只有瓶子颜色不同。随手拿了红的。</p>
-      <p>严格说，这里什么决定也没有发生。拿哪瓶结果都一样，没有任何东西让人多想一秒。游戏设计里管这种东西叫<span class="term" tabindex="0" data-def="看上去有选项，但选哪个结果都一样，或其中一项永远最优的选择。">假选择</span>。</p>
-      <p>真选择长什么样？想想游戏里的岔路口：近路有守卫，远路安全却会错过宝箱。玩家得想一想自己现在更缺什么。这一想，就是选择有意义的证据。</p>
+      <p>严格说，这里什么决定也没有发生：拿哪瓶结果都一样，没有任何东西让人多想一秒。这样的选项在游戏设计里算<span class="term" tabindex="0" data-def="看上去有选项，但选哪个结果都一样，或其中一项永远最优的选择。">假选择</span>。</p>
+      <p>换成岔路口就不一样了：近路有守卫，远路安全却会错过宝箱，玩家得想一想自己现在更缺什么。</p>
     </div>
   </div>
-  <p>把岔路口拆开看，里面有三样东西。玩家得<b>知道</b>每条路通向哪里，否则只是蒙。每条路得<b>有得有失</b>，否则不用想。选完以后局面得<b>真的不一样</b>，而且玩家看得出来，否则选了也白选。</p>
+  <p>一个岔路口里有三样东西。玩家得<b>知道</b>每条路通向哪里，否则只是蒙。每条路得<b>有得有失</b>，否则不用想。选完以后局面得<b>真的不一样</b>，而且玩家看得出来，否则选了也白选。</p>
   <div class="grid3">
     <div class="card y mini"><div class="ico">👀</div><h3>信息</h3><p>玩家知道选项分别是什么，能做判断。</p></div>
     <div class="card p mini"><div class="ico">⚖️</div><h3><span class="term" tabindex="0" data-def="Trade-off：得到一样东西就要放弃另一样，没有哪个选项在所有方面都最好。">权衡</span></h3><p>每个选项有得有失，没有“永远最优”。</p></div>
     <div class="card b mini"><div class="ico">🌱</div><h3>后果</h3><p>选择会影响之后的局面，并被玩家察觉。</p></div>
   </div>
-  <p>设计圈里常引用一句话：“游戏是一连串有趣的决定。”它多半被归到 Sid Meier（《文明》系列的设计师）名下，确切出处说不清。他自己在 GDC 2012 的演讲《Interesting Decisions》里回顾并展开过这个想法。</p>
+  <p>设计圈里常引用一句话：“游戏是一连串有趣的决定。”它常被归到 Sid Meier（《文明》系列的设计师）名下，确切出处说不清。他自己在 GDC 2012 的演讲《Interesting Decisions》里回顾并展开过这个想法。</p>
   <div class="card">
     <svg viewBox="0 0 700 210" width="100%" role="img" aria-label="左边有权衡：重剑伤害高但慢，弓伤害低但远程，看情况选；右边有一个显然最好：钢剑比铁剑伤害高、价格低，没人会选铁剑">
       <g class="rough" stroke="#2b2b3a" stroke-width="4">
@@ -108,7 +108,7 @@
         <circle cx="110" cy="215" r="14" fill="#b6e8a8"/><circle cx="250" cy="100" r="14" fill="#ffe58a"/><circle cx="500" cy="55" r="14" fill="#b6e8a8"/><circle cx="400" cy="190" r="14" fill="#ddd" stroke-dasharray="4 3"/>
       </g>
       <g font-size="18" fill="#2b2b3a">
-        <text x="125" y="248">🏹 弓</text><text x="206" y="80">⚔️ 钢剑</text><text x="410" y="40">🗡️ 重剑</text><text x="338" y="226">🗡️ 铁剑</text>
+        <text x="125" y="248">🏹 弓</text><text x="206" y="80">⚔️ 钢剑</text><text x="410" y="40">🗡️ 重剑</text><text x="338" y="226">🗡️ 铁剑</text><text x="338" y="248" font-size="16">伤害 5 · 价格 100</text><text x="206" y="58" font-size="16">伤害 9 · 价格 80</text>
         <text x="420" y="130" fill="#a8242e">被钢剑碾压的区域</text>
         <text x="355" y="302" text-anchor="middle">代价（价格、风险、冷却……）越来越高 →</text>
         <text x="30" y="150" transform="rotate(-90 30 150)" text-anchor="middle">收益越来越高 →</text>
@@ -146,10 +146,19 @@
   </div>
   <div class="sticky" id="c8k1" data-done="把入场费拖到 30 元以上，玩满 10000 次，看看平均所得能不能稳稳站在红线上面。">试试看：把入场费拖到 30 元以上，玩满 10000 次，看看平均所得能不能稳稳站在红线上面。<span class="c8ok"></span></div>
   <div class="story">
-    <p><b>早期的办法为什么不行。</b>数学上，第 n 项“概率 × 奖金”恰好都等于 1：(½)ⁿ × 2ⁿ = 1。无穷多个 1 加起来是无穷大，按期望值，应该愿意付任何价钱。可是几乎没有人肯付一百元。要么人们都不理性，要么“只看期望值”这个办法本身有问题。</p>
-    <p><b>关键的一步。</b>两位数学家几乎同时想到了出路。1728 年，Gabriel Cramer 在给 Nicolaus 的信里说：钱对人的价值，大概像平方根那样增长，不和数额成正比。1738 年，Daniel Bernoulli 在圣彼得堡帝国科学院的刊物上发表论文，提出了更完整的想法：<b>同样一元钱，对穷人比对富人更值钱</b>。该算的不是钱的期望，而是钱带来的满足，也就是<span class="term" tabindex="0" data-def="效用（utility）：经济学里对“满足/价值感”的抽象度量。同样一笔钱带来的效用，往往随已有财富增加而变小。">效用</span>的期望。他用的是对数曲线，效用涨得越来越慢。这个赌局因为他的论文发表在圣彼得堡，得了“圣彼得堡悖论”这个名字。</p>
+    <p>数学上，第 n 项“概率 × 奖金”恰好都等于 1：(½)ⁿ × 2ⁿ = 1。无穷多个 1 加起来是无穷大，按期望值，应该愿意付任何价钱。可是几乎没有人肯付一百元。要么人们都不理性，要么“只看期望值”这个办法本身有问题。</p>
+    <p>出路是两位数学家先后想到的。1728 年，Gabriel Cramer 在给 Nicolaus 的信里说：钱对人的价值像平方根那样增长，不和数额成正比。</p>
+    <p>1738 年，Daniel Bernoulli 在圣彼得堡帝国科学院的刊物上发表论文，提出了更完整的想法：<b>同样一元钱，对穷人比对富人更值钱</b>。该算<b>钱带来的满足</b>，也就是<span class="term" tabindex="0" data-def="效用（utility）：经济学里对“满足/价值感”的抽象度量。同样一笔钱带来的效用，往往随已有财富增加而变小。">效用</span>的期望。他用的是对数曲线，效用涨得越来越慢。这个赌局因为他的论文发表在圣彼得堡，得了“圣彼得堡悖论”这个名字。</p>
     <p>换成效用，无穷大就不见了。拖动下面的滑块，看看一个有 1000 元的人，会给这个赌局开出什么价。</p>
   </div>
+  <aside class="cc-card" aria-label="概念卡：圣彼得堡悖论">
+    <span class="cc-tag">概念卡</span>
+    <p class="cc-name"><span>圣彼得堡悖论</span></p>
+    <p class="cc-en">St. Petersburg paradox</p>
+    <p class="cc-by">尼古拉·伯努利（Nicolaus Bernoulli） · 1713 年在信中提出；丹尼尔·伯努利（Daniel Bernoulli） · 1738 年用效用解释</p>
+    <p class="cc-def">一个按期望值算价值无穷大的赌局，却没人愿意花很多钱去参加。说明价值不等于钱的数额。</p>
+    <p class="cc-eg"><span class="cc-k">例子</span>抛硬币，第 n 次才首次正面就拿 2ⁿ 元。期望值是无穷大，实际上几乎没人肯付一百元入场。</p>
+  </aside>
   <div class="board">
     <b>第三步：钱越多越不值钱</b>
     <p class="small">用“对数效用”（后人常这样概括 Bernoulli 的想法）重新给这个赌局定价。再看看如果赌场的赔付能力有限，期望值会怎样。</p>
@@ -160,7 +169,9 @@
     <div class="c8out" id="c8s_calc"></div>
   </div>
   <div class="story">
-    <p><b>然后出现了新问题。</b>1944 年，von Neumann 与 Morgenstern 在《Theory of Games and Economic Behavior》里把“期望效用”公理化，它成了经济学的标准工具。但二十世纪中叶的实验陆续发现，真人的选择常常违背它，比如 Allais 在 1950 年代提出的反例，还有“丢分比得分更痛”这类现象。1979 年，Kahneman 与 Tversky 换了问法：不问人“应该”怎么选，只记录人“实际”怎么选。这就是前景理论。</p>
+    <p>1944 年，von Neumann 与 Morgenstern 在《Theory of Games and Economic Behavior》里把“期望效用”公理化，它成了经济学的标准工具。</p>
+    <p>可是二十世纪中叶的实验陆续发现，真人的选择常常违背它，比如 Allais 在 1950 年代提出的反例，还有“丢分比得分更痛”这类现象。</p>
+    <p>1979 年，Kahneman 与 Tversky 换了问法：不问人“应该”怎么选，只记录人“实际”怎么选。按这个思路建起来的理论，就是前景理论。</p>
     <div class="card">
       <svg viewBox="0 0 700 380" width="100%" role="img" aria-label="从圣彼得堡赌局到前景理论的演化图：问题、方案、新问题、新方案，四步向下">
         <g class="rough" stroke="#2b2b3a" stroke-width="3.5" fill="none" stroke-linecap="round">
@@ -183,18 +194,26 @@
       <div class="ev hasimg"><span data-illus="c08_axioms"></span><div><b class="yr">1944</b><br>von Neumann 与 Morgenstern 把“期望效用”写成公理，成为经济学的标准工具。</div></div>
       <div class="ev hasimg"><span data-illus="c08_prospect"></span><div><b class="yr">1979</b><br>Kahneman 与 Tversky 发表《Prospect Theory: An Analysis of Decision under Risk》，用实验描述人实际怎么选。Kahneman 因相关工作获 2002 年诺贝尔经济学奖（Tversky 1996 年去世）。</div></div>
     </div>
-    <p>这条线对游戏设计师意味着：<b>价值不等于数字本身</b>。同样的 50 点伤害，对血厚的玩家和血薄的玩家分量不同。同样丢 18 分，对攒了 100 分的人和攒了 20 分的人也不同。接下来的两节，是这场接力里最常用到的两棒。</p>
+    <p>对游戏设计师来说，<b>价值不等于数字本身</b>。同样的 50 点伤害，对血厚的玩家和血薄的玩家分量不同。同样丢 18 分，对攒了 100 分的人和攒了 20 分的人也不同。</p>
   </div>
 
   <!-- ===== 4 为什么：边际效用与机会成本 ===== -->
   <div class="sec"><span class="n">4</span><h2><span class="tag why">为什么成立</span>为什么“第二把一模一样的剑”没意义</h2></div>
-  <p>背包里已经有一瓶血药，再捡一瓶，很开心。捡到第九瓶，几乎没有感觉。同样一个“+1”，价值越来越小，这正是 Daniel Bernoulli 那条曲线在游戏里的样子。</p>
-  <p>还有另一半。拿 100 金币买了铁剑，就买不了盾。<b>放弃的那个最好的备选，才是这次选择真正的代价</b>。把这两件事合起来，就能回答“要不要再拿一件”：新增的那一件如果比“把资源花在别处”更值，就拿；不如，就该停。</p>
+  <p>背包里已经有一瓶血药，再捡一瓶，很开心。捡到第九瓶，几乎没有感觉。同样一个“+1”，价值越来越小，和 Daniel Bernoulli 那条曲线在游戏里的样子一模一样。</p>
+  <p>同一次选择还有另一半。拿 100 金币买了铁剑，就买不了盾，<b>放弃的那个最好的备选，就是这次选择付出的代价</b>。把这两件事合起来，就能回答“要不要再拿一件”：新增的那一件如果比“把资源花在别处”更值，就拿；不如，就该停。</p>
   <div class="why-box">
     <h3>边际效用递减 + 机会成本</h3>
     <p><span class="term" tabindex="0" data-def="Marginal utility：多得到“一份”东西所新增的价值。多数日常物品的新增价值会随数量增加而变小。">边际效用</span>递减：同类东西拿得越多，每多一件带来的新增价值越小。<span class="term" tabindex="0" data-def="Opportunity cost：选了某个选项，就放弃了“次优备选”能带来的价值，这个被放弃的价值就是机会成本。">机会成本</span>：做一个选择的真实代价，是放弃的最好的另一个选项。</p>
-    <div class="src">出处：边际效用的想法在 19 世纪 70 年代前后由杰文斯（1871）、门格尔（1871）、瓦尔拉斯（1874）各自独立提出，常称“边际革命”；更早，Daniel Bernoulli 在 1738 年就用“财富的效用增长越来越慢”解释圣彼得堡悖论。“机会成本”一词常追溯到奥地利学派的 Friedrich von Wieser（1914 年的《社会经济理论》）。</div>
+    <div class="src">出处：<br>杰文斯 · 1871、门格尔 · 1871、瓦尔拉斯 · 1874 · 各自独立提出边际效用 · 常称“边际革命”。更早，Daniel Bernoulli 在 1738 年就用“财富的效用增长越来越慢”解释圣彼得堡悖论。<br>Friedrich von Wieser · 1914 · 《社会经济理论》 · “机会成本”一词常追溯到他。</div>
   </div>
+  <aside class="cc-card" aria-label="概念卡：边际效用递减">
+    <span class="cc-tag">概念卡</span>
+    <p class="cc-name"><span>边际效用递减</span></p>
+    <p class="cc-en">Diminishing marginal utility</p>
+    <p class="cc-by">杰文斯（William Stanley Jevons）、门格尔（Carl Menger） · 1871 年；瓦尔拉斯（Léon Walras） · 1874 年，三人各自独立提出</p>
+    <p class="cc-def">同类东西拿得越多，每多一件带来的新增价值越小。</p>
+    <p class="cc-eg"><span class="cc-k">例子</span>背包里的第一瓶血药能救命，第九瓶堆在背包里吃灰。</p>
+  </aside>
   <div class="card">
     <svg viewBox="0 0 700 320" width="100%" role="img" aria-label="效用曲线：同样加六十枚金币，穷时效用涨一大截，富时只涨一小截">
       <g class="rough" stroke="#2b2b3a" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -206,12 +225,12 @@
       <g stroke="#2b2b3a" stroke-width="3"><circle cx="100" cy="197.5" r="7" fill="#ffe58a"/><circle cx="160" cy="167" r="7" fill="#ffe58a"/><circle cx="500" cy="76" r="7" fill="#b6e8a8"/><circle cx="560" cy="64.4" r="7" fill="#b6e8a8"/></g>
       <g font-size="17" fill="#2b2b3a">
         <text x="360" y="306" text-anchor="middle">财富（金币数量）→</text><text x="24" y="150" transform="rotate(-90 24 150)" text-anchor="middle">效用（满足感）→</text>
-        <text x="170" y="240">穷时 +60 币：效用涨一大截</text><text x="250" y="205">富时 +60 币：只涨一小截</text>
+        <text x="170" y="240">穷时 +60 币：效用涨一大截</text><text x="620" y="108" text-anchor="middle">富时 +60 币：</text><text x="620" y="130" text-anchor="middle">只涨一小截</text>
         <text x="380" y="40" font-size="16">（示意曲线，非实测数据）</text>
       </g>
     </svg>
   </div>
-  <p>这条曲线直接管着道具设计。重复的、可替换的选项，第二件的新增价值很快跌到机会成本以下，那时“再拿一件同类”就等于一个被碾压的选项。想让第二件仍有价值，办法只有一个：让它在别的方面不同，也就是回到前面说的权衡。</p>
+  <p>这条曲线直接管着道具设计。重复的、可替换的选项，第二件的新增价值很快跌到机会成本以下，那时“再拿一件同类”就等于一个被碾压的选项。第二件要仍有价值，得在别的方面和第一件不同，也就是回到前面说的权衡。</p>
   <div class="eg" data-ic="🧪" data-t="第9瓶血药"><span data-illus="c08_pile"></span><div class="egt"><b>第 9 瓶血药</b>：第一瓶救命，第九瓶堆在背包里吃灰。所以好的设计要么给血药设上限，要么让后面的药水有不同的用处。</div></div>
   <div class="eg" data-ic="💰" data-t="100金币买什么"><span data-illus="c08_choice100"></span><div class="egt"><b>100 金币买剑还是盾</b>：买了剑，就失去盾牌能带来的生存。盾牌的价值是这次选择的机会成本，看不见，却真实。</div></div>
   <div class="eg" data-ic="🍔" data-t="第四个汉堡"><span data-illus="c08_burgers"></span><div class="egt"><b>连吃四个汉堡</b>：饿的时候第一个香得要命，第四个几乎是负担。周六下午选了看电影，机会成本就是没去的那场球赛。</div></div>
@@ -223,19 +242,30 @@
     <span data-illus="c08_pig"></span>
     <div>
       <p>第 6 章说过，玩家最怕无聊，也最怕焦虑。而“可能丢掉已有的东西”，是制造焦虑最省力的办法。拿一个小游戏来试：轮流掷一颗骰子，点数累加到“本轮分”；掷到 1，本轮分全丢；随时可以“存分”，把本轮分存进总分。</p>
-      <p>攒到 18 分的时候，是不是已经开始犹豫了？这时候掷出 1，那种难受通常比“再多拿 18 分”的开心强烈得多。这不是小气，而是人类决策里相当稳定的倾向。</p>
-      <p>心理学家<span class="term" tabindex="0" data-def="Daniel Kahneman（卡尼曼）与 Amos Tversky（特沃斯基）：行为经济学的奠基人物，卡尼曼因此与他人共获 2002 年诺贝尔经济学奖。">卡尼曼与特沃斯基</span>把它写进了<span class="term" tabindex="0" data-def="描述人在风险下如何实际做决定的理论：用“相对参考点的得失”而非“最终总财富”来评估，损失的分量更重，并且会扭曲概率。">前景理论</span>。</p>
+      <p>攒到 18 分的时候，是不是已经开始犹豫了？这时候掷出 1，难受的程度比“再多拿 18 分”的开心强烈得多。这是人类决策里相当稳定的倾向，和小气无关。</p>
+      <p>心理学家<span class="term" tabindex="0" data-def="Daniel Kahneman（卡尼曼）与 Amos Tversky（特沃斯基）：行为经济学的奠基人物，卡尼曼因此与他人共获 2002 年诺贝尔经济学奖。">卡尼曼与特沃斯基</span>把它写进了<span class="term" tabindex="0" data-def="前景理论（prospect theory）：描述人在风险下如何实际做决定的理论。用“相对参考点的得失”而非“最终总财富”来评估，损失的分量更重，并且会扭曲概率。">前景理论</span>。</p>
     </div>
   </div>
-  <p>它大致有三个要点。第一，人评价的是“比现状多了还是少了”，现状就是<span class="term" tabindex="0" data-def="Reference point：用来判断“得”还是“失”的基准，通常是现状或期望值。同样的结果换个参考点，感受会从赚变成亏。">参考点</span>，不是最终的绝对数字。第二，<span class="term" tabindex="0" data-def="Loss aversion：同样大小的损失带来的痛苦，通常大于同样大小的收益带来的快乐。">损失厌恶</span>：同样大小的损失，分量大约是收益的两倍上下。第三，人会扭曲概率，常常高估小概率事件，所以既会买彩票，也会买保险。</p>
+  <aside class="cc-card" aria-label="概念卡：前景理论">
+    <span class="cc-tag">概念卡</span>
+    <p class="cc-name"><span>前景理论</span></p>
+    <p class="cc-en">Prospect theory</p>
+    <p class="cc-by">丹尼尔·卡尼曼（Daniel Kahneman）、阿莫斯·特沃斯基（Amos Tversky） · 1979 年论文《Prospect Theory: An Analysis of Decision under Risk》</p>
+    <p class="cc-def">人评价得失，看的是相对现状多了还是少了。同样大小的损失比收益更痛（损失厌恶）。</p>
+    <p class="cc-eg"><span class="cc-k">例子</span>掷骰子攒到 18 分，再掷一次可能全丢，多数人会犹豫着要不要存分。</p>
+  </aside>
+  <p>前景理论有三个要点。</p>
+  <p>人评价的是“比现状多了还是少了”，现状就是<span class="term" tabindex="0" data-def="参考点（reference point）：用来判断“得”还是“失”的基准，通常是现状或期望值。同样的结果换个参考点，感受会从赚变成亏。">参考点</span>，不是最终的绝对数字。</p>
+  <p><span class="term" tabindex="0" data-def="损失厌恶（loss aversion）：同样大小的损失带来的痛苦，通常大于同样大小的收益带来的快乐。">损失厌恶</span>：同样大小的损失，分量大约是收益的两倍上下。</p>
+  <p>人还会扭曲概率，高估小概率事件，所以既会买彩票，也会买保险。</p>
   <div class="why-box">
     <h3>经典发现：赚的时候求稳，亏的时候想赌</h3>
-    <p>“稳拿 100，或者一半机会拿 200”：期望值一样，多数人选稳拿。翻成亏损，“稳亏 100，或者一半机会亏 200”：许多人反而愿意赌一把。同一个数学结构，落在“得”还是“失”一侧，选择就逆转了，这叫反射效应。</p>
-    <div class="src">出处：Daniel Kahneman &amp; Amos Tversky，《Prospect Theory: An Analysis of Decision under Risk》，Econometrica 47(2)，1979；Tversky &amp; Kahneman，1992，《Advances in Prospect Theory》，Journal of Risk and Uncertainty 5：给出的价值函数典型估计是指数约 0.88、损失厌恶系数 λ 约 2.25（实验对象的中位数，个体差异很大）。</div>
+    <p>“稳拿 100，或者一半机会拿 200”：期望值一样，多数人选稳拿。翻成亏损，“稳亏 100，或者一半机会亏 200”：许多人反而愿意赌一把。同一个数学结构，落在“得”还是“失”一侧，选择就逆转了，这是前景理论里的反射效应。</p>
+    <div class="src">出处：<br>Kahneman 与 Tversky · 1979 · 用实验记录人面对风险时实际怎么选 · 提出前景理论（《Prospect Theory: An Analysis of Decision under Risk》，Econometrica 47(2)）。<br>Tversky 与 Kahneman · 1992 · 估计价值函数 · 指数约 0.88，损失厌恶系数 λ 约 2.25，是实验对象的中位数，个体差异很大（《Advances in Prospect Theory》，Journal of Risk and Uncertainty 5）。</div>
   </div>
   <div class="board">
     <b>先猜后揭晓：你自己会怎么选？</b>
-    <p class="small">每一行选一个。两行的期望值其实完全对称。</p>
+    <p class="small">每一行选一个。两行的期望值完全对称。</p>
     <div class="c8row"><span class="c8lab">得的一侧</span><button class="chip" data-g="a">A：稳拿 100</button><button class="chip" data-g="b">B：一半机会拿 200，一半什么都没有</button></div>
     <div class="c8row"><span class="c8lab">失的一侧</span><button class="chip" data-g="c">C：稳亏 100</button><button class="chip" data-g="d">D：一半机会亏 200，一半不亏</button></div>
     <div class="c8out" id="c8g_out" style="display:none"></div>
@@ -265,15 +295,20 @@
     <div class="msg" id="dmsg">每次投之前都在做选择：“继续还是存分？”</div>
     <label class="ctl">痛感系数 λ <output id="c8d_lo">2.0</output>（输 T 分的痛，相当于赢 λ·T 分的快）</label>
     <input type="range" id="c8d_l" min="10" max="40" value="20">
-    <div class="small">“再投一次”的主观净收益 = 平均得分 3.33 − λ × T / 6（T 是本轮分）。左（粉）= 不划算，右（绿）= 划算：</div>
+    <div class="small">“再投一次”划不划算，看下面这条：左（粉）= 不划算，右（绿）= 划算。</div>
+    <details>
+      <summary>进阶：这条是怎么算的</summary>
+      <p class="small">“再投一次”的主观净收益 = 平均得分 3.33 − λ × T / 6（T 是本轮分）。每次投出 2 到 6 点时涨分，平均每次约涨 3.33；投出 1 点的概率是六分之一，丢掉 T 分，这份痛要乘 λ。</p>
+    </details>
     <div class="c8bi"><i id="c8d_i"></i><u></u></div>
     <div class="c8out" id="c8d_t"></div>
     <p class="small" id="advice"></p>
   </div>
   <div class="sticky" id="c8k2" data-done="先把 λ 拖到 3.5，再靠直觉玩到 50 分；再把 λ 拖到 1，比较一下两个“收手线”。">试试看：先把 λ 拖到 3.5，玩一局到 50 分；再把 λ 拖到 1，比较一下两个“收手线”差多少。<span class="c8ok"></span></div>
-  <p class="small">客观上，“继续”和“存分”的盈亏平衡点是本轮分 T = 20（最大化单回合期望得分，是 Pig 这类骰子游戏里常说的“攒到 20 就收手”；在先到 50 分的竞速里，最优策略还会随比分变化）。如果痛感是收益的 λ 倍，主观收手线就是 20/λ。设计师可以利用这一点：让玩家先拥有，再面临失去，张力就比单纯的“可能得到”高得多。</p>
+  <p class="small">客观上，“继续”和“存分”的盈亏平衡点是本轮分 T = 20。这是 Pig 这类骰子游戏里常说的“攒到 20 就收手”，它能最大化单回合的期望得分。在先到 50 分的竞速里，最优策略还会随比分变化。</p>
+  <p class="small">如果痛感是收益的 λ 倍，主观收手线就是 20/λ。设计师可以利用这一点：让玩家先拥有，再面临失去，张力就比单纯的“可能得到”高得多。</p>
   <div class="eg" data-ic="☠️" data-t="丢光装备"><span data-illus="c08_permadeath"></span><div class="egt"><b>Roguelike 的死亡清零</b>：死了会丢掉本局全部装备。装备攒得越多，每一步越紧张，因为守着的是已经属于自己的东西。</div></div>
-  <div class="eg" data-ic="🔥" data-t="连登奖励"><span data-illus="c08_streak"></span><div class="egt"><b>连登奖励</b>：断一天就清零。玩家不是为了奖励才打开游戏，而是为了不失去那串数字。这招很有效，所以更要想想：是在给玩家乐趣，还是在拿他的损失厌恶换时长？</div></div>
+  <div class="eg" data-ic="🔥" data-t="连登奖励"><span data-illus="c08_streak"></span><div class="egt"><b>连登奖励</b>：断一天就清零。玩家打开游戏，是为了不失去那串数字，奖励倒在其次。这招很有效，所以更要想想：是在给玩家乐趣，还是在拿他的损失厌恶换时长？</div></div>
   <div class="eg" data-ic="🏷️" data-t="划线价签"><span data-illus="c08_tag"></span><div class="egt"><b>划线价签</b>：“原价 500，现价 400”比“平时就卖 400”更让人想买。参考点变了，同样的 400 元，一个是赚到，一个只是价钱。</div></div>
   <div class="eg bad" data-ic="💥" data-t="处处扣分"><span data-illus="c08_penalty"></span><div class="egt"><b>反例：每个小失误都清零</b>：损失厌恶会把惩罚放大一倍有余，所以过度的“扣分”换来的不是紧张，是挫败。玩家会觉得游戏在针对他。</div></div>
 
@@ -282,25 +317,25 @@
   <div class="withimg">
     <span data-illus="c08_jam"></span>
     <div>
-      <p>翻开一本三百道菜的菜单，可能反而更焦虑，最后点了“老样子”。这种现象叫<span class="term" tabindex="0" data-def="Choice overload：选项太多时，人可能更难做决定、更不满意，甚至干脆放弃选择。">选择过载</span>，最出名的证据是 2000 年的“果酱研究”：超市里摆出 24 种果酱的摊位，吸引了 60% 的路人停下来，6 种的摊位只有 40%。可是停下来的人里，24 种摊位真正买了的只有 3%，6 种摊位则接近 30%。</p>
-      <p>这个结果被引用了二十年，用来说明“选项多不一定好”。但它后来的命运不太顺：有人换了场景重做，常常得不到同样的结果。</p>
+      <p>翻开一本三百道菜的菜单，反而更焦虑，最后点了“老样子”，这种现象是<span class="term" tabindex="0" data-def="Choice overload：选项太多时，人可能更难做决定、更不满意，甚至干脆放弃选择。">选择过载</span>。最出名的证据是 2000 年的“果酱研究”：超市里摆出 24 种果酱的摊位，吸引了 60% 的路人停下来，6 种的摊位只有 40%。可是停下来的人里，24 种摊位真正买了的只有 3%，6 种摊位则接近 30%。</p>
+      <p>这个结果被引用了二十年，用来说明“选项多会让人更难选”。但它后来的命运不太顺：换了场景重做的研究，常常得不到同样的结果。</p>
     </div>
   </div>
   <div class="why-box">
     <h3>果酱研究，以及它的争议</h3>
-    <p>2010 年，Scheibehenne、Greifeneder 和 Todd 汇总了大量相关实验，发现平均而言效应接近于零，不同研究之间差异很大。后来的工作则提出，效应出不出现要看条件：选项是否难以比较、人是否已有明确偏好、能否按类别筛选、有没有时间压力。更稳妥的说法是：选项多会增加决策负担，是否变成坏结果，要看情境。</p>
-    <div class="src">出处：Sheena Iyengar &amp; Mark Lepper，《When Choice is Demotivating》，Journal of Personality and Social Psychology，2000；元分析：Scheibehenne、Greifeneder &amp; Todd，2010；调节因素综述：Chernev、Böckenholt &amp; Goodman，2015。</div>
+    <p>2010 年，Scheibehenne、Greifeneder 和 Todd 汇总了大量相关实验，发现平均而言效应接近于零，不同研究之间差异很大。后来的工作提出，效应出不出现要看条件：选项是否难以比较、人是否已有明确偏好、能否按类别筛选、有没有时间压力。选项多会增加决策负担，是否变成坏结果，要看情境。</p>
+    <div class="src">出处：<br>Iyengar 与 Lepper · 2000 · 超市果酱摊位实验 · 24 种与 6 种的摊位，购买率相差很大（《When Choice is Demotivating》，Journal of Personality and Social Psychology）。<br>Scheibehenne、Greifeneder、Todd · 2010 · 元分析 · 平均效应接近零。<br>Chernev、Böckenholt、Goodman · 2015 · 综述调节因素。</div>
   </div>
   <div class="board">
     <label class="ctl">选项数量 <input type="range" id="co_n" min="3" max="30" value="6"><output id="co_no">6</output></label>
     <label class="ctl"><input type="checkbox" id="co_m"> 选项有清晰分类 / 玩家有明确偏好（降低每个额外选项的负担）</label>
-    <svg id="co_svg" class="plot" viewBox="0 0 520 260" role="img" aria-label="选项数量与决策时间、满意度的示意曲线"></svg>
+    <svg id="co_svg" class="plot" viewBox="0 0 520 272" role="img" aria-label="选项数量与决策时间、满意度的示意曲线"></svg>
     <div class="msg" id="co_t"></div>
   </div>
   <div class="sticky" id="c8k3" data-done="把选项拖到 20 个以上，再勾上“有清晰分类”，看看满意度那条线的峰值往哪边走。">试试看：把选项拖到 20 个以上，再勾上“有清晰分类”，看看满意度那条线的峰值往哪边走。<span class="c8ok"></span></div>
   <p class="small">⚠ <b>这是示意曲线，不是实测数据</b>：曲线由“收益递减 + 每个选项带来固定负担”的简单公式生成，目的是展示趋势，峰值位置会随游戏和玩家而变。</p>
-  <p>所以“3 到 5 个有区分度的选项通常够用”只是经验法则。技能树、建造类游戏的玩家常常<b>喜欢</b>海量选项，关键是用分类、分阶段解锁、推荐这些手段，把每个新增选项的负担压下去。</p>
-  <div class="eg" data-ic="🌳" data-t="40个技能"><span data-illus="c08_skills40"></span><div class="egt"><b>一次摆出 40 个技能</b>：新手往往直接关掉窗口。换成分阶段解锁、每次三选一，同样的内容，选择就变轻松了。</div></div>
+  <p>“3 到 5 个有区分度的选项通常够用”是一条经验法则。技能树、建造类游戏的玩家<b>喜欢</b>海量选项，关键是用分类、分阶段解锁、推荐这些手段，把每个新增选项的负担压下去。</p>
+  <div class="eg" data-ic="🌳" data-t="40个技能"><span data-illus="c08_skills40"></span><div class="egt"><b>一次摆出 40 个技能</b>：新手直接关掉窗口。换成分阶段解锁、每次三选一，同样的内容，选择就变轻松了。</div></div>
   <div class="eg" data-ic="🎬" data-t="为你推荐"><span data-illus="c08_recommend"></span><div class="egt"><b>视频网站的“为你推荐”</b>：几万部片子里不知道看什么，平台挑出 6 部，一下就点开了。选项少了，选择反而发生得更快。</div></div>
   <div class="eg bad" data-ic="🗡️" data-t="十把雷同的剑"><span data-illus="c08_swords10"></span><div class="egt"><b>反例：商店里 10 把几乎一样的装备</b>：数量虽多，每把都没有区分度。玩家要比较的是一堆噪音，不是一组权衡，这比选项少更糟。</div></div>
 
@@ -309,15 +344,27 @@
   <div class="withimg rev">
     <span data-illus="c08_coin"></span>
     <div>
-      <p>一个结果百分之百猜得到，它出现的时候什么也没学到。一个怎么也猜不准的结果，出现时才让人“哦”一下。被碾压的选项、永远最优的选项没意义，部分原因就是它们的结果太好猜。</p>
-      <p>这种“好不好猜”可以量出来。Claude Shannon 在 1948 年的信息论奠基论文里给了一个量，叫<span class="term" tabindex="0" data-def="Entropy：信息论里衡量结果不确定性的量，单位 bit。二选一时 p=0.5 熵最大（1 bit），p 越接近 0 或 1，熵越小。">信息熵</span>。</p>
+      <p>一个结果百分之百猜得到，它出现的时候什么也没学到。一个怎么也猜不准的结果，出现时才让人“哦”一下。被碾压的选项和永远最优的选项没意义，一部分原因是它们的结果太好猜。</p>
+      <p>这种“好不好猜”可以量出来。Claude Shannon 在 1948 年的信息论奠基论文里给出了这个量，名字是<span class="term" tabindex="0" data-def="Entropy：信息论里衡量结果不确定性的量，单位 bit。二选一时 p=0.5 熵最大（1 bit），p 越接近 0 或 1，熵越小。">信息熵</span>。</p>
     </div>
   </div>
   <div class="why-box">
     <h3>信息熵：用一个数描述“有多不确定”</h3>
-    <p>对一个二选一的结果，设其中一种的概率为 p，信息熵是<br><code>H(p) = −p·log₂p − (1−p)·log₂(1−p)</code>（单位 bit）。抛硬币（p = 0.5）时 H = 1，最有悬念；p = 0.99 时 H ≈ 0.08，几乎没有悬念。</p>
-    <div class="src">出处：Claude Shannon，《A Mathematical Theory of Communication》，Bell System Technical Journal，1948。把它用来类比“选择有没有信息量”，是本书的借用，不是游戏设计的公认定律。</div>
+    <p>对一个二选一的结果，两种结果各占一半（比如抛硬币）时，悬念最大，信息熵是 1 bit。如果其中一种有 99% 的概率，信息熵只有约 0.08 bit，几乎没有悬念。</p>
+    <details>
+      <summary>进阶：写成公式</summary>
+      <p class="small">设其中一种结果的概率为 p，信息熵 H(p) = −p·log₂p − (1−p)·log₂(1−p)，单位是 bit。p = 0.5 时 H = 1；p = 0.99 时 H ≈ 0.08。</p>
+    </details>
+    <div class="src">出处：Claude Shannon · 1948 · 提出信息熵，衡量结果的不确定性（《A Mathematical Theory of Communication》，Bell System Technical Journal）。把它用来类比“选择有没有信息量”，是本书的借用。</div>
   </div>
+  <aside class="cc-card" aria-label="概念卡：信息熵">
+    <span class="cc-tag">概念卡</span>
+    <p class="cc-name"><span>信息熵</span></p>
+    <p class="cc-en">Information entropy</p>
+    <p class="cc-by">克劳德·香农（Claude Shannon） · 1948 年《A Mathematical Theory of Communication》</p>
+    <p class="cc-def">衡量一个结果有多难猜的数，单位是 bit。越难猜，熵越大。</p>
+    <p class="cc-eg"><span class="cc-k">例子</span>抛硬币的结果最难猜，熵是 1 bit；97% 的玩家都买同一把武器，这个选择的熵接近 0。</p>
+  </aside>
   <div class="card">
     <svg viewBox="0 0 700 300" width="100%" role="img" aria-label="二元信息熵曲线：p=0.5 最高为 1 bit，p 接近 0 或 1 时趋近 0">
       <g class="rough" stroke="#2b2b3a" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -338,7 +385,7 @@
 
   <!-- ===== 8 怎么用 招牌 ===== -->
   <div class="sec"><span class="n">8</span><h2><span class="tag how">怎么用</span>动手搭：决策树搭建器</h2></div>
-  <p>现在是关卡设计师，要给玩家摆出一组选项。下面是一棵最简单的决策树：树根是“选哪个？”，每个分叉是一个选项，有三个数值：<b>收益</b>（越高越好）、<b>风险</b>与<b>代价</b>（越低越好）。<b>拖动选项里的彩色条</b>改数值（也可以用下方滑块），系统会实时高亮：<span style="background:#ffd6dc">粉色 = 被碾压</span>、<span style="background:#fff0a8">金色 = 永远最优</span>、<span style="background:#dff5d4">绿色 = 有自己的位置</span>，并给出改进提示。</p>
+  <p>这次换成关卡设计师的位置，给玩家摆出一组选项。下面是一棵最简单的决策树：树根是“选哪个？”，每个分叉是一个选项，有三个数值：<b>收益</b>（越高越好）、<b>风险</b>与<b>代价</b>（越低越好）。<b>拖动选项里的彩色条</b>改数值（也可以用下方滑块），系统会实时高亮：<span style="background:#ffd6dc">粉色 = 被碾压</span>、<span style="background:#fff0a8">金色 = 永远最优</span>、<span style="background:#dff5d4">绿色 = 有自己的位置</span>，并给出改进提示。</p>
   <div class="board">
     <div class="c8row">
       <button class="btn alt" data-pre="weapons">载入：武器店</button><button class="btn alt" data-pre="roads">载入：三条路</button><button class="btn alt" data-pre="good">载入：各有利弊</button>
@@ -373,15 +420,15 @@
   </div>
 
   <div class="key">
-    <h3>本章要点</h3>
+    <h3>要点</h3>
     <ul>
       <li>有意义的选择 = <b>信息 + 权衡 + 后果</b>；要避开“被碾压的选项”和“永远最优”的选项。</li>
       <li>只算期望值会碰壁（圣彼得堡赌局）：价值取决于处境，于是有了效用和边际效用递减。人又不完全按期望效用选，于是有了前景理论。</li>
       <li><b>机会成本</b>让重复的选项贬值；<b>损失厌恶</b>让丢掉已有的东西比没得到更痛。</li>
-      <li>选项不是越多越好，3 到 5 个有区分度的通常够用（经验法则，选择过载的研究结果并不一致）。结果越好猜，选择的信息量越低。</li>
+      <li>选项不是越多越好，3 到 5 个有区分度的通常够用。这是经验法则，选择过载的研究结果并不一致。结果越好猜，选择的信息量越低。</li>
     </ul>
   </div>
-  <div class="tldr">有意义的选择，是玩家看得清、舍不得、又不得不舍的选择：每个选项各有所得，各有所失，选了以后局面真的不同。</div>
+  <div class="tldr">有意义的选择，是玩家看得清每个选项、每个选项都有得有失、选了以后局面真的不同的选择。</div>
 
   <div class="sec"><span class="n">9</span><h2><span class="tag think">练习</span>小测验</h2></div>
   <div id="quiz"></div>
@@ -459,7 +506,7 @@ GD.mountQuiz($("quiz"), [
   }
   function fmt(x) { return x >= 1e6 ? x.toExponential(2).replace("e+", "×10^") : Math.round(x).toLocaleString("en-US"); }
   function drawS() {
-    const f = fee(), ymax = Math.max(30, f * 1.5), X = n => 50 + Math.log10(n) / 5 * 490, Y = v => 205 - Math.min(v, ymax) / ymax * 180;
+    const f = fee(), ymax = Math.max(30, f * 1.5, pts.reduce((m, p) => Math.max(m, p[1]), 0) * 1.1), X = n => 50 + Math.log10(n) / 5 * 490, Y = v => 205 - Math.min(v, ymax) / ymax * 180;
     let s = '<rect x="50" y="25" width="490" height="180" fill="#fffef7" stroke="#2b2b3a" stroke-width="3"/>';
     for (let e = 0; e <= 5; e++) s += '<text x="' + X(Math.pow(10, e)) + '" y="224" text-anchor="middle" font-size="14">' + Math.pow(10, e).toLocaleString("en-US") + '</text>';
     s += '<text x="295" y="240" text-anchor="middle" font-size="14">玩的次数（对数坐标）</text>';
@@ -489,7 +536,7 @@ GD.mountQuiz($("quiz"), [
     const o = $("c8s_revout"); o.style.display = "block";
     const log2n = cnt > 1 ? Math.log2(cnt) : 0;
     o.innerHTML = "<b>数学上：</b>第 n 次首次正面的概率是 (½)ⁿ，奖金 2ⁿ，每一项的“概率×奖金”都是 1。1 + 1 + 1 + …… 永远加不完，<b>期望值是无穷大</b>。<br>" +
-      "<b>可是你的试玩：</b>" + (cnt ? "玩了 " + cnt.toLocaleString("en-US") + " 次，平均每次只有约 " + (sum / cnt).toFixed(1) + " 元（大致在 log₂(次数)≈" + log2n.toFixed(1) + " 的量级附近，且被偶尔的大奖拉扯着波动）。" : "还没玩，先点上面的“玩”。") +
+      "<b>可是你的试玩：</b>" + (cnt ? "玩了 " + cnt.toLocaleString("en-US") + " 次，平均每次约 " + (sum / cnt).toFixed(1) + " 元。次数一多，平均所得的典型水平大致跟着 log₂(次数)≈" + log2n.toFixed(1) + " 走，也就是十几元的量级；如果这次的平均明显更高，那是偶尔撞上的大奖把它拉了上去。" : "还没玩，先点上面的“玩”。") +
       "<br>原因：奖金翻倍的同时概率减半，那些“无穷大”全来自极罕见的超大奖，现实中几乎碰不到。这就是为什么只看期望值，无法解释人们的出价。接着往下，看看 Bernoulli 的出路。";
   };
   function utilFair(W) {
@@ -529,7 +576,9 @@ GD.mountQuiz($("quiz"), [
       '<path d="M' + X(n) + ' 20V220" stroke="#ff7a59" stroke-width="3"/>' +
       '<circle cx="' + X(n) + '" cy="' + YS(sat(n, m)).toFixed(1) + '" r="7" fill="#3aa655" stroke="#2b2b3a"/>' +
       '<circle cx="' + X(n) + '" cy="' + YT(tim(n, m)).toFixed(1) + '" r="7" fill="#4a9ac4" stroke="#2b2b3a"/>' +
-      '<g font-size="15" fill="#2b2b3a"><text x="440" y="244">选项数量 →</text><text x="50" y="34" fill="#3aa655">示意满意度（实线）</text><text x="50" y="54" fill="#4a9ac4">示意决策时间（虚线）</text></g>';
+      [3, 10, 20, 30].map(k => '<path d="M' + X(k).toFixed(1) + ' 220v4" stroke="#2b2b3a" stroke-width="2"/><text x="' + X(k).toFixed(1) + '" y="243" font-size="13" text-anchor="middle" fill="#2b2b3a">' + k + '</text>').join("") +
+      '<circle cx="' + X(best).toFixed(1) + '" cy="' + YS(bv).toFixed(1) + '" r="9" fill="none" stroke="#b8860b" stroke-width="3"/><text x="' + X(best).toFixed(1) + '" y="' + (YS(bv) - 14).toFixed(1) + '" font-size="14" text-anchor="middle" fill="#7a5a00">峰值 n≈' + best + '</text>' +
+      '<g font-size="15" fill="#2b2b3a"><text x="440" y="262" font-size="14">选项数量 →</text><text x="50" y="34" fill="#3aa655">示意满意度（实线）</text><text x="50" y="54" fill="#4a9ac4">示意决策时间（虚线）</text></g>';
     $("co_t").textContent = "n=" + n + "：示意决策时间约 " + tim(n, m).toFixed(1) + " 秒，示意满意度约 " + sat(n, m).toFixed(1) + " / 10。示意曲线的峰值在 n≈" + best + "。（示意，非实测）";
   }
   $("co_n").oninput = co; $("co_m").onchange = co; co();
@@ -611,7 +660,8 @@ GD.mountQuiz($("quiz"), [
         let plan = null;
         o.by.forEach(p => {
           [["b", p.b + 1 - o.b, p.b + 1, p.b + 1 <= 10], ["r", o.r - (p.r - 1), p.r - 1, p.r - 1 >= 0], ["c", o.c - (p.c - 1), p.c - 1, p.c - 1 >= 0]].forEach(([k, cost, val, ok]) => {
-            if (ok && (!plan || cost < plan.cost)) plan = { k, cost, val, p };
+            const t = Object.assign({}, o, { [k]: val });
+            if (ok && !opts.some(x => x !== o && dom(t, x)) && (!plan || cost < plan.cost)) plan = { k, cost, val, p };
           });
         });
         if (plan) add("warn", "「" + esc(o.name) + "」被「" + esc(plan.p.name) + "」全面碾压。给它一个独有的长处：把" + DIM[plan.k] + "调到 " + plan.val + "（现在是 " + o[plan.k] + "，对手是 " + plan.p[plan.k] + "）。若它是新手装备或升级前身，可以保留，但要让玩家一眼看出来。", () => { snap(); o[plan.k] = plan.val; });

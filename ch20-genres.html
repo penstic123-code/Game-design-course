@@ -52,7 +52,7 @@
     <div class="txt">
       <span class="badge">第 20 章</span>
       <h1>类型设计套路</h1>
-      <p class="sub">类型不是标签，是一份“循环 + 承诺”的合同。</p>
+      <p class="sub">类型是一份“循环 + 承诺”的合同。</p>
     </div>
     <svg viewBox="0 0 190 150" class="rough" aria-hidden="true">
       <rect x="20" y="20" width="60" height="45" rx="8" fill="#ffe58a" stroke="#2b2b3a" stroke-width="4"/>
@@ -68,14 +68,14 @@
     <span class="time">约 45 分钟</span>
     <ul>
       <li>读完能说清五个常见类型各自的“核心循环 + 玩家承诺”，并讲出“类型”这个标签是怎么<b>长出来</b>的。</li>
-      <li>读完能识别<span class="term" tabindex="0" data-def="幸存者偏差：只观察“活下来的”样本，忽略没活下来的，从而得出错误的因果结论。">幸存者偏差</span>，解释为什么“成功游戏的共同点”不等于“成功的原因”，并知道该补看哪些数据。</li>
+      <li>读完能识别<span class="term" tabindex="0" data-def="幸存者偏差（survivorship bias）：只观察“活下来的”样本，忽略没活下来的，从而得出错误的因果结论。">幸存者偏差</span>，解释为什么“成功游戏的共同点”不等于“成功的原因”，并知道该补看哪些数据。</li>
       <li>读完能用玩家的<span class="term" tabindex="0" data-def="图式（schema）：大脑里关于“这类事物通常是什么样”的预设框架，用来快速理解新信息。">图式</span>与期待，判断一次“打破类型惯例”会带来惊喜还是困惑，并说出为什么同类游戏总会扎堆。</li>
     </ul>
   </div>
 
   <!-- ===== 1 是什么：类型 = 循环 + 承诺 ===== -->
   <div class="sec"><span class="n">1</span><h2><span class="tag what">是什么</span>类型 = 核心循环 + 玩家承诺</h2></div>
-  <p>在商店页上看到“肉鸽”两个字，没点开任何截图，就已经猜到了不少：每一局都不太一样，死了会很心疼，多半还会忍不住再来一局。谁告诉的？没有人，是这个词本身。</p>
+  <p>在商店页上看到“肉鸽”两个字，没点开任何截图，就已经猜到了不少：每一局都不太一样，死了会很心疼，还会忍不住再来一局。这些没有人告诉过，是这个词本身带来的。</p>
   <p>所以类型对设计者更像一份<b>合同</b>。玩家挑了这个类型，就是在期待某种<b>核心循环</b>（第 2 章讲过，玩家一遍遍重复的那组动作），也在期待某些<b>玩家承诺</b>，也就是“会得到这种体验”。</p>
   <div class="grid2">
     <div class="card y"><h3>🔁 核心循环</h3><p>玩家一遍遍重复的那组动作：例如“跳跃 → 落地 → 前进”，或者“抽牌 → 出牌 → 打赢 → 拿新牌”。</p></div>
@@ -83,14 +83,14 @@
   </div>
   <div class="card">
     <svg viewBox="0 0 740 300" width="100%" role="img" aria-label="类型合同示意图：设计者承诺核心循环与玩家承诺，兑现带来信任，违背带来被骗感">
-      <defs><marker id="c20ar" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2b2b3a"/></marker></defs>
+      <defs><marker id="c20ar" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="14" refX="12" refY="7" orient="auto"><path d="M0,0 L14,7 L0,14 z" fill="#2b2b3a"/></marker></defs>
       <g class="rough" stroke="#2b2b3a" stroke-width="3.5">
         <rect x="10" y="20" width="170" height="90" rx="10" fill="#fff7cf"/>
         <rect x="560" y="20" width="170" height="90" rx="10" fill="#e8f6fc"/>
         <rect x="215" y="10" width="310" height="120" rx="6" fill="#fff"/>
         <rect x="30" y="190" width="320" height="90" rx="10" fill="#eaf9e4"/>
         <rect x="390" y="190" width="320" height="90" rx="10" fill="#ffe9ef"/>
-        <path d="M180 65 H213 M527 65 H558" fill="none" marker-end="url(#c20ar)"/>
+        <path d="M180 65 H213" fill="none" marker-end="url(#c20ar)"/><path d="M527 65 H558" fill="none" marker-end="url(#c20ar)"/>
         <path d="M300 130 L200 188" fill="none" marker-end="url(#c20ar)"/>
         <path d="M440 130 L540 188" fill="none" marker-end="url(#c20ar)"/>
       </g>
@@ -126,7 +126,7 @@
     <div class="withimg rev"><span data-illus="c20_grogue"></span><div>
       <p><b>承诺：</b>每一局都是新故事。名字来自 1980 年前后的老游戏《Rogue》。</p>
       <p><span class="term" tabindex="0" data-def="用规则和随机数在运行时自动生成地图、敌人、奖励等内容，而不是全部手工摆放。">程序生成</span>让地图、敌人、奖励每局重新拼出来，玩家没法死记套路。<span class="term" tabindex="0" data-def="死亡后进度被清除、从头再来的规则（permadeath）。">永久死亡</span>让每个决定都有分量，因为死了就从头来。</p>
-      <p>局内成长只在这一局里有效，死了就没了；<span class="term" tabindex="0" data-def="死亡后仍保留的永久解锁或强化（meta progression），与只在一局内有效的局内成长相对。">局外成长</span>则在死后仍保留。带局外成长的作品，常被叫作 roguelite。</p>
+      <p>局内成长只在这一局里有效，死了就没了；<span class="term" tabindex="0" data-def="局外成长（meta-progression，即第 16 章的元进度）：死亡后仍保留的永久解锁或强化，与只在一局内有效的局内成长相对。">局外成长</span>则在死后仍保留。带局外成长的作品，常被归入 roguelite。</p>
     </div></div>
   </div>
   <div class="card v">
@@ -170,7 +170,7 @@
 
   <!-- ===== 3 是什么：两种成长 ===== -->
   <div class="sec"><span class="n">3</span><h2><span class="tag what">是什么</span>肉鸽的两种成长：局内与局外</h2></div>
-  <p>肉鸽有一个矛盾：永久死亡让人紧张，可是死一次就清零，谁受得了？它的解法是把成长拆成两层。</p>
+  <p>肉鸽有一个矛盾：永久死亡让人紧张，可是死一次就清零，玩家很难接受。它的解法是把成长拆成两层。</p>
   <div class="card">
     <svg id="c20_growth" viewBox="0 0 740 330" width="100%" role="img" aria-label="左图：只有局内成长时每局起点相同；右图：有局外成长时每局起点逐局抬高"></svg>
     <p class="small">示意图：每条上升线是一局里力量的增长，✖ 是死亡。左边每局都从同一个起点重来；右边失败会留下永久加成，起点越来越高。</p>
@@ -189,10 +189,11 @@
   <p>没人在某一天宣布“现在开始，世界上有了肉鸽”。类型是<b>先有一批相似的游戏，再有人想给它们起个共同的名字</b>，名字起好了，边界才开始争论。第 1 章见过同样的事：“游戏”这个词没有一条公认的定义，只有家族相似。类型也一样，只是更年轻，吵得更凶。</p>
   <div class="story">
     <h3>从《Rogue》到“roguelike”</h3>
-    <p><b>当时的问题。</b>1980 年前后，加州大学圣克鲁兹分校的学生 Michael Toy 和 Glenn Wichman 做了一个用字符画地牢的游戏《Rogue》，地图靠 Ken Arnold 写的 curses 库显示在终端上。它随 BSD UNIX 流传，1983 年的 4.2BSD 里就带着它，可是<b>没有附源代码</b>。直到 1986 年的 4.3BSD，源码才可以获得。想玩“类似的东西”的人，只能从零重做。</p>
-    <p><b>早期的尝试。</b>爱好者们做出了 Hack、Moria、Angband 等相似的游戏，玩家分散在不同的 Usenet 讨论组里，互相很难找到对方。</p>
-    <p><b>关键一步。</b>1993 年，有人提议把这些讨论合并到一个总名下。据维基百科的梳理，争论了大约三周，最后选了 <b>rec.games.roguelike.*</b>，理由是《Rogue》是这类游戏里最老的，算是“最不坏的选项”。一个词，就这样把一批游戏框成了“一个类型”。</p>
-    <p><b>然后边界开始漂。</b>2008 年，国际 Roguelike 开发者大会在柏林举行，社区起草了“柏林诠释”。它不是一条定义，而是一份<b>因素清单</b>，高权重的因素包括随机环境生成、永久死亡、回合制、格子移动等。它拿 ADOM、Angband、Linley’s Dungeon Crawl、NetHack、Rogue 这五款当基准，衡量“一个游戏有多像 roguelike”。同一年，独立游戏《Spelunky》问世，它只满足其中一部分因素，却被很多人叫作肉鸽，于是 roguelite 这类说法也跟着出现了。</p>
+    <p>1980 年前后，加州大学圣克鲁兹分校的学生 Michael Toy 和 Glenn Wichman 做了一个用字符画地牢的游戏《Rogue》。地图靠 Ken Arnold 写的 curses 库显示在终端上。它随 BSD UNIX 流传，1983 年的 4.2BSD 里就带着它，可是<b>没有附源代码</b>。直到 1986 年的 4.3BSD，源码才可以获得。想玩“类似的东西”的人，只能自己从零做起。</p>
+    <p>于是爱好者们自己做出了 Hack、Moria、Angband 等相似的游戏。可是玩家分散在不同的 Usenet 讨论组里，互相很难找到对方。</p>
+    <p>1993 年，有人提议把这些讨论合并到一个总名下。据维基百科的梳理，争论了大约三周，最后选了 <b>rec.games.roguelike.*</b>，理由是《Rogue》是这类游戏里最老的，算是“最不坏的选项”。一个词，就这样把一批游戏框成了“一个类型”。</p>
+    <p>类型有了名字，边界却开始漂。2008 年，国际 Roguelike 开发者大会在柏林举行，社区起草了“柏林诠释”。它列的是一份<b>因素清单</b>，没有给出定义。高权重的因素包括随机环境生成、永久死亡、回合制、格子移动等。</p>
+    <p>它拿 ADOM、Angband、Linley’s Dungeon Crawl、NetHack、Rogue 这五款当基准，衡量“一个游戏有多像 roguelike”。同一年，独立游戏《Spelunky》问世。它只满足其中一部分因素，却被很多人归入肉鸽，于是 roguelite 这类说法也跟着出现了。</p>
   </div>
   <div class="timeline">
     <div class="ev hasimg"><span data-illus="c20_rogue"></span><div><b class="yr">1980 前后</b>　《Rogue》（Toy、Wichman，使用 Arnold 的 curses 库）：用字符画出地牢和一个 @ 代表的冒险者。</div></div>
@@ -201,6 +202,14 @@
     <div class="ev hasimg"><span data-illus="c20_berlin"></span><div><b class="yr">2008</b>　柏林诠释：一份因素清单，而不是定义。</div></div>
     <div class="ev hasimg"><span data-illus="c20_lite"></span><div><b class="yr">2008 起</b>　《Spelunky》等只满足部分因素的作品流行，roguelite 一类说法出现，边界继续争论。</div></div>
   </div>
+  <aside class="cc-card" aria-label="概念卡：肉鸽（Roguelike）">
+    <span class="cc-tag">概念卡</span>
+    <p class="cc-name"><span>肉鸽</span></p>
+    <p class="cc-en">Roguelike（局外成长较多的常归入 roguelite）</p>
+    <p class="cc-by">《Rogue》（Michael Toy、Glenn Wichman，约 1980 年）；名字来自 1993 年 Usenet 讨论组 rec.games.roguelike.*；2008 年社区起草“柏林诠释”</p>
+    <p class="cc-def">像《Rogue》的一类游戏：每局程序生成，永久死亡，死了从头来。边界由社区约定，一直在漂。</p>
+    <p class="cc-eg"><span class="cc-k">例子</span>《Hades》每次出发的房间和祝福都不一样，死后回到起点，用攒下的资源升级永久能力。</p>
+  </aside>
   <p><b>先自己划线，再看别人怎么划。</b>下面是 6 款常被拿来讨论的游戏。第一步，凭直觉标出<b>觉得哪些算肉鸽</b>。第二步，勾选认为“肉鸽必须具备”的条件，看按这个定义哪些游戏会被算进去，和直觉一致吗？</p>
   <div class="board" id="c20_draw">
     <div class="small"><b>第一步：</b>点游戏名，标记“我觉得它算肉鸽”（再点取消）。</div>
@@ -224,8 +233,8 @@
   <div class="story">
     <h3>该给飞机的哪里加装甲？</h3>
     <div class="withimg rev"><span data-illus="c20_planeback"></span><div>
-      <p><b>当时的问题。</b>第二次世界大战期间，美国军方想给轰炸机加装装甲，可装甲很重，不可能全身都包。该加在哪里？研究者检查<b>返航</b>的飞机，机翼、机身上弹孔密布，发动机附近却很少。直觉很自然：“加固弹孔多的地方。”</p>
-      <p><b>关键一步。</b>在哥伦比亚大学统计研究小组（SRG）工作的 Abraham Wald 看到了另一面：这些是<b>飞回来的</b>飞机。弹孔少的位置，也许恰恰是“中弹就回不来”的位置，那些飞机根本不在样本里。该加固的，是返航飞机上<b>没有弹孔</b>的地方。</p>
+      <p>第二次世界大战期间，美国军方想给轰炸机加装装甲，可装甲很重，不可能全身都包。该加在哪里？研究者检查<b>返航</b>的飞机，机翼、机身上弹孔密布，发动机附近却很少。直觉很自然：“加固弹孔多的地方。”</p>
+      <p>在哥伦比亚大学统计研究小组（SRG）工作的 Abraham Wald 看到了另一面：这些是<b>飞回来的</b>飞机。弹孔少的位置，恰恰是“中弹就回不来”的位置，那些飞机根本不在样本里。该加固的，是返航飞机上<b>没有弹孔</b>的地方。</p>
       <p>Wald 1943 年写的一组备忘录，讨论的正是怎样在只看得到幸存者的情况下，估计飞机各部位的存活概率。其中一份题为《A Method of Estimating Plane Vulnerability Based on Damage of Survivors》，后来由海军分析中心在 1980 年重新印行。Mangel 与 Samaniego 在 1984 年的《美国统计学会杂志》里做过通俗介绍。</p>
     </div></div>
     <p class="small">流传的“弹孔图”故事在不同转述里细节有出入（谁画的图、具体数据），这里取被广泛接受的要点：<b>分析样本里缺了谁</b>。下面的飞机和数字都是<b>示意</b>，不是史料数据。</p>
@@ -249,14 +258,26 @@
 
   <!-- ===== 6 为什么：幸存者偏差 ===== -->
   <div class="sec"><span class="n">6</span><h2><span class="tag why">为什么成立</span>只看成功者会骗人：幸存者偏差</h2></div>
-  <p>想做“下一个爆款”，于是研究了 20 款最成功的独立游戏，发现“70% 都是像素风”“一半有肉鸽元素”。结论似乎呼之欲出：做个像素风肉鸽！</p>
+  <p>想做“下一个爆款”，于是研究了 20 款最成功的独立游戏，发现“70% 都是像素风”“约三成有肉鸽元素”。结论似乎一目了然：做个像素风肉鸽！</p>
   <p>可是失败的那几千款里，像素风占多少？如果也是 70%，这个“发现”就毫无信息量。Wald 的飞机，是同一个陷阱。</p>
   <div class="why-box">
     <h3>幸存者偏差</h3>
     <p><b>原理：</b>只观察被筛选留下来的样本，就会把“筛选留下的特征”误当成“成功的原因”。要检验“特征 X 是不是成功的原因”，至少还要看三样东西：<span class="term" tabindex="0" data-def="基础比例（base rate）：某个特征在全体样本里本来占多大比例。">基础比例</span>（X 在所有游戏里本来占多少）、<b>失败样本</b>（有 X 的游戏成功率，比没有 X 的高吗）、<b>样本量</b>（20 个成功者，随机波动有多大）。</p>
-    <p>用符号说：看到的是 P(像素风 | 成功)，想知道的是 P(成功 | 像素风)。两者不同，除非同时知道 P(像素风) 和 P(成功)。</p>
-    <div class="src">出处：Wald 在 Statistical Research Group 的飞机生存性研究（1943 年备忘录；Mangel &amp; Samaniego, 1984, JASA）。“幸存者偏差”是统计学与行为科学里的通用概念，条件概率的区别是概率论的基本内容。</div>
+    <p>看到的是“成功者里像素风占多少”，想知道的是“像素风游戏里成功的占多少”。这是两个不同的问题，除非同时知道像素风占全体的比例，和成功占全体的比例。</p>
+    <details>
+      <summary>进阶：用符号写出来</summary>
+      <p class="small">看到的是 P(像素风 | 成功)，想知道的是 P(成功 | 像素风)。P(A | B) 读作“在 B 发生的条件下 A 的概率”。两者相等，要求同时知道 P(像素风) 和 P(成功)。</p>
+    </details>
+    <div class="src">出处：Wald · 1943 · 在 Statistical Research Group 写飞机生存性的备忘录 · 要估计没回来的飞机。Mangel 与 Samaniego · 1984 · 介绍 Wald 的工作（JASA）。“幸存者偏差”是统计学与行为科学里的通用概念，条件概率的区别是概率论的基本内容。</div>
   </div>
+  <aside class="cc-card" aria-label="概念卡：幸存者偏差">
+    <span class="cc-tag">概念卡</span>
+    <p class="cc-name"><span>幸存者偏差</span></p>
+    <p class="cc-en">Survivorship bias</p>
+    <p class="cc-by">亚伯拉罕·瓦尔德（Abraham Wald） · 1943 年为美国军方做的飞机生存性研究</p>
+    <p class="cc-def">只看被筛选留下来的样本，会把“留下来的特征”误当成成功的原因。要问：没留下来的呢？</p>
+    <p class="cc-eg"><span class="cc-k">例子</span>返航的飞机弹孔集中在机翼和机身，该加固的却是弹孔最少的发动机附近：中弹就回不来的飞机不在样本里。</p>
+  </aside>
   <div class="eg" data-ic="🎮" data-t="爆款都联机"><span data-illus="c20_hits"></span><div class="egt"><b>“爆款都有联机，所以做联机”</b>：如果所有游戏里本来就有 40% 联机，成功者里 40% 联机并不说明什么。要比的是有联机和没联机的成功率。</div></div>
   <div class="eg" data-ic="🎓" data-t="辍学创业"><span data-illus="c20_dropout"></span><div class="egt"><b>“某某辍学创业成了亿万富翁，所以辍学有助于成功”</b>：我们看不到数量多得多的、辍学后默默无闻的人。</div></div>
   <div class="eg" data-ic="🏛️" data-t="老建筑结实"><span data-illus="c20_oldbuild"></span><div class="egt"><b>“老房子都很结实，现在的房子质量不行”</b>：质量差的老房子早就塌了或被拆了，我们只看到活下来的。</div></div>
@@ -267,10 +288,19 @@
   <p>点开一个标着“平台跳跃”的游戏，手指已经准备好“按住跳得高”。如果这次按键要等半秒才起跳，会烦躁。但如果这个游戏在第十分钟让人发现“跳跃键同时也是抓钩”，会笑出来。两种都是在打破预期，感受却天差地别。</p>
   <div class="why-box">
     <h3>图式与期待：类型承诺的心理学</h3>
-    <p><b>原理：</b>心理学里的<span class="term" tabindex="0" data-def="图式（schema）：大脑里关于“这类事物通常是什么样”的预设框架，用来快速理解新信息。">图式</span>，指大脑里关于“这类东西通常是什么样”的预设框架。这一概念常追溯到巴特利特（Bartlett，1932）：他让英国受试者复述一则陌生的北美印第安民间故事（《鬼的战争》），发现人们在复述时会把不合自己文化预期的部分，改写成“说得通”的样子。预期会改造人对新信息的理解。（这类早期记忆研究的结论强度，后来也有不少讨论。）</p>
+    <p><b>原理：</b>心理学里的<span class="term" tabindex="0" data-def="图式（schema）：大脑里关于“这类事物通常是什么样”的预设框架，用来快速理解新信息。">图式</span>，指大脑里关于“这类东西通常是什么样”的预设框架。这一概念常追溯到巴特利特（Bartlett，1932）。</p>
+    <p>他让英国受试者复述一则陌生的北美印第安民间故事（《鬼的战争》），发现人们在复述时会把不合自己文化预期的部分，改写成“说得通”的样子。预期会改造人对新信息的理解。这类早期记忆研究的结论强度，后来也有不少讨论。</p>
     <p>玩家看到类型名，就启动了一套图式：该怎么操作、该期待什么、什么算公平。符合图式，玩家上手快、省力。违背图式，玩家要重新学习，代价是困惑，收益可能是惊喜。常见的看法是：<b>打破预期、但事后能说得通</b>的东西，最容易让人觉得惊喜。打破预期又<b>说不通</b>（判定不准、违背类型的核心承诺），则让人觉得被骗。</p>
-    <div class="src">出处：Frederic Bartlett，《Remembering》（1932）提出图式概念并用于记忆研究；“期待与惊喜”是游戏行业里常见的设计经验，不是某一条定律。下面“表层 / 核心”的区分是一种设计判断，现实里取决于执行。</div>
+    <div class="src">出处：Frederic Bartlett · 1932 · 《Remembering》 · 提出图式概念并用于记忆研究。“期待与惊喜”是游戏行业里常见的设计经验。下面“表层 / 核心”的区分是一种设计判断，现实里取决于执行。</div>
   </div>
+  <aside class="cc-card" aria-label="概念卡：图式">
+    <span class="cc-tag">概念卡</span>
+    <p class="cc-name"><span>图式</span></p>
+    <p class="cc-en">Schema</p>
+    <p class="cc-by">弗雷德里克·巴特利特（Frederic Bartlett） · 1932 年《Remembering》</p>
+    <p class="cc-def">大脑里关于“这类东西通常是什么样”的预设框架。符合它，上手快；违背它，要重新学，可能困惑，也可能惊喜。</p>
+    <p class="cc-eg"><span class="cc-k">例子</span>点开平台跳跃游戏，手指已经准备好“按住跳得高”；按键要等半秒才起跳，会烦躁，跳跃键同时是抓钩，会笑出来。</p>
+  </aside>
   <div class="card">
     <svg viewBox="0 0 740 330" width="100%" role="img" aria-label="两层惯例示意：表层惯例打破风险小，核心承诺打破风险大，需要新乐趣补偿；右侧箭头从惊喜指向困惑">
       <defs><marker id="c20ar2" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2b2b3a"/></marker></defs>
@@ -304,12 +334,12 @@
     <span data-illus="c20_peaks"></span>
     <div>
       <p>一个类型火了以后，大家做出来的游戏会越来越像：同样的核心循环，同样的升级树，同样的画风。没有谁规定要这样，每个人只是在“把已经有效的东西再改好一点”。</p>
-      <p>这像登山者在大雾里找最高点：他只看得见脚下，哪边高就往哪边走。走到四周都是下坡，他就停了。可是雾里的那座山头，也许只是一座矮山，真正更高的那座在山谷的另一边。</p>
+      <p>这像登山者在大雾里找最高点：他只看得见脚下，哪边高就往哪边走。走到四周都是下坡，他就停了。可是那座山头可能只是一座矮山，真正更高的那座在山谷的另一边。</p>
     </div>
   </div>
   <div class="why-box">
     <h3>局部最优与“爬山法”</h3>
-    <p>在一个“地形”上，只靠一小步一小步地改进，很容易困在<span class="term" tabindex="0" data-def="局部最优：周围一小圈里最好、但整体未必最好的位置。只做小步改进的方法走到这里就会停下。">局部最优</span>：周围一圈里最高，但不是全局最高。要到更高的山头，往往得先走下坡，也就是先变差一阵，再变好。进化生物学家 Sewall Wright 在 1932 年首次把这种“适应度地形”画成图，后来这个比喻被广泛借用到优化、产品设计等领域。把“类型扎堆”看成爬山，是一种类比。</p>
+    <p>在一个“地形”上，只靠一小步一小步地改进，很容易困在<span class="term" tabindex="0" data-def="局部最优：周围一小圈里最好、但整体未必最好的位置。只做小步改进的方法走到这里就会停下。">局部最优</span>：周围一圈里最高，但不是全局最高。要到更高的山头，得先走下坡，也就是先变差一阵，再变好。进化生物学家 Sewall Wright 在 1932 年首次把这种“适应度地形”画成图，后来这个比喻被广泛借用到优化、产品设计等领域。把“类型扎堆”看成爬山，是一种类比。</p>
     <div class="src">出处：Sewall Wright，《The roles of mutation, inbreeding, crossbreeding and selection in evolution》，第六届国际遗传学大会论文集，1932。</div>
   </div>
   <div class="board">
@@ -362,11 +392,14 @@
 
   <div class="reflect">
     <h3>反思与争议</h3>
-    <p>幸存者偏差提醒别过度解读成功案例，但这不等于成功案例没有参考价值：结合基础比例和失败样本、再做对照，仍然能学到东西。瓦尔德的故事在不同转述里细节不一，这里取的是被广泛接受的要点。“惊喜还是困惑”的判断因玩家人群而异：老玩家想要新鲜，新玩家可能更需要熟悉，文中的判断只是一种设计经验。局部最优也要换个角度看：矮山头未必不好，它可能意味着一个稳定、有人买账的玩法，把它当成“需要逃离的陷阱”是片面的。至于“类型是社区约定出来的”，是一种常见看法，也有人认为类型对应着稳定的玩法结构。类型更像“事实”还是“约定”？</p>
+    <p>幸存者偏差提醒别过度解读成功案例。成功案例仍有参考价值：结合基础比例和失败样本、再做对照，仍然能学到东西。瓦尔德的故事在不同转述里细节不一，这里取的是被广泛接受的要点。</p>
+    <p>“惊喜还是困惑”的判断因玩家人群而异：老玩家想要新鲜，新玩家可能更需要熟悉，文中的判断只是一种设计经验。</p>
+    <p>局部最优也有另一面：矮山头可能意味着一个稳定、有人买账的玩法，把它一概当成“需要逃离的陷阱”是片面的。</p>
+    <p>“类型是社区约定出来的”是一种常见看法，也有人认为类型对应着稳定的玩法结构。想一想：类型更像“事实”，还是“约定”？</p>
   </div>
 
   <div class="key">
-    <h3>本章要点</h3>
+    <h3>要点</h3>
     <ul>
       <li>类型 ＝ <b>核心循环 + 玩家承诺</b>。先想清楚向玩家承诺了什么体验，再决定用哪个类型。</li>
       <li>平台跳跃靠<b>手感与关卡教学</b>；解谜靠<b>线索与顿悟</b>；卡牌构筑把策略放在<b>构筑</b>、紧张放在<b>抽牌</b>；4X 的核心是<b>经济、扩张、军事</b>互相牵制；肉鸽靠<b>程序生成 + 永久死亡</b>，局内成长带来戏剧性，局外成长缓冲挫败。</li>
@@ -404,7 +437,7 @@ const SVGNS = "http://www.w3.org/2000/svg";
     { n: "策略/4X", c: "#5bb5dd", v: [1, 2, 5, 3, 2] },
     { n: "解谜", c: "#6fcf6f", v: [1, 0, 3, 1, 5] },
   ];
-  const shown = new Set([0, 1]);
+  const shown = new Set([0]);
   const CX = 350, CY = 215, R = 150;
   const ang = i => (-90 + 72 * i) * Math.PI / 180;
   const pt = (i, val) => [CX + R * val / 5 * Math.cos(ang(i)), CY + R * val / 5 * Math.sin(ang(i))];
@@ -426,7 +459,7 @@ const SVGNS = "http://www.w3.org/2000/svg";
     const sel = [...shown];
     if (!sel.length) $("rtext").textContent = "还没有叠上任何类型。勾选一个看看。";
     else if (sel.length === 1) { const g = GENRES[sel[0]]; const mx = Math.max(...g.v); $("rtext").innerHTML = "<b>" + g.n + "</b> 最突出的维度：" + AXES.filter((_, i) => g.v[i] === mx).join("、") + "（" + mx + " 分）。再叠一个类型对比看看。"; }
-    else $("rtext").innerHTML = "<b>每个维度谁最高：</b><br>" + AXES.map((a, i) => { const mx = Math.max(...sel.map(k => GENRES[k].v[i])); return a + "：" + sel.filter(k => GENRES[k].v[i] === mx).map(k => GENRES[k].n).join("、") + "（" + mx + "）"; }).join("<br>");
+    else $("rtext").innerHTML = "<b>每个维度谁最高：</b><br>" + AXES.map((a, i) => { const mx = Math.max(...sel.map(k => GENRES[k].v[i])); return a + "：" + sel.filter(k => GENRES[k].v[i] === mx).map(k => GENRES[k].n).join("、") + "（" + mx + "）"; }).join("<br>") + (() => { const both = AXES.filter((_, i) => sel.every(k => GENRES[k].v[i] === 5)); return "<br><b>所选类型都是满分的维度：</b>" + (both.length ? both.join("、") : "没有"); })();
   }
   $("rall").onclick = () => { GENRES.forEach((_, i) => shown.add(i)); draw(); };
   $("rnone").onclick = () => { shown.clear(); draw(); };
@@ -638,7 +671,7 @@ GD.mountQuiz(document.getElementById("quiz"), [
   const seen = {};
   document.querySelectorAll("#c20_draw [data-p]").forEach(b => b.addEventListener("click", () => { seen[b.dataset.p] = 1; if (seen.strict && seen.loose) done("c20k2", "同一批游戏，换一条线，算肉鸽的数量就变了：定义在漂。"); }));
   let reveals = 0;
-  q("c20_ago").addEventListener("click", () => { reveals++; if (reveals >= 2) done("c20k3", "弹孔最少的两处，降低的坠毁概率往往最多：那里才是真正致命的位置。"); });
+  q("c20_ago").addEventListener("click", () => { reveals++; if (reveals >= 2) done("c20k3", "弹孔最少的两处，降低的坠毁概率最多：那里才是真正致命的位置。"); });
   new MutationObserver(() => { if (q("c20_repout").textContent.trim()) done("c20k5", "每次“秘诀”都在换，因为 20 个样本只能看到随机波动。要看有和没有的成功率，不要只看成功者里的占比。"); }).observe(q("c20_repout"), { childList: true });
 
   /* 爬山法 */

@@ -77,8 +77,8 @@
     '<circle cx="56" cy="84" r="5" fill="#ffd34d" stroke-width="2.5"/><circle cx="112" cy="84" r="5" fill="#ffd34d" stroke-width="2.5"/><path d="M56 89 V126 M112 89 V126" stroke-width="2.5"/>' +
     '<rect x="132" y="22" width="56" height="86" fill="#fff"/><path d="M138 100 L144 88 L148 88 L154 72 L158 72 L166 52 L182 32" fill="none" stroke="#3a86ff" stroke-width="3"/>', T(160, 121, 12, "不同规则", "middle") + T(66, 40, 12.5, "不是每次都给饲料", "middle"));
   add("c02_designers", "游戏设计师们围着一张写满“掉落率”的白板，一人举着宝箱，借用实验室里的规则设计奖励", ground +
-    '<rect x="10" y="10" width="100" height="62" fill="#fff"/><path d="M20 28 h56 M20 42 h72 M20 56 h40" stroke-width="2.5"/>' +
-    person(130, 71, { s: 0.85, arms: "up", face: "grin" }) + chest(117, 44, "#d8c8ff") + person(172, 71, { s: 0.85, arms: "point", face: "smile", look: -1 }), T(60, 90, 12, "掉率 20%", "middle") + T(60, 108, 12, "每5个必出？", "middle"));
+    '<rect x="10" y="10" width="100" height="62" fill="#fff"/>' +
+    person(130, 71, { s: 0.85, arms: "up", face: "grin" }) + chest(117, 44, "#d8c8ff") + person(172, 71, { s: 0.85, arms: "point", face: "smile", look: -1 }), T(60, 34, 12, "平均 5 只掉 1 件", "middle") + T(60, 56, 12, "哪一只？不知道", "middle"));
 
   /* ---- 第4节：可变奖励的例子 ---- */
   add("c02_gacha", "抽卡：火柴人拧着扭蛋机的把手，一颗彩色胶囊正在掉出来，没人知道里面是什么", ground +
@@ -95,12 +95,12 @@
     person(100, 77, { s: 0.8, arms: "stand", face: "o" }), T(100, 18, 12, "一模一样，天天如此", "middle") + T(138, 84, 12, "哈——", "middle"));
 
   /* ---- 第5节：预测误差时间线 ---- */
-  addUp("c02_kamin", "卡明的阻断实验：灯已经能预告电击，再加一个铃声，动物也学不会铃声的含义", ground +
-    '<circle cx="36" cy="40" r="16" fill="#ffe58a"/><path d="M36 16 v-6 M12 40 h-6 M60 40 h6" stroke-width="2.5"/>' +
-    '<path d="M96 28 q-12 8 -10 20 h30 q2 -12 -10 -20 z M101 52 q2 6 6 0" fill="#ffc078" stroke-width="2.5"/>' +
+  addUp("c02_kamin", "卡明的阻断实验：先让灯预告电击，再让灯和铃一起响，动物仍然学不会铃声的含义", ground +
+    '<rect x="6" y="16" width="90" height="60" fill="#fff" stroke-width="2.5"/><rect x="104" y="16" width="90" height="60" fill="#fff" stroke-width="2.5"/>' +
+    '<circle cx="24" cy="54" r="10" fill="#ffe58a" stroke-width="2.5"/><path d="M38 54 H54 M49 49 l5 5 -5 5" fill="none" stroke-width="2.5"/><path d="M60 64 l7 -12 4 8 7 -14 5 10" fill="none" stroke="#ffb000" stroke-width="3"/>' +
+    '<circle cx="118" cy="54" r="9" fill="#ffe58a" stroke-width="2.5"/><path d="M146 46 q-8 5 -7 14 h14 q1 -9 -7 -14z" fill="#ffc078" stroke-width="2.2"/><path d="M158 54 H167 M163 50 l4 4 -4 4" fill="none" stroke-width="2.5"/><path d="M171 64 l5 -10 3 7 5 -11 3 8" fill="none" stroke="#ffb000" stroke-width="3"/>' +
     '<ellipse cx="60" cy="106" rx="20" ry="11" fill="#e9dccb"/><circle cx="82" cy="98" r="8" fill="#e9dccb"/>' + eye(85, 96) +
-    '<path d="M126 90 l10 -10 4 12 10 -12 6 16" fill="none" stroke="#ffb000" stroke-width="3.5"/>' +
-    '<path d="M50 62 L78 86" stroke-dasharray="3 5" stroke-width="2.5"/>', T(36, 60, 12, "灯", "middle") + T(100, 14, 12, "铃", "middle") + T(150, 66, 12, "电击", "middle") + T(100, 135, 12, "被预告的，不必再学", "middle"));
+    '<ellipse cx="146" cy="96" rx="32" ry="13" fill="#fff"/><circle cx="104" cy="100" r="3" fill="#fff" stroke-width="2.2"/><circle cx="96" cy="103" r="2" fill="#fff" stroke-width="2"/>', T(51, 28, 12, "先：灯→电击", "middle") + T(149, 28, 12, "后：灯+铃", "middle") + T(146, 91, 12, "铃？没用", "middle") + T(100, 135, 12, "被预告的，不必再学", "middle"));
   add("c02_rw", "雷斯克拉与瓦格纳的黑板：新的预期等于旧的预期加上一小份“实际减预期”", '<rect x="10" y="12" width="180" height="94" rx="4" fill="#2f4a3d"/>' +
     person(168, 73, { s: 0.7, arms: "point", face: "smile", look: -1, glasses: true }).replace(/<g /g, '<g ') +
     '<path d="M14 120 H186" stroke-dasharray="2 7" stroke-width="3"/>', '<g fill="#fff" stroke="none" font-size="11.5" text-anchor="start"><text x="18" y="40">新预期 =</text><text x="18" y="62">旧预期 +</text><text x="18" y="84">速度 ×（实际−预期）</text></g>');
@@ -135,8 +135,8 @@
   /* ---- 第7节：目标梯度 ---- */
   add("c02_stampcard", "集章卡：两张卡，一张空白，一张已经预先盖好了两个章，火柴人把盖了章的那张拿在手里", ground +
     '<path d="M8 104 H88 M14 104 V126 M82 104 V126" stroke-width="4"/><rect x="16" y="68" width="66" height="36" fill="#fff"/><rect x="92" y="72" width="66" height="36" fill="#fff"/>' +
-    [0, 1, 2, 3].map(i => '<rect x="' + (22 + i * 15) + '" y="80" width="13" height="13" fill="#fff" stroke-width="2"/>').join("") + [0, 1, 2, 3].map(i => '<rect x="' + (98 + i * 15) + '" y="84" width="13" height="13" fill="' + (i < 2 ? "#ffe58a" : "#fff") + '" stroke-width="2"/>').join("") +
-    person(176, 62, { arms: "hold", face: "grin", look: -1 }), T(49, 56, 12, "空白", "middle") + T(125, 60, 12, "送了两格", "middle"));
+    [0, 1, 2, 3, 4, 5, 6, 7].map(i => '<rect x="' + (22 + (i % 4) * 14) + '" y="' + (73 + Math.floor(i / 4) * 14) + '" width="11" height="11" fill="#fff" stroke-width="2"/>').join("") + [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(i => '<rect x="' + (97 + (i % 5) * 12) + '" y="' + (73 + Math.floor(i / 5) * 14) + '" width="10" height="11" fill="' + (i < 2 ? "#ffe58a" : "#fff") + '" stroke-width="2"/>').join("") +
+    person(176, 62, { arms: "hold", face: "grin", look: -1 }), T(49, 56, 12, "空白 8 格", "middle") + T(125, 60, 12, "10 格，送 2", "middle"));
   add("c02_coffee", "咖啡店的集点卡：火柴人拿着只差一格就满的卡，快步走向柜台", ground +
     person(70, 60, { arms: "hold", face: "grin", legs: "run", look: 1 }) + '<rect x="94" y="64" width="40" height="26" fill="#fff6c9" stroke-width="2.5"/><g stroke-width="1.8" fill="#ffe58a"><rect x="98" y="70" width="6" height="6"/><rect x="106" y="70" width="6" height="6"/><rect x="114" y="70" width="6" height="6"/><rect x="122" y="70" width="6" height="6"/><rect x="98" y="80" width="6" height="6"/><rect x="106" y="80" width="6" height="6"/><rect x="114" y="80" width="6" height="6" fill="#fff"/></g>' +
     '<path d="M150 126 V84 H190 V126" fill="#c98f5a"/><path d="M158 84 q4 -14 12 0 M164 62 q-4 10 4 12" fill="none" stroke-width="2.5"/><rect x="160" y="66" width="14" height="16" fill="#fff" stroke-width="2.5"/>', T(114, 56, 12, "差一格！", "middle"));

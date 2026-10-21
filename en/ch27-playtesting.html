@@ -1,0 +1,877 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Chapter 27 Player Research and Playtesting</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+  .scroll{overflow-x:auto}
+  .c27cap{min-height:2.4em;font-family:var(--hand);font-size:1.3rem;background:#fff;border:2.5px dashed var(--ink);border-radius:10px;padding:4px 12px;margin:6px 0}
+  .c27log{max-height:150px;overflow:auto;background:#fff;border:2.5px solid var(--ink);border-radius:10px;padding:6px 12px;font-size:1rem;line-height:1.6;margin:6px 0}
+  .c27log div{border-bottom:1px dotted #bbb}
+  .c27log b.tm{font-family:var(--hand);font-size:1.05rem;background:none;margin-right:6px}
+  .c27tl{position:relative;height:56px;border:3px solid var(--ink);border-radius:10px;background:#fffef7;margin:6px 0 2px}
+  .c27tl .tick{position:absolute;top:6px;width:10px;height:10px;margin-left:-5px;border:2px solid var(--ink);border-radius:50%;background:#cfd8e3}
+  .c27tl .tick.dead{background:#ff8fa3}
+  .c27tl .flag{position:absolute;top:24px;margin-left:-9px;min-width:18px;height:26px;font-size:.85rem;line-height:22px;text-align:center;border:2.5px solid var(--ink);border-radius:6px;background:#ffd666;cursor:pointer;padding:0 3px}
+  .c27tl .head{position:absolute;top:0;bottom:0;width:3px;margin-left:-1px;background:#e0668a;pointer-events:none}
+  .c27tl .band{position:absolute;top:0;bottom:0;background:rgba(120,200,110,.35);border-left:2px dashed #2a7;border-right:2px dashed #2a7;pointer-events:none}
+  .c27tl .band.decoy{background:rgba(255,180,60,.35);border-color:#c80}
+  .c27scrub{width:100%}
+  .c27row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:6px 0}
+  .c27marks{font-size:1rem;margin:4px 0}
+  .c27marks span{display:inline-block;background:#fff4c4;border:2.5px solid var(--ink);border-radius:14px;padding:0 10px;margin:3px;cursor:pointer}
+  .c27res{background:#fff;border:2.5px dashed var(--ink);border-radius:12px;padding:8px 14px;margin:8px 0;line-height:1.7}
+  .c27res .ok{color:#1f7a3a}.c27res .no{color:#b3262e}.c27res .mid{color:#a86400}
+  .c27res h4{margin:.6em 0 .2em;font-family:var(--hand);font-size:1.25rem}
+  .c27sw{font:inherit;cursor:pointer;border:2.5px solid #e08a1e;background:#fff0dc;border-radius:8px;padding:0 6px;margin:0 1px}
+  .c27sw.on{border-color:#2a9d5c;background:#eaf9e4}
+  .c27q{background:#fff;border:2.5px solid var(--ink);border-radius:12px;padding:8px 14px;margin:10px 0}
+  .c27q .sent{font-size:1.15rem;line-height:2}
+  .c27q .wy{font-size:.98rem;color:var(--soft);min-height:1.6em}
+  .c27q.done{background:#eaf9e4}
+  .c27sb{display:flex;align-items:center;gap:8px;margin:3px 0;font-size:1rem}
+  .c27sb .nm{width:9.5em;flex:none}
+  .c27sb .bar{height:20px;border:2.5px solid var(--ink);border-radius:6px;min-width:3px}
+  .c27sb .v{font-family:var(--hand);font-size:1.1rem;white-space:nowrap}
+  .c27hist{display:flex;align-items:flex-end;gap:2px;height:110px;border-bottom:3px solid var(--ink);margin:8px 0}
+  .c27hist div{flex:1;background:var(--blue);border:2px solid var(--ink);border-bottom:none;border-radius:3px 3px 0 0;min-height:1px}
+  .c27hist div.cur{background:#ffb0c4}
+  .c27lab{display:flex;justify-content:space-between;font-size:.95rem;color:var(--soft)}
+  table.c27t{width:100%;border-collapse:collapse;font-size:1rem}
+  table.c27t th,table.c27t td{border:2.5px solid var(--ink);padding:6px 8px;text-align:left;vertical-align:top}
+  table.c27t th{background:var(--yellow);font-family:var(--hand);font-weight:400;font-size:1.15rem}
+  .c27ty{border:2.5px solid var(--ink);border-radius:20px;background:#fff;font:inherit;font-size:1rem;padding:2px 12px;cursor:pointer;margin:3px}
+  .c27ty.sel{background:var(--green);font-weight:700}
+  .c27win{outline:3px solid #2f8f48;outline-offset:2px}
+</style>
+</head>
+<body data-ch="27">
+<main class="wrap">
+
+  <div class="hero">
+    <div class="txt">
+      <span class="badge">Chapter 27</span>
+      <h1>Player Research and Playtesting</h1>
+      <p class="sub">Three months on a tutorial level, and a friend says “it’s pretty fun.” But in the recording, he was stuck for forty seconds.</p>
+    </div>
+    <svg viewBox="0 0 190 150" class="rough" aria-hidden="true">
+      <g stroke="#2b2b3a" stroke-width="4" fill="#fff">
+        <rect x="20" y="25" width="110" height="70" rx="6" fill="#e8f6fc"/>
+        <path d="M60 100 L50 125 L100 125 L90 100" fill="#fff7cf"/>
+        <circle cx="160" cy="55" r="18" fill="#ffe9ef"/>
+      </g>
+      <path d="M32 78 L55 52 L75 68 L100 38 L120 60" stroke="#d6436f" stroke-width="4" fill="none"/>
+      <circle cx="160" cy="55" r="6" fill="#2b2b3a"/>
+      <text x="136" y="100" font-size="18">?!</text>
+    </svg>
+  </div>
+
+  <div class="goals">
+    <h3>Learning goals</h3>
+    <ul>
+      <li>Tell apart what playtests, usability tests, interviews, surveys and telemetry can each answer, and pick the right method for a specific question.</li>
+      <li>Explain why what people say often differs from what they do, why the players you see are only the ones who survived, and how think-aloud, neutral questions and observation get around these traps.</li>
+      <li>Use 1−(1−L)<sup>n</sup> to estimate “how many testers are enough,” state the premises of this rule of thumb, and say why small samples deceive.</li>
+    </ul>
+    <span class="time">About 45 minutes</span>
+  </div>
+
+  
+  <div class="sec"><span class="n">1</span><h2><span class="tag what">What it is</span>Playtesting: watch people play, don’t ask whether they like it</h2></div>
+
+  <div class="withimg">
+    <span data-illus="c27_silent"></span>
+    <div>
+      <p>Say you showed a friend the little game you made. He played a while and said with a smile: “It’s pretty fun!” You’re delighted. The next day you watch his screen recording: in the first level he paced back and forth in front of a door that wouldn’t open for forty seconds, and only got the key by accident. What he said was sincere, and also polite; only the recording shows where the game really gets stuck.</p>
+      <p>The professional approach is not to ask but to watch. A <span class="term" tabindex="0" data-def="Playtest: a research activity in which real target players (not the designer) play your game or prototype while the designer observes and records, used to find problems and validate design hypotheses.">playtest</span> lets real players play the prototype while the designer shuts up and observes, replacing “I think” with “I saw.” Once a prototype is built, it is what tells you where to change.</p>
+      <p>Playtesting has a close relative, <span class="term" tabindex="0" data-def="Usability testing: a method in which typical users complete assigned tasks while you observe where they get stuck, make mistakes or become confused, to judge whether the product is easy to learn and use.">usability testing</span>. The two share a set of techniques and differ only in the question they ask.</p>
+    </div>
+  </div>
+  <aside class="cc-card" aria-label="Concept card: Usability Testing">
+    <span class="cc-tag">Concept card</span>
+    <p class="cc-name"><span>Usability Testing</span></p>
+    <p class="cc-en">Usability testing</p>
+    <p class="cc-by">John D. Gould, Clayton Lewis · <i>Designing for Usability</i> (1985) proposed “actually measure how people use it”</p>
+    <p class="cc-def">Give typical users a task and see whether they can finish it, how long it takes and where they go wrong; judge whether the product is easy to use from the behavior observed.</p>
+    <p class="cc-eg"><span class="cc-k">Example</span>Ask someone who has never used it to “find the settings and turn the volume down,” stand by without a word, and note what they click first and how long they pause.</p>
+  </aside>
+
+  <p>A usability test asks “is it smooth to use”: give the user a task (“buy a ticket”) and see whether they can finish it, how long it takes, and where they go wrong. A playtest asks more broadly: besides “is it smooth,” it asks “is it fun”: does the challenge suit them, does the pace drag, do emotions rise and fall.</p>
+  <div class="scroll"><table class="c27t">
+    <tr><th></th><th>Usability test</th><th>Playtest</th></tr>
+    <tr><td><b>Core question</b></td><td>Can they finish? Where do they get stuck?</td><td>Do they want to go on? Where is it boring, frustrating, surprising?</td></tr>
+    <tr><td><b>What an “obstacle” means</b></td><td>Mostly a defect to remove</td><td>Some obstacles are the design (difficulty, puzzles); tell “good hard” from “bad stuck”</td></tr>
+    <tr><td><b>Typical task</b></td><td>“Please find the settings and turn the volume down”</td><td>“Please play freely and tell me when you want to stop” (few tasks, watch how they play on their own)</td></tr>
+  </table></div>
+  <p>The difference between “good hard” and “bad stuck” is another way of saying “challenge matches skill” in flow: if the player knows what to do, why they failed and how to do better next time, it is good hard; if they don’t know the goal or why they died, it is bad stuck.</p>
+
+  <div class="eg" data-ic="🎯"><span data-illus="c27_deathmap"></span><div class="egt"><b>In the game: a playtest of a shooter</b>: researchers watched players through one-way glass, recorded the routes they walked and where they died, popped up a question every few minutes in the game asking “how engaged and how frustrated are you now,” and had some players think aloud. According to a 2007 report in Wired, Microsoft’s game studios did this for <i>Halo 3</i> (secondhand report; check the original for details).</div></div>
+  <div class="eg" data-ic="🪑"><span data-illus="c27_ikea"></span><div class="egt"><b>Daily life: assembling for the first time</b>: give a stranger an instruction sheet and a pile of parts, and stand by saying nothing. Seeing which board he puts on backwards is ten times more effective than asking “were the instructions clear?”</div></div>
+  <div class="eg" data-ic="✉️"><span data-illus="c27_letter"></span><div class="egt"><b>Daily life: revising a cover letter</b>: have a friend read it and say what they think. When he reaches the third paragraph and stops to ask “what does ‘multi-dimensional empowerment’ mean?” you know at once which sentence to change.</div></div>
+  <div class="eg bad" data-ic="🙋"><span data-illus="c27_roommate"></span><div class="egt"><b>Counterexample: sending the game to a roommate and asking “is it fun?”</b> He is a friend, who doesn’t want to hurt you; he has heard the designer explain how to play; and he may well not be a target player at all. This has only the form of a playtest, without its substance.</div></div>
+
+  
+  <div class="sec"><span class="n">2</span><h2><span class="tag what">What it is</span>The spectrum of methods: what they say vs what they do, one vs many</h2></div>
+  <p>Since just listening to players is not enough, we need to know what other approaches are available. Research methods can roughly be placed on two axes: horizontally from “what players say (self-report)” to “what players do (behavior),” vertically from “why (few, in depth)” to “how many (large-scale statistics).”</p>
+
+  <div class="card">
+    <svg viewBox="0 0 720 420" width="100%" role="img" aria-label="Research method spectrum: horizontal axis from self-report to behavior, vertical axis from qualitative to quantitative. Interviews and focus groups sit in self-report/qualitative, surveys in self-report/quantitative, observation and think-aloud in behavior/qualitative, telemetry and A/B tests in behavior/quantitative">
+      <g class="rough" stroke="#2b2b3a" stroke-width="4" fill="none">
+        <path d="M70 360 L690 360"/><path d="M70 360 L70 30"/>
+        <path d="M380 40 L380 350" stroke-width="2" stroke-dasharray="8 8"/><path d="M80 195 L680 195" stroke-width="2" stroke-dasharray="8 8"/>
+      </g>
+      <g font-size="17" fill="#2b2b3a">
+        <text x="85" y="392">What players say (self-report)</text><text x="690" y="392" text-anchor="end">What players do (behavior)</text>
+        <text x="50" y="60" text-anchor="end" transform="rotate(-90 50 60)">Quantitative: how many</text>
+        <text x="50" y="350" transform="rotate(-90 50 350)">Qualitative: why</text>
+      </g>
+      <g class="rough" stroke="#2b2b3a" stroke-width="3.5">
+        <rect x="95" y="255" width="140" height="48" rx="10" fill="#e8f6fc"/>
+        <rect x="245" y="295" width="125" height="48" rx="10" fill="#e8f6fc"/>
+        <rect x="95" y="80" width="140" height="48" rx="10" fill="#fff7cf"/>
+        <rect x="400" y="255" width="140" height="56" rx="10" fill="#eaf9e4"/>
+        <rect x="548" y="295" width="135" height="48" rx="10" fill="#eaf9e4"/>
+        <rect x="415" y="80" width="115" height="48" rx="10" fill="#ffe9ef"/>
+        <rect x="545" y="130" width="135" height="48" rx="10" fill="#ffe9ef"/>
+      </g>
+      <g font-size="17" fill="#2b2b3a" text-anchor="middle">
+        <text x="165" y="285">Interviews</text><text x="307" y="325">Focus groups</text>
+        <text x="165" y="110">Surveys</text>
+        <text x="470" y="278">Observation</text><text x="470" y="299" font-size="16">+ think-aloud</text>
+        <text x="615" y="325">Recording replay</text>
+        <text x="472" y="110">Telemetry data</text><text x="612" y="160">A/B tests</text>
+      </g>
+      <g font-size="16" fill="#8a3b12">
+        <text x="90" y="230">Prone to social desirability</text>
+        <text x="400" y="230">Shows where people get stuck, hard to scale</text>
+        <text x="90" y="62">Wording decides the answer</text><text x="400" y="62">Knows “where,” not “why”</text>
+      </g>
+    </svg>
+  </div>
+  <p>None is “best”; they fill in for one another: <b>telemetry says “40% drop out at level 3” (how many), observation says “because they can’t see that door” (why), and an interview adds “I thought it was background” (how he understood it)</b>.</p>
+
+  <div class="grid2">
+    <div class="card b"><h3>👀 Observation</h3><p>Watch what players do: pauses, repeats, hesitation, skipping. The closest thing to “the truth,” but you must restrain yourself from interrupting.</p></div>
+    <div class="card y"><h3>🗣️ Interview</h3><p>Chat afterward: how he understood it and what he expected. Good for digging into motives and mental models, but he will give a “rationalized” account.</p></div>
+    <div class="card p"><h3>📋 Survey</h3><p>Ask many people at once, easy to compare and quantify. But how the questions are asked and how the options are given decide what you get.</p></div>
+    <div class="card g"><h3>📈 Telemetry</h3><p>The game records events itself: where players died, how long they were stuck, which level they quit. Many people, no disturbance, but no “why.”</p></div>
+  </div>
+
+  <h3>Think-aloud: turning the words in the head into sound</h3>
+  <p>Observation has a problem: you can see the player stop, but not what they are thinking. <span class="term" tabindex="0" data-def="Think-aloud: having the subject say aloud what they are thinking while operating; the researcher records those words to learn their understanding and confusion at that moment.">Think-aloud</span> exists for this problem. The player is asked to say what is in their head as they play: “I see a door… it won’t open… do I need a key?” The researcher does not judge, explain or help, and only when the player is silent too long asks, “What are you thinking now?”</p>
+
+  <aside class="cc-card" aria-label="Concept card: Think-Aloud Protocol">
+    <span class="cc-tag">Concept card</span>
+    <p class="cc-name"><span>Think-Aloud Protocol</span></p>
+    <p class="cc-en">Think-aloud protocol</p>
+    <p class="cc-by">K. Anders Ericsson, Herbert A. Simon · 1980, <i>Verbal Reports as Data</i></p>
+    <p class="cc-def">Ask the subject to say, while doing something, what they are attending to and thinking at that moment, without explaining why. The words obtained can be treated as data.</p>
+    <p class="cc-eg"><span class="cc-k">Example</span>A player stands before a locked door and says: “The door won’t open… there’s a wooden box beside it, I wonder if it can be pushed.” The designer knows on the spot that the player did not see the key hint.</p>
+  </aside>
+
+  <h3>Task design and neutral questions</h3>
+  <ul>
+    <li><b>Give tasks as “goals,” not “routes.”</b> Say “please find a way through this level,” not “please go left, take the key and open the door.” The latter does the very thing you are testing for him.</li>
+    <li><b>Keep questions neutral.</b> Ask “what did you think?” rather than “wasn’t it great?” Ask about real past behavior, not imagined future behavior (“what did you last pay for?” rather than “would you buy it?”).</li>
+    <li><b>Record in layers.</b> Note the facts first (14:32, third time at the door), then the interpretation (maybe didn’t see the key), and don’t mix the two on one sticky note.</li>
+  </ul>
+  <p class="small">Testers who know they are being observed will behave differently from usual. So say at the start “we’re testing the game, not you”; this script can be used as is.</p>
+
+  
+  <div class="sec"><span class="n">3</span><h2>When to test, whom to test, how many to test</h2></div>
+  <p>Research sits inside the iteration loop as a series of small experiments, not as a big exam taken at the end. The diagram below marks its place: it swaps “I guess” for “I saw,” so the next round of changes has evidence behind it.</p>
+
+  <div class="card">
+    <svg viewBox="0 0 720 385" width="100%" role="img" aria-label="Iteration loop: idea, prototype, playtest research, insight, revision, and back to the prototype">
+      <defs><marker id="c27ar" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 z" fill="#2b2b3a"/></marker></defs>
+      <g class="rough" stroke="#2b2b3a" stroke-width="3.5">
+        <rect x="20" y="140" width="120" height="60" rx="12" fill="#fff7cf"/>
+        <rect x="190" y="40" width="130" height="60" rx="12" fill="#e8f6fc"/>
+        <rect x="400" y="40" width="150" height="66" rx="12" fill="#ffe9ef"/>
+        <rect x="560" y="140" width="140" height="60" rx="12" fill="#eaf9e4"/>
+        <rect x="290" y="240" width="140" height="60" rx="12" fill="#f1eaff"/>
+      </g>
+      <g font-size="19" fill="#2b2b3a" text-anchor="middle">
+        <text x="80" y="177">Idea/hypothesis</text><text x="255" y="77">Build a prototype</text>
+        <text x="475" y="68">Playtest research</text><text x="475" y="92" font-size="16">Watch · ask · data</text>
+        <text x="630" y="177">Insight</text><text x="360" y="277">Revise the design</text>
+      </g>
+      <g class="rough" stroke="#2b2b3a" stroke-width="3.5" fill="none" marker-end="url(#c27ar)">
+        <path d="M80 136 Q100 90 185 75"/><path d="M322 72 L396 72"/><path d="M552 80 Q620 100 630 136"/>
+        <path d="M600 202 Q560 260 434 272"/><path d="M288 272 Q120 280 90 204"/>
+      </g>
+      <g font-size="16" fill="#8a3b12">
+        <text x="400" y="26">Research is here: turning “I guess” into “I saw”</text>
+        <text x="360" y="350" text-anchor="middle">The faster the loop, the faster the learning; test paper prototypes early, playable versions later</text>
+      </g>
+    </svg>
+  </div>
+
+  <h3>When to test</h3>
+  <p><b>The earlier the better, and the rougher the better.</b> A level sketch on paper, or a graybox level of only blocks, can be playtested. The earlier you discover “nobody understands the goal,” the cheaper the fix. Later, test balance, feel and long-term experience.</p>
+
+  <h3>Whom to test: target players, not friends</h3>
+  <p>The ideal tester is a target player: someone who likes this kind of game, knows nothing about your game, and doesn’t know the designer. When recruiting, first write a “screening criteria” (what genres they have played, how many hours a week). Friends and colleagues can be used too, but know that they will be more polite and also more readily guess the designer’s intent. If the game has clearly different player groups (newcomers vs veterans), test them separately.</p>
+
+  <h3>How many to test: “5 is enough”?</h3>
+  <p>The most widely circulated rule of thumb in the industry is “test 5 people and that is enough,” and it is also the most misused. The arithmetic behind it is not complicated. Say each tester finds a given problem with probability L, and people are independent of one another. In their 1993 paper Nielsen and Landauer fitted data from several projects and got an average L of about <b>31%</b>.</p>
+  <p>Then the probability that all 5 people miss the problem is 0.69 multiplied by itself 5 times, about 16%, so the probability that at least one finds it is <b>84%</b> (Nielsen’s article writes about 85%). Raise the number of people to 15, and the probability that everyone misses it becomes negligible; the chance of finding it is about 99.6%.</p>
+  <details>
+    <summary>Advanced: the general formula</summary>
+    <p class="small">The probability that at least one of n people finds a given problem is <b>1 − (1 − L)<sup>n</sup></b>. Here (1−L)<sup>n</sup> is the probability that all n people miss it, and its complement is “at least one finds it.”</p>
+  </details>
+  <p>L is an average that varies with product, task and population, and it has drawn quite a few challenges. Drag the sliders and run the simulation to see for yourself how sensitive it is.</p>
+
+  
+  <div class="sec"><span class="n">4</span><h2><span class="tag origin">Invention story</span>Why do we have to “watch people use it”?</h2></div>
+
+  <div class="story">
+    <h3>The designer’s blind spot: the maker sees the problems least</h3>
+    <p>Suppose you are a software designer in the early 1980s who wrote a very “clever” interface. You use it fast, and colleagues say it’s good. After release, users ask for help in droves. What do you do? There are three common old approaches : read more design guidelines; have colleagues try it; get it perfect in one go and ship, then see. Their shared flaw is that the judges all know the system as well as the designer, and can’t see the world of “someone seeing it for the first time.”</p>
+    <p>To see that world, you have to let “first-timers” use it and observe them while they do. But how do you know what is going on in their head? Ask them? Whether verbal reports can be trusted was something psychologists argued over.</p>
+  </div>
+
+  <h3>First try for yourself: how many problems do you think 5 people can find?</h3>
+  <p>Before looking at history, make a prediction. Suppose in the typical case <b>each tester can find a given problem with probability 31%</b>. What percent of all problems can 5 people find together? Drag the slider, write down your intuition, then reveal.</p>
+  <div class="board">
+    <label class="ctl">My guess: about <output id="c27_gv">50</output>%</label>
+    <input type="range" id="c27_gs" min="0" max="100" step="1" value="50">
+    <div><button class="btn green" id="c27_gb">Reveal</button><button class="btn pink" id="c27_gr">Guess again</button></div>
+    <div id="c27_gout"></div>
+  </div>
+  <div class="sticky">Try it: write down your guess and reveal it, and see how many percentage points it differs from the theoretical value. Then think: why is intuition often too low?</div>
+
+  <h3>From “verbal report” to “usability test”: a timeline</h3>
+  <div class="timeline">
+    <div class="ev hasimg"><span data-illus="c27_nisbett"></span><div><b class="yr">1977</b> Nisbett and Wilson publish “Telling More Than We Can Know” in <i>Psychological Review</i>: when people explain the causes of their own behavior, they mostly apply a commonsense theory of causes and do not really look inward. <b>The problem: can verbal reports still be trusted?</b></div></div>
+    <div class="ev hasimg"><span data-illus="c27_aloud"></span><div><b class="yr">1980</b> Ericsson and Simon (same journal) publish “Verbal Reports as Data”: when subjects are asked to <b>report what they are attending to right now</b>, the verbal report can serve as data; when asked to <b>explain causes or guess at processes</b>, it is unreliable. Saying aloud what you are attending to generally doesn’t change the thinking itself. <b>The key insight: don’t ask “why”; have them say “what are you thinking.”</b></div></div>
+    <div class="ev hasimg"><span data-illus="c27_gl"></span><div><b class="yr">1985</b> Gould and Lewis publish “Designing for Usability” in <i>Communications of the ACM</i>, proposing three principles: <b>focus on users from the start and keep doing so; measure how people actually use it; design iteratively</b> (prototype, test, revise, test again). This line later became known as user-centered design, and critics (such as Cockton 2008) have challenged its account of its own effectiveness.</div></div>
+    <div class="ev hasimg"><span data-illus="c27_virzi"></span><div><b class="yr">1992–93</b> Virzi (1992, <i>Human Factors</i>) reports that about 4–5 subjects find about 80% of usability problems, with diminishing returns afterward, and the most severe problems are usually found early. Nielsen and Landauer (1993, INTERCHI) wrote the process as a mathematical model: multiply together the chance that each of n people misses it, then take the complement. From 11 studies they estimated an average L of about 31%.</div></div>
+    <div class="ev hasimg"><span data-illus="c27_three"></span><div><b class="yr">2000</b> Nielsen publishes the column “Why You Only Need to Test with 5 Users,” stressing that rather than one big test with 15 people, do <b>three small rounds of 5 with design changes in between</b>. He also notes that the formula holds only for the same kind of users with similar ways of using it. Different user groups need 3–4 of each.</div></div>
+    <div class="ev hasimg"><span data-illus="c27_faulkner"></span><div><b class="yr">2001–03</b> The rebuttals come: Spool and Schroeder (2001) observed 49 users doing the same task on 4 real websites and argued that finding 85% of problems takes far more than 5 people (as later retold: the first 5 found only about 35%). Faulkner (2003) tested 60 people on a timesheet application and then drew random groups of 5 from them: <b>the average was close to 85%, but the share of problems found by different groups of 5 ranged from 55% to 99%</b>; for groups of 10 the lowest was 80%, for 20 the lowest 95%.</div></div>
+    <div class="ev hasimg"><span data-illus="c27_mirror"></span><div><b class="yr">2007</b> In the games industry: according to reports by Wired and NPR, the user research team at Microsoft’s game studios used one-way-glass observation, route and death-location statistics, random pop-up questionnaires and think-aloud during <i>Halo 3</i> development. NPR says that after many players didn’t know what to do, the team made the objective prompt flash on screen. (Secondhand reports; check the originals for details.)</div></div>
+  </div>
+
+  <div class="chain"><span class="st">Designer can’t see blind spots</span><span class="ar">→</span><span class="st">Need to see how newcomers use it</span><span class="ar">→</span><span class="st">Asking “why” isn’t reliable</span><span class="ar">→</span><span class="st">Switch to observation + think-aloud</span><span class="ar">→</span><span class="st">How many to test?</span><span class="ar">→</span><span class="st">Small samples + several rounds</span></div>
+
+  <p>Back to the guess: many people guess 50% or even lower, because intuition says “only 31% of people find it, so five together surely can’t reach 85%.” But 31% is <b>per person</b>. For a problem to be missed by everyone, the probability shrinks as it is multiplied across people: all 5 missing it is only 0.69 to the fifth power, about 16%. People are used to adding probabilities and not used to multiplying them, so they guess low.</p>
+  <p>The rule is a lovely model, but its conditions are strict and it is disputed. The reason for several rounds is a different one: each round fixes the most obvious problems, and only then do the subtler ones come into view.</p>
+
+  
+  <div class="sec"><span class="n">5</span><h2><span class="tag why">Why it holds</span>What people say is often not what people do</h2></div>
+
+  <div class="why-box">
+    <h3>Principle one: people know less about their own mental processes than they think</h3>
+    <p>After reviewing a large number of experiments, Nisbett and Wilson (1977) proposed that when people explain the causes of their own behavior, they mostly rely on a commonsense theory of “what usually causes it,” not on direct observation of their actual process. So when you press for causes or ask what they like, the answer is often <b>a plausible-sounding story</b>. This paper was very influential and also controversial; later assessments are mixed. The safer reading is: be careful asking for causes.</p>
+    <p>Ericsson and Simon (1980) went on to draw a distinction that laid the foundation for think-aloud: <b>“what do you see and think now”</b> reflects what is attended to at the moment and is usually reliable; <b>“why”</b> requires after-the-fact reasoning and is less reliable.</p>
+    <p class="src">Sources:<br>Nisbett and Wilson · 1977 · reviewed experiments and showed that people often cannot say what really caused their behavior (<i>Telling more than we can know</i>, Psychological Review 84, 231–259).<br>Ericsson and Simon · 1980 · distinguished “reporting what is being attended to” from “explaining causes,” and treated the former as usable data (<i>Verbal reports as data</i>, Psychological Review 87; revised as a book, <i>Protocol Analysis</i>, MIT Press, 1993).</p>
+  </div>
+
+  <div class="card">
+    <svg viewBox="0 0 700 320" width="100%" role="img" aria-label="Illustration: the gap between what players say and what they actually do, compared in three groups of bars">
+      <g class="rough" stroke="#2b2b3a" stroke-width="3.5">
+        <path d="M60 250 L680 250" fill="none"/>
+        <rect x="90" y="90" width="70" height="160" fill="#e8f6fc"/><rect x="170" y="160" width="70" height="90" fill="#ffc9c9"/>
+        <rect x="300" y="110" width="70" height="140" fill="#e8f6fc"/><rect x="380" y="195" width="70" height="55" fill="#ffc9c9"/>
+        <rect x="510" y="80" width="70" height="170" fill="#e8f6fc"/><rect x="590" y="170" width="70" height="80" fill="#ffc9c9"/>
+      </g>
+      <g font-size="17" fill="#2b2b3a" text-anchor="middle">
+        <text x="125" y="80">Say</text><text x="205" y="150">Do</text><text x="335" y="100">Say</text><text x="415" y="185">Do</text><text x="545" y="70">Say</text><text x="625" y="160">Do</text>
+        <text x="165" y="280">“The tutorial is clear”</text><text x="375" y="280">“I’ll play again”</text><text x="585" y="280">“The difficulty is just right”</text>
+      </g>
+      <text x="350" y="30" font-size="16" fill="#8a3b12" text-anchor="middle">Illustration: values are for demonstration, not real data. The point is that “say” is often higher than “do”</text>
+    </svg>
+  </div>
+
+  <div class="why-box">
+    <h3>Principle two: bias, the data is already skewed before it is collected</h3>
+    <p>Not only do players say things crooked: observers, designers and the way people are chosen also skew the data. Four are common:</p>
+    <ul>
+      <li><span class="term" tabindex="0" data-def="Confirmation bias: the tendency to look for, notice and remember evidence supporting your existing view, and to ignore evidence that does not.">Confirmation bias</span> (observer): believing “the goal is clear enough,” you more easily explain a player’s wandering as “he’s enjoying the scenery.”</li>
+      <li><span class="term" tabindex="0" data-def="Social desirability bias: respondents tend to give answers that look good or proper rather than their real thoughts.">Social desirability bias</span> (player): facing the people who made the game, most don’t want to say “boring,” and friends least of all.</li>
+      <li><span class="term" tabindex="0" data-def="Curse of knowledge: once you know something, it is hard to imagine what it is like for someone who doesn’t. Designers make this mistake most easily.">Curse of knowledge</span> (designer): knowing the key is behind the wooden box, you think “it’s obvious.”</li>
+      <li><b>Sampling bias</b> (choosing people): testing only friends, only veterans, or only active users misses those who have already been driven away, and this trap is bigger.</li>
+    </ul>
+    <p class="src">Sources:<br>Camerer, Loewenstein and Weber · 1989 · showed experimentally that people who know something find it hard to ignore what they know, and misjudge others (the curse of knowledge; <i>The Curse of Knowledge in Economic Settings</i>, Journal of Political Economy 97(5): 1232–1254).<br>Confirmation bias and social desirability bias are commonly accepted concepts in psychology and user research, not attributed to a single source.</p>
+  </div>
+
+  <aside class="cc-card" aria-label="Concept card: Curse of Knowledge">
+    <span class="cc-tag">Concept card</span>
+    <p class="cc-name"><span>Curse of Knowledge</span></p>
+    <p class="cc-en">Curse of knowledge</p>
+    <p class="cc-by">Colin Camerer, George Loewenstein, Martin Weber · 1989, <i>The Curse of Knowledge in Economic Settings</i></p>
+    <p class="cc-def">Once you know something, it is hard to imagine what it is like not to know it, and so hard to judge how someone else will think or act.</p>
+    <p class="cc-eg"><span class="cc-k">Example</span>A designer who has built a level for three months knows with eyes closed that the key is behind the wooden box, and cannot understand why players don’t find it.</p>
+  </aside>
+
+
+  <div class="card">
+    <svg viewBox="0 0 720 340" width="100%" role="img" aria-label="Bias diagram: four biases flow from the observer, the player, the designer and the choice of people into “the data you see,” with the matching antidotes below">
+      <defs><marker id="c27ab" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 z" fill="#d6436f"/></marker></defs>
+      <g class="rough" stroke="#2b2b3a" stroke-width="3.5">
+        <rect x="10" y="20" width="160" height="60" rx="10" fill="#ffe9ef"/><rect x="190" y="20" width="160" height="60" rx="10" fill="#ffe9ef"/>
+        <rect x="370" y="20" width="160" height="60" rx="10" fill="#ffe9ef"/><rect x="550" y="20" width="160" height="60" rx="10" fill="#ffe9ef"/>
+        <rect x="230" y="130" width="260" height="62" rx="14" fill="#fff7cf"/>
+        <rect x="10" y="246" width="160" height="70" rx="10" fill="#eaf9e4"/><rect x="190" y="246" width="160" height="70" rx="10" fill="#eaf9e4"/>
+        <rect x="370" y="246" width="160" height="70" rx="10" fill="#eaf9e4"/><rect x="550" y="246" width="160" height="70" rx="10" fill="#eaf9e4"/>
+      </g>
+      <g font-size="17" fill="#2b2b3a" text-anchor="middle">
+        <text x="90" y="46">Confirmation bias</text><text x="90" y="68" font-size="16">(observer)</text>
+        <text x="270" y="46">Social desirability</text><text x="270" y="68" font-size="16">(player)</text>
+        <text x="450" y="46">Curse of knowledge</text><text x="450" y="68" font-size="16">(designer)</text>
+        <text x="630" y="46">Sampling bias</text><text x="630" y="68" font-size="16">(choosing people)</text>
+        <text x="360" y="168" font-size="20">The data you see</text>
+        <text x="90" y="272" font-size="16">Record facts first</text><text x="90" y="296" font-size="16">Two independent coders</text>
+        <text x="270" y="272" font-size="16">Watch actions</text><text x="270" y="296" font-size="16">Don’t ask “is it fun”</text>
+        <text x="450" y="272" font-size="16">Test new people</text><text x="450" y="296" font-size="16">You shut up</text>
+        <text x="630" y="272" font-size="16">Recruit target players</text><text x="630" y="296" font-size="16">Test by group</text>
+      </g>
+      <g class="rough" stroke="#d6436f" stroke-width="3.5" fill="none" marker-end="url(#c27ab)">
+        <path d="M90 82 Q120 120 228 150"/><path d="M270 82 L300 126"/><path d="M450 82 L420 126"/><path d="M630 82 Q600 120 492 150"/>
+      </g>
+      <g stroke="#2a9d5c" stroke-width="3" fill="none" stroke-dasharray="6 6"><path d="M90 244 L90 84"/><path d="M270 244 L270 84"/><path d="M450 244 L450 84"/><path d="M630 244 L630 84"/></g>
+    </svg>
+  </div>
+
+  <div class="eg" data-ic="🕶️"><span data-illus="c27_confirm"></span><div class="egt"><b>Confirmation bias: the player going in circles</b>: believing “the level has a real atmosphere,” you see his being lost as “enjoying the scenery,” until the recording shows him turning back three times to look for the exit.</div></div>
+  <div class="eg" data-ic="😅"><span data-illus="c27_polite"></span><div class="egt"><b>Social desirability: saying “it’s pretty good” aloud</b>: the player has sweat on the forehead and a tight grip, yet facing the people who made the game still says “it’s pretty good.” Behavior is more honest than answers.</div></div>
+  <div class="eg" data-ic="🔑"><span data-illus="c27_curse"></span><div class="egt"><b>Curse of knowledge: the key is “obviously obvious”</b>: the designer knows the key is behind the wooden box, and the box even glows, as obvious as can be. In the player’s eyes there is only an ordinary box.</div></div>
+  <div class="eg bad" data-ic="📝"><span data-illus="c27_mixednote"></span><div class="egt"><b>Almost, but not quite: facts and interpretations on one sticky note</b>: the observation was recorded carefully, but “walked to the door three times” and “maybe didn’t see the key (my guess)” are mixed together, so later you can’t tell which sentence was seen and which was made up.</div></div>
+
+  
+  <div class="sec"><span class="n">6</span><h2><span class="tag why">Why it holds</span>What you see is only the part that survived</h2></div>
+  <p>There is another, subtler kind of skew: the problem lies in <b>who answers</b>, and how players answer matters less.</p>
+  <div class="why-box">
+    <h3>Principle three: survivorship bias</h3>
+    <p>During the Second World War the US military wanted to add armor to bombers, but armor is heavy and can only go on the vital spots. The military tallied the planes that returned to base and found the most bullet holes on the wings and fuselage, and the fewest around the engines. The intuitive conclusion: add armor where the bullet holes are many. The statistician Abraham Wald saw it the opposite way: the statistics contain only the planes that <b>flew back</b>. Planes hit in the engine never returned, which is why they show “no bullet holes” in the statistics. The places to armor were those that looked untouched.</p>
+    <p>This is <span class="term" tabindex="0" data-def="Seeing only the samples that remain after some kind of filtering and taking them to represent the whole, and so drawing wrong conclusions.">survivorship bias</span>: a filtered sample leads people to misjudge the whole. In game research it can be seen everywhere: you interview those still playing, while those scared off are long gone; you see the clear-run recordings, while players who didn’t finish have none.</p>
+    <p class="src">Sources:<br>Abraham Wald · 1943 · studied at the Statistical Research Group of Columbia University how to estimate the survival probability of planes that were shot down, which is the origin of the bullet-hole story.<br>Marc Mangel and Francisco Samaniego · 1984 · introduced and organized Wald’s work (“Abraham Wald’s work on aircraft survivability,” Journal of the American Statistical Association 79(386): 259–267).<br>The bullet-hole story is widely told and often simplified; here it is used as a metaphor, so check the original for details. <a href="https://www.ams.org/samplings/feature-column/fc-2016-06" target="_blank" rel="noopener">The American Mathematical Society’s column</a> discusses the origins of the legend.</p>
+  </div>
+
+  <div class="card b no-print" id="c27_waldbox">
+    <h3>✈️ Armor: where would you put it?</h3>
+    <p class="small">The picture below shows a plane that flew back, with red dots as bullet holes (illustrative, not real data). You can armor only one place; guess first, then reveal.</p>
+    <svg viewBox="0 0 700 250" width="100%" role="img" aria-label="A top-down sketch of a bomber that flew back: many bullet holes on the wings, fuselage and tail, and almost none on the engines and cockpit">
+      <g stroke="#2b2b3a" stroke-width="3.5">
+        <path id="c27_w_wing" d="M300 104 L380 104 L420 40 L340 40 Z M300 156 L380 156 L420 220 L340 220 Z" fill="#cfd3dc"/>
+        <ellipse id="c27_w_body" cx="360" cy="130" rx="230" ry="26" fill="#cfd3dc"/>
+        <path id="c27_w_tail" d="M540 106 L580 52 L610 52 L590 106 Z M540 154 L580 208 L610 208 L590 154 Z" fill="#cfd3dc"/>
+        <circle id="c27_w_eng" cx="360" cy="64" r="14" fill="#cfd3dc"/><circle cx="360" cy="196" r="14" fill="#cfd3dc"/>
+        <circle id="c27_w_cock" cx="170" cy="130" r="16" fill="#cfd3dc"/>
+      </g>
+      <g fill="#d6303a" id="c27_holes"></g>
+      <path d="M296 63 L342 63 M296 195 L342 195" stroke="#2b2b3a" stroke-width="2" fill="none"/>
+      <g font-size="17" fill="#2b2b3a" text-anchor="middle">
+        <text x="440" y="26">Wing</text><text x="590" y="36">Tail</text><text x="470" y="236">Body</text><text x="288" y="68" text-anchor="end">Engine</text><text x="288" y="200" text-anchor="end">Engine</text><text x="170" y="86">Cockpit</text>
+      </g>
+    </svg>
+    <div class="c27row" id="c27_wbtn">
+      <button class="btn" data-w="wing">Wing</button><button class="btn" data-w="body">Body</button><button class="btn" data-w="tail">Tail</button><button class="btn" data-w="eng">Engine</button><button class="btn" data-w="cock">Cockpit</button>
+      <button class="btn alt" id="c27_wreset">↺ Choose again</button>
+    </div>
+    <div class="msg" id="c27_wmsg">Click a button above to choose a place.</div>
+  </div>
+  <div class="sticky no-print">Try it: first pick the place with the most holes and see the feedback; then pick a place that “looks untouched.” Can you say why?</div>
+
+  <div class="eg" data-ic="🎮"><span data-illus="c27_activeonly"></span><div class="egt"><b>In the game: interviewing only active players</b>: ask people still playing “what’s the most fun,” and everyone says “the combat is great.” But those who left on day three are not on the list; they were driven off by the first ten minutes.</div></div>
+  <div class="eg" data-ic="🎤"><span data-illus="c27_stage"></span><div class="egt"><b>Daily life: a success seminar</b>: the speaker on stage says “I quit my job to start a company, and so I succeeded.” What the audience can’t see are those who made the same decision and didn’t succeed. They don’t give seminars.</div></div>
+  <div class="eg" data-ic="✈️"><span data-illus="c27_wald"></span><div class="egt"><b>Classic: the planes that flew back</b>: bullet holes clustered on wings and fuselage, yet the places that most need armor are elsewhere: planes hit in a vital spot never flew back.</div></div>
+  <div class="eg bad" data-ic="📮"><span data-illus="c27_exitsurvey"></span><div class="egt"><b>Almost, but not quite: sending an exit survey to players who left</b>: asking those who left is a good idea. But out of a hundred emails only three come back, and the repliers are a small group who like to reply, so you still don’t hear the voice of most departed players. The remedy is to recruit actively and pay them.</div></div>
+
+  
+  <div class="sec"><span class="n">7</span><h2><span class="tag why">Why it holds</span>With few people, luck passes for a pattern</h2></div>
+  <div class="withimg rev">
+    <span data-illus="c27_coin"></span>
+    <div>
+      <p>Flip a coin five times and get four heads: would you suspect the coin? Probably. But for a perfectly fair coin, the chance of four or more heads in five flips is 6/32, close to one in five. Five flips can’t support any conclusion at all.</p>
+      <p>But people stubbornly believe that “a small sample should look like the whole.” In 1971 Tversky and Kahneman half-jokingly called this belief “the law of small numbers,” as if small samples obeyed the law of large numbers too.</p>
+    </div>
+  </div>
+  <div class="why-box">
+    <h3>Principle four: small samples fluctuate a lot</h3>
+    <p>Tversky and Kahneman (1971) surveyed professional psychology researchers with a questionnaire and found that they too often overestimated the representativeness of small samples and made research decisions accordingly: with too small a sample, conclusions are held up by luck. This is an influential view.</p>
+    <p>Back to playtests: Faulkner drew many groups of 5 for the same application, the average found about 85%, yet some groups found only 55%. <b>The average is right, but you hold only one group of 5</b>, and don’t know whether you drew good luck or bad. That is why you need several rounds, retesting after each round of fixes.</p>
+    <p>In A/B tests the problem is sharper. By a rough estimate from Lehr’s rule of thumb (for 80% power and 5% significance), to reliably tell a 5% conversion rate from 6%, <b>you need about 8000 people per group</b>. With only 50 people per group, “version B has 2 more people” is just noise. Statistical significance only says “not very likely pure luck,” not “the difference is large and worth acting on.”</p>
+    <details>
+      <summary>Advanced: how this number is estimated</summary>
+      <p class="small">Lehr’s rule of thumb: the number per group is about 16·p(1−p)/δ². Here p is the average of the two conversion rates, 5.5%, and δ is their difference, 0.01. Plugging in gives 16×0.055×0.945÷0.0001≈8300, of the order of 8000. This is a rough estimate, not an exact calculation.</p>
+    </details>
+    <p class="src">Sources:<br>Amos Tversky and Daniel Kahneman · 1971 · surveyed researchers and found that people believe a small sample should resemble the population and overestimate its representativeness (“Belief in the law of small numbers,” Psychological Bulletin 76(2): 105–110).<br>Lehr’s rule of thumb can be found in sample-size estimation in statistics textbooks.</p>
+  </div>
+  <div class="eg" data-ic="🎲"><span data-illus="c27_ab"></span><div class="egt"><b>In the game: an A/B test, 50 per group</b>: version B got 2 more clicks than A, and the team held a celebration. Random fluctuation alone can produce such a gap.</div></div>
+  <div class="eg" data-ic="🍀"><span data-illus="c27_coin2"></span><div class="egt"><b>Daily life: three wins in a row and “my luck’s in”</b>: three is a sample, not a pattern. The lucky are usually also the result of random fluctuation.</div></div>
+  <div class="eg" data-ic="🚪"><span data-illus="c27_five"></span><div class="egt"><b>Playtest: 4 of 5 people didn’t see that door</b>: this is not a law, but it is enough to go and check, because the cost is low. And “all 5 had no problem” should not reassure you.</div></div>
+  <div class="eg bad" data-ic="📊"><span data-illus="c27_goodhart"></span><div class="egt"><b>Data is not insight: staring at “time spent”</b>: telemetry shows “40% drop out at level 3” but no reason. Once time spent is taken as a target, you may make more dragging levels, which is just what Goodhart’s law describes. The most reliable combination: telemetry finds “where,” observation and interviews explain “why,” and after a change use data to confirm.</div></div>
+
+  <h3>Check it yourself: a 10-minute mini-experiment</h3>
+  <div class="eg" data-ic="🧪"><span data-illus="c27_predict"></span><div class="egt"><b>Experiment: “predicted vs actual.”</b> Find someone who has not seen the prototype and first ask: “Do you think you can figure out how to begin within 1 minute? Where would you click?” Write it down. Then let him really play, and only watch without a word. Most people’s predictions are rosier than reality. Write down the gap: this is one replication of the gap between “say” and “do.”</div></div>
+
+  
+  <div class="sec"><span class="n">8</span><h2><span class="tag how">How to use it</span>The playtest observation room: watch the recording, mark the stuck points</h2></div>
+  <p>Below is a 60-second “recording replay”: a virtual player in a small level starts from the left room, finds a key to open the door, passes through a spike corridor, pulls a lever, and walks to the exit on the right. (Illustrative: the route and captions are made up, for practicing observation, not real data.)</p>
+  <p><b>Task:</b> play (or drag the progress bar), read the “objective log” and the player’s think-aloud captions, choose a problem type, and click “Mark this moment.” When finished, click “Compare with expert marks.” Remember to separate facts from interpretation: not every event is a problem, and not every problem makes a sound.</p>
+
+  <div class="board" id="c27_room">
+    <svg id="c27_lv" viewBox="0 0 600 300" width="100%" role="img" aria-label="A top-down view of a small level: the left room has a wooden box and a signboard, in the middle a locked door and a spike corridor, with a lever, a pit and the exit on the right; a dot shows the virtual player’s position and the dashed line is the movement trace">
+      <rect x="4" y="4" width="592" height="292" fill="#fffef7"/>
+      <g class="rough" stroke="#2b2b3a" stroke-width="4" fill="#ddd">
+        <rect x="4" y="4" width="592" height="14"/><rect x="4" y="282" width="592" height="14"/>
+        <rect x="244" y="18" width="12" height="108"/><rect x="244" y="174" width="12" height="108"/>
+        <rect x="340" y="18" width="40" height="107" fill="#c9c9d6"/><rect x="340" y="175" width="40" height="107" fill="#c9c9d6"/>
+        <rect x="130" y="233" width="42" height="34" fill="#d9b382"/>
+      </g>
+      <g fill="#d6436f" stroke="#2b2b3a" stroke-width="2"><path d="M345 160 l6 -16 l6 16 z"/><path d="M357 160 l6 -16 l6 16 z"/><path d="M369 160 l6 -16 l6 16 z"/></g>
+      <ellipse cx="440" cy="205" rx="22" ry="14" fill="#555" stroke="#2b2b3a" stroke-width="3"/>
+      <g font-size="22" text-anchor="middle">
+        <text x="110" y="80">🪧</text><text x="150" y="258">📦</text><text x="250" y="156">🔒</text>
+        <text x="480" y="62">🕹️</text><text x="568" y="158">🚪</text>
+      </g>
+      <g font-size="16" fill="#2b2b3a" text-anchor="middle">
+        <text x="60" y="130">Start</text><text x="440" y="244">Pit</text><text x="360" y="198">Spikes</text>
+      </g>
+      <g id="c27_trail" fill="#3d7fb8"></g>
+      <g id="c27_deaths" fill="#d6436f" stroke="#2b2b3a" stroke-width="1.5"></g>
+      <circle id="c27_pl" cx="40" cy="150" r="9" fill="#ffb347" stroke="#2b2b3a" stroke-width="3"/>
+    </svg>
+    <div class="c27cap" id="c27_cap">(Click “Play” to start)</div>
+    <div class="c27row">
+      <button class="btn green" id="c27_play">▶ Play</button>
+      <button class="btn alt" id="c27_rst">⏮ Back to start</button>
+      <label class="ctl" style="margin:0">Speed
+        <select id="c27_sp" style="font:inherit;border:2.5px solid var(--ink);border-radius:8px;background:#fffef7;padding:2px 6px"><option value="1">1×</option><option value="2" selected>2×</option><option value="4">4×</option></select>
+      </label>
+      <span class="stat">Time <b id="c27_tm">0.0</b>/60 s</span>
+    </div>
+    <div class="c27tl" id="c27_tl"><div class="head" id="c27_hd" style="left:0"></div></div>
+    <input class="c27scrub" type="range" id="c27_sc" min="0" max="60" step="0.1" value="0" aria-label="Recording progress">
+    <div class="small">Top row of gray dots = objective events (pink = deaths; the pink dots above the spikes in the picture = number of deaths), bottom row of yellow flags = your marks (click a flag to delete it).</div>
+    <h4 style="margin:.6em 0 .2em">Objective log (only facts that were seen)</h4>
+    <div class="c27log" id="c27_log"><div style="color:var(--soft)">(After playing, the facts appear one by one)</div></div>
+    <h4 style="margin:.6em 0 .2em">Your marks: choose a type, then click “Mark this moment”</h4>
+    <div id="c27_types">
+      <button class="c27ty" data-ty="goal">Goal unclear</button><button class="c27ty" data-ty="ctrl">Controls not smooth</button><button class="c27ty" data-ty="diff">Difficulty</button><button class="c27ty" data-ty="ui">Interface/prompt</button><button class="c27ty" data-ty="other">Other/not a problem</button>
+    </div>
+    <div><button class="btn" id="c27_mark">📍 Mark this moment</button><button class="btn pink" id="c27_clear">Clear marks</button><button class="btn alt" id="c27_cmp">🔍 Compare with expert marks</button></div>
+    <div class="c27marks" id="c27_marks"></div>
+    <div class="msg" id="c27_msg"></div>
+    <div class="c27res" id="c27_res" style="display:none"></div>
+  </div>
+  <div class="sticky">Try it: mark at least 3 moments you think are stuck points and click “Compare with expert marks.” If you hit 3 of 4 or more without marking “jumping into the pit on purpose” as a problem, you pass.</div>
+  <p class="small">Note: the expert marks are also an “interpretation,” not truth. In real research two observers usually mark independently and then check agreement, and disagreement is itself a clue.</p>
+
+  <div class="sec"><span class="n">9</span><h2><span class="tag how">How to use it</span>Supporting interactive: the “how many people are enough?” simulator</h2></div>
+  <p>Adjust two knobs: <b>L</b> (the probability one player finds a given problem) and <b>n</b> (the number of testers). The curve is the theory given by the multiplication above; the bars are the result of a <b>random simulation of 1000 runs</b>: each time, have n people each “find” each problem, and count how many were found in all. Theory is the average, and each run fluctuates up and down.</p>
+  <div class="board">
+    <label class="ctl">L (probability one person finds a given problem) = <output id="c27_lv2">0.31</output></label>
+    <input type="range" id="c27_ls" min="0.05" max="0.6" step="0.01" value="0.31">
+    <label class="ctl">Number of testers n = <output id="c27_nv">5</output></label>
+    <input type="range" id="c27_ns" min="1" max="30" step="1" value="5">
+    <label class="ctl">Total number of problems N = <output id="c27_Nv">20</output></label>
+    <input type="range" id="c27_Ns" min="10" max="40" step="1" value="20">
+    <label class="ctl"><input type="checkbox" id="c27_het"> Problems vary in difficulty (three levels; the average probability of finding is still L)</label>
+    <canvas id="c27_cv" width="760" height="300" style="width:100%;height:auto;background:#fffef7;border:3px solid var(--ink);border-radius:10px" aria-label="Curve of the share of problems found against the number of people, with a simulation band"></canvas>
+    <div id="c27_stats"></div>
+    <div class="c27hist" id="c27_hist" aria-label="Distribution of the number of problems found in 1000 simulations"></div>
+    <div class="c27lab"><span>Found 0</span><span>Bar height = how many of 1000 runs found exactly k → found N</span></div>
+    <button class="btn alt" id="c27_re">🎲 Simulate again</button>
+    <div class="msg" id="c27_smsg"></div>
+  </div>
+  <div class="sticky">Try it: ① L=0.31, n=5, and see the fluctuation around the theoretical 84%. ② Pull L to 0.08 (equivalent to Spool and Schroeder’s reported “the first 5 found only about 35%”) and see that 5 people are far from enough. ③ Tick “vary in difficulty”: the hardest-to-find problems drag it down, and the curve falls below the theoretical one. The model assumes each person is independent and problems are equivalent; in reality neither fully holds.</div>
+
+  <div class="sec"><span class="n">10</span><h2><span class="tag how">How to use it</span>Supporting interactive: the question rewriter</h2></div>
+  <p>The 5 questions below each have a flaw. <b>Click the orange word and turn it into a neutral wording</b> to see the reason; click again to restore. When all are rewritten, the sentence becomes a proper question.</p>
+  <div class="c27row"><button class="btn green" id="c27_qall">Rewrite all</button><button class="btn pink" id="c27_qnone">Restore all</button><span class="stat">Rewritten <b id="c27_qc">0</b>/5</span><span class="stat" id="c27_qwin" hidden>🎉 All rewritten</span></div>
+  <div id="c27_qs"></div>
+  <div class="sticky">Try it: without looking at hints, rewrite all 5 sentences successfully, and watch the “rewritten” count reach 5/5.</div>
+
+  <div class="sec"><span class="n">11</span><h2><span class="tag how">How to use it</span>The script for a 45-minute playtest</h2></div>
+  <div class="grid2">
+    <div class="card y"><h3>① Preparation (the day before)</h3><ul><li>Write down 2–3 <b>specific questions</b> (“Can a newcomer find the key within 2 minutes?”).</li><li>Recruit 3–5 target players; have screen recording ready.</li><li>Play through it yourself first so you don’t waste time on bugs.</li></ul></div>
+    <div class="card b"><h3>② Opening script (2 minutes)</h3><ul><li>“We’re testing the game, not you.”</li><li>“Getting stuck, disliking something, not understanding: all of it is useful information.”</li><li>“Please say what you’re thinking as you play. I won’t answer questions, but I’ll write them down.”</li></ul></div>
+    <div class="card g"><h3>③ Observation (25 minutes)</h3><ul><li>The designer <b>shuts up</b>. If asked “how do I play here?” answer “what do you think?”</li><li>Note facts: time, position, action.</li><li>When silent too long: “What are you thinking now?”</li></ul></div>
+    <div class="card p"><h3>④ Wrap-up interview (8 minutes)</h3><ul><li>Open question: “What left the deepest impression just now?”</li><li>Replay key moments: “You paused here for a while; what were you thinking?”</li><li>Only at the end ask “Is there anything else you’d like to say?”</li></ul></div>
+  </div>
+  <h3>Synthesis: affinity diagram + severity ranking</h3>
+  <p>After a playtest there is a big pile of scattered observations. The <span class="term" tabindex="0" data-def="Affinity diagram (also called the KJ method): a way of organizing many scattered observations: write them on sticky notes, group them by similarity, name each group, and see the common themes.">affinity diagram</span> is a way to sort them: write each observation on a sticky note (for example “3/5 people lingered at the door for more than 10 seconds”), put similar ones together, and give each pile a name (“goal unclear”). Then give each pile two scores: <b>how many people hit it (frequency)</b> × <b>how serious the consequence (severity: merely annoying / stuck / gave up)</b>. Fix the ones with high frequency and high severity first. <b>Some findings hit only one person and can still be fatal</b>, such as a lost save, so don’t look only at head counts.</p>
+
+  <aside class="cc-card" aria-label="Concept card: Affinity Diagram">
+    <span class="cc-tag">Concept card</span>
+    <p class="cc-name"><span>Affinity Diagram</span></p>
+    <p class="cc-en">Affinity diagram (KJ method)</p>
+    <p class="cc-by">Jiro Kawakita · developed the KJ method in the 1960s; published <i>Hassōhō</i> in 1967</p>
+    <p class="cc-def">Write scattered observations on cards one by one, group them by similarity, and name each group so that the common themes show.</p>
+    <p class="cc-eg"><span class="cc-k">Example</span>Five players’ recordings contain 7 notes like “paced in front of the door” and “read the hint again and again”; they go into one pile named “goal unclear.”</p>
+  </aside>
+  <div class="eg" data-ic="🔧"><span data-illus="c27_symptom"></span><div class="egt"><b>Players’ suggestions are symptoms, not prescriptions</b>: if 3 people say “make it easier,” making every level easier is wrong. The recording shows they died at the same spike spot, and what is really needed is “a warning before the spikes.”</div></div>
+  <div class="eg bad" data-ic="🙅"><span data-illus="c27_allfix"></span><div class="egt"><b>Counterexample: doing everything they say</b>: change whatever players say, and after one round the game has become the “lowest common denominator,” and the original design with personality is gone. The designer’s job is to find the cause, not to carry out suggestions.</div></div>
+
+  
+  <div class="misc">
+    <h3>Common misconceptions</h3>
+    <ul>
+      <li><b>“Testing 5 people is enough.”</b> This is a simplification of a conditional rule of thumb: it assumes similar player groups, equivalent problems, and <b>retesting after fixes</b>. With different groups or a complex product, 5 is far from enough (Faulkner’s worst group of 5 found only 55%).</li>
+      <li><b>“Players say they want it, so I’ll build it.”</b> Players are good at saying “what bothers me” and bad at designing solutions. Treat suggestions as symptoms.</li>
+      <li><b>“Friends tried it, no problem.”</b> They are more polite and understand the designer better, so every problem gets underestimated.</li>
+      <li><b>“The data shows X, so we’ll do X.”</b> Data says only “where,” not “why.” Optimizing a single metric easily falls into the Goodhart trap.</li>
+      <li><b>“Ask why, let them explain it themselves.”</b> “Why” invites after-the-fact rationalization. Ask “what were you thinking, where were you looking” instead.</li>
+      <li><b>“Everyone I interviewed said it’s good.”</b> Think of the ones who left: they are not on the interview list.</li>
+    </ul>
+  </div>
+
+  <div class="reflect">
+    <h3>Reflections and controversies</h3>
+    <ul>
+      <li><b>The “5 people” dispute.</b> Nielsen’s view is that “several small tests beat one big test.” Critics (Spool and Schroeder, Faulkner and others) point out that L is not fixed and differs greatly across studies, and that results of different groups of 5 can be worlds apart. The dispute has no conclusion yet.</li>
+      <li><b>Where L comes from.</b> The 31% is the average over the projects Nielsen studied back then. Lewis (1994) and others point out that small-sample estimates of L tend to be high (as later retold). So L can’t be used as is; look at your own project.</li>
+      <li><b>Does think-aloud change how people play?</b> Ericsson and Simon’s theory holds that as long as the report is of what is being attended to, thinking generally isn’t changed; but in games, talking while playing may make people more focused or more distracted, so some researchers also run a “silent group” as a control.</li>
+      <li><b>Does research kill “authorship”?</b> One view holds that over-reliance on testing grinds a game down to a “lowest common denominator”; another holds that research only provides evidence, and the decision stays with the designer. This is a disagreement about design philosophy, with no standard answer.</li>
+      <li><b>Ethics.</b> When telemetry collects player behavior data, inform players and obtain consent, and mind privacy.</li>
+    </ul>
+  </div>
+
+  <div class="key">
+    <h3>Key points</h3>
+    <ul>
+      <li>A <b>playtest</b> has target players really play while the designer shuts up and observes; it shares techniques with usability tests, but a playtest also asks “is it fun.”</li>
+      <li>The methods complement one another: <b>telemetry</b> knows “where and how many,” <b>observation + think-aloud</b> knows “where it gets stuck,” <b>interviews</b> know “how he understood it,” and <b>surveys</b> suit comparison at scale.</li>
+      <li>What people say ≠ what they do: self-report is affected by <b>social desirability</b>, observers by <b>confirmation bias</b>, designers by the <b>curse of knowledge</b>, and the sample may be left with only <b>survivors</b>; get around them with behavior, neutral questions, independent coding and active recruiting.</li>
+      <li>Think-aloud asks “what are you thinking,” not “why did you”; this comes from Ericsson and Simon’s research on verbal reports.</li>
+      <li>The probability model for finding problems: with each person finding a problem at L≈31%, 5 people find about 84%. But L varies by project, and results of groups of 5 fluctuate widely (small samples let luck pass for a pattern). The core is <b>several small tests + retest after fixing</b>.</li>
+    </ul>
+  </div>
+  <div class="tldr">Don’t ask players whether it’s fun; watch where they get stuck; mind who is missing from the sample; a few people tested over several rounds improve a game better than one big test.</div>
+
+  <div class="sec"><span class="n">12</span><h2><span class="tag think">Practice</span>Quiz</h2></div>
+  <div id="quiz"></div>
+
+  <div class="sec"><span class="n">13</span><h2><span class="tag how">Your design</span>Your playtest plan</h2></div>
+  <div class="card o">
+    <p>For a prototype you are making (or want to make), design a playtest: ① write down 2–3 <b>specific questions</b> (not “is it fun”); ② choose a method (observation/interview/survey/telemetry) and say why; ③ write 3 neutral questions; ④ plan whom to recruit and why not friends; ⑤ predict which bias you will fall into and how to prevent it.</p>
+    <textarea rows="7" data-save="ch27" placeholder="Prototype: paper parkour level&#10;Question: Can a new player understand within 1 minute that ‘you need to get the key to open the door’?&#10;Method: observation + think-aloud, 5 people, target players……&#10;Questions: ……"></textarea>
+  </div>
+</main>
+
+<script src="../js/illus.js"></script>
+<script src="../js/illus-ch27.js"></script>
+<script src="../js/en/illus.js"></script>
+<script src="../js/en/illus-lib.js"></script>
+<script src="../js/en/illus-ch27.js"></script>
+<script src="../js/common.js"></script>
+<script>
+const $ = id => document.getElementById(id);
+
+(function () {
+  const gs = $("c27_gs"), gv = $("c27_gv"), out = $("c27_gout");
+  gs.oninput = () => { gv.textContent = gs.value; };
+  $("c27_gb").onclick = () => {
+    const g = +gs.value, th = (1 - Math.pow(0.69, 5)) * 100;
+    const rows = [["Your guess", g, "#ffd666"], ["Theory (L=31%, n=5)", th, "#8fd0f0"], ["Faulkner’s worst group of 5", 55, "#ffb0c4"], ["Faulkner’s best group of 5", 99, "#b6e8a8"], ["Spool and Schroeder (as retold)", 35, "#ffb0c4"]];
+    out.innerHTML = rows.map(r => '<div class="c27sb"><span class="nm">' + r[0] + '</span><span class="bar" style="width:' + (r[1] * 0.55) + '%;background:' + r[2] + '"></span><span class="v">' + Math.round(r[1]) + '%</span></div>').join("") +
+      '<div class="msg">' + (Math.abs(g - th) <= 10 ? "Your intuition is quite accurate: the theoretical value is about " + th.toFixed(1) + "%." : "The theoretical value is about " + th.toFixed(1) + "%: each person has only 31%, but the chance that “all 5 miss it” is 0.69⁵≈16%.") +
+      " But in real research the results of groups of 5 differ greatly.</div>";
+  };
+  $("c27_gr").onclick = () => { out.innerHTML = ""; gs.value = 50; gv.textContent = 50; };
+})();
+
+(function () {
+  const KF = [[0,40,150],[4,100,125],[5,110,95],[6,130,125],[9,220,150],[10,238,150],[12,215,112],[14,238,168],[16,208,190],[18,240,135],[20,222,172],[22,190,215],[24,150,248],[26,200,200],[27,238,152],[28,260,150],[29.5,300,150],[30,358,150],[30.3,290,150],[33,330,150],[35,358,150],[35.3,290,150],[38,330,150],[40,358,150],[40.3,290,150],[41,330,150],[41.8,372,150],[43,410,150],[45,470,100],[46,478,85],[47,482,80],[48,477,86],[49,482,81],[50,479,84],[51.5,440,190],[52,440,205],[52.3,430,150],[54,470,100],[55,479,80],[56,480,78],[58,555,150],[60,560,150]];
+  const EV = [
+    [5, "The hint box “The door needs a key, the key is behind the box” pops up and is dismissed by a key press after 0.5 seconds"],
+    [10, "First time at the locked door"],
+    [14, "Second time at the door"],
+    [18, "Third time at the door"],
+    [24, "Walks behind the box and picks up the key (took 24 seconds)"],
+    [27, "Opens the door with the key"],
+    [30, "Death #1: at the spikes (358, 150)", 1],
+    [35, "Death #2: same spot", 1],
+    [40, "Death #3: same spot", 1],
+    [41.8, "Passes through the spike corridor"],
+    [46, "Presses the interact key, the lever doesn’t respond (1st time)"],
+    [48, "Presses the interact key, the lever doesn’t respond (2nd time)"],
+    [49, "Presses the interact key, the lever doesn’t respond (3rd time)"],
+    [50, "Presses the interact key, the lever doesn’t respond (4th time)"],
+    [52, "Walks to the edge of the pit and jumps in on purpose"],
+    [55, "Stands closer, the lever is activated (5th attempt)"],
+    [58, "Reaches the exit, took 58 seconds"]
+  ];
+  const CAP = [[0,"…Where is this?"],[3,"This room is pretty empty."],[5,"(glances at the pop-up box, presses a key to close it)"],[9,"The door won’t open."],[13,"So… what am I supposed to do?"],[17,"(walks back to the door again)"],[21,"Forget it, let me look around."],[24,"Oh! Something behind the box?"],[28,"It opened!"],[31,"Dead again…"],[36,"This hit detection is way too tight."],[41,"Made it… that was luck."],[46,"I did press the interact key!"],[49,"Is it broken?"],[51,"What happens if I jump down? Ha ha"],[54,"Let me try again from a different spot."],[56,"It works!"],[58,"Cleared it… I think?"]];
+  const TYN = { goal: "Goal unclear", ctrl: "Controls not smooth", diff: "Difficulty", ui: "Interface/prompt", other: "Other" };
+  const EXPERT = [
+    { id: "hint", t0: 4, t1: 6, ty: "ui", title: "Hint flashes by and is skipped", what: "The only hint telling the player “the key is behind the box” popped up for 0.5 seconds and was dismissed by a key press. No death, no sound: a “silent problem.”", fix: "Tie the hint to the moment the player first approaches the door; let the hint be reviewed in the menu; don’t use a flash-by pop-up for key information, use environmental cues instead (the key glows, the camera briefly pans to the box)." },
+    { id: "goal", t0: 10, t1: 21, ty: "goal", title: "Lingering at the door: not knowing the goal", what: "The player returned to the door 3 times and made no progress for about 10 seconds, saying in the think-aloud “what am I supposed to do?” This isn’t “hard”; it is not knowing the next step, and it is a chain result of the previous “hint skipped.”", fix: "Show a “missing key” icon on the door; let the level layout bring the key into view (don’t hide it behind the box); give a light hint when a stay of more than 8 seconds is detected." },
+    { id: "diff", t0: 30, t1: 41, ty: "diff", title: "Dying three times at the same spot", what: "Died 3 times at the same spike spot, and the player said “this hit detection is way too tight.” The question is “good hard” or “bad stuck”: he knows why he died, but the timing window seems too narrow and there is no warning.", fix: "Add a warning (sound and light before the spikes), widen the timing window, and put a checkpoint before the spikes to cut the retry cost. Don’t lower the difficulty across the board." },
+    { id: "ctrl", t0: 46, t1: 51, ty: "ctrl", title: "Interact key not responding: hit range too small", what: "The player pressed the interact key 4 times with no response from the lever, saying “I did press it,” and succeeded on the 5th time only by standing closer. The problem is most likely an interaction range that is too small with no “almost there” feedback.", fix: "Enlarge the interaction hit range; highlight and show the key prompt when near; give “a little closer” feedback on failure." }
+  ];
+  const DECOY = { t0: 51, t1: 53, title: "Jumping into the pit on purpose: the player is exploring", what: "The player said with a laugh “what happens if I jump down?”, a deliberate probe, not being stuck. Over-reading this kind of behavior treats the player’s curiosity as a defect." };
+  const TOL = 3;
+  let t = 0, playing = false, last = 0, cur = "", marks = [], nid = 1, compared = false;
+  const pl = $("c27_pl"), tl = $("c27_tl"), sc = $("c27_sc");
+
+  
+  EV.forEach(e => { const d = document.createElement("div"); d.className = "tick" + (e[2] ? " dead" : ""); d.style.left = (e[0] / 60 * 100) + "%"; d.title = e[0] + "s " + e[1]; tl.appendChild(d); });
+
+  function pos(tt) {
+    for (let i = 0; i < KF.length - 1; i++) {
+      const a = KF[i], b = KF[i + 1];
+      if (tt <= b[0]) {
+        const dt = b[0] - a[0];
+        if (dt <= 0.35) return tt < b[0] ? { x: a[1], y: a[2] } : { x: b[1], y: b[2] };
+        const f = (tt - a[0]) / dt;
+        return { x: a[1] + (b[1] - a[1]) * f, y: a[2] + (b[2] - a[2]) * f };
+      }
+    }
+    const e = KF[KF.length - 1]; return { x: e[1], y: e[2] };
+  }
+  function trailD(tt) {
+    let d = "", prev = null;
+    for (let s = 0; s <= tt + 1e-6; s += 0.2) {
+      const p = pos(s);
+      if (!prev || Math.hypot(p.x - prev.x, p.y - prev.y) > 35) d += "M" + p.x.toFixed(1) + " " + p.y.toFixed(1);
+      else d += "L" + p.x.toFixed(1) + " " + p.y.toFixed(1);
+      prev = p;
+    }
+    const q = pos(tt);
+    if (prev && Math.hypot(q.x - prev.x, q.y - prev.y) <= 35) d += "L" + q.x.toFixed(1) + " " + q.y.toFixed(1);
+    return d;
+  }
+  function render() {
+    const p = pos(t);
+    pl.setAttribute("cx", p.x); pl.setAttribute("cy", p.y);
+    (function () { let h = "", prev = null; for (let s = 0; s <= t + 1e-6; s += 0.35) { const q = pos(s); if (!prev || Math.hypot(q.x - prev.x, q.y - prev.y) > 6) { h += '<circle cx="' + q.x.toFixed(0) + '" cy="' + q.y.toFixed(0) + '" r="2"/>'; prev = q; } } $("c27_trail").innerHTML = h; })();
+    $("c27_deaths").innerHTML = EV.filter(e => e[2] && e[0] <= t).map((e, i) => '<circle cx="' + (346 + i * 14) + '" cy="135" r="5"/>').join("");
+    $("c27_tm").textContent = t.toFixed(1);
+    $("c27_hd").style.left = (t / 60 * 100) + "%";
+    sc.value = t;
+    let c = "(……)"; CAP.forEach(x => { if (x[0] <= t) c = "🗣️ “" + x[1] + "”"; });
+    $("c27_cap").textContent = c;
+    const shown = EV.filter(e => e[0] <= t);
+    $("c27_log").innerHTML = shown.length ? shown.map(e => '<div><b class="tm">' + e[0].toFixed(0).padStart(2, "0") + '″</b>' + e[1] + '</div>').join("") : '<div style="color:var(--soft)">(After playing, the facts appear one by one)</div>';
+    $("c27_log").scrollTop = 1e6;
+  }
+  function tick(ts) {
+    if (!playing) return;
+    const dt = (ts - last) / 1000; last = ts;
+    t = Math.min(60, t + dt * (+$("c27_sp").value));
+    render();
+    if (t >= 60) { playing = false; $("c27_play").textContent = "▶ Play"; return; }
+    requestAnimationFrame(tick);
+  }
+  $("c27_play").onclick = () => {
+    if (playing) { playing = false; $("c27_play").textContent = "▶ Play"; return; }
+    if (t >= 60) t = 0;
+    playing = true; $("c27_play").textContent = "⏸ Pause"; last = performance.now(); requestAnimationFrame(tick);
+  };
+  $("c27_rst").onclick = () => { playing = false; $("c27_play").textContent = "▶ Play"; t = 0; render(); };
+  sc.oninput = () => { t = +sc.value; render(); };
+  tl.addEventListener("pointerdown", e => {
+    if (e.target.classList.contains("flag")) return;
+    const r = tl.getBoundingClientRect(); t = Math.max(0, Math.min(60, (e.clientX - r.left) / r.width * 60)); render();
+  });
+  document.querySelectorAll("#c27_types .c27ty").forEach(b => b.onclick = () => {
+    cur = b.dataset.ty;
+    document.querySelectorAll("#c27_types .c27ty").forEach(x => x.classList.toggle("sel", x === b));
+  });
+  function drawMarks() {
+    tl.querySelectorAll(".flag").forEach(x => x.remove());
+    marks.forEach(m => {
+      const f = document.createElement("div"); f.className = "flag"; f.style.left = (m.t / 60 * 100) + "%"; f.textContent = TYN[m.ty].slice(0, 1); f.title = "Click to delete: " + m.t.toFixed(1) + "s " + TYN[m.ty];
+      f.onclick = () => { marks = marks.filter(x => x.id !== m.id); drawMarks(); };
+      tl.appendChild(f);
+    });
+    $("c27_marks").innerHTML = marks.length ? "My marks: " + marks.slice().sort((a, b) => a.t - b.t).map(m => '<span data-id="' + m.id + '">' + m.t.toFixed(1) + "″ " + TYN[m.ty] + " ✕</span>").join("") : "";
+    $("c27_marks").querySelectorAll("span").forEach(s => s.onclick = () => { marks = marks.filter(x => x.id !== +s.dataset.id); drawMarks(); });
+  }
+  $("c27_mark").onclick = () => {
+    if (!cur) { $("c27_msg").textContent = "Choose a problem type first."; return; }
+    marks.push({ id: nid++, t: Math.round(t * 10) / 10, ty: cur });
+    $("c27_msg").textContent = "Marked: " + t.toFixed(1) + " s " + TYN[cur] + ". Keep watching, or click “Compare with expert marks.”";
+    drawMarks();
+  };
+  function clearBands() { tl.querySelectorAll(".band").forEach(x => x.remove()); }
+  $("c27_clear").onclick = () => { marks = []; drawMarks(); clearBands(); $("c27_res").style.display = "none"; $("c27_msg").textContent = "Cleared; you can mark again."; };
+  $("c27_cmp").onclick = () => {
+    if (!marks.length) { $("c27_msg").textContent = "You haven’t marked anything yet. Watch the recording once, and mark the stuck points you think there are."; return; }
+    clearBands();
+    const near = (m, e) => m.t >= e.t0 - TOL && m.t <= e.t1 + TOL;
+    const used = new Set();
+    const h = [];
+    let foundN = 0; const bias = [];
+    EXPERT.forEach(e => {
+      const ms = marks.filter(m => near(m, e)); ms.forEach(m => used.add(m.id));
+      const exact = ms.find(m => m.ty === e.ty);
+      let st, cls;
+      if (exact) { st = "✔ Found it, and the type is right"; cls = "ok"; foundN++; }
+      else if (ms.length) { st = "◐ Found the location, but the type you marked is “" + TYN[ms[0].ty] + "” and the expert filed it under “" + TYN[e.ty] + "”"; cls = "mid"; foundN += 0.5; }
+      else { st = "✖ Missed"; cls = "no"; }
+      h.push('<h4>' + e.title + ' (' + e.t0 + '–' + e.t1 + ' ″, ' + TYN[e.ty] + ') <span class="' + cls + '">' + st + '</span></h4><div>' + e.what + '</div><div><b>How to fix:</b>' + e.fix + '</div>');
+      const b = document.createElement("div"); b.className = "band"; b.style.left = (e.t0 / 60 * 100) + "%"; b.style.width = ((e.t1 - e.t0) / 60 * 100) + "%"; tl.appendChild(b);
+      if (!ms.length && e.id === "hint") bias.push("<b>Conspicuous-event bias:</b> deaths are dramatic and easy to notice; “dismissing the hint after 0.5 s” has no sound and no consequence, and is the easiest to miss, yet it is exactly the cause of the lingering later. Remember: <b>find the “cause” first, then look at the “effect.”</b>");
+      if (ms.length && !exact && e.id === "goal" && ms[0].ty === "diff") bias.push("<b>Misattribution:</b> taking “doesn’t know what to do” for “too hard.” Read the captions: what he says is “what am I supposed to do?” not “too hard.”");
+      if (ms.length && !exact && e.id === "diff" && ms[0].ty === "ctrl") bias.push("<b>Misattribution:</b> he knows the spikes killed him and complains that “the hit detection is too tight,” which is closer to a difficulty/timing-window problem; but “not enough feedback” can also count as part of controls, a gray area worth discussing.");
+    });
+    const dm = marks.filter(m => !used.has(m.id) && m.t >= DECOY.t0 - 1 && m.t <= DECOY.t1 + 1);
+    dm.forEach(m => used.add(m.id));
+    h.push('<h4>' + DECOY.title + ' (' + DECOY.t0 + '–' + DECOY.t1 + ' ″) <span class="' + (dm.length && dm.every(m => m.ty === "other") ? "mid" : dm.length ? "no" : "ok") + '">' + (dm.length ? (dm.every(m => m.ty === "other") ? "◐ You marked it and labeled it “Other,” showing that you noticed it was special" : "✖ This is not a problem") : "✔ Didn’t mark it (correct)") + '</span></h4><div>' + DECOY.what + '</div>');
+    if (dm.length && !dm.every(m => m.ty === "other")) bias.push("<b>Confirmation bias / over-reading:</b> seeing “leaves the route” and taking it for a defect. Ask first: is he stuck, or playing?");
+    const fp = marks.filter(m => !used.has(m.id));
+    if (fp.length) { h.push('<h4>Extra marks: ' + fp.length + ' <span class="mid">(the expert found no problem at these moments)</span></h4><div>' + fp.map(m => m.t.toFixed(1) + "″ " + TYN[m.ty]).join(", ") + '. Not necessarily wrong, but ask “what is the evidence?”</div>'); if (fp.length >= 2) bias.push("<b>A page full of problems:</b> marking every event is the same as having no priorities. What to do after a playtest is to rank: frequency × severity."); }
+    const dec = Math.round(foundN / EXPERT.length * 100);
+    const box = $("c27_res"); box.style.display = "block";
+    box.innerHTML = '<div style="font-family:var(--hand);font-size:1.4rem">Expert problems hit: ' + foundN + " / " + EXPERT.length + ' (about ' + dec + '%)</div>' + h.join("") +
+      '<h4>Biases you may have fallen into</h4>' + (bias.length ? "<ul>" + bias.map(x => "<li>" + x + "</li>").join("") + "</ul>" : "<div>This time your marks were steady, with no obvious signs of bias. (But bias often strikes when you don’t notice, which is why real research has two people mark independently.)</div>") +
+      '<div class="small">Green band = the expert problem time window (±3 seconds tolerance); this “expert marking” is illustrative, not the only right answer.</div>';
+    $("c27_msg").textContent = "Compared. You can delete the marks and go through again to see whether you can find them all in one go. " + (foundN >= 3 && !(dm.length && !dm.every(m => m.ty === "other")) ? " 🎉 Try-it task complete: hit " + foundN + " /4, without treating the deliberate pit jump as a problem." : "");
+  };
+  render(); drawMarks();
+})();
+
+(function () {
+  const cv = $("c27_cv"), ctx = cv.getContext("2d");
+  const W = cv.width, H = cv.height, ML = 52, MR = 14, MT = 14, MB = 34, NMAX = 30;
+  let sim = null;
+  function params() { return { L: +$("c27_ls").value, n: +$("c27_ns").value, N: +$("c27_Ns").value, het: $("c27_het").checked }; }
+  function probs(P) { 
+    const arr = [], m = [0.4, 1, 1.6];
+    for (let i = 0; i < P.N; i++) arr.push(P.het ? Math.min(0.99, P.L * m[i % 3]) : P.L);
+    return arr;
+  }
+  function expected(P, nn) { 
+    const pr = probs(P); let s = 0; pr.forEach(p => s += 1 - Math.pow(1 - p, nn)); return s / P.N;
+  }
+  function simulate(P) {
+    const pr = probs(P), S = 1000;
+    const cnt = []; 
+    for (let n = 0; n <= NMAX; n++) cnt.push(new Array(S).fill(0));
+    for (let s = 0; s < S; s++) {
+      for (let i = 0; i < P.N; i++) {
+        const p = pr[i];
+        
+        const u = 1 - Math.random();
+        const g = Math.ceil(Math.log(u) / Math.log(1 - p));
+        for (let n = Math.max(1, g); n <= NMAX; n++) cnt[n][s]++;
+      }
+    }
+    sim = { cnt, P: Object.assign({}, P) };
+  }
+  function pct(arr, q) { const a = arr.slice().sort((x, y) => x - y); return a[Math.min(a.length - 1, Math.floor(q * a.length))]; }
+  function draw() {
+    const P = params();
+    if (!sim || sim.P.L !== P.L || sim.P.N !== P.N || sim.P.het !== P.het) simulate(P);
+    const X = n => ML + (W - ML - MR) * n / NMAX, Y = v => MT + (H - MT - MB) * (1 - v);
+    ctx.clearRect(0, 0, W, H);
+    ctx.lineWidth = 1.5; ctx.font = "15px sans-serif"; ctx.fillStyle = "#2b2b3a"; ctx.strokeStyle = "#ccc";
+    [0, .25, .5, .75, .85, 1].forEach(v => { ctx.beginPath(); ctx.moveTo(ML, Y(v)); ctx.lineTo(W - MR, Y(v)); ctx.stroke(); ctx.textAlign = "right"; ctx.fillText(Math.round(v * 100) + "%", ML - 6, Y(v) + 5); });
+    ctx.textAlign = "center"; for (let n = 0; n <= NMAX; n += 5) ctx.fillText(n, X(n), H - 18);
+    ctx.fillText("Number of testers n", (W + ML) / 2, H - 2);
+    
+    ctx.fillStyle = "rgba(61,127,184,.2)"; ctx.beginPath();
+    for (let n = 1; n <= NMAX; n++) { const v = pct(sim.cnt[n], 0.95) / P.N; n === 1 ? ctx.moveTo(X(n), Y(v)) : ctx.lineTo(X(n), Y(v)); }
+    for (let n = NMAX; n >= 1; n--) ctx.lineTo(X(n), Y(pct(sim.cnt[n], 0.05) / P.N));
+    ctx.closePath(); ctx.fill();
+    
+    ctx.strokeStyle = "#3d7fb8"; ctx.lineWidth = 3; ctx.beginPath();
+    for (let n = 0; n <= NMAX; n++) { const v = 1 - Math.pow(1 - P.L, n); n ? ctx.lineTo(X(n), Y(v)) : ctx.moveTo(X(n), Y(v)); } ctx.stroke();
+    if (P.het) { ctx.strokeStyle = "#d6436f"; ctx.setLineDash([7, 5]); ctx.beginPath(); for (let n = 0; n <= NMAX; n++) { const v = expected(P, n); n ? ctx.lineTo(X(n), Y(v)) : ctx.moveTo(X(n), Y(v)); } ctx.stroke(); ctx.setLineDash([]); }
+    
+    const th = 1 - Math.pow(1 - P.L, P.n), ex = expected(P, P.n);
+    ctx.fillStyle = "#ffb347"; ctx.strokeStyle = "#2b2b3a"; ctx.lineWidth = 2.5; ctx.beginPath(); ctx.arc(X(P.n), Y(ex), 7, 0, 7); ctx.fill(); ctx.stroke();
+    ctx.strokeStyle = "#e0668a"; ctx.setLineDash([4, 4]); ctx.beginPath(); ctx.moveTo(X(P.n), Y(0)); ctx.lineTo(X(P.n), Y(1)); ctx.stroke(); ctx.setLineDash([]);
+    ctx.fillStyle = "#2b2b3a"; ctx.textAlign = "left"; ctx.font = "14px sans-serif";
+    ctx.fillText("Blue: theory 1−(1−L)ⁿ" + (P.het ? "; pink dashed: mixed difficulty" : "") + "; band: simulated 5%–95%", ML + 8, MT + 14);
+    
+    const arr = sim.cnt[P.n];
+    const med = pct(arr, .5), lo = pct(arr, .05), hi = pct(arr, .95), mn = Math.min.apply(null, arr);
+    const need = q => Math.ceil(Math.log(1 - q) / Math.log(1 - P.L));
+    $("c27_stats").innerHTML = '<span class="stat">Theory <b>' + (th * 100).toFixed(1) + '%</b></span>' + (P.het ? '<span class="stat">Expectation with varied difficulty <b>' + (ex * 100).toFixed(1) + '%</b></span>' : "") +
+      '<span class="stat">Simulated median <b>' + (med / P.N * 100).toFixed(0) + '%</b></span><span class="stat">5%–95% range <b>' + (lo / P.N * 100).toFixed(0) + '%–' + (hi / P.N * 100).toFixed(0) + '%</b></span><span class="stat">Worst run <b>' + (mn / P.N * 100).toFixed(0) + '%</b></span>' +
+      '<div class="small">Under the theoretical model, to reach 85% / 95% / 99% you need n ≥ ' + need(.85) + ' / ' + need(.95) + ' / ' + need(.99) + ' (L=' + P.L.toFixed(2) + ').</div>';
+    const hist = new Array(P.N + 1).fill(0); arr.forEach(c => hist[c]++);
+    const mx = Math.max.apply(null, hist);
+    $("c27_hist").innerHTML = hist.map((c, k) => '<div class="' + (Math.abs(k - ex * P.N) < 0.5 ? "cur" : "") + '" style="height:' + (c / mx * 100) + '%" title="Found ' + k + ' problems: ' + c + ' runs"></div>').join("");
+    $("c27_smsg").textContent = "n=" + P.n + ": in 1000 simulations, 5% of runs found fewer than " + (lo / P.N * 100).toFixed(0) + "% of the problems, and the worst run found only " + (mn / P.N * 100).toFixed(0) + "%." + (P.n < 8 && P.L < 0.2 ? " When L is small, 5 people are far from enough." : "");
+  }
+  function sync() { $("c27_lv2").textContent = (+$("c27_ls").value).toFixed(2); $("c27_nv").textContent = $("c27_ns").value; $("c27_Nv").textContent = $("c27_Ns").value; draw(); }
+  ["c27_ls", "c27_ns", "c27_Ns"].forEach(id => $(id).oninput = sync);
+  $("c27_het").onchange = sync;
+  $("c27_re").onclick = () => { sim = null; draw(); };
+  sync();
+})();
+
+(function () {
+  const Q = [
+    ["You", { b: "Don’t you think", g: "Think", w: "“Don’t you” presupposes the answer and puts the “yes” inside the question." }, "this tutorial", { b: "is very clear, right?", g: "How is it?", w: "“…right?” invites a nod; the open-ended “how is it” doesn’t decide the conclusion for him." }],
+    ["If it launched, would you", { b: "buy this skin?", g: "What did you last pay for in a game? What made you decide?", w: "Asking about imagined future willingness is unreliable; asking about real past behavior is more credible (saying you’d buy ≠ really buying)." }],
+    ["In that boss fight just now,", { b: "was it too hard?", g: "What were you thinking while you fought?", w: "You decided for him that it was “hard” and also put the word into his mouth. Let him describe the process." }],
+    ["Just now, did you", { b: "see the health bar at the top left?", g: "How did you tell how much health you had left?", w: "You pointed out the location, which gave away the answer; he may say “I saw it” to look attentive." }],
+    [{ b: "Why didn’t you click that button?", g: "Where were you looking, and what were you thinking at that moment?", w: "“Why” invites after-the-fact rationalization (Nisbett &amp; Wilson); asking “where were you looking, what were you thinking” is the reliable information Ericsson &amp; Simon talk about." }]
+  ];
+  const st = Q.map(q => q.map(() => false));
+  const box = $("c27_qs");
+  function build() {
+    box.innerHTML = "";
+    Q.forEach((q, qi) => {
+      const d = document.createElement("div"); d.className = "c27q";
+      const s = document.createElement("div"); s.className = "sent"; const w = document.createElement("div"); w.className = "wy";
+      d.appendChild(s); d.appendChild(w); box.appendChild(d);
+      q.forEach((p, pi) => {
+        if (typeof p === "string") { s.appendChild(document.createTextNode(p)); return; }
+        const b = document.createElement("button"); b.className = "c27sw"; b.onclick = () => { st[qi][pi] = !st[qi][pi]; upd(); };
+        s.appendChild(b);
+      });
+    });
+    upd();
+  }
+  function upd() {
+    let nd = 0;
+    [...box.children].forEach((d, qi) => {
+      const sw = Q[qi].map((p, pi) => ({ p, pi })).filter(x => typeof x.p !== "string");
+      const bs = d.querySelectorAll(".c27sw"); const ws = [];
+      sw.forEach((x, i) => { const on = st[qi][x.pi]; bs[i].textContent = on ? x.p.g : x.p.b; bs[i].classList.toggle("on", on); if (on) ws.push(x.p.w); });
+      const done = sw.every(x => st[qi][x.pi]); if (done) nd++;
+      d.classList.toggle("done", done);
+      d.querySelector(".wy").innerHTML = (done ? "✔ Neutral." : "") + (ws.length ? " " + ws.join(" ") : "Click the orange words to try");
+    });
+    $("c27_qc").textContent = nd; $("c27_qwin").hidden = nd !== Q.length;
+  }
+  $("c27_qall").onclick = () => { st.forEach((r, i) => r.forEach((_, j) => st[i][j] = true)); upd(); };
+  $("c27_qnone").onclick = () => { st.forEach((r, i) => r.forEach((_, j) => st[i][j] = false)); upd(); };
+  build();
+})();
+
+(function () {
+  const holes = [[392,50],[404,76],[420,62],[330,112],[352,140],[400,120],[430,130],[470,126],[500,138],[520,122],[550,134],[300,126],[250,130],[440,100],[400,206],[410,180],[396,160],[600,70],[590,90],[570,200],[596,190],[330,150],[455,148],[480,112],[510,150]];
+  $("c27_holes").innerHTML = holes.map(h => '<circle cx="' + h[0] + '" cy="' + h[1] + '" r="4"/>').join("");
+  const RG = { wing: "c27_w_wing", body: "c27_w_body", tail: "c27_w_tail", eng: "c27_w_eng", cock: "c27_w_cock" };
+  const TXT = {
+    wing: "Many bullet holes on the wings, so you want armor here? But the wings are riddled with holes and the plane still flew back, which shows that being hit here isn’t fatal.",
+    body: "There are quite a few holes in the fuselage too, another place that “got hit and still flew back.” Putting armor here protects a spot that didn’t fear being hit much anyway.",
+    tail: "The tail is the same: many holes just show that the plane could come back after being hit here.",
+    eng: "✔ Wald’s reasoning: there are almost no holes near the engines, not because nobody hit them, but because planes hit there never came back. The places with no visible holes are the missing part of the sample.",
+    cock: "✔ The cockpit is like the engines: very few holes, quite possibly because planes hit there couldn’t come back. What should be protected is the “blank in the survivor sample” at the vital spots."
+  };
+  let done = false;
+  document.querySelectorAll("#c27_wbtn [data-w]").forEach(b => b.onclick = () => {
+    Object.values(RG).forEach(id => { $(id).style.stroke = ""; $(id).style.strokeWidth = ""; });
+    const k = b.dataset.w; $(RG[k]).style.stroke = k === "eng" || k === "cock" ? "#2f8f48" : "#d6303a"; $(RG[k]).style.strokeWidth = "6";
+    $("c27_wmsg").innerHTML = TXT[k] + (k === "eng" || k === "cock" ? "<br>🎉 Try-it task complete. The same trap shows up in playtests: don’t look only at “those who came back.”" : "");
+    $("c27_waldbox").classList.toggle("c27win", k === "eng" || k === "cock");
+  });
+  $("c27_wreset").onclick = () => {
+    Object.values(RG).forEach(id => { $(id).style.stroke = ""; $(id).style.strokeWidth = ""; });
+    $("c27_wmsg").textContent = "Click a button above to choose a place."; $("c27_waldbox").classList.remove("c27win");
+  };
+})();
+
+GD.mountQuiz($("quiz"), [
+  { q: "(Why) Why is “watching the moments a player gets stuck” usually more reliable than “asking players whether they find it fun”?", opts: ["Because players all love to lie", "Because self-report is affected by social desirability and after-the-fact rationalization, while behavior happens before words are organized", "Because observation needs no manpower", "Because surveys have never been any use"], a: 1, why: "People often give a “plausible-sounding” explanation of their own reactions (Nisbett &amp; Wilson’s view), and tilt toward politeness facing the designer. Behavior records get around both problems. It isn’t that players “lie,” nor that surveys are useless; they answer different questions." },
+  { q: "(Why invented) Why was think-aloud designed as “say what you’re thinking” rather than “explain why you did this”?", opts: ["To make tests shorter", "Because Ericsson and Simon’s research held that reporting what is attended to in the moment is more reliable, while “why,” which needs after-the-fact reasoning, is unreliable", "Because players can’t explain", "Because it saves the need for recording"], a: 1, why: "This is the theoretical basis of think-aloud: verbal reports can serve as data when they report what is being attended to, and when asked to infer processes that weren’t attended to they readily make up stories. It is also why it was invented: to get information from inside the head while “watching people use it.”" },
+  { q: "A problem has probability L=0.2 of being found by any one tester. With 5 testers, the probability that at least one finds it is about?", opts: ["20%", "About 67%", "100%", "About 33%"], a: 1, why: "1−(1−0.2)⁵ = 1−0.8⁵ = 1−0.32768 ≈ 67%. The smaller the L, the more people are needed; this also shows that “5 people, 85%” depends on the premise L≈31%." },
+  { q: "Which sentence is most like a neutral question?", opts: ["Do you find this level particularly challenging?", "This tutorial is very clear, isn’t it?", "How did you feel about that level just now?", "You must have seen that very obvious button, right?"], a: 2, why: "A, B and D all put the answer or an evaluation inside the question (presupposing, inviting a nod, pointing at the location). The open-ended “how did you feel” doesn’t lead." },
+  { q: "(Why) Why can’t “testing 5 people is enough” be taken as a rule that holds everywhere?", opts: ["Because 5 is an odd number", "Because L varies by project and different groups of 5 can differ a lot (Faulkner: 55%–99%), and the model assumes similar users, equivalent problems, and retesting after fixes", "Because the fewer tests the better", "Because the formula 1−(1−L)ⁿ is wrong"], a: 1, why: "The formula itself is right under its assumptions; the problem lies in the assumptions: L must fit reality, user groups must be similar, and people independent. With small samples luck passes for a pattern, and Nielsen himself stresses several rounds of iteration and testing different user groups separately." },
+  { q: "You interviewed only veteran players who are still playing, and concluded that “the tutorial has no problem.” What is the most likely problem here?", opts: ["Veterans are more honest than newcomers", "Survivorship bias: the newcomers the tutorial drove away are long gone from your sample", "Interviews are never reliable", "The sample is too large"], a: 1, why: "Like “counting only the planes that flew back,” what you see is a filtered group. Actively recruit newcomers or players who left." }
+]);
+</script>
+</body>
+</html>

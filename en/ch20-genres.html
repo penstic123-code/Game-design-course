@@ -52,7 +52,7 @@
     <div class="txt">
       <span class="badge">Chapter 20</span>
       <h1>Genre Design Patterns</h1>
-      <p class="sub">A genre is not a label but a contract of “loop + promise.”</p>
+      <p class="sub">A genre is a contract made of “a loop plus a promise.”</p>
     </div>
     <svg viewBox="0 0 190 150" class="rough" aria-hidden="true">
       <rect x="20" y="20" width="60" height="45" rx="8" fill="#ffe58a" stroke="#2b2b3a" stroke-width="4"/>
@@ -67,30 +67,30 @@
     <h3>Learning goals</h3>
     <span class="time">about 45 min</span>
     <ul>
-      <li>Say each of five common genres’ “core loop + player promise,” and tell how the label “genre” <b>grew</b>.</li>
-      <li>Spot <span class="term" tabindex="0" data-def="Survivorship bias: observing only the samples that “survived” and ignoring those that didn’t, and so drawing wrong conclusions about cause.">survivorship bias</span>, explain why “what successful games have in common” is not “the cause of success,” and know what other data to look at.</li>
-      <li>Use the player’s <span class="term" tabindex="0" data-def="Schema: a preset framework in the brain of “what this kind of thing is usually like,” used to understand new information quickly.">schema</span> and expectations to judge whether “breaking a genre convention” brings delight or confusion, and say why games of the same kind always cluster.</li>
+      <li>Explain the “core loop + player promise” of each of five common genres, and tell how the “genre” label <b>grew</b>.</li>
+      <li>Spot <span class="term" tabindex="0" data-def="Survivorship bias: observing only the samples that “survived” and ignoring those that did not, and so drawing wrong causal conclusions.">survivorship bias</span>, explain why “what successful games have in common” is not the same as “the reasons for success,” and know which data to look at in addition.</li>
+      <li>Use players’ <span class="term" tabindex="0" data-def="Schema: a ready-made framework in the brain for “what things of this kind are usually like,” used to understand new information quickly.">schemas</span> and expectations to judge whether “breaking a genre convention” will bring delight or confusion, and say why games of the same kind always cluster together.</li>
     </ul>
   </div>
 
   
   <div class="sec"><span class="n">1</span><h2><span class="tag what">What it is</span>Genre = core loop + player promise</h2></div>
-  <p>You see the word “roguelike” on a store page, and without opening a single screenshot you have already guessed a lot: every run is a little different, dying will hurt, and you will probably be unable to resist another run. Who told you? Nobody, it was the word itself.</p>
-  <p>So for a designer a genre is more like a <b>contract</b>. A player who picks this genre is expecting a certain <b>core loop</b> (covered in Chapter 2: the set of actions players repeat over and over), and also certain <b>player promises</b>, that is, “you will get this kind of experience.”</p>
+  <p>You see the word “roguelike” on a store page, and without opening a single screenshot you have already guessed a good deal: every run will be a bit different, dying will hurt, and you will probably be unable to resist one more run. Nobody said any of this; the word itself carried it.</p>
+  <p>So to a designer a genre is more like a <b>contract</b>. By choosing this genre a player is expecting a certain <b>core loop</b> (from Chapter 2, the set of actions players repeat again and again), and also expecting certain <b>player promises</b>, that is, “you will get this kind of experience.”</p>
   <div class="grid2">
     <div class="card y"><h3>🔁 Core loop</h3><p>The set of actions players repeat over and over: for example “jump → land → move forward,” or “draw a card → play a card → win → get a new card.”</p></div>
     <div class="card p"><h3>🤝 Player promise</h3><p>The experience this genre guarantees by default: platformers promise <b>“failure is my execution’s fault”</b>; roguelikes promise <b>“every run is different”</b>; puzzles promise <b>“the moment it clicks feels great.”</b></p></div>
   </div>
   <div class="card">
     <svg viewBox="0 0 740 300" width="100%" role="img" aria-label="Genre contract schematic: the designer promises a core loop and a player promise; keeping it brings trust, and breaking it brings a feeling of being cheated">
-      <defs><marker id="c20ar" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2b2b3a"/></marker></defs>
+      <defs><marker id="c20ar" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="14" refX="12" refY="7" orient="auto"><path d="M0,0 L14,7 L0,14 z" fill="#2b2b3a"/></marker></defs>
       <g class="rough" stroke="#2b2b3a" stroke-width="3.5">
         <rect x="10" y="20" width="170" height="90" rx="10" fill="#fff7cf"/>
         <rect x="560" y="20" width="170" height="90" rx="10" fill="#e8f6fc"/>
         <rect x="215" y="10" width="310" height="120" rx="6" fill="#fff"/>
         <rect x="30" y="190" width="320" height="90" rx="10" fill="#eaf9e4"/>
         <rect x="390" y="190" width="320" height="90" rx="10" fill="#ffe9ef"/>
-        <path d="M180 65 H213 M527 65 H558" fill="none" marker-end="url(#c20ar)"/>
+        <path d="M180 65 H213" fill="none" marker-end="url(#c20ar)"/><path d="M527 65 H558" fill="none" marker-end="url(#c20ar)"/>
         <path d="M300 130 L200 188" fill="none" marker-end="url(#c20ar)"/>
         <path d="M440 130 L540 188" fill="none" marker-end="url(#c20ar)"/>
       </g>
@@ -105,10 +105,10 @@
       </g>
     </svg>
   </div>
-  <div class="eg" data-ic="🏃" data-t="Platformer"><span data-illus="c20_coyote"></span><div class="egt"><b>Platformer</b>: you buy it to get steadily more precise with your hands. As long as lenient rules like “coyote time” (you can still jump for a moment after running off an edge) are in place, when you die you think “my bad, one more try.”</div></div>
+  <div class="eg" data-ic="🏃" data-t="Platformer"><span data-illus="c20_coyote"></span><div class="egt"><b>Platformers</b>: you buy one to get steadily more precise with your controls. As long as forgiving rules like “coyote time” (you can still jump for a moment after running off an edge) are kept in order, dying makes you think “my bad, one more try.”</div></div>
   <div class="eg" data-ic="🧩" data-t="Puzzle"><span data-illus="c20_aha"></span><div class="egt"><b>Puzzle</b>: the promise is “I can work it out by thinking.” With enough clues but no direct answer, you get that “aha.”</div></div>
-  <div class="eg" data-ic="🌶️" data-t="Sichuan restaurant"><span data-illus="c20_chili"></span><div class="egt"><b>Walking into a Sichuan restaurant</b>: you assume “there will be spice.” Open a horror film and you assume “I’ll be scared.” A cuisine and a film genre are both contracts nobody wrote down.</div></div>
-  <div class="eg bad" data-ic="💢" data-t="Sloppy hitbox"><span data-illus="c20_hitbox"></span><div class="egt"><b>Breaking a promise</b>: the advertising says “precision platforming,” but the hit detection is vague and you fall though you clearly touched the platform. Players don’t mind that it is hard; they feel <b>cheated</b>, because the promise “failure is my fault” was not kept.</div></div>
+  <div class="eg" data-ic="🌶️" data-t="Sichuan restaurant"><span data-illus="c20_chili"></span><div class="egt"><b>Walking into a Sichuan restaurant</b>: you assume “it will be spicy.” Opening a horror film, you assume “I’ll be scared.” Cuisines and film genres alike are contracts nobody wrote down.</div></div>
+  <div class="eg bad" data-ic="💢" data-t="Sloppy hitbox"><span data-illus="c20_hitbox"></span><div class="egt"><b>Breaking the promise</b>: the marketing says “precision platforming,” but the collision is fuzzy, and you clearly land on a platform and still fall. Players don’t mind that it’s hard; they feel <b>cheated</b>, because the promise that “failure is my fault” was not kept.</div></div>
 
   
   <div class="sec"><span class="n">2</span><h2><span class="tag what">What it is</span>Design patterns of five genres</h2></div>
@@ -126,7 +126,7 @@
     <div class="withimg rev"><span data-illus="c20_grogue"></span><div>
       <p><b>Promise:</b> every run is a new story. The name comes from the old game <i>Rogue</i> of around 1980.</p>
       <p><span class="term" tabindex="0" data-def="Using rules and random numbers to generate maps, enemies, rewards and other content automatically at runtime, instead of placing everything by hand.">Procedural generation</span> re-assembles maps, enemies and rewards every run, so players can’t memorize a routine. <span class="term" tabindex="0" data-def="The rule that progress is wiped on death and you start over (permadeath).">Permadeath</span> gives every decision weight, because dying means starting over.</p>
-      <p>In-run growth works only within this run and is gone when you die; <span class="term" tabindex="0" data-def="Permanent unlocks or upgrades that persist after death (meta progression), as opposed to in-run growth that lasts only for one run.">meta-progression</span> is kept after death. Works with meta-progression are often called roguelites.</p>
+      <p>In-run growth works only within this run and is gone when you die; <span class="term" tabindex="0" data-def="Meta-progression (the meta progression of Chapter 16): permanent unlocks or upgrades that persist after death, as opposed to in-run growth that lasts only for one run.">meta-progression</span> is kept after death. Works with meta-progression are often classed as roguelites.</p>
     </div></div>
   </div>
   <div class="card v">
@@ -155,7 +155,7 @@
   </div>
 
   <h3>Genre radar: stacked comparison</h3>
-  <p>Put the five genres on the same set of dimensions and you will see the difference in their “personalities.” <b>Tick the genres below to stack them layer by layer</b>, and below it will tell you who is highest in each dimension.</p>
+  <p>Put the five genres on the same set of dimensions and their “personalities” show. <b>Tick the genres below to stack them layer by layer</b>, and the text underneath says who is highest on each dimension.</p>
   <div class="card">
     <svg viewBox="0 0 700 420" width="100%" role="img" aria-label="Radar chart of five game genres on five dimensions, with ticks to stack them">
       <g id="c20_radar" class="rough" stroke="#2b2b3a" stroke-width="3"></g>
@@ -170,7 +170,7 @@
 
   
   <div class="sec"><span class="n">3</span><h2><span class="tag what">What it is</span>Two kinds of growth in roguelikes: in-run and meta</h2></div>
-  <p>A roguelike has a contradiction: permadeath makes people tense, but if one death wipes everything, who can stand it? Its solution is to split growth into two layers.</p>
+  <p>A roguelike has a contradiction: permadeath makes people tense, but if one death wipes everything, players find it hard to accept. Its solution is to split growth into two layers.</p>
   <div class="card">
     <svg id="c20_growth" viewBox="0 0 740 330" width="100%" role="img" aria-label="Left: with only in-run growth every run starts at the same point; right: with meta-progression the start rises run after run"></svg>
     <p class="small">Schematic: each rising line is the growth of power within one run, and ✖ is death. On the left every run restarts from the same starting point; on the right failure leaves a permanent bonus and the starting point gets higher and higher.</p>
@@ -186,13 +186,14 @@
 
   
   <div class="sec"><span class="n">4</span><h2><span class="tag origin">How it was invented</span>How the word “genre” grew</h2></div>
-  <p>Nobody declared one day that “from now on the world has roguelikes.” A genre is <b>first a batch of similar games, and then someone wanting to give them a common name</b>, and only once the name is chosen do the arguments over the boundary begin. You saw the same in Chapter 1: the word “game” has no agreed definition, only family resemblance. Genres are the same, only younger and more quarrelsome.</p>
+  <p>Nobody announced one day that “from now on there are roguelikes in the world.” A genre is <b>first a batch of similar games, then someone wanting to give them a common name</b>, and only after the name is chosen do arguments about its borders begin. Chapter 1 saw the same thing: the word “game” has no agreed definition, only family resemblance. Genres are the same, only younger and quarrelsome.</p>
   <div class="story">
     <h3>From <i>Rogue</i> to “roguelike”</h3>
-    <p><b>The problem at the time.</b> Around 1980, Michael Toy and Glenn Wichman, students at the University of California, Santa Cruz, made a game that drew dungeons in characters, <i>Rogue</i>, whose map was shown on the terminal through the curses library written by Ken Arnold. It spread with BSD UNIX and was included in 4.2BSD in 1983, but <b>without source code</b>; only with 4.3BSD in 1986 did the source become available. People who wanted to play “something like it” had to remake it from scratch.</p>
-    <p><b>Early attempts.</b> Hobbyists made similar games like Hack, Moria and Angband, and players were scattered among different Usenet newsgroups, hard to find each other.</p>
-    <p><b>The key step.</b> In 1993 someone proposed merging these discussions under one name. According to Wikipedia’s account, it was argued for about three weeks and in the end <b>rec.games.roguelike.*</b> was chosen, on the grounds that <i>Rogue</i> was the oldest of this kind of game, making it “the least bad option.” One word, and that is how a batch of games was framed as “a genre.”</p>
-    <p><b>Then the boundary starts to drift.</b> In 2008 the International Roguelike Development Conference was held in Berlin and the community drafted the “Berlin Interpretation.” It is not a definition but a <b>list of factors</b>, with the high-weight ones including random environment generation, permadeath, turn-based play and grid movement; it takes ADOM, Angband, Linley’s Dungeon Crawl, NetHack and Rogue as the benchmark for measuring “how roguelike a game is.” In the same year the indie game <i>Spelunky</i> appeared, meeting only some of these factors yet called a roguelike by many, and so terms like roguelite followed.</p>
+    <p>Around 1980 the students Michael Toy and Glenn Wichman at the University of California, Santa Cruz made <i>Rogue</i>, a game that drew dungeons in characters. The map was shown on the terminal through the curses library written by Ken Arnold. It spread with BSD UNIX and was in 4.2BSD in 1983, but <b>without source code</b>. Not until 4.3BSD in 1986 was the source available. Anyone who wanted to play “something like it” had to start from scratch.</p>
+    <p>So hobbyists made similar games on their own: Hack, Moria, Angband. But players were scattered among different Usenet newsgroups and found it hard to reach each other.</p>
+    <p>In 1993 someone proposed merging these discussions under one name. According to Wikipedia’s account, it was argued for about three weeks and in the end <b>rec.games.roguelike.*</b> was chosen, on the grounds that <i>Rogue</i> was the oldest of this kind of game, making it “the least bad option.” One word, and that is how a batch of games was framed as “a genre.”</p>
+    <p>Once the genre had a name, its borders began to drift. In 2008 the International Roguelike Development Conference met in Berlin, and the community drafted the “Berlin Interpretation.” What it lists is a <b>set of factors</b>, and it gives no definition. The high-weight factors include random environment generation, permadeath, turn-based play and grid movement.</p>
+    <p>It takes ADOM, Angband, Linley’s Dungeon Crawl, NetHack and Rogue as benchmarks to measure “how roguelike a game is.” The same year the indie game <i>Spelunky</i> appeared. It met only some of the factors yet was counted as a roguelike by many, and so terms like roguelite came along too.</p>
   </div>
   <div class="timeline">
     <div class="ev hasimg"><span data-illus="c20_rogue"></span><div><b class="yr">Around 1980</b> <i>Rogue</i> (Toy, Wichman, using Arnold’s curses library): a dungeon and an adventurer represented by an @ drawn in characters.</div></div>
@@ -201,7 +202,15 @@
     <div class="ev hasimg"><span data-illus="c20_berlin"></span><div><b class="yr">2008</b> The Berlin Interpretation: a list of factors, not a definition.</div></div>
     <div class="ev hasimg"><span data-illus="c20_lite"></span><div><b class="yr">From 2008</b> Works like <i>Spelunky</i> that meet only some factors become popular, terms like roguelite appear, and the boundary keeps being argued over.</div></div>
   </div>
-  <p><b>Draw your own line first, then see how others draw theirs.</b> Below are 6 games often brought up in discussion. Step one: by intuition, mark <b>which ones you think count as roguelikes</b>; step two: tick the conditions you think a “roguelike must have,” and see which games get counted by that definition. Does it match your intuition?</p>
+  <aside class="cc-card" aria-label="Concept card: Roguelike">
+    <span class="cc-tag">Concept card</span>
+    <p class="cc-name"><span>Roguelike</span></p>
+    <p class="cc-en">Roguelike (works with more meta-progression are often classed as roguelite)</p>
+    <p class="cc-by"><i>Rogue</i> (Michael Toy and Glenn Wichman, around 1980); the name comes from the Usenet group rec.games.roguelike.* in 1993; the community drafted the “Berlin Interpretation” in 2008</p>
+    <p class="cc-def">A kind of game like <i>Rogue</i>: every run is procedurally generated, death is permanent, and after dying you start over. The boundary is set by community convention and keeps drifting.</p>
+    <p class="cc-eg"><span class="cc-k">Example</span><i>Hades</i> gives different rooms and boons on every departure; after death you return to the start and use the resources you saved to upgrade permanent abilities.</p>
+  </aside>
+  <p><b>Draw the line yourself first, then see how others draw it.</b> Below are 6 games often brought up in this discussion. Step one: by gut feeling, mark <b>which you think count as roguelikes</b>. Step two: tick the conditions you think a roguelike “must have,” and see which games get counted in under that definition. Does it agree with your intuition?</p>
   <div class="board" id="c20_draw">
     <div class="small"><b>Step one:</b> click a game’s name to mark “I think it’s a roguelike” (click again to undo).</div>
     <div id="c20_gmarks"></div>
@@ -217,16 +226,16 @@
     <div class="msg" id="c20_dmsg" style="font-size:1.05rem;font-family:var(--body)"></div>
   </div>
   <div class="sticky" id="c20k2">Try it: first click “Strict” and see which games drop out; then click “Loose” and see which get let in. <span class="c20ok"></span></div>
-  <p class="small">This is an <b>illustrative classification</b> meant to show that “definitions drift”: the factors are a simplified five, and the judgments about each work are disputed too (for example <i>Slay the Spire</i> only unlocks new content without adding stats, and in <i>Vampire Survivors</i> the stages are fixed and what is random is the upgrade choices). It is not an authoritative division of genres. The lesson for designers: don’t agonize over “does my game count as some genre,” and think clearly about <b>what you are promising the player</b>.</p>
+  <p class="small">This is an <b>illustrative classification</b> meant to show that “definitions drift”: the factors are a simplified five, and the judgment on each title is contested (for example <i>Slay the Spire</i> only unlocks new content without adding stats, and in <i>Vampire Survivors</i> the stages are fixed and what is random are the upgrade choices). It is not an authoritative genre classification. The lesson for designers: don’t fret over “does my game count as such-and-such genre,” and think clearly about <b>what you have promised the player</b>.</p>
 
   
   <div class="sec"><span class="n">5</span><h2><span class="tag origin">How it was invented</span>Wald’s airplane: “who is missing” is the key</h2></div>
   <div class="story">
     <h3>Where on the plane should armor go?</h3>
     <div class="withimg rev"><span data-illus="c20_planeback"></span><div>
-      <p><b>The problem at the time.</b> During the Second World War the US military wanted to add armor to bombers, but armor is heavy and can’t cover the whole plane. Where should it go? Researchers examined planes that had <b>returned</b>, and the wings and fuselage were riddled with bullet holes, with few near the engines. The intuition came naturally: “reinforce where the holes are.”</p>
-      <p><b>The key step.</b> Abraham Wald, working with Columbia University’s Statistical Research Group (SRG), saw the other side: these were the planes that <b>made it back</b>. The places with few holes might be exactly the places where “if hit, it doesn’t come back,” and those planes were not in the sample at all. What needed reinforcing was the places on returning planes with <b>no bullet holes</b>.</p>
-      <p>Wald’s 1943 set of memoranda dealt with exactly how to estimate the survival probability of each part of a plane when only survivors can be seen; one, titled “A Method of Estimating Plane Vulnerability Based on Damage of Survivors,” was reprinted by the Center for Naval Analyses in 1980. Mangel and Samaniego gave a popular introduction in the 1984 <i>Journal of the American Statistical Association</i>.</p>
+      <p>During the Second World War the US military wanted to add armor to bombers, but armor is heavy and can’t cover the whole plane. Where should it go? Researchers examined planes that had <b>returned</b>, and the wings and fuselage were riddled with bullet holes, with few near the engines. The intuition came naturally: “reinforce where the holes are.”</p>
+      <p>Abraham Wald, working with Columbia University’s Statistical Research Group (SRG), saw the other side: these were the planes that <b>made it back</b>. The places with few holes were exactly the places where “if hit, it doesn’t come back,” and those planes were not in the sample at all. What needed reinforcing was the places on returning planes with <b>no bullet holes</b>.</p>
+      <p>Wald’s set of memoranda from 1943 dealt with exactly how to estimate the survival probability of different parts of an aircraft when only the survivors can be seen. One of them, titled “A Method of Estimating Plane Vulnerability Based on Damage of Survivors,” was reprinted by the Center for Naval Analyses in 1980. Mangel and Samaniego gave a popular introduction in the <i>Journal of the American Statistical Association</i> in 1984.</p>
     </div></div>
     <p class="small">The details of the much-retold “bullet-hole diagram” differ across retellings (who drew the diagram, the exact data), so the widely accepted main point is taken here: <b>who is missing from the analyzed sample</b>. The planes and numbers below are <b>illustrative</b>, not historical data.</p>
     <div class="timeline">
@@ -234,7 +243,7 @@
       <div class="ev hasimg"><span data-illus="c20_jasa"></span><div><b class="yr">1984</b> Mangel &amp; Samaniego, “Abraham Wald’s work on aircraft survivability”, Journal of the American Statistical Association 79(386): 259–267.</div></div>
       <div class="ev hasimg"><span data-illus="c20_ask"></span><div><b class="yr">Today</b> “Survivorship bias” becomes a common concept in statistics and behavioral science: when evaluating successes, first ask “what about the failures?”</div></div>
     </div>
-    <p><b>Try it first: you decide where the armor goes.</b> The picture below shows 140 “bullet holes on returning planes” (illustrative: each plane is hit at random, the chance of crashing after a hit differs by part, and we see only those that made it back). Click parts of the plane to choose <b>2 places</b> for armor (each halves the “chance of crashing when hit,” illustrative), then click “Reveal.”</p>
+    <p><b>Try it yourself first: decide where to add armor.</b> The picture below shows 140 “bullet holes on returning planes” (illustrative: each plane is hit at random, the chance of crashing after a hit differs by part, and you see only those that flew back). Click parts of the plane to choose <b>2 places</b> for armor (each halves the “crash chance after a hit,” illustrative), then click “Reveal.”</p>
     <div class="board">
       <svg id="c20_plane" viewBox="0 0 720 350" width="100%" role="img" aria-label="Top view of a bomber, the distribution of bullet holes on returning planes, with parts you can click to add armor"></svg>
       <div>
@@ -249,14 +258,26 @@
 
   
   <div class="sec"><span class="n">6</span><h2><span class="tag why">Why it works</span>Looking only at winners misleads: survivorship bias</h2></div>
-  <p>You want to make “the next hit,” so you study the 20 most successful indie games and find “70% are pixel art” and “half have roguelike elements.” The conclusion seems ready to jump out: make a pixel-art roguelike!</p>
-  <p>But have you thought about how much of the thousands of failures is pixel art? If it is also 70%, this “finding” carries no information. Wald’s plane is the same trap.</p>
+  <p>You want to make “the next hit,” so you study the 20 most successful indie games and find that “70% are pixel art” and “about a third have roguelike elements.” The conclusion seems obvious: make a pixel-art roguelike!</p>
+  <p>But among the several thousand that failed, how many are pixel art? If it is also 70%, this “discovery” carries no information at all. Wald’s planes are the same trap.</p>
   <div class="why-box">
     <h3>Survivorship bias</h3>
-    <p><b>The principle:</b> when we observe only the samples left after selection, we mistake “the traits selection left behind” for “the cause of success.” To test whether “trait X is a cause of success,” you need at least three more things: the <span class="term" tabindex="0" data-def="Base rate: the share a trait takes in the whole sample to begin with.">base rate</span> (how much of all games had X to begin with), <b>the failed samples</b> (is the success rate of games with X higher than without X), and <b>sample size</b> (with 20 winners, how big is the random fluctuation).</p>
-    <p>In symbols: what we see is P(pixel art | success), and what we want to know is P(success | pixel art). The two differ unless you also know P(pixel art) and P(success).</p>
-    <div class="src">Sources: Wald’s research on aircraft survivability at the Statistical Research Group (1943 memoranda; Mangel &amp; Samaniego, 1984, JASA). “Survivorship bias” is a common concept in statistics and behavioral science, and the difference between conditional probabilities is basic probability theory.</div>
+    <p><b>The principle:</b> observe only the samples that survived a filter, and you take “features the filter kept” for “the cause of success.” To test whether “feature X is the cause of success,” you must look at three more things: the <span class="term" tabindex="0" data-def="Base rate: how large a share of the whole sample a feature occupies to begin with.">base rate</span> (how much of all games has X to begin with), <b>the failed samples</b> (is the success rate of games with X higher than without X?), and <b>the sample size</b> (with 20 winners, how big is the random fluctuation?).</p>
+    <p>What you see is “how much of the successes is pixel art,” and what you want to know is “how much of the pixel-art games succeeded.” These are two different questions, unless you also know what share of all games is pixel art and what share of all games succeeded.</p>
+    <details>
+      <summary>Advanced: writing it in symbols</summary>
+      <p class="small">What you see is P(pixel art | success), and what you want to know is P(success | pixel art). P(A | B) is read “the probability of A given B.” The two are equal only if you also know P(pixel art) and P(success).</p>
+    </details>
+    <div class="src">Sources: Wald · 1943 · wrote the memoranda on aircraft survivability at the Statistical Research Group · had to estimate the planes that did not return. Mangel and Samaniego · 1984 · presented Wald’s work (JASA). “Survivorship bias” is a common concept in statistics and behavioral science, and the difference between conditional probabilities is basic probability theory.</div>
   </div>
+  <aside class="cc-card" aria-label="Concept card: Survivorship Bias">
+    <span class="cc-tag">Concept card</span>
+    <p class="cc-name"><span>Survivorship Bias</span></p>
+    <p class="cc-en">Survivorship bias</p>
+    <p class="cc-by">Abraham Wald · aircraft survivability research for the US military, 1943</p>
+    <p class="cc-def">Looking only at the samples that were selected to remain makes you mistake the traits of the survivors for the cause of success. Ask: what about those that did not remain?</p>
+    <p class="cc-eg"><span class="cc-k">Example</span>Returning planes had bullet holes concentrated on the wings and fuselage, yet what needed reinforcing was the area near the engines, which had the fewest holes: planes hit there did not come back and were not in the sample.</p>
+  </aside>
   <div class="eg" data-ic="🎮" data-t="Hits are all online"><span data-illus="c20_hits"></span><div class="egt"><b>“Hit games all have online play, so make it online”</b>: if 40% of all games had online play to begin with, 40% of winners having it says nothing. What to compare is the success rate with online play and without.</div></div>
   <div class="eg" data-ic="🎓" data-t="Dropout founder"><span data-illus="c20_dropout"></span><div class="egt"><b>“So-and-so dropped out, founded a company and became a billionaire, so dropping out helps you succeed”</b>: we don’t see the far more numerous people who dropped out and stayed unknown.</div></div>
   <div class="eg" data-ic="🏛️" data-t="Old buildings are sturdy"><span data-illus="c20_oldbuild"></span><div class="egt"><b>“Old houses are all sturdy, and today’s houses are poor quality”</b>: the badly built old houses collapsed or were torn down long ago, and we see only the ones that survived.</div></div>
@@ -264,13 +285,22 @@
 
   
   <div class="sec"><span class="n">7</span><h2><span class="tag why">Why it works</span>A genre is a psychological expectation: delight and confusion when breaking convention</h2></div>
-  <p>You open a game labeled “platformer,” and your finger is already ready for “hold to jump higher.” If this time the key press waits half a second before the jump, you get irritated; but if in the tenth minute the game lets you discover that “the jump button is also a grappling hook,” you laugh. Both break expectations, and the feelings are worlds apart.</p>
+  <p>You open a game labeled “platformer,” and your fingers are already ready for “hold to jump higher.” If this time the key press must wait half a second before the jump, it is irritating. But if on the tenth minute the game lets you discover that “the jump button is also a grappling hook,” you laugh. Both break your expectations, yet the feelings are poles apart.</p>
   <div class="why-box">
     <h3>Schema and expectation: the psychology of the genre promise</h3>
-    <p><b>The principle:</b> in psychology, a <span class="term" tabindex="0" data-def="Schema: a preset framework in the brain of “what this kind of thing is usually like,” used to understand new information quickly.">schema</span> is the preset framework in the brain of “what this kind of thing is usually like.” The concept is often traced to Bartlett (1932): he had British subjects retell an unfamiliar North American Indian folk tale (“The War of the Ghosts”) and found that in retelling, people rewrote the parts that didn’t fit their own culture’s expectations into forms that “made sense.” Expectations reshape how we understand new information. (How strong the conclusions of this kind of early memory research are has also been much discussed since.)</p>
-    <p>When players see a genre name, they start up a schema: how to control, what to expect, what counts as fair. If it fits the schema, the player gets going quickly and with little effort; if it goes against it, the player must relearn, the cost is confusion, and the gain may be delight. A common view: things that <b>break expectations but make sense afterward</b> most easily feel like delight; breaking expectations in a way that <b>doesn’t make sense</b> (inaccurate hit detection, going against the genre’s core promise) makes people feel cheated.</p>
-    <div class="src">Sources: Frederic Bartlett, <i>Remembering</i> (1932), which introduced the concept of schema and applied it to the study of memory; “expectation and delight” is common design experience in the games industry, not a single law. The distinction between “surface / core” below is a design judgment, and in reality depends on execution.</div>
+    <p><b>The principle:</b> in psychology a <span class="term" tabindex="0" data-def="Schema: a ready-made framework in the brain for “what things of this kind are usually like,” used to understand new information quickly.">schema</span> is the brain’s ready-made framework for “what things of this kind are usually like.” The idea is often traced to Bartlett (1932).</p>
+    <p>He had British subjects retell an unfamiliar North American Indian folk tale (“The War of the Ghosts”) and found that, in retelling, people rewrote the parts that did not fit their own culture’s expectations into something that “made sense.” Expectation reshapes how people understand new information. How strong the conclusions of this kind of early memory research are has also been much discussed since.</p>
+    <p>When players see a genre name, a schema starts up: how to operate, what to expect, what counts as fair. If the game fits the schema, players get started fast and with little effort. If it goes against it, players have to relearn, the cost being confusion and the gain possibly delight. A common view is: things that <b>break expectations but make sense afterwards</b> are the likeliest to feel like a delight. Breaking expectations and <b>not making sense</b> (inaccurate collision, going against the genre’s core promise) makes people feel cheated.</p>
+    <div class="src">Sources: Frederic Bartlett · 1932 · <i>Remembering</i> · introduced the concept of schema and applied it to memory research. “Expectation and delight” is common design experience in the games industry. The distinction between “surface / core” below is a design judgment, and in reality depends on execution.</div>
   </div>
+  <aside class="cc-card" aria-label="Concept card: Schema">
+    <span class="cc-tag">Concept card</span>
+    <p class="cc-name"><span>Schema</span></p>
+    <p class="cc-en">Schema</p>
+    <p class="cc-by">Frederic Bartlett · <i>Remembering</i>, 1932</p>
+    <p class="cc-def">The brain’s ready-made framework for “what things of this kind are usually like.” If a game fits it, players start fast; if it goes against it, players must relearn, which may bring confusion or delight.</p>
+    <p class="cc-eg"><span class="cc-k">Example</span>Opening a platformer, your fingers are already ready for “hold to jump higher.” If the button takes half a second to jump, you get annoyed; if the jump button doubles as a grappling hook, you laugh.</p>
+  </aside>
   <div class="card">
     <svg viewBox="0 0 740 330" width="100%" role="img" aria-label="Two-layer convention schematic: breaking a surface convention is low risk, breaking a core promise is high risk and needs new fun as compensation; the arrow on the right runs from delight to confusion">
       <defs><marker id="c20ar2" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2b2b3a"/></marker></defs>
@@ -304,12 +334,12 @@
     <span data-illus="c20_peaks"></span>
     <div>
       <p>Once a genre takes off, the games everyone makes grow more and more alike: the same core loop, the same upgrade tree, the same art style. Nobody ordered it; each person is just “making what already works a bit better.”</p>
-      <p>It is like a climber looking for the highest point in thick fog: he can see only what is underfoot, and goes wherever it is higher. When every direction around him slopes down, he stops. But the peak in the fog may be only a low hill, and the higher one lies on the other side of the valley.</p>
+      <p>It is like a climber looking for the highest point in thick fog: he can see only what is underfoot, and goes wherever it is higher. When every direction around him slopes down, he stops. But that peak may be only a low hill, and the higher one lies on the other side of the valley.</p>
     </div>
   </div>
   <div class="why-box">
     <h3>Local optima and “hill climbing”</h3>
-    <p>On a “landscape,” improving only in small steps easily leaves you stuck at a <span class="term" tabindex="0" data-def="Local optimum: the best position within a small neighborhood, but not necessarily the best overall. A method that makes only small improvements stops here.">local optimum</span>: highest in the neighborhood, but not the highest overall. To reach a higher peak you often have to go downhill first, that is, get worse for a while before getting better. The evolutionary biologist Sewall Wright first drew this “fitness landscape” in 1932; the metaphor was later borrowed widely in optimization, product design and other fields. Seeing “genre clustering” as hill climbing is an analogy of this course.</p>
+    <p>On a “landscape,” improving only by small steps easily leaves you stuck at a <span class="term" tabindex="0" data-def="Local optimum: the best position within a small surrounding neighborhood, though not necessarily the best overall. A method that only takes small improving steps stops here.">local optimum</span>: the highest point in the surrounding area but not the highest overall. To reach a higher peak you have to walk downhill first, that is, get worse for a while before getting better. The evolutionary biologist Sewall Wright first drew this kind of “fitness landscape” in 1932, and the metaphor has since been borrowed widely in optimization, product design and elsewhere. Seeing “genre clustering” as hill climbing is an analogy.</p>
     <div class="src">Source: Sewall Wright, “The roles of mutation, inbreeding, crossbreeding and selection in evolution,” Proceedings of the Sixth International Congress of Genetics, 1932.</div>
   </div>
   <div class="board">
@@ -326,7 +356,7 @@
 
   
   <div class="sec"><span class="n">9</span><h2><span class="tag how">How to use it</span>Signature interactive: circle the “secrets of success,” then check against everyone with one click</h2></div>
-  <p><b>How to play:</b> click “Generate” to get 200 games. Each has 6 design traits, and <b>the traits have no connection to success at all, purely random</b> (each time 20 winners are drawn, the golden squares). <b>First look at just these 20 winners</b> and tick what you think are the “secrets of success”; then click <b>“Compare with all in one click”</b> and see how much of your secret appears among the failures. Finally click “Repeat 200 times” and see whether these “secrets” change every time.</p>
+  <p><b>How to play:</b> click “Generate” to get 200 games. Each has 6 design features, and <b>the features have nothing to do with success, purely random</b> (each time 20 winners are drawn, the gold cells). <b>Look at just those 20 winners first</b> and tick what you think are the “secrets of success.” Then click <b>“Compare with everyone”</b> and see how much of each “secret” appears among the losers. Finally click “Repeat 200 times” and see whether the “secrets” change every time.</p>
   <div class="board">
     <label style="display:block;margin-bottom:6px"><input type="checkbox" id="c20_real"> 🔬 Make “online play” <b>really useful</b> in this world (about 3 times the chance of success). Regenerate after ticking and see whether the correct test can detect it when there really is a relationship.</label>
     <div>
@@ -355,34 +385,37 @@
     <ul>
       <li><b>“Successful works all have X, so making X will succeed.”</b> It ignores that failed works have plenty of X too (the base rate), and factors like luck, publishing and timing.</li>
       <li><b>“Mixing two hot genres must be even hotter.”</b> The promises of two genres may conflict (for example the precise control of “failure is my fault” against the uncertainty of “random every time”), so check the promises first.</li>
-      <li><b>“Genre conventions are made to be broken.”</b> Conventions are the player’s shortcut; breaking one or two on purpose brings delight, and breaking them all makes a game nobody can read.</li>
-      <li><b>“A genre has one official definition.”</b> It is agreed on by the community and it drifts; you tried it yourself in the line-drawing interactive.</li>
+      <li><b>“Genre conventions exist to be broken.”</b> Conventions are a shortcut that saves players effort. Breaking one or two on purpose brings delight; break them all and you have a game nobody can read.</li>
+      <li><b>“A genre has one official definition.”</b> It is agreed by the community and it drifts, as the draw-the-line interactive already showed you firsthand.</li>
     </ul>
   </div>
 
   <div class="reflect">
     <h3>Reflection and debate</h3>
-    <p>Survivorship bias reminds us not to over-read success stories, but that doesn’t mean success stories have no reference value: combining base rates and failed samples, and then running controls, you can still learn something. The details of Wald’s story differ across retellings, and the widely accepted main point is taken here. The judgment of “delight or confusion” varies by player group: veterans want freshness and newcomers may need familiarity, and the judgments in the text are only a kind of design experience. Local optima should also be seen from another angle: a low hill is not necessarily bad, it may mean a stable gameplay that people buy, and treating it as a “trap to escape” is itself one-sided. As for “genres are agreed on by the community,” that is a common view, and some argue that genres correspond to stable gameplay structures. Do you think a genre is more like a “fact” or a “convention”?</p>
+    <p>Survivorship bias warns against over-reading successful cases. Successful cases still have reference value: combined with base rates and failed samples, and with a control, you can still learn from them. Details of Wald’s story differ between retellings, and what is taken here is the widely accepted core.</p>
+    <p>Whether something is “delight or confusion” differs by player group: veterans want freshness, while new players may need familiarity, and the judgment in the text is only design experience.</p>
+    <p>Local optima have another side: a low peak may mean a stable play style that people buy into, and treating every one as a “trap to escape” is one-sided.</p>
+    <p>“Genres are agreed upon by the community” is a common view, and some think genres correspond to stable structures of play. Think about it: are genres more “fact” or “convention”?</p>
   </div>
 
   <div class="key">
     <h3>Key points</h3>
     <ul>
-      <li>Genre = <b>core loop + player promise</b>. First think clearly about what experience you promise the player, and then decide which genre to use.</li>
+      <li>Genre = <b>core loop + player promise</b>. Think clearly about what experience you promise the player first, and then decide which genre to use.</li>
       <li>Platformers rely on <b>feel and level teaching</b>; puzzles on <b>clues and insight</b>; deckbuilders put strategy in <b>building</b> and tension in <b>drawing</b>; the core of 4X is the mutual check of <b>economy, expansion and military</b>; roguelikes rely on <b>procedural generation + permadeath</b>, with in-run growth bringing drama and meta-progression cushioning frustration.</li>
       <li><b>A genre is first a batch of similar games and then someone naming it</b> (as when a newsgroup was named roguelike in 1993); the boundary is agreed on by the community and drifts.</li>
       <li><b>Survivorship bias</b> (Wald’s plane): when analyzing a sample, first ask “who is missing”; look at the base rate, failed samples and sample size.</li>
       <li>A genre is the player’s <b>psychological expectation</b>: breaking a surface convention is low risk, while breaking a core promise needs new fun as compensation; improving only in small steps easily leaves you stuck at a <b>local optimum</b>, which is why games of one kind cluster.</li>
     </ul>
   </div>
-  <div class="tldr">A genre is a contract of expectations written to the player: use it to save effort, break it deliberately now and then, but don’t take “what the winners have in common” as a recipe.</div>
+  <div class="tldr">A genre is a contract of expectations written to the player: use it to save effort, break it on purpose now and then, but don’t take “what winners have in common” as a recipe.</div>
 
   <div class="sec"><span class="n">10</span><h2><span class="tag think">Practice</span>Check yourself</h2></div>
   <div id="quiz"></div>
 
   <div class="sec"><span class="n">11</span><h2><span class="tag how">Your design</span>Mix two genres</h2></div>
   <div class="card o">
-    <p>Mix two genres, write one sentence of the “<b>player promise</b>,” and then write down its core loop. Example: deckbuilder + platformer, “use the cards in your hand to add skills to jumping”? Think: would the promises of the two genres conflict? Which layer of convention did you break (surface or core)?</p>
+    <p>Mix two genres, write one sentence of “<b>player promise</b>,” then write down its core loop. Example: deck-building + platformer: “use the cards in your hand to add skills to your jumps”? Do the promises of the two genres conflict? Which layer of convention was broken (surface or core)?</p>
     <textarea rows="5" data-save="ch20" placeholder="Genre A + Genre B: the promise is…; the core loop is…; a possible conflict is…"></textarea>
     <p class="small">✍️ Saved automatically in your browser.</p>
   </div>
@@ -406,7 +439,7 @@ const SVGNS = "http://www.w3.org/2000/svg";
     { n: "Strategy/4X", c: "#5bb5dd", v: [1, 2, 5, 3, 2] },
     { n: "Puzzle", c: "#6fcf6f", v: [1, 0, 3, 1, 5] },
   ];
-  const shown = new Set([0, 1]);
+  const shown = new Set([0]);
   const CX = 350, CY = 215, R = 150;
   const ang = i => (-90 + 72 * i) * Math.PI / 180;
   const pt = (i, val) => [CX + R * val / 5 * Math.cos(ang(i)), CY + R * val / 5 * Math.sin(ang(i))];
@@ -427,8 +460,8 @@ const SVGNS = "http://www.w3.org/2000/svg";
     $("rchips").querySelectorAll("button").forEach(b => (b.onclick = () => { const i = +b.dataset.i; shown.has(i) ? shown.delete(i) : shown.add(i); draw(); }));
     const sel = [...shown];
     if (!sel.length) $("rtext").textContent = "No genres stacked yet. Tick one and see.";
-    else if (sel.length === 1) { const g = GENRES[sel[0]]; const mx = Math.max(...g.v); $("rtext").innerHTML = "<b>" + g.n + "</b> stands out most in:" + AXES.filter((_, i) => g.v[i] === mx).join(",") + " (" + mx + "  pts). Stack another genre to compare."; }
-    else $("rtext").innerHTML = "<b>Highest in each dimension:</b><br>" + AXES.map((a, i) => { const mx = Math.max(...sel.map(k => GENRES[k].v[i])); return a + ":" + sel.filter(k => GENRES[k].v[i] === mx).map(k => GENRES[k].n).join(",") + " (" + mx + ")"; }).join("<br>");
+    else if (sel.length === 1) { const g = GENRES[sel[0]]; const mx = Math.max(...g.v); $("rtext").innerHTML = "<b>" + g.n + "</b> stands out most in: " + AXES.filter((_, i) => g.v[i] === mx).join(",") + " (" + mx + "  pts). Stack another genre to compare."; }
+    else $("rtext").innerHTML = "<b>Highest in each dimension:</b><br>" + AXES.map((a, i) => { const mx = Math.max(...sel.map(k => GENRES[k].v[i])); return a + ":" + sel.filter(k => GENRES[k].v[i] === mx).map(k => GENRES[k].n).join(",") + " (" + mx + ")"; }).join("<br>") + (() => { const both = AXES.filter((_, i) => sel.every(k => GENRES[k].v[i] === 5)); return "<br><b>Dimensions where all chosen genres score full marks:</b>" + (both.length ? both.join(",") : "None"); })();
   }
   $("rall").onclick = () => { GENRES.forEach((_, i) => shown.add(i)); draw(); };
   $("rnone").onclick = () => { shown.clear(); draw(); };
@@ -449,7 +482,7 @@ const SVGNS = "http://www.w3.org/2000/svg";
       if (meta) s += `<line x1="${x0 - 6}" y1="${yb}" x2="${x0 + 10}" y2="${yb}" stroke="#2b2b3a" stroke-width="3"/>`;
     }
     if (meta) s += `<path d="M${ox + 12} ${Y0 - 18} L${ox + PW - 20} ${Y0 - 100}" stroke="#2b2b3a" stroke-width="3" stroke-dasharray="6 5" fill="none"/>`;
-    s += `<text x="${ox + PW / 2}" y="26" font-size="19" text-anchor="middle">${meta ? "With meta: start rises" : "In-run only: same start"}</text>`;
+    s += `<text x="${ox + PW / 2}" y="26" font-size="16" text-anchor="middle">${meta ? "With meta: start rises" : "In-run only: same start"}</text>`;
     s += `<text x="${ox + PW / 2}" y="${Y0 + 28}" font-size="17" text-anchor="middle">Run 1 → Run 5</text>`;
     return s;
   }
@@ -523,8 +556,8 @@ const SVGNS = "http://www.w3.org/2000/svg";
     s += `<g class="reg" data-k="tail"><rect class="shape" x="268" y="276" width="184" height="32" fill="${fill("tail")}"/></g>`;
     s += "</g>";
     
-    const lab = (t, x, y) => `<text x="${x}" y="${y}" font-size="17" text-anchor="middle" class="halo" style="pointer-events:none">${t}</text>`;
-    s += lab("Nose", 360, 22) + lab("Body", 360, 150) + lab("Wing", 150, 152) + lab("Wing", 570, 152) + lab("Engine", 216, 146) + lab("Engine", 504, 146) + lab("Tail", 360, 326);
+    const lab = (t, x, y) => `<text x="${x}" y="${y}" font-size="13" text-anchor="middle" class="halo" style="pointer-events:none">${t}</text>`;
+    s += lab("Nose", 360, 22) + lab("Body", 360, 150) + lab("Wing", 150, 152) + lab("Wing", 570, 152) + lab("Engine", 216, 141) + lab("Engine", 504, 141) + lab("Tail", 360, 326);
     armor.forEach(k => { const c = { nose: [360, 78], body: [360, 200], wing: [150, 200], eng: [216, 200], tail: [360, 298] }[k]; s += `<text x="${c[0]}" y="${c[1]}" font-size="26" text-anchor="middle" style="pointer-events:none">🛡</text>`; });
     
     dots.forEach(d => (s += `<circle cx="${d[0].toFixed(1)}" cy="${d[1].toFixed(1)}" r="3.6" fill="#2b2b3a" style="pointer-events:none"/>`));
@@ -589,7 +622,7 @@ const SVGNS = "http://www.w3.org/2000/svg";
       return "<div class='fr'><button class='chip " + (picks.has(k) ? "on" : "") + "' data-k='" + k + "'>" + (picks.has(k) ? "✔ " : "") + x[0] + "</button><div>" + extra + "</div></div>";
     }).join("");
     $("rows").querySelectorAll("button[data-k]").forEach(b => (b.onclick = () => { const k = +b.dataset.k; picks.has(k) ? picks.delete(k) : picks.add(k); draw(); }));
-    if (view === "succ") $("msg").textContent = picks.size ? "The “secrets of success” you chose:" + [...picks].map(k => FE[k][0]).join(",") + ". Now click “Compare with all in one click” to verify." : "";
+    if (view === "succ") $("msg").textContent = picks.size ? "The “secrets of success” you chose: " + [...picks].map(k => FE[k][0]).join(",") + ". Now click “Compare with all in one click” to verify." : "";
     else if (!picks.size) $("msg").textContent = "You haven’t ticked any “secret.” Go back, tick a few, and come to verify.";
     else {
       const names = [...picks].map(k => FE[k][0]).join(",");
@@ -611,8 +644,8 @@ const SVGNS = "http://www.w3.org/2000/svg";
     }
     $("repout").innerHTML = "<p><b>Repeated " + T + "  times</b> (black line = the trait’s true share among all; orange band = the 90% range of its share among winners):</p>" +
       FE.map((x, k) => { const a = shares[k].slice().sort((p, q) => p - q), lo = a[Math.floor(T * 0.05)], hi = a[Math.ceil(T * 0.95) - 1];
-        return "<div class='fr'><span>" + x[0] + " (all " + Math.round(x[1] * 100) + "%)</span><div><div class='band'><div class='rg' style='left:" + lo * 100 + "%;width:" + Math.max(1, (hi - lo) * 100) + "%'></div><div class='bs' style='left:" + x[1] * 100 + "%'></div></div><div class='fnum'>Share among winners " + Math.round(lo * 100) + "%–" + Math.round(hi * 100) + "%; times it was “the one that looks most like the secret” (the biggest excess over all): <b>" + top[k] + " / " + T + "</b></div></div></div>"; }).join("") +
-      "<div class='msg' style='font-size:1.05rem;font-family:var(--body)'>" + (real ? "Online play’s orange band sits to the right overall (really useful), while the bands of the other traits sway around the black line." : "Every trait’s range sways up and down around the black line, and almost every trait has a chance to be “the number-one secret”: looking only at 20 winners you can “discover” one every time, but it is different every time.") + "</div>";
+        return "<div class='fr'><span>" + x[0] + " (all " + Math.round(x[1] * 100) + "%)</span><div><div class='band'><div class='rg' style='left: " + lo * 100 + "%;width:" + Math.max(1, (hi - lo) * 100) + "%'></div><div class='bs' style='left:" + x[1] * 100 + "%'></div></div><div class='fnum'>Share among winners " + Math.round(lo * 100) + "%–" + Math.round(hi * 100) + "%; times it was “the one that looks most like the secret” (the biggest excess over all): <b>" + top[k] + " / " + T + "</b></div></div></div>"; }).join("") +
+      "<div class='msg' style='font-size:1.05rem;font-family:var(--body)'>" + (real ? "Online play’s orange band sits to the right overall (really useful), while the bands of the other traits sway around the black line." : "Each feature’s interval fluctuates around the black line, and almost every feature has a chance to become the “top secret.” Looking only at the 20 winners, you can “discover” one every time, but it is different every time.") + "</div>";
   };
 })();
 
@@ -630,12 +663,12 @@ GD.mountQuiz(document.getElementById("quiz"), [
 <script>
 (function () {
   const q = id => document.getElementById(id);
-  function done(id, msg) { const e = q(id); if (!e || e.classList.contains("done")) return; e.classList.add("done"); e.querySelector(".c20ok").textContent = " ✅ Done!" + msg; }
+  function done(id, msg) { const e = q(id); if (!e || e.classList.contains("done")) return; e.classList.add("done"); e.querySelector(".c20ok").textContent = " ✅ Done! " + msg; }
   new MutationObserver(() => { const t = q("c20_rchips").textContent; if (t.indexOf("✔ Platformer") >= 0 && t.indexOf("✔ Puzzle") >= 0) done("c20k1", "Only “share of handcrafted design” is full marks for both: levels and puzzles are placed one by one by the author, not by randomness, so replay value is low."); }).observe(q("c20_rchips"), { childList: true, subtree: true });
   const seen = {};
   document.querySelectorAll("#c20_draw [data-p]").forEach(b => b.addEventListener("click", () => { seen[b.dataset.p] = 1; if (seen.strict && seen.loose) done("c20k2", "The same batch of games, draw the line elsewhere, and the number counted as roguelikes changes: the definition drifts."); }));
   let reveals = 0;
-  q("c20_ago").addEventListener("click", () => { reveals++; if (reveals >= 2) done("c20k3", "The two places with the fewest holes often lower the crash chance the most: that is where the truly fatal spots are."); });
+  q("c20_ago").addEventListener("click", () => { reveals++; if (reveals >= 2) done("c20k3", "The two places with the fewest holes lower the crash chance the most: that is where the truly fatal spots are."); });
   new MutationObserver(() => { if (q("c20_repout").textContent.trim()) done("c20k5", "The “secrets” change every time, because 20 samples show only random fluctuation. Look at the success rates with and without, not just the share among winners."); }).observe(q("c20_repout"), { childList: true });
 
   
@@ -671,7 +704,7 @@ GD.mountQuiz(document.getElementById("quiz"), [
   };
   q("c20_rand10").onclick = () => {
     if (busy) return; let ok = 0; for (let i = 0; i < 10; i++) if (climbEnd(Math.random()) > 0.5) ok++;
-    q("c20_hmsg").textContent = "Random 10 starts: " + ok + "  times reached the highest peak," + (10 - ok) + "  times stuck on the low peak. Trying more starts is “exploring.”"; rnd = true;
+    q("c20_hmsg").textContent = "Random 10 starts: " + ok + "  times reached the highest peak, " + (10 - ok) + "  times stuck on the low peak. Trying more starts is “exploring.”"; rnd = true;
     if (lowStop) done("c20k4", "A method that only walks uphill leaves success to the starting point; to reach the highest peak, change the start, or be willing to go downhill first.");
   };
   q("c20_hreset").onclick = () => { cx = null; mk.style.display = "none"; q("c20_hmsg").textContent = "Click anywhere on the curve to pick a start, then click “Climb from here.”"; };

@@ -123,7 +123,7 @@
     ground + person(60, 63, { arms: "up", face: "o" }) +
     path("M80 58 L98 58 L95 78 L83 78 Z", "#fff") +
     path("M96 108 L114 108 L111 126 L99 126 Z", "none", DASH) + path("M70 72 q34 -4 34 36", "none", DASH),
-    T(150, 40, 13, "咦？比想的轻", "middle") + T(150, 70, 13, "手甩过头了", "middle"));
+    T(150, 40, 13, "咦？比想的轻", "middle") + T(150, 70, 13, "手甩过头了", "middle") + T(152, 118, 13, "以为的位置", "middle"));
 
   add("c07_menu", "菜单面板从左边滑进来：一开始每帧挪得远，快到位时挪得越来越短",
     path("M10 100 H190", "none", DASH) +
@@ -152,12 +152,13 @@
     rect(146, 82, 8, 20, WH) + path("M150 78 q-2 -2 0 -5 q2 3 0 5", Y, 'stroke-width="1.5"'),
     T(52, 122, 13, "黑屋里 +1 支", "middle") + T(148, 122, 13, "正午 +1 支", "middle"));
 
-  add("c07_shake3", "三个方块分别在小、中、大三档震动：晃动幅度成倍增长，一眼分得清",
-    rect(14, 38, 30, 34, PK, 'transform="translate(-2 0)" fill-opacity=".35" stroke-dasharray="3 3" stroke-width="2"') + rect(14, 38, 30, 34, PK, 'transform="translate(2 0)"') +
-    rect(88, 38, 30, 34, BL, 'transform="translate(-8 0)" fill-opacity=".35" stroke-dasharray="3 3" stroke-width="2"') + rect(88, 38, 30, 34, BL, 'transform="translate(8 0)"') +
-    rect(150, 38, 30, 34, GR, 'transform="translate(-14 0)" fill-opacity=".35" stroke-dasharray="3 3" stroke-width="2"') + rect(150, 38, 30, 34, GR, 'transform="translate(14 0)"') +
-    path("M12 104 H188", "none", 'stroke-width="3"'),
-    T(31, 22, 13, "普攻 2", "middle") + T(103, 22, 13, "重击 8", "middle") + T(165, 22, 13, "暴击 16", "middle") + T(100, 124, 13, "每一档是上一档的几倍", "middle"));
+  add("c07_shake3", "三个方块分别在小、中、大三档震动：晃动幅度按 1 : 4 : 8 增长，下方横线用同一把尺子量出幅度，一眼分得清",
+    rect(19, 44, 22, 30, PK, 'transform="translate(-2 0)" fill-opacity=".35" stroke-dasharray="3 3" stroke-width="2"') + rect(19, 44, 22, 30, PK, 'transform="translate(2 0)"') +
+    rect(84, 44, 22, 30, BL, 'transform="translate(-8 0)" fill-opacity=".35" stroke-dasharray="3 3" stroke-width="2"') + rect(84, 44, 22, 30, BL, 'transform="translate(8 0)"') +
+    rect(149, 44, 22, 30, GR, 'transform="translate(-16 0)" fill-opacity=".35" stroke-dasharray="3 3" stroke-width="2"') + rect(149, 44, 22, 30, GR, 'transform="translate(16 0)"') +
+    path("M28 90 H32", "none", 'stroke-width="4" stroke-linecap="butt"') + path("M87 90 H103", "none", 'stroke-width="4" stroke-linecap="butt"') + path("M144 90 H176", "none", 'stroke-width="4" stroke-linecap="butt"') +
+    path("M12 106 H188", "none", 'stroke-width="3"'),
+    T(30, 24, 13, "普攻 2", "middle") + T(95, 24, 13, "重击 8", "middle") + T(160, 24, 13, "暴击 16", "middle") + T(100, 128, 13, "横线 = 晃动幅度（1 : 4 : 8）", "middle"));
 
   add("c07_brightness", "手机亮度滑块：5% 调到 10% 屏幕明显变亮，85% 调到 90% 几乎看不出",
     path("M14 44 H110", "none", 'stroke-width="3"') + circ(18, 44, 5, Y) + circ(28, 44, 5, OR) +

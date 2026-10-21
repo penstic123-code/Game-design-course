@@ -118,7 +118,9 @@ ILLUS_EN_ADD({
 },
 "mountain": {
 "a": "A stick figure climbing a mountain by hand, with a stamina ring over their head",
-"t": []
+"t": [
+"Stamina"
+]
 },
 "chairs": {
 "a": "Three completely different chairs: a stool, a sofa, a swing",
@@ -129,19 +131,18 @@ ILLUS_EN_ADD({
 "t": []
 },
 "forced": {
-"a": "A company approval process: a stick figure forced, dejectedly, through a gate stamped with red seals",
+"a": "A company approval process: three dejected stick figures queue up, waiting for a pile of documents to be stamped",
 "t": [
-"{s=.55}OK",
-"{s=.55}OK",
-"{s=.55}OK",
 "Must! No choice"
 ]
 },
 "simcity": {
 "a": "A management sim: a stick figure looks at the little city they built, with two contradictory thoughts floating above their head",
 "t": [
-"Playing mayor?",
-"Fighting myself?"
+"Playing",
+"mayor?",
+"Fighting",
+"myself?"
 ]
 },
 "oddplay": {

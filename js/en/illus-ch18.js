@@ -29,7 +29,7 @@ ILLUS_EN_ADD({
 "a": "In a co-op game a strong player shouts “let me do it” and plays alone, while two stick figures beside them stand idle with arms down; below it says one person clears it, two watch",
 "t": [
 "Let me!",
-"One clears it, two watch"
+"{y=-4}One plays, two watch"
 ]
 },
 "c18_landlord": {
@@ -139,14 +139,14 @@ ILLUS_EN_ADD({
 "a": "Two stick figures on opposite sides of the Earth hold the same score card and wave, showing that one ruler is used everywhere",
 "t": [
 "1970: FIDE adopts it",
-"One ruler, used everywhere"
+"{y=-4}One ruler everywhere"
 ]
 },
 "c18_team": {
 "a": "Two teams of two face each other across the middle with a question mark overhead: the team won, so how much did each person contribute",
 "t": [
 "The team won, who deserves credit?",
-"2006: ratings begin to support teams"
+"{y=-4}2006: team ratings"
 ]
 },
 "c18_trade": {
@@ -154,7 +154,7 @@ ILLUS_EN_ADD({
 "t": [
 "Wood",
 "Herbs",
-"Each does what they do best, then swap"
+"{y=-4}Specialize, then swap"
 ]
 },
 "c18_crowd": {
@@ -162,7 +162,7 @@ ILLUS_EN_ADD({
 "t": [
 "Popular server",
 "Empty server",
-"Newcomers all crowd to where the people are"
+"{y=-4}Crowds attract crowds"
 ]
 }
 });

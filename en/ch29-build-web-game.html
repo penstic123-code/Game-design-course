@@ -1,0 +1,629 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Chapter 29 Hands-On 2: Make a Small Web Game</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+  pre.code{background:#2b2b3a;color:#f7f3e3;border:3px solid var(--ink);border-radius:12px;padding:12px 14px;overflow:auto;font-size:.82rem;line-height:1.55;max-height:520px;box-shadow:4px 5px 0 rgba(0,0,0,.25);tab-size:2}
+  .gamebox{text-align:center}
+  .c29stick{background:#fff;padding:4px 0 8px;border-bottom:2px dashed var(--ink);margin-bottom:8px}
+  @media(min-width:760px) and (min-height:720px){.c29stick{position:sticky;top:58px;z-index:5}}
+  #game{background:#fff;border:3px solid var(--ink);border-radius:10px;width:100%;max-width:480px;display:block;margin:0 auto;cursor:ew-resize;box-shadow:4px 5px 0 var(--ink)}
+  @media(max-width:700px){#game{max-width:340px}}
+  #game:focus{outline:3px solid var(--blue);outline-offset:3px}
+  .lvl{font-family:var(--hand);font-size:1.5rem;margin:10px 0;padding:8px 14px;border:3px solid var(--ink);border-radius:14px 24px 14px 22px;background:#fff}
+  .lvl.easy{background:var(--green)}.lvl.ok{background:var(--yellow)}.lvl.hard{background:#ffc9c9}
+  pre.out{white-space:pre-wrap;word-break:break-all;font-family:Consolas,monospace;font-size:.9rem;margin:0;background:#fffef7;border:2.5px dashed var(--ink);border-radius:12px;padding:10px 14px}
+  .c29lane{position:relative;height:38px;border:3px solid var(--ink);border-radius:10px;background:#fff;margin:6px 0;overflow:hidden}
+  .c29lane i{position:absolute;top:4px;left:0;width:26px;height:26px;border:3px solid var(--ink);border-radius:50%;background:var(--pink)}
+  .c29lane.slow i{background:var(--blue)}
+  .c29lane b{position:absolute;right:8px;top:2px;background:none;font-family:var(--hand);font-size:1.1rem}
+  .c29log{border-collapse:collapse;margin:8px auto;font-size:.85rem;background:#fff}
+  .c29log td,.c29log th{border:2px solid var(--ink);padding:1px 8px;text-align:center}
+  .cl{display:block;white-space:pre}
+  .cl.hl{background:rgba(255,229,138,.3);box-shadow:inset 3px 0 0 #ffe58a}
+  .c29map{margin:8px 0}
+</style>
+</head>
+<body data-ch="29">
+<main class="wrap">
+  <div class="hero">
+    <div class="txt">
+      <span class="badge">Chapter 29 · Hands-On</span>
+      <h1>Make a Small Web Game</h1>
+      <p class="sub">No need to learn programming first. Read a 100-line little game, then turn its knobs.</p>
+    </div>
+    <svg viewBox="0 0 190 150" class="rough" aria-hidden="true">
+      <rect x="25" y="25" width="140" height="100" rx="10" fill="#fff" stroke="#2b2b3a" stroke-width="4"/>
+      <circle cx="70" cy="55" r="11" fill="#ff7a7a" stroke="#2b2b3a" stroke-width="3"/>
+      <circle cx="125" cy="80" r="11" fill="#ff7a7a" stroke="#2b2b3a" stroke-width="3"/>
+      <rect x="60" y="105" width="50" height="12" fill="#ffe58a" stroke="#2b2b3a" stroke-width="3"/>
+    </svg>
+  </div>
+
+  <div class="goals"><span class="time">⏱ About 60 minutes (hands-on included)</span><h3>Learning goals</h3><ul><li>Say what HTML, CSS and JavaScript each handle, and how the “input → update → draw” game loop makes the picture move.</li><li>Explain why the game loop looks the way it does, and why web games went from Flash to Canvas.</li><li>Drag a parameter panel and see for yourself the relationship “numbers → play → feel,” and know the limits of this kind of tuning.</li></ul></div>
+
+  <div class="sec"><span class="n">1</span><h2><span class="tag what">What it is</span>Three roles: who handles the skeleton, who the looks, who the rules</h2></div>
+  <p>Many people want to make a game, see a screenful of code, and close the page. A playable little game is only about 100 lines of code. You needn’t finish learning programming first; it is enough to tell what each of three roles does. Think of cooking:</p>
+  <div class="card">
+    <svg viewBox="0 0 760 290" width="100%" role="img" aria-label="HTML is the skeleton, CSS the looks, JavaScript the rules and behavior; the three together make a web game">
+      <g class="rough" stroke="#2b2b3a" stroke-width="4">
+        <rect x="15" y="20" width="220" height="150" rx="18" fill="#ffb3c6"/>
+        <rect x="270" y="20" width="220" height="150" rx="18" fill="#a8dcf0"/>
+        <rect x="525" y="20" width="220" height="150" rx="18" fill="#ffe58a"/>
+        <rect x="150" y="225" width="460" height="56" rx="18" fill="#b6e8a8"/>
+        <g fill="none" stroke-linecap="round"><path d="M125 178V217"/><path d="M380 178V217"/><path d="M635 178Q635 205 590 217"/></g>
+      </g>
+      <g font-size="22" text-anchor="middle">
+        <text x="125" y="58" font-size="30">HTML</text><text x="125" y="95">Structure: what’s there</text><text x="125" y="125">Place a canvas</text><text x="125" y="155">≈ board and table</text>
+        <text x="380" y="58" font-size="30">CSS</text><text x="380" y="95">Looks: what it looks like</text><text x="380" y="125">Color, size, position</text><text x="380" y="155">≈ paint and decoration</text>
+        <text x="635" y="58" font-size="30">JavaScript</text><text x="635" y="95">Behavior: how to play</text><text x="635" y="125">Rules, scoring, collision</text><text x="635" y="155">≈ rulebook + referee</text>
+        <text x="380" y="261" font-size="23">Browser combines them → playable game</text>
+      </g>
+    </svg>
+  </div>
+  <p>A game’s “design” almost all lands in <b>JavaScript</b>: goals, rules, feedback and numbers are, in code, just a few variables and a few conditions. Three examples show what each role’s job really is:</p>
+  <div class="eg" data-ic="🧺"><span data-illus="c29_widen"></span><div class="egt"><b>In the game: making the basket wider</b>. This is a number at the rules level (<code>P.width</code> on this page, written in the JS). Changing the page background color is CSS’s business; putting a game area on the page is HTML’s <code>&lt;canvas&gt;</code>.</div></div>
+  <div class="eg" data-ic="🍲"><span data-illus="c29_cooking"></span><div class="egt"><b>Daily life: cooking a meal</b>. The ingredient list is HTML (what’s there), plating and tableware are CSS (what it looks like), and the recipe’s steps and heat are JavaScript (how to cook it and when).</div></div>
+  <div class="eg bad" data-ic="🎨"><span data-illus="c29_cssonly"></span><div class="egt"><b>Counterexample: a scoring game made with only HTML and CSS</b>. CSS can animate, but “judging whether the apple landed in the basket, adding points, taking away a life” is rules and needs JavaScript to compute. Only looks, no referee.</div></div>
+
+  <div class="sec"><span class="n">2</span><h2><span class="tag what">What it is</span>How the browser turns them into a picture</h2></div>
+  <p>Once the browser has these three, it runs a pipeline to produce the picture. Games use the <span class="term" tabindex="0" data-def="A canvas element in HTML that JavaScript can draw on pixel by pixel, good for games that redraw dozens of times a second.">canvas</span>, which takes a shortcut:</p>
+  <div class="card">
+    <svg viewBox="0 0 760 370" width="100%" role="img" aria-label="Browser rendering flow: HTML is parsed into the DOM, CSS into the CSSOM, merged into a render tree, then layout, paint, and display on screen; in Canvas, JavaScript draws pixels directly and hands them to the page to show">
+      <g class="rough" stroke="#2b2b3a" stroke-width="4">
+        <rect x="10" y="20" width="150" height="56" rx="12" fill="#ffb3c6"/><rect x="10" y="100" width="150" height="56" rx="12" fill="#a8dcf0"/>
+        <rect x="205" y="60" width="110" height="56" rx="12" fill="#ffe58a"/><rect x="355" y="60" width="100" height="56" rx="12" fill="#ffe58a"/>
+        <rect x="495" y="60" width="100" height="56" rx="12" fill="#ffe58a"/><rect x="635" y="60" width="115" height="56" rx="12" fill="#b6e8a8"/>
+        <rect x="205" y="230" width="300" height="76" rx="12" fill="#d8c8ff"/>
+        <g fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M164 50L201 76"/><path d="M164 126L201 100"/><path d="M319 88H351"/><path d="M459 88H491"/><path d="M599 88H631"/><path d="M509 268H692V122" stroke-dasharray="8 8"/></g>
+      </g>
+      <g font-size="18" text-anchor="middle">
+        <text x="85" y="55">HTML→DOM</text><text x="85" y="135">CSS→CSSOM</text><text x="260" y="95">Render tree</text><text x="405" y="95">Layout</text><text x="545" y="95">Paint</text><text x="692" y="95">Display</text>
+        <text x="260" y="146" font-size="16">What’s visible + style</text><text x="405" y="146" font-size="16">Size and position of each</text>
+        <text x="355" y="262" font-size="20">JavaScript: Canvas</text><text x="355" y="290" font-size="16">Draws pixels by itself</text>
+        <text x="380" y="346" font-size="17">Top row: the browser lays out for you; bottom line: the game decides what to draw each frame</text>
+      </g>
+    </svg>
+    <p class="small">The order of steps follows MDN’s “critical rendering path” page (DOM, CSSOM, render tree, layout, paint). The dashed Canvas line is a sketch: it hands the finished bitmap to the page to display.</p>
+  </div>
+  <p>Games like the canvas because an ordinary web page works by “typesetting”: with many elements, every change means recalculating positions. A canvas works by “painting”: how many balls to draw and where is decided by the program each frame, which suits games that must redraw dozens of times a second.</p>
+  <p class="src">Source:<br>MDN · the page “<a href="https://developer.mozilla.org/en-US/docs/Web/Performance/Guides/Critical_rendering_path" target="_blank" rel="noopener">Critical rendering path</a>” · explains how the browser strings DOM, CSSOM, render tree, layout and paint into a pipeline.</p>
+
+  <div class="sec"><span class="n">3</span><h2><span class="tag what">What it is</span>The game loop: input → update → draw</h2></div>
+  <p>A web page usually <b>changes only after the player clicks</b>; a game <b>goes round and round</b>, and even if you press nothing, the apple keeps falling. Seeing the two side by side:</p>
+  <div class="card">
+    <svg viewBox="0 0 760 320" width="100%" role="img" aria-label="Comparison: on the left a program that waits for input and handles it once per player action; on the right a game loop that on every pass reads input, updates and draws, whether or not there was an action">
+      <g class="rough" stroke="#2b2b3a" stroke-width="4" fill="none" stroke-linecap="round">
+        <rect x="15" y="50" width="340" height="250" rx="18" fill="#e8f6fc"/><rect x="405" y="50" width="340" height="250" rx="18" fill="#fff7cf"/>
+        <path d="M48 112V138M48 184V210"/><path d="M280 244H322Q334 244 334 232V112Q334 100 322 100H210"/>
+        <path d="M555 122V146M555 194V218"/><path d="M660 250H715Q727 250 727 238V122Q727 110 715 110H684"/>
+        <rect x="32" y="84" width="6" height="20" fill="#2b2b3a" stroke-width="2"/><rect x="44" y="84" width="6" height="20" fill="#2b2b3a" stroke-width="2"/>
+        <circle cx="42" cy="172" r="9" stroke-width="3"/><path d="M42 156V160M42 184V188M26 172H30M54 172H58M31 161L34 164M53 161L50 164M31 183L34 180M53 183L50 180" stroke-width="3"/>
+        <rect x="28" y="228" width="28" height="22" stroke-width="3"/><path d="M30 248L38 238L44 244L48 240L54 248" stroke-width="2.5"/>
+      </g>
+      <g fill="#2b2b3a" stroke="#2b2b3a" stroke-width="2" stroke-linejoin="round">
+        <path d="M48 150L40 136H56z"/><path d="M48 222L40 208H56z"/><path d="M206 100L222 92V108z"/>
+        <path d="M555 158L547 144H563z"/><path d="M555 230L547 216H563z"/><path d="M680 110L696 102V118z"/>
+      </g>
+      <g font-size="17" text-anchor="middle">
+        <text x="185" y="32" font-size="22">Waiting type (text adventure, web page)</text><text x="575" y="32" font-size="22">Game loop</text>
+        <text x="70" y="100" text-anchor="start">Wait for input</text><text x="70" y="172" text-anchor="start">Handle once</text><text x="70" y="244" text-anchor="start">Show result, wait again</text>
+        <text x="555" y="110">① Read input (if any)</text><text x="555" y="182">② Update the world</text><text x="555" y="254">③ Draw, then loop again</text>
+      </g>
+    </svg>
+  </div>
+  <p>A game program turns round and round in this way, and in structure it is a <span class="term" tabindex="0" data-def="Game loop: on each pass a game program reads input, updates state and draws the picture, without waiting for the player, pass after pass.">game loop</span>. The browser calls our function about 60 times a second (about 60 <span class="term" tabindex="0" data-def="Each refresh of the picture is a frame; frame rate is how many frames per second.">frames</span>/second), and each pass does three things, which is the technical version of the <span class="term" tabindex="0" data-def="The smallest closed loop the player repeats: action → feedback → reward.">core loop</span>:</p>
+  <aside class="cc-card" aria-label="Concept card: Game Loop">
+    <span class="cc-tag">Concept card</span>
+    <p class="cc-name"><span>Game Loop</span></p>
+    <p class="cc-en">Game loop</p>
+    <p class="cc-by">Robert Nystrom · <i>Game Programming Patterns</i> (2014) organized it as a design pattern (separating game time from player input and processor speed); <i>Spacewar!</i> (1962) was an early form of the real-time loop</p>
+    <p class="cc-def">On each pass the program reads input, updates state and draws the picture, without waiting for a key press, pass after pass; that is how the picture moves by itself.</p>
+    <p class="cc-eg"><span class="cc-k">Example</span>In an apple-catching game the player touches no key, yet every pass an apple falls a little further, and a missed one costs a life.</p>
+  </aside>
+  <div class="card">
+    <svg viewBox="0 0 760 290" width="100%" role="img" aria-label="The game loop: read input, update state, draw the picture, then back to reading input, about 60 passes a second">
+      <g class="rough" stroke="#2b2b3a" stroke-width="4">
+        <rect x="20" y="70" width="190" height="86" rx="18" fill="#a8dcf0"/>
+        <rect x="285" y="70" width="190" height="86" rx="18" fill="#ffe58a"/>
+        <rect x="550" y="70" width="190" height="86" rx="18" fill="#ffb3c6"/>
+        <g fill="none" stroke-linecap="round"><path d="M214 113H281"/><path d="M479 113H546"/><path d="M645 160Q645 236 380 236Q115 236 115 164"/></g>
+      </g>
+      <g fill="#2b2b3a" stroke="#2b2b3a" stroke-width="2" stroke-linejoin="round"><path d="M283 113L267 104V122z"/><path d="M548 113L532 104V122z"/><path d="M115 160L106 176H124z"/></g>
+      <g font-size="22" text-anchor="middle">
+        <text x="115" y="105">① Input</text><text x="115" y="135" font-size="19">Which key was pressed?</text>
+        <text x="380" y="105">② Update</text><text x="380" y="135" font-size="16">Apples fall; caught?</text>
+        <text x="645" y="105">③ Draw</text><text x="645" y="135" font-size="19">Draw the new state</text>
+        <text x="380" y="272" font-size="20">About 60 passes a second (requestAnimationFrame)</text>
+        <text x="380" y="36" font-size="20">Multiply by dt (time since last pass): same speed on any machine</text>
+      </g>
+    </svg>
+  </div>
+  <div class="eg" data-ic="🍎"><span data-illus="c29_idle"></span><div class="egt"><b>In the game: catching apples</b>. Even if you don’t touch the keyboard, the apple falls a little on every pass, and a miss costs a life. This is “continuous updating.”</div></div>
+  <div class="eg" data-ic="📖"><span data-illus="c29_flipbook"></span><div class="egt"><b>Daily life: a flip book</b>. Flip a few dozen pages a second, each page differing from the last by a tiny movement, and the eye sees “motion.” The game loop does the same thing: draw one page every pass.</div></div>
+  <div class="eg bad" data-ic="🧊"><span data-illus="c29_freeze"></span><div class="egt"><b>Counterexample: writing your own infinite loop</b>. Write <code>while (true) {…}</code> in a function, updating and drawing forever yourself, and the browser’s main thread is fully occupied: the page freezes and buttons can’t be clicked. Have the browser “call your program once per frame” (with requestAnimationFrame) instead of hogging the loop yourself.</div></div>
+
+  <div class="sec"><span class="n">4</span><h2><span class="tag origin">Invention story</span>How did the game loop become the standard structure?</h2></div>
+  <p>Try it yourself first. <b>Suppose you wrote a little ball game: the ball moves 20 cells per second and reaches the finish after 100 cells.</b> You tuned the speed on your own computer (60 frames/second). Now you put it on two other computers: one very fast, one very slow. Drag the slider and compare the two ways of writing it.</p>
+  <div class="card b no-print">
+    <label class="ctl">Frame rate of the fast computer <output id="c29fo">120</output> frames/second<input type="range" id="c29f" min="30" max="144" step="6" value="120"></label>
+    <label class="ctl"><input type="checkbox" id="c29dt"> Time with dt: each pass moves “speed × time since the last pass” (tick it and race once more)</label>
+    <div class="c29lane"><i id="c29a"></i><b id="c29ta">Fast computer</b></div>
+    <div class="c29lane slow"><i id="c29b"></i><b id="c29tb">Slow computer (30 frames/second)</b></div>
+    <button class="btn" id="c29go">🏁 Start the race</button>
+    <div class="msg" id="c29msg">Default way of writing: each pass moves a fixed “distance for 1/60 of a second” (that is, assuming every computer runs at 60 frames/second). Don’t tick dt yet and race to see.</div>
+    <p class="small">Illustration: a timer simulates machines with different frame rates here; what matters is “which ball arrives first and by how much.”</p>
+  </div>
+  <div class="sticky no-print" id="c29t0">Try it: race once without dt, then race once with dt, and compare “how many times slower” in the two races. <b id="c29t0ok"></b></div>
+  <div class="story">
+    <h3>Why does the game loop look like this?</h3>
+    <p>Early programs were “batch”: run once, spit out a result, end. Later came interactive programs, the first of which were games, such as the text adventure <i>Colossal Cave Adventure</i>, which <b>waits for a command from the player, responds, then waits again</b>. Action games can’t wait: even if the player presses nothing, bullets must fly and enemies must move. (From the game-loop chapter of Robert Nystrom’s <i>Game Programming Patterns</i>.)</p>
+    <p>In 1962 Steve Russell and others at MIT made <i>Spacewar!</i> on the PDP-1 minicomputer, which influenced many later arcade games, and the first form of the loop is in it. But games then were often <b>tied to the speed of one particular machine</b>: how far to move each pass was tuned to that machine. Nystrom mentions that on a faster computer such games became too fast, and the “Turbo button” on personal computers of the time had to do with this.</p>
+    <p>The later approach was to <b>separate</b> “game time” from “processor speed and player input”: the game loop processes player input but doesn’t wait for it, and lets the game run at a consistent speed on different hardware (Nystrom).</p>
+    <p>There are two common ways to do the separating. ① <span class="term" tabindex="0" data-def="Variable time step: each pass advances the world by the real elapsed time dt; simple, but results may differ slightly across machines.">Variable time step</span>: each pass advances by “the real time since the last pass, dt”; simple, good for small games, and what this page uses. ② Fixed time step: each update advances a fixed small slice of time; more stable, and more commonly used in games with complicated physics.</p>
+    <p>Moving the game loop onto the web took another winding road. Web pages began as static documents, and for a long time animated little games relied on plug-ins. Flash’s predecessor was released in 1996 and later taken over by Macromedia and then Adobe. Flash let many creators make animated little games without deep programming and distribute them in the browser.</p>
+    <p>Meanwhile in 2004 Apple added <code>&lt;canvas&gt;</code> to its own WebKit, Gecko and Opera followed, and it was later folded into HTML5 by the WHATWG. In April 2010 Steve Jobs published the open letter “Thoughts on Flash” explaining why the iPhone does not support Flash, citing reasons including that Flash is a closed system, and battery life and touch problems. Adobe held that it was mainly a business consideration.</p>
+    <p>In July 2017 Adobe announced it would end support for Flash on December 31, 2020. Now the natively supported <code>&lt;canvas&gt;</code> + JavaScript is the foundation of web games.</p>
+    <p>Working with this is <span class="term" tabindex="0" data-def="A browser function: ask it to call your function before the next repaint, generally in sync with the display’s refresh rate."><code>requestAnimationFrame</code></span>, which has the browser call the program’s function “before the next repaint,” usually matching the display’s refresh rate (60, 75, 120, 144 Hz and so on). The callback receives a timestamp that must be used to compute progress, or the animation will run faster on high-refresh-rate screens, and this is where the trap in the race above lies.</p>
+    <div class="timeline">
+      <div class="ev hasimg"><span data-illus="c29_spacewar"></span><div><b class="yr">1962</b> <i>Spacewar!</i> is made on the PDP-1 at MIT, an early representative of real-time interactive games.</div></div>
+      <div class="ev hasimg"><span data-illus="c29_turbo"></span><div><b class="yr">Later</b> Games tied to specific hardware speed; when personal computers got faster, the “Turbo button” problem appeared (Nystrom).</div></div>
+      <div class="ev hasimg"><span data-illus="c29_flash"></span><div><b class="yr">1996</b> FutureSplash Animator is released and later becomes Macromedia Flash: playing animation in the browser through a plug-in.</div></div>
+      <div class="ev hasimg"><span data-illus="c29_canvas"></span><div><b class="yr">2004</b> Apple introduces canvas in WebKit, so a web page can draw frame by frame itself; in 2005 Adobe acquires Macromedia.</div></div>
+      <div class="ev hasimg"><span data-illus="c29_iphone"></span><div><b class="yr">April 2010</b> Jobs publishes “Thoughts on Flash,” and the iPhone does not support Flash.</div></div>
+      <div class="ev hasimg"><span data-illus="c29_sunset"></span><div><b class="yr">2017–2021</b> Adobe announces the end of Flash in July 2017, support ends on December 31, 2020, and from January 12, 2021 it is blocked from running.</div></div>
+    </div>
+    <p class="src">Sources:<br>Robert Nystrom · 2014 · the “Game Loop” chapter of <i>Game Programming Patterns</i>, on the game loop and time steps (<a href="https://gameprogrammingpatterns.com/game-loop.html" target="_blank" rel="noopener">Game Programming Patterns · Game Loop</a>).<br>MDN · the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/requestAnimationFrame" target="_blank" rel="noopener">requestAnimationFrame</a> documentation.<br>Steve Russell and others · 1962 · made <a href="https://en.wikipedia.org/wiki/Spacewar!" target="_blank" rel="noopener">Spacewar!</a> on the PDP-1.<br>Apple · 2004 · added canvas to WebKit (<a href="https://en.wikipedia.org/wiki/Canvas_element" target="_blank" rel="noopener">Canvas element</a>).<br>Sources differ slightly on the timing of the acquisition in Flash’s history (<a href="https://www.theregister.com/2021/01/12/flash_is_dead/" target="_blank" rel="noopener">The Register</a>).<br>Steve Jobs · 2010 · the open letter “Thoughts on Flash”; its content is as reported by media (<a href="https://www.pcworld.com/article/512460/steve_jobs_shares_his_thoughts_on_flash.html" target="_blank" rel="noopener">PCWorld</a>), and Apple’s original page could not be read directly.</p>
+  </div>
+
+  <div class="sec"><span class="n">5</span><h2><span class="tag why">Why it holds</span>Why multiply by dt? Why is tuning parameters a shortcut?</h2></div>
+  <div class="withimg">
+    <span data-illus="c29_dtwalk"></span>
+    <div>
+      <h3>① Why updates multiply by dt</h3>
+      <p>A device with a high frame rate has more passes a second, but each pass should only take a small step. <code>position += speed × <span class="term" tabindex="0" data-def="dt (delta time): how many seconds have passed since the last pass. Multiplying speed by it makes the distance covered per second independent of the frame rate.">dt</span></code> makes “how far per second” independent of frame rate, which separates game time from processor speed.</p>
+      <p>It is like walking: say “1.4 meters per second,” not “70 centimeters per step,” and people with different strides can still compare speeds. Write the apple’s fall as <code>it.y += P.speed * dt</code>, and on a 60 Hz screen and a 144 Hz screen the distance fallen per second is the same.</p>
+      <p>Conversely, adding a fixed 3 pixels per pass gives 180 pixels a second on a 60 Hz screen and 432 pixels a second on a 144 Hz screen. This is why “the fast computer arrives first” in the race above.</p>
+    </div>
+  </div>
+  <aside class="cc-card" aria-label="Concept card: Delta Time">
+    <span class="cc-tag">Concept card</span>
+    <p class="cc-name"><span>Delta Time</span></p>
+    <p class="cc-en">Delta time</p>
+    <p class="cc-by">Robert Nystrom · <i>Game Programming Patterns</i> (2014), the “Game Loop” chapter, explains advancing the game by real elapsed time</p>
+    <p class="cc-def">dt is the real time since the last pass. Moving by “speed times dt” on each pass makes the distance an object covers per second independent of the frame rate.</p>
+    <p class="cc-eg"><span class="cc-k">Example</span>An apple falls 200 pixels a second: on a 60-frame screen it moves about 3.3 pixels per pass, on a 144-frame screen about 1.4, and after one second it is at the same place.</p>
+  </aside>
+  <div class="why-box"><p>Boundary: for readability this page uses a “variable step” and limits dt to 0.05 seconds (so returning from another tab doesn’t “teleport” things). Games with more complicated physics more commonly use a fixed step in the industry.</p>
+    <p class="src">Source of the principle:<br>Robert Nystrom · 2014 · the “Game Loop” chapter of <i>Game Programming Patterns</i>, which separates game time from processor speed.<br>MDN · the requestAnimationFrame documentation.</p></div>
+
+  <div class="withimg rev">
+    <span data-illus="c29_knob"></span>
+    <div>
+      <h3>② Turning a knob is walking “mechanics → dynamics → aesthetics” by hand</h3>
+      <p>The <span class="term" tabindex="0" data-def="Mechanics → Dynamics → Aesthetics: rules produce play, play produces feelings.">MDA</span> framework says: the designer sets out mechanics, and what the player experiences is dynamics and aesthetics. The parameter panel puts this chain before your eyes: <b>what you turn is the mechanics</b> (fall speed, basket width, bomb probability), <b>what you see is the dynamics</b> (whether you can catch, whether to take a risk), <b>what you feel is the aesthetics</b> (relaxed, tense, flustered).</p>
+      <p>These numbers are like the <span class="term" tabindex="0" data-def="Numeric parameters in a game that you can adjust, such as speed, count, probability.">knobs</span> on a radio: turn one and the feel changes. Pull the bomb probability from 15% to 40% and the hesitation over “should I reach for it” grows at once, the feeling going from relaxed to tense. Turn only one at a time, to know which one did the work, like adjusting the grind of coffee, changing one variable at a time.</p>
+      <p>Change speed, basket, bombs and lives all at once, and all you get is “it’s harder now,” without knowing which knob deserves the credit or which way to tune next.</p>
+    </div>
+  </div>
+  <div class="why-box"><p>Boundary: tuning parameters can polish a core loop that already works, but can’t rescue a loop that isn’t interesting in itself; and how fun it is depends not only on the numbers but also on the structure of the rules.</p>
+    <p class="src">Source of the principle: Robin Hunicke, Marc LeBlanc and Robert Zubek · 2004 · proposed the MDA framework: mechanics produce dynamics, and dynamics produce aesthetics.</p></div>
+
+  <div class="withimg">
+    <span data-illus="c29_phi"></span>
+    <div>
+      <h3>③ Worldview: every frame is still, and “motion” is filled in by the brain</h3>
+      <p>The game loop draws a still picture on each pass, yet the eyes feel the ball moving. In 1912 Max Wertheimer ran a series of experiments: two still points of light flash briefly one after the other, and with a suitable interval people see a single point moving; this is <span class="term" tabindex="0" data-def="Apparent motion (the phi phenomenon): when two still stimuli appear briefly one after the other, people feel something moving.">apparent motion</span> (the phi phenomenon). This paper is often seen as the starting point of Gestalt psychology.</p>
+      <p>Remember the flip book? The brain fills in motion between two still pictures. A game’s “smoothness” relies on still pictures dense enough, with the brain connecting them.</p>
+      <p>Phi is often confused with another phenomenon, “beta movement,” and the actual visual mechanism is more complicated than described here.</p>
+    </div>
+  </div>
+  <aside class="cc-card" aria-label="Concept card: Apparent Motion">
+    <span class="cc-tag">Concept card</span>
+    <p class="cc-name"><span>Apparent Motion</span></p>
+    <p class="cc-en">Apparent motion (phi phenomenon)</p>
+    <p class="cc-by">Max Wertheimer · 1912, <i>Experimentelle Studien über das Sehen von Bewegung</i></p>
+    <p class="cc-def">Two still points of light flash briefly one after the other, and with a suitable interval people see a single point moving. The motion is filled in by the brain.</p>
+    <p class="cc-eg"><span class="cc-k">Example</span>In a flip book each page differs only a little from the one before, and flipped fast the eyes see “movement.”</p>
+  </aside>
+  <div class="why-box"><h3>④ Worldview: all models are wrong, but some are useful</h3>
+    <p>The “difficulty index” on the page is pieced together with a crude formula, and real difficulty depends on the player’s hand speed, habits and mood, which a formula can’t compute. The statistician George Box said: “All models are wrong, but some are useful.” What’s useful is to take the model’s predictions to playtests, be corrected by reality, and then revise the model.</p>
+    <p class="src">Sources:<br>George E. P. Box · 1976 · wrote “all models are wrong” in “Science and Statistics” (<i>Journal of the American Statistical Association</i> 71(356)).<br>Box and Draper · 1987 · the full “but some are useful” wording is in <i>Empirical Model-Building and Response Surfaces</i>.<br>Max Wertheimer · 1912 · published the apparent-motion experiments (“Experimentelle Studien über das Sehen von Bewegung,” <i>Zeitschrift für Psychologie</i> 61, 161–265).</p></div>
+
+  <aside class="cc-card" aria-label="Concept card: All Models Are Wrong, but Some Are Useful">
+    <span class="cc-tag">Concept card</span>
+    <p class="cc-name"><span>All Models Are Wrong, but Some Are Useful</span></p>
+    <p class="cc-en">All models are wrong, but some are useful</p>
+    <p class="cc-by">George E. P. Box · “Science and Statistics” (1976); the full wording is in the 1987 book with Draper</p>
+    <p class="cc-def">A model always simplifies reality, so it is wrong somewhere. Whether it is useful depends on whether its predictions survive a check against reality, and then reality is used to revise it.</p>
+    <p class="cc-eg"><span class="cc-k">Example</span>The panel’s “difficulty index” is only a crude formula; parameters it calls “just right” may play too hard, and after a playtest the formula is what should be changed.</p>
+  </aside>
+
+  <div class="sec"><span class="n">6</span><h2><span class="tag how">How to use it</span>Signature interactive: the apple-catching test bench</h2></div>
+  <p>The game below <b>is</b> the very code shown in “Read the code”: the page reads it out and runs it directly, not a screenshot. Use the keyboard ← → or drag with a finger/mouse on the picture to catch apples and avoid bombs. Drag the sliders below and the game changes <b>in real time</b> (the number of lives takes effect at the next restart).</p>
+  <div class="card gamebox" id="c29lab">
+    <div class="c29stick">
+      <canvas id="game" width="480" height="360" tabindex="0" aria-label="Apple-catching mini-game"></canvas>
+      <div class="msg" id="gstat">Click the picture or press Space to start / restart</div>
+      <button class="btn" id="restart">🔄 Restart</button>
+    </div>
+    <div style="text-align:left">
+    <label class="ctl">🍎 Fall speed <output id="o_speed"></output> pixels/second<input type="range" id="p_speed" min="60" max="400" step="10"></label>
+    <label class="ctl">🧺 Basket width <output id="o_width"></output> pixels<input type="range" id="p_width" min="40" max="200" step="5"></label>
+    <label class="ctl">⏳ Spawn rate <output id="o_rate"></output> per second<input type="range" id="p_rate" min="0.3" max="3" step="0.1"></label>
+    <label class="ctl">❤️ Lives <output id="o_lives"></output><input type="range" id="p_lives" min="1" max="10" step="1"></label>
+    <label class="ctl">💣 Bomb probability <output id="o_bomb"></output> %<input type="range" id="p_bomb" min="0" max="50" step="1"></label>
+    </div>
+    <div class="lvl" id="lvl"></div>
+    <div class="small" id="lvlWhy"></div>
+    <div id="played" class="small"></div>
+    <div id="c29logbox"></div>
+    <button class="btn alt" data-pre="easy">🌱 Easy</button>
+    <button class="btn" data-pre="mid">⚖️ Default</button>
+    <button class="btn pink" data-pre="hard">🔥 Hell</button>
+    <button class="btn green" id="export">📋 Export parameters</button>
+  </div>
+  <div class="sticky" id="c29t1">Try it: first play a full 20 seconds with the default parameters; then find another set that also shows “just right” but feels different (for example faster falling, a wider basket) and play a full 20 seconds again. Turn only one or two knobs at a time, so you know which one changed the feel. <b id="c29t1ok"></b></div>
+  <div class="card y" id="exp" style="display:none">
+    <h3>Your parameter object</h3>
+    <pre class="out" id="expOut"></pre>
+    <p class="small">After copying, paste it into the <code>&lt;script&gt;</code> of your own HTML file (see “Read the code” below for how).</p>
+  </div>
+  <p class="small">The “easy / just right / hard” hint is estimated with a crude formula and is <b>for reference only</b>. The real answer comes from playtests: play it yourself, then let a friend play.</p>
+
+  <div class="sec"><span class="n">7</span><h2><span class="tag how">Read the code</span>About 100 lines: variables → input → update → draw → loop</h2></div>
+  <p>No need to understand every line; grasp the structure: <b><span class="term" tabindex="0" data-def="The sum of all the variables of the game at one moment, such as score, basket position and lives.">state</span> → input → update → draw → loop</b>. <code>P</code> is the parameter panel above, and changing it changes the feel. Click the buttons below to light up the matching section:</p>
+  <div class="c29map no-print">
+    <button class="btn" data-map="state">📦 State</button>
+    <button class="btn alt" data-map="input">🎮 Input</button>
+    <button class="btn pink" data-map="update">⚙️ Update</button>
+    <button class="btn green" data-map="draw">🖼️ Draw</button>
+    <button class="btn" data-map="loop">🔁 Loop</button>
+    <button class="btn alt" data-map="none">Clear highlight</button>
+  </div>
+  <pre class="code" id="codeView"></pre>
+  <div class="sticky no-print" id="c29t2">Try it: click “Update,” find in the section that lights up the line that makes the apples fall (the one with <code>P.speed</code>), and click it. <b id="c29t2ok"></b></div>
+  <div class="card b">
+    <h3>How do I put it in my own file?</h3>
+    <p>Create a new <code>mygame.html</code>, write in the skeleton below, paste the result of “Export parameters” and the game code above into the <code>&lt;script&gt;</code> in turn, and double-click to open it in a browser:</p>
+    <pre class="code" style="max-height:none">&lt;!doctype html&gt;
+&lt;meta charset="utf-8"&gt;
+&lt;canvas id="game" width="480" height="360"&gt;&lt;/canvas&gt;
+&lt;script&gt;
+const canvas = document.getElementById("game");
+const P = { /* paste the exported parameters */ };
+/* paste the game code above */
+&lt;/script&gt;</pre>
+  </div>
+  <div class="grid3">
+    <div class="card y mini"><div class="ico">🔧</div><h3>Try changing one place</h3><p>Change <code>score++</code> to <code>score += 2</code>, reload, and feel how the feedback changes.</p></div>
+    <div class="card b mini"><div class="ico">➕</div><h3>Add a power-up</h3><p>Following the bombs, add a “golden apple”: catching it scores 5 points. Think what choice of the player’s it would change.</p></div>
+    <div class="card p mini"><div class="ico">📝</div><h3>Check with playtests</h3><p>After every change, go through it again: playtest, observe, change again.</p></div>
+  </div>
+
+  <div class="sec"><span class="n">8</span><h2><span class="tag how">How to use it</span>What to learn next</h2></div>
+  <div class="grid2">
+    <div class="card g"><h3>1. JavaScript basics</h3><p>Variables, conditions, loops, functions, arrays and objects, events. Once you can read the code above, a systematic study goes much more smoothly. MDN Web Docs has free tutorials.</p></div>
+    <div class="card o"><h3>2. Pick an engine</h3><p><b>Phaser</b>: a JS framework made for 2D web games, continuing this path. <b>Godot</b>: free and open source, with a scripting language, GDScript, close to Python, good for beginners. <b>Unity</b>: uses C#, with plenty of material and jobs. Pick one first; don’t learn three at once.</p></div>
+    <div class="card v"><h3>3. Join a game jam</h3><p>Make a small game around a theme in 48 hours or a few days, such as Global Game Jam or Ludum Dare. The short time forces you to cut the scope to the minimum.</p></div>
+    <div class="card p"><h3>4. Make it small but complete</h3><p>Take every project to “a game that can be played through” and send it to others to playtest. Finishing 5 small games teaches far more than abandoning 1 big game halfway.</p></div>
+  </div>
+
+  <div class="misc">
+    <h3>Common misconceptions</h3>
+    <ul>
+      <li><b>“Start by making the full game”</b>: first make a small thing you can play through once; the smaller the scope, the easier to finish.</li>
+      <li><b>“You must finish learning programming before you start”</b>: reading a small game and then changing it is a more efficient way in.</li>
+      <li><b>“A prototype must look good”</b>: the apples and basket here are plain, but enough to verify the play.</li>
+      <li><b>“The harder the difficulty the more challenging”</b>: extreme parameters are not the same as fun; use the hints in the panel and your own playtests to find “just right.”</li>
+      <li><b>“Tuning parameters can rescue any game”</b>: when the core loop doesn’t hold, adjusting numbers only spins in place.</li>
+      <li><b>“Moving a fixed amount per pass is fine, no need for dt”</b>: then the game speeds up or slows down with the device’s frame rate (the race above has already shown it).</li>
+    </ul>
+  </div>
+
+  <div class="reflect">
+    <h3>Something to think about</h3>
+    <p><b>What does your favorite set of parameters make the player “feel” (tension? ease?), and which knob deserves most of the credit?</b> If you were allowed to change only one knob, which would you change, and why?</p>
+    <textarea rows="3" data-save="ch25reflect" placeholder="e.g. Bomb probability matters most: it decides whether players dare to reach for it…"></textarea>
+    <p class="small">A contested question: was the death of Flash technological progress, or the price of a closed ecosystem? The Flash era left behind a large number of creative little games, and some, unable to run after Flash was turned off, face being lost. Open standards and the preservation of creators’ work often have to be considered together.</p>
+  </div>
+
+  <div class="key">
+    <h3>Key points</h3>
+    <ul>
+      <li>HTML builds the structure, CSS handles the looks, <b>JavaScript writes the rules</b>; game design is mainly embodied in the state and conditions in the JS.</li>
+      <li>The game loop: <b>input → update → draw</b>, about 60 passes a second, not waiting for input; multiply by dt in updates so game time is separate from machine speed.</li>
+      <li>Web games went from the plug-in era (Flash) to native Canvas + JavaScript.</li>
+      <li>Every frame is a still picture and the “motion” is filled in by the brain; formulas like the difficulty index are crude models and need correcting by playtests.</li>
+      <li>Putting adjustable numbers together in one parameter object makes it easy to iterate after playtests. Make something playable first, then get better step by step.</li>
+    </ul>
+  </div>
+  <div class="tldr">Turning rules into numbers, then turning the knobs yourself and watching the consequences, is the fastest way to understand “mechanics → dynamics → aesthetics.” But it polishes a loop that already works and cannot replace a good idea.</div>
+
+  <div class="sec"><span class="n">9</span><h2><span class="tag think">Practice</span>Quiz</h2></div>
+  <div id="quiz"></div>
+
+  <div class="sec"><span class="n">10</span><h2><span class="tag think">Your design</span>Your result</h2></div>
+  <div class="card g">
+    <h3>🎛️ My favorite set of parameters</h3>
+    <p>Click “Save current parameters” and it is stored on this device, and the sliders are restored after a page refresh.</p>
+    <button class="btn" id="saveP">💾 Save current parameters</button>
+    <div class="msg" id="savedMsg"></div>
+    <pre class="out" id="savedOut" style="display:none"></pre>
+    <div class="field"><label style="font-family:var(--hand);font-size:1.3rem">📝 I think this set is fun, because…</label><textarea rows="2" data-save="ch21why" placeholder="e.g. Fewer bombs and slower speed: beginners can play too, and it isn’t boring"></textarea></div>
+  </div>
+
+  <div class="sticky">Paste the exported parameters into your own HTML file and change one thing. <b>A little game that runs is your first work.</b></div>
+</main>
+<script type="text/plain" id="gamecode">
+// ===== Catch the apples =====
+// Needs two outside variables: canvas (the canvas element) and P (the parameter object)
+const ctx = canvas.getContext("2d");
+const W = canvas.width, H = canvas.height;
+
+// ---- Game state: everything in the game that “changes” lives here ----
+let basket, items, lives, score, spawnTimer, over, startTime, endTime;
+const keys = { left: false, right: false };   // which keys are currently held
+
+function reset() {                  // start a new game
+  basket = { x: W / 2, y: H - 30 }; // center of the basket
+  items = [];                       // every falling object on screen (apples or bombs)
+  lives = P.lives; score = 0;
+  spawnTimer = 0; over = false;
+  startTime = performance.now();
+}
+
+// ---- Step 1: input ----
+addEventListener("keydown", e => {
+  if (e.target && /INPUT|TEXTAREA|SELECT/.test(e.target.tagName)) return; // don't steer while typing in an input box
+  if (e.key === "ArrowLeft") { keys.left = true; e.preventDefault(); }
+  if (e.key === "ArrowRight") { keys.right = true; e.preventDefault(); }
+  if (e.key === " " && over) reset();           // after the game ends, Space restarts
+});
+addEventListener("keyup", e => {
+  if (e.key === "ArrowLeft") keys.left = false;
+  if (e.key === "ArrowRight") keys.right = false;
+});
+function pointerTo(e) {             // finger/mouse: the basket follows to the x position
+  const r = canvas.getBoundingClientRect();
+  basket.x = (e.clientX - r.left) * (W / r.width);
+}
+canvas.addEventListener("pointermove", pointerTo);
+canvas.addEventListener("pointerdown", e => { pointerTo(e); if (over) reset(); });
+
+// ---- Step 2: update (dt = seconds since the last pass) ----
+function update(dt) {
+  if (over) return;
+  // keyboard movement: 420 pixels per second
+  basket.x += ((keys.right ? 1 : 0) - (keys.left ? 1 : 0)) * 420 * dt;
+  basket.x = Math.max(P.width / 2, Math.min(W - P.width / 2, basket.x)); // stay within the edges
+
+  // spawn falling objects by the “spawn rate”, on a timer
+  spawnTimer += dt;
+  while (spawnTimer >= 1 / P.rate) {
+    spawnTimer -= 1 / P.rate;
+    items.push({ x: 16 + Math.random() * (W - 32), y: -16,
+                 bomb: Math.random() * 100 < P.bomb });      // by probability, it becomes a bomb
+  }
+
+  for (const it of items) it.y += P.speed * dt;               // fall
+
+  // collision check: within the basket's height range and close enough sideways
+  for (const it of items) {
+    const hit = it.y > basket.y - 12 && it.y < basket.y + 12 &&
+                Math.abs(it.x - basket.x) < P.width / 2 + 8;
+    if (hit) {
+      it.dead = true;
+      if (it.bomb) lives--; else score++;                     // bombs cost a life, apples add score
+    } else if (it.y > H + 16) {
+      it.dead = true;
+      if (!it.bomb) lives--;                                  // a missed apple costs a life
+    }
+  }
+  items = items.filter(it => !it.dead);                       // clear out the ones already handled
+
+  if (lives <= 0) { over = true; endTime = performance.now(); if (P.onOver) P.onOver(score, (endTime - startTime) / 1000); }
+}
+
+// ---- Step 3: draw ----
+function draw() {
+  ctx.clearRect(0, 0, W, H);
+  ctx.fillStyle = "#e8f6fc"; ctx.fillRect(0, 0, W, H);
+  for (const it of items) {
+    ctx.beginPath(); ctx.arc(it.x, it.y, 14, 0, Math.PI * 2);
+    ctx.fillStyle = it.bomb ? "#2b2b3a" : "#e5484d"; ctx.fill();
+    ctx.lineWidth = 3; ctx.strokeStyle = "#2b2b3a"; ctx.stroke();
+    if (it.bomb) { ctx.fillStyle = "#fff"; ctx.font = "16px sans-serif"; ctx.textAlign = "center"; ctx.fillText("✕", it.x, it.y + 6); }
+  }
+  ctx.fillStyle = "#ffe58a"; ctx.strokeStyle = "#2b2b3a"; ctx.lineWidth = 3;
+  ctx.fillRect(basket.x - P.width / 2, basket.y - 10, P.width, 22);
+  ctx.strokeRect(basket.x - P.width / 2, basket.y - 10, P.width, 22);
+  ctx.fillStyle = "#2b2b3a"; ctx.font = "20px sans-serif"; ctx.textAlign = "left";
+  ctx.fillText("Score " + score + "   Lives " + "♥".repeat(Math.max(0, lives)), 10, 24);
+  if (over) {
+    ctx.fillStyle = "rgba(255,255,255,.85)"; ctx.fillRect(0, H / 2 - 50, W, 100);
+    ctx.fillStyle = "#2b2b3a"; ctx.textAlign = "center"; ctx.font = "26px sans-serif";
+    ctx.fillText("Game over, score " + score, W / 2, H / 2 - 5);
+    ctx.font = "16px sans-serif"; ctx.fillText("Click the picture or press Space to restart", W / 2, H / 2 + 28);
+  }
+}
+
+// ---- Loop: the browser calls loop on every frame ----
+let last = performance.now();
+function loop(now) {
+  const dt = Math.min(0.05, (now - last) / 1000);   // cap at 0.05 s so returning from another tab doesn't “teleport” things
+  last = now;
+  update(dt); draw();
+  requestAnimationFrame(loop);
+}
+reset();
+P.reset = reset;                    // let the outside (such as page buttons) restart it too
+requestAnimationFrame(loop);
+</script>
+
+<script src="../js/illus.js"></script>
+<script src="../js/illus-ch29.js"></script>
+<script src="../js/en/illus.js"></script>
+<script src="../js/en/illus-lib.js"></script>
+<script src="../js/en/illus-ch29.js"></script>
+<script src="../js/common.js"></script>
+<script>
+const $ = id => document.getElementById(id);
+const mark = (id, m) => { const e = $(id + "ok"); if (e) e.textContent = m ? " ✅ " + m : ""; };
+const SRC = $("gamecode").textContent.replace(/^\n/, "");
+const LINES = SRC.split(/\r?\n/);
+$("codeView").innerHTML = LINES.map(l => '<span class="cl">' + l.replace(/&/g, "&amp;").replace(/</g, "&lt;") + " </span>").join("");
+const spans = [...$("codeView").children];
+const at = k => LINES.findIndex(l => l.includes(k));
+const BOUND = { state: [at("Game state"), at("Step 1")], input: [at("Step 1"), at("Step 2")], update: [at("Step 2"), at("Step 3")], draw: [at("Step 3"), at("---- Loop")], loop: [at("---- Loop"), LINES.length] };
+document.querySelectorAll("[data-map]").forEach(b => (b.onclick = () => {
+  const k = b.dataset.map; spans.forEach(s => { s.classList.remove("hl"); s.removeAttribute("tabindex"); });
+  if (k === "none") return;
+  const [a, z] = BOUND[k]; for (let i = a; i < z; i++) { spans[i].classList.add("hl"); if (k === "update") spans[i].tabIndex = 0; }
+  const cv = $("codeView"); cv.scrollTop = Math.max(0, spans[a].offsetTop - cv.offsetTop - 12);
+}));
+spans.forEach(sp => {
+  const pick = () => {
+    if (!sp.classList.contains("hl") || !spans.some(x => x.tabIndex === 0)) return;
+    if (sp.textContent.includes("it.y += P.speed")) mark("c29t2", "Correct: it is the line <code>it.y += P.speed * dt</code>, where the apple moves down a little each pass.");
+    else { const e = $("c29t2ok"); if (e) e.textContent = " That line isn’t it; look again for the one with P.speed."; }
+  };
+  sp.addEventListener("click", pick);
+  sp.addEventListener("keydown", ev => { if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); pick(); } });
+});
+
+const PRESETS = {
+  easy: { speed: 100, width: 150, rate: 0.8, lives: 6, bomb: 5 },
+  mid: { speed: 160, width: 100, rate: 1.2, lives: 3, bomb: 15 },
+  hard: { speed: 320, width: 50, rate: 2.5, lives: 1, bomb: 40 },
+};
+const P = Object.assign({}, PRESETS.mid);
+try { const sv = JSON.parse(GD.store.get("gdc-ch21-params")); if (sv) for (const k in PRESETS.mid) if (typeof sv[k] === "number") P[k] = sv[k]; } catch (e) {}
+
+const KEYS = ["speed", "width", "rate", "lives", "bomb"];
+function sync() {
+  KEYS.forEach(k => { $("p_" + k).value = P[k]; $("o_" + k).textContent = P[k]; });
+  const d = (P.speed / 200) * (P.rate / 1.2) * (120 / P.width) * (1 + P.bomb / 50) * Math.sqrt(5 / P.lives) / 1.6;
+  const el = $("lvl");
+  let cls, txt, why;
+  if (d < 0.6) { cls = "easy"; txt = "😴 This set of numbers looks: easy"; why = "Slow fall, a wide basket or many lives make it easy to keep catching: it may get boring (flow: challenge below skill)."; }
+  else if (d <= 1.5) { cls = "ok"; txt = "👌 This set of numbers looks: just right"; why = "There is pressure, but also chances to catch your breath, and a beginner might manage to keep playing (near the flow zone)."; }
+  else { cls = "hard"; txt = "😱 This set of numbers looks: very hard"; why = "No time to react, or almost no margin for error, so frustration is likely (challenge far above skill)."; }
+  el.className = "lvl " + cls; el.textContent = txt + " (difficulty index " + d.toFixed(2) + ")"; $("lvlWhy").textContent = why;
+}
+KEYS.forEach(k => {
+  const s = $("p_" + k);
+  s.oninput = () => { P[k] = parseFloat(s.value); sync(); };
+  s.onchange = () => s.blur();       // release focus after letting go, so the arrow keys stop changing the slider
+});
+document.querySelectorAll("[data-pre]").forEach(b => (b.onclick = () => { Object.assign(P, PRESETS[b.dataset.pre]); sync(); P.reset(); }));
+sync();
+
+let plays = 0, runs = [], okSets = {};
+function drawRuns() {
+  if (!runs.length) { $("c29logbox").innerHTML = ""; return; }
+  $("c29logbox").innerHTML = '<table class="c29log"><tr><th>Game</th><th>Speed</th><th>Basket</th><th>Rate</th><th>Lives</th><th>Bomb%</th><th>Caught</th><th>Lasted (s)</th></tr>' +
+    runs.map(r => `<tr><td>${r.n}</td><td>${r.speed}</td><td>${r.width}</td><td>${r.rate}</td><td>${r.lives}</td><td>${r.bomb}</td><td>${r.score}</td><td>${r.secs}</td></tr>`).join("") + "</table>";
+}
+P.onOver = (score, secs) => {
+  if ($("lvl").classList.contains("ok") && secs >= 20) {
+    okSets[KEYS.map(k => P[k]).join("/")] = 1;
+    if (Object.keys(okSets).length >= 2) mark("c29t1", "Done: you lasted over 20 seconds with two different “just right” sets. Think about how the two feels differ.");
+    else mark("c29t1", "First set done (" + secs.toFixed(1) + " seconds). Now find another set that is also “just right” but feels different.");
+  }
+  plays++;
+  runs.push({ n: plays, speed: P.speed, width: P.width, rate: P.rate, lives: P.lives, bomb: P.bomb, score, secs: secs.toFixed(1) });
+  if (runs.length > 5) runs.shift();
+  drawRuns();
+  $("played").textContent = "Latest game: caught " + score + ", lasted " + secs.toFixed(1) + " seconds (played " + plays + " games in all). Comparing survival time under different parameters is also a kind of playtest data.";
+  $("gstat").textContent = "Game over! Click the picture or press Space to restart";
+};
+$("gstat").textContent = "← → or drag on the picture to catch apples";
+
+// run the same code shown on the page
+const canvas = $("game");
+try {
+  new Function("canvas", "P", SRC)(canvas, P);
+} catch (err) { $("gstat").textContent = "Game failed to start: " + err.message; }
+$("restart").onclick = () => { P.reset(); canvas.focus(); $("gstat").textContent = "← → or drag on the picture to catch apples"; };
+
+function paramsText() {
+  return "const P = { speed: " + P.speed + ", width: " + P.width + ", rate: " + P.rate + ", lives: " + P.lives + ", bomb: " + P.bomb + " };\n// speed fall speed (pixels/second)  width basket width  rate spawned per second  lives number of lives  bomb bomb probability (%)";
+}
+$("export").onclick = () => {
+  const t = paramsText(); $("expOut").textContent = t; $("exp").style.display = "block";
+  const ok = () => { $("export").textContent = "✔ Copied"; setTimeout(() => ($("export").textContent = "📋 Export parameters"), 1500); };
+  const fb = () => {
+    const ta = document.createElement("textarea"); ta.value = t; ta.style.position = "fixed"; ta.style.opacity = "0"; document.body.appendChild(ta); ta.select();
+    try { document.execCommand("copy"); ok(); } catch (e) { $("export").textContent = "Select and copy from below"; } ta.remove();
+  };
+  if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(t).then(ok, fb); else fb();
+};
+
+function showSaved() {
+  let sv = null; try { sv = JSON.parse(GD.store.get("gdc-ch21-params")); } catch (e) {}
+  const o = $("savedOut");
+  if (sv) { o.style.display = "block"; o.textContent = "Saved parameters: " + JSON.stringify(sv); } else o.style.display = "none";
+}
+$("saveP").onclick = () => {
+  GD.store.set("gdc-ch21-params", JSON.stringify({ speed: P.speed, width: P.width, rate: P.rate, lives: P.lives, bomb: P.bomb }));
+  $("savedMsg").textContent = "✔ Saved!"; showSaved();
+};
+showSaved();
+
+/* ===== Invention-story interactive: a race between two computers with different frame rates ===== */
+const ran = {};
+(function () {
+  const A = $("c29a"), B = $("c29b");
+  let running = false;
+  const place = (el, p) => (el.style.left = "calc((100% - 26px) * " + (p / 100) + ")");
+  place(A, 0); place(B, 0);
+  $("c29f").oninput = function () { $("c29fo").textContent = this.value; $("c29ta").textContent = "Fast computer (" + this.value + " frames/second)"; };
+  $("c29ta").textContent = "Fast computer (120 frames/second)";
+  $("c29go").onclick = function () {
+    if (running) return;
+    running = true; this.disabled = true;
+    const useDt = $("c29dt").checked, SPEED = 20;
+    const ms = [{ fps: +$("c29f").value, pos: 0, acc: 0, done: null, el: A, lab: $("c29ta"), name: "Fast computer" }, { fps: 30, pos: 0, acc: 0, done: null, el: B, lab: $("c29tb"), name: "Slow computer" }];
+    ms.forEach(m => place(m.el, 0));
+    const t0 = performance.now(); let last = t0;
+    $("c29msg").textContent = useDt ? "With dt: each pass moves “speed × time elapsed”…" : "Fixed amount per pass: the race begins…";
+    (function frame(now) {
+      const rdt = (now - last) / 1000; last = now;
+      ms.forEach(m => {
+        if (m.done !== null) return;
+        m.acc += rdt;
+        while (m.acc >= 1 / m.fps && m.done === null) {
+          m.acc -= 1 / m.fps;
+          m.pos += useDt ? SPEED / m.fps : SPEED / 60;
+          if (m.pos >= 100) { m.pos = 100; m.done = (now - t0) / 1000; m.lab.textContent = m.name + ": " + m.done.toFixed(1) + " s"; }
+        }
+        place(m.el, m.pos);
+      });
+      if (ms.every(m => m.done !== null) || now - t0 > 40000) {
+        running = false; $("c29go").disabled = false;
+        const d1 = ms[0].done, d2 = ms[1].done;
+        if (d1 && d2) { ran[useDt ? "on" : "off"] = d2 / d1; if (ran.on && ran.off) mark("c29t0", "Result: without dt it was " + ran.off.toFixed(1) + " times slower, and with dt the gap is only " + ran.on.toFixed(1) + " times."); }
+        $("c29msg").textContent = (d1 === null || d2 === null) ? "Race timed out, try again." :
+          useDt ? "Fast computer " + d1.toFixed(1) + " s, slow computer " + d2.toFixed(1) + " s: almost the same time (the slow computer’s picture is choppier, but the speed is right). This is separating “game time” from machine speed."
+                : "Fast computer " + d1.toFixed(1) + " s, slow computer " + d2.toFixed(1) + " s: the same code, and the speed differs by " + (d2 / d1).toFixed(1) + " times across machines. Now tick dt and race once more.";
+        return;
+      }
+      requestAnimationFrame(frame);
+    })(last);
+  };
+})();
+
+GD.mountQuiz($("quiz"), [
+  { q: "Of HTML, CSS and JavaScript, which mainly handles “game rules and behavior”?", opts: ["HTML", "CSS", "JavaScript", "All three are the same"], a: 2, why: "HTML builds the structure, CSS handles the looks, and rules, scoring and collision checks are all JavaScript’s business." },
+  { q: "(Why) Every frame in a game is a still picture, so why do we see objects moving?", opts: ["Because the screen itself moves", "Because when still pictures appear continuously and fast enough, the visual system fills in motion (Wertheimer’s apparent motion)", "Because the player’s eyes fooled the graphics card", "Because each frame hides a short video"], a: 1, why: "It is like a flip book: motion is filled in by the brain between successive still pictures." },
+  { q: "(Why) When updating position, writing y += speed * dt (dt is the seconds since the last frame) has what advantage?", opts: ["Makes the game look better", "Objects move at the same real speed on devices with different frame rates", "Makes the game harder", "No difference"], a: 1, why: "A device with a high frame rate has more passes a second but moves less each pass; multiplying by dt keeps the distance per second the same." },
+  { q: "(Why invented) Why must the game loop “not wait for input,” instead of “waiting for a command and handling it once” like a text adventure?", opts: ["Because text adventures are slow", "Because in action games the world keeps moving even if the player does nothing (bullets fly, enemies move), so it must keep updating and drawing", "Because players don’t like waiting", "Because the browser requires it"], a: 1, why: "This is the difference between games and ordinary waiting programs. Separating game time from player input and processor speed is the problem the game loop solves." },
+  { q: "(Why invented) Why did web games gradually move from Flash to Canvas + JavaScript? Which statement below is the safest?", opts: ["Because Flash games were all not fun", "There are many reasons: Flash relied on a plug-in and was controlled by one company, Apple said publicly in 2010 that the iPhone would not support Flash, Adobe announced in 2017 that support would end at the end of 2020; meanwhile browsers natively supported canvas and more standards", "Because Canvas is an upgrade of Flash", "Because only one company wanted to use JavaScript"], a: 1, why: "There is no single reason. Only sourced facts are stated here, without simplifying it into “who won and who lost.”" },
+  { q: "The panel hints “just right,” but a friend played two games and found it too hard. What should you do?", opts: ["Trust the formula; the friend played wrong", "Go by the playtest, adjust a knob and note what you changed", "Set all parameters to the lowest", "Just delete the hint feature"], a: 1, why: "All models are wrong, but some are useful (Box). The difficulty index is only a crude model, and the real answer comes from playtests; when you change things, turn only one knob at a time." },
+]);</script>
+</body>
+</html>

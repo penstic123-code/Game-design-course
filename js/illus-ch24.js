@@ -13,7 +13,8 @@
   illusAdd("c24_screen", "第一屏：火柴人戴着帽子站在地面上，前面只有一只栗宝宝慢慢走来，头顶有一个问号砖块，没有别的东西",
     rc(6, 110, 188, 16, "#e0a06a") + '<path d="M38 110 V126 M70 110 V126 M102 110 V126 M134 110 V126 M166 110 V126" stroke-width="2"' + none + '/>' +
     person(34, 46, { arms: "stand", face: "smile", hat: "cap" }) + goomba(132, 98, 0.9) + rc(150, 46, 24, 24, "#ffd34d") +
-    '<path d="M64 98 H104" stroke-dasharray="3 6" stroke-width="2.5"' + none + '/><path d="M98 92 l8 6 -8 6"' + none + ' stroke-width="2.5"/>',
+    '<path d="M64 98 H104" stroke-dasharray="3 6" stroke-width="2.5"' + none + '/><path d="M98 92 l8 6 -8 6"' + none + ' stroke-width="2.5"/>' +
+    '<path d="M126 80 H108 M114 74 l-6 6 6 6" stroke-width="2.5"' + none + '/>',
     E(162, 64, 18, "?") + T(100, 22, 13, "第一屏：只有一只敌人", "middle"));
 
   /* ---------- 例子：先单独引入 ---------- */
@@ -98,14 +99,14 @@
     T(100, 24, 13, "看，别说", "middle"));
 
   /* ---------- 为什么成立 ---------- */
-  illusAdd("c24_ramp", "四根水管一根比一根高，火柴人一次一次跳过去，越跳越稳，右边是更高的下一根",
-    ground + rc(46, 106, 20, 20, "#7ed17f") + rc(80, 90, 20, 36, "#7ed17f") + rc(114, 72, 20, 54, "#7ed17f") + rc(148, 52, 20, 74, "#7ed17f") +
+  illusAdd("c24_ramp", "三根水管，矮的、中等的、高的，火柴人一次一次跳过去，越跳越稳",
+    ground + rc(56, 100, 22, 26, "#7ed17f") + rc(98, 80, 22, 46, "#7ed17f") + rc(140, 52, 22, 74, "#7ed17f") +
     person(22, 40, { arms: "up", legs: "run", face: "grin", hat: "cap", s: 0.8 }) + '<path d="M60 100 q8 -22 18 -8 M96 82 q10 -22 20 -8" stroke-dasharray="3 5" stroke-width="2.5"' + none + '/>',
     T(100, 22, 13, "台阶一格比一格高", "middle"));
   illusAdd("c24_safe", "坑底铺着一张软垫，火柴人掉下来笑嘻嘻地弹了起来，说再来一次",
     rc(6, 84, 56, 42, "#e0a06a") + rc(138, 84, 56, 42, "#e0a06a") + rc(62, 112, 76, 14, "#ffb3c6") +
     person(100, 32, { arms: "up", legs: "wide", face: "grin", hat: "cap", s: 0.8 }) + '<path d="M86 100 q14 -8 28 0" stroke-width="2.5"' + none + '/>',
-    T(100, 20, 13, "掉下去也没事", "middle"));
+    T(6, 14, 13, "掉下去也没事"));
   illusAdd("c24_weight", "火柴人刹车时脚下拖出一道长长的滑痕，带着一点惯性往前滑，显得有分量",
     ground + person(110, 58, { arms: "stand", legs: "wide", face: "o", hat: "cap" }) + '<path d="M30 122 H98" stroke-width="3.5" stroke-dasharray="8 4"' + none + '/>' +
     '<path d="M138 96 h18 M142 106 h24 M138 116 h16" stroke-width="2.5"' + none + '/>',

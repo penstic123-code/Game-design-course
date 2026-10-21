@@ -31,9 +31,9 @@
     '<path d="M60 108 L72 90 M122 108 L134 90" stroke-width="4" fill="none"/><circle cx="74" cy="87" r="5" fill="none" stroke-width="3"/><circle cx="136" cy="87" r="5" fill="none" stroke-width="3"/>',
     T(36, 62, 12, "第1轮", "middle") + T(98, 62, 12, "第2轮", "middle") + T(160, 62, 12, "第3轮", "middle") + T(67, 76, 11, "改设计", "middle") + T(129, 76, 11, "改设计", "middle") + T(100, 24, 12, "每轮 5 人，轮与轮之间改设计", "middle"));
 
-  illusAdd("c27_faulkner", "三组同样是五个人的测试者，发现问题的比例从五成多到几乎全部，柱子高矮悬殊",
-    bar(34, 44, "#ffb3c6") + bar(88, 64, "#ffe58a") + bar(142, 86, "#b6e8a8"),
-    T(45, 62, 12, "55%", "middle") + T(99, 42, 12, "80%", "middle") + T(153, 20, 12, "99%", "middle") + T(100, 132, 11, "同样5人，结果相差很大", "middle"));
+  illusAdd("c27_faulkner", "两组同样是五个人的测试者，一组发现了五成多的问题，另一组几乎全部发现，柱子高矮悬殊",
+    bar(48, 44, "#ffb3c6") + bar(116, 86, "#b6e8a8"),
+    T(59, 62, 12, "55%", "middle") + T(127, 20, 12, "99%", "middle") + T(100, 132, 11, "同样5人，结果相差很大", "middle"));
 
   illusAdd("c27_mirror", "单向玻璃后面的研究员看着屏幕，玻璃另一侧的玩家全神贯注玩手柄，并不知道正在被观察",
     ground + '<rect x="84" y="30" width="10" height="96" fill="#cfe9f5"/>' + person(40, 62, { arms: "desk", face: "wide", legs: "sit" }) +
@@ -110,7 +110,7 @@
     T(50, 28, 13, "闭嘴", "middle") + T(150, 28, 12, "自己试", "middle"));
 
   illusAdd("c27_coin", "掷了五次硬币出现四次正面，旁边的人惊呼“这枚硬币有问题”，其实只是样本太小",
-    ground + person(50, 62, { arms: "up", face: "shout" }) + '<circle cx="110" cy="112" r="11" fill="#ffd34d"/><circle cx="140" cy="112" r="11" fill="#ffd34d"/><circle cx="170" cy="112" r="11" fill="#ffd34d"/>' + bub(8, 8, 96, 24),
+    ground + person(50, 62, { arms: "up", face: "shout" }) + '<circle cx="96" cy="114" r="9" fill="#ffd34d"/><circle cx="116" cy="114" r="9" fill="#ffd34d"/><circle cx="136" cy="114" r="9" fill="#fff" stroke-dasharray="3 3"/><circle cx="156" cy="114" r="9" fill="#ffd34d"/><circle cx="176" cy="114" r="9" fill="#ffd34d"/>' + bub(8, 8, 96, 24),
     T(56, 25, 12, "这硬币有问题！", "middle") + T(140, 88, 12, "5 次里 4 次正面", "middle") + T(100, 136, 11, "只是样本太小", "middle"));
 
   illusAdd("c27_ab", "两组各五十人，版本B比版本A多了两个人点击，但两根柱子的高度差还不如晃动的误差线",

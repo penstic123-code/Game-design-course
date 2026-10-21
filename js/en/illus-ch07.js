@@ -103,7 +103,8 @@ ILLUS_EN_ADD({
 "a": "A stick figure thinks the cup is full of water and lifts hard, but it is empty, and their hand flies up high",
 "t": [
 "Huh? Lighter than I thought",
-"Hand flew too high"
+"Hand flew too high",
+"Expected position"
 ]
 },
 "c07_menu": {
@@ -133,12 +134,12 @@ ILLUS_EN_ADD({
 ]
 },
 "c07_shake3": {
-"a": "Three squares shaking at small, medium and large tiers: the amplitude grows by multiples, clear at a glance",
+"a": "Three squares shaking at small, medium and large tiers: the amplitude grows as 1 : 4 : 8, and the bars below measure the amplitude with the same ruler, clear at a glance",
 "t": [
 "Basic 2",
 "Heavy 8",
 "Critical 16",
-"Each tier a multiple of the last"
+"Bar = shake amplitude (1 : 4 : 8)"
 ]
 },
 "c07_brightness": {

@@ -71,7 +71,7 @@
     <div class="txt">
       <span class="badge">Chapter 10</span>
       <h1>UI &amp; Onboarding</h1>
-      <p class="sub">A good interface is “invisible”: it is there when the player needs it and out of the way when they don’t.</p>
+      <p class="sub">A good interface is “invisible”: it is there when the player needs it and stays out of the way when not.</p>
     </div>
     <svg viewBox="0 0 190 150" class="rough" aria-hidden="true">
       <rect x="15" y="20" width="160" height="105" fill="#fff" stroke="#2b2b3a" stroke-width="4" rx="8"/>
@@ -86,9 +86,9 @@
     <h3>Learning goals</h3>
     <span class="time">about 50 min</span>
     <ul>
-      <li>Explain why the HUD was invented and why it can’t be stuffed full, using “working memory is tiny” and “extraneous load,” and group interface elements with the Gestalt principles of proximity, similarity, closure and continuity.</li>
-      <li>Lay out a HUD by hand: decide for each element in each scene whether it is “always on, dimmed or hidden,” and read the visual-load, center-occlusion and grouping diagnostics.</li>
-      <li>Judge whether a default is a “nudge” or “manipulation,” and pick sensible defaults for onboarding.</li>
+      <li>Say why the HUD was invented and why it can’t be packed too full (explained by “working memory is small” and “extraneous load”), and group an interface with the Gestalt principles of proximity, similarity, closure and continuity.</li>
+      <li>Lay out a HUD by hand: decide for each element by scene whether it stays, fades or hides, and read the visual-load, center-blocking and grouping diagnostics.</li>
+      <li>Judge whether a default is “nudging” or “manipulating,” and pick sensible default settings for new-player onboarding.</li>
     </ul>
   </div>
 
@@ -97,9 +97,9 @@
   <div class="withimg">
     <span data-illus="c10_dead"></span>
     <div>
-      <p>You have surely met this: the fight is at its hottest, the screen goes black with a “you were knocked down,” and the first question in your head is: how much health did I have left?</p>
-      <p>The health bar was on screen the whole time, and you just didn’t look at it. It’s not that you weren’t paying attention; there were a dozen things on the screen fighting for your eyes. The job of the interface (<span class="term" tabindex="0" data-def="User Interface: the window through which player and game exchange information, including on-screen information, menus and control prompts.">UI</span>) is to find a balance between “letting the player know” and “staying out of the player’s way.”</p>
-      <p>Before doing that, ask a seemingly dull question: where does this piece of information “live”? Designers often sort it with two questions: <b>does it exist in the story world? Does it exist in the game’s 3D space?</b> This gives four kinds.</p>
+      <p>In the thick of battle, the screen goes black with a “pop,” reading “You were knocked down.” Dazed for a moment, the first question in your head is: how much health was left just then?</p>
+      <p>The health bar was on screen the whole time, yet nobody saw it: a dozen things were fighting for the eye at once, and the player was not careless. Designing the interface (<span class="term" tabindex="0" data-def="User interface: the window through which player and game exchange information, including on-screen information, menus, control prompts and so on.">UI</span>) means finding a balance between “letting the player know” and “not getting in the way.”</p>
+      <p>Every piece of information “lives” somewhere. Designers often sort it with two questions: <b>Does it exist in the story world? Does it exist in the game’s 3D space?</b> That gives four kinds.</p>
     </div>
   </div>
   <div class="card">
@@ -122,23 +122,23 @@
     </svg>
   </div>
   <div class="grid2">
-    <div class="card g"><h3>Diegetic</h3><p>The characters themselves can see it too. Upside: the strongest immersion. Downside: not always clear or easy to read, and it takes the most work to make.</p></div>
+    <div class="card g"><h3>Diegetic</h3><p>The character can see it too, so immersion is strongest. The drawback is that all the clarity depends on extra effort from the designer, so it is the hardest to make.</p></div>
     <div class="card p"><h3>Non-diegetic (the most common)</h3><p>A HUD that serves purely the player, pasted onto the screen. Upside: clear and easy to change. Downside: it easily breaks immersion, and tends to pile up.</p></div>
   </div>
-  <p>The <span class="term" tabindex="0" data-def="Head-Up Display: a layer of information always overlaid on the game picture, such as health bars, ammo and the minimap.">HUD</span> is the layer of information always overlaid on the picture. There is no right or wrong choice among them; it depends on whether you need <b>clarity</b> or <b>immersion</b> more.</p>
+  <p>The <span class="term" tabindex="0" data-def="Head-Up Display: a layer of information always overlaid on the game picture, such as a health bar, ammo and a minimap.">HUD</span> is the layer of information always overlaid on the picture. There is no right or wrong choice among the kinds, which depends on whether <b>clarity</b> or <b>immersion</b> is needed more.</p>
   <div class="eg" data-ic="🔦"><span data-illus="c10_spine"></span><div class="egt"><b>Diegetic: the glowing bar on the back.</b> In <i>Dead Space</i> the glowing spine bar on the protagonist’s back is the health: both the character and the player can see it, and no numbers are needed on screen. Horror games often use this trick to keep immersion.</div></div>
   <div class="eg" data-ic="🔫"><span data-illus="c10_corner"></span><div class="egt"><b>Non-diegetic: numbers in a screen corner.</b> The health and ammo of a competitive shooter are pasted in the screen corners. They don’t belong to the story world, but they read at a glance, and when winning and losing are at stake, clarity matters more than immersion.</div></div>
-  <div class="eg" data-ic="🚗"><span data-illus="c10_dash"></span><div class="egt"><b>In daily life: a dashboard and a battery bar.</b> A car’s dashboard really is installed in the car and is “diegetic” for the driver; the battery bar at the top of a phone is not an object in the phone’s world but a layer the system puts on top, so it is “non-diegetic.”</div></div>
+  <div class="eg" data-ic="🚗"><span data-illus="c10_dash"></span><div class="egt"><b>Daily life: a dashboard and a battery bar</b> A car’s dashboard really is installed in the car, so for the driver it is “diegetic.” The battery bar at the top of a phone is not an object in the phone’s world but a layer laid on by the system, and is “non-diegetic.”</div></div>
   <div class="eg bad" data-ic="🕯️"><span data-illus="c10_tiny"></span><div class="egt"><b>A near-miss: diegetic does not mean usable.</b> For immersion, health is made a tiny indicator light on the character’s clothes. In a fight the camera shakes and the player simply can’t see it. Either make it a more eye-catching glow, or add a layer of meta UI like a reddening screen when things get critical.</div></div>
-  <p class="small">This four-way split is often traced to Fagerholt and Lorentzon’s 2009 master’s thesis at Chalmers University of Technology, <i>Beyond the HUD</i>. The word “diegetic” is borrowed from film, and some think it doesn’t always fit games (Jørgensen and others have made a similar criticism about game sound).</p>
+  <p class="small">This four-way split is often traced to the 2009 Chalmers University of Technology master’s thesis “Beyond the HUD” by Fagerholt and Lorentzon. The term “diegetic” is borrowed from film, and some critics say it does not fit games well (Jørgensen and others have made a similar criticism about game sound).</p>
 
   
   <div class="sec"><span class="n">2</span><h2><span class="tag what">What it is</span>Information hierarchy: not all information is equally important</h2></div>
-  <p>Knowing where information lives is not enough. Screen space and the player’s attention are both scarce, and you have to decide how eye-catching each piece of information is. This “eye-catchingness” is called <span class="term" tabindex="0" data-def="Visual weight: how eye-catching an element is in the picture, determined by size, contrast, position, animation and so on.">visual weight</span>. A simple three-tier method is:</p>
+  <p>Knowing where information lives is not enough. Screen space and the player’s attention are both scarce, so you have to decide how eye-catching each piece should be. That “eye-catchingness” is <span class="term" tabindex="0" data-def="Visual weight: how much an element draws the eye in a picture, determined by size, contrast, position, animation and so on.">visual weight</span>. A simple three-level approach:</p>
   <div class="grid3">
     <div class="card y mini"><div class="ico">1</div><h3>Always prominent</h3><p>Information the current decision needs right now, such as health in combat.</p></div>
     <div class="card b mini"><div class="ico">2</div><h3>Dimmed</h3><p>Glanced at now and then, like the minimap. Smaller and paler.</p></div>
-    <div class="card v mini"><div class="ico">3</div><h3>Shown only when needed</h3><p>If it isn’t needed, don’t show it. Pop-up menus, displayed only when an event triggers.</p></div>
+    <div class="card v mini"><div class="ico">3</div><h3>Shown only when needed</h3><p>Pop-up menus, shown only when an event triggers; if it is not needed, do not put it there.</p></div>
   </div>
   <p>The difficulty is that <b>the same element belongs in different tiers at different moments</b>. The figure below is the “seating chart” of the same HUD at three moments.</p>
   <div class="card">
@@ -158,7 +158,7 @@
     </svg>
   </div>
   <div class="eg" data-ic="🛒"><span data-illus="c10_shop"></span><div class="egt"><b>In games: the gold bar changes its face with the scene.</b> In combat the gold bar folds away and only grows in the shop; when exploring, the minimap gets bigger, and as soon as combat begins it shrinks into a pale thumbnail in the corner.</div></div>
-  <div class="eg" data-ic="⛽"><span data-illus="c10_fuel"></span><div class="egt"><b>In daily life: the low-fuel light.</b> A car’s “low fuel” light is normally off and comes on when the fuel is nearly gone, claiming your attention only at the moment you have a decision to make.</div></div>
+  <div class="eg" data-ic="⛽"><span data-illus="c10_fuel"></span><div class="egt"><b>Daily life: the low-fuel light</b> A car’s “low fuel” light stays off normally and comes on only when fuel is nearly out, taking attention only at the moment the driver must make a decision.</div></div>
   <div class="eg" data-ic="📱"><span data-illus="c10_phone"></span><div class="egt"><b>In daily life: a phone’s status bar.</b> The time is always shown, while the “battery below 20%” alert pops up only when needed.</div></div>
   <div class="eg bad" data-ic="🌀"><span data-illus="c10_flood"></span><div class="egt"><b>Counterexample: everything always on.</b> In combat, the chat box, achievement popups, friends online and weather and time are all up. Each looks “useful” alone, but piled together the player misses the truly deadly one, the health.</div></div>
 
@@ -185,11 +185,11 @@
       </g>
     </svg>
   </div>
-  <div class="eg" data-ic="🍄"><span data-illus="c10_goomba"></span><div class="egt"><b>Do first, tell after: an opening without words.</b> Level 1-1 of <i>Super Mario Bros.</i> opens with no text; the first enemy walks slowly toward you, and if you don’t jump you bump into it. It makes you “do” first, and then understand.</div></div>
+  <div class="eg" data-ic="🍄"><span data-illus="c10_goomba"></span><div class="egt"><b>Do first, tell later: an opening without text</b> The opening of <i>Super Mario</i> level 1-1 has no text, and the first enemy walks slowly toward the player, who will bump into it unless they jump. Let the player “do” first, then understand.</div></div>
   <div class="eg" data-ic="🚪"><span data-illus="c10_rooms"></span><div class="egt"><b>Progressive disclosure: one new thing per room.</b> Designers often praise this approach: the first few rooms introduce only one new mechanic at a time, and the next is layered on only once it is learned (<i>Portal</i> is often cited as an example).</div></div>
-  <div class="eg" data-ic="💬"><span data-illus="c10_bubble"></span><div class="egt"><b>A contextual hint in daily life: an app’s little bubble.</b> When a phone app is first opened, a little bubble pops up only the first time you touch a certain button, instead of handing you a manual right away.</div></div>
+  <div class="eg" data-ic="💬"><span data-illus="c10_bubble"></span><div class="egt"><b>A contextual hint in daily life: an app’s little bubble</b> When an app is first opened, a small bubble pops up only the first time you touch a certain button, with no manual dumped on you at the start.</div></div>
   <div class="eg bad" data-ic="📚"><span data-illus="c10_wall"></span><div class="egt"><b>Counterexample: a twenty-page forced tutorial.</b> A 20-page illustrated tutorial pops up at the start and demands “finish it all before you can begin.” The player taps skip, and when a real problem comes up later, can’t find the way back in. Good practice is to make it <b>skippable and reviewable</b>.</div></div>
-  <div class="sticky">The best teaching often happens when the player <b>doesn’t notice they are being taught</b>: use level design to make a little room that can only be passed once the thing is learned, which beats a pop-up. Remember to let hints be skipped and revisited; veterans and newcomers both deserve respect.</div>
+  <div class="sticky">The best teaching happens when the player <b>does not notice being taught</b>: use level design to build a small room that can be passed only once the skill is learned, which works better than a pop-up. Hints should be skippable and re-readable, with respect for both veterans and newcomers.</div>
 
   
   <div class="sec"><span class="n">4</span><h2><span class="tag origin">How it was invented</span>Why was the HUD invented? And why does it have to be “small”?</h2></div>
@@ -198,15 +198,15 @@
     <div class="withimg rev">
       <span data-illus="c10_lookdown"></span>
       <div>
-        <p>Imagine you are in a fast-flying fighter, having to watch the enemy aircraft ahead and read speed and altitude at the same time. The instruments are below the cockpit, and each time you look down your eyes leave the front. Even if it is only a second or two, the situation can change completely.</p>
-        <p>The early remedy was to arrange the instruments more neatly and make the numerals bigger. But as long as the instruments are “down there,” you have to look down, refocus, and look up again. The problem was not whether the instruments looked good but their <b>position</b>.</p>
+        <p>Imagine sitting in a fighter plane flying at high speed, having both to watch the enemy planes ahead and to read speed and altitude. The instruments are below the cockpit, and every time you look down, your eyes leave the front. Even for just a second or two, the situation can change completely.</p>
+        <p>The early remedy was to arrange the instruments more neatly and make the numerals larger. But as long as the instruments are “below,” you still have to look down, refocus, and look up. The problem was not whether the instruments looked good, but their <b>position</b>.</p>
         <p>So someone changed the approach: don’t make the eyes go looking for information, let the information come to the eyes. <b>Project the key figures onto transparent glass directly in front of the pilot</b>, so that with the head up they can see the outside world and the readout together. That is where the name “Head-Up Display” comes from: <b>you see it with your head up</b>. It evolved step by step from the reflector gunsight in fighters, which projects an aiming ring onto glass.</p>
       </div>
     </div>
-    <p>But a new problem soon arose: more and more information could be projected onto the glass, while the pilot’s attention and memory did not grow. Designers had to decide: <b>which information deserves this precious “straight ahead”?</b> Games borrowed the same name, and the same problem.</p>
+    <p>A new problem soon appeared: more and more information could be projected on the glass, while the pilot’s attention and memory did not grow. Designers had to decide: <b>which information deserves this precious “straight ahead”?</b> Games borrowed the same name, and the same problem.</p>
     <div class="timeline">
       <div class="ev hasimg"><span data-illus="c10_tl_sight"></span><div><b class="yr">Around WWII</b> Fighters carry reflector gunsights that project an aiming ring onto glass in front.</div></div>
-      <div class="ev hasimg"><span data-illus="c10_tl_radar"></span><div><b class="yr">1942</b> British radar researchers build an experimental device that combines a radar image and the projection of a gyro gunsight onto one windscreen. According to Wikipedia, the device wasn’t installed on an aircraft then, but it already had the core features of the modern HUD.</div></div>
+      <div class="ev hasimg"><span data-illus="c10_tl_radar"></span><div><b class="yr">1942</b> Radar researchers at Britain’s Telecommunications Research Establishment (TRE) ran an experiment that combined the radar image with the projection of a gyro gunsight on the same windscreen, so a night-fighter pilot did not have to look down at the radar screen. This is seen as an early ancestor of the HUD.</div></div>
       <div class="ev hasimg"><span data-illus="c10_tl_miller"></span><div><b class="yr">1956</b> The psychologist George Miller publishes “The Magical Number Seven, Plus or Minus Two”: people can hold only a limited amount of information at once, but they can use <b>chunking</b> to squeeze several small items into one, in effect enlarging what “fits.”</div></div>
       <div class="ev hasimg"><span data-illus="c10_tl_sweller"></span><div><b class="yr">1988</b> John Sweller proposes cognitive load theory: poor presentation needlessly uses up limited working memory.</div></div>
       <div class="ev hasimg"><span data-illus="c10_tl_cowan"></span><div><b class="yr">2001</b> Nelson Cowan reviews a large body of experiments and argues that, once rehearsal and chunking are excluded, capacity looks more like about 4 chunks.</div></div>
@@ -214,7 +214,7 @@
   </div>
   <div class="board" id="c10_wm">
     <b>Guess first, then try: how many digits can you remember at a time?</b>
-    <p class="small">The digits will flash for 3 seconds. Guess a number by feel first, then test, and see how far you are from the psychologists’ conclusions.</p>
+    <p class="small">Digits will flash for 3 seconds. First guess a number by feel, then test, and see how far off you are from the psychologists’ conclusion.</p>
     <label class="ctl">① Your prediction: I can remember <output id="c10_gv">7</output> digits at a time <input type="range" id="c10_g" min="3" max="12" value="7"></label>
     <label class="ctl">② Number of digits in this test, N <output id="c10_nv">6</output> <input type="range" id="c10_n" min="3" max="12" value="6"></label>
     <div>Display:<button class="chip on" data-wm="0">Run together</button><button class="chip" data-wm="1">Groups of 3</button></div>
@@ -227,40 +227,66 @@
     <div class="c10_bars" id="c10_bars"></div>
     <div class="small" id="c10_cmp"></div>
   </div>
-  <div class="sticky">Try it: with the same N (say 9), test once with “Run together” and once with “Groups of 3.” With the same digits, grouping leaves fewer “units” to remember, and you will most likely feel firsthand what a chunk is. A single test fluctuates a lot, so try several rounds; this is not a rigorous experiment.</div>
+  <div class="sticky">Try it: measure the same N (say 9) once written as a single run, then once in “groups of 3.” With the same digits, grouping leaves fewer “units” to remember, and you feel for yourself what a chunk is. A single test fluctuates a lot, so try several rounds. This is not a rigorous experiment.</div>
 
   <div class="story">
     <h3>Story two: why do we “see the whole”?</h3>
-    <p>Early psychology wanted to take perception apart into a pile of “basic sensations” (dots, lines, patches of color) and add them up like building blocks. But there was a phenomenon that couldn’t be taken apart: light two still bulbs in turn, and what you see is plainly <b>one light running back and forth</b>, though nothing in the picture is “moving.” See for yourself first:</p>
+    <p>Early psychology wanted to break perception into a pile of “basic sensations” (dots, lines, patches of color) and add them up like building blocks. But one phenomenon would not come apart: light two still bulbs in turn and what you see is clearly <b>one light running back and forth</b>, though there is no “moving thing” in the picture. See for yourself first:</p>
     <div class="board">
-      <p>The two red dots below are only <b>lighting up in turn</b>, and neither dot ever moves. What do you see? Press “Slow” and “Fast” and take a look at each.</p>
+      <p>The two red dots below only <b>light up in turn</b>, and no dot ever moves. What will you see? Click “Slow” and “Fast” for a look at each.</p>
       <div class="c10_phi" id="c10_phi"><i class="a"></i><i class="b"></i></div>
       <button class="btn alt" id="c10_slow">Slow (1 second per switch)</button><button class="btn" id="c10_fast">Fast (about 0.2 seconds per switch)</button>
-      <div class="msg" id="c10_phit">When it is slow, you see two separate lights; when fast, most people see “a single dot jumping left and right.”</div>
+      <div class="msg" id="c10_phit">When slow, you see two separate lights. When fast, most people see “one dot jumping left and right.”</div>
     </div>
-    <p>In the version often told, the psychologist Max Wertheimer was struck by flickering lights on a train around 1910, went back to experiment with a stroboscopic device, and in 1912 published a long paper on “apparent motion” (the phi phenomenon). (“Inspiration on the train” is a circulating anecdote whose details vary; what can be confirmed is that 1912 paper.) His conclusion: perception is not the sum of parts, <b>the brain grasps the overall structure first</b>. This is the starting point of the <span class="term" tabindex="0" data-def="Gestalt psychology: from the German for “whole.” It holds that people perceive the whole structure first, not isolated parts.">Gestalt</span> (German for “whole”) school.</p>
-    <p>For interface designers this means: <b>players don’t read your 12 icons one by one; what they see first is “a few blocks.”</b> You can use placement to divide the blocks for them.</p>
+    <p>In the version often told, the psychologist Max Wertheimer was struck by flickering lights from a train around 1910 and went home to experiment with a stroboscope. The “inspiration on the train” is a circulating anecdote, and the details vary. What is certain is that in 1912 he published a long paper on “apparent motion” (the phi phenomenon).</p>
+    <p>His conclusion was that perception is not the sum of parts: <b>the brain grasps the overall structure first</b>. This was the starting point of the <span class="term" tabindex="0" data-def="Gestalt psychology: from the German word for “whole.” It holds that people perceive overall structure first, rather than isolated parts.">Gestalt</span> (German for “whole”) school.</p>
+    <p>For the interface designer, <b>players do not read 12 icons one by one; what they see first is “a few blocks.”</b> The designer can use placement to split them into blocks on the player’s behalf.</p>
     <div class="timeline">
       <div class="ev hasimg"><span data-illus="c10_tl_phi"></span><div><b class="yr">1912</b> Wertheimer publishes “Experimental Studies on the Perception of Motion,” describing the phi phenomenon.</div></div>
       <div class="ev hasimg"><span data-illus="c10_tl_laws"></span><div><b class="yr">1923</b> Wertheimer publishes a paper on perceptual organization, summing up grouping tendencies such as proximity and similarity.</div></div>
       <div class="ev hasimg"><span data-illus="c10_tl_ui"></span><div><b class="yr">Today</b> “Put like things close together, same color and same shape” in interface design applies these tendencies. They are empirical descriptions, not exact laws.</div></div>
     </div>
   </div>
+  <aside class="cc-card" aria-label="Concept card: Gestalt">
+    <span class="cc-tag">Concept card</span>
+    <p class="cc-name"><span>Gestalt</span></p>
+    <p class="cc-en">Gestalt psychology (German Gestalt, “whole”)</p>
+    <p class="cc-by">Max Wertheimer · published the phi phenomenon paper in 1912 and summed up the principles of perceptual grouping in 1923</p>
+    <p class="cc-def">People see the overall structure first and the parts second. Things that are close together, look alike, have a gap in their outline, or sit in a line are seen as a group.</p>
+    <p class="cc-eg"><span class="cc-k">Example</span>The health, mana and stamina bars sit side by side and the skill icons form a separate row, so the player knows “these are resources, those are skills” without reading a word.</p>
+  </aside>
 
   
   <div class="sec"><span class="n">5</span><h2><span class="tag why">Why it works</span>Why can’t a HUD be stuffed too full? Cognitive load and working memory</h2></div>
-  <p>If 12 control instructions pop up at the start, you probably won’t remember a single one; split a phone number into 3-4-4 and it is much easier to remember. Behind both is the same thing: <b>the human brain can handle very little information at once</b>.</p>
+  <p>Show 12 control instructions at the start and not one is remembered. Split a phone number into 3-4-4 and it is much easier to remember. Behind both is the same fact: <b>the human brain can handle very little information at once</b>.</p>
   <div class="why-box">
     <h3>Cognitive load theory and the limit of working memory</h3>
-    <p><span class="term" tabindex="0" data-def="Working memory: the brain’s “workbench” for temporarily holding and processing information. Its capacity is small, and information soon vanishes without rehearsal.">Working memory</span> is where we temporarily hold and process information, and its capacity is very limited. John Sweller’s 1988 paper started from the “cognitive burden during problem solving” and later developed into <span class="term" tabindex="0" data-def="Cognitive load theory: the load on working memory while learning and operating is of three kinds, intrinsic, extraneous and germane; when the total load exceeds capacity, both learning and performance get worse.">cognitive load theory</span>. Later literature often splits load into three kinds:</p>
+    <p><span class="term" tabindex="0" data-def="Working memory: the brain’s “workbench” for temporarily holding and processing information. Its capacity is very small, and information vanishes quickly unless rehearsed.">Working memory</span> is where information is held and processed temporarily, and its capacity is very limited. John Sweller’s 1988 paper started from the “cognitive burden while solving problems” and later grew into <span class="term" tabindex="0" data-def="Cognitive load theory: the load placed on working memory during learning and tasks falls into three kinds (intrinsic, extraneous and germane), and when the total exceeds capacity, both learning and performance get worse.">cognitive load theory</span>. Later literature often divides the load into three kinds:</p>
     <ul>
       <li><b>Intrinsic load</b>: the complexity of the task itself (how many variables must be handled at once).</li>
       <li><b>Extraneous load</b>: the extra burden brought by <b>poor presentation</b> (a cluttered HUD, walls of text), which a designer most needs to cut.</li>
       <li><b>Germane load</b>: the useful effort that goes into integrating new knowledge into a “routine” (a schema).</li>
     </ul>
-    <p>As for how big the capacity actually is: the point of Miller’s 1956 paper was that people can hold about 7±2 <span class="term" tabindex="0" data-def="Chunk: a unit of information that the brain remembers as a whole. Squeezing several small items into one chunk through familiar patterns in effect enlarges capacity.">chunks</span>, not 7 “digits,” and that recoding can enlarge what “fits.” After reviewing many experiments, Cowan proposed in 2001 that with chunking and rehearsal excluded, the real capacity is more conservative, <b>about 4 chunks</b>. The argument between the two numbers has still not been entirely settled, but everyone agrees: <b>it is very small, so spend it sparingly.</b></p>
-    <div class="src">Sources: Sweller (1988), Cognitive load during problem solving: Effects on learning, <i>Cognitive Science</i> 12(2): 257–285; Miller (1956), The magical number seven, plus or minus two, <i>Psychological Review</i> 63(2): 81–97; Cowan (2001), The magical number 4 in short-term memory, <i>Behavioral and Brain Sciences</i> 24(1): 87–114 (<a href="https://pubmed.ncbi.nlm.nih.gov/11515286/">PubMed</a>). The three-way split of load comes from later reviews by Sweller and others (such as Sweller, van Merriënboer &amp; Paas, 1998).</div>
+    <p>As for capacity, the point of Miller’s 1956 paper was that people can hold about 7±2 <span class="term" tabindex="0" data-def="Chunk: a unit of information the brain remembers as a whole. Combining several small pieces into one chunk through a familiar pattern effectively expands capacity.">chunks</span>, not 7 “digits.” Recoding can expand how much fits.</p>
+    <p>After reviewing many experiments, Cowan proposed in 2001 that once chunking and rehearsal are ruled out, the true capacity is more conservative, <b>about 4 chunks</b>. The dispute between the two numbers has still not been fully settled, but everyone agrees: <b>it is small, so spend it sparingly.</b></p>
+    <div class="src">Sources:<br>Sweller · 1988 · studied cognitive burden in problem solving · proposed cognitive load theory (“Cognitive load during problem solving: Effects on learning,” <i>Cognitive Science</i> 12(2): 257–285). The division into three kinds of load comes from later reviews by Sweller and colleagues (e.g., Sweller, van Merriënboer and Paas, 1998).<br>Miller · 1956 · people can hold about 7±2 chunks (“The magical number seven, plus or minus two,” <i>Psychological Review</i> 63(2): 81–97).<br>Cowan · 2001 · reviewed many experiments · with chunking and rehearsal excluded, capacity is about 4 chunks (“The magical number 4 in short-term memory,” <i>Behavioral and Brain Sciences</i> 24(1): 87–114, <a href="https://pubmed.ncbi.nlm.nih.gov/11515286/">PubMed</a>).</div>
   </div>
+  <aside class="cc-card" aria-label="Concept card: Cognitive load theory">
+    <span class="cc-tag">Concept card</span>
+    <p class="cc-name"><span>Cognitive load theory</span></p>
+    <p class="cc-en">Cognitive load theory</p>
+    <p class="cc-by">John Sweller · his 1988 paper “Cognitive load during problem solving: Effects on learning”</p>
+    <p class="cc-def">Working memory has very little capacity. When the complexity of the task itself, a cluttered presentation, and the effort of integrating knowledge add up to more than it can hold, performance gets worse.</p>
+    <p class="cc-eg"><span class="cc-k">Example</span>A battle screen lights up 12 elements at once, and the player misses the health bar.</p>
+  </aside>
+  <aside class="cc-card" aria-label="Concept card: Chunk">
+    <span class="cc-tag">Concept card</span>
+    <p class="cc-name"><span>Chunk</span></p>
+    <p class="cc-en">Chunk</p>
+    <p class="cc-by">George Miller · his 1956 paper “The Magical Number Seven, Plus or Minus Two”</p>
+    <p class="cc-def">A unit of information the brain remembers as a whole. Pack small pieces into chunks and the same capacity holds more.</p>
+    <p class="cc-eg"><span class="cc-k">Example</span>The phone number 13912345678 split into 139-1234-5678 turns 11 units to remember into 3.</p>
+  </aside>
   <div class="card">
     <svg viewBox="0 0 700 300" width="100%" role="img" aria-label="Working-memory capacity of about 4 chunks: a clean HUD fits, a cluttered HUD overflows">
       <g class="rough" stroke="#2b2b3a" stroke-width="3.5">
@@ -270,11 +296,11 @@
       </g>
       <g font-size="18" fill="#2b2b3a" text-anchor="middle">
         <text x="98" y="82"><tspan font-size="14">Intrinsic</tspan></text><text x="176" y="82"><tspan font-size="14">Intrinsic</tspan></text><text x="254" y="82"><tspan font-size="14">Germane</tspan></text><text x="332" y="82">Spare</text>
-        <text x="98" y="208"><tspan font-size="14">Intrinsic</tspan></text><text x="176" y="208"><tspan font-size="14">Intrinsic</tspan></text><text x="254" y="208"><tspan font-size="13">Extraneous</tspan></text><text x="332" y="208"><tspan font-size="13">Extraneous</tspan></text><text x="410" y="208"><tspan font-size="13">Extraneous</tspan></text><text x="488" y="208"><tspan font-size="13">Extraneous</tspan></text>
+        <text x="98" y="208"><tspan font-size="14">Intrinsic</tspan></text><text x="176" y="208"><tspan font-size="14">Intrinsic</tspan></text><text x="254" y="208"><tspan font-size="13">Extraneous</tspan></text><text x="332" y="208"><tspan font-size="13">Extraneous</tspan></text><text x="410" y="208"><tspan font-size="13">Extraneous</tspan></text><text x="488" y="208" font-weight="700">Health</text>
       </g>
       <g font-size="20" fill="#2b2b3a"><text x="60" y="34">Clean HUD: it fits, with room left to think about strategy</text><text x="60" y="160">Cluttered HUD: extraneous load fills it, beyond a capacity of about 4 chunks</text></g>
       <path d="M372 252 V276 H526 V252" stroke="#e5484d" stroke-width="4" fill="none" class="rough"/>
-      <text x="360" y="276" font-size="18" fill="#b3303a" text-anchor="end">Overflow: health missed</text>
+      <text x="360" y="276" font-size="18" fill="#b3303a" text-anchor="end">Overflow: the health bar at the end gets overlooked</text>
       <path d="M60 106 H370" stroke="#2b2b3a" stroke-width="3" class="rough"/><text x="380" y="112" font-size="16" fill="#3f3f50">≈ 4 chunks (sketch)</text>
     </svg>
   </div>
@@ -285,7 +311,7 @@
 
   
   <div class="sec"><span class="n">6</span><h2><span class="tag why">Why it works</span>Why does a player “read” the layout at a glance? The Gestalt principles</h2></div>
-  <p>Since brain capacity is this small, what a designer can do is make a dozen elements <b>become two or three blocks</b> in the player’s eyes. Fortunately the brain itself loves grouping: see a few dots in a row and you won’t take them as “6 separate dots” but directly see “a row.”</p>
+  <p>With a brain capacity this small, what the designer can do is make a dozen elements <b>become two or three blocks</b> in the player’s eyes. Fortunately the brain itself loves to group: a few dots in a row won’t look like “6 separate dots,” but straight away like “a row.”</p>
   <div class="why-box">
     <h3>Gestalt principles of perception</h3>
     <p>Psychologists such as Wertheimer, Köhler and Koffka (the Gestalt school) summed up some tendencies in how we perceive wholes, and the often-cited ones are:</p>
@@ -295,7 +321,7 @@
       <li><b>Closure</b>: the brain automatically completes an outline with a gap and sees it as a whole shape.</li>
       <li><b>Continuity</b>: things arranged along a smooth route are seen as a single line.</li>
     </ul>
-    <div class="src">Source: Wertheimer, M. (1923). Untersuchungen zur Lehre von der Gestalt II. <i>Psychologische Forschung</i>, 4, 301–350 (an abridged English translation, “Laws of organization in perceptual forms,” is in Ellis (ed.), <i>A Source Book of Gestalt Psychology</i>, 1938; <a href="https://psychclassics.yorku.ca/Wertheimer/Forms/forms.htm">full text online</a>). These “principles” are more like descriptive empirical regularities than exact quantitative laws, and later scholars have rewritten and extended them.</div>
+    <div class="src">Source: Wertheimer · 1923 · summed up perceptual grouping tendencies such as proximity and similarity (“Untersuchungen zur Lehre von der Gestalt II,” <i>Psychologische Forschung</i> 4: 301–350; an English abridgment, “Laws of organization in perceptual forms,” is in Ellis, ed., <i>A Source Book of Gestalt Psychology</i>, 1938, <a href="https://psychclassics.yorku.ca/Wertheimer/Forms/forms.htm">full text online</a>). These “principles” are descriptive rules of thumb, and later scholars have rewritten and extended them.</div>
   </div>
   <div class="card">
     <svg viewBox="0 0 700 250" width="100%" role="img" aria-label="The four Gestalt principles sketched: proximity, similarity, closure, continuity">
@@ -320,19 +346,29 @@
     </svg>
   </div>
   <div class="eg" data-ic="📏"><span data-illus="c10_prox"></span><div class="egt"><b>In games (proximity): resources in one group, skills in another.</b> Put the health, mana and stamina bars right next to each other, put the skill icons in a separate row, and leave a gap between the two groups. Even without reading a word, the player knows “these are resources and those are skills.”</div></div>
-  <div class="eg" data-ic="⭕"><span data-illus="c10_ring"></span><div class="egt"><b>In games (closure): the cooldown ring.</b> A skill’s cooldown is shown as a “ring with a small stretch still missing”; the brain fills it in, and you see at a glance “almost ready.” Quest waypoints lined up along one line, and the eye naturally follows them: that is “continuity.”</div></div>
+  <div class="eg" data-ic="⭕"><span data-illus="c10_ring"></span><div class="egt"><b>In the game (closure): the cooldown ring</b> A skill’s cooldown is shown with a “ring with a small gap left,” the brain completes it automatically, and at a glance you know “almost ready.” Quest waypoints laid out along a line, and the eye follows naturally, which is “continuity.”</div></div>
   <div class="eg" data-ic="🛗"><span data-illus="c10_elev"></span><div class="egt"><b>In daily life: an elevator button panel.</b> Floors, open/close door and alarm are split into three blocks by spacing rather than by text labels. The “folders” on a phone’s home screen likewise ring similar apps into one whole.</div></div>
   <div class="eg bad" data-ic="🔳"><span data-illus="c10_grid"></span><div class="egt"><b>Counterexample: 12 evenly spaced icons.</b> The spacing is perfectly even, the colors and shapes all differ, and there is no hint of grouping. Players can only read them one by one, each becomes a separate chunk, and that uses up the capacity exactly.</div></div>
-  <p>So when making a HUD, <b>put like things close together and pull unlike things apart</b> (proximity); give like things the same color and shape (similarity); show cooldowns with an unclosed ring (closure); and line up waypoints along one line (continuity). That way the player <b>reads the layout without reading words</b>, and the extraneous load drops. In the “HUD placement bench” later, the grouping diagnostics on the right check exactly this.</p>
+  <p>So when building a HUD, <b>put related information close and separate the unrelated</b> (proximity). Give related things the same color and shape (similarity). Show a cooldown as an open ring (closure). Run waypoints along a line (continuity). Players read the layout <b>without reading any text</b>, and the extraneous load drops too.</p>
 
   
   <div class="sec"><span class="n">7</span><h2><span class="tag why">Why it works</span>Why do “defaults” matter so much? The default effect and choice architecture</h2></div>
-  <p>When you bought a new phone, did you ever change the factory ringtone? Most people didn’t, even though changing it takes two taps. <b>People often accept the default option</b>, and this matters a great deal to onboarding: whether a switch in the settings is on or off by default decides the final experience of most players.</p>
+  <p>When you buy a new phone, do you change the factory ringtone? Most people do not, even though it takes two taps. <b>Most people accept the default option</b>, and this matters a great deal for onboarding: whether a setting is on or off by default decides the final experience of most players.</p>
   <div class="why-box">
     <h3>The default effect and choice architecture</h3>
-    <p><span class="term" tabindex="0" data-def="Default effect: when there is a preset option, people tend to keep it even when they could easily change it. Reasons include inertia, assuming the default is recommended, and the psychological cost of changing.">The default effect</span>: a preset option clearly affects the final choice. In 2003, Johnson and Goldstein compared organ-donation registration across European countries in <i>Science</i>: countries with “presumed consent, opt out” had much higher consent rates than countries with “presumed no consent, opt in,” and the example often cited is nearly 100% in Austria against about 12% in Germany. (This is a cross-country comparison with many confounders, and “registered consent” is not the same as “actual donation.”) In <i>Nudge</i>, Thaler and Sunstein put forward <span class="term" tabindex="0" data-def="Choice architecture: how a designer arranges the presentation of options (defaults, order, wording and so on), which in itself influences people’s choices.">choice architecture</span>: <b>there is no “neutral” design</b>, because there always has to be a default and there always has to be an order.</p>
-    <div class="src">Sources: Johnson, E. J. &amp; Goldstein, D. (2003). Do defaults save lives? <i>Science</i>, 302(5649), 1338–1339; Thaler, R. &amp; Sunstein, C. (2008). <i>Nudge</i>.</div>
+    <p><span class="term" tabindex="0" data-def="The default effect: when a preset option exists, people tend to keep it even if it is easy to change. Reasons include inertia, the belief that the default is recommended, and the psychological cost of changing.">The default effect</span>: a preset option clearly influences the final choice. In 2003 Johnson and Goldstein compared organ donation registrations across European countries in <i>Science</i>. Countries with “presumed consent, opt out if you wish” had a far higher share of registered consent than countries with “presumed refusal, opt in actively.” The example often cited is Austria at nearly 100% against Germany at about 12%.</p>
+    <p>This is a cross-country comparison with many confounding factors, and registered consent is not the same as actual donation.</p>
+    <p>In <i>Nudge</i>, Thaler and Sunstein introduced <span class="term" tabindex="0" data-def="Choice architecture: how a designer arranges the presentation of options (defaults, order, wording), an arrangement that itself influences what people choose.">choice architecture</span>: <b>there is no “neutral” design</b>, because there must be some default, and some order of listing.</p>
+    <div class="src">Sources:<br>Johnson and Goldstein · 2003 · compared organ donation registrations across European countries · the default option greatly affects the registration rate (“Do defaults save lives?”, <i>Science</i> 302(5649): 1338–1339).<br>Thaler and Sunstein · 2008 · <i>Nudge</i> · proposed choice architecture.</div>
   </div>
+  <aside class="cc-card" aria-label="Concept card: The default effect">
+    <span class="cc-tag">Concept card</span>
+    <p class="cc-name"><span>The default effect</span></p>
+    <p class="cc-en">Default effect</p>
+    <p class="cc-by">Eric Johnson, Daniel Goldstein · their 2003 organ-donation study in <i>Science</i></p>
+    <p class="cc-def">When a preset option exists, most people keep it, even if changing it is easy.</p>
+    <p class="cc-eg"><span class="cc-k">Example</span>With “show beginner tips automatically” off by default, almost no newcomers see the tips; on by default, most newcomers do.</p>
+  </aside>
   <div class="board">
     <b>Micro-experiment: how many people can a default move? (a sketch model)</b>
     <p class="small">Suppose some players sincerely want to turn a feature on. Suppose also that changing the default takes a little effort, and some of “those who want to change it” can’t be bothered. Drag the sliders and see the final share who end up with it on under the two defaults.</p>
@@ -341,17 +377,21 @@
     <div class="c10_defbar"><i id="c10_don" style="background:#b6e8a8"></i><b id="c10_dont"></b></div>
     <div class="c10_defbar"><i id="c10_doff" style="background:#ffb3c6"></i><b id="c10_dofft"></b></div>
     <div class="msg" id="c10_defm"></div>
-    <p class="small">The formula: default on = q + (1−q)·inertia; default off = q·(1−inertia). The numbers are all sketches; real proportions have to come from A/B tests.</p>
+    <p class="small">All numbers are illustrative; the real proportions have to come from A/B testing.</p>
+    <details>
+      <summary>Advanced: how the two bars are calculated</summary>
+      <p class="small">Default on = q + (1−q)·inertia; default off = q·(1−inertia). q is the share who genuinely want it on, and inertia is the share who want to change it but cannot be bothered. For example, with q = 60% and inertia = 40%: with default on, 40% of the 40% who do not want it will not bother to turn it off, so the on share = 60% + 16% = 76%; with default off, 40% of the 60% who want it will not bother to turn it on, so the on share = 60% × 60% = 36%.</p>
+    </details>
   </div>
   <div class="sticky">Try it: drag “can’t be bothered” to 0 and the two bars become equally long, showing that all the power of the default comes from inertia. Then drag it to 90% and see how many players one designer’s choice can “decide for.”</div>
   <div class="eg" data-ic="💡"><span data-illus="c10_tips"></span><div class="egt"><b>In games: the new-player tips switch.</b> “Show beginner tips automatically” is off by default, and as a result almost no newcomers see the tips. If tips help newcomers, they should be on by default, with turning them off made easy.</div></div>
   <div class="eg" data-ic="🧰"><span data-illus="c10_toolbar"></span><div class="egt"><b>In daily life: an installation wizard.</b> A “bundled toolbar” is ticked by default, and many people click “Next” without unticking it.</div></div>
   <div class="eg bad" data-ic="🔒"><span data-illus="c10_sub"></span><div class="egt"><b>Counterexample (manipulation): a hidden cancel button.</b> “Auto-renew” is ticked by default, and the way to cancel is hidden three menus deep. The default favors the designer and harms the player, and exiting is deliberately made hard, which slides from a “nudge” into a dark pattern.</div></div>
-  <p>How to tell whether a default is a nudge or manipulation? Ask two questions: does it serve <b>the player’s own interest</b>? Is it <b>transparent and easy to change</b>? If both, it is a nudge; if either is not, be wary.</p>
+  <p>How to tell whether a default is a nudge or manipulation? Ask two questions: does it serve <b>the player’s own interest</b>? Is it <b>transparent and easy to change</b>? If both, it is a nudge. If either fails, be wary.</p>
 
   
   <div class="sec"><span class="n">8</span><h2><span class="tag how">Try it</span>Play with it: the HUD placement bench</h2></div>
-  <p>Below is a game screen. <b>Drag</b> an element to change its position, and <b>click</b> an element to cycle it among “always on, dimmed, hidden” (or use the buttons on the right). The diagnostics beside it tell you in real time how heavy the <b>visual load</b> is, how much of the <b>central field of view</b> is blocked, and whether the elements are grouped by <b>Gestalt</b>. Switch between “combat / exploring” and see why the same HUD needs a different layout.</p>
+  <p>Below is a game screen. <b>Drag</b> elements to change position, <b>click</b> an element to cycle between “stay, fade, hide” (or use the buttons on the right). The diagnostics beside it give three results live: how heavy the <b>visual load</b> is, how much of the <b>central field of view</b> is blocked, and whether the elements are grouped by <b>Gestalt</b>. Switch between “Combat / Exploration” and see why the same HUD needs different layouts.</p>
   <div class="board">
     <div>Scene:<button class="chip on" id="c10_s0">⚔️ In combat</button><button class="chip" id="c10_s1">🧭 Exploring</button>
       <span class="small"> Color blocks = categories: <span class="c10_cat" style="background:#e5484d"></span>Resource <span class="c10_cat" style="background:#3b82f6"></span>Navigation <span class="c10_cat" style="background:#2f9e44"></span>Action <span class="c10_cat" style="background:#9a9a9a"></span>Misc</span></div>
@@ -374,8 +414,12 @@
     </div>
     <div class="msg" id="c10_sum"></div>
   </div>
-  <div class="sticky">Try it: in “combat,” bring the “scene match” at the lower right above 12 while keeping the “visual load” below 3.5 and having no ✘ in the grouping diagnostics. When you manage it a 🎉 appears at the bottom. Then switch to “exploring” and see which elements should change tier.</div>
-  <p class="small"><b>How it is computed (a sketch model):</b> visual load = after merging elements that sit close together into a “chunk,” each group counts (the most prominent member’s weight + 0.25 × the weights of the rest), with always-on weight 1 and dimmed weight 0.35; central blocking = the rough share of the dashed middle area covered by elements (dimmed counted as 0.4); the grouping diagnostics score “like things grouped, unlike things apart.” These rules are teaching simplifications, not measured standards. The reference layout is only one common line of thought, and <b>there is no single answer</b>: whatever this second’s decision uses should stand out, and the rest give way.</p>
+  <div class="sticky">Try it: arrange elements in “In combat” so that the “scene match” below reaches 12 or more, with “visual load” under 3.5 and no ✘ in the group diagnosis. When you manage it, a 🎉 appears at the bottom. Then switch to “Exploring” and see which elements should change gear.</div>
+  <p class="small">The reference layout is only one common line of thinking and <b>there is no single answer</b>: whatever the decision of this very second needs should be prominent, and the rest should give way.</p>
+  <details>
+    <summary>Advanced: how the diagnosis is calculated (illustrative model)</summary>
+    <p class="small">Visual burden = after merging elements that sit close together into one “chunk,” each group counts (the weight of its most prominent member + 0.25 × the weights of the others), with a permanent element weighing 1 and a toned-down one 0.35. Center blockage = a rough share of the dotted central area covered by elements (toned-down ones count as 0.4). The grouping diagnosis scores “related things grouped, unrelated things apart.” These rules are teaching simplifications, not measured standards.</p>
+  </details>
 
   
   <div class="sec"><span class="n">9</span><h2><span class="tag how">Try it</span>Legibility: contrast, and “not color alone”</h2></div>
@@ -389,17 +433,19 @@
     <div class="msg"><span id="c10_ratio">—</span> <span id="c10_verdict"></span></div>
     <button class="btn" id="c10_gray">Toggle grayscale view</button>
     <div class="c10_cbox" id="c10_cbox">
-      <div><div class="mk"><span class="c10_dotr" style="background:#e5484d"></span><span class="c10_dotr" style="background:#3aa655"></span></div><h3>❌ Color alone</h3><p class="small">Red = enemy, green = friend. Turned gray, the two circles look almost the same and can’t be told apart.</p></div>
+      <div><div class="mk"><span class="c10_dotr" style="background:#c83c32"></span><span class="c10_dotr" style="background:#1e6c46"></span></div><h3>❌ Color alone</h3><p class="small">Red is enemy and green is friend; in grayscale the two circles look almost identical and cannot be told apart.</p></div>
       <div><div class="mk"><span class="c10_tri"></span><span class="c10_dotr" style="background:#3aa655;text-align:center;line-height:28px;color:#fff;font-weight:700">✔</span></div><h3>✔ Color + shape</h3><p class="small">Enemy = triangle, friend = circle + check mark. Even without color they can be told apart.</p></div>
     </div>
   </div>
-  <div class="sticky">Try it: press “Gray on gray” to bring the contrast below 3; then adjust the text and background colors to at least 4.5 : 1 and see the note become “✔ Normal text passes too.” Finally press “Grayscale view” and confirm that only one of the two approaches can still be told apart without color.</div>
-  <p>A few common cases: an enemy’s health bar doesn’t use only red but adds a “skull icon overhead”; important audio cues (such as footsteps) get a visual cue; a subway map, besides colors, gives each line a number. Conversely, white text over a bright sky background looks “okay” in a screenshot but vanishes on a phone screen in sunlight. Red–green color vision differences are fairly common (the often-cited figure is about 1 in 12 men, depending on the population). Grayscale is only an approximate simulation, but enough to test “is the information still there once color is removed?”</p>
+  <div class="sticky">Try it: click “Gray on gray” to push the contrast below 3; then adjust the text and background colors to at least 4.5 : 1 and watch the hint turn into “✔ Ordinary text also passes.” Finally click “Switch to grayscale view” and confirm that only one of the two designs can still be told apart without color.</div>
+  <p>A few common cases: an enemy health bar uses not only red but also a “skull icon above the head.” An important sound cue (such as footsteps) comes with a visual cue. A subway map labels each line with a number as well as a color.</p>
+  <p>Conversely, white text over a bright sky looks “okay” in a screenshot but vanishes on a phone screen in the sun.</p>
+  <p>Red–green color-vision differences are fairly common; the number often cited is about 1 in 12 men, varying by population. Grayscale is only an approximate simulation, but it is enough to test whether “the information is still there once color is removed.”</p>
 
   <div class="misc">
     <h3>Common misconceptions</h3>
     <ul>
-      <li><b>“The more complete the information, the happier the player.”</b> Extra information adds extraneous load and often drowns the important information.</li>
+      <li><b>“The more information given, the happier the player.”</b> The extra information adds extraneous load and drowns out what matters.</li>
       <li><b>“Memory capacity is 7±2 digits.”</b> Miller was talking about <b>chunks</b>; later estimates (such as Cowan’s) are more conservative, about 4 chunks.</li>
       <li><b>“Defaults are neutral.”</b> There is no neutral: the designer must pick one, and that choice affects the outcome.</li>
       <li><b>“The less HUD, the classier.”</b> The best density differs for newcomers and veterans; a minimalist HUD can also leave newcomers unable to find information.</li>
@@ -410,8 +456,8 @@
     <ul>
       <li><b>Cognitive load theory is itself contested.</b> The three kinds of load are hard to separate cleanly in experiments, the status of “germane load” has been substantially adjusted in the field, and the theory is still developing.</li>
       <li><b>The Gestalt principles are empirical.</b> They describe general tendencies, and players of different cultures, ages and eyesight won’t necessarily match exactly.</li>
-      <li><b>The effect of nudges is disputed.</b> A study pooled by Mertens et al. in <i>PNAS</i> in 2022 found nudges have some effect, but Maier et al. then pointed out in the same journal that after correcting for publication bias there is almost no overall effect, though individual nudges may still work. So in your game you should <b>verify with A/B tests yourself</b>, not directly believe some average effect.</li>
-      <li><b>There is no clear line between nudging and manipulation.</b> Some think gentle nudges are acceptable, while others criticize them as “paternalistic” intervention. This involves value judgments, so weigh it against your own project’s player base.</li>
+      <li><b>The effect of nudges is disputed:</b> a study pooled by Mertens and colleagues in <i>PNAS</i> in 2022 found nudges have some effect. Maier and colleagues then argued in the same journal that after correcting for publication bias almost no overall effect is visible, though individual nudges may still work. So in your own game, <b>verify with A/B testing</b> rather than trusting some average effect.</li>
+      <li><b>There is no clear line between nudging and manipulation:</b> some think gentle nudges are acceptable, others criticize them as “paternalistic” intervention. This involves value judgments, to be weighed against your own project’s player base.</li>
     </ul>
   </div>
 
@@ -419,10 +465,10 @@
     <h3>Key points</h3>
     <ul>
       <li>UI is divided by “is it in the story, is it in the space” into <b>diegetic, spatial, meta and non-diegetic</b> kinds; there is no right or wrong, only a trade-off between clarity and immersion.</li>
-      <li><b>Why the HUD was invented</b>: pilots shouldn’t look down for information, so it was projected in front of their eyes; games inherited the method and also its problem: more and more can be put up, and brain capacity hasn’t changed.</li>
+      <li><b>Why the HUD was invented</b>: pilots shouldn’t look down for information, so it was projected in front of the line of sight. Games inherited this method, and the problem with it: more and more can be put there, and brain capacity hasn’t changed.</li>
       <li>Give information a <b>priority</b>: what the current decision uses stands out, the rest gives way or hides; the same element sits in different tiers in different scenes.</li>
       <li><b>Cognitive load</b>: working memory is tiny (a conservative estimate is about 4 chunks), so cut extraneous load; <b>Gestalt</b>: proximity, similarity, closure and continuity let a layout group itself, turning many elements into a few chunks.</li>
-      <li>Onboarding: <b>do first and tell after, progressive disclosure, contextual hints</b>; the <b>default effect</b>: defaults change most people’s choices, so use them in the player’s interest; text contrast should normally be at least 4.5:1, and don’t rely on color alone.</li>
+      <li>Onboarding: <b>do first and tell later, progressive disclosure, contextual hints</b>. The <b>default effect</b>: defaults change most people’s choices, and should be used in the player’s interest. Text contrast should be at least 4.5:1 in ordinary conditions, and not rely on color alone.</li>
     </ul>
   </div>
   <div class="tldr">A good interface saves the player brain power: put in less information, let the layout group itself, and set defaults in the player’s interest.</div>
@@ -432,7 +478,7 @@
 
   <div class="sec"><span class="n">11</span><h2><span class="tag how">Your design</span>Your HUD and your first three minutes</h2></div>
   <div class="card o">
-    <p>List <b>the information the player needs to see</b> in your game, mark each 1 (always on) / 2 (dimmed) / 3 (appears when needed), and group them by category. Then write: in the first 3 minutes of your game, <b>what does it teach the player, one thing at a time</b>?</p>
+    <p>List the <b>information the player needs to see</b> in the game, mark each 1 (stays) / 2 (fades) / 3 (appears when needed), and group by category. Then write: in the game’s first 3 minutes, <b>what does it teach the player at a time</b>?</p>
     <textarea rows="5" data-save="ch10" placeholder="Information priority:&#10;Health 1 / Minimap 2 / Achievements 3…&#10;Grouping: resources (health, stamina) top left, navigation (map, quest) top right&#10;First-three-minutes teaching order: movement first, then jumping, then…"></textarea>
     <p class="small">✍️ Saved automatically in your browser.</p>
   </div>
@@ -487,15 +533,15 @@ const rnd = n => Math.floor(Math.random() * n);
     bars();
     const g = +$("c10_g").value, b = Math.max(best[0], best[1]);
     $("c10_cmp").textContent = b
-      ? "You predicted " + g + " digits; your longest measured so far is " + b + " digits." + (b > g ? " You do better than you thought." : b < g ? " Fewer than expected: most people overestimate themselves." : " Your prediction was spot on.") + " Miller’s 7±2 refers to “chunks,” not “digits”; single digits can’t be chunked, so the number you can hold is often fewer than 7, and after grouping there are fewer “units” to remember. Every separate element on a HUD is, for the player, one “digit.”"
+      ? "You predicted " + g + " digits; your longest measured so far is " + b + " digits. " + (b > g ? " You do better than you thought." : b < g ? " Fewer than expected: most people overestimate themselves." : " Your prediction was spot on.") + " Miller’s 7±2 refers to “chunks,” not “digits”; single digits can’t be chunked, so the number you can hold is often fewer than 7, and after grouping there are fewer “units” to remember. Every separate element on a HUD is, for the player, one “digit.”"
       : "No fully correct record yet; try a smaller N.";
   };
   $("c10_reset").onclick = () => { best[0] = best[1] = 0; tried[0] = tried[1] = 0; $("c10_t").textContent = "Records cleared."; $("c10_cmp").textContent = ""; $("c10_disp").textContent = "When ready, press “Start,” and the digits will appear for 3 seconds"; bars(); };
   bars();
 })();
 
-$("c10_slow").onclick = () => { $("c10_phi").classList.remove("fast"); $("c10_phit").textContent = "Slow: you see two lights taking turns, two separate things."; };
-$("c10_fast").onclick = () => { $("c10_phi").classList.add("fast"); $("c10_phit").textContent = "Fast: most people see “a dot jumping left and right.” In fact nothing on screen is moving; the brain has integrated it into a whole (apparent motion / the phi phenomenon)."; };
+$("c10_slow").onclick = () => { $("c10_phi").classList.remove("fast"); $("c10_phit").textContent = "Slow: you see two lights taking turns, as two separate things."; };
+$("c10_fast").onclick = () => { $("c10_phi").classList.add("fast"); $("c10_phit").textContent = "Fast: most people see “one dot jumping left and right.” In fact nothing in the picture is moving, and the brain has integrated it into one whole (apparent motion / the phi phenomenon)."; };
 
 (function () {
   const CAT = { res: ["Resource", "#e5484d"], nav: ["Navigation", "#3b82f6"], act: ["Action", "#2f9e44"], misc: ["Misc", "#9a9a9a"] };
@@ -614,7 +660,7 @@ $("c10_fast").onclick = () => { $("c10_phi").classList.add("fast"); $("c10_phit"
       if (g.length >= 2) {
         const ok = cats.length === 1;
         ok ? good++ : bad++;
-        lines.push((ok ? "✔ " : "✘ ") + "<b>" + names(g) + "</b>:" + (ok ? "same type (" + CAT[cats[0]][0] + ") sit together and read as one group." : "different types (" + cats.map(c => CAT[c][0]).join("/") + ") are crowded together and will be misread as one group."));
+        lines.push((ok ? "✔ " : "✘ ") + "<b>" + names(g) + "</b>: " + (ok ? "same type (" + CAT[cats[0]][0] + ") sit together and read as one group." : "different types (" + cats.map(c => CAT[c][0]).join("/") + ") are crowded together and will be misread as one group."));
         const bb = g.map(e => R[e.id]), x0 = Math.min(...bb.map(b => b.x)) - 5, y0 = Math.min(...bb.map(b => b.y)) - 5;
         const x1 = Math.max(...bb.map(b => b.x + b.w)) + 5, y1 = Math.max(...bb.map(b => b.y + b.h)) + 5;
         const d = document.createElement("div");
@@ -638,7 +684,7 @@ $("c10_fast").onclick = () => { $("c10_phi").classList.add("fast"); $("c10_phit"
     let diff = 0, hint = [];
     EL.forEach(e => { const d = Math.abs(e.ref[scene] - S[e.id]); diff += d; if (d === 2) hint.push(e.nm + " (" + e.why + ")"); });
     const match = 16 - diff;
-    $("c10_sum").innerHTML = "Scene match <b>" + match + " / 16</b> (what should stand out stands out, what should give way gives way);" + (hint.length ? "Furthest off:" + hint.slice(0, 2).join(";") : "No obvious mismatch.") +
+    $("c10_sum").innerHTML = "Scene match <b>" + match + " / 16</b> (what should stand out stands out, what should give way gives way); " + (hint.length ? "Furthest off: " + hint.slice(0, 2).join(";") : "No obvious mismatch.") +
       (load <= 3.5 && cov < 0.1 && bad === 0 && match >= 12 ? " 🎉 This layout is clean and readable in this scene!" : "");
   }
   function setScene(i) {
@@ -685,7 +731,7 @@ $("c10_gray").onclick = () => { $("c10_cbox").classList.toggle("gray"); $("c10_s
     $("c10_don").style.width = on * 100 + "%"; $("c10_doff").style.width = off * 100 + "%";
     $("c10_dont").textContent = "Default on: about " + Math.round(on * 100) + "% end up with it on";
     $("c10_dofft").textContent = "Default off: about " + Math.round(off * 100) + "% end up with it on";
-    $("c10_defm").textContent = "With the same players, just because of the default, the share who turn it on differs by " + Math.round((on - off) * 100) + " percentage points." + (l === 0 ? "Inertia is 0, so the default no longer matters." : "");
+    $("c10_defm").textContent = "With the same players, just because of the default, the share who turn it on differs by " + Math.round((on - off) * 100) + " percentage points. " + (l === 0 ? "Inertia is 0, so the default no longer matters." : "");
   }
   $("c10_q").oninput = upd; $("c10_l").oninput = upd; upd();
 })();

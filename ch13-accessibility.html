@@ -44,7 +44,7 @@
     <div class="txt">
       <span class="badge">第 13 章</span>
       <h1>可访问性</h1>
-      <p class="sub">不是“为少数人加个选项”，而是让更多人能走进游戏。</p>
+      <p class="sub">让更多人能走进游戏，不止是给少数人加个选项。</p>
     </div>
     <svg viewBox="0 0 190 150" class="rough" aria-hidden="true">
       <g stroke="#2b2b3a" stroke-width="5" stroke-linejoin="round" stroke-linecap="round">
@@ -67,16 +67,24 @@
     <span class="time">约 40 分钟</span>
   </div>
 
-  <div class="sec"><span class="n">1</span><h2><span class="tag what">是什么</span>障碍不是“一种人”，而是“一种不匹配”</h2></div>
+  <div class="sec"><span class="n">1</span><h2><span class="tag what">是什么</span>障碍是人与设计之间的一种“不匹配”</h2></div>
   <div class="withimg">
     <span data-illus="c13_stairs"></span>
     <div>
-  <p>先做个小实验：用一只手玩一款需要双手的动作游戏，比如左手握着咖啡，右手操作。没几分钟就会发现，很多游戏默认玩家有“两只手、全部手指灵活、看得清、听得到、反应够快”。</p>
-  <p><span class="term" tabindex="0" data-def="让尽可能多的人能够使用一件产品、一个界面或一个环境，不论他们的身体、感官、认知条件或所处情境如何。在游戏里，指让更多玩家能进入、理解并玩下去。">可访问性</span>（accessibility，常缩写 a11y）问的是：<b>设计对谁关上了门？</b>这里的“障碍”不是某个人身上的标签，而是<b>人与设计之间的不匹配</b>。同一个人在不同时刻，会遇到不同的不匹配。</p>
-  <p>这个看法叫障碍的<b>社会模型</b>。英国的残障者组织 UPIAS 在 1976 年的小册子《残障的基本原则》里就这样主张，迈克·奥利弗（Mike Oliver）1983 年的著作把它带给了更多专业人士。问题从“这个人哪里不行”，挪到了“这个设计对谁关了门”。</p>
+  <p>用一只手玩一款需要双手的动作游戏，比如左手握着咖啡，右手操作。没几分钟就会发现，很多游戏默认玩家有“两只手、全部手指灵活、看得清、听得到、反应够快”。</p>
+  <p><span class="term" tabindex="0" data-def="让尽可能多的人能够使用一件产品、一个界面或一个环境，不论他们的身体、感官、认知条件或所处情境如何。在游戏里，指让更多玩家能进入、理解并玩下去。">可访问性</span>（accessibility，常缩写 a11y）问的是：<b>设计对谁关上了门？</b>这里的“障碍”是<b>人与设计之间的不匹配</b>，和某个人身上的标签无关。同一个人在不同时刻，会遇到不同的不匹配。</p>
+  <p>这种看法是障碍的<b>社会模型</b>：英国的残障者组织 UPIAS 在 1976 年的小册子《残障的基本原则》里就这样主张，迈克·奥利弗（Mike Oliver）1983 年的著作把它带给了更多专业人士。问题从“这个人哪里不行”，挪到了“这个设计对谁关了门”。</p>
     </div>
   </div>
-  <p>常见的分法是三类。这套“永久、暂时、情境”的框架常被归到微软的包容性设计工具包（Kat Holmes 主持）：</p>
+  <aside class="cc-card" aria-label="概念卡：障碍的社会模型">
+    <span class="cc-tag">概念卡</span>
+    <p class="cc-name"><span>障碍的社会模型</span></p>
+    <p class="cc-en">Social model of disability</p>
+    <p class="cc-by">英国残障者组织 UPIAS · 1976 年《残障的基本原则》；迈克·奥利弗（Mike Oliver） · 1983 年的著作使“社会模型”一词流行</p>
+    <p class="cc-def">障碍来自人与环境、设计之间的不匹配，问题在“设计对谁关了门”，而不在这个人哪里不行。</p>
+    <p class="cc-eg"><span class="cc-k">例子</span>关键提示只靠声音，玩家在深夜不敢开声音，就等于“暂时失聪”，障碍是环境和设计造出来的。</p>
+  </aside>
+  <p>障碍常分成永久、暂时、情境三类，这套框架常被归到微软的包容性设计工具包（Kat Holmes 主持）：</p>
   <div class="grid3">
     <div class="card y mini"><div class="ico">♾️</div><h3>永久</h3><p>长期存在：盲或低视力、失聪或重听、只有一只手或手臂、阅读障碍。</p></div>
     <div class="card b mini"><div class="ico">⏳</div><h3>暂时</h3><p>会好起来：手臂骨折打石膏、眼科检查后瞳孔放大、中耳炎、熬夜后注意力涣散。</p></div>
@@ -102,7 +110,7 @@
       </g>
     </svg>
   </div>
-  <p class="small">同一列竖着读，<b>需要的解决办法常常相同</b>。字幕既帮到失聪的玩家，也帮到地铁里静音的玩家。单手可用的按键布局，既帮到只有一只手的人，也帮到手臂骨折的人和正抱着孩子的人。</p>
+  <p class="small">同一列竖着读，<b>需要的解决办法相同</b>。字幕既帮到失聪的玩家，也帮到地铁里静音的玩家。单手可用的按键布局，既帮到只有一只手的人，也帮到手臂骨折的人和正抱着孩子的人。</p>
 
   <div class="eg" data-ic="♾️"><span data-illus="c13_onehand"></span><div class="egt"><b>永久：</b>一位玩家天生只有一只手。对他来说，“同时按住方向键、跳跃、冲刺和攻击”不是难度，是物理上的墙：不管多想玩，手指的数量就摆在那里。</div></div>
   <div class="eg" data-ic="⏳"><span data-illus="c13_cast"></span><div class="egt"><b>暂时：</b>右手打着石膏三周。还是想玩，却发现游戏只允许 WASD 加鼠标。三周以后手好了，那堵墙对别人却一直在。</div></div>
@@ -156,16 +164,16 @@
       </g>
     </svg>
   </div>
-  <p class="small">“冗余”不是“重复啰嗦”。它的代价通常很小（多画一个箭头），换来的是：任何一路因为障碍、环境或设备而失效时，游戏仍然能玩。</p>
+  <p class="small">“冗余”的代价很小（多画一个箭头），换来的是：任何一路因为障碍、环境或设备而失效时，游戏仍然能玩。</p>
   <div class="eg" data-ic="🎮"><span data-illus="c13_redundant"></span><div class="egt"><b>游戏：</b>敌人从左后方接近，屏幕左边缘出现箭头，耳机里是左声道的脚步声，手柄左侧轻轻震动。听不到的人看箭头，看不清的人听声音，两样都不方便的人还有震动。</div></div>
   <div class="eg" data-ic="🚦"><span data-illus="c13_signal"></span><div class="egt"><b>日常：</b>人行横道的信号灯，绿灯小人亮起时同时发出滴滴声。看不见的人听声音过马路，听不见的人看灯，戴着耳机的人也不会错过。</div></div>
-  <div class="eg bad" data-ic="🩸"><span data-illus="c13_hponly"></span><div class="egt"><b>反例：</b>低血量只用“屏幕边缘闪红光”提示。红绿色觉不同的玩家可能分不清，开了“减少动态”的玩家根本看不到闪烁。这条唯一的通道一断，警告就彻底消失了。</div></div>
+  <div class="eg bad" data-ic="🩸"><span data-illus="c13_hponly"></span><div class="egt"><b>反例：</b>低血量只用“屏幕边缘闪红光”提示。红绿色觉不同的玩家会分不清，开了“减少动态”的玩家根本看不到闪烁。这条唯一的通道一断，警告就彻底消失了。</div></div>
 
   <div class="sec"><span class="n">3</span><h2><span class="tag origin">发明故事</span>它们是怎么被“发明”出来的</h2></div>
   <div class="story">
     <h3>故事一：一道路缘石，挡住了一群人</h3>
     <p>想象坐轮椅，要从家去街角的商店。路很平，直到路口：人行道和马路之间有一道十几厘米高的<b>路缘石</b>。对走路的人这几乎不存在，对轮椅使用者它是一堵墙。只能绕很远，或者请人抬。</p>
-    <p>先别往下读。如果是城市的设计者，只能用最便宜的办法解决这个问题，会怎么做？下面是一道“先猜后揭晓”：<b>修了缓坡（路缘石坡道）之后，哪些人会因此受益</b>？</p>
+    <p>先猜一猜：城市用最便宜的办法解决这个问题，在路缘石处修了缓坡（路缘石坡道）。<b>哪些人会因此受益</b>？</p>
     <div class="c13_guess" id="c13_guess">
       <label><input type="checkbox" value="wc"> 轮椅使用者</label>
       <label><input type="checkbox" value="st"> 推婴儿车的家长</label>
@@ -194,7 +202,7 @@
 
   <div class="story">
     <h3>故事二：字幕为什么要“可开关”</h3>
-    <p>聋人和重听的观众看电视，只有画面，没有听到的内容。最直接的办法是把字幕<b>烧进</b>画面，这叫开放式字幕（open captions）。但这样所有观众都看到字幕，商业电视台担心不需要的人嫌烦、把观众赶走。问题于是变成：<b>能不能只对需要的人显示？</b></p>
+    <p>聋人和重听的观众看电视，听不到声音，只剩画面。最直接的办法是把字幕<b>烧进</b>画面，也就是开放式字幕（open captions）。但这样所有观众都看到字幕，商业电视台担心不需要的人嫌烦、把观众赶走。问题于是变成：<b>能不能只对需要的人显示？</b></p>
     <div class="timeline">
       <div class="ev hasimg"><span data-illus="c13_tl_french"></span><div><b class="yr">1972</b>　美国公共电视台 PBS 的《法国大厨》（<i>The French Chef</i>）开始定期播出开放式字幕。</div></div>
       <div class="ev hasimg"><span data-illus="c13_tl_nci"></span><div><b class="yr">1979</b>　美国成立国家字幕协会（National Captioning Institute），目标之一是争取商业电视网的配合。</div></div>
@@ -214,12 +222,12 @@
       <div class="ev hasimg"><span data-illus="c13_tl_tlou"></span><div><b class="yr">2020</b>　《最后生还者 第二章》（<i>The Last of Us Part II</i>）发售时提供 60 多项无障碍设置，并包含面向盲人和低视力玩家的功能。开发团队很早就请盲人顾问布兰登·科尔（Brandon Cole）参与咨询。</div></div>
     </div>
     <p>这些线索共同指向：<b>无障碍不是事后补丁，越早问“这个设计对谁关了门”，成本越低。</b>微软也提供自己的 Xbox Accessibility Guidelines，把类似检查项整理成可对照的清单。</p>
-    <p class="src">出处：AbleGamers 官网“Mark Barlet”页；Game Informer, 2012-09-04《Game Accessibility Guidelines Published》与 gameaccessibilityguidelines.com；Microsoft Xbox News 2018-09-04；Naughty Dog / PlayStation Blog 2020-06 关于 TLOU2 无障碍功能的文章。这里只记录这些节点，不评价“谁最好”。</p>
+    <p class="src">出处：AbleGamers 官网“Mark Barlet”页；Game Informer, 2012-09-04《Game Accessibility Guidelines Published》与 gameaccessibilityguidelines.com；Microsoft Xbox News 2018-09-04；Naughty Dog / PlayStation Blog 2020-06 关于 TLOU2 无障碍功能的文章。</p>
   </div>
 
   <div class="sec"><span class="n">4</span><h2><span class="tag why">为什么成立</span>通用设计、对比度、闪光与色觉</h2></div>
   <h3>① 为少数人做的设计，常让所有人受益</h3>
-  <p>这就是<span class="term" tabindex="0" data-def="路缘石坡道为轮椅使用者而设，却让推婴儿车、拖行李箱、骑车的人同样受益。泛指：为最受限的人做的设计，往往让所有人都更方便。">路缘石效应</span>。它背后的工程思路叫<span class="term" tabindex="0" data-def="从一开始就让产品能被尽可能多的人使用，而不是做完再给特殊群体打补丁。">通用设计</span>：</p>
+  <p>前面的坡道就是<span class="term" tabindex="0" data-def="路缘石坡道为轮椅使用者而设，却让推婴儿车、拖行李箱、骑车的人同样受益。泛指：为最受限的人做的设计，往往让所有人都更方便。">路缘石效应</span>的样子，背后的工程思路是<span class="term" tabindex="0" data-def="从一开始就让产品能被尽可能多的人使用，而不是做完再给特殊群体打补丁。">通用设计</span>：</p>
   <div class="card">
     <svg viewBox="0 0 700 230" width="100%" role="img" aria-label="示意图：一个路缘石坡道在中间，周围分别指向轮椅、婴儿车、行李箱、手推车，说明为一类人做的设计同时服务其他人。">
       <g class="rough" stroke="#2b2b3a" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -228,7 +236,8 @@
         <rect x="260" y="20" width="180" height="56" rx="12" fill="#eaf9e4"/>
         <rect x="20" y="20" width="150" height="48" rx="12" fill="#fff7cf"/><rect x="530" y="20" width="150" height="48" rx="12" fill="#e8f6fc"/>
         <rect x="20" y="95" width="150" height="48" rx="12" fill="#ffe9ef"/><rect x="530" y="95" width="150" height="48" rx="12" fill="#f1eaff"/>
-        <path d="M170 45 L258 50"/><path d="M530 45 L442 50"/>      </g>
+        <path d="M170 45 L258 50"/><path d="M530 45 L442 50"/>
+        <path d="M290 76 L172 114"/><path d="M410 76 L528 114"/></g>
       <g font-size="17" text-anchor="middle" fill="#2b2b3a">
         <text x="350" y="44" font-weight="700">一个设计：缓坡</text><text x="350" y="64" font-size="16">（为轮椅而做）</text>
         <text x="95" y="50">轮椅使用者</text><text x="605" y="50">推婴儿车的家长</text>
@@ -237,6 +246,22 @@
       </g>
     </svg>
   </div>
+  <aside class="cc-card" aria-label="概念卡：路缘石效应">
+    <span class="cc-tag">概念卡</span>
+    <p class="cc-name"><span>路缘石效应</span></p>
+    <p class="cc-en">The curb-cut effect</p>
+    <p class="cc-by">安吉拉·格洛弗·布莱克韦尔（Angela Glover Blackwell） · 2017 年文章《The Curb-Cut Effect》</p>
+    <p class="cc-def">为最受限的人做的设计，最后让所有人受益。</p>
+    <p class="cc-eg"><span class="cc-k">例子</span>路缘石坡道为轮椅修，推婴儿车、拖行李箱、骑车的人走起来同样顺。</p>
+  </aside>
+  <aside class="cc-card" aria-label="概念卡：通用设计">
+    <span class="cc-tag">概念卡</span>
+    <p class="cc-name"><span>通用设计</span></p>
+    <p class="cc-en">Universal design</p>
+    <p class="cc-by">罗恩·梅斯（Ron Mace） · 1985 年提出这个词</p>
+    <p class="cc-def">从一开始就让尽可能多的人能用，不做完再给特殊群体打补丁。</p>
+    <p class="cc-eg"><span class="cc-k">例子</span>游戏的字幕、可重映射按键、文字缩放：做在基础功能里，静音的人、单手的人、小屏幕的人都用得上。</p>
+  </aside>
   <p>游戏里的对应：<b>字幕</b>（静音环境用）、<b>可重映射按键</b>（左撇子、不同键盘布局、单手都用）、<b>文字缩放</b>（小屏手机、掌机、远距离大电视）、<b>暂停与自动存档</b>（任何被打断的人）。</p>
   <div class="eg" data-ic="🛤️"><span data-illus="c13_curb"></span><div class="egt"><b>路缘石坡道：</b>为轮椅做的缓坡，推婴儿车、拖行李箱的人走起来同样顺，连送货的手推车也沾了光。</div></div>
   <div class="eg" data-ic="💬"><span data-illus="c13_caption"></span><div class="egt"><b>字幕：</b>为听障者做的字幕，在嘈杂的酒吧里、安静的图书馆里、学外语的人那里，都成了每天在用的功能。</div></div>
@@ -257,7 +282,7 @@
         <text x="336" y="176" font-weight="700">4.5:1 正文（AA）</text>
         <text x="445" y="150">7:1 AAA</text>
         <text x="640" y="150">21:1 黑白</text>
-        <text x="350" y="40">不达标 ←  → 达标（刻度按对数画）</text>
+        <text x="350" y="40">文字色相对白底的对比度：不达标 ← → 达标（刻度按对数画）</text>
       </g>
     </svg>
   </div>
@@ -287,18 +312,19 @@
   <p>对游戏设计者来说：<b>爆炸白屏、频闪特效、快速切换的明暗</b>要小心，并提供“减少闪光/动态”的选项。</p>
   <p class="src">出处：W3C《Understanding SC 2.3.1: Three Flashes or Below Threshold》。该标准针对网页，用于游戏时是参考而非法定要求。</p>
 
-  <h3>④ 色觉差异：不是少数的少数</h3>
+  <h3>④ 色觉差异：比想象中常见</h3>
   <p>红绿色觉缺陷在不同人群里比例不同。据维基百科对文献的整理，在北欧裔人群中，<b>男性约 8%，女性约 0.5%</b>有红绿色觉缺陷，其中最常见的是绿色弱（deuteranomaly，男性约 5%）。蓝黄型和全色盲都非常罕见。</p>
-  <p>也就是说，<b>每 12 位男性玩家里，平均就约有 1 位“红绿难分”的人</b>。红蓝分阵营、红绿血量这类设计，因此不是边角问题。</p>
-  <p class="src">出处：Wikipedia《Color blindness》条目（Epidemiology 部分，引用多项人群研究）；比例随人群和测量方法不同而变化，这里只做数量级参考。</p>
+  <p><b>每 12 位男性玩家里，平均约有 1 位“红绿难分”的人</b>。红蓝分阵营、红绿血量这类设计，因此是主要问题，不是边角问题。</p>
+  <p class="src">出处：Wikipedia《Color blindness》条目（Epidemiology 部分，引用多项人群研究）。比例随人群和测量方法不同而变化，这里只做数量级参考。</p>
 
   <h3>⑤ 认知负荷：无障碍和“好设计”是同一件事</h3>
   <div class="withimg rev">
     <span data-illus="c13_load"></span>
     <div>
-      <p>还记得新手教学为什么要一次只教一件事吗？人的工作记忆像一张很小的桌子，同一时刻摆不下几样东西。米勒（George Miller，1956）曾经概括为“7±2 个”，后来内尔森·考恩（Nelson Cowan，2001）认为纯粹的容量更像 4 个左右的“组块”，具体数字至今仍有争论。</p>
-      <p>约翰·斯维勒（John Sweller，1988）把这个想法用到学习上，提出认知负荷理论：任务太杂、信息太散，桌子就满了，再多的东西直接掉下去。游戏还要再加上时间压力：地图、血条、敌人、提示全要看，同时还得按键。</p>
-      <p>对有阅读障碍、注意力难集中的人，或者刚下夜班的人，这张桌子更小。降低负荷的做法，比如清晰的图标、一次只教一件事、可回看的提示、不强迫快速反应，既帮助有认知障碍的玩家，也帮助疲惫的、分心的、第一次玩的人。<b>这就是路缘石效应的认知版本。</b></p>
+      <p>第 10 章讲过，新手教学要一次只教一件事。人的工作记忆像一张很小的桌子，同一时刻摆不下几样东西。米勒（George Miller，1956）概括为“7±2 个”，后来内尔森·考恩（Nelson Cowan，2001）认为纯粹的容量更像 4 个左右的“组块”，具体数字至今仍有争论。</p>
+      <p>约翰·斯维勒（John Sweller，1988）把这个想法用到学习上，提出认知负荷理论：任务太杂、信息太散，桌子就满了，再多的东西直接掉下去。</p>
+      <p>游戏还要再加上时间压力：地图、血条、敌人、提示全要看，同时还得按键。</p>
+      <p>对有阅读障碍、注意力难集中的人，或者刚下夜班的人，这张桌子更小。降低负荷的做法，比如清晰的图标、一次只教一件事、可回看的提示、不强迫快速反应，既帮助有认知障碍的玩家，也帮助疲惫的、分心的、第一次玩的人。</p>
     </div>
   </div>
   <p class="src">出处：Miller (1956)，《The magical number seven, plus or minus two》，<i>Psychological Review</i> 63；Cowan (2001)，《The magical number 4 in short-term memory》，<i>Behavioral and Brain Sciences</i> 24；Sweller (1988)，《Cognitive load during problem solving》，<i>Cognitive Science</i> 12。</p>
@@ -307,12 +333,20 @@
   <div class="withimg">
     <span data-illus="c13_veil"></span>
     <div>
-      <p>做个思想实验：要设计一款游戏，但必须在<b>不知道自己将成为哪位玩家</b>的前提下做决定。可能是双手灵活的老手，也可能只有一只手，或者色觉与别人不同。在这种处境里，大概会很自然地把选项做足。</p>
-      <p>哲学家约翰·罗尔斯（John Rawls）在《正义论》（1971）里用的就是这种“无知之幕”：公平的规则，是在不知道自己处境的时候定下的。他讨论的是社会制度，搬到设计上只是一个类比，但它回答了“为什么要为少数人做”：设计的人没法保证自己永远不是那少数。</p>
-      <p>设计界对应的说法叫通用设计。据说建筑师罗恩·梅斯（Ron Mace）在 1985 年前后提出这个词，主张从一开始就让尽可能多的人能用，不要做完再补丁。</p>
+      <p>做个思想实验：要设计一款游戏，但必须在<b>不知道自己将成为哪位玩家</b>的前提下做决定。可能是双手灵活的老手，也可能只有一只手，或者色觉与别人不同。在这种处境里，人会很自然地把选项做足。</p>
+      <p>哲学家约翰·罗尔斯（John Rawls）在《正义论》（1971）里用的就是这种“无知之幕”：公平的规则，是在不知道自己处境的时候定下的。他讨论的是社会制度，搬到设计上是一个类比，它回答了“为什么要为少数人做”：设计的人没法保证自己永远不是那少数。</p>
+      <p>设计界对应的做法是通用设计，由建筑师罗恩·梅斯（Ron Mace）在 1985 年提出，主张从一开始就让尽可能多的人能用，不要做完再补丁。</p>
     </div>
   </div>
-  <p class="src">出处：John Rawls，《A Theory of Justice》（1971）；Ron Mace 与通用设计的渊源见 NC State 通用设计中心的介绍（年份各来源略有出入，这里取保守说法）。</p>
+  <aside class="cc-card" aria-label="概念卡：无知之幕">
+    <span class="cc-tag">概念卡</span>
+    <p class="cc-name"><span>无知之幕</span></p>
+    <p class="cc-en">Veil of ignorance</p>
+    <p class="cc-by">约翰·罗尔斯（John Rawls） · 1971 年《正义论》</p>
+    <p class="cc-def">公平的规则，要在不知道自己处境的时候定下。不知道自己会是谁，人就会照顾到每一种处境。</p>
+    <p class="cc-eg"><span class="cc-k">例子</span>设计一款游戏，却不知道自己会成为哪位玩家，是双手灵活的老手，还是只有一只手的人，选项自然会做足。</p>
+  </aside>
+  <p class="src">出处：John Rawls · 1971 · 《A Theory of Justice》 · 提出“无知之幕”。Ron Mace · 1985 · 提出“通用设计”，见 NC State 通用设计中心的介绍。</p>
 
   <div class="sec"><span class="n">5</span><h2><span class="tag how">怎么用</span>招牌互动：障碍模拟器</h2></div>
   <p>下面是一个简化的游戏画面：左上血条、右上小地图、红色的敌人和绿色的友军、底部一条提示文字，还有一个“只靠声音”的威胁。先做预测：<b>选“绿色盲”，哪些信息会丢？</b>然后切换试试，页面会逐项诊断。最后打开“设计加固”，看多通道冗余怎么补上。</p>
@@ -340,7 +374,7 @@
     <filter id="c13_f_blur"><feGaussianBlur stdDeviation="2.6"/></filter>
     <pattern id="c13_hatch" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="8" height="8" fill="#e0b020"/><rect width="3" height="8" fill="#222"/></pattern>
   </defs></svg>
-  <p class="small">简化声明：这些滤镜是对色觉缺陷的<b>近似</b>（采用常见的颜色矩阵近似法，数值没有逐个核对，仅作教学示意）。真实的感受因人而异；“低视力”只是高斯模糊。它们只能帮忙<b>发现设计问题</b>，不能代替让真实的障碍用户来测试。</p>
+  <p class="small">简化声明：这些滤镜是对色觉缺陷的<b>近似</b>。红、绿、蓝黄三种用的是 Machado 等人（2009）论文里严重程度 100% 的颜色矩阵，数值已和作者主页上的表逐项对过。这组矩阵本来是为线性 RGB 设计的，这里直接作用在屏幕颜色上，所以只作教学示意。真实的感受因人而异；“低视力”只是高斯模糊。它们只能帮忙<b>发现设计问题</b>，不能代替让真实的障碍用户来测试。</p>
 
   <div class="sec"><span class="n">6</span><h2><span class="tag how">怎么用</span>辅助互动：按键重映射器（含单手检查）</h2></div>
   <p>先选一个动作（下面的按钮），再点键盘上的键来绑定。选择“单手模式”后，够不着的键会变暗，冲突（一个键绑了两个动作）会标红。试试：<b>只用左手，能不能把所有动作都绑好、没有冲突？</b></p>
@@ -381,24 +415,24 @@
       <li><b>“只有很少的玩家需要”</b>：除了永久障碍，还有暂时和情境障碍；红绿色觉缺陷在男性里也不算罕见。</li>
       <li><b>“加个色盲模式就行”</b>：如果只是换了一套颜色，仍是靠颜色。更稳的是颜色之外再加形状、图案、文字。</li>
       <li><b>“做了选项就算完成”</b>：选项要<b>找得到</b>（首次启动就能设置）、<b>可预览</b>、<b>不惩罚使用者</b>。</li>
-      <li><b>“无障碍会破坏设计”</b>：好的做法常让设计更清晰。真正冲突的情形，需要具体权衡，不能一刀切。</li>
+      <li><b>“无障碍会破坏设计”</b>：好的做法让设计更清晰。真正冲突的情形，要具体权衡。</li>
     </ul>
   </div>
 
   <div class="reflect">
     <h3>反思与争议</h3>
-    <p><b>局限。</b>这里的模拟器和对比度计算都是简化的：不同的人障碍程度、辅助技术和使用习惯差别极大，“符合标准”不等于“好用”。WCAG 也是为网页设计的，搬到游戏里需要判断。</p>
+    <p><b>模拟的局限：</b>这里的模拟器和对比度计算都是简化的：不同的人障碍程度、辅助技术和使用习惯差别极大，“符合标准”不等于“好用”。WCAG 也是为网页设计的，搬到游戏里需要判断。</p>
     <p><b>争议：难度该不该也是无障碍选项？</b>一种观点认为，调低难度、跳过战斗等本身就是重要的可访问手段，不应被污名化。另一种观点认为，某些游戏的核心挑战正是它想表达的内容，随意绕开会改变作品的意图。常见的折中是<b>提供细粒度的辅助</b>（放慢时间、辅助瞄准、可跳过的段落），把选择权交给玩家，不做“一刀切的简单模式”。</p>
     <p><b>争议：成本与优先级。</b>小团队资源有限，应该先做什么？《游戏可访问性指南》的“按影响面、影响深度和成本排序”提供了一种思路，但依游戏类型而变。</p>
-    <p><b>可能改变看法的一点。</b>如果原来觉得“无障碍是对少数人的照顾”，这里换一种看法：它更像<b>提高设计的容错度</b>，让游戏在更多的环境、更多的身体和更多的心情下仍然成立。</p>
+    <p><b>另一种理解：</b>无障碍可以看作<b>提高设计的容错度</b>，让游戏在更多的环境、更多的身体和更多的心情下仍然成立。</p>
   </div>
 
   <div class="key">
-    <h3>本章要点</h3>
+    <h3>要点</h3>
     <ul>
       <li>障碍是<b>人与设计的不匹配</b>，分永久、暂时、情境三类；能力分视觉、听觉、运动、认知四大类。</li>
       <li><b>多通道冗余</b>：重要信息不要只走颜色、只走声音或只靠长按。</li>
-      <li><b>路缘石效应</b>：为边缘人群做的设计，常让所有人受益；障碍在环境里，不在人身上。</li>
+      <li><b>路缘石效应</b>：为边缘人群做的设计，让更多人受益；障碍在环境里，不在人身上。</li>
       <li>可量化的底线：普通文字对比度 <b>≥ 4.5:1</b>、大字 <b>≥ 3:1</b>；任意一秒内闪光 <b>不超过 3 次</b>（WCAG）。</li>
       <li>可访问性要<b>早做</b>、与用户<b>一起做</b>，并用真人测试验证。</li>
     </ul>
@@ -436,7 +470,7 @@ function c13toHex(rgb) { return "#" + rgb.map(v => Math.max(0, Math.min(255, Mat
     skate: ["yes", "常被提到的受益者之一。"],
     old: ["yes", "少迈一个台阶，对拄拐、膝盖不好的人是实实在在的帮助。"],
     blind: ["mixed", "要小心：坡道把路缘的“边缘”抹平，盲杖少了一条提示线索。后来人们加了触感警示铺面（带小圆点的地砖）来补上。设计要和受影响的人一起检验。"],
-    idle: ["no", "基本无关。不是每个人都会受益，路缘石效应并不意味着“全体都受益”。"]
+    idle: ["no", "基本无关。路缘石效应说的是更多的人受益，没说所有人都受益。"]
   };
   const box = $("c13_guess");
   function reset() {
@@ -599,7 +633,7 @@ function c13toHex(rgb) { return "#" + rgb.map(v => Math.max(0, Math.min(255, Mat
     L: { up: "W", down: "S", left: "A", right: "D", jump: "Space", atk: "F", sprint: "Shift", use: "E", swap: "Q", pause: "Tab" },
     R: { up: "I", down: "K", left: "J", right: "L", jump: "Space", atk: "U", sprint: "N", use: "O", swap: "P", pause: "9" }
   };
-  let bind = Object.assign({}, PRESET.def), sel = "up", hand = "both";
+  let bind = Object.assign({}, PRESET.def), sel = "up", hand = "both", touched = false;
   const kbd = $("c13_kbd"), acts = $("c13_acts");
 
   function reach(k) { return hand === "both" || handOf(k) === "B" || handOf(k) === hand; }
@@ -607,7 +641,7 @@ function c13toHex(rgb) { return "#" + rgb.map(v => Math.max(0, Math.min(255, Mat
     const cnt = {}; Object.values(bind).forEach(k => { if (k) cnt[k] = (cnt[k] || 0) + 1; });
     const keyAct = {}; ACTS.forEach(([id, ab]) => { const k = bind[id]; if (k) (keyAct[k] = keyAct[k] || []).push(ab); });
     kbd.innerHTML = ROWS.map(r => `<div class="c13_krow">` + r.map(k => `<button class="c13_key ${k === "Space" ? "space" : k.length > 1 ? "wide" : ""} ${handOf(k)} ${reach(k) ? "" : "dim"} ${cnt[k] > 1 ? "conf" : ""}" data-k="${k}">${k === "Space" ? "空格" : k}<small>${(keyAct[k] || []).join("")}</small></button>`).join("") + `</div>`).join("");
-    kbd.querySelectorAll(".c13_key").forEach(b => b.onclick = () => { bind[sel] = b.dataset.k; const i = ACTS.findIndex(a => a[0] === sel); if (i < ACTS.length - 1 && !(cnt[b.dataset.k] > 0 && false)) sel = ACTS[i + 1][0]; render(); });
+    kbd.querySelectorAll(".c13_key").forEach(b => b.onclick = () => { touched = true; bind[sel] = b.dataset.k; const i = ACTS.findIndex(a => a[0] === sel); if (i < ACTS.length - 1 && !(cnt[b.dataset.k] > 0 && false)) sel = ACTS[i + 1][0]; render(); });
     acts.innerHTML = ACTS.map(([id, ab, nm]) => {
       const k = bind[id]; const bad = k && (cnt[k] > 1 || !reach(k));
       return `<button class="c13_act ${id === sel ? "sel" : ""} ${bad ? "bad" : ""}" data-a="${id}">${nm}：<b>${k ? (k === "Space" ? "空格" : k) : "未绑定"}</b></button>`;
@@ -628,19 +662,19 @@ function c13toHex(rgb) { return "#" + rgb.map(v => Math.max(0, Math.min(255, Mat
     if (hand !== "both" && !m.length) m.push(`单手可完整操作。最紧张的瞬间要同时按 ${hold} 个键${tog ? "" : "（勾选“冲刺改为切换”可少一个）"}——手指数量有限，这就是为什么“按住改切换”是重要的辅助选项。`);
     if (hand === "both" && !m.length) m.push("双手模式没有问题。切到“只用左手”或“只用右手”，看看有多少键被点暗，再试着重新分配。");
     $("c13_rmsg").textContent = m.join(" ");
-    if (hand === "L" && !conflicts.length && !far.length && !unb.length) { const t = $("c13_rtask"); t.textContent = "✔ 完成：只用左手，10 个动作全部绑好，没有冲突。最紧张的时刻要同时按 " + hold + " 个键。"; t.style.background = "#eaf9e4"; }
+    if (touched && hand === "L" && !conflicts.length && !far.length && !unb.length) { const t = $("c13_rtask"); t.textContent = "✔ 完成：只用左手，10 个动作全部绑好，没有冲突。最紧张的时刻要同时按 " + hold + " 个键。"; t.style.background = "#eaf9e4"; }
   }
   document.querySelectorAll("[data-hand]").forEach(b => b.onclick = () => { hand = b.dataset.hand; render(); });
   $("c13_tog").onchange = render;
-  $("c13_pdef").onclick = () => { bind = Object.assign({}, PRESET.def); sel = "up"; render(); };
-  $("c13_pL").onclick = () => { bind = Object.assign({}, PRESET.L); hand = "L"; sel = "up"; render(); };
-  $("c13_pR").onclick = () => { bind = Object.assign({}, PRESET.R); hand = "R"; sel = "up"; render(); };
-  $("c13_pclr").onclick = () => { bind = {}; sel = "up"; render(); };
+  $("c13_pdef").onclick = () => { touched = false; bind = Object.assign({}, PRESET.def); sel = "up"; render(); };
+  $("c13_pL").onclick = () => { touched = false; bind = Object.assign({}, PRESET.L); hand = "L"; sel = "up"; render(); };
+  $("c13_pR").onclick = () => { touched = false; bind = Object.assign({}, PRESET.R); hand = "R"; sel = "up"; render(); };
+  $("c13_pclr").onclick = () => { touched = false; bind = {}; sel = "up"; render(); };
   render();
 })();
 
 GD.mountQuiz($("quiz"), [
-  { q: "（为什么）为什么说“为少数人做的设计，常常让所有人受益”？", opts: ["因为少数人的需求总是比多数人更重要", "因为障碍来自环境与设计的不匹配，很多人会在暂时或情境下遇到同样的不匹配", "因为设计越复杂越好", "因为这样可以少做测试"], a: 1, why: "路缘石坡道为轮椅而做，却让推婴儿车、拖行李箱的人同样受益。字幕为听障者而做，也帮到嘈杂环境中的人。永久、暂时、情境三类障碍的“解决办法”常常是同一个。" },
+  { q: "（为什么）为什么说“为少数人做的设计，会让更多人受益”？", opts: ["因为少数人的需求总是比多数人更重要", "因为障碍来自环境与设计的不匹配，很多人会在暂时或情境下遇到同样的不匹配", "因为设计越复杂越好", "因为这样可以少做测试"], a: 1, why: "路缘石坡道为轮椅而做，却让推婴儿车、拖行李箱的人同样受益。字幕为听障者而做，也帮到嘈杂环境中的人。永久、暂时、情境三类障碍的“解决办法”是同一个。" },
   { q: "（为什么被发明）电视字幕为什么发展出“隐藏式（可开关）”的形式，而不是一直开放地显示？", opts: ["因为开放式字幕技术上做不到", "因为想让需要的观众使用，同时不打扰不需要的观众，也更容易争取电视台配合", "因为字幕只能给外语节目", "因为隐藏式字幕更便宜得多"], a: 1, why: "开放式字幕会让所有观众都看到，商业电视台不愿意；隐藏式字幕把信号藏在电视信号里，由解码器按需显示。后来法案要求较大的电视机内置解码器，使它成为标配。" },
   { q: "一个 18 磅的大号标题，对比度是 3.5:1。按 WCAG AA，它的结论是？", opts: ["不达标，必须 4.5:1", "达标：大号文字的 AA 门槛是 3:1", "达标，因为 3.5 大于 1", "无法判断"], a: 1, why: "AA 级：普通文字 ≥ 4.5:1，大号文字（≥18 磅，或 ≥14 磅加粗）≥ 3:1。所以 3.5:1 的大标题达标，但同样配色的小字不达标。" },
   { q: "一款游戏用“红色=敌人，绿色=队友”区分阵营，且没有其他标记。最好的修复是？", opts: ["换一套更鲜艳的红和绿", "只加一个“色盲模式”开关，里面仍然是红绿", "在颜色之外再加形状、图案或文字等第二条通道", "什么都不做，因为色盲玩家很少"], a: 2, why: "多通道冗余：让信息不只靠颜色。红绿色觉缺陷在部分人群中比例不低（男性约 8% 的量级，来自北欧裔人群的统计整理），换更鲜艳的红绿依然无法解决问题。" },

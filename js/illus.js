@@ -138,9 +138,15 @@
     '<path d="M136 80 L158 92 M130 88 L150 104"/><path d="M46 78 q-24 -10 -22 -34" fill="none"/><path d="M60 100 L54 124 M92 102 L96 124"/>' +
     '<circle cx="172" cy="108" r="14" fill="#ff8fab"/><path d="M162 100 q10 6 18 -2 M160 110 q12 6 24 -2" fill="none" stroke-width="2.2"/><path d="M150 40 l-10 -8 M158 46 l-12 -2" stroke-width="2.5"/>');
   add("cubs", "两只幼狮互相摔打，咬得很轻", ground +
-    '<g transform="rotate(-12 60 80)"><circle cx="60" cy="80" r="30" fill="#ffc078"/><circle cx="40" cy="56" r="9" fill="#ffc078"/><circle cx="80" cy="56" r="9" fill="#ffc078"/>' + eye(51, 76) + eye(69, 76) + '<path d="M54 90 q6 6 12 0" fill="none"/></g>' +
-    '<g transform="rotate(14 142 88)"><circle cx="142" cy="88" r="27" fill="#ffd9a8"/><circle cx="124" cy="66" r="8" fill="#ffd9a8"/><circle cx="160" cy="66" r="8" fill="#ffd9a8"/>' + eye(134, 84) + eye(150, 84) + '<path d="M136 98 q6 -4 12 0" fill="none"/></g>' +
-    '<path d="M96 56 l4 -10 M104 62 l10 -6 M98 100 l-6 10" stroke-width="2.5"/>');
+    '<path d="M22 98 q-16 -4 -10 -24" fill="none"/><circle cx="12" cy="72" r="4" fill="#e8a45c" stroke-width="2.5"/>' +
+    '<ellipse cx="52" cy="102" rx="32" ry="16" fill="#ffc078"/><path d="M38 114 V126 M66 114 V126" fill="none"/>' +
+    '<circle cx="72" cy="74" r="20" fill="#ffc078"/><circle cx="60" cy="56" r="7" fill="#ffc078"/><circle cx="84" cy="56" r="7" fill="#ffc078"/>' + eye(66, 72) + eye(78, 72) + '<path d="M67 82 q5 5 10 0" fill="none" stroke-width="2.2"/>' +
+    '<path d="M86 94 L104 84" fill="none"/>' +
+    '<path d="M178 100 q16 -4 12 -22" fill="none"/><circle cx="190" cy="76" r="4" fill="#e8a45c" stroke-width="2.5"/>' +
+    '<ellipse cx="150" cy="102" rx="30" ry="16" fill="#ffd9a8"/><path d="M136 114 V126 M164 114 V126" fill="none"/>' +
+    '<circle cx="128" cy="76" r="18" fill="#ffd9a8"/><circle cx="117" cy="60" r="6.5" fill="#ffd9a8"/><circle cx="139" cy="60" r="6.5" fill="#ffd9a8"/>' + eye(123, 74) + eye(134, 74) + '<path d="M123 82 q5 5 10 0" fill="none" stroke-width="2.2"/>' +
+    '<path d="M114 94 L98 86" fill="none"/>' +
+    '<path d="M94 58 l2 -10 M102 52 l8 -6 M92 112 l-2 8" stroke-width="2.5"/>');
   add("housekids", "过家家：两个火柴孩子，一个抱着娃娃，旁边是纸盒搭的小房子", ground +
     '<rect x="120" y="80" width="56" height="46" fill="#ffe58a"/><path d="M114 82 L148 54 L182 82 Z" fill="#ff8fab"/><rect x="140" y="100" width="16" height="26" fill="#c98f5a"/>' +
     person(38, 70, { s: 0.85, arms: "hold", face: "smile", hair: true }) + '<circle cx="64" cy="86" r="5" fill="#ffd6a5" stroke-width="2.5"/>' +
@@ -182,7 +188,8 @@
     person(126, 40, { s: 0.8, beard: true, tie: true }) + person(174, 40, { s: 0.8, tie: true, hat: "cap" }) +
     '<path d="M6 106 H194" stroke-dasharray="2 7" stroke-width="3"/>',
     T(100, 16, 13, "没有哪个特征，是四个人都有的", "middle") +
-    E(30, 128, 16, "👓🧢") + E(78, 128, 16, "👓🧔") + E(126, 128, 16, "🧔👔") + E(174, 128, 16, "👔🧢"));
+    E(30, 128, 16, "👓🧢") + E(78, 128, 16, "👓🧔") + E(126, 128, 16, "🧔👔") + E(174, 128, 16, "👔🧢") +
+    E(54, 68, 14, "👓") + E(102, 68, 14, "🧔") + E(150, 68, 14, "👔"));
   add("scholar", "一位火柴学者拿着书，旁边是四种乐趣的小图标", ground +
     person(46, 63, { arms: "hold", face: "smile", glasses: true, beard: true }) + '<rect x="56" y="76" width="26" height="20" fill="#ffe58a" transform="rotate(-8 69 86)"/><path d="M69 76 V96" stroke-width="2.5"/>' +
     '<rect x="104" y="22" width="84" height="84" rx="8" fill="#fffdf3"/><path d="M146 22 V106 M104 64 H188" stroke-width="2.5"/>',
@@ -205,28 +212,31 @@
     '<rect x="14" y="26" width="30" height="50" fill="#e8e8f0"/><path d="M14 26 L44 76 M44 26 L14 76" stroke="#e5484d" stroke-width="4"/>', T(29, 94, 13, "电梯", "middle"));
   add("mountain", "一个火柴人徒手爬山，头上是体力环", '<path d="M0 126 L70 28 L102 70 L134 36 L200 126 Z" fill="#a8dcf0"/><path d="M70 28 l-12 18 l12 -4 l10 10 Z" fill="#fff"/>' +
     person(112, 84, { s: 0.6, arms: "up", legs: "run", face: "shout" }) +
-    '<circle cx="112" cy="56" r="12" fill="#fff" stroke="#3aa655" stroke-width="5"/><path d="M112 44 A12 12 0 1 1 102 62" fill="none" stroke="#e5484d" stroke-width="5"/>');
+    '<circle cx="112" cy="56" r="12" fill="#fff" stroke="#3aa655" stroke-width="5"/><path d="M112 44 A12 12 0 1 1 102 62" fill="none" stroke="#e5484d" stroke-width="5"/>',
+    T(112, 36, 12, "体力", "middle"));
   add("chairs", "三种完全不同的椅子：凳子、沙发、秋千", ground +
     '<rect x="18" y="74" width="48" height="10" fill="#c98f5a"/><path d="M26 84 L22 124 M58 84 L62 124 M42 84 V124"/><rect x="76" y="68" width="56" height="40" rx="14" fill="#ff8fab"/><rect x="82" y="46" width="44" height="30" rx="12" fill="#ff8fab"/><path d="M86 108 V124 M122 108 V124"/>' +
     '<path d="M146 20 L140 126 M190 20 L196 126" stroke-width="3"/><path d="M152 20 L158 76 M184 20 L176 76"/><rect x="152" y="76" width="30" height="8" fill="#c98f5a"/><path d="M146 20 H190"/>');
   add("quadrants", "四个象限，代表四种乐趣来源", '<rect x="40" y="16" width="60" height="54" fill="#ffc078"/><rect x="100" y="16" width="60" height="54" fill="#a8dcf0"/><rect x="100" y="70" width="60" height="54" fill="#ffb3c6"/><rect x="40" y="70" width="60" height="54" fill="#b6e8a8"/>',
     E(70, 52, 24, "♟️") + E(130, 52, 24, "🎲") + E(130, 106, 24, "🎭") + E(70, 106, 24, "🎢"));
 
-  add("forced", "公司审批流程：一个火柴人垂头丧气地被迫穿过一道盖着红章的关卡",
+  add("forced", "公司审批流程：三个垂头丧气的火柴人排着队，等着一叠要盖章的文件",
     ground +
-    person(36, 63, { arms: "stand", face: "sad", look: 1, legs: "walk" }) +
-    '<rect x="78" y="56" width="18" height="70" fill="#e8e8f0"/><rect x="112" y="56" width="18" height="70" fill="#e8e8f0"/><rect x="146" y="56" width="18" height="70" fill="#e8e8f0"/>' +
-    '<circle cx="87" cy="82" r="8.5" fill="#ffd0d0" stroke="#e5484d" stroke-width="2"/><circle cx="121" cy="82" r="8.5" fill="#ffd0d0" stroke="#e5484d" stroke-width="2"/><circle cx="155" cy="82" r="8.5" fill="#ffd0d0" stroke="#e5484d" stroke-width="2"/>' +
-    '<path d="M76 56 H166" stroke-width="4"/>',
-    '<text x="87" y="86" font-size="8.5" text-anchor="middle" fill="#e5484d" stroke="none">章</text><text x="121" y="86" font-size="8.5" text-anchor="middle" fill="#e5484d" stroke="none">章</text><text x="155" y="86" font-size="8.5" text-anchor="middle" fill="#e5484d" stroke="none">章</text>' +
-    T(120, 38, 15, "必须！没得选", "middle"));
+    person(22, 72, { s: 0.85, arms: "stand", face: "sad", look: 1, legs: "walk" }) +
+    person(58, 72, { s: 0.85, arms: "stand", face: "sad", look: 1, legs: "walk" }) +
+    person(94, 72, { s: 0.85, arms: "stand", face: "sad", look: 1, legs: "walk" }) +
+    '<rect x="146" y="64" width="34" height="10" fill="#fff"/><rect x="144" y="74" width="34" height="10" fill="#fff"/><rect x="147" y="84" width="34" height="10" fill="#fff"/><rect x="145" y="94" width="34" height="10" fill="#fff"/>' +
+    '<circle cx="168" cy="69" r="3.5" fill="#ffd0d0" stroke="#e5484d" stroke-width="2"/>' +
+    '<rect x="132" y="104" width="58" height="9" fill="#c98f5a"/><path d="M138 113 V126 M184 113 V126" fill="none"/>' +
+    '<circle cx="160" cy="79" r="3.5" fill="#ffd0d0" stroke="#e5484d" stroke-width="2"/>',
+    T(96, 30, 15, "必须！没得选", "middle"));
   add("simcity", "模拟经营：火柴人看着自己建的小城，头上冒出两个互相矛盾的想法",
     ground +
     person(36, 66, { arms: "chin", face: "flat", look: 1 }) +
     '<rect x="96" y="92" width="22" height="34" fill="#a8dcf0"/><rect x="120" y="76" width="22" height="50" fill="#ffe58a"/><rect x="144" y="100" width="22" height="26" fill="#ffb3c6"/><rect x="168" y="86" width="20" height="40" fill="#b6e8a8"/>' +
     '<path d="M104 100 h6 M104 108 h6 M128 86 h6 M128 96 h6 M128 106 h6" stroke-width="2.5"/>' +
-    '<ellipse cx="68" cy="26" rx="40" ry="18" fill="#fff"/><ellipse cx="152" cy="26" rx="42" ry="18" fill="#fff"/><circle cx="50" cy="52" r="3" fill="#fff" stroke-width="2.5"/>',
-    T(68, 31, 11, "假装当市长？", "middle") + T(152, 31, 11, "和自己较劲？", "middle"));
+    '<ellipse cx="58" cy="24" rx="40" ry="21" fill="#fff"/><ellipse cx="148" cy="24" rx="42" ry="21" fill="#fff"/><circle cx="44" cy="50" r="3" fill="#fff" stroke-width="2.5"/>',
+    T(58, 22, 13, "假装当", "middle") + T(58, 37, 13, "市长？", "middle") + T(148, 22, 13, "和自己", "middle") + T(148, 37, 13, "较劲？", "middle"));
   add("oddplay", "成年人窝在沙发上刷手机，头上冒出一个问号：这是在练什么技能？",
     ground +
     '<rect x="26" y="88" width="90" height="38" rx="10" fill="#d8c8ff"/><rect x="26" y="68" width="20" height="30" rx="8" fill="#d8c8ff"/>' +

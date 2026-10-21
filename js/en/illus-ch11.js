@@ -191,7 +191,9 @@ ILLUS_EN_ADD({
 "t": [
 "Move + jump",
 "Move",
-"Jump"
+"Jump",
+"Veteran",
+"Newcomer"
 ]
 },
 "c11_rusty": {
@@ -203,7 +205,7 @@ ILLUS_EN_ADD({
 "c11_dashagain": {
 "a": "Four level cards in a row, with a dash-jump icon on levels 2, 4, 8 and 15, the gaps growing wider",
 "t": [
-"Intervals keep growing"
+"Gaps keep growing: +2, +4, +7"
 ]
 },
 "c11_vocab": {

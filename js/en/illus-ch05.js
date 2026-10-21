@@ -45,7 +45,7 @@ ILLUS_EN_ADD({
 "c05_monsters": {
 "a": "A level full of monsters, each walking its own patrol line with no connection to the others",
 "t": [
-"50 monsters, each on its own",
+"50 monsters (only some drawn)",
 "Just a lot, not emergence"
 ]
 },
@@ -78,10 +78,12 @@ ILLUS_EN_ADD({
 ]
 },
 "c05_kart": {
-"a": "A racing game: a trailing car picks up a glowing power-up box and is catching up with the car ahead",
+"a": "A racing game: a trailing pink car picks up a glowing power-up box and is catching up with the blue car ahead",
 "t": [
 "Behind → strong item",
-"?"
+"?",
+"Behind",
+"Ahead"
 ]
 },
 "c05_rubber": {
@@ -139,7 +141,7 @@ ILLUS_EN_ADD({
 "c05_conway": {
 "a": "Conway, wearing glasses, bends over a desk trying out rules square by square on graph paper with a pen",
 "t": [
-"1968: rules on paper"
+"Rules tried on paper"
 ]
 },
 "c05_gardner": {
@@ -176,9 +178,9 @@ ILLUS_EN_ADD({
 ]
 },
 "c05_adriatic": {
-"a": "In wartime there are few fishing boats at sea, and the sea has more big fish instead",
+"a": "In wartime there are few fishing boats at sea, and the share of predatory big fish goes up instead",
 "t": [
-"Less fishing, more big fish"
+"Less fishing in war, higher share of predators"
 ]
 },
 "c05_lynx": {
@@ -224,7 +226,8 @@ ILLUS_EN_ADD({
 "c05_isolated": {
 "a": "Thirty items each shut in their own little box, with no use for what is in another box",
 "t": [
-"30 items that never meet"
+"30 items that never meet",
+"(illustrative: only 6 drawn)"
 ]
 },
 "c05_fog": {

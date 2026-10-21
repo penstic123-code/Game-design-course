@@ -51,10 +51,10 @@ ILLUS_EN_ADD({
 ]
 },
 "c08_road": {
-"a": "Two roads lead to a castle: the short road has a guard standing on it, the long road loops far around but has a treasure chest along it",
+"a": "Two roads lead to a castle: the short road has a guard standing on it, with a treasure chest behind the guard; the long road loops far around, safe but bypassing the chest",
 "t": [
-"Short: a guard",
-"Long · chest"
+"Short: guard and chest",
+"Long: safe"
 ]
 },
 "c08_cards": {

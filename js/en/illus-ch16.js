@@ -130,7 +130,7 @@ ILLUS_EN_ADD({
 ]
 },
 "c16_coffee": {
-"a": "Two coffee punch cards: one with ten blank spaces and one with twelve of which two are already stamped, and the latter fills up faster",
+"a": "Two car-wash punch cards: one with eight blank spaces and one with ten of which two are already stamped, and the latter fills up faster",
 "t": [
 "All blank",
 "Two stamps free",

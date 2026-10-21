@@ -1,0 +1,571 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Chapter 26: Prototyping &amp; Iteration</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+  .field{margin:10px 0}
+  .field label{font-family:var(--hand);font-size:1.3rem;display:block}
+  #onepage{white-space:pre-wrap;font-size:1rem;line-height:1.7}
+  .c26track{position:relative;height:54px;margin:14px 6px 30px;border-bottom:4px solid var(--ink)}
+  .c26track .tk{position:absolute;bottom:-28px;font-size:.85rem;color:var(--soft);transform:translateX(-50%)}
+  .c26dot{position:absolute;top:6px;width:22px;height:22px;margin-left:-11px;border:3px solid var(--ink);border-radius:50%;transition:left .35s}
+  .c26dot.g{background:#a8dcf0}.c26dot.t{background:#ffe58a;border-radius:4px;transform:rotate(45deg);top:26px}
+  .c26dot.h{background:#fff;border-style:dashed;opacity:.6}
+  #c26hill{touch-action:manipulation;cursor:crosshair}
+  .c26tab td,.c26tab th{border:2px solid var(--ink);padding:2px 10px;text-align:center}
+  .c26tab{border-collapse:collapse;margin:8px 0;background:#fff}
+  .c26win{outline:3px solid #2f8f48;outline-offset:2px}
+  @media print{
+    @page{margin:14mm}
+    body *{visibility:hidden}
+    body{background:#fff!important}
+    #outcard,#outcard *{visibility:visible}
+    #outcard{position:absolute;left:0;top:0;width:100%;box-shadow:none;border:none;background:#fff}
+    #outcard .no-print{display:none!important}
+  }
+</style>
+</head>
+<body data-ch="26">
+<main class="wrap">
+  <div class="hero">
+    <div class="txt">
+      <span class="badge">Chapter 26</span>
+      <h1>Prototyping &amp; Iteration</h1>
+      <p class="sub">Don’t think a year ahead. Make a paper version you can play today.</p>
+    </div>
+    <svg viewBox="0 0 190 150" class="rough" aria-hidden="true">
+      <rect x="25" y="30" width="110" height="90" fill="#fff" stroke="#2b2b3a" stroke-width="4" transform="rotate(-6 80 75)"/>
+      <path d="M45 55h60M45 75h40M45 95h55" stroke="#2b2b3a" stroke-width="4" stroke-linecap="round" transform="rotate(-6 80 75)"/>
+      <path d="M130 110 L170 40 l12 8 -40 70z" fill="#ffe58a" stroke="#2b2b3a" stroke-width="4"/>
+    </svg>
+  </div>
+
+  <div class="goals"><span class="time">⏱ about 50 min</span><h3>Learning goals</h3><ul>
+    <li>Explain why iterative design appeared: what the risk of finalizing in one go is, and why a game’s experience can only be “found by trying.”</li>
+    <li>Explain why small improvements get stuck on a “good enough” hilltop, how exploration and exploitation should be mixed, and why the faster the feedback the better.</li>
+    <li>String the previous twenty-five chapters into one line, and generate your own one-page design.</li></ul></div>
+
+  <!-- 1 -->
+  <div class="sec"><span class="n">1</span><h2><span class="tag what">What it is</span>Design is “found by trying”</h2></div>
+  <div class="withimg">
+    <span data-illus="c26_second"></span>
+    <div>
+      <p>Imagine sitting at a desk with a page of rules written out: the goal, how pieces move, how points are scored, every item weighed, the whole thing looking seamless. Then a friend picks it up, plays for ten minutes, and does something you never thought of: he finds that by running into a corner he can win forever.</p>
+      <p>Whether the designer is dim has nothing to do with it. What you write down is rules, and what players get is an experience, and between them lies a layer of “how players will actually play.” How rules collide and how people find loopholes can’t be fully worked out in your head; only real people playing can show it.</p>
+      <p>So professional teams don’t rely on thinking it through once. They rely on a circle that keeps turning: make a <span class="term" tabindex="0" data-def="Prototype: a playable version made as cheaply as possible to test an idea, not aiming to be complete or pretty.">prototype</span>, find people to play it, see how they play, change a little, and play again. Turning the circle round after round is <span class="term" tabindex="0" data-def="Iteration: repeating “make a version → playtest → revise” over many rounds, each round better than the last.">iteration</span>.</p>
+    </div>
+  </div>
+  <aside class="cc-card" aria-label="Concept card: Iterative Design">
+    <span class="cc-tag">Concept card</span>
+    <p class="cc-name"><span>Iterative Design</span></p>
+    <p class="cc-en">Iterative design</p>
+    <p class="cc-by">Eric Zimmerman · <i>Play as Research: The Iterative Design Process</i> (2003) sets out iterative design for games systematically</p>
+    <p class="cc-def">Make a small piece, playtest it, observe, revise, and go round again. Each round uses the players’ real reactions to decide where to change next.</p>
+    <p class="cc-eg"><span class="cc-k">Example</span>The 120-card Alpha of <i>Magic: The Gathering</i> was dealt out to two players and played at once; Beta and Gamma rounds of changes followed before it was settled.</p>
+  </aside>
+  <div class="card">
+    <svg viewBox="0 0 700 250" width="100%" role="img" aria-label="The iteration loop: idea, prototype, playtest, observe, revise, and back to the prototype">
+      <g class="rough" stroke="#2b2b3a" stroke-width="4">
+        <rect x="20" y="95" width="120" height="60" rx="18" fill="#ffe58a"/>
+        <rect x="190" y="20" width="130" height="60" rx="18" fill="#a8dcf0"/>
+        <rect x="380" y="20" width="130" height="60" rx="18" fill="#ffb3c6"/>
+        <rect x="560" y="95" width="120" height="60" rx="18" fill="#b6e8a8"/>
+        <rect x="290" y="175" width="130" height="60" rx="18" fill="#d8c8ff"/>
+        <g fill="none" stroke-linecap="round"><path d="M140 110 Q165 60 188 52"/><path d="M322 50 H378"/><path d="M512 50 Q550 60 580 93"/><path d="M620 157 Q560 215 424 208"/><path d="M288 208 Q100 220 70 157"/></g>
+      </g>
+      <g font-size="21" text-anchor="middle"><text x="80" y="132">💡 Idea</text><text x="255" y="58">📄 Prototype</text><text x="445" y="58">👥 Playtest</text><text x="620" y="132">👀 Observe</text><text x="355" y="212">🔧 Revise</text></g>
+    </svg>
+  </div>
+  <div class="grid3">
+    <div class="card y mini"><div class="ico">📄</div><h3>A prototype should be “rough”</h3><p>Paper, dice, sticky notes, Excel will all do. The earlier, the cheaper, and the less it hurts to change.</p></div>
+    <div class="card b mini"><div class="ico">🤐</div><h3>Keep quiet while they play</h3><p>Don’t explain; watch how the player plays, where they get stuck, where they laugh.</p></div>
+    <div class="card p mini"><div class="ico">🔍</div><h3>Find the cause, don’t just obey</h3><p>When a player says “I want flight,” the real problem may be “moving is too slow.”</p></div>
+  </div>
+
+  <!-- 2 -->
+  <div class="sec"><span class="n">2</span><h2><span class="tag what">What it is</span>Why prototypes should be rough, and early</h2></div>
+  <p>Prototypes are rough because rough is cheap. Changing a rule on paper takes one pen. Discover a problem in the rules after the art, levels and code are all done, and you have to tear it down and start over. <b>The cost of one change rises the further the project goes.</b></p>
+  <div class="card">
+    <svg viewBox="0 0 700 285" width="100%" role="img" aria-label="Schematic: from idea to release, the cost of one change keeps rising; a problem found at the paper-prototype stage is cheapest">
+      <g class="rough" fill="none" stroke="#2b2b3a" stroke-width="4" stroke-linecap="round">
+        <path d="M60 30 V215 H670"/>
+        <path d="M80 200 C200 195 300 180 400 140 S560 50 650 30" stroke="#e5484d" stroke-width="5"/>
+      </g>
+      <g fill="#ffe58a" stroke="#2b2b3a" stroke-width="3"><circle cx="100" cy="199" r="9"/><circle cx="250" cy="188" r="9"/><circle cx="410" cy="137" r="9"/><circle cx="552" cy="66" r="9"/><circle cx="650" cy="30" r="9"/></g>
+      <g font-size="18" text-anchor="middle" fill="#2b2b3a"><text x="100" y="240">Idea</text><text x="250" y="240">Paper prototype</text><text x="410" y="240">Playable</text><text x="550" y="240">Art done</text><text x="650" y="240">Release</text></g>
+      <g font-size="18" fill="#2b2b3a"><text x="70" y="26">Cost of one change (illustrative)</text><text x="110" y="165" fill="#1f7a3a">Found here: one pen</text><text x="600" y="122" text-anchor="middle" fill="#b3262e">Found here: start over</text><path d="M557 78 L585 100" stroke="#b3262e" stroke-width="2.5" fill="none"/></g>
+    </svg>
+    <p class="small">This is an illustrative curve to build intuition, not measured data; the curve’s shape differs between projects.</p>
+  </div>
+  <div class="eg" data-ic="🃏"><span data-illus="c26_magic"></span><div class="egt"><b>The first playtest of <i>Magic: The Gathering</i></b>: the designer Richard Garfield himself recounts that the earliest Alpha playtest had 120 cards, dealt at random to two players, and they just started playing. Several rounds of changes followed, Beta and Gamma, and by Gamma the cost of many creatures had been raised, and the cards that “steal an opponent’s creature permanently” had already become rare and were later dropped altogether. Problems that show only when the cards are together were found by playing round after round.</div></div>
+  <div class="eg" data-ic="🎲"><span data-illus="c26_armello"></span><div class="egt"><b>The paper stage of <i>Armello</i></b>: the indie team said in an interview that, although they knew it would end up a digital game, they first iterated with paper prototypes for about eight months. During playtests two “hosts” handled the hidden rules by hand, in effect simulating the computer with human labor.</div></div>
+  <div class="eg" data-ic="🍲"><span data-illus="c26_taste"></span><div class="egt"><b>Cooking a new dish</b>: nobody gets the salt right the first time. Add a little, taste, add more. “Tasting” is the cheapest playtest. Showing friends the outline before writing an essay is the same idea.</div></div>
+  <div class="eg bad" data-ic="🏚️"><span data-illus="c26_year"></span><div class="egt"><b>A “complete version” made behind closed doors for a year (a hypothetical, not a specific project)</b>: beautiful art and twenty levels all done, and only after release does it turn out players get stuck in level one. What then needs changing is the whole level and the teaching; one rule is nowhere near enough. A paper prototype would have exposed this in an afternoon.</div></div>
+  <p class="src">Sources: Garfield, <a href="https://magic.wizards.com/en/news/making-magic/creation-magic-gathering-2013-03-12" target="_blank" rel="noopener">The Creation of Magic: The Gathering</a> (Wizards of the Coast site, 2013 reprint of a 1994 article); Armello developer interview: <a href="https://gamecloud.net.au/features/interviews/paxaus-2015-interview-with-armello-developer-jason-bakker" target="_blank" rel="noopener">PAX AUS 2015 interview</a> (the developer’s own account; defer to it for the exact length).</p>
+
+  
+  <div class="sec"><span class="n">3</span><h2><span class="tag origin">How it was invented</span>How was iteration thought up</h2></div>
+  <p>First try it yourself. <b>Suppose you are the project lead, and the client only vaguely said “about this level,” with the real requirement hidden at some unknown position.</b> There are two ways to work: finalize in one go, with a single chance; or split it into four rounds, where after each delivery the players tell you which way you are off and by how much. Play a few games of each and see the results.</p>
+  <div class="card b no-print" id="c26game">
+    <div class="small">Blue dot = where your proposal is now (it follows as you drag the slider); dashed circle = positions already delivered; yellow diamond = the real requirement (revealed only after delivery). The target position is random each game (0–100). Illustrative experiment, not real data.</div>
+    <div>
+      <button class="btn" id="c26mA">📦 Lock it in one go (only 1 chance)</button>
+      <button class="btn alt" id="c26mB">🔁 In 4 rounds (see playtest reactions each round)</button>
+    </div>
+    <div class="c26track" id="c26track" aria-hidden="true"><i class="tk" style="left:0%">0</i><i class="tk" style="left:50%">50</i><i class="tk" style="left:100%">100</i></div>
+    <label class="ctl">Your plan’s position <output id="c26go">50</output><input type="range" id="c26gs" min="0" max="100" value="50"></label>
+    <button class="btn green" id="c26go_btn">📮 Deliver to players to playtest</button>
+    <div class="msg" id="c26gmsg">Pick an approach first, then drag the slider to guess.</div>
+    <table class="c26tab"><tr><th></th><th>Games played</th><th>Average error</th></tr>
+      <tr><td>📦 One go</td><td id="c26nA">0</td><td id="c26eA">—</td></tr>
+      <tr><td>🔁 4 rounds</td><td id="c26nB">0</td><td id="c26eB">—</td></tr></table>
+    <button class="btn alt" id="c26greset">↺ Clear scores</button>
+  </div>
+  <div class="sticky no-print">Try it: play each approach at least 3 games. Look at the “average deviation” column: which is smaller? Splitting into rounds doesn’t require being any smarter, it just leaves a chance to correct after every wrong guess.</div>
+
+  <div class="story">
+    <h3>People in history ran into the same wall</h3>
+    <p>Software keeps getting larger, and needs are hard to state clearly at the start. If the work is lined up in a straight line, finishing all the requirements first, then design, then coding, then testing, it is like the “one go” above. The first sight of real reactions comes on delivery day, when it is too late to change.</p>
+    <p>The software world was not the first to think of this. According to Larman and Basili’s historical survey, its source can be traced to the quality-improvement work of Walter Shewhart at Bell Labs in the 1930s: plan, do, check, act, round and round, later popularized by Deming.</p>
+    <p>In the 1950s the X-15 hypersonic aircraft project already used iterative, incremental methods. The NASA Project Mercury software team used very short time-boxed iterations in the early 1960s (sources differ slightly on the years).</p>
+    <p>The sequential approach owes its reputation to a 1970 paper by Winston Royce. In “Managing the Development of Large Software Systems” he drew a sequential flow chart of “requirements → design → coding → testing → operations,” which later came to be called the “<span class="term" tabindex="0" data-def="Arranging software development in a straight line of requirements, design, coding and testing, where each step starts only after the previous one is finished.">waterfall model</span>.” But Royce himself never used the word “waterfall”; according to several sources it may first have appeared in a 1976 paper by Bell and Thayer.</p>
+    <p>Royce’s paper in fact points out that this simplest approach is very risky, and recommends adding iteration and early trial builds. Scholars read the paper differently on how far it “opposes” the approach.</p>
+    <p>Later people moved step by step to another idea: don’t line up “thinking it through” and “making it” as two steps in sequence; make a small piece, try it, and decide the next step from that.</p>
+    <p>From 1986 to 1988 Barry Boehm proposed the “<span class="term" tabindex="0" data-def="Spiral model: a development model that proceeds in rounds driven by risk, each round first using a prototype to test the biggest uncertainty.">spiral model</span>”: advance in rounds driven by risk, each round first using a prototype to test the biggest uncertainty. In February 2001, 17 software practitioners at the Snowbird ski resort in Utah wrote the <i>Agile Manifesto</i>, which puts “responding to change” before “following a plan.”</p>
+    <p>For games, this approach is especially important. In <i>Rules of Play</i> (2003), Salen and Zimmerman call game design a “second-order design problem”: what you design is rules, but the experience is played out by the player, so you can’t design the experience directly, only make something playable and see.</p>
+    <p>In <i>Play as Research: The Iterative Design Process</i>, Eric Zimmerman used three projects, SiSSYFiGHT 2000, LOOP and LEGO Junkbot, to show this approach: build a playable prototype as soon as possible, playtest it, and decide where the game should grow according to how the test felt.</p>
+    <div class="card">
+      <svg viewBox="0 0 720 300" width="100%" role="img" aria-label="Comparison: fixing a design in one go gets feedback only once at the end, while iteration gets feedback in every small round and corrects direction">
+        <g class="rough" fill="none" stroke="#2b2b3a" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M30 116 H600"/><path d="M590 104 l14 12 -14 12"/>
+          <rect x="30" y="40" width="120" height="60" rx="12" fill="#ffe58a"/><rect x="170" y="40" width="120" height="60" rx="12" fill="#a8dcf0"/><rect x="310" y="40" width="120" height="60" rx="12" fill="#ffb3c6"/><rect x="450" y="40" width="120" height="60" rx="12" fill="#b6e8a8"/>
+          <path d="M30 230 C80 150 140 150 180 215 S260 280 300 210 S380 150 430 215 S500 270 560 230" stroke="#e5484d"/>
+          <circle cx="180" cy="215" r="10" fill="#fff"/><circle cx="300" cy="210" r="10" fill="#fff"/><circle cx="430" cy="215" r="10" fill="#fff"/><circle cx="560" cy="230" r="10" fill="#b6e8a8"/>
+        </g>
+        <g font-size="16" font-weight="700" fill="#2b2b3a"><text x="30" y="28">One-go approach</text><text x="30" y="144">Round-by-round</text></g>
+        <g font-size="18" text-anchor="middle" fill="#2b2b3a"><text x="90" y="76">Requirements</text><text x="230" y="76">Design</text><text x="370" y="76">Coding</text><text x="510" y="76">Testing</text>
+          <text x="640" y="154" text-anchor="end">A straight line, results only at the end</text>
+          <text x="180" y="262">Try</text><text x="300" y="262">Try</text><text x="430" y="262">Try</text><text x="560" y="262">Try</text>
+          <text x="680" y="190" text-anchor="end">Corrected by players each round</text></g>
+      </svg>
+      <p class="small">Top: the sequential approach (checked only at the end); bottom: the iterative approach (every small circle is checked and corrected).</p>
+    </div>
+    <div class="timeline">
+      <div class="ev hasimg"><span data-illus="c26_shewhart"></span><div><b class="yr">1930s</b> Shewhart at Bell Labs improves quality with the short loop “plan–do–check–act,” later promoted by Deming. <b>The new idea:</b> don’t expect to get it right once; learn something each turn.</div></div>
+      <div class="ev hasimg"><span data-illus="c26_x15"></span><div><b class="yr">1950s–60s</b> The X-15 project and the software team of the Mercury program use iterative, incremental approaches (Larman &amp; Basili’s survey). <b>The new problem:</b> trial and error is too costly for aircraft and rockets, so one big flight can only be broken into many small trials.</div></div>
+      <div class="ev hasimg"><span data-illus="c26_royce"></span><div><b class="yr">1970</b> Royce publishes his paper, whose sequential flow chart was later called “waterfall,” a name added by later writers; what he himself discussed in it is exactly the risk of this approach.</div></div>
+      <div class="ev hasimg"><span data-illus="c26_spiral"></span><div><b class="yr">1986–1988</b> Boehm’s spiral model: risk-driven, iterating in rounds, each round first testing the biggest uncertainty.</div></div>
+      <div class="ev hasimg"><span data-illus="c26_agile"></span><div><b class="yr">2001</b> The <i>Agile Manifesto</i> is written at Snowbird with 17 signatories, and puts “responding to change” before “following a plan.”</div></div>
+      <div class="ev hasimg"><span data-illus="c26_zim"></span><div><b class="yr">2003</b> Zimmerman, in <i>Design Research</i>, sets out the iterative design of games systematically; in the same year <i>Rules of Play</i> proposes the “second-order design problem.”</div></div>
+    </div>
+    <p class="src">Sources: Larman &amp; Basili, “Iterative and Incremental Development: A Brief History,” IEEE Computer 36(6), 2003 (<a href="https://umiacs.umd.edu/node/12140" target="_blank" rel="noopener">entry</a>); the <a href="https://en.wikipedia.org/wiki/Winston_W._Royce" target="_blank" rel="noopener">Royce entry</a> and <a href="https://dwheeler.com/essays/waterfall.html" target="_blank" rel="noopener">Wheeler’s commentary essay</a> (the two read the paper slightly differently); the <a href="https://agilemanifesto.org/history.html" target="_blank" rel="noopener">Agile Manifesto history page</a>; Boehm, Computer 21(5), 1988; Zimmerman, <i>Play as Research</i>, Design Research, MIT Press, 2003 (full text not obtained; details come from the abstract and citations).</p>
+  </div>
+
+  
+  <div class="sec"><span class="n">4</span><h2><span class="tag why">Why it works</span>With many rules, working it out stops working</h2></div>
+  <p>“Trying it out” sounds like designers being lazy, but there are three very solid reasons. The first is mathematical: combinations of rules grow much faster than the rules themselves.</p>
+  <div class="why-box"><h3>Complex systems are unpredictable: the design space is too large to work out</h3>
+    <p>With 20 rules, pairing gives 190 pairs, not counting cases where three or more act together. Each pair may add up, cancel or produce new play. Chapter 5 covered emergence: these interactions grow overall behavior the designer never wrote down. This is what Salen and Zimmerman call the “<span class="term" tabindex="0" data-def="Second-order design problem: the designer designs rules, but the experience is played out by the players, so there is a layer between what is designed and the final effect.">second-order design problem</span>.” So even the most experienced can only form hypotheses first, and let the prototype verify them.</p>
+    <div class="card">
+      <svg id="c26pairs" viewBox="0 0 700 250" width="100%" role="img" aria-label="Three circles with 4, 8 and 20 rule dots, with every pair of dots joined by a line, giving 6, 28 and 190 lines, denser and denser">
+        <g id="c26pg"></g>
+        <g font-size="17" text-anchor="middle" fill="#2b2b3a">
+          <text x="120" y="232">4 rules: 6 pairs</text><text x="350" y="232">8 rules: 28 pairs</text><text x="580" y="232">20 rules: 190 pairs</text>
+        </g>
+      </svg>
+      <p class="small">Each rule added brings a whole new patch of interactions to think through.</p>
+    </div>
+    <div class="eg" data-ic="🃏"><span data-illus="c26_gamma"></span><div class="egt"><b>The Gamma version of <i>Magic</i></b>: a card that “steals an opponent’s creature permanently” looks cool alone, and the problem shows only when it is placed among the interactions of a whole deck.</div></div>
+    <div class="eg" data-ic="🚦"><span data-illus="c26_oneway"></span><div class="egt"><b>Adding a one-way street in a city</b>: it looks reasonable locally, yet may jam the next street. Changes in a system spread along its connections.</div></div>
+    <div class="eg bad" data-ic="📚"><span data-illus="c26_doc"></span><div class="egt"><b>“A 50-page design doc is watertight, so no playtest is needed”</b>: a document can only describe the rules, and cannot describe what players will do once the rules collide.</div></div>
+    <p class="src">Source of the principle: Salen and Zimmerman · 2003 · <i>Rules of Play</i> (MIT Press) · proposes the “second-order design problem.” The number of pairs among 20 rules is 20×19÷2=190.</p></div>
+  <aside class="cc-card" aria-label="Concept card: Second-Order Design Problem">
+    <span class="cc-tag">Concept card</span>
+    <p class="cc-name"><span>Second-Order Design Problem</span></p>
+    <p class="cc-en">Second-order design problem</p>
+    <p class="cc-by">Katie Salen, Eric Zimmerman · <i>Rules of Play</i> (2003)</p>
+    <p class="cc-def">The designer designs rules, but the experience is played out by the players. There is a layer between what is designed and the final effect, so the experience cannot be designed directly.</p>
+    <p class="cc-eg"><span class="cc-k">Example</span>Nobody writing the rules thought of “keep running to the corner and you win forever”; a friend found it in ten minutes of playtesting.</p>
+  </aside>
+
+  
+  <div class="sec"><span class="n">5</span><h2><span class="tag why">Why it works</span>Why small-step improvement gets stuck at “OK”</h2></div>
+  <div class="withimg rev">
+    <span data-illus="c26_bandit"></span>
+    <div>
+      <p>Once you know to iterate, the next question is: in which direction to change each round? The most natural way is small-step improvement. Raise it a bit in this version; if it’s bad, step back; if good, keep it. Each version a bit better than the last sounds foolproof.</p>
+      <p>But think of the climber in the fog: with each step he goes higher, and at some point everything around is downhill, so he stops, thinking he is at the top. In fact across a valley stands a much higher mountain he has never seen.</p>
+      <p>A point that is “better than its neighbors but not the best” belongs, in optimization, to what is called a <span class="term" tabindex="0" data-def="Local optimum: a point that looks best nearby but is not the best overall: moving in any adjacent direction is worse, so you stop here.">local optimum</span>.</p>
+    </div>
+  </div>
+  <div class="why-box"><h3>Explore and exploit: polish most of the time, leap boldly now and then</h3>
+    <p>In decision theory this dilemma is <span class="term" tabindex="0" data-def="Exploration and exploitation: a trade-off in decisions: keep using a method known to be pretty good (exploit), or pay a cost to try an unknown method (explore).">exploration versus exploitation</span>: next to you is a slot machine that pays decently, so do you keep pulling it, or spend a few pulls trying others? The classic “multi-armed bandit” problem asks exactly this. All exploitation leaves you stuck at a local optimum. All exploration burns your time on things that never get polished. The organization scholar James March pointed out in a 1991 paper that an organization that only polishes known practices does well in the short term and is dragged down in the long term.</p>
+    <p>Optimization algorithms have a kindred method: in 1983 Kirkpatrick, Gelatt and Vecchi proposed “simulated annealing,” which at first allows an occasional step in a worse direction, and grows more conservative as time passes. The lesson for design: <b>leap boldly early, polish late</b>. There is no standard ratio; it depends on time and risk.</p>
+    <div class="src">Sources:<br>James G. March · 1991 · proposes exploration and exploitation in organizational learning (“Exploration and Exploitation in Organizational Learning,” Organization Science 2(1): 71–87).<br>S. Kirkpatrick, C. D. Gelatt, M. P. Vecchi · 1983 · propose simulated annealing (“Optimization by Simulated Annealing,” Science 220(4598): 671–680).<br>The game analogy here is a teaching extrapolation, not the words of these two papers.</div>
+  </div>
+  <aside class="cc-card" aria-label="Concept card: Exploration and Exploitation">
+    <span class="cc-tag">Concept card</span>
+    <p class="cc-name"><span>Exploration and Exploitation</span></p>
+    <p class="cc-en">Exploration and exploitation</p>
+    <p class="cc-by">James G. March · 1991 paper “Exploration and Exploitation in Organizational Learning”</p>
+    <p class="cc-def">Keep using a method known to be pretty good (exploitation), or pay a cost to try something not yet tried (exploration). All exploitation leaves you stuck at a local optimum; all exploration never gets anything polished.</p>
+    <p class="cc-eg"><span class="cc-k">Example</span>A designer tunes a tower’s damage through ten versions, each a little better, while the real problem is that the map has only one path and its structure has to change.</p>
+  </aside>
+  <div class="eg" data-ic="🏰"><span data-illus="c26_tower"></span><div class="egt"><b>A tower defense game (hypothetical)</b>: the designer tunes the towers’ damage ten versions in a row, each a little better. The real problem is “the map has only one road,” which tuning numbers can never fix; the map structure has to change.</div></div>
+  <div class="eg" data-ic="🍜"><span data-illus="c26_diner"></span><div class="egt"><b>Picking a restaurant</b>: choose only among the few near home, and you always pick “the least bad one.” Only an occasional visit to a place you’ve never been may find something better.</div></div>
+  <div class="eg" data-ic="📄"><span data-illus="c26_resume"></span><div class="egt"><b>Revising a résumé</b>: ten versions of rewording, each a bit smoother, yet the direction you send it in is wrong. Small-step improvement can’t touch a problem like “direction.”</div></div>
+  <div class="eg bad" data-ic="🔨"><span data-illus="c26_flip"></span><div class="egt"><b>Always starting over</b>: the other extreme. Each time a change of direction, no version polished to a playable state, forever exploring and not exploiting at all.</div></div>
+
+  
+  <div class="sec"><span class="n">6</span><h2><span class="tag why">Why it works</span>The faster the feedback, the faster the learning</h2></div>
+  <p>The last reason is the plainest: in the same 12 weeks, rounds of 2 weeks give only 6 times a “guess is checked against reality,” and rounds of 2 days give 42. The number of checks is the number of lessons.</p>
+  <div class="why-box"><h3>Fast feedback</h3>
+    <p>It is generally held that timely feedback helps learning and correction. In memory research, delayed feedback sometimes serves long-term retention better (the “desirable difficulties” proposed by Schmidt &amp; Bjork). That concerns a learner’s memory, while here we are talking about how fast a designer gets information, and the two situations differ. Fast is not the same as careless: if the people playing are wrong for the purpose, fast only means reaching a wrong conclusion sooner.</p>
+    <div class="src">Source of the principle: the industry consensus on iterative development and rapid prototyping; Schmidt &amp; Bjork (1992), Psychological Science 3(4), on feedback and retention in training.</div>
+  </div>
+  <div class="eg" data-ic="🎚️"><span data-illus="c26_slider"></span><div class="egt"><b>Tuning difficulty in a web mini game</b>: drag a slider and see the difficulty change at once, ten sets of parameters in a minute. If you had to repackage and publish each time, you might try one set a day.</div></div>
+  <div class="eg" data-ic="🏀"><span data-illus="c26_hoop"></span><div class="egt"><b>Practicing free throws</b>: a coach says “a bit left” on the spot and the next ball can be corrected; get a note a week later, and that week was spent practicing on the wrong feel.</div></div>
+  <div class="eg bad" data-ic="👯"><span data-illus="c26_samepeople"></span><div class="egt"><b>Every round fast, but the testers are always yourself and colleagues</b>: colleagues know the game too well and can’t see a newcomer’s sticking points. You got a wrong conclusion quickly.</div></div>
+
+  
+  <div class="sec"><span class="n">7</span><h2><span class="tag how">How to use it</span>Signature interactive: climbing a hill in the fog</h2></div>
+  <p>The curve below stands for the “fun level of the game” as a certain design direction changes. <b>In reality you can’t see the whole curve</b>, only the neighborhood of positions you have playtested. The red dot starts from the left: first press “small step” again and again, then try “bold leap,” or click anywhere on the chart to test play that spot. To peek at the whole picture, turn on “god’s-eye view.” This is an illustration; a real design space has far more than one dimension.</p>
+  <div class="card b no-print" id="c26hillbox">
+    <svg viewBox="0 0 600 252" width="100%" id="c26hill" role="img" aria-label="A multi-peaked curve in fog: only the areas near positions you’ve tried are shown. Click a position on the chart to try it.">
+      <g class="rough" fill="none" stroke="#2b2b3a" stroke-width="4" stroke-linecap="round">
+        <path d="M40 30 L40 212 L572 212"/>
+        <path id="c26god" stroke="#6b6b80" stroke-width="3" stroke-dasharray="5 6" style="display:none"/>
+        <path id="c26curve" stroke="#3d7fb8" stroke-width="5"/>
+      </g>
+      <g id="c26trail"></g>
+      <circle id="c26ghost" r="8" fill="none" stroke="#2b2b3a" stroke-width="3" stroke-dasharray="4 3" style="display:none"/>
+      <circle id="c26dot" r="10" fill="#ff7a7a" stroke="#2b2b3a" stroke-width="3"/>
+      <g font-size="17" fill="#2b2b3a"><text x="52" y="22">Fun level</text><text x="300" y="240">Design direction (difficulty, pacing…) →</text><text id="c26fog" x="300" y="130" fill="#4a4a60">? Untried places are fog</text></g>
+    </svg>
+    <button class="btn green" id="c26small">🐾 Small step</button>
+    <button class="btn pink" id="c26jump">🦘 Bold leap</button>
+    <button class="btn alt" id="c26godbtn">👁 God’s-eye view: off</button>
+    <button class="btn alt" id="c26reset">↺ Start over</button>
+    <div>
+      <span class="stat">Current fun <b id="c26h">0</b></span>
+      <span class="stat">Best tried <b id="c26best">0</b></span>
+      <span class="stat">Effort spent <b id="c26cost">0</b></span>
+    </div>
+    <div class="msg" id="c26hmsg">Click “Small step” to begin.</div>
+    <p class="small">Rules: a small step tries only one small notch left and right, and goes to whichever is more fun (effort +1); a bold leap, and clicking a position on the chart, both go off to try a new direction far away, keeping it only if it is more fun and otherwise returning to the original spot (effort +4, because of redoing and replaying).</p>
+  </div>
+  <div class="sticky no-print">Try it: push the fun level above 95 with total effort no more than 40. Where does using only small steps get you stuck? How many leaps does it take?</div>
+
+  
+  <div class="sec"><span class="n">8</span><h2><span class="tag how">How to use it</span>Supporting: the shorter a round, the more you learn in the same time</h2></div>
+  <p>Suppose “change → build → playtest → see the result” counts as one round. Drag the slider to change how many days a round takes, and see how much can be learned in 12 weeks (84 days). <b>This is a simplified illustrative model: each round is assumed to bring new information, with less new information later on, and it is not measured data.</b></p>
+  <div class="card g no-print" id="c26speedbox">
+    <label class="ctl">One round takes <output id="c26do">7</output> days<input type="range" id="c26d" min="1" max="14" value="7"></label>
+    <svg viewBox="0 0 600 236" width="100%" role="img" aria-label="A curve of information learned over time; the shorter the round, the steeper the curve">
+      <g class="rough" fill="none" stroke="#2b2b3a" stroke-width="4" stroke-linecap="round">
+        <path d="M40 30 L40 190 L572 190"/>
+        <polyline id="c26ref" stroke="#6b6b80" stroke-width="3" stroke-dasharray="6 6"/>
+        <polyline id="c26cur" stroke="#e5484d" stroke-width="5"/>
+      </g>
+      <path d="M40 46 H572" stroke="#1f7a3a" stroke-width="2.5" stroke-dasharray="3 6" fill="none"/>
+      <text x="568" y="40" font-size="16" fill="#1f7a3a" text-anchor="end">90% line</text>
+      <g font-size="16" fill="#2b2b3a"><text x="52" y="22">Information learned (illustrative)</text><text x="400" y="220">Time (12 weeks in all) →</text><text x="330" y="165" fill="#4a4a60">Gray dashed: 14 days per round</text><text x="330" y="181" fill="#b3262e">Red: the speed you chose</text></g>
+    </svg>
+    <div class="msg" id="c26smsg"></div>
+    <p class="small">If the wrong people playtest and the notes are careless, the faster it goes, the sooner a wrong conclusion arrives.</p>
+  </div>
+  <div class="sticky no-print">Try it: to what number of days must you squeeze one round to learn more than 90% in 12 weeks? Then ask yourself: can a real project do that?</div>
+
+  
+  <div class="sec"><span class="n">9</span><h2><span class="tag how">Review</span>Looking back: the structure of the previous twenty-five chapters</h2></div>
+  <p>Having come this far, the chapters you have read can be strung into a line. One key point per chapter, plus a line of “why.” Click a chapter title to go back and reread it.</p>
+  <div id="c26review"></div>
+  <p>String these five parts into one sentence: first know what games are, then understand the player’s experience, then master the systems behind it, then settle your own stance, and finally make it with cases, and learn to improve it round by round.</p>
+
+  <div class="misc">
+    <h3>Common misconceptions</h3>
+    <ul>
+      <li><b>“Iteration means keep adding things”</b>: often iteration is cutting, simplifying and merging.</li>
+      <li><b>“The more the prototype looks like the finished thing, the better”</b>: the more it looks finished, the harder to bring yourself to change it, and the easier to put attention on art rather than play.</li>
+      <li><b>“Do whatever players say they want”</b>: players are good at pointing out what is wrong, but the designer still has to find how to fix it.</li>
+      <li><b>“Keep improving in small steps and you will reach the best”</b>: you may only have climbed the nearest little hill.</li>
+      <li><b>“The waterfall model is what Royce recommended”</b>: Royce’s paper didn’t use that word and was discussing the risks of this approach.</li>
+      <li><b>“The hill-climbing chart, cost curve and speed chart above are real data”</b>: all are illustrative, to build intuition.</li>
+    </ul>
+  </div>
+
+  <div class="reflect">
+    <h3>Reflection and debate</h3>
+    <p>Think back on the last piece of work you “changed again and again” (a game, an essay, a slide deck, anything): <b>were you polishing in small steps, or boldly changing direction? Looking back now, which “small hilltop” might you have been stuck on?</b></p>
+    <textarea rows="3" data-save="ch23reflect" placeholder="E.g. I kept tuning the level difficulty, but the problem may be that the core loop itself isn’t fun…"></textarea>
+    <p>Agile and iteration are often held up as the standard answer, but for engineering with very clear needs and extremely costly changes (a rocket that can’t be test-fired again and again, say), doing the design thoroughly first also makes sense. Iteration is strongest when “uncertainty is large and trial and error is cheap.”</p>
+  </div>
+
+  <div class="key">
+    <h3>Key points</h3>
+    <ul>
+      <li>Iteration = make a small piece → playtest → observe → revise, repeatedly. The earlier, rougher and faster, the smaller the cost of change.</li>
+      <li>It is not an invention unique to games: its source can be traced to quality improvement and the engineering practice of the 1950s–60s. “Waterfall” is a later, simplified name for Royce’s paper.</li>
+      <li>Games are “second-order design”: the experience is played out by players, and with many rules it can’t be worked out in full, so you must make something playable and look.</li>
+      <li>Small-step improvement easily falls into a local optimum and needs an occasional bold leap. Rapid iteration presupposes that the people playing and the records kept are reliable.</li>
+    </ul>
+  </div>
+  <div class="tldr">Nobody can know on paper whether it will be fun: systems are too complex, it is easy to get stuck at a local optimum, and the faster the feedback the faster the learning. So make it rough first, test it quickly, change it often, and leap now and then.</div>
+
+  <div class="sec"><span class="n">10</span><h2><span class="tag think">Practice</span>Quiz</h2></div>
+  <div id="quiz"></div>
+
+  <div class="sec"><span class="n">11</span><h2><span class="tag how">Your design</span>Generate your “one-page design”</h2></div>
+  <p>Put together everything learned so far. Fill it in and click “Generate,” then copy or print it, and you have your first game design document. The note after each field gives the chapter of the matching knowledge point.</p>
+  <div class="board no-print">
+    <div class="field"><label>🎮 Game title</label><input type="text" id="f_name" data-save="ch10name" placeholder="A memorable name"></div>
+    <div class="field"><label>💗 What should the player feel? (aesthetics, Ch. 4)</label><input type="text" id="f_feel" data-save="ch10feel" placeholder="E.g. tense yet funny"></div>
+    <div class="field"><label>🚩 Goal and rules (Ch. 1)</label><textarea rows="2" id="f_rules" data-save="ch10rules" placeholder="What does the player do? What are the limits?"></textarea></div>
+    <div class="field"><label>🔄 Core loop (Ch. 2)</label><input type="text" id="f_loop" data-save="ch10loop" placeholder="A verb chain: move → dodge → eat cheese → speed up…"></div>
+    <div class="field"><label>👥 Target players and motivation (Ch. 3)</label><input type="text" id="f_who" data-save="ch10who" placeholder="E.g. social players who like playing with friends, satisfying “relatedness”"></div>
+    <div class="field"><label>⚖️ One meaningful choice (Ch. 8)</label><input type="text" id="f_choice" data-save="ch10choice" placeholder="E.g. risk grabbing the high-score cheese, or play it safe and slow?"></div>
+    <div class="field"><label>📈 Progression and growth: why do players want a second game? (Ch. 16)</label><input type="text" id="f_prog" data-save="ch26prog" placeholder="E.g. unlock a new card each game; a high-score board"></div>
+    <div class="field"><label>♿ Accessibility: who might be unable to play? How to lower the barrier? (Ch. 13)</label><input type="text" id="f_acc" data-save="ch26access" placeholder="E.g. don’t rely on color alone; adjustable difficulty; remappable keys"></div>
+    <div class="field"><label>📄 Minimal prototype: the version you can make today</label><textarea rows="2" id="f_proto" data-save="ch10proto" placeholder="E.g. a 5×5 paper map + two pieces + one die"></textarea></div>
+    <div class="field"><label>❓ The question I want to verify in the playtest</label><textarea rows="2" id="f_test" data-save="ch10test" placeholder="E.g. will players be willing to take risks? Is the length of a game right?"></textarea></div>
+    <button class="btn" id="gen">✨ Generate the one-pager</button>
+  </div>
+  <div class="card y" id="outcard" style="display:none">
+    <h3 id="o_title"></h3>
+    <div id="onepage"></div>
+    <div class="no-print"><button class="btn alt" id="copy">📋 Copy text</button><button class="btn pink" onclick="window.print()">🖨️ Print / save as PDF</button></div>
+  </div>
+
+  <div class="sticky no-print">Tonight, make a prototype with paper and dice, and find a friend to playtest it for 10 minutes. <b>The first game you make will surely have all sorts of problems; that is normal, and it is also the fastest way to learn.</b></div>
+</main>
+<script src="../js/illus.js"></script>
+<script src="../js/illus-ch26.js"></script>
+<script src="../js/en/illus.js"></script>
+<script src="../js/en/illus-lib.js"></script>
+<script src="../js/en/illus-ch26.js"></script>
+<script src="../js/common.js"></script>
+<script>
+const $ = id => document.getElementById(id);
+
+(function () {
+  var NS = "http://www.w3.org/2000/svg", g = $("c26pg");
+  [[120, 4], [350, 8], [580, 20]].forEach(function (c) {
+    var cx = c[0], n = c[1], r = 78, cy = 110, pts = [];
+    for (var i = 0; i < n; i++) { var a = -Math.PI / 2 + i * 2 * Math.PI / n; pts.push([cx + r * Math.cos(a), cy + r * Math.sin(a)]); }
+    var d = "";
+    for (var i = 0; i < n; i++) for (var j = i + 1; j < n; j++) d += "M" + pts[i][0].toFixed(1) + " " + pts[i][1].toFixed(1) + "L" + pts[j][0].toFixed(1) + " " + pts[j][1].toFixed(1);
+    var p = document.createElementNS(NS, "path"); p.setAttribute("d", d); p.setAttribute("stroke", n === 20 ? "#b3262e" : "#3d7fb8"); p.setAttribute("stroke-width", n === 20 ? "1" : "1.8"); p.setAttribute("fill", "none"); g.appendChild(p);
+    pts.forEach(function (q) { var k = document.createElementNS(NS, "circle"); k.setAttribute("cx", q[0]); k.setAttribute("cy", q[1]); k.setAttribute("r", n === 20 ? 4 : 6); k.setAttribute("fill", "#ffe58a"); k.setAttribute("stroke", "#2b2b3a"); k.setAttribute("stroke-width", 2); g.appendChild(k); });
+  });
+})();
+
+(function () {
+  var mode = "A", round = 0, T = 0, done = false, guesses = [];
+  var errs = { A: [], B: [] };
+  var track = $("c26track");
+  function newT() { T = 8 + Math.floor(Math.random() * 85); round = 0; done = false; guesses = []; }
+  function dots() {
+    track.querySelectorAll(".c26dot").forEach(function (d) { d.remove(); });
+    guesses.forEach(function (g, i) { var d = document.createElement("i"); d.className = "c26dot " + (done && i === guesses.length - 1 ? "g" : "h"); d.style.left = g + "%"; track.appendChild(d); });
+    if (!done) { var cur = document.createElement("i"); cur.className = "c26dot g"; cur.style.left = $("c26gs").value + "%"; track.appendChild(cur); }
+    if (done) { var t = document.createElement("i"); t.className = "c26dot t"; t.style.left = T + "%"; track.appendChild(t); }
+  }
+  function words(d) { var a = Math.abs(d); return a > 25 ? "Far off" : a > 10 ? "A bit off" : a > 3 ? "Close" : "Very close"; }
+  function avg(e) { return e.reduce(function (a, b) { return a + b; }, 0) / e.length; }
+  function stats() {
+    ["A", "B"].forEach(function (m) {
+      var e = errs[m]; $("c26n" + m).textContent = e.length;
+      $("c26e" + m).textContent = e.length ? avg(e).toFixed(1) : "—";
+    });
+    $("c26game").classList.remove("c26win");
+  }
+  function setMode(m) {
+    mode = m; newT(); dots();
+    $("c26mA").style.outline = m === "A" ? "3px solid var(--ink)" : "none";
+    $("c26mB").style.outline = m === "B" ? "3px solid var(--ink)" : "none";
+    $("c26gmsg").textContent = m === "A" ? "Only 1 chance: guess by feel, then deliver." : "4 rounds in all: after each delivery, the player will say which way you are off and by how much.";
+    $("c26go_btn").disabled = false; $("c26go_btn").textContent = "📮 Deliver to players to playtest";
+  }
+  $("c26gs").oninput = function () { $("c26go").textContent = this.value; dots(); };
+  $("c26mA").onclick = function () { setMode("A"); };
+  $("c26mB").onclick = function () { setMode("B"); };
+  $("c26go_btn").onclick = function () {
+    if (done) { setMode(mode); return; }
+    var g = +$("c26gs").value; guesses.push(g); round++;
+    var d = g - T;
+    if (mode === "A" || round >= 4) {
+      done = true; errs[mode].push(Math.abs(d)); stats();
+      var m = "Revealed: the real need was at " + T + ", and your error is " + Math.abs(d) + ". Click “Play again” to continue.";
+      if (errs.A.length >= 3 && errs.B.length >= 3) {
+        m += "<br>🎉 Playtest task complete: one go averages an error of " + avg(errs.A).toFixed(1) + ", 4 rounds averages " + avg(errs.B).toFixed(1) + "." + (avg(errs.B) < avg(errs.A) ? "Splitting into rounds is clearly more accurate: not because you got smarter, but because after each wrong guess you get a chance to fix it." : " Rounds didn’t win this time; play a few more games and compare again.");
+        $("c26game").classList.add("c26win");
+      }
+      $("c26gmsg").innerHTML = m;
+      $("c26go_btn").textContent = "🔄 Play again";
+    } else {
+      $("c26gmsg").textContent = "Round " + round + " : the players say “" + words(d) + "," + (d > 0 ? "too far right" : d < 0 ? "too far left" : "just right") + ".” There are still " + (4 - round) + "  rounds left, adjust your plan.";
+    }
+    dots();
+  };
+  $("c26greset").onclick = function () { errs = { A: [], B: [] }; stats(); setMode(mode); };
+  setMode("A"); stats();
+})();
+
+(function () {
+  function g(x, c, w, h) { var t = (x - c) / w; return h * Math.exp(-t * t); }
+  function f(x) { return g(x, 18, 9, 0.42) + g(x, 48, 11, 0.62) + g(x, 84, 8, 1.0); }
+  function sx(x) { return 40 + x * 5.2; }
+  function sy(v) { return 212 - v * 170; }
+  var NS = "http://www.w3.org/2000/svg";
+  var x, cost, best, known, god = false;
+  var gp = [];
+  for (var i = 0; i <= 100; i++) gp.push((i === 0 ? "M" : "L") + sx(i).toFixed(1) + " " + sy(f(i)).toFixed(1));
+  $("c26god").setAttribute("d", gp.join(" "));
+  function reveal(c) { for (var i = Math.max(0, Math.round(c) - 4); i <= Math.min(100, Math.round(c) + 4); i++) known[i] = true; }
+  function drawCurve() {
+    var p = [], on = false;
+    for (var i = 0; i <= 100; i++) {
+      if (known[i]) { p.push((on ? "L" : "M") + sx(i).toFixed(1) + " " + sy(f(i)).toFixed(1)); on = true; } else on = false;
+    }
+    $("c26curve").setAttribute("d", p.join(" "));
+  }
+  function trailDot(px) {
+    var c = document.createElementNS(NS, "circle");
+    c.setAttribute("cx", sx(px)); c.setAttribute("cy", sy(f(px))); c.setAttribute("r", 4); c.setAttribute("fill", "#2b2b3a"); c.setAttribute("opacity", ".35");
+    $("c26trail").appendChild(c);
+  }
+  function win() {
+    var h = Math.round(f(x) * 100);
+    return h >= 95 ? (cost <= 40 ? "<br>🎉 Try-it task complete: fun level " + h + ", with only " + cost + "  effort spent." : "<br>Reached the top (fun level " + h + "), but effort " + cost + "  went over 40; try again for a cheaper route.") : "";
+  }
+  function show(msg) {
+    var d = $("c26dot");
+    d.setAttribute("cx", sx(x)); d.setAttribute("cy", sy(f(x)));
+    $("c26h").textContent = Math.round(f(x) * 100);
+    $("c26best").textContent = Math.round(best * 100);
+    $("c26cost").textContent = cost;
+    drawCurve();
+    $("c26fog").style.display = (god || known.filter(Boolean).length > 60) ? "none" : "";
+    if (msg) $("c26hmsg").innerHTML = msg + win();
+  }
+  function reset() {
+    x = 10; cost = 0; known = []; best = f(x); reveal(x);
+    $("c26trail").innerHTML = ""; $("c26ghost").style.display = "none";
+    trailDot(x); show("Click “Small step” to start, or click anywhere on the chart to try playing there.");
+  }
+  function tryFar(nx, label) {
+    nx = Math.max(0, Math.min(100, nx));
+    var gh = $("c26ghost"); cost += 4; reveal(nx);
+    gh.setAttribute("cx", sx(nx)); gh.setAttribute("cy", sy(f(nx))); gh.style.display = "";
+    if (f(nx) > best) best = f(nx);
+    if (f(nx) > f(x) + 1e-9) { x = nx; trailDot(x); show(label + " Success: this is more fun, and the red dot has moved over (but at more effort)."); }
+    else show(label + ": this isn’t better, so back to where it was. Exploring costs, and may not succeed; try a few more places.");
+  }
+  $("c26small").onclick = function () {
+    $("c26ghost").style.display = "none";
+    var l = Math.max(0, x - 3), r = Math.min(100, x + 3);
+    reveal(l); reveal(r);
+    var nx = f(r) >= f(l) ? r : l; cost += 1;
+    if (f(nx) > f(x) + 1e-9) { x = nx; if (f(x) > best) best = f(x); trailDot(x); show("Small step: a little more fun."); }
+    else show("Stuck! Both left and right are worse; this is a local optimum: it looks “OK,” but there may be a higher hill far away. Try clicking far away, or a “Bold leap.”");
+  };
+  $("c26jump").onclick = function () { tryFar(Math.random() * 100, "Bold leap"); };
+  $("c26hill").addEventListener("pointerdown", function (e) {
+    var r = this.getBoundingClientRect(), px = (e.clientX - r.left) * (600 / r.width);
+    var nx = (px - 40) / 5.2; if (nx < 0 || nx > 100) return;
+    tryFar(nx, "Your chosen position (cell " + Math.round(nx) + " )");
+  });
+  $("c26godbtn").onclick = function () {
+    god = !god; $("c26god").style.display = god ? "" : "none";
+    this.textContent = "👁 God’s-eye view: " + (god ? "on" : "off"); show();
+  };
+  $("c26reset").onclick = reset;
+  reset();
+})();
+
+(function () {
+  function K(n) { return 1 - Math.exp(-n / 8); }
+  function line(d) {
+    var p = [];
+    for (var t = 0; t <= 84; t += 1) p.push((40 + t * 6.3).toFixed(1) + "," + (190 - K(Math.floor(t / d)) * 160).toFixed(1));
+    return p.join(" ");
+  }
+  $("c26ref").setAttribute("points", line(14));
+  function upd() {
+    var d = +$("c26d").value;
+    $("c26do").textContent = d;
+    $("c26cur").setAttribute("points", line(d));
+    var n = Math.floor(84 / d), pc = Math.round(K(n) * 100);
+    $("c26smsg").innerHTML = "In 12 weeks about " + n + "  rounds can be done; the information learned (illustrative) is about " + pc + "% (at 14 days per round, about " + Math.round(K(6) * 100) + "%). " + (pc >= 90 ? "<br>🎉 Try-it task complete: one round of " + d + "  days, learning over 90%." : "");
+  }
+  $("c26d").oninput = upd; upd();
+})();
+
+(function () {
+  var P = [
+    ["y", "Part 1 · Know games (Ch. 1–5)", [
+      [1, "ch01-what-is-a-game", "What Is a Game", "Game = goal + rules + feedback + voluntary.", "Know what a game is first, and you know what each design move is changing."],
+      [2, "ch02-core-loop", "Core Loop", "Action → feedback → reward → growth, turning round after round.", "This is what the player does every minute; if the loop isn’t fun, the rest is wasted."],
+      [3, "ch03-player-motivation", "Player Motivation", "Autonomy / competence / relatedness; different players want different fun.", "A design needs “who plays it,” or it tries to please everyone and moves nobody."],
+      [4, "ch04-rules-mda", "Rules & MDA", "Mechanics → dynamics → aesthetics: the designer lays out mechanics, the player lives out the experience.", "It lets you work backward from “the feeling you want” to the rules, and see that experience must be tested in play."],
+      [5, "ch05-emergence-systems", "Emergence & Systems Thinking", "Simple rules interacting grow play nobody wrote.", "It explains why you can’t just work it out on paper, which is the reason for iteration."]]],
+    ["b", "Part 2 · Experience (Ch. 6–13)", [
+      [6, "ch06-flow", "Flow & Difficulty", "Challenge matches skill, with difficulty rising in waves.", "Too hard breeds anxiety and too easy boredom; only a match brings engagement."],
+      [7, "ch07-game-feel", "Feedback & Game Feel", "Immediate, obvious, proportional feedback.", "Players rely on feedback to confirm “I caused this,” and game feel is that sense of confirmation."],
+      [8, "ch08-meaningful-choices", "Meaningful Choices", "Information + trade-offs + consequences, avoiding options that are always crushed.", "A choice with no trade-off is only going through the motions."],
+      [9, "ch09-narrative", "Narrative Design", "A story is carried not just by text but by mechanics, environment and suspense.", "Curiosity and feeling make players want to know “what happens next.”"],
+      [10, "ch10-ui-onboarding", "UI & Onboarding", "Make information clear at a glance, and let rules be learned in action.", "Players’ attention and memory are limited, and the interface should save them brainpower."],
+      [11, "ch11-level-design", "Level Design & Teaching", "Introduce → practice → vary, and first make sure it can be cleared.", "Learn in safety, and only then dare to use it in a challenge."],
+      [12, "ch12-audio-visual", "Audio & Visual Design", "Sound and picture carry feedback, and also shape mood and readability.", "Players must first “see and hear” before they can understand and feel."],
+      [13, "ch13-accessibility", "Accessibility", "Let people of different abilities, devices and situations all play.", "One fewer needless barrier brings a new group of players, and many improvements benefit everyone."]]],
+    ["g", "Part 3 · Systems (Ch. 14–20)", [
+      [14, "ch14-randomness-probability", "Randomness & Probability", "Understand luck through probability; randomness brings surprise and uncertainty.", "Randomness used well is surprise, and used badly is “being targeted.”"],
+      [15, "ch15-balance-economy", "Balance & Economy", "Counters, faucets and sinks; change one variable at a time.", "Numbers are the knobs of experience, and turning one at a time shows which does the work."],
+      [16, "ch16-progression", "Progression Systems", "Use growth, unlocks and goals to give players a long-term sense of moving forward.", "A fun single game isn’t enough: “I’m getting stronger / moving ahead” keeps long-term investment."],
+      [17, "ch17-goodhart-metrics", "Goodhart & Metrics", "Once a metric becomes a target, it distorts.", "People optimize the metric itself, not the experience behind the metric that the designer really wanted."],
+      [18, "ch18-multiplayer", "Multiplayer Design", "The interaction between players is itself the content.", "People are the strongest source of content, and also the hardest variable to control."],
+      [19, "ch19-game-theory", "Game Theory & Cooperation", "Others’ choices change your best choice; cooperation and betrayal are kept by incentives.", "The incentive structure decides what players will do, not what the designer hopes they do."],
+      [20, "ch20-genres", "Genre Playbooks", "Each genre has mature playbooks, and each has its costs.", "Playbooks are experience that predecessors found by trying, but what we see are mostly survivors, so don’t take them as a winning recipe."]]],
+    ["p", "Part 4 · Stance (Ch. 21–22)", [
+      [21, "ch21-ethics-monetization", "Ethics & Monetization", "Ways of monetizing shape player behavior, and the effect on players must be weighed.", "Design decisions bring real consequences, and stance is part of design."],
+      [22, "ch22-games-and-reality", "Games & Reality", "The power of games can carry over to learning and life, and has limits and risks too.", "Know what games can and cannot do, to neither exaggerate nor demonize."]]],
+    ["o", "Part 5 · Cases and practice (Chapters 23–26)", [
+      [23, "ch23-case-tetris", "Case: Tetris", "Minimal rules + one speed knob, with the challenge chasing the player.", "See how “minimal” hits flow, surprise and low cognitive load."],
+      [24, "ch24-case-mario", "Case: Super Mario 1-1", "Teach with the level itself, and let forgiving feel and visual guidance make people dare to try.", "See the principle of “teaching without text,” not just copy the form."],
+      [25, "ch25-case-zelda-botw", "Case: Breath of the Wild", "Consistent rules breed emergence, and sight lines and curiosity guide exploration.", "See how systemic design wins the player’s own stories."],
+      [26, "ch26-prototype-iterate", "Prototyping & Iteration", "Rough prototype → playtest → observe → revise, in a loop.", "Nobody can know in advance whether it will be fun; you can only try it. The faster and rougher the tries, the more you learn."]]],
+  ];
+  $("c26review").innerHTML = P.map(function (p) {
+    return '<div class="card ' + p[0] + '" style="box-shadow:3px 4px 0 var(--ink);margin:14px 0"><h3>' + p[1] + "</h3><ul>" + p[2].map(function (c) {
+      return '<li><a href="' + c[1] + '.html"><b>Chapter ' + c[0] + ": " + c[2] + "</b></a>: " + c[3] + '<br><span class="small">Why: ' + c[4] + "</span></li>";
+    }).join("") + "</ul></div>";
+  }).join("");
+})();
+
+$("gen").onclick = () => {
+  const v = id => ($(id).value.trim() || "(not filled in yet)");
+  const txt = `Game: ${v("f_name")}\n\n[Feeling wanted] ${v("f_feel")}\n\n[Goal and rules]\n${v("f_rules")}\n\n[Core loop] ${v("f_loop")}\n\n[Target players and motivation] ${v("f_who")}\n\n[Key choice] ${v("f_choice")}\n\n[Progression and growth] ${v("f_prog")}\n\n[Accessibility] ${v("f_acc")}\n\n[Minimal prototype]\n${v("f_proto")}\n\n[Questions the playtest should verify]\n${v("f_test")}`;
+  $("o_title").textContent = "📄 " + ($("f_name").value.trim() || "My game") + "  · One-page design";
+  $("onepage").textContent = txt; $("outcard").style.display = "block"; $("outcard").scrollIntoView({ behavior: "smooth" });
+};
+$("copy").onclick = () => {
+  const t = $("onepage").textContent;
+  (navigator.clipboard ? navigator.clipboard.writeText(t) : Promise.reject()).then(() => ($("copy").textContent = "✔ Copied"), () => {
+    const r = document.createRange(); r.selectNodeContents($("onepage")); const s = getSelection(); s.removeAllRanges(); s.addRange(r); $("copy").textContent = "Selected, press Ctrl+C";
+  });
+};
+
+GD.mountQuiz($("quiz"), [
+  { q: "Why should a prototype be as “rough” as possible?", opts: ["Because you can’t make it polished", "The cheaper and faster, the bolder you dare to change", "Rough is more fun", "There is no reason"], a: 1, why: "A prototype’s purpose is learning, not display. The earlier the trial and error, the lower the cost, so paper, dice and sticky notes are enough." },
+  { q: "[Why] Why might “small-step improvement” alone leave a game stuck at an “OK” level?", opts: ["Small steps always make the game worse", "It climbs only to the highest nearby point (a local optimum) and can’t see a higher point far away", "Players don’t like small changes", "Small steps cost more"], a: 1, why: "Local optimum: any adjacent direction is worse, so you stop. An occasional bold leap (exploring) may find a higher hill, but it has a cost." },
+  { q: "[Why] Why does shortening the “change → playtest → see the result” round let the designer learn faster?", opts: ["Because players like fast games", "In the same time more rounds of “guess checked against reality” can be done, getting more information at lower cost", "Because observing is no longer needed", "Because fast never goes wrong"], a: 1, why: "The value of iteration is information. More rounds, more information; but only if the testers and the notes are reliable, and fast does not mean sloppy." },
+  { q: "[Why it was invented] Why did people give up the all-in-one approach of “finish the requirements, then design, then code, and only test at the end,” and turn to iteration?", opts: ["Because people in the past weren’t smart enough", "Because this approach gets real feedback for the first time only at the end, when it is too late to change; and needs are often unclear at the start", "Because iteration is always cheaper and faster", "Because Royce’s paper explicitly named and recommended the waterfall model"], a: 1, why: "The core is risk: feedback comes too late. Royce’s 1970 paper did not use the word “waterfall” and discussed the risks of this approach; iteration doesn’t guarantee being cheaper either, it just exposes errors earlier." },
+  { q: "[Why it was invented] Why is game design said to depend on iteration more than ordinary products?", opts: ["Because games make more money", "Because games are “second-order design”: what is designed is rules, the experience is played out by players, and you can only make something playable and then observe", "Because games have no rules", "Because games are all simple"], a: 1, why: "This is Salen and Zimmerman’s view (<i>Rules of Play</i>, 2003): the designer can’t design the experience directly, so prototypes and playtests are needed to verify." },
+  { q: "During a playtest a player keeps dying at the same trap and still can’t get past it after five deaths. Also, the player says “I want a flying skill!” How should you read these two things?", opts: ["The player is dumb; add flying right away", "Most likely the mechanism wasn’t taught or the hint is unclear; ask why they want to fly (is movement too slow, or do they want to dodge enemies)", "The game is too easy; ignore the player’s opinion", "The sound is too loud; add more skills"], a: 1, why: "Failing again and again in the same spot is usually a problem of teaching or hints; players are good at pointing out problems, but the solutions have to be found by the designer." },
+]);
+</script>
+</body>
+</html>

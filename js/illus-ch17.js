@@ -60,7 +60,7 @@
     '<path d="M112 24 V92 H192" fill="none" stroke-width="3"/>' +
     '<path d="M118 76 L150 66 L186 36" fill="none" stroke="#3aa655" stroke-width="3.5"/>' +
     '<path d="M118 84 L150 74 L186 86" fill="none" stroke="#e5484d" stroke-width="3.5"/>',
-    T(78, 112, 13, "货币量", "middle") + T(152, 108, 13, "关系松了", "middle") + T(152, 18, 12, "控制后不再并行", "middle"));
+    T(78, 112, 13, "货币量", "middle") + T(152, 108, 13, "关系松了", "middle") + T(150, 20, 13, "控制后不再并行", "middle"));
 
   illusAdd("c17_crime", "办事员用橡皮把“抢劫”改成“盗窃”，统计表上的犯罪数字就变好看了",
     ground +
@@ -68,7 +68,7 @@
     person(54, 58, { arms: "desk", legs: "sit", face: "flat", look: 1 }) +
     '<rect x="108" y="28" width="82" height="56" fill="#fff"/><path d="M118 70 H180" />' +
     '<rect x="86" y="86" width="14" height="8" fill="#ffb3c6" transform="rotate(-20 93 90)"/>',
-    T(149, 50, 14, "抢劫→盗窃", "middle") + T(149, 68, 12, "犯罪数字 ↓", "middle") + T(100, 138, 12, "数字好看了，治安没变", "middle"));
+    T(149, 50, 15, "抢劫→盗窃", "middle") + T(149, 68, 13, "犯罪数字 ↓", "middle") + T(100, 138, 13, "数字好看了，治安没变", "middle"));
 
   illusAdd("c17_audit", "大学按发表论文篇数评估，教授把一个研究切成一叠小论文；论文篇数的记分牌上数字飙升",
     ground +
@@ -83,13 +83,13 @@
     '<circle cx="36" cy="92" r="6" fill="#ffe58a"/><circle cx="62" cy="114" r="6" fill="#ffe58a"/><circle cx="88" cy="90" r="6" fill="#ffe58a"/>' +
     '<path d="M40 82 Q62 62 86 80" fill="none" stroke="#e5484d" stroke-dasharray="3 5" stroke-width="2.5"/>' +
     '<path d="M172 20 V44"/><path d="M172 20 l16 6 -16 6z" fill="#ff8fab"/>',
-    E(62, 100, 22, "🚤") + T(62, 138, 12, "绕圈撞目标", "middle") + T(160, 62, 12, "终点没人理", "middle"));
+    E(62, 100, 22, "🚤") + T(62, 138, 13, "绕圈撞目标", "middle") + T(160, 62, 13, "终点没人理", "middle"));
 
   illusAdd("c17_genie", "只写“水温 40 度”，机器把浴缸里一小团水烧到 40 度，其余仍是冷水，字面达标、意图落空（示意）",
     person(28, 54, { arms: "up", face: "wide" }) +
     '<path d="M62 84 H190 V122 Q190 128 184 128 H68 Q62 128 62 122z" fill="#cfeaf8"/>' +
     '<circle cx="110" cy="108" r="10" fill="#ff8fab"/>',
-    T(128, 70, 13, "读数 40°C 达标", "middle") + T(158, 112, 12, "其余是冷水", "middle") + T(26, 137, 12, "示意", "middle"));
+    T(128, 70, 13, "读数 40°C 达标", "middle") + T(155, 112, 12, "其余是冷水", "middle") + T(26, 137, 13, "示意", "middle"));
 
   illusAdd("c17_leader", "排行榜前几名里，有人靠手气，有人靠本事，有人靠刷分，榜首不一定最强",
     '<rect x="12" y="14" width="176" height="30" fill="#fff7cf"/><rect x="12" y="52" width="176" height="30" fill="#e8f6fc"/><rect x="12" y="90" width="176" height="30" fill="#ffe9ef"/>',

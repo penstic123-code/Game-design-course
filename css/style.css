@@ -318,3 +318,30 @@ html[lang^="en"] svg text{font-family:"HandEn","Kalam","Comic Sans MS",cursive}
 @media (max-width:520px){.qz-tray{grid-template-columns:1fr 1fr}}
 .q .qz-card:hover:not(:disabled){transform:none;background:var(--yellow)}
 .q .qz-card.ok,.q .qz-card.ok:disabled{opacity:1;color:var(--ink);background:transparent;border-color:transparent;font-weight:700}
+
+/* ---- 练习题横向翻阅（qz-nav） ---- */
+.q.qz-hide{display:none}
+.qz-nav{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:6px 0 12px;flex-wrap:wrap}
+.qz-nav .btn:disabled{opacity:.4;cursor:default}
+.qz-dots{display:flex;gap:6px;flex-wrap:wrap;justify-content:center}
+.qz-dot{width:34px;height:34px;border:2.5px solid var(--ink);border-radius:50%;background:#fff;color:var(--ink);font:700 .95rem var(--hand);cursor:pointer;padding:0}
+.qz-dot.on{background:var(--yellow);box-shadow:2px 3px 0 rgba(43,43,58,.35)}
+.qz-dot.ok{background:var(--green)}
+.qz-dot:focus-visible{outline:3px solid #2b6cff;outline-offset:2px}
+@media(max-width:520px){.qz-nav{justify-content:center}.qz-dots{order:-1;width:100%}}
+
+/* ---- 概念卡（cc-）：概念首次被命名处，亮出官方名 ---- */
+.cc-card{position:relative;margin:30px 0 24px;padding:18px 20px 12px 22px;background:#fff;color:var(--ink);border:3px solid var(--ink);border-left-width:12px;border-left-color:var(--accent2);border-radius:6px 20px 8px 18px;box-shadow:4px 5px 0 var(--accent2);transform:rotate(-.35deg)}
+.cc-card p{margin:.15em 0}
+.cc-tag{position:absolute;top:-15px;left:14px;background:var(--accent2);color:var(--ink);border:2.5px solid var(--ink);border-radius:6px;padding:0 12px;font-family:var(--body);font-weight:700;font-size:.9rem;line-height:1.6;transform:rotate(-2deg)}
+.cc-card .cc-name{font-family:var(--hand);font-size:2.3rem;line-height:1.25;margin:.1em 0 0;color:var(--ink)}
+.cc-card .cc-name span{background:linear-gradient(transparent 62%,var(--accent) 62%);padding:0 4px}
+.cc-card .cc-en{font-size:1rem;color:var(--soft);margin-top:0}
+.cc-card .cc-by{font-size:.95rem;color:var(--soft)}
+.cc-card .cc-def{font-size:1.12rem;font-weight:700;margin-top:.5em}
+.cc-card .cc-eg{font-size:1rem;margin-top:.5em;padding-top:.45em;border-top:2px dashed var(--line)}
+.cc-card .cc-k{display:inline-block;font-weight:700;font-size:.85rem;border:2px solid var(--ink);border-radius:8px;padding:0 8px;margin-right:6px;background:#fff7cf}
+@media(max-width:700px){.cc-card{padding:18px 14px 10px 14px;border-left-width:9px}.cc-card .cc-name{font-size:1.9rem}}
+@media print{.cc-card{box-shadow:none;transform:none;break-inside:avoid}}
+
+select{max-width:100%}

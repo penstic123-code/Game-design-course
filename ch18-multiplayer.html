@@ -52,13 +52,13 @@
   <p>加入一个陌生的四人副本，队里没有一个熟人。boss 打到一半，自己的血剩一丝，队里的治疗扔过来一个大招，自己的法力见了底。他为什么要帮忙？他不会再遇到这个人，帮忙对他一点好处也没有。</p>
   <p>要回答这个问题，得先搞清楚玩家之间到底是什么关系。同样是“四个人在一起玩”，关系不同，设计要解决的麻烦完全不同。</p>
   <div class="card">
-    <svg viewBox="0 0 700 200" width="100%" role="img" aria-label="从纯合作到纯竞争的光谱，团队对抗和合作加背叛在中间">
+    <svg viewBox="0 -16 700 216" width="100%" role="img" aria-label="从纯合作到纯竞争的光谱，团队对抗和合作加背叛在中间">
       <g class="rough" stroke="#2b2b3a" stroke-width="4" fill="none" stroke-linecap="round">
-        <path d="M40 100 H660"/><path d="M648 90 L662 100 L648 110"/>
+        <path d="M40 100 H660"/><path d="M648 90 L662 100 L648 110"/><path d="M236 33 V27 H464 V33" stroke-width="3"/>
         <circle cx="80" cy="100" r="24" fill="#b6e8a8"/><circle cx="250" cy="100" r="24" fill="#e8f6fc"/><circle cx="450" cy="100" r="24" fill="#fff0dc"/><circle cx="620" cy="100" r="24" fill="#ffb3c6"/>
       </g>
       <g font-size="20" text-anchor="middle" fill="#2b2b3a">
-        <text x="80" y="60" font-weight="700">纯合作</text><text x="80" y="150">大家赢或输</text><text x="80" y="176">在一起</text>
+        <text x="350" y="16" font-weight="700">混合</text><text x="80" y="60" font-weight="700">纯合作</text><text x="80" y="150">大家赢或输</text><text x="80" y="176">在一起</text>
         <text x="250" y="60" font-weight="700">团队对抗</text><text x="250" y="150">队内合作</text><text x="250" y="176">队外竞争</text>
         <text x="450" y="60" font-weight="700">合作+背叛</text><text x="450" y="150">可结盟</text><text x="450" y="176">也可出卖</text>
         <text x="620" y="60" font-weight="700">纯竞争</text><text x="620" y="150">只有一个</text><text x="620" y="176">赢家</text>
@@ -67,7 +67,7 @@
   </div>
   <div class="grid3">
     <div class="card g mini"><div class="ico">🤝</div><h3>合作</h3><p>大家共同对抗系统（关卡、Boss）。难点是<b>分工与沟通</b>，最怕能力强的人“替别人打完”。</p></div>
-    <div class="card p mini"><div class="ico">⚔️</div><h3>竞争</h3><p>玩家互为对手。看<b>技巧与策略</b>，最怕新手被碾压，败者很快离场。</p></div>
+    <div class="card p mini"><div class="ico">⚔️</div><h3>竞争</h3><p>玩家互为对手，比的是<b>技巧与策略</b>，最怕新手被碾压，败者很快离场。</p></div>
     <div class="card v mini"><div class="ico">🎭</div><h3>混合</h3><p>团队对抗，或“合作中夹带背叛”。靠<b>信任与博弈</b>，最容易产生故事。</p></div>
   </div>
   <p>还有一条独立的轴：玩家是不是<b>对称</b>的。象棋里双方规则、资源一模一样，公平易懂，输赢全看技术。1 对多的猎杀游戏是<b>非对称</b>：角色不同、玩法不同，体验丰富，但平衡难，需要反复找真人测试，直到各个角色的胜率都说得过去。</p>
@@ -77,15 +77,24 @@
     <div class="card y"><h3><span class="term" tabindex="0" data-def="一方所得恰等于另一方所失，总量固定">零和</span>（zero-sum）</h3><p>一方所得就是另一方所失，<b>总量固定</b>。象棋、扑克都是这样：我赢，就是你输，玩家的利益完全对立。</p></div>
     <div class="card b"><h3><span class="term" tabindex="0" data-def="总量可变，参与者可以同时受益或同时受损">非零和</span>（non-zero-sum）</h3><p><b>总量可变</b>，可能双赢，也可能双输。交易和合作任务都是这样。这里才有“合作的可能”，也才有“背叛的诱惑”。</p></div>
   </div>
-  <p>非零和里最麻烦的一类叫<b><span class="term" tabindex="0" data-def="个人的最优选择合起来对集体不利的局面，如囚徒困境、公共品困境">社会困境</span></b>：每个人都做对自己最聪明的选择，合起来却是所有人都吃亏。后面会亲手玩到它。先看几个具体的例子，感受这几个词落在真实游戏里长什么样。</p>
+  <p>非零和里最麻烦的一类是<b><span class="term" tabindex="0" data-def="个人的最优选择合起来对集体不利的局面，如囚徒困境、公共品困境">社会困境</span></b>：每个人都做对自己最聪明的选择，合起来却是所有人都吃亏。后面会亲手玩到它。</p>
+  <aside class="cc-card" aria-label="概念卡：社会困境">
+    <span class="cc-tag">概念卡</span>
+    <p class="cc-name"><span>社会困境</span></p>
+    <p class="cc-en">Social dilemma</p>
+    <p class="cc-by">罗宾·道斯（Robyn Dawes） · 1980 年综述《Social dilemmas》（《心理学年度评论》31）</p>
+    <p class="cc-def">每个人选对自己最划算的做法，合起来却对所有人都不利。个人最优不等于集体最优。</p>
+    <p class="cc-eg"><span class="cc-k">例子</span>四人组的公共基金：多投 1 个代币，自己只拿回 0.5，但全队合计多得 1。人人都不投，是对个人最划算的，全队却吃亏。</p>
+  </aside>
+  <p>下面几个例子，是这些词落在真实游戏里的样子。</p>
   <div class="eg" data-ic="🦠"><span data-illus="c18_coop"></span><div class="egt"><b>《瘟疫危机》（Pandemic）</b>：Matt Leacock 设计的合作桌游，2008 年由 Z-Man Games 出版。所有人对抗的是一盘会自己扩散的疫情，赢一起赢，输一起输。这是<b>纯合作、非零和</b>：对手是系统，不是彼此。</div></div>
   <div class="eg" data-ic="♟️"><span data-illus="c18_versus"></span><div class="egt"><b>象棋</b>：我吃你一子，你就少一子。一局下来，赢的 +1，输的 −1，总和永远是 0。这是<b>纯竞争、零和</b>。</div></div>
-  <div class="eg" data-ic="🐺"><span data-illus="c18_mixed"></span><div class="egt"><b>狼人杀 / Mafia</b>：据说是 Dmitry Davidoff 在莫斯科国立大学心理系创造的（他本人记的是 1987 年春天的第一局）。好人要合作揪出坏人，坏人要合伙撒谎。<b>同一个房间里既合作又背叛</b>，所以每一局都是一个故事。</div></div>
+  <div class="eg" data-ic="🐺"><span data-illus="c18_mixed"></span><div class="egt"><b>狼人杀 / Mafia</b>：由 Dmitry Davidoff 在莫斯科国立大学心理系创造，他本人记得第一局在 1987 年春天。好人要合作揪出坏人，坏人要合伙撒谎。<b>同一个房间里既合作又背叛</b>，所以每一局都是一个故事。</div></div>
   <div class="eg" data-ic="🏠"><span data-illus="c18_landlord"></span><div class="egt"><b>大富翁的前身：《地主游戏》</b>：Elizabeth Magie 在 1904 年申请专利，给同一块棋盘配了两套规则。“垄断规则”下，谁收租最多谁赢，其他人破产。“繁荣规则”下，有人买地全员受益，最穷的人财富翻倍时游戏结束，<b>人人都赢</b>。同一块棋盘，一套是零和，一套是非零和。三十年后，帕克兄弟买下她的专利，我们熟悉的只剩前一套。</div></div>
   <div class="eg bad" data-ic="🎮"><span data-illus="c18_carry"></span><div class="egt"><b>反例：合作游戏变成一个人的游戏</b>：名义上是合作，可有人什么都懂、抢着指挥，其他人只能照做，甚至只能围观。关系设计成了“合作”，体验却是“一个玩家加几个观众”。缺的是<b>每个人手里真有一个只有他能做的决定</b>。</div></div>
 
   <div class="sec"><span class="n">3</span><h2><span class="tag what">是什么</span>反馈循环：滚雪球与追赶机制</h2></div>
-  <p>大富翁玩到后半场，大家都知道结果了：有人坐拥半条街，有人每走一步都在交租，却还不得不一直扔骰子。这种“谁领先谁就更容易继续领先”的循环，叫<b><span class="term" tabindex="0" data-def="结果反过来放大原因的循环，使差距越拉越大">正反馈</span></b>。多人游戏一定会碰上它，因为玩家之间有比较，有比较就有“领先”。</p>
+  <p>大富翁玩到后半场，大家都知道结果了：有人坐拥半条街，有人每走一步都在交租，却还不得不一直扔骰子。“谁领先谁就更容易继续领先”，这样的循环是<b><span class="term" tabindex="0" data-def="结果反过来放大原因的循环，使差距越拉越大">正反馈</span></b>。多人游戏一定会碰上它，因为玩家之间有比较，有比较就有“领先”。</p>
   <div class="card">
     <svg viewBox="0 0 700 270" width="100%" role="img" aria-label="左：正反馈循环，领先导致资源更多，资源更多导致变得更强，变得更强导致赢得更多，再导致更领先；右：负反馈循环，领先导致被追赶机制拉回，导致差距缩小">
       <defs><marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10z" fill="#2b2b3a"/></marker></defs>
@@ -97,29 +106,38 @@
       </g>
       <g stroke="#2b2b3a" stroke-width="3.5" fill="none" marker-end="url(#ah)">
         <path d="M152 75 H186"/><path d="M255 102 V166"/><path d="M188 195 H154"/><path d="M85 168 V104"/>
-        <path d="M512 75 H546"/><path d="M640 102 L600 166"/><path d="M463 195 L420 104"/>
+        <path d="M512 75 H546"/><path d="M640 102 L600 166"/><path d="M463 195 L420 104" stroke-dasharray="9 6"/>
       </g>
       <g font-size="17" text-anchor="middle" fill="#2b2b3a">
         <text x="85" y="81">领先</text><text x="255" y="81">资源更多</text><text x="255" y="201">变得更强</text><text x="85" y="201">赢得更多</text>
-        <text x="445" y="81">领先</text><text x="615" y="81">被追赶机制</text><text x="530" y="201">差距缩小</text>
+        <text x="445" y="81">领先</text><text x="615" y="81">被追赶机制</text><text x="530" y="201">领先变少</text><text x="392" y="158" fill="#b3261e" font-weight="700">− 削弱</text>
         <text x="170" y="30" font-size="20" font-weight="700">正反馈：滚雪球</text>
         <text x="530" y="30" font-size="20" font-weight="700">负反馈：拉回来</text>
         <text x="170" y="256">越强越强，越弱越弱</text><text x="530" y="256">领先者受限，落后者受帮助</text>
       </g>
     </svg>
   </div>
-  <p>对策是反过来再造一个循环：让领先者受点限制、落后者得到点帮助，差距就被拉回来。这叫<b><span class="term" tabindex="0" data-def="结果反过来抑制原因的循环，使差距缩小，趋向稳定">负反馈</span></b>，也就是俗称的追赶机制。设计目标不是消灭其中一种，而是调旋钮：让赢的人有奖励，但奖励别大到无法翻盘。</p>
+  <p>对策是反过来再造一个循环：让领先者受点限制、落后者得到点帮助，差距就被拉回来。这样的循环是<b><span class="term" tabindex="0" data-def="结果反过来抑制原因的循环，使差距缩小，趋向稳定">负反馈</span></b>，游戏里俗称追赶机制。设计时两种循环都留着，只调旋钮：让赢的人有奖励，但奖励别大到无法翻盘。</p>
   <div class="eg" data-ic="🏎️"><span data-illus="c18_kart"></span><div class="egt"><b>赛车游戏的道具</b>：《马里奥赛车》系列按名次发道具，落后的人更容易拿到强力道具，所以最后一圈经常翻盘。这是<b>负反馈</b>，悬念被保住了。</div></div>
   <div class="eg" data-ic="⛄"><span data-illus="c18_snowball"></span><div class="egt"><b>雪球与大富翁</b>：山顶推一下，雪球越滚越大。大富翁里也一样：地产多收租多，收租多买得更多。这是<b>正反馈</b>，早期的一点点优势会被放大成定局。</div></div>
   <div class="eg bad" data-ic="💥"><span data-illus="c18_toostrong"></span><div class="egt"><b>反例：追赶机制调过头</b>：领先的赛车被道具追着砸，一路领先的人觉得自己的技术在被惩罚，落后的人反而不用努力就能赶上。负反馈太强，会让“做得好”没有回报。</div></div>
 
   <div class="sec"><span class="n">4</span><h2><span class="tag what">是什么</span>怎么匹配强弱：Elo 评分</h2></div>
-  <p>追赶机制是在一局之内拉平差距。更早的一步是别让悬殊的人坐到一桌：强者遇强者，新手遇新手。这就需要给每个人一个能比较的分数。最经典的做法是 <span class="term" tabindex="0" data-def="由阿帕德·埃洛为国际象棋设计的评分方法：根据预期得分与实际得分的差调整评分">Elo</span>。国际象棋用它，许多游戏的排位系统也受它启发，只是各家实现不同。</p>
-  <div class="sticky">
-    <b>预期得分</b>：E<sub>A</sub> = 1 / (1 + 10<sup>(R<sub>B</sub> − R<sub>A</sub>)/400</sup>)<br>
-    <b>新评分</b>：R'<sub>A</sub> = R<sub>A</sub> + K × (S − E<sub>A</sub>)　（胜 S=1，平 0.5，负 0）
-  </div>
-  <p>读法很直白：先根据两人的评分差预测 A 的得分（评分差 400，强者预期约 91%），打完后看实际结果比预测多了多少，就按这个差调整。<span class="term" tabindex="0" data-def="Elo 公式里的灵敏度系数：K 大则评分变化快，K 小则稳定">K</span> 是灵敏度：K 大，分数涨跌快，适合刚来的新人；K 小，分数稳定。每局双方一加一减，总数不变。</p>
+  <p>追赶机制是在一局之内拉平差距。更早的一步是别让悬殊的人坐到一桌：强者遇强者，新手遇新手。这就需要给每个人一个能比较的分数。最经典的做法是 <span class="term" tabindex="0" data-def="Elo 评分（Elo rating system）：由阿帕德·埃洛为国际象棋设计的评分方法，根据预期得分与实际得分的差调整评分">Elo</span>。国际象棋用它，许多游戏的排位系统也受它启发，只是各家实现不同。</p>
+  <aside class="cc-card" aria-label="概念卡：Elo 评分">
+    <span class="cc-tag">概念卡</span>
+    <p class="cc-name"><span>Elo 评分</span></p>
+    <p class="cc-en">Elo rating system</p>
+    <p class="cc-by">阿帕德·埃洛（Arpad Elo） · 1960 年被美国国际象棋联合会（USCF）采用，1978 年出版《The Rating of Chessplayers, Past and Present》</p>
+    <p class="cc-def">把评分当作预测：两人评分一比，就能算出各自的胜率。实际结果比预测多或少了多少，就按这个差调整分数。</p>
+    <p class="cc-eg"><span class="cc-k">例子</span>1200 分的小个子赢了 1800 分的大个子，涨约 31 分；大个子赢了，只涨约 1 分。</p>
+  </aside>
+  <details>
+    <summary>进阶：Elo 的公式</summary>
+    <p class="small"><b>预期得分</b>：E<sub>A</sub> = 1 / (1 + 10<sup>(R<sub>B</sub> − R<sub>A</sub>)/400</sup>)<br>
+    <b>新评分</b>：R'<sub>A</sub> = R<sub>A</sub> + K × (S − E<sub>A</sub>)　（胜 S=1，平 0.5，负 0）。R<sub>A</sub>、R<sub>B</sub> 是两人的评分。</p>
+  </details>
+  <p>做法很直白：先根据两人的评分差预测 A 的得分（评分差 400，强者预期约 91%），打完后看实际结果比预测多了多少，就按这个差调整。<span class="term" tabindex="0" data-def="Elo 公式里的灵敏度系数：K 大则评分变化快，K 小则稳定">K</span> 是灵敏度：K 大，分数涨跌快，适合刚来的新人；K 小，分数稳定。每局双方一加一减，总数不变。</p>
   <div class="card">
     <svg viewBox="0 0 700 290" width="100%" role="img" aria-label="Elo 预期得分曲线：横轴为评分差，纵轴为预期得分；评分差为 0 时预期 50%，评分差 400 时预期约 91%">
       <g class="rough" stroke="#2b2b3a" stroke-width="3.5" fill="none" stroke-linecap="round">
@@ -138,7 +156,7 @@
     </svg>
     <p class="small">曲线是公式画出来的（K 不影响曲线，只影响每次调整多少）。</p>
   </div>
-  <div class="eg" data-ic="🧑‍🦲"><span data-illus="c18_upset"></span><div class="egt"><b>爆冷</b>：1200 分的小个子赢了 1800 分的大个子。他的预期得分只有约 0.03，K=32，所以涨 32×(1−0.03)≈31 分，大个子扣同样的 31 分。要是大个子赢，他只涨约 1 分：赢了本该赢的人，系统几乎没学到什么。</div></div>
+  <div class="eg" data-ic="🧑‍🦲"><span data-illus="c18_upset"></span><div class="egt"><b>爆冷</b>：1200 分的小个子赢了 1800 分的大个子。他的预期得分只有约 0.03，K=32，所以涨 32×(1−0.03)≈31 分，大个子扣同样的 31 分。要是大个子赢，他只涨约 1 分。赢了本该赢的人，系统几乎没学到什么。</div></div>
   <div class="eg" data-ic="🌱"><span data-illus="c18_newcomer"></span><div class="egt"><b>新账号的头几局</b>：不少评分系统给新人更大的 K，前几局分数大起大落，很快逼近真实水平，之后 K 变小，分数就稳了。</div></div>
   <div class="eg bad" data-ic="🦹"><span data-illus="c18_smurf"></span><div class="egt"><b>反例：高手开小号</b>：评分是对“过去对局”的估计。新账号没有过去，分数还停在“新手”，实力却是大神，于是在新手房间里连赢。Elo 在这里没有错，只是没数据可用。</div></div>
 
@@ -147,7 +165,7 @@
     <h3>A 俱乐部的 1800 分，和 B 俱乐部的 1800 分，是一回事吗？</h3>
     <p>国际象棋比赛的组织者曾被一个朴素的问题困扰：怎么知道一个人到底有多强？各个俱乐部有自己的排名，可那只是俱乐部内部的先后，没法换算到别处。想把不同城市的棋手放进同一场锦标赛，就得有一把大家都认的尺子。</p>
     <p>美国国际象棋联合会（USCF）在 1950 年前后用的是哈克尼斯（Kenneth Harkness）设计的评分办法，它让评分第一次成了全国通用的东西。可后来被请来检查它的阿帕德·埃洛（Arpad Elo）认为，这套办法的结果在某些情况下并不可靠。</p>
-    <p>埃洛是匈牙利出生的美国物理学教授，同时也是个棋手。他换了个角度：评分的意义是<b>预测</b>，不是排名。两个人评分一比，就该能算出各自的胜率。真实结果比预测高了还是低了，差多少，就按这个差去修正。意外越大，改得越多。读过多巴胺与“预测误差”的故事，会觉得很眼熟：学习靠的就是预测和结果之间的差。</p>
+    <p>埃洛是匈牙利出生的美国物理学教授，同时也是个棋手。他换了个角度：评分的意义是<b>预测</b>，不是排名。两个人评分一比，就该能算出各自的胜率。真实结果比预测高了还是低了，差多少，就按这个差去修正。意外越大，改得越多。第 2 章讲过的预测误差也是这样：学习靠预测和结果之间的差。</p>
   </div>
   <div class="card">
     <h3>🤔 先猜，再揭晓</h3>
@@ -167,8 +185,8 @@
   <div class="withimg">
     <span data-illus="c18_strangers"></span>
     <div>
-      <p>回到开头那个治疗。如果每个人只算自己的得失，“不给”永远更划算，人人都不给，团队就崩了。可现实里，陌生人合作的比例比这个预测高得多。</p>
-      <p>这个矛盾最早被研究得很干净，是在 1950 年。兰德公司的 Merrill Flood 和 Melvin Dresher 设计了一个双人游戏，让同事连玩一百轮，看人们会不会彼此背叛。后来 Albert Tucker 把它讲成两个囚犯的故事，就是今天的囚徒困境。</p>
+      <p>再回到开头那个治疗：如果每个人只算自己的得失，“不给”永远更划算，人人都不给，团队就崩了。可现实里，陌生人合作的比例比这个预测高得多。</p>
+      <p>这个矛盾最早被研究得很干净，是在 1950 年。兰德公司的 Merrill Flood 和 Melvin Dresher 设计了一个双人游戏，让同事连玩一百轮。他们想看看，人们会不会彼此背叛。后来 Albert Tucker 把它讲成两个囚犯的故事，成了今天的囚徒困境。</p>
       <p>要让合作成立，得有些东西把“对个人划算”和“对大家划算”重新对齐。研究者找到了几样。</p>
     </div>
   </div>
@@ -180,7 +198,7 @@
       <li><b><span class="term" tabindex="0" data-def="你投入多我就投入多，你投入少我也少；实验中常被发现占相当比例">有条件合作者</span></b>：不少人看别人投入多少再决定自己投多少，这背后是<span class="term" tabindex="0" data-def="人们会拿自己与他人对比来评估自己的处境和行为，倾向向周围人的水平靠拢">社会比较</span>。</li>
       <li><b>惩罚</b>：愿意付出代价惩罚搭便车者的人，让“白嫖”变得不划算。但惩罚有成本，也有副作用。</li>
     </ul>
-    <div class="src">出处：Flood &amp; Dresher 1950 年在兰德公司的实验见 Flood (1952)，Tucker 的监狱叙事见《斯坦福哲学百科》“Prisoner’s Dilemma”（“囚徒困境”这个名字最早见于印刷是 Luce &amp; Raiffa, 1957，归属有争议）；Trivers，“互惠利他”(1971)；Nowak &amp; Sigmund，“形象评分”间接互惠 (Nature, 1998)；Fischbacher, Gächter &amp; Fehr, “Are people conditionally cooperative?” (Economics Letters, 2001)，约一半的人是有条件合作者、约三分之一搭便车；Fehr &amp; Gächter 论公共品博弈中的惩罚 (2000, 2002)；社会比较：Festinger (1954)。</div>
+    <div class="src">出处：<br>Flood 与 Dresher · 1950 · 在兰德公司让同事连玩一百轮双人游戏（见 Flood 1952）；Tucker 把它讲成两个囚犯的故事（见《斯坦福哲学百科》“Prisoner’s Dilemma”）；“囚徒困境”这个名字最早见于印刷是 Luce 与 Raiffa 1957 年的书，归属有争议。<br>Trivers · 1971 · 互惠利他。<br>Nowak 与 Sigmund · 1998 · “形象评分”间接互惠（Nature）。<br>Fischbacher、Gächter、Fehr · 2001 · 约一半的人是有条件合作者、约三分之一搭便车（“Are people conditionally cooperative?”，Economics Letters）。<br>Fehr 与 Gächter · 2000、2002 · 公共品博弈中的惩罚。<br>Festinger · 1954 · 社会比较。</div>
   </div>
   <div class="card">
     <svg viewBox="0 0 700 290" width="100%" role="img" aria-label="声誉循环：我帮了队友，别人看见并记下，我的声誉变好，陌生人也愿意帮我，回到我愿意继续帮人；中间提示：可见性是关键，看不见这个循环就断了">
@@ -201,10 +219,12 @@
     </svg>
   </div>
   <p>光说没用，下面用一个小实验验证。规则是：4 人一组，每人每轮有 10 个代币，决定往基金里投多少，基金里的代币<b>翻倍</b>后平均分给 4 人。单轮所得是 10 − 自己的投入 + 0.5 × （4 人投入之和）。</p>
-  <p><b>算一算：多投 1 个，自己只拿回 0.5，亏 0.5；可每个队友各多得 0.5，全队共多得 2。</b>个人最优是不投，集体最优是全投，这就是公共品版本的社会困境。</p>
+  <p><b>算一算：多投 1 个，自己只拿回 0.5，亏 0.5；3 位队友各多得 0.5，一共 +1.5，全队合计多得 1。</b>个人最优是不投，集体最优是全投，这是公共品版本的社会困境。</p>
   <div class="board">
     <b>公共品小游戏（示意）</b>
-    <p class="small">玩家和 3 名虚拟玩家，共 10 轮。虚拟玩家都是“有条件合作者”：下一轮投入 ≈ 参照值 ± 随机浮动 1 个。参照值：<b>匿名</b>时只看见基金总额，参照上一轮 4 人的平均投入；<b>声誉可见</b>时看得到每个人的投入，参照其他 3 人上一轮的平均投入，并且因为自己也被看见，每人多投约 1 个（这是<b>设定的假设</b>，真实实验中的幅度因情境而异）。<b>惩罚</b>：每个投入至少比玩家多 3 的虚拟玩家，付出 1 点让玩家扣 3 点（需要先“声誉可见”，否则看不出是谁）。这是简化的示意规则，不是真实实验数据。</p>
+    <p class="small">玩家和 3 名虚拟玩家，共 10 轮。虚拟玩家都是“有条件合作者”：下一轮投入 ≈ 参照值 ± 随机浮动 1 个。</p>
+    <p class="small">参照值：<b>匿名</b>时只看见基金总额，参照上一轮 4 人的平均投入；<b>声誉可见</b>时看得到每个人的投入，参照其他 3 人上一轮的平均投入，并且因为自己也被看见，每人多投约 1 个（这是<b>设定的假设</b>，真实实验中的幅度因情境而异）。</p>
+    <p class="small"><b>惩罚</b>：每个投入至少比玩家多 3 的虚拟玩家，付出 1 点让玩家扣 3 点（需要先“声誉可见”，否则看不出是谁）。这是简化的示意规则，不是真实实验数据。</p>
     <label class="chk"><input type="checkbox" id="g-rep"> 声誉可见（每个人投了多少公开）</label>
     <label class="chk"><input type="checkbox" id="g-pun" disabled> 允许惩罚</label>
     <button class="btn alt" id="g-reset">重新开始</button>
@@ -222,7 +242,8 @@
     <div id="g-tbl"></div>
     <div class="msg" id="g-cmsg"></div>
   </div>
-  <p>实验的结论不是“惩罚越重越好”。Herrmann、Thöni 和 Gächter 在 2008 年的《科学》论文里，在世界各地 16 个被试群体里重复了公共品实验，发现有些社会里，被惩罚的反而是投入多的合作者（反社会惩罚），强到抵消了惩罚促进合作的作用。这和各地公民合作的规范、法治强弱有关。所以“惩罚能促进合作”不是处处成立的结论。</p>
+  <p>惩罚也不是越重越好。Herrmann、Thöni 和 Gächter 在 2008 年的《科学》论文里，在世界各地 16 个被试群体里重复了公共品实验。</p>
+  <p>他们发现，有些社会里被惩罚的反而是投入多的合作者（反社会惩罚），强到抵消了惩罚促进合作的作用。这和各地公民合作的规范、法治强弱有关。</p>
 
   <div class="sec"><span class="n">7</span><h2><span class="tag why">为什么成立</span>为什么分工与交易能让双方都更好？比较优势</h2></div>
   <div class="withimg rev">
@@ -230,15 +251,23 @@
     <div>
       <p>合作不只靠善意，也靠算账。队里最强的玩家，打输出比谁都强，采集也比谁都快。他是不是该什么都自己来？</p>
       <p>直觉上是的，结果却反过来。时间有限，他做 A 就不能做 B。只要对方做某件事“相对不吃亏”，让对方去做，整队的总产出就会增加。</p>
-      <p>这是 19 世纪初李嘉图想明白的事：重要的不是谁更强，而是谁放弃得更少。</p>
+      <p>这是 19 世纪初李嘉图想明白的事：谁放弃得更少，比谁更强重要。</p>
     </div>
   </div>
   <div class="why-box">
     <h3>比较优势</h3>
-    <p>为得到一单位某样东西所放弃的另一样东西的数量，叫<b><span class="term" tabindex="0" data-def="为了得到一单位某物所放弃的另一物的数量；比较优势指机会成本更低的一方">机会成本</span></b>。机会成本低的一方，对那件事有<b><span class="term" tabindex="0" data-def="在机会成本上占优：即使别的方面都不如对方，也值得去做‘相对擅长’的那件事">比较优势</span></b>。双方各做自己机会成本更低的事，再按一个<b>介于两者机会成本之间的价格</b>交换，总产出变多，两边都能分到好处。</p>
+    <p>为得到一单位某样东西，要放弃另一样东西若干，这个数量是<b><span class="term" tabindex="0" data-def="为了得到一单位某物所放弃的另一物的数量；比较优势指机会成本更低的一方">机会成本</span></b>。机会成本低的一方，对那件事有<b><span class="term" tabindex="0" data-def="在机会成本上占优：即使别的方面都不如对方，也值得去做‘相对擅长’的那件事">比较优势</span></b>。双方各做自己机会成本更低的事，再按一个<b>介于两者机会成本之间的价格</b>交换，总产出变多，两边都能分到好处。</p>
     <p>游戏里随处可见：队伍里的角色分工、交易所里的采集与制造、合作游戏里“让谁去做什么”。交易把局面变成非零和。多出来的蛋糕怎么分，仍然是一场博弈。</p>
-    <div class="src">出处：亚当·斯密论分工（《国富论》，1776）；大卫·李嘉图在《政治经济学及赋税原理》（1817）中用葡萄酒与毛呢的例子阐述比较优势。</div>
+    <div class="src">出处：亚当·斯密 · 1776 · 《国富论》 · 论分工。大卫·李嘉图 · 1817 · 《政治经济学及赋税原理》 · 用葡萄酒与毛呢的例子阐述比较优势。</div>
   </div>
+  <aside class="cc-card" aria-label="概念卡：比较优势">
+    <span class="cc-tag">概念卡</span>
+    <p class="cc-name"><span>比较优势</span></p>
+    <p class="cc-en">Comparative advantage</p>
+    <p class="cc-by">大卫·李嘉图（David Ricardo） · 1817 年《政治经济学及赋税原理》</p>
+    <p class="cc-def">机会成本更低的一方，对那件事有比较优势。各做自己机会成本更低的事，再交换，总产出会变多。</p>
+    <p class="cc-eg"><span class="cc-k">例子</span>阿林样样都比小苔强，但产 1 草药阿林要放弃 1 个木材，小苔只放弃 0.5 个，所以草药该让小苔做。</p>
+  </aside>
   <div class="board">
     <b>手算一遍：阿林和小苔，各有 12 天</b>
     <table class="tbl l">
@@ -246,7 +275,7 @@
       <tr><th>阿林</th><td>6 木材 <b>或</b> 6 草药</td><td>1 木材</td></tr>
       <tr><th>小苔</th><td>2 木材 <b>或</b> 4 草药</td><td>0.5 木材</td></tr>
     </table>
-    <p class="small">两人都想要“木材和草药一样多”（凑成套才有用）。阿林事事都更强（绝对优势），但：产 1 单位草药，阿林放弃 1 个木材，小苔只放弃 0.5 个木材，所以<b>小苔在草药上有比较优势</b>；反过来，产 1 单位木材，阿林放弃 1 个草药，小苔放弃 2 个，阿林在木材上有比较优势。</p>
+    <p class="small">两人都想要“木材和草药一样多”（凑成套才有用）。阿林事事都更强（绝对优势）。可是产 1 单位草药，阿林放弃 1 个木材，小苔只放弃 0.5 个木材，所以<b>小苔在草药上有比较优势</b>。反过来，产 1 单位木材，阿林放弃 1 个草药，小苔放弃 2 个，阿林在木材上有比较优势。</p>
     <div id="c-chips"></div>
     <div id="c-trade" style="display:none">
       <p class="small">专业化：小苔 12 天全做草药（48 草药）；阿林 10 天做木材（60）、2 天做草药（12）。然后阿林卖给小苔 x 个木材，价格 p 个草药 / 木材。</p>
@@ -264,15 +293,23 @@
     <span data-illus="c18_crowd"></span>
     <div>
       <p>新玩家上线，总会往人多的服务器、人多的公会挤，因为人多好匹配、热闹，也没人想去一个空荡荡的地方。</p>
-      <p>可每个新人都这样选，人多的就更多，人少的更少。这是前面那个滚雪球的社交版本：被选中的概率和已有的规模成正比（甚至更强），叫<b><span class="term" tabindex="0" data-def="新加入者倾向于选择已经很大的对象，使大者愈大、形成少数巨头">偏好依附</span></b>。</p>
-      <p>还记得经济系统里的幂律吗？少数大头占去大部分，这里是同一个形状，来自另一种机制。</p>
+      <p>可每个新人都这样选，人多的就更多，人少的更少。这是前面那个滚雪球的社交版本：被选中的概率和已有的规模成正比（甚至更强），这个机制是<b><span class="term" tabindex="0" data-def="新加入者倾向于选择已经很大的对象，使大者愈大、形成少数巨头">偏好依附</span></b>。</p>
+      <p>第 15 章讲过幂律：少数大头占去大部分。这里是同一个形状，来自另一种机制。</p>
     </div>
   </div>
   <div class="why-box">
     <h3>网络效应与“富者愈富”</h3>
     <p>只要“人越多价值越高”，并且新人跟着人多的走，系统就会出现<b><span class="term" tabindex="0" data-def="‘富者愈富’：优势累积，使少数对象占据绝大多数份额，常伴随幂律式的分布">赢家通吃</span></b>。设计上的对策有：分服 / 合服、跨服匹配、给小社区特色功能，或者让新人先进“新手池”，不单纯选最大的。</p>
-    <div class="src">出处：巴拉巴西与阿尔伯特（1999，《科学》）用“偏好依附”模型解释网络中的幂律；社会学家默顿（1968）把科学界“强者累积优势”称为“马太效应”。下面的模拟是高度简化的示意。</div>
+    <div class="src">出处：巴拉巴西与阿尔伯特 · 1999 · 用“偏好依附”模型解释网络中的幂律（《科学》）。默顿 · 1968 · 把科学界“强者累积优势”称为“马太效应”。下面的模拟是高度简化的示意。</div>
   </div>
+  <aside class="cc-card" aria-label="概念卡：偏好依附">
+    <span class="cc-tag">概念卡</span>
+    <p class="cc-name"><span>偏好依附</span></p>
+    <p class="cc-en">Preferential attachment</p>
+    <p class="cc-by">巴拉巴西（Albert-László Barabási）、阿尔伯特（Réka Albert） · 1999 年《Science》论文；默顿（Robert K. Merton） · 1968 年的“马太效应”是近亲</p>
+    <p class="cc-def">新加入者倾向于选已经很大的对象，于是大的更大，少数巨头占去大部分。</p>
+    <p class="cc-eg"><span class="cc-k">例子</span>新玩家都往人多的服务器和公会挤，人多的更多，人少的更少。</p>
+  </aside>
   <div class="board">
     <b>示意：8 个服务器、400 名新玩家依次加入</b>
     <label class="ctl">“从众程度” γ（0 = 随机选；1 = 按人数比例选；2 = 更偏爱人多的） <output id="n-gv">1.0</output></label><input type="range" id="n-g" min="0" max="2" step="0.25" value="1">
@@ -284,7 +321,7 @@
   <p class="small">试试看：把 γ 拖到 0，再拖到 2，各点几次“再来一次”，看最大服务器的占比怎么变。</p>
 
   <div class="sec"><span class="n">9</span><h2><span class="tag how">怎么用</span>调旋钮：反馈、匹配与信任</h2></div>
-  <p>现在把前面的东西装进手里。第一个是最重要的旋钮：反馈强度。两名<b>实力完全相同</b>的玩家打 20 回合，每回合胜者得 1 分，基础胜率各 50%，但当前领先者的胜率会被调整。往右拖是正反馈，往左拖是负反馈，程序会模拟 3000 场。</p>
+  <p>三个小实验，把前面的东西装进手里。第一个是最重要的旋钮：反馈强度。两名<b>实力完全相同</b>的玩家打 20 回合，每回合胜者得 1 分，基础胜率各 50%，但当前领先者的胜率会被调整。往右拖是正反馈，往左拖是负反馈，程序会模拟 3000 场。</p>
   <div class="board">
     <label class="ctl">反馈强度 <output id="fv">0</output>（正：领先者更强；负：领先者被削弱）</label><input type="range" id="fb" min="-30" max="30" step="5" value="0">
     <div id="fout" style="margin-top:8px"></div>
@@ -329,10 +366,10 @@
     <div class="msg" id="pmsg"></div>
   </div>
   <div class="sticky c18try" id="c18_tp">试试看：选“以牙还牙”，想办法拿到 27 分以上。然后换成“永远背叛”，看合作还有没有意义。</div>
-  <p>另一种经典情景叫<b>猎鹿</b>：两人合力才能猎到鹿（回报高），各自去抓兔子则稳妥但回报低。它的问题不是“诱惑背叛”，而是“敢不敢信对方”。这类设计靠沟通、承诺和可见的信号来解决。</p>
+  <p>还有一种经典情景是<b>猎鹿</b>：两人合力才能猎到鹿（回报高），各自去抓兔子则稳妥但回报低。它的难点在“敢不敢信对方”，没有“诱惑背叛”的问题。这类设计靠沟通、承诺和可见的信号来解决。</p>
 
   <div class="key">
-    <h3>本章要点</h3>
+    <h3>要点</h3>
     <ul>
       <li>先看玩家关系：<b>合作、竞争或混合</b>；零和（总量固定）没有合作空间，非零和才有合作也有背叛。</li>
       <li><b>社会困境</b>：个人最优 ≠ 集体最优。合作游戏要防“一言堂”，竞争游戏要防新手被碾压。</li>
@@ -348,7 +385,7 @@
   <div class="misc">
     <h3>常见误区</h3>
     <ul>
-      <li>“人性自私，所以合作游戏必然崩坏”：实验里很多人是有条件合作者。问题往往在于机制让搭便车看不见、不用付代价。</li>
+      <li>“人性自私，所以合作游戏必然崩坏”：实验里很多人是有条件合作者。问题在于机制让搭便车看不见、不用付代价。</li>
       <li>“惩罚越重越好”：重惩罚会引发报复，让玩家不敢尝试，也容易误伤。与其惩罚，先让投入可见、给正向声誉。</li>
       <li>“我比对方强，所以所有事都我来做更好”：忽略了机会成本。比较优势说的是“相对”擅长，不是“绝对”。</li>
       <li>“Elo 就是玩家的实力”：它只是在特定对局结构下对胜率的估计，对多人团队、不同角色、新账号都需要修正。</li>
@@ -365,10 +402,10 @@
     </ul>
   </div>
 
-  <div class="sec"><span class="n">10</span><h2><span class="tag think">反思</span>练习</h2></div>
+  <div class="sec"><span class="n">10</span><h2><span class="tag think">练习</span>小测验</h2></div>
   <div id="quiz"></div>
 
-  <div class="sec"><span class="n">11</span><h2><span class="tag how">怎么用</span>你的设计</h2></div>
+  <div class="sec"><span class="n">11</span><h2><span class="tag how">你的设计</span>设计一个多人小游戏</h2></div>
   <div class="card o">
     <p>设计一个 2-4 人的小游戏：它是合作、竞争还是混合？准备用什么机制防止“滚雪球”？写下一个正反馈和一个负反馈的例子。</p>
     <textarea rows="5" data-save="ch18" placeholder="例：四人抢占领地。占地越多收入越多（正反馈）；但最后一名每回合可以免费放一个陷阱（负反馈）……"></textarea>
@@ -399,7 +436,7 @@ function tryDone(id, text) {
     b.onclick = () => {
       [...box.children].forEach(x => x.classList.remove("on")); b.classList.add("on");
       const e = 1 / (1 + Math.pow(10, 600 / 400)), g = 32 * (1 - e);
-      $("c18_gmsg").innerHTML = (v === 31 ? "👍 猜对了。" : "答案是 <b>31 分</b>。") + "小个子的预期得分 E≈" + e.toFixed(3) + "，涨 32×(1−" + e.toFixed(3) + ")≈<b>" + g.toFixed(1) + "</b> 分。结果越出乎预料，系统改得越多，这正是“按预测误差学习”。";
+      $("c18_gmsg").innerHTML = (v === 31 ? "👍 猜对了。" : "答案是 <b>31 分</b>。") + "小个子的预期得分 E≈" + e.toFixed(3) + "，涨 32×(1−" + e.toFixed(3) + ")≈<b>" + g.toFixed(1) + "</b> 分。结果越出乎预料，系统改得越多，这就是“按预测误差学习”。";
     };
     box.appendChild(b);
   });
@@ -462,7 +499,7 @@ function play(me) {
       if (myS >= 27) tryDone("c18_tp", "你拿到 " + myS + " 分：对会回应的对手，合作是长期最划算的。现在换成“永远背叛”试试。");
     }
     else if (strat === "allD") t += coopN ? " 对永远背叛的人，合作每次都是被剥削。" : " 对方永远背叛时，背叛才是自保。";
-    else if (strat === "allC") t += " 对永远合作的人，背叛能得高分，但这种“老好人”在现实中往往会被利用。";
+    else if (strat === "allC") t += " 对永远合作的人，背叛能得高分，但这种“老好人”在现实中会被利用。";
     else t += " 面对随机的对手，你很难建立信任，也不好预测。";
     $("pmsg").textContent = t;
   }
@@ -550,7 +587,7 @@ fupd();
 GD.mountQuiz($("quiz"), [
   { q: "1500 分的 A 对 1500 分的 B，K=32，A 赢。A 的新评分是？", opts: ["1500", "1516", "1532", "1484"], a: 1, why: "E=0.5，新分 = 1500 + 32×(1−0.5) = 1516；B 同时 −16 变成 1484。" },
   { q: "“领先者获得更多资源，从而更容易继续领先”属于？", opts: ["正反馈（可能滚雪球）", "负反馈", "对称设计", "零和游戏"], a: 0, why: "把差距放大的循环叫正反馈；它让游戏早期决定后期，需要用追赶机制等来平衡。" },
-  { q: "【为什么】公共品游戏：4 人每人 10 币，基金翻倍后平均分。你多投 1 个币，自己的单轮所得变化是？为什么这是社会困境？", opts: ["+1；因为基金翻倍", "−0.5；你只拿回一半，而全队多得 2，个人最优是不投，集体最优是全投", "0；因为是平分", "+0.5；因为分到了一半"], a: 1, why: "多投 1 币：自己少 1，基金多 2，你分得 2÷4 = 0.5，净 −0.5；3 位队友各 +0.5。对个人是亏的，对全队是赚的（总共 +1），这就是个人理性与集体理性的冲突。" },
+  { q: "【为什么】公共品游戏：4 人每人 10 币，基金翻倍后平均分。你多投 1 个币，自己的单轮所得变化是？为什么这是社会困境？", opts: ["+1；因为基金翻倍", "−0.5；你只拿回一半，而全队合计多得 1，个人最优是不投，集体最优是全投", "0；因为是平分", "+0.5；因为分到了一半"], a: 1, why: "多投 1 币：自己少 1，基金多 2，你分得 2÷4 = 0.5，净 −0.5；3 位队友各 +0.5。对个人是亏的，对全队是赚的（总共 +1），这就是个人理性与集体理性的冲突。" },
   { q: "【为什么】阿林做 1 木材要放弃 1 草药，小苔做 1 木材要放弃 2 草药。哪个交易价格（草药/木材）能让双方都受益？", opts: ["0.8", "1.5", "2.5", "任何价格都行"], a: 1, why: "阿林卖木材至少要换回 1 草药（否则不如自己做草药），小苔最多愿意付 2 草药。价格必须在 1 到 2 之间，双方才都有好处。0.8 阿林亏，2.5 小苔亏。" },
   { q: "【为什么被发明】在 Elo 之前，各俱乐部各算各的积分。Elo 的关键想法是什么？", opts: ["把所有棋手按总胜场数排名", "评分差应当能换算成胜率，用实际结果与预测的差去调整评分", "让裁判主观给每个人打分", "只在同一俱乐部内比赛"], a: 1, why: "评分的意义是预测。两人评分一比就算出各自的预期得分，结果比预期高多少，就调整多少；这样不同地方的棋手也能放在同一把尺子上。" },
   { q: "【为什么】为什么把每个人的投入公开（声誉可见），常常能提高公共品游戏里的合作水平？", opts: ["因为公开后规则变简单了", "因为别人能看见谁投了多少，帮助别人会给自己积累好名声，搭便车也更容易被发现", "因为公开后基金会翻倍得更多", "因为玩家不再比较彼此"], a: 1, why: "可见性让“对大家好”变成“对我也好”（声誉），同时让搭便车无处藏身。这是间接互惠和惩罚发挥作用的前提。" },
@@ -673,7 +710,7 @@ GD.mountQuiz($("quiz"), [
       out = head + row("阿林", aw, ah, 36) + row("小苔", bw, bh, 16) + "</table>";
       const sa = Math.min(aw, ah) - 36, sb = Math.min(bw, bh) - 16;
       g("c-msg").textContent = (sa > 1e-9 && sb > 1e-9) ? "✅ 双方都比自给自足多：合计 " + (Math.min(aw, ah) + Math.min(bw, bh)).toFixed(1) + " 套（自给自足 52 套）。" :
-        (sa < -1e-9 || sb < -1e-9) ? "⚠️ 有一方比自给自足更差，他不会同意这笔交易。" : "有一方没有得到好处（和自给自足一样）。把价格调到 1 到 2 之间，并用“自动凑成对”配平数量。";
+        (sa < -1e-9 || sb < -1e-9) ? "⚠️ " + (sa < -1e-9 && sb < -1e-9 ? "阿林和小苔都" : sa < -1e-9 ? "阿林" : "小苔") + "比自给自足更差，" + (sa < -1e-9 && sb < -1e-9 ? "他们" : "他") + "不会同意这笔交易。" : "有一方没有得到好处（和自给自足一样）。把价格调到 1 到 2 之间，并用“自动凑成对”配平数量。";
       if (sa > 1e-9 && sb > 1e-9) tryDone("c18_tc", "价格 " + p.toFixed(1) + "、数量 " + x + "：阿林多 " + sa.toFixed(1) + " 套，小苔多 " + sb.toFixed(1) + " 套，合计 " + (Math.min(aw, ah) + Math.min(bw, bh)).toFixed(1) + " 套。");
     }
     g("c-out").innerHTML = out;
@@ -702,7 +739,7 @@ GD.mountQuiz($("quiz"), [
     });
     g("n-svg").innerHTML = h;
     let avg = 0; const R = 200; for (let i = 0; i < R; i++) { const s = nrun(gm); avg += Math.max(...s) / s.reduce((a, b) => a + b, 0); }
-    g("n-stat").innerHTML = '<span class="stat">最大服务器占 <b>' + (mx / tot * 100).toFixed(0) + '%</b></span><span class="stat">200 次平均的最大占比 <b>' + (avg / R * 100).toFixed(0) + '%</b></span><span class="stat">平均均分占比 <b>12.5%</b></span>';
+    g("n-stat").innerHTML = '<span class="stat">最大服务器占 <b>' + (mx / tot * 100).toFixed(0) + '%</b></span><span class="stat">200 次平均的最大占比 <b>' + (avg / R * 100).toFixed(0) + '%</b></span><span class="stat">平均均分占比 <b>12.5%</b></span><span class="stat">粉色柱 = 这一次最大的服务器</span>';
     g("n-msg").textContent = gm === 0 ? "随机选择：最大的也只比平均多一点点。" : gm < 1 ? "略偏爱人多的：开始出现头部。" : gm === 1 ? "按人数比例选：每次结果差别很大，但头部明显（反复点“再来一次”看看谁赢）。" : "偏爱人多的程度超过比例：几乎总有一个服务器吞掉大部分玩家。";
   }
   g("n-g").oninput = nupd; g("n-go").onclick = nupd; nupd();

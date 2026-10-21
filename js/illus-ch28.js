@@ -34,8 +34,17 @@
     '<rect x="64" y="100" width="130" height="6" fill="#c58b4e"/><path d="M70 106 V121 M188 106 V121" stroke-width="3" fill="none"/>' +
     '<rect x="68" y="72" width="20" height="28" fill="#ffb3c6"/><rect x="92" y="72" width="20" height="28" fill="#a8dcf0"/><rect x="116" y="72" width="20" height="28" fill="#b6e8a8"/><rect x="140" y="72" width="20" height="28" fill="#d8c8ff"/>' +
     '<circle cx="78" cy="84" r="4" fill="#ffe58a"/><circle cx="102" cy="84" r="4" fill="#ffe58a"/><circle cx="126" cy="84" r="4" fill="#ffe58a"/><circle cx="150" cy="84" r="4" fill="#ffe58a"/>' +
-    '<rect x="166" y="70" width="24" height="30" fill="#fff"/><path d="M171 80 h14 M171 88 h10" stroke-width="2" fill="none"/><path d="M164 68 L192 102 M192 68 L164 102" stroke="#e5484d" stroke-width="3.5" fill="none"/>',
-    T(112, 56, 12, "三个晚上画好的卡面", "middle") + T(128, 134, 11, "规则纸条没试过，被叉掉", "middle"));
+    '<rect x="170" y="36" width="24" height="32" fill="#fff"/><path d="M175 46 h14 M175 54 h14 M175 62 h8" stroke-width="2" fill="none"/><path d="M166 32 L198 72 M198 32 L166 72" stroke="#e5484d" stroke-width="3.5" fill="none"/>',
+    T(108, 56, 12, "三个晚上画好的卡面", "middle") + T(128, 134, 11, "规则纸条没试过，被叉掉", "middle"));
+
+  illusAdd("c28_pretty2", "对照：左边三个晚上画好并过塑的卡牌，火柴人舍不得改；右边是铅笔写的便利贴，撕掉重写只要十秒",
+    ground +
+    person(22, 56, { arms: "chin", face: "sad" }) +
+    '<rect x="46" y="80" width="26" height="38" rx="3" fill="#ffb3c6" stroke-width="4"/><rect x="62" y="84" width="26" height="38" rx="3" fill="#a8dcf0" stroke-width="4"/>' +
+    '<path d="M104 44 V121" stroke-dasharray="3 5" stroke-width="2" fill="none"/>' +
+    person(124, 56, { arms: "point", face: "grin" }) +
+    '<rect x="150" y="90" width="22" height="22" fill="#ffe58a"/><path d="M155 98 h12 M155 104 h8" stroke-width="2" fill="none"/><path d="M178 88 l14 -8 l5 13 l-13 7z" fill="#ffe58a" stroke-dasharray="3 3"/><path d="M174 98 l-2 6" stroke-width="2" fill="none"/>',
+    E(80, 78, 13, "✨") + T(54, 38, 12, "过塑，舍不得改", "middle") + T(158, 38, 12, "撕了重写", "middle") + T(100, 136, 11, "糙到撕了不心疼", "middle"));
 
   illusAdd("c28_jump", "反例：纸片小人站在一块纸平台上，想验证跳起来爽不爽，可纸上没有实时的手眼配合，虚线跳跃弧线上只有问号",
     ground +

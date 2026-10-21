@@ -57,7 +57,7 @@
   <div class="withimg">
     <span data-illus="c14_inout"></span>
     <div>
-      <p>同样是“看运气”，有的随机让人觉得刺激，有的却让人想摔手柄。差别往往不在概率多大，而在<b>随机发生在做决定之前，还是之后</b>。</p>
+      <p>同样是“看运气”，有的随机让人觉得刺激，有的却让人想摔手柄。差别在于<b>随机发生在做决定之前，还是之后</b>，和概率多大关系不大。</p>
       <p>俄罗斯方块里，下一块是什么是随机的，但玩家先看到它，再决定放哪儿，聪明才智仍然管用。“命中率 75%”的一刀就不一样了：决定已经做完，剩下的只能等骰子。</p>
     </div>
   </div>
@@ -136,7 +136,15 @@
 
   <!-- 3 期望值 -->
   <div class="sec"><span class="n">3</span><h2><span class="tag what">是什么</span>期望值：怎么给随机定价</h2></div>
-  <p>帕斯卡和费马算的那个东西，现在就叫<b><span class="term" tabindex="0" data-def="每种结果的概率乘以其数值再求和，即重复很多次后的长期平均">期望值</span>（EV）</b>：每种结果的<b>概率 × 数值</b>，再加起来。它回答的是：如果重复很多很多次，平均每次是多少。</p>
+  <p>帕斯卡和费马算的就是<b><span class="term" tabindex="0" data-def="期望值（expected value，EV）：每种结果的概率乘以其数值再求和，即重复很多次后的长期平均">期望值</span>（EV）</b>：每种结果的<b>概率 × 数值</b>，再加起来。它回答的是：如果重复很多很多次，平均每次是多少。</p>
+  <aside class="cc-card" aria-label="概念卡：期望值">
+    <span class="cc-tag">概念卡</span>
+    <p class="cc-name"><span>期望值</span></p>
+    <p class="cc-en">Expected value，简称 EV</p>
+    <p class="cc-by">帕斯卡、费马 · 1654 年通信中奠定算法；惠更斯（Christiaan Huygens） · 1657 年《论赌博中的计算》使“期望”成形</p>
+    <p class="cc-def">每种结果的概率乘以它的数值，再全部加起来。重复很多次后，平均每次大约得到这么多。</p>
+    <p class="cc-eg"><span class="cc-k">例子</span>宝箱 10% 得 50 金币，30% 得 10 金币，60% 得 0：期望值 = 0.1×50 + 0.3×10 = 8 金币。</p>
+  </aside>
   <div class="grid2">
     <div class="card g"><h3>例：开宝箱</h3><p>10% 得 50 金币，30% 得 10 金币，60% 得 0。<br>EV = 0.1×50 + 0.3×10 + 0.6×0 = <b>8 金币</b>。</p></div>
     <div class="card b"><h3>例：一颗六面骰</h3><p>EV = (1+2+3+4+5+6)/6 = <b>3.5</b>。<br>永远掷不出 3.5，但掷很多次，平均就会靠近它。</p></div>
@@ -164,7 +172,7 @@
 
   <!-- 5 CLT -->
   <div class="sec"><span class="n">5</span><h2><span class="tag why">为什么成立</span>多颗骰子相加，为什么就变成钟形？</h2></div>
-  <p>2d6 比 1d12 更“集中”，这是一个普遍规律，不是骰子的特例：<b>把许多独立的小随机量加起来，总和的形状趋近钟形</b>。直觉很好懂：想让总和特别大，需要<b>每一颗都同时很大</b>，这种“恰好全部凑齐”的组合越来越少。而“有大有小、互相抵消”的组合多得多。</p>
+  <p>2d6 比 1d12 更“集中”，这是一个普遍规律：<b>把许多独立的小随机量加起来，总和的形状趋近钟形</b>。直觉不难懂。想让总和特别大，需要<b>每一颗都同时很大</b>，这种“恰好全部凑齐”的组合越来越少。而“有大有小、互相抵消”的组合多得多。</p>
   <p>下面把骰子数从 1 拖到 20。图里是<b>精确算出</b>的理论分布（不是随机模拟），红线是同均值、同标准差的正态曲线。</p>
   <div class="board">
     <label class="ctl">六面骰的数量 n <output id="cn">2</output></label><input type="range" id="clt" min="1" max="20" step="1" value="2">
@@ -177,10 +185,23 @@
   <div class="sticky" id="c14t3">试试看：把 n 拖到 16，再切到“平均点数”视图。看看平均点数的标准差，是单颗骰子的几分之几。</div>
   <div class="why-box">
     <h3>中心极限定理（CLT）</h3>
-    <p>一颗六面骰：平均 3.5，方差 35/12 ≈ 2.917，标准差 ≈ 1.708。n 颗独立骰子之和：平均 3.5n，<b>方差相加</b>为 35n/12，所以标准差 = 1.708×<b>√n</b>。n=4 时标准差是单颗的 2 倍，n=16 时是 4 倍。可总和本身约是 n 倍大，所以<b>相对波动按 1/√n 缩小</b>。平均点数的标准差是 1.708/√n，越投越窄。</p>
-    <p>在条件合适时（各项<b>独立</b>、方差有限，且没有哪一项主宰总和），许多随机量之和的分布会越来越像正态分布。放到游戏里：暴击这类“每次 20% 触发”的小随机，打一场长战斗会平均掉，一次性的大宝箱不会。要让玩家“多数时候感觉稳定、偶尔有惊喜”，就把大随机拆成很多次小随机。要刺激的“一把定胜负”，就合并成一次大随机。多局制能让强者更稳地赢，原理也在这里。</p>
-    <div class="src">出处：概率论的经典结果。早期对二项分布的正态近似常归功于棣莫弗与拉普拉斯，其后由李雅普诺夫、林德伯格等人严格化。</div>
+    <p>一颗六面骰的平均是 3.5，标准差约 1.708。n 颗独立骰子之和，平均是 3.5n，标准差是单颗的 <b>√n</b> 倍：n=4 时是 2 倍，n=16 时是 4 倍。总和本身约是 n 倍大，所以<b>相对波动按 1/√n 缩小</b>。</p>
+    <details>
+      <summary>进阶：标准差怎么算</summary>
+      <p class="small">单颗六面骰的方差是 35/12 ≈ 2.917，标准差 ≈ 1.708。独立随机量的<b>方差相加</b>，n 颗之和的方差是 35n/12，标准差 = 1.708×√n。平均点数的标准差是 1.708/√n，越投越窄。</p>
+    </details>
+    <p>条件合适时（各项<b>独立</b>、方差有限，且没有哪一项主宰总和），许多随机量之和的分布会越来越像正态分布。</p>
+    <p>放到游戏里：暴击这类“每次 20% 触发”的小随机，打一场长战斗会平均掉，一次性的大宝箱不会。要让玩家“多数时候感觉稳定、偶尔有惊喜”，就把大随机拆成很多次小随机。要刺激的“一把定胜负”，就合并成一次大随机。多局制能让强者更稳地赢，也是同一个道理。</p>
+    <div class="src">出处：概率论的经典结果。早期对二项分布的正态近似常归功于棣莫弗（1733）与拉普拉斯，其后由李雅普诺夫、林德伯格等人严格化。</div>
   </div>
+  <aside class="cc-card" aria-label="概念卡：中心极限定理">
+    <span class="cc-tag">概念卡</span>
+    <p class="cc-name"><span>中心极限定理</span></p>
+    <p class="cc-en">Central limit theorem，简称 CLT</p>
+    <p class="cc-by">棣莫弗（Abraham de Moivre） · 1733 年最早的正态近似；拉普拉斯、李雅普诺夫、林德伯格等人后来严格化</p>
+    <p class="cc-def">许多独立的小随机量加起来，总和的分布会越来越像钟形（正态分布）。</p>
+    <p class="cc-eg"><span class="cc-k">例子</span>一颗骰子每个点数一样可能，两颗相加就集中在中间，十六颗相加几乎是一条标准的钟形曲线。</p>
+  </aside>
 
   <!-- 6 直觉陷阱 -->
   <div class="sec"><span class="n">6</span><h2><span class="tag what">是什么</span>概率直觉的陷阱：该轮到红了吧？</h2></div>
@@ -188,9 +209,17 @@
     <span data-illus="c14_roulette"></span>
     <div>
       <p>1913 年 8 月 18 日，摩纳哥蒙特卡洛赌场的一张轮盘赌桌上，小球连续 26 次落进黑格。赌客们看着计分牌上一长串黑，越看越觉得“再黑下去就不科学了，这回该出红了”，于是纷纷把筹码压到红色上。</p>
-      <p>据说，这一晚赌场赚得盆满钵满。轮盘没有记忆，每一次都是独立的：这一次落进黑还是红，跟之前出了几次黑毫无关系。这个错误后来被叫作<span class="term" tabindex="0" data-def="误以为独立事件会‘补偿’之前的结果，如连出正面后觉得该出反面了">赌徒谬误</span>，也叫“蒙特卡洛谬误”。</p>
+      <p>那一晚赌场赚得盆满钵满。轮盘没有记忆，每一次都是独立的：这一次落进黑还是红，跟之前出了几次黑毫无关系。这种判断错误是<span class="term" tabindex="0" data-def="赌徒谬误（gambler’s fallacy）：误以为独立事件会‘补偿’之前的结果，如连出正面后觉得该出反面了">赌徒谬误</span>，也因这场事件得名“蒙特卡洛谬误”。</p>
     </div>
   </div>
+  <aside class="cc-card" aria-label="概念卡：赌徒谬误">
+    <span class="cc-tag">概念卡</span>
+    <p class="cc-name"><span>赌徒谬误</span></p>
+    <p class="cc-en">Gambler’s fallacy（也叫 Monte Carlo fallacy）</p>
+    <p class="cc-by">1913 年蒙特卡洛赌场的轮盘事件最出名；特沃斯基（Amos Tversky）、卡尼曼（Daniel Kahneman） · 1971 年在心理学里系统研究“小数定律”</p>
+    <p class="cc-def">误以为独立事件会“补偿”之前的结果。连出几次黑，就觉得下一次该出红了。</p>
+    <p class="cc-eg"><span class="cc-k">例子</span>硬币连出 5 次正面，下一次仍然是各 50%，硬币没有记忆。</p>
+  </aside>
   <div class="grid2">
     <div class="card o"><h3>🪙 赌徒谬误</h3><p>“连续出了 5 次正面，下次该是反面了！”错。<b>独立事件</b>没有记忆，下一次仍然是各 50%。随机不会“补偿”。</p></div>
     <div class="card v"><h3>🔬 小样本会骗人</h3><p>投 10 次，出现 70% 正面一点也不稀奇。投 1000 次才会稳定在 50% 附近。玩家一生只玩几十次，所以他们经历的永远是“毛躁的小样本”。</p></div>
@@ -200,37 +229,45 @@
     <button class="btn" id="flip">🪙 抛一组</button>
     <div id="flipout" style="margin-top:8px"></div>
   </div>
-  <p>为什么人会犯这种错？光说“人笨”解释不了。不如亲自答几道题试试。</p>
+  <p>人为什么会犯这种错？光说“人笨”解释不了，先亲自答几道题。</p>
 
   <!-- 7 启发式 -->
   <div class="sec"><span class="n">7</span><h2><span class="tag why">为什么成立</span>人类的概率直觉为何总出错？</h2></div>
-  <p>先做个小实验：<b>别算，凭感觉答</b>。下面 6 道题都和游戏里的随机有关。每题先给出直觉答案，点“揭晓”后会看到精确计算，以及直觉与真值差了多少。</p>
+  <p><b>别算，凭感觉答。</b>下面 6 道题都和游戏里的随机有关。每题先给出直觉答案，点“揭晓”后会看到精确计算，以及直觉与真值差了多少。</p>
   <div class="board" id="iq"></div>
   <div class="msg" id="iqsum"></div>
   <div class="sticky" id="c14t4">试试看：6 道题都揭晓。数数直觉接近真值的有几题，再想想哪几题被“看起来”的感觉带跑了。</div>
   <div class="why-box">
     <h3>启发式：大脑的“省力算法”</h3>
-    <p>大脑没法每次都做精确计算，就用<b>捷径</b>快速估计。多数时候够用，但在概率题上会系统性地偏。心理学家把这些捷径叫作<b><span class="term" tabindex="0" data-def="人在不确定情况下做判断时使用的经验捷径；快但会有系统性偏差">启发式</span></b>。</p>
+    <p>大脑没法每次都做精确计算，就用<b>捷径</b>快速估计。这类捷径是<b><span class="term" tabindex="0" data-def="启发式（heuristics）：人在不确定情况下做判断时使用的经验捷径；快但会有系统性偏差">启发式</span></b>，多数时候够用，但在概率题上会系统性地偏。</p>
     <ul>
-      <li><b><span class="term" tabindex="0" data-def="按‘像不像’来判断概率：越像典型样子，就越觉得可能">代表性启发式</span></b>：HTHTTH“看起来更随机”，所以觉得它更可能；HHHHHH“看起来不像随机”，所以觉得不可能。其实只要硬币公平，任何指定的 6 次序列概率都是 (1/2)<sup>6</sup> = 1/64。赌徒谬误和对<b>小样本</b>的过度信任都来自这里（特沃斯基与卡尼曼 1971 年称之为“小数定律”：人们以为小样本也该像整体一样均匀）。同源的还有忽视<b>基础比例</b>（第 4 题，<span class="term" tabindex="0" data-def="判断时只看‘证据像不像’，忽略事先就存在的比例（基础率）">基础率忽视</span>）。</li>
-      <li><b><span class="term" tabindex="0" data-def="按‘能想起多少例子’来判断频率：越容易回想起来，就越觉得常见">可得性启发式</span></b>：论坛里满是晒“十连双金”的截图，因为没出的人不发帖，于是高估了它的常见程度。</li>
+      <li><b><span class="term" tabindex="0" data-def="代表性启发式（representativeness heuristic）：按‘像不像’来判断概率：越像典型样子，就越觉得可能">代表性启发式</span></b>：HTHTTH“看起来更随机”，所以觉得它更可能；HHHHHH“看起来不像随机”，所以觉得不可能。只要硬币公平，任何指定的 6 次序列概率都是 (1/2)<sup>6</sup> = 1/64。<br>赌徒谬误和对<b>小样本</b>的过度信任都来自这里。特沃斯基与卡尼曼 1971 年称之为“小数定律”：人们以为小样本也该像整体一样均匀。<br>同源的还有忽视<b>基础比例</b>（第 4 题，<span class="term" tabindex="0" data-def="基础率忽视（base rate neglect）：判断时只看‘证据像不像’，忽略事先就存在的比例（基础率）">基础率忽视</span>）。</li>
+      <li><b><span class="term" tabindex="0" data-def="可得性启发式（availability heuristic）：按‘能想起多少例子’来判断频率：越容易回想起来，就越觉得常见">可得性启发式</span></b>：论坛里满是晒“十连双金”的截图，因为没出的人不发帖，于是高估了它的常见程度。</li>
       <li><b>对小概率累积的误判</b>：“每次只有 1.5%，十次应该没问题”（第 2 题）、“0.5% 掉落，刷 200 次就有一半把握”（第 5 题）、生日问题里人们严重低估“有一对撞上”的概率（第 6 题）。</li>
     </ul>
-    <p>设计含义：玩家不是在算概率，而是在<b>感受</b>概率。“显示的概率”与“玩家感受到的概率”之间总有落差，保底、洗牌袋这类“按感受调整”的机制就是为此而存在。</p>
-    <div class="src">出处：特沃斯基与卡尼曼，“Belief in the law of small numbers”，《Psychological Bulletin》76(2)（1971）；“Judgment under uncertainty: Heuristics and biases”，《Science》185（1974）；基础率忽视见卡尼曼与特沃斯基，“On the psychology of prediction”，《Psychological Review》80（1973）。科普读物：卡尼曼《思考，快与慢》（2011）。</div>
+    <p>设计含义：玩家在<b>感受</b>概率，不会去算概率。“显示的概率”与“玩家感受到的概率”之间总有落差，保底、洗牌袋这类“按感受调整”的机制就是为此而存在。</p>
+    <div class="src">出处：<br>Tversky 与 Kahneman · 1971 · 提出“小数定律”（“Belief in the law of small numbers”，《Psychological Bulletin》76(2)）。<br>Tversky 与 Kahneman · 1974 · 总结三类启发式和它们的偏差（“Judgment under uncertainty: Heuristics and biases”，《Science》185）。<br>Kahneman 与 Tversky · 1973 · 基础率忽视（“On the psychology of prediction”，《Psychological Review》80）。科普读物：卡尼曼《思考，快与慢》（2011）。</div>
   </div>
+  <aside class="cc-card" aria-label="概念卡：启发式与偏差">
+    <span class="cc-tag">概念卡</span>
+    <p class="cc-name"><span>启发式与偏差</span></p>
+    <p class="cc-en">Heuristics and biases</p>
+    <p class="cc-by">特沃斯基（Amos Tversky）、卡尼曼（Daniel Kahneman） · 1974 年《Science》论文《Judgment under uncertainty: Heuristics and biases》</p>
+    <p class="cc-def">人用经验捷径估计概率，多数时候够用，在概率题上会系统性地偏。</p>
+    <p class="cc-eg"><span class="cc-k">例子</span>论坛里满是“十连双金”的截图，没出的人不发帖，于是玩家高估了出货有多常见（可得性启发式）。</p>
+  </aside>
   <div class="eg" data-ic="🕵️"><span data-illus="c14_cheat"></span><div class="egt"><b>反作弊系统的“冤案”</b>：第 4 题的画面。真作弊者只占 1%，系统再准，也会把一批清白的人圈进来，被圈出的人里大部分是无辜的。把“1000 个人里有几个”说出来，比说“95%”好理解得多。</div></div>
   <div class="eg" data-ic="📢"><span data-illus="c14_forum"></span><div class="egt"><b>论坛里的“欧皇”</b>：晒图的都是出货的人，没出的人不会发帖。只看到成功的样本，于是高估了“出货”的常见程度。</div></div>
   <div class="eg bad" data-ic="🃏"><span data-illus="c14_deckmem"></span><div class="egt"><b>“差一点就对”：不放回的抽牌</b>：一副牌里已经抽走了三张 A，剩下的牌里 A 就少了，下一张是 A 的概率真的变了。这里“有记忆”是对的。赌徒谬误只适用于<b>每次独立</b>的情形（硬币、骰子、轮盘）。</div></div>
-  <p>人们对这些捷径的看法有分歧。格尔德·格伦泽尔（Gerd Gigerenzer）等人认为，这些捷径在真实环境里往往很“聪明”，而且用<b>频数格式</b>（“1000 人里有几个”）来表述，人的表现会好很多（Gigerenzer 与 Hoffrage，1995）。两种说法都有实验支持。对设计者来说，结论相同：别指望玩家会正确地算概率。</p>
+  <p>人们对这些捷径的看法有分歧。格尔德·格伦泽尔（Gerd Gigerenzer）等人认为，这些捷径在真实环境里很“聪明”，而且用<b>频数格式</b>（“1000 人里有几个”）来表述，人的表现会好很多（Gigerenzer 与 Hoffrage，1995）。两种说法都有实验支持。对设计者来说，结论相同：别指望玩家会正确地算概率。</p>
 
   <!-- 8 发明故事 保底 -->
   <div class="sec"><span class="n">8</span><h2><span class="tag origin">发明故事</span>被运气坑了一百抽的人</h2></div>
   <div class="withimg">
     <span data-illus="c14_unlucky"></span>
     <div>
-      <p>电脑里的“随机数”是算法算出来的，叫<span class="term" tabindex="0" data-def="由确定性算法产生、统计上看起来随机的数列">伪随机</span>，对游戏来说足够用。设计师真正的麻烦不在“随机够不够真”，而在<b>纯随机有时太残酷</b>。</p>
-      <p>想想一个爆率 1% 的道具。很多玩家的直觉是“抽 100 次，总该出一个了吧”。先猜一猜：抽满 100 次，有多少人还是一无所获？</p>
+      <p>电脑里的“随机数”是算法算出来的<span class="term" tabindex="0" data-def="由确定性算法产生、统计上看起来随机的数列">伪随机</span>，对游戏来说足够用。设计师真正的麻烦不在“随机够不够真”，而在<b>纯随机有时太残酷</b>。</p>
+      <p>拿一个爆率 1% 的道具来说。很多玩家的直觉是“抽 100 次，总该出一个了吧”。先猜一猜：抽满 100 次，有多少人还是一无所获？</p>
     </div>
   </div>
   <div class="c14guess" id="c14g2">
@@ -264,16 +301,18 @@
 
   <!-- 10 保底模拟 -->
   <div class="sec"><span class="n">10</span><h2><span class="tag how">怎么用</span>爆率 1% 的三种设计</h2></div>
-  <p>基础爆率 1%。500 位玩家每人连续抽到 20 次“中奖”，统计<b>相邻两次中奖之间隔了多少抽</b>。调整保底上限，对比三种方案。</p>
+  <p>基础爆率设为 1%，模拟 500 位玩家每人连续抽到 20 次“中奖”，统计<b>相邻两次中奖之间隔了多少抽</b>。调整保底上限，对比三种方案。</p>
   <div class="board">
     <label class="ctl">保底上限（连续未中多少抽后必中） <output id="capv">90</output></label><input type="range" id="cap" min="20" max="150" step="5" value="90">
     <button class="btn" id="psim">🚀 开始模拟</button>
-    <svg viewBox="0 0 700 294" width="100%" style="margin-top:8px" id="psvg" role="img" aria-label="三种方案的间隔分布折线图"></svg>
+    <svg viewBox="0 -14 700 308" width="100%" style="margin-top:8px" id="psvg" role="img" aria-label="三种方案的间隔分布折线图"></svg>
     <div id="ptbl"></div>
     <div class="msg" id="pmsg"></div>
   </div>
   <div class="sticky" id="c14t5">试试看：把保底上限调到 50 以下并模拟，让“最长一次”不超过 50 抽，同时观察平均间隔掉到了多少。保底越低，运气的故事还剩多少？</div>
-  <p class="small">横轴：两次中奖之间的抽数（每 20 抽一格，最后一格为 300 以上）。纵轴：占比。看红线（纯随机）的尾巴，总有人要抽到 300 抽以上。保底把尾巴切断，洗牌袋则把分布挤得更均匀。注意：保底和洗牌袋<b>平均也变好了</b>（保底降低了平均间隔），所以真实设计要同时调基础概率，别把“平均成本”悄悄改了。还记得核心循环里讲过的“预测误差”吗？保底只截断最糟的尾巴，不让每一次都变成必得，这样惊喜还在。</p>
+  <p class="small">横轴：两次中奖之间的抽数（每 20 抽一格，最后一格为 300 以上）。纵轴：占比。看红线（纯随机）的尾巴，总有人要抽到 300 抽以上。保底把尾巴切断，洗牌袋则把分布挤得更均匀。绿线在保底上限处会冲到一个尖峰，那是“强制中奖”，过了上限就断崖般落到 0。</p>
+  <p class="small">保底的<b>平均间隔也变短了</b>。洗牌袋和纯随机一样，平均都是 100 抽一次（表里为了对齐，每位玩家第一次中奖之前的那一段没有计入）。所以真实设计要同时调基础概率，别把“平均成本”悄悄改了。</p>
+  <p class="small">第 2 章讲过预测误差：保底只截断最糟的尾巴，不让每一次都变成必得，这样惊喜还在。</p>
 
   <div class="misc">
     <h3>常见误区</h3>
@@ -282,7 +321,7 @@
       <li>“期望值一样，体验就一样”：错。期望值只管平均，方差决定了真实的感受。</li>
       <li>“洗牌袋和保底是作弊，不再是随机”：它们依旧是随机，只是各次不再独立，这是有意的设计取舍。</li>
       <li>“抽牌也是独立事件，所以连续抽到同一张牌说明‘有鬼’”：不放回的抽牌是有记忆的，放回的才独立。分清再下判断。</li>
-      <li>“中心极限定理说什么都会变成钟形”：不对，要求独立、方差有限、没有哪一项占主导。</li>
+      <li>“中心极限定理说什么都会变成钟形”：它要求各项独立、方差有限、没有哪一项占主导。</li>
     </ul>
   </div>
 
@@ -291,12 +330,12 @@
     <ul>
       <li><b>启发式一定是“错误”吗？</b>卡尼曼与特沃斯基强调它造成的系统性偏差，格伦泽尔等人则强调它在真实环境里的合理性。这是学界的不同观点，两种说法都有实验支持。</li>
       <li>保底和洗牌袋让玩家更舒服，但玩家也可能学会“算保底”：在拿到保底之前不再继续玩，拿到之后转身就走。这是设计者要权衡的。</li>
-      <li>利用玩家的概率误判去提高付费，比如只显示“最高概率”、不显示综合概率，是否正当？这是一个设计伦理问题，值得自己想一想。</li>
+      <li>利用玩家的概率误判去提高付费，比如只显示“最高概率”、不显示综合概率，是否正当？这是一个设计伦理问题。</li>
     </ul>
   </div>
 
   <div class="key">
-    <h3>本章要点</h3>
+    <h3>要点</h3>
     <ul>
       <li><b>输入随机</b>发生在决策之前，增加变化；<b>输出随机</b>发生在决策之后，增加紧张但削弱掌控感。</li>
       <li><b>期望值 = 概率 × 数值之和</b>，诞生于“被打断的赌局怎么分钱”。它用来给随机奖励定价，不描述单局体验。</li>
@@ -401,13 +440,13 @@ $("flip").onclick = () => {
 // ---------- 保底模拟
 function gapsPure(p, hits) {
   const g = []; let c = 0;
-  while (g.length < hits) { c++; if (Math.random() < p) { g.push(c); c = 0; } }
-  return g;
+  while (g.length < hits + 1) { c++; if (Math.random() < p) { g.push(c); c = 0; } }
+  return g.slice(1);
 }
 function gapsPity(p, cap, hits) {
   const g = []; let c = 0;
-  while (g.length < hits) { c++; if (c >= cap || Math.random() < p) { g.push(c); c = 0; } }
-  return g;
+  while (g.length < hits + 1) { c++; if (c >= cap || Math.random() < p) { g.push(c); c = 0; } }
+  return g.slice(1);
 }
 function gapsBag(size, hits) {
   const g = []; let bag = [], i = 0, c = 0;
@@ -417,12 +456,12 @@ function gapsBag(size, hits) {
     i = 0;
   };
   refill();
-  while (g.length < hits) {
+  while (g.length < hits + 1) {
     if (i >= size) refill();
     c++;
     if (bag[i++]) { g.push(c); c = 0; }
   }
-  return g;
+  return g.slice(1);
 }
 function pct(sorted, q) { return sorted[Math.min(sorted.length - 1, Math.floor(q * sorted.length))]; }
 $("cap").oninput = () => ($("capv").textContent = $("cap").value);
@@ -447,7 +486,7 @@ function psim() {
   const X = i => 50 + (i + 0.5) * (620 / B), Y = p => 230 - p / mx * 205;
   let h = '<line x1="50" y1="230" x2="680" y2="230" stroke="#2b2b3a" stroke-width="3"/>';
   for (let i = 0; i < B; i += 3) h += `<text x="${50 + i * 620 / B}" y="254" text-anchor="start" font-size="16">${i * 20}</text>`;
-  h += `<text x="46" y="30" text-anchor="end" font-size="16">${(mx * 100).toFixed(0)}%</text><text x="38" y="228" text-anchor="end" font-size="16">0</text>`;
+  h += `<text x="46" y="14" text-anchor="end" font-size="16">占比</text><text x="46" y="32" text-anchor="end" font-size="16">${(mx * 100).toFixed(0)}%</text><text x="38" y="228" text-anchor="end" font-size="16">0</text>`;
   defs.forEach(([k, , col]) => {
     h += `<polyline fill="none" stroke="${col}" stroke-width="4" stroke-linejoin="round" points="${hist[k].map((p, i) => X(i) + "," + Y(p)).join(" ")}"/>`;
   });
@@ -605,7 +644,7 @@ GD.mountQuiz($("quiz"), [
       '<span class="stat">标准差 <b>' + sdShow.toFixed(3) + '</b></span>' +
       '<span class="stat">相对 n=1 的倍数 <b>' + (sdShow / sd1).toFixed(3) + '</b>（' + (avg ? "1/√n" : "√n") + ' = ' + (avg ? (1 / Math.sqrt(n)).toFixed(3) : Math.sqrt(n).toFixed(3)) + '）</span>' +
       '<span class="stat">单颗标准差 <b>' + sd1.toFixed(3) + '</b></span>';
-    g("cmsg").textContent = n === 1 ? "n=1：每个点数一样高（均匀）。往右拖，看形状怎么变。" : n === 2 ? "2d6 已经有点像钟形了：标准差 " + sd.toFixed(2) + "，正好是第 3 节里的 2.42。" : n < 4 ? "钟形正在成形。" : "红线（正态曲线）几乎贴住柱子顶端：n 越大越贴。";
+    g("cmsg").textContent = n === 1 ? "n=1：每个点数一样高（均匀）。往右拖，看形状怎么变。" : n === 2 ? "2d6 已经有点像钟形了：标准差 " + sd.toFixed(2) + "，正好是第 4 节里的 2.42。" : n < 4 ? "钟形正在成形。" : "红线（正态曲线）几乎贴住柱子顶端：n 越大越贴。";
   }
   g("clt").oninput = cdraw;
   g("csamp").onclick = () => {

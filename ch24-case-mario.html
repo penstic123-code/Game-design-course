@@ -21,6 +21,7 @@
   .stop{cursor:pointer}
   .stop:focus{outline:none}
   .stop:focus .hl,.stop:hover .hl{stroke-width:6}
+  .stop.sel .hl{stroke-width:8;stroke:#c0272d}
   .wbpal{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
   .wbpal .el{font:inherit;font-size:1rem;border:2.5px solid var(--ink);background:#fff;border-radius:14px 8px 14px 8px;padding:3px 12px;cursor:grab;touch-action:none;user-select:none}
   .wbpal .el.sel{background:var(--yellow);transform:rotate(-2deg)}
@@ -80,9 +81,10 @@
   <!-- 1 是什么 -->
   <div class="sec"><span class="n">1</span><h2><span class="tag what">是什么</span>没有一个字的第一关</h2></div>
   <p>第一次玩《超级马力欧兄弟》的人，面前没有一个字：没有“按 A 键跳跃”，没有“踩敌人”，也没人说该往右走。可大多数人不到一分钟，就已经学会了跑、跳、踩、顶砖块。</p>
-  <p>这是任天堂 1985 年的作品，通常认为主要由宫本茂和手塚卓志设计，近藤浩治作曲。它的第一关 1-1，成了游戏设计里被引用得最多的“无文字教学”范本。它到底做了什么？</p>
+  <p>这是任天堂 1985 年的作品，通常认为主要由宫本茂和手塚卓志设计，近藤浩治作曲。它的第一关 1-1，成了游戏设计里被引用得最多的“无文字教学”范本。它的教法可以拆成三个做法。</p>
   <div class="card">
     <svg viewBox="0 0 760 300" width="100%" role="img" aria-label="马力欧核心循环：向右跑、遇障碍、起跳、过关收获、更难的下一段">
+      <defs><marker id="c24lpar" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="14" refX="12" refY="7" orient="auto"><path d="M0,0 L14,7 L0,14 z" fill="#2b2b3a" stroke="none"/></marker></defs>
       <g class="rough" stroke="#2b2b3a" stroke-width="4" stroke-linejoin="round">
         <rect x="20" y="105" width="150" height="80" rx="22" fill="#ffe58a"/>
         <rect x="215" y="20" width="150" height="80" rx="22" fill="#a8dcf0"/>
@@ -90,8 +92,8 @@
         <rect x="590" y="105" width="150" height="80" rx="22" fill="#b6e8a8"/>
         <rect x="305" y="205" width="160" height="80" rx="22" fill="#d8c8ff"/>
         <g fill="none" stroke-width="4.5" stroke-linecap="round">
-          <path d="M172 128 Q195 80 213 66"/><path d="M367 60 L408 60"/><path d="M562 66 Q580 80 598 103"/>
-          <path d="M660 187 Q620 260 467 250"/><path d="M303 250 Q150 260 105 187"/>
+          <path d="M172 128 Q195 80 213 66" marker-end="url(#c24lpar)"/><path d="M367 60 L408 60" marker-end="url(#c24lpar)"/><path d="M562 66 Q580 80 598 103" marker-end="url(#c24lpar)"/>
+          <path d="M660 187 Q620 260 467 250" marker-end="url(#c24lpar)"/><path d="M303 250 Q150 260 105 187" marker-end="url(#c24lpar)"/>
         </g>
       </g>
       <g font-size="22" text-anchor="middle" fill="#2b2b3a">
@@ -120,12 +122,12 @@
   <div class="eg bad" data-ic="🪧"><span data-illus="c24_e_wall"></span><div class="egt"><b>“教程墙”</b>：第一分钟弹出十个提示框，同时讲解八个系统。信息一多，玩家什么也记不住，还不如直接去玩。<b>反例的要点：不是教得少，是一次教得太多。</b></div></div>
 
   <!-- 2 发明故事 -->
-  <div class="sec"><span class="n">2</span><h2><span class="tag origin">发明故事</span>没有文字，怎么教会第一次玩的人？</h2></div>
+  <div class="sec"><span class="n">2</span><h2><span class="tag origin">发明故事</span>没有文字，也要教会第一次玩的人</h2></div>
   <div class="story">
     <h3>1985 年：卡带一插就玩，说明书多半没人翻</h3>
-    <p>那时的家用游戏机没有“新手引导”这个说法。玩家拿到卡带就开始玩，手册也许在抽屉里躺一辈子。设计者面对的问题很现实：第一关开始时玩家什么都不会，要怎么在不写一个字的情况下，让他学会跑、跳、踩敌人和顶砖块？</p>
-    <p>更有意思的是，据手塚卓志回忆，1-1 并不是最先做出来的，而是开发的最后阶段，为了平衡整个游戏的难度才定下来的。也就是说，这个“教学范本”是反复调出来的，不是一次灵光。</p>
-    <p>先别看他们是怎么做的，<b>自己当一回关卡设计师</b>。</p>
+    <p>那时的家用游戏机没有“新手引导”这个说法。玩家拿到卡带就开始玩，手册在抽屉里躺一辈子。设计者面对的问题很现实：第一关开始时玩家什么都不会，要怎么在不写一个字的情况下，让他学会跑、跳、踩敌人和顶砖块？</p>
+    <p>据手塚卓志回忆，1-1 是开发的最后阶段，为了平衡整个游戏的难度才定下来的，不是最先做出来的。也就是说，这个“教学范本”是反复调出来的，没有一次灵光。</p>
+    <p>先<b>自己当一回关卡设计师</b>。</p>
   </div>
 
   <div class="board" id="c24wb">
@@ -147,7 +149,7 @@
     <div class="ev hasimg"><span data-illus="c24_t_koopa"></span><div><b class="yr">第一只敌人</b>　据 2015 年《Eurogamer》访谈的报道，宫本茂说最初想用库巴兵（乌龟）当开场敌人，后来觉得对第一次玩的人，“跳上去再把它踢走”有点太难。龟壳不是一踩就解决的，于是他们改做了一个“坏蘑菇”，也就是栗宝宝。</div></div>
     <div class="ev hasimg"><span data-illus="c24_t_mush"></span><div><b class="yr">蘑菇</b>　据同一次访谈的报道，宫本茂想让玩家体会到“马力欧变大”的反应，而变大需要一个道具，于是有了超级蘑菇。它和栗宝宝长得有点像，新手常会躲开它。可头顶低矮的砖块让玩家很难不碰到，一碰就变大了，这才明白“它是好东西”。</div></div>
     <div class="ev hasimg"><span data-illus="c24_t_hole"></span><div><b class="yr">边玩边学</b>　宫本茂说，第一关的目的，是让玩家“学会这个游戏是怎么回事”；他希望玩家在做那些自然会做的动作时就弄懂规则，不需要教程。他还说过一句：一旦玩家明白了该做什么，“它就成了他们的游戏”。</div></div>
-    <div class="ev hasimg"><span data-illus="c24_t_watch"></span><div><b class="yr">反复试玩</b>　手塚卓志（2015 年《产经新闻》访谈）说，关卡几乎从来不会第一次就成功，“人们很少照设计者想的方式玩”，所以他会在一旁看，再调整。设计者自己做关卡，因为知道答案，“难免会做得太难”。</div></div>
+    <div class="ev hasimg"><span data-illus="c24_t_watch"></span><div><b class="yr">反复试玩</b>　手塚卓志（2015 年《产经新闻》访谈）说，关卡几乎从来不会第一次就成功，“人们很少照设计者想的方式玩”，所以他会在一旁看，再调整。设计者自己做关卡，“难免会做得太难”。</div></div>
   </div>
   <p class="small">出处：<a href="https://www.gamerevolution.com/features/362525-perfect-level-super-mario-bros-world-1-1-changed-everything">Game Revolution 对宫本茂《Eurogamer》访谈的引述</a>；<a href="https://www.gigazine.net/gsc_news/en/20150914-mario-world-making">GIGAZINE（2015-09-14，转述 Eurogamer 访谈）</a>；<a href="https://soranews24.com/2015/09/09/super-mario-bros-creator-explains-how-and-why-he-designed-world-1-1-of-the-8-bit-classic-%E3%80%90video%E3%80%91/amp/">SoraNews24（2015-09-09）</a>；<a href="https://shmuplations.com/?p=22080">手塚卓志《产经新闻》访谈（2015-11-30，shmuplations 英译）</a>。转述内容可能与原话略有出入，这里只取各来源一致的部分。</p>
 
@@ -182,8 +184,8 @@
   <div class="card">
     <svg viewBox="0 0 760 330" width="100%" role="img" aria-label="1-1 教学时间线：栗宝宝、问号砖块、水管、坑、阶梯和旗杆">
       <g class="rough" stroke="#2b2b3a" stroke-width="4" stroke-linejoin="round">
-        <rect x="20" y="200" width="270" height="22" fill="#e0a06a"/>
-        <rect x="330" y="200" width="410" height="22" fill="#e0a06a"/>
+        <rect x="20" y="200" width="465" height="22" fill="#e0a06a"/>
+        <rect x="545" y="200" width="195" height="22" fill="#e0a06a"/>
       </g>
       <g class="stop" tabindex="0" role="button" data-i="0" aria-label="站点1 栗宝宝">
         <rect class="hl" x="30" y="40" width="120" height="46" rx="14" fill="#ffe58a" stroke="#2b2b3a" stroke-width="4"/>
@@ -198,13 +200,13 @@
       <g class="stop" tabindex="0" role="button" data-i="2" aria-label="站点3 水管">
         <rect class="hl" x="340" y="40" width="110" height="46" rx="14" fill="#b6e8a8" stroke="#2b2b3a" stroke-width="4"/>
         <text x="395" y="72" font-size="20" text-anchor="middle" fill="#2b2b3a">③ 水管</text>
-        <g class="rough" stroke="#2b2b3a" stroke-width="4"><rect x="350" y="160" width="22" height="40" fill="#7ed17f"/><rect x="392" y="135" width="22" height="65" fill="#7ed17f"/></g>
+        <g class="rough" stroke="#2b2b3a" stroke-width="4"><rect x="346" y="170" width="22" height="30" fill="#7ed17f"/><rect x="378" y="150" width="22" height="50" fill="#7ed17f"/><rect x="410" y="128" width="22" height="72" fill="#7ed17f"/></g>
       </g>
       <g class="stop" tabindex="0" role="button" data-i="3" aria-label="站点4 坑">
         <rect class="hl" x="470" y="110" width="90" height="46" rx="14" fill="#ffb3c6" stroke="#2b2b3a" stroke-width="4"/>
         <text x="515" y="142" font-size="20" text-anchor="middle" fill="#2b2b3a">④ 坑</text>
-        <path d="M292 205 L292 262 M328 205 L328 262" stroke="#2b2b3a" stroke-width="3" stroke-dasharray="6 5" fill="none"/>
-        <text x="310" y="282" font-size="17" text-anchor="middle" fill="#4b4b5e">坑</text>
+        <path d="M485 205 L485 232 M545 205 L545 232" stroke="#2b2b3a" stroke-width="3" stroke-dasharray="6 5" fill="none"/>
+        <text x="515" y="224" font-size="17" text-anchor="middle" fill="#4b4b5e">坑</text>
       </g>
       <g class="stop" tabindex="0" role="button" data-i="4" aria-label="站点5 阶梯和旗杆">
         <rect class="hl" x="590" y="40" width="150" height="46" rx="14" fill="#d8c8ff" stroke="#2b2b3a" stroke-width="4"/>
@@ -233,13 +235,22 @@
     <div>
       <p>光会教还不够，操作本身也得让人信得过。按下跳跃键，角色就该在玩家想要的时候、跳到想要的高度。差一点点，玩家不会觉得“我还要练”，只会觉得“它不听我的”。</p>
       <p>据 GIGAZINE 转述宫本茂的话，他觉得前作《大金刚》“自由度低”，所以让马力欧起跳后还能在空中移动。跑动时的“打滑”，是为了给马力欧一种重量感。助跑再跳会跳得更远，按住跳跃键跳得更高（<span class="term" tabindex="0" data-def="可变跳跃高度：按住跳跃键越久跳得越高，松手越早跳得越矮，让玩家能微调落点。">可变跳跃高度</span>），这些后来都成了平台跳跃游戏的标准配置。</p>
-      <p>许多这类游戏还会再加一层更隐蔽的宽容：刚走出平台边缘的一小段时间里仍然允许起跳，叫<span class="term" tabindex="0" data-def="Coyote time：角色离开平台边缘后的很短时间内仍允许起跳，名字来自卡通里跑出悬崖才掉落的土狼。">土狼时间</span>。落地前一瞬提前按下跳跃，落地后立刻起跳，叫<span class="term" tabindex="0" data-def="输入缓冲：把玩家稍早按下的操作暂存起来，等条件满足时再执行。">输入缓冲</span>。原版《马力欧》具体用了哪些，社区说法不一，这里不下结论。页面里的迷你关把它们做成了开关，可以自己感受。</p>
+      <p>许多这类游戏还会再加一层更隐蔽的宽容：刚走出平台边缘的一小段时间里仍然允许起跳，这是<span class="term" tabindex="0" data-def="土狼时间（coyote time）：角色离开平台边缘后的很短时间内仍允许起跳，名字来自卡通里跑出悬崖才掉落的土狼。">土狼时间</span>。</p>
+      <p>落地前一瞬提前按下跳跃，落地后立刻起跳，靠的是<span class="term" tabindex="0" data-def="输入缓冲（input buffering）：把玩家稍早按下的操作暂存起来，等条件满足时再执行。">输入缓冲</span>。原版《马力欧》具体用了哪些，社区说法不一。页面里的迷你关把它们做成了开关，可以自己感受。</p>
     </div>
   </div>
+  <aside class="cc-card" aria-label="概念卡：土狼时间与输入缓冲">
+    <span class="cc-tag">概念卡</span>
+    <p class="cc-name"><span>土狼时间与输入缓冲</span></p>
+    <p class="cc-en">Coyote time and input buffering</p>
+    <p class="cc-by">平台跳跃游戏社区的行业术语，没有公认的提出者</p>
+    <p class="cc-def">土狼时间：走出平台边缘后很短的时间里仍能起跳。输入缓冲：把稍早按下的操作暂存，条件满足时再执行。两者都让操作和意图对得上。</p>
+    <p class="cc-eg"><span class="cc-k">例子</span>在平台边缘晚了一点才按跳，角色仍然跳起来了；落地前一瞬按下跳，落地后立刻起跳。</p>
+  </aside>
   <div class="eg" data-ic="🦊"><span data-illus="c24_e_coyote"></span><div class="egt"><b>土狼时间</b>：刚走出平台边缘的短暂时间里仍能起跳。玩家不会察觉它的存在，只会觉得“我明明按准了，它也确实跳了”（下面的迷你关可以开关体验）。</div></div>
   <div class="eg" data-ic="⏱️"><span data-illus="c24_e_buffer"></span><div class="egt"><b>输入缓冲</b>：落地前一瞬间提前按下跳跃，落地后立刻起跳。手比眼睛快一点，游戏替玩家记住了这次意图。</div></div>
   <div class="eg" data-ic="📱"><span data-illus="c24_e_phone"></span><div class="egt"><b>手机输入法的容错</b>：手指点偏了一点，仍然能打出想要的字。生活里同一个道理：不去惩罚“差一点”。</div></div>
-  <div class="eg bad" data-ic="🎯"><span data-illus="c24_e_frame"></span><div class="egt"><b>逐帧精确判定、零容错</b>：差一帧就算失败，玩家会觉得“不是我的错”，不会觉得“我该练习”。<b>反例的要点：宽容不是降低难度，而是让操作和意图对得上。</b></div></div>
+  <div class="eg bad" data-ic="🎯"><span data-illus="c24_e_frame"></span><div class="egt"><b>逐帧精确判定、零容错</b>：差一帧就算失败，玩家会觉得“不是我的错”，不会觉得“我该练习”。<b>反例的要点：宽容的作用是让操作和意图对得上，难度仍在关卡里。</b></div></div>
 
   <!-- 5 失败便宜 -->
   <div class="sec"><span class="n">5</span><h2><span class="tag what">是什么</span>第三个做法：让失败很便宜</h2></div>
@@ -248,22 +259,22 @@
   <div class="eg" data-ic="🔁"><span data-illus="c24_e_respawn"></span><div class="egt"><b>马力欧</b>：掉坑、被撞，几秒内重来，不用重看开场，不用重走长路。</div></div>
   <div class="eg" data-ic="🏊"><span data-illus="c24_e_pool"></span><div class="egt"><b>学游泳</b>：先在浅水区扑腾，不会一上来就进深水。浅水区就是一块受保护的试错场。</div></div>
   <div class="eg" data-ic="📝"><span data-illus="c24_e_draft"></span><div class="egt"><b>写草稿</b>：草稿纸上随便划，没有“写错了就作废整本”的压力。所以敢写出没想清楚的句子。</div></div>
-  <div class="eg bad" data-ic="🥾"><span data-illus="c24_e_longrun"></span><div class="egt"><b>失败要重打半小时</b>：每次死亡都要先走很长的路才能再试一次，玩家会选择“不冒险”。<b>反例的要点：不是失败本身，而是失败的价格，决定了人敢不敢学。</b></div></div>
+  <div class="eg bad" data-ic="🥾"><span data-illus="c24_e_longrun"></span><div class="egt"><b>失败要重打半小时</b>：每次死亡都要先走很长的路才能再试一次，玩家会选择“不冒险”。<b>反例的要点：决定人敢不敢学的，是失败的价格，和失败本身无关。</b></div></div>
 
   <!-- 6 ZPD -->
   <div class="sec"><span class="n">6</span><h2><span class="tag why">为什么成立</span>为什么一格一格往上爬，就能学会</h2></div>
   <div class="withimg">
     <span data-illus="c24_ramp"></span>
     <div>
-      <p>回头看水管：先是矮的，再是中等的，最后是高的。为什么不直接放最高的？因为玩家面对的问题，从来不是“能不能跳”，而是“跳得过去吗”。矮管一次就过，信心有了。中管得按得久一点，学到了新东西。高管需要前面所有的积累。每一格都比刚学会的多一点点，又不会多到跳不过去。</p>
-      <p>教育心理学家把这个“多一点点”的范围，叫<span class="term" tabindex="0" data-def="最近发展区（ZPD）：学习者独自做不到、但在有人或有设计帮助时能做到的那一段范围。（Vygotsky）">最近发展区</span>：学习者独自还做不到、但有人搭一把手就够得着的那一段。离得太近，没东西可学。离得太远，只剩挫败。</p>
+      <p>回头看水管：先是矮的，再是中等的，最后是高的。为什么不直接放最高的？因为玩家面对的问题是“跳得过去吗”，不是“能不能跳”。矮管一次就过，信心有了。中管得按得久一点，学到了新东西。高管需要前面所有的积累。每一格都比刚学会的多一点点，又不会多到跳不过去。</p>
+      <p>这个“多一点点”的范围，在教育心理学里是<span class="term" tabindex="0" data-def="最近发展区（ZPD）：学习者独自做不到、但在有人或有设计帮助时能做到的那一段范围。（Vygotsky）">最近发展区</span>：学习者独自还做不到、但有人搭一把手就够得着的那一段。离得太近，没东西可学。离得太远，只剩挫败。</p>
       <p>1-1 里的“搭一把手”不是老师，是关卡本身：孤零零的第一只敌人、平坦的跑道、一格格变高的水管。它们像搭在墙外的<span class="term" tabindex="0" data-def="脚手架（scaffolding）：在学习者暂时做不到时给予支持，随能力提高逐步撤掉。（Wood、Bruner、Ross，1976）">脚手架</span>，随着玩家变强一点点撤走。</p>
     </div>
   </div>
   <div class="why-box">
     <h3>谁说的：维果茨基与脚手架</h3>
     <p>最近发展区是苏联心理学家列夫·维果茨基（Lev Vygotsky）提出的，他的思想主要写于 1930 年代，后来收在《社会中的心智》（Mind in Society，1978）里。“脚手架”这个比喻则来自另一批研究：1976 年，伍德（David Wood）、布鲁纳（Jerome Bruner）和罗斯（Gail Ross）观察导师怎样带孩子完成一项搭建任务，导师在孩子暂时做不到的部分上帮一把，随着孩子进步再一点点收手。</p>
-    <p>要注意的是，把这套教育心理学搬到游戏关卡上，是类比，不是严格的实验证据。最近发展区本身也是个相当宽泛的概念，具体怎么测量，至今有争论。</p>
+    <p>把这套教育心理学搬到游戏关卡上是类比，没有严格的实验证据。最近发展区本身是个宽泛的概念，怎么测量至今有争论。</p>
     <div class="src">出处：L. S. Vygotsky,《Mind in Society》（1978）；David Wood, Jerome S. Bruner &amp; Gail Ross, “The role of tutoring in problem solving”, 《Journal of Child Psychology and Psychiatry》17(2): 89–100（1976）。</div>
   </div>
 
@@ -273,10 +284,18 @@
     <span data-illus="c24_safe"></span>
     <div>
       <p>现实里，学东西常常要为失败付钱：考砸了有成绩单，操作失误了有后果。所以人在现实里天然保守，会挑稳妥的路。游戏却能把这笔账改写：掉进坑里，顶多几秒钟。</p>
-      <p>教育学者詹姆斯·保罗·吉（James Paul Gee）在《电子游戏带给我们的学习与读写启示》（2003）里，把这一点列为好游戏的学习原则之一，他沿用了心理学家埃里克森的“心理社会延缓期”这个词：学习者可以在后果被调低的空间里冒险。他的意思是，勇敢尝试，本身就是学习。</p>
+      <p>教育学者詹姆斯·保罗·吉（James Paul Gee）在《电子游戏带给我们的学习与读写启示》（2003）里，把这一点列为好游戏的学习原则之一。他沿用了心理学家埃里克森的“<span class="term" tabindex="0" data-def="心理社会延缓期（psychosocial moratorium）：学习者可以在后果被调低的空间里冒险和试错，不必立刻承担全部后果。（埃里克森提出，Gee 借用到游戏学习）">心理社会延缓期</span>”这个词，指学习者可以在后果被调低的空间里冒险，而勇敢尝试本身就是学习。</p>
       <p>下面这个小实验，可以亲手拧两个旋钮：关卡难度是台阶式还是一上来就“悬崖”，以及失败后要花多长时间才能重来。</p>
     </div>
   </div>
+  <aside class="cc-card" aria-label="概念卡：心理社会延缓期">
+    <span class="cc-tag">概念卡</span>
+    <p class="cc-name"><span>心理社会延缓期</span></p>
+    <p class="cc-en">Psychosocial moratorium</p>
+    <p class="cc-by">埃里克·埃里克森（Erik Erikson）提出；詹姆斯·保罗·吉（James Paul Gee） · 2003 年《What Video Games Have to Teach Us About Learning and Literacy》借用到游戏学习</p>
+    <p class="cc-def">后果被调低的空间：学习者可以在里面冒险、试错，不必立刻承担全部后果。</p>
+    <p class="cc-eg"><span class="cc-k">例子</span>在 1-1 里掉进坑，几秒后又站在起点附近，所以玩家敢试没把握的跳跃。</p>
+  </aside>
   <div class="board">
     <h3>🧪 实验 B：台阶 vs 悬崖，失败的价格</h3>
     <p class="small"><b>这是本页的示意模型，参数是本页设定的，不是实测。</b>2000 个模拟玩家依次面对 6 个障碍：成功率取决于障碍难度和他当前的技能。成功会学到不少，失败也会学到一点。每次失败后，他可能因为“重来太麻烦”而放弃，放弃的概率随重来时间升高。</p>
@@ -363,18 +382,18 @@
   </div>
 
   <div class="key">
-    <h3>本章要点</h3>
+    <h3>要点</h3>
     <ul>
       <li>1-1 靠设计出来的情境而不是文字教学：安全地引入、重复练习、再加变化。</li>
       <li>关键决定：第一个敌人要“一踩就好”（据宫本茂回忆，为此放弃了乌龟），并且单独出现；蘑菇从头顶砖块里出来，让新手躲不开。</li>
       <li>难度要贴着玩家的最近发展区往上爬；关卡本身就是脚手架。</li>
       <li>手感是一组参数：惯性、重力、可变跳高、宽容时间。宽容的目的是让操作和意图对得上。</li>
-      <li>失败便宜，玩家才敢试。而难度要靠看玩家试玩来调，因为设计者知道答案。</li>
+      <li>失败便宜，玩家才敢试。而难度要靠看玩家试玩来调，因为设计者自己做的关卡难免太难。</li>
     </ul>
   </div>
-  <div class="tldr">1-1 靠关卡本身搭脚手架、给操作以宽容、让失败很便宜，所以不用一个字也教得会。但这只是一个被反复讨论的幸存案例。</div>
+  <div class="tldr">1-1 靠关卡本身搭脚手架、给操作以宽容、让失败很便宜，所以不用一个字也教得会。但这只是一个被反复讨论的成功案例，不是通用的配方。</div>
 
-  <div class="sec"><span class="n">9</span><h2><span class="tag think">练习</span>练习</h2></div>
+  <div class="sec"><span class="n">9</span><h2><span class="tag think">练习</span>小测验</h2></div>
   <div id="quiz"></div>
 
   <div class="sec"><span class="n">10</span><h2><span class="tag think">反思</span>你的拆解</h2></div>
@@ -517,11 +536,12 @@ function mountLinkPair(root, cnt, P, items) {
     // 曲线
     let sv = '<g class="rough" fill="none" stroke="#2b2b3a" stroke-width="4" stroke-linecap="round"><path d="M50 34 V160 H580"/></g>';
     sv += '<g font-size="17" fill="#2b2b3a"><text x="58" y="26">危险度 / 技能</text><text x="470" y="190">格子 1 → 6</text></g>';
-    const X = i => 90 + i * 85, Y = v => 160 - v * 25;
+    const X = i => 90 + i * 85, Y = v => 160 - v * 21;
     let ds = "", ss = "";
     pts.forEach(p => { if (!p) return; ds += (ds ? " " : "") + X(p.i) + "," + Y(p.d); ss += (ss ? " " : "") + X(p.i) + "," + Y(p.s); });
     if (ss) sv += '<polyline points="' + ss + '" fill="none" stroke="#4a7de0" stroke-width="5" stroke-dasharray="9 6"/>';
     if (ds) sv += '<polyline points="' + ds + '" fill="none" stroke="#e5484d" stroke-width="5"/>';
+    pts.forEach(p => { if (p) sv += '<circle cx="' + X(p.i) + '" cy="' + Y(p.s) + '" r="6" fill="#4a7de0" stroke="#2b2b3a" stroke-width="2"/>'; });
     pts.forEach(p => { if (p) sv += '<circle cx="' + X(p.i) + '" cy="' + Y(p.d) + '" r="9" fill="' + (flagged.includes(p.i) ? "#e5484d" : "#ffe58a") + '" stroke="#2b2b3a" stroke-width="3"/>'; });
     sv += '<g font-size="16" fill="#e5484d"><text x="320" y="26">━ 危险度</text></g><g font-size="16" fill="#4a7de0"><text x="440" y="26">┅ 玩家技能</text></g>';
     $("c24curve").innerHTML = sv;
@@ -532,6 +552,7 @@ function mountLinkPair(root, cnt, P, items) {
       if (flagged.includes(i)) f.push("❗ 第 " + (i + 1) + " 格「" + e.n + "」" + (i === 0 ? "：开场就遇到它，玩家还什么都没学会。" : "：危险度高于玩家此时的技能，容易卡住（试试往后放，或先放几个练习）。"));
     });
     const filled = slots.filter(Boolean);
+    if (filled.length === 1) f.push("📈 只放了一格，还连不成线。再多放几格，就能看到技能线（蓝色虚线）和危险线（红线）慢慢拉开。");
     if (filled.length === 6) {
       if (!filled.some(id => BY[id].d === 0)) f.push("💨 全程没有一格“零风险”的喘息，玩家会一直紧绷。");
       const cnt = {}; filled.forEach(id => cnt[id] = (cnt[id] || 0) + 1);
@@ -545,14 +566,14 @@ function mountLinkPair(root, cnt, P, items) {
     const same = slots.filter((id, i) => id === ACTUAL[i]).length;
     $("c24rev").innerHTML = '<div class="card y"><p><b>1-1 前半段的实际安排（简化概括）：</b>' + ACTUAL.map(id => BY[id].em + BY[id].n).join(" → ") + "。</p>" +
       "<p>你的排布与它在同一格相同的有 <b>" + same + " / 6</b> 格。注意几个关键点：<b>① 开场是单独的一只栗宝宝</b>（据设计者的回忆，为了让第一个敌人一踩就能解决，没有用乌龟）；<b>② 问号砖块紧随其后</b>，让你在无压力时发现“顶砖块有奖励”；<b>③ 水管由低到高</b>，把“跳”练到位；<b>④ 坑和阶梯放到后面</b>，用已经学会的技能去面对更高的风险。</p>" +
-      '<p class="small">这条顺序是对 1-1 的简化概括，不是逐格还原；上方的“危险度/技能”是本页的示意模型，并不是设计者当年的算法。排得不一样不代表错，它提醒的是：<b>好的开场，是让危险度始终比技能高一点点，而不是高很多。</b></p></div>';
+      '<p class="small">这条顺序是对 1-1 的简化概括，不是逐格还原；上方的“危险度/技能”是本页的示意模型，和设计者当年的算法无关。排得不一样也可以，它提醒的是：<b>好的开场，让危险度始终比技能高一点点，高很多就太难了。</b></p></div>';
   };
   render();
 })();
 
 /* ===== 拆解面板 ===== */
 const DX = [
-  ["四根柱子", "目标·规则·反馈·自愿", "<b>目标</b>：到达终点旗杆。<br><b>规则</b>：踩敌人可以消灭它，碰到会失败；掉进坑里失败；顶问号砖块掉金币。<br><b>反馈</b>：金币声、踩扁的瞬间、画面与音乐。<br><b>自愿</b>：每次尝试成本极低，随时重来。"],
+  ["游戏四要素", "目标·规则·反馈·自愿", "<b>目标</b>：到达终点旗杆。<br><b>规则</b>：踩敌人可以消灭它，碰到会失败；掉进坑里失败；顶问号砖块掉金币。<br><b>反馈</b>：金币声、踩扁的瞬间、画面与音乐。<br><b>自愿</b>：每次尝试成本极低，随时重来。"],
   ["核心循环", "跑→跳→过", "秒级：跑起来、起跳、落点。分钟级：一关里连续遇到的一串障碍。更长：一关接一关，难度和元素逐渐增加。每一个障碍都是一次“行动 → 立即反馈”的小循环。"],
   ["玩家动机", "自主·胜任", "<b>胜任</b>：从“被栗宝宝撞死”到“稳稳踩中”，进步肉眼可见。<br><b>自主</b>：同一段路，你可以全速冲、也可以收金币，还可以探索砖块。设计者给了一条主路，也留了点旁支。"],
   ["心流与难度", "难度阶梯", "开头几乎零风险，之后逐步引入水管高度、坑、更多敌人。挑战沿着一条缓缓上升的线前进，玩家技能在途中同步增长，容易保持在心流通道里。"],
@@ -574,13 +595,13 @@ DX.forEach((d, i) => {
 
 /* ===== 时间线 ===== */
 const TL = [
-  ["① 单独的栗宝宝（引入）", "第一屏里往往只有一个朝你走来的敌人，旁边没有别的威胁。你要么跳，要么被撞——不管哪种，你立刻明白了“这家伙会伤人”。失败的代价很小（重来），所以是<b>安全的引入</b>。"],
+  ["① 单独的栗宝宝（引入）", "第一屏里只有一个朝你走来的敌人，旁边没有别的威胁。你要么跳，要么被撞——不管哪种，你立刻明白了“这家伙会伤人”。失败的代价很小（重来），所以是<b>安全的引入</b>。"],
   ["② 问号砖块（引入）", "问号砖块以显眼的颜色和位置出现在你头顶，鼓励你去跳、去顶。常被分析为：设计者希望玩家在无压力时发现“可以顶砖块拿奖励”这一规则，把‘跳’和‘奖励’挂上钩。"],
   ["③ 水管（练习）", "水管的高度逐渐变高，需要你用不同长度的跳跃越过去。这是对“跳”的<b>练习</b>：同样动作，难度刻度一格格上升，你同时在学“按住更久跳更高”。"],
-  ["④ 坑（变化）", "坑是“变化”：以前掉不下去，现在会失败。同样是跳，后果升高了——这正是把已学会的技能放进更高风险环境。通常在这之前你已经有了足够的练习。"],
+  ["④ 坑（变化）", "坑是“变化”：无底的坑掉下去就会失败。同样是跳，后果升高了，已学会的技能被放进了更高风险的环境。通常在这之前你已经有了足够的练习。"],
   ["⑤ 阶梯与旗杆（变化 / 收束）", "阶梯要求你连着跳，是技能的小综合；终点旗杆让‘到达’清晰可见。抓住旗杆越高通常得分越多，也是给玩家一点“掌握后的小奖励”。整段像一次轻松的毕业考。"],
 ];
-function showTL(i) { $("tlpanel").innerHTML = "<h3 style='margin:0'>" + TL[i][0] + "</h3><p>" + TL[i][1] + "</p>"; }
+function showTL(i) { document.querySelectorAll(".stop").forEach(x => x.classList.toggle("sel", +x.dataset.i === i)); $("tlpanel").innerHTML = "<h3 style='margin:0'>" + TL[i][0] + "</h3><p>" + TL[i][1] + "</p>"; }
 document.querySelectorAll(".stop").forEach(g => {
   const i = +g.dataset.i;
   g.addEventListener("click", () => showTL(i));
@@ -807,7 +828,7 @@ knobs(); reset(true); requestAnimationFrame(loop);
 GD.mountQuiz($("quiz"), [
   { q: "1-1 开头让玩家先面对“一只孤零零的敌人”，主要是为了？", opts: ["让关卡看起来简单", "在安全、单独的情境里让玩家自己学会基本规则", "为了省制作成本", "增加敌人数量"], a: 1, why: "先单独引入一个元素，玩家才能清楚地把“原因”和“结果”联系起来，这是安全引入。" },
   { q: "【为什么被发明】据宫本茂的回忆，第一个敌人为什么没有用乌龟（库巴兵），而是做成了栗宝宝？", opts: ["乌龟的美术太贵", "乌龟不能一踩就解决，作为第一个敌人，对新手有点太难，需要一个“一踩就好”的敌人", "因为龟壳无法绘制", "因为玩家不喜欢乌龟"], a: 1, why: "他的说法是：最初想用乌龟，但觉得对第一次玩的人，跳上去再踢走有点难；于是做了“坏蘑菇”。第一个敌人要让玩家用最基本的动作（跳）就能解决。" },
-  { q: "【为什么被发明】手塚卓志为什么说，要“看玩家怎么玩，再调整”，而不是自己一次做对？", opts: ["因为玩家喜欢被观察", "设计者知道答案，容易把关卡做得太难，人们也很少照设计者想的方式玩，只有看新玩家实际怎么玩才能发现", "因为这样更省钱", "因为规则要求如此"], a: 1, why: "这是他自己的回忆：自己做关卡难免做得太难，而且玩家很少照设计者预想的方式玩。" },
+  { q: "【为什么被发明】手塚卓志为什么说，要“看玩家怎么玩，再调整”，而不是自己一次做对？", opts: ["因为玩家喜欢被观察", "设计者自己做关卡难免做得太难，人们也很少照设计者想的方式玩，只有看新玩家实际怎么玩才能发现", "因为这样更省钱", "因为规则要求如此"], a: 1, why: "这是他自己的回忆：自己做关卡难免做得太难，而且玩家很少照设计者预想的方式玩。" },
   { q: "“引入 → 练习 → 变化”中，水管逐渐变高属于？", opts: ["引入", "练习", "变化", "结局"], a: 1, why: "同一个跳跃动作，难度一格格上升，就是练习。" },
   { q: "【为什么】水管为什么一格比一格高，而不是一上来就放最高的？", opts: ["为了省地图空间", "每一格只比刚学会的多一点，始终落在玩家够得着的范围（最近发展区）内，关卡本身起到脚手架的作用", "因为高的水管更难画", "为了让玩家死得更多"], a: 1, why: "最近发展区：独自做不到、但有支持就够得着的那一段。离得太近没东西可学，离得太远只剩挫败。" },
   { q: "【为什么】“离开平台后短暂时间内仍可起跳”为什么会让玩家觉得操作很准？", opts: ["因为它让游戏更简单", "它把“差一点”的操作也当作成功，让反馈和意图对得上，玩家觉得“是我让它跳的”", "因为玩家看不到这个机制", "因为它减少了敌人数量"], a: 1, why: "玩家对“按键 → 结果”的因果关系很敏感；宽容判定避免“我明明按了”的挫败。" },
@@ -818,7 +839,7 @@ GD.mountQuiz($("quiz"), [
 mountLinkPair($("c24pair"), $("c24paircnt"),
   ["脚手架 / 最近发展区", "安全失败（低错误成本）", "宽容与即时响应", "一次只教一件事"],
   [
-    { t: "水管一次比一次高、坑一次比一次宽，玩家没觉得自己在被“教”，却越跳越稳。", a: 0, why: "难度被拆成小台阶，每一步都在玩家“够得着”的范围内，这正是脚手架与最近发展区的游戏版本。", hint: "关键词是“一步步加难”“够得着”。" },
+    { t: "水管一次比一次高、坑一次比一次宽，玩家没觉得自己在被“教”，却越跳越稳。", a: 0, why: "难度被拆成小台阶，每一步都在玩家“够得着”的范围内，这就是脚手架与最近发展区的游戏版本。", hint: "关键词是“一步步加难”“够得着”。" },
     { t: "掉进坑里后几秒就能重来，玩家毫不犹豫地再试一次。", a: 1, why: "失败的代价很低，试错就不可怕，玩家才敢尝试没把握的跳跃，学习得以发生。", hint: "关键词是“代价”。" },
     { t: "刚走出平台边缘的一瞬间按下跳跃，仍然能跳起来，玩家觉得“我明明按准了”。", a: 2, why: "宽容的判定把“差几帧”的操作也算作成功，玩家得到的是“我的操作被准确响应”的感受。", hint: "这里在讨论“按键”和“结果”之间的关系。" },
     { t: "按住跳跃键跳得更高，松手立刻变矮，玩家觉得角色“就是我的手的延伸”。", a: 2, why: "即时、与输入成比例的响应，让玩家强烈感到“是我造成了这个结果”。", hint: "想想：玩家感觉“是谁让它跳的”？" },

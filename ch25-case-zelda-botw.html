@@ -64,7 +64,7 @@
   <div class="goals"><span class="time">约 40 分钟</span><h3>学习目标</h3><ul>
     <li>读完能说清团队当年面对的问题（传统塞尔达“被动”），以及“视线引导”“乘法式玩法”“武器会坏”各自是为了解决什么。</li>
     <li>读完能用涌现、自主感、信息缺口、机会成本、反馈循环这几条原理，解释“为什么这个设计有效”，并分清哪些是开发者说的、哪些是推断。</li>
-    <li>读完能提醒自己：成功的开放世界不代表“照做就能成”，并写出小团队借鉴时最该砍掉什么。</li>
+    <li>读完能分清“成功的案例”和“照做就能成”，并写出小团队借鉴时最该砍掉什么。</li>
   </ul></div>
 
   <!-- ============ 1 速写 ============ -->
@@ -72,9 +72,9 @@
   <div class="withimg">
     <span data-illus="c25_hill"></span>
     <div>
-      <p>小时候大概都爬过家附近的某座小山。没人要求上去，只是看见山顶有个东西，就想知道山那边是什么。</p>
+      <p>很多人小时候爬过家附近的某座小山。没人要求上去，只是看见山顶有个东西，就想知道山那边是什么。</p>
       <p>《塞尔达传说：旷野之息》（2017 年 3 月 3 日在 Wii U 和 Switch 上发行，任天堂）想让玩家一直处在这种状态里。玩家从一座高台出发，基本可以直接走向任何一个看得见的地方，没人催着去做任务。总监是藤林秀麿（Hidemaro Fujibayashi），制作人是青沼英二（Eiji Aonuma）。</p>
-      <p>它值得拆开看的设计思路有三条：<b>用视线和地形吸引玩家探索</b>；<b>让物理与“化学”规则在整个世界里保持一致</b>，于是玩家会想出设计者没有逐条写出的玩法；<b>让武器会坏</b>，逼玩家取舍。开发者在公开分享里把第二条称为“乘法式玩法”（multiplicative gameplay）。</p>
+      <p>它的设计思路有三条：<b>用视线和地形吸引玩家探索</b>；<b>让物理与“化学”规则在整个世界里保持一致</b>，于是玩家会想出设计者没有逐条写出的玩法；<b>让武器会坏</b>，逼玩家取舍。开发者在公开分享里把第二条称为“乘法式玩法”（multiplicative gameplay）。</p>
     </div>
   </div>
   <p>把玩家的一般状态连起来，是一个<span class="term" tabindex="0" data-def="核心循环：玩家反复进行的“行动→反馈→奖励”的最小闭环。">核心循环</span>：<b>看见远处的地标 → 前往 → 沿途与世界的规则互动 → 有所发现 → 登高再看，找到下一个想去的地方</b>。</p>
@@ -91,6 +91,10 @@
           <path d="M150 115 Q175 75 203 62"/><path d="M335 55 L383 55"/><path d="M515 62 Q545 70 565 93"/>
           <path d="M615 167 Q560 225 437 222"/><path d="M283 222 Q120 235 80 167"/>
         </g>
+        <g fill="#2b2b3a" stroke-width="2">
+          <path d="M205 62 L189 52 L190 71z"/><path d="M386 55 L371 47 L371 63z"/><path d="M567 96 L550 90 L561 77z"/>
+          <path d="M435 222 L452 214 L452 231z"/><path d="M79 164 L94 172 L79 182z"/>
+        </g>
       </g>
       <g font-size="26" text-anchor="middle" fill="#2b2b3a">
         <text x="85" y="130">① 看见</text><text x="270" y="63">② 前往</text><text x="450" y="63">③ 互动</text>
@@ -106,7 +110,16 @@
 
   <!-- ============ 2 视线引导：是什么 ============ -->
   <div class="sec"><span class="n">2</span><h2><span class="tag what">是什么</span>视线引导：山是遮挡，塔尖是邀请</h2></div>
-  <p>开放世界有一个老问题：什么都能去，反而不知道去哪。于是设计师得让世界自己“说话”。《旷野之息》的做法是用地形。任天堂的开发者在 2017 年日本的 CEDEC 大会上讲过一条“三角形规则”（据 Matt Walker 的英文翻译和多篇转述）：把障碍物想成三角形，玩家面对它们总有两个选择：翻过去，或绕过去。同时三角形会挡住视线，所以后面的东西可以留作惊喜。</p>
+  <p>开放世界有一个老问题：什么都能去，反而不知道去哪。于是设计师得让世界自己“说话”。《旷野之息》的做法是用地形。</p>
+  <p>任天堂的开发者在 2017 年日本的 CEDEC 大会上讲过一条“<b>三角形规则</b>”（据 Matt Walker 的英文翻译和多篇转述）：把障碍物想成三角形，玩家面对它们总有两个选择：翻过去，或绕过去。同时三角形会挡住视线，所以后面的东西可以留作惊喜。</p>
+  <aside class="cc-card" aria-label="概念卡：三角形规则">
+    <span class="cc-tag">概念卡</span>
+    <p class="cc-name"><span>三角形规则</span></p>
+    <p class="cc-en">The triangle rule（视线引导）</p>
+    <p class="cc-by">任天堂开发者 · 2017 年日本 CEDEC 大会的演讲（据 Matt Walker 的英文翻译和多篇转述）</p>
+    <p class="cc-def">把障碍想成三角形：玩家总能翻过去或绕过去，三角形又挡住视线，让后面的东西留作惊喜。大、中、小三种尺寸各管地标、遮挡和行走节奏。</p>
+    <p class="cc-eg"><span class="cc-k">例子</span>山遮住一半，塔尖探出山头：玩家远远看见一个想去的地方，又不知道那里有什么。</p>
+  </aside>
   <div class="c25fig">
     <svg viewBox="0 0 700 270" width="100%" role="img" aria-label="三角形规则示意：大三角形是远处也看得见的地标，中三角形遮挡视线，小三角形控制行走节奏">
       <g class="rough" stroke="#2b2b3a" stroke-width="4" stroke-linejoin="round">
@@ -114,7 +127,6 @@
         <path d="M40 210 L150 70 L260 210z" fill="#a8dcf0"/>
         <path d="M290 210 L360 130 L430 210z" fill="#b6e8a8"/>
         <path d="M470 210 L505 175 L540 210z" fill="#ffe58a"/>
-        <path d="M570 210 L592 188 L614 210z" fill="#ffe9ef"/>
       </g>
       <g font-size="18" fill="#2b2b3a" text-anchor="middle">
         <text x="150" y="28" font-weight="700">大：地标</text><text x="150" y="50" font-size="16">很远就能看见</text>
@@ -128,26 +140,34 @@
     <svg viewBox="0 0 700 250" width="100%" role="img" aria-label="视线引导示意：玩家看到山后探出的塔尖">
       <g class="rough" stroke="#2b2b3a" stroke-width="4" stroke-linejoin="round">
         <path d="M20 210 L680 210" fill="none"/>
-        <path d="M150 210 L260 110 L370 210z" fill="#b6e8a8"/>
+        <path d="M150 210 L260 136 L370 210z" fill="#b6e8a8"/>
         <rect x="456" y="65" width="22" height="145" fill="#ffe58a"/><path d="M447 65 L467 35 L487 65z" fill="#ffb3c6"/>
         <path d="M530 210 L600 150 L670 210z" fill="#d8c8ff"/>
         <circle cx="70" cy="190" r="12" fill="#ff8fab"/>
       </g>
       <path d="M82 188 L467 48" stroke="#c4202a" stroke-width="3" stroke-dasharray="8 7" fill="none"/>
       <g font-size="18" fill="#2b2b3a">
-        <text x="30" y="238">玩家</text><text x="195" y="198">遮挡：山</text><text x="520" y="50">塔尖露出来</text><text x="520" y="238">另一座山后面…</text>
+        <text x="30" y="238">玩家</text><text x="260" y="190" text-anchor="middle">遮挡：山</text><text x="520" y="50">塔尖露出来</text><text x="520" y="238">另一座山后面…</text>
       </g>
     </svg>
     <p class="small">地形一起一伏：既遮住了全部答案，又留下一个够高的目标。</p>
   </div>
   <div class="eg" data-ic="🗼"><span data-illus="c25_peek"></span><div class="egt"><b>塔尖探出山头（游戏）</b>山遮住一半，塔尖高过山头，玩家远远就看见一个想去的地方，又不知道那里有什么。目标是玩家自己选的，没有任务在催。</div></div>
   <div class="eg" data-ic="🌳"><span data-illus="c25_bend"></span><div class="egt"><b>公园里拐弯的小路（日常）</b>好的园林小路不会让人一眼看到终点：拐个弯，树后露出一角屋顶，就想往前走。道理和塔尖是同一个。</div></div>
-  <div class="eg bad" data-ic="🏜️"><span data-illus="c25_flat"></span><div class="egt"><b>反例：一眼望到头</b>如果地形完全平坦，所有地标全都看得见，没有任何遮挡，就没有悬念，也没有“走过去看看”的理由。这正是三角形要避免的。</div></div>
+  <div class="eg bad" data-ic="🏜️"><span data-illus="c25_flat"></span><div class="egt"><b>反例：一眼望到头</b>如果地形完全平坦，所有地标全都看得见，没有任何遮挡，就没有悬念，也没有“走过去看看”的理由。三角形要避免的就是这种地形。</div></div>
   <div class="eg bad" data-ic="🚧"><span data-illus="c25_unreach"></span><div class="egt"><b>反例：看得见，去不了</b>地标放在远处却被看不见的墙拦住，玩家会很快意识到这个世界的“承诺”不算数。远处的目标必须有路可以走到，“看见就能去”才站得住。</div></div>
 
   <!-- ============ 3 乘法式玩法 ============ -->
   <div class="sec"><span class="n">3</span><h2><span class="tag what">是什么</span>乘法式玩法：少量规则，大量组合</h2></div>
-  <p>第二条思路和地形无关，讲的是“物体怎么互相反应”。如果游戏里有 N 种元素（火、风、水、电……）和 M 种物体（草、木、金属……），而且规则对它们<b>处处成立</b>，就能产生大约 N×M 种互动，而设计者只需要做 N+M 份东西，不必为每个场景手写一个机关。开发者管这叫乘法式玩法。</p>
+  <p>第二条思路和地形无关，讲的是“物体怎么互相反应”。如果游戏里有 N 种元素（火、风、水、电……）和 M 种物体（草、木、金属……），而且规则对它们<b>处处成立</b>，就能产生大约 N×M 种互动，而设计者只需要做 N+M 份东西，不必为每个场景手写一个机关。</p>
+  <aside class="cc-card" aria-label="概念卡：乘法式玩法">
+    <span class="cc-tag">概念卡</span>
+    <p class="cc-name"><span>乘法式玩法</span></p>
+    <p class="cc-en">Multiplicative gameplay</p>
+    <p class="cc-by">藤林秀麿（Hidemaro Fujibayashi）、Satoru Takizawa、Takuhiro Dohta · 2017 年 GDC 演讲</p>
+    <p class="cc-def">少量规则处处一致，彼此相乘，产生比设计者列出的清单多得多的互动。</p>
+    <p class="cc-eg"><span class="cc-k">例子</span>火烧草地，热空气上升，张开滑翔伞就能飞起来：没有专门的关卡，是规则相乘“长”出来的。</p>
+  </aside>
   <div class="c25fig">
     <svg viewBox="0 0 700 200" width="100%" role="img" aria-label="乘法式玩法示意：元素乘以物体，得到许多组合">
       <g class="rough" stroke="#2b2b3a" stroke-width="4" stroke-linejoin="round">
@@ -174,13 +194,14 @@
   <div class="eg" data-ic="🗡️"><span data-illus="c25_weapon"></span><div class="egt"><b>武器见底（游戏）</b>手里的剑还剩一点耐久，前面是一只更强的敌人。是继续砍眼前的小怪，还是留着？没有标准答案，玩家得自己权衡。</div></div>
   <div class="eg" data-ic="🎒"><span data-illus="c25_backpack"></span><div class="egt"><b>背包只能装三样（日常）</b>出门爬山，背包有限，得决定带水、带伞，还是带零食。放进去一样，就等于放弃了另一样。</div></div>
   <div class="eg bad" data-ic="♾️"><span data-illus="c25_infinite"></span><div class="egt"><b>反例：永不损坏的神器</b>如果有一把永远不坏的最强武器，玩家当然只会用它，选择也就消失了。每个敌人都用同一招，打久了就只剩重复。</div></div>
-  <p>开发者怎么解释的？2017 年底，Fujibayashi 在《Nintendo Power Podcast》的访谈里说，团队想让玩家被吸进这片开阔的世界里去冒险。如果让玩家随心所欲，大家反而不知道该做什么，所以让不同敌人掉落不同武器，引导玩家去找它们。Aonuma 则说，耐久让战斗更有策略，玩家不能只靠自己最喜欢的那招。玩家的反应分得很开：有人喜欢这种取舍，有人觉得烦，Game Informer 当年就有一篇文章批评它。</p>
+  <p>开发者自己的解释见于 2017 年底的访谈。Fujibayashi 在《Nintendo Power Podcast》里说，团队想让玩家被吸进这片开阔的世界里去冒险。如果让玩家随心所欲，大家反而不知道该做什么，所以让不同敌人掉落不同武器，引导玩家去找它们。</p>
+  <p>Aonuma 则说，耐久让战斗更有策略，玩家不能只靠自己最喜欢的那招。玩家的反应分得很开：有人喜欢这种取舍，有人觉得烦，Game Informer 当年就有一篇文章批评它。</p>
 
   <!-- ============ 5 发明故事 ============ -->
-  <div class="sec"><span class="n">5</span><h2><span class="tag origin">发明故事</span>团队当年面对什么问题，又为什么这样改？</h2></div>
+  <div class="sec"><span class="n">5</span><h2><span class="tag origin">发明故事</span>团队当年面对的问题，和他们的改法</h2></div>
   <div class="story">
     <h3>从“被动”到“主动”</h3>
-    <p><b>问题。</b>《旷野之息》的开发在《天空之剑》（2011）之后启动。2017 年 3 月 GDC（游戏开发者大会）上，Fujibayashi 与美术总监 Satoru Takizawa、技术总监 Takuhiro Dohta 一起讲了团队的出发点：塞尔达系列是一个很“被动”的游戏，事件顺序预先定好，路上有过不去的墙，玩家看似自由，其实是在走预定的路线。他们想把它改成“主动”的游戏。</p>
+    <p>《旷野之息》的开发在《天空之剑》（2011）之后启动。2017 年 3 月 GDC（游戏开发者大会）上，Fujibayashi 与美术总监 Satoru Takizawa、技术总监 Takuhiro Dohta 一起讲了团队的出发点：塞尔达系列是一个很“被动”的游戏，事件顺序预先定好，路上有过不去的墙，玩家看似自由，其实是在走预定的路线。他们想把它改成“主动”的游戏。</p>
     <p><b>先猜一下。</b>要让一个几十人的团队很快理解“物体会互相反应”到底好玩在哪，他们最先做了什么？</p>
     <div class="c25guess" id="c25g1" data-ok="1">
       <button class="chip" data-fb="没有，这样太慢，而且还看不出好不好玩。">先做一整片完整的 3D 地图</button>
@@ -193,9 +214,9 @@
       <div class="ev hasimg"><span data-illus="c25_proto"></span><div><b class="yr">原型</b>　Fujibayashi 回头玩了最初的《塞尔达传说》，印象最深的一点是：“每次屏幕一滚动，就有新东西可发现。”他们做了一个外表像 8 位老塞尔达的 2D 小原型，目的是快速向同事演示“物体会互相反应”。后来团队说明，这个“2D”原型其实跑在 3D 引擎上，后台就是游戏最终使用的物理和化学系统。</div></div>
       <div class="ev hasimg"><span data-illus="c25_chem"></span><div><b class="yr">乘法</b>　过去的谜题大多是一个个单独做的机关，很费人力。他们想要的是少量机制，在整个世界里反复相乘：物体对玩家有反应，物体之间也互相有反应。原型里只有一条简单规则：“有个目标，你能走到吗？”</div></div>
       <div class="ev hasimg"><span data-illus="c25_art"></span><div><b class="yr">美术</b>　规则一致还不够，玩家得“一眼看懂”它。美术总监 Takizawa 在《风之杖 HD》的基础上改风格，觉得原来过度夸张的卡通感反而不容易让人联想到物理和化学玩法。有些表现故意不写实：原木被砍断，立刻变成一捆绑好的柴；食物在锅里像橡皮球一样弹跳。他后来说，自己看到这种“荒谬”，感到的是有趣。</div></div>
-      <div class="ev hasimg"><span data-illus="c25_gravity"></span><div><b class="yr">世界</b>　最后是怎么把玩家引向广阔的世界。据 CEDEC 2017 演讲的转述，塔最初让人觉得是一条直线：玩家总被塔牵着走。团队用热力图找到玩家卡住或无聊的地方，调整塔的位置，又精心安排塔与塔之间的小建筑，让它们把玩家往世界深处“吸”。他们把这叫作“引力”。</div></div>
+      <div class="ev hasimg"><span data-illus="c25_gravity"></span><div><b class="yr">世界</b>　最后要解决的，是怎么把玩家引向广阔的世界。据 CEDEC 2017 演讲的转述，塔最初让人觉得是一条直线：玩家总被塔牵着走。团队用热力图找到玩家卡住或无聊的地方，调整塔的位置，又精心安排塔与塔之间的小建筑，让它们把玩家往世界深处“吸”。他们把这叫作“引力”。</div></div>
     </div>
-    <p><b>关键洞察。</b>他们没有“设计一个更大的世界”，而是想清楚了一件事：自由不是把门全部打开，而是让玩家的每个愿望都能落地。看得见的目标要去得了，做过的实验要有一致的结果，要用的东西得有分量。三条设计都是在回答这一个问题。</p>
+    <p>把这几步连起来看，他们想清楚了一件事：自由要让玩家的每个愿望都能落地，把门全部打开是不够的，更大的世界也不够。看得见的目标要去得了，做过的实验要有一致的结果，要用的东西得有分量。三条设计回答的是同一个问题。</p>
   </div>
 
   <div class="card">
@@ -213,9 +234,11 @@
         <path d="M64 246 L370 100" stroke-width="16" opacity=".55"/>
       </g>
       <g id="c25g_b" fill="none" stroke="#c4202a" stroke-linecap="round" style="display:none">
-        <path d="M64 246 Q100 180 160 205" stroke-width="7" opacity=".45"/><path d="M160 205 Q250 130 330 170" stroke-width="7" opacity=".45"/>
-        <path d="M64 252 Q300 296 560 230" stroke-width="7" opacity=".45"/><path d="M330 170 Q360 120 372 102" stroke-width="7" opacity=".45"/>
-        <path d="M560 230 Q520 170 470 150" stroke-width="7" opacity=".45"/>
+        <defs><marker id="c25ga" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="2.6" markerHeight="2.6" orient="auto"><path d="M0 0 L10 5 L0 10z" fill="#c4202a"/></marker></defs>
+        <g stroke-width="6" opacity=".6" marker-end="url(#c25ga)">
+          <path d="M66 244 Q96 226 148 226"/><path d="M168 220 Q262 112 366 104"/>
+          <path d="M66 258 Q300 312 564 268"/><path d="M598 208 Q540 118 396 102"/>
+        </g>
       </g>
       <g font-size="18" fill="#2b2b3a" text-anchor="middle"><text x="50" y="304">出发</text><text x="382" y="80">塔</text></g>
     </svg>
@@ -241,15 +264,23 @@
       <span data-illus="c25_ants"></span>
       <div>
         <p>蚂蚁是最常被拿来讲涌现的例子：一只蚂蚁只会走路、留下气味、顺着气味走，没有哪只蚂蚁知道整条觅食路线。可是一群蚂蚁一起，就“长”出了一条通向食物的路。物理学家 P. W. Anderson 1972 年有一篇很短的文章，题目就叫《More Is Different》（多则异）：每升一个层级，就会出现下一层不能简单从上一层推出来的新性质。</p>
-        <p>游戏里同理：火、草、风、金属各有几条简单规则，规则相乘，就冒出“借上升气流飞起来”这样没人专门设计的玩法。但涌现要成立有个前提：<b>规则必须一致</b>。火在这里能烧、在那里不能，玩家的猜测就没有价值。游戏研究者 Jesper Juul 把游戏的结构分成“涌现式”和“渐进式”，这款游戏常被拿来当前者的代表（这是常见的一种分类，不是唯一分法）。</p>
+        <p>游戏里同理：火、草、风、金属各有几条简单规则，规则相乘，就冒出“借上升气流飞起来”这样没人专门设计的玩法。但涌现要成立有个前提：<b>规则必须一致</b>。火在这里能烧、在那里不能，玩家的猜测就没有价值。游戏研究者 Jesper Juul 把游戏的结构分成“涌现式”和“渐进式”，这款游戏常被拿来当前者的代表。</p>
       </div>
     </div>
-    <p class="src">原理出处：P. W. Anderson, “More Is Different”, <i>Science</i> 177(4047): 393–396（1972）；Jesper Juul, <i>Half-Real</i>（MIT Press, 2005）对涌现与渐进的区分。</p></div>
+    <p class="src">原理出处：P. W. Anderson · 1972 · “More Is Different” · 每升一个层级，就出现下一层不能简单从上一层推出来的新性质（<i>Science</i> 177(4047): 393–396）。Jesper Juul · 2005 · <i>Half-Real</i>（MIT Press） · 区分涌现式与渐进式游戏。</p></div>
+  <aside class="cc-card" aria-label="概念卡：涌现式与渐进式游戏">
+    <span class="cc-tag">概念卡</span>
+    <p class="cc-name"><span>涌现式与渐进式游戏</span></p>
+    <p class="cc-en">Games of emergence and games of progression</p>
+    <p class="cc-by">耶斯珀·尤尔（Jesper Juul） · 2002 年《The Open and the Closed》，2005 年《Half-Real》</p>
+    <p class="cc-def">涌现式游戏靠少量规则组合出大量变化；渐进式游戏靠设计者一关一关安排好的内容往前推。</p>
+    <p class="cc-eg"><span class="cc-k">例子</span>象棋、《旷野之息》常被当作涌现式的代表；按剧情逐关推进的冒险游戏更接近渐进式。</p>
+  </aside>
   <div class="why-box"><h3>② <span class="term" tabindex="0" data-def="Deci 与 Ryan 提出：人有自主、胜任、关联三种基本心理需求，满足时动机更持久。">自我决定理论</span>：自主感</h3>
-    <p>还记得讲玩家动机时那三种需求吗？其中一种就是自主：觉得“这是我自己选的”，内在动机更强。看到塔、自己决定去哪，没有任务列表催促，给的正是自主感。这个理论是对动机的解释框架，用它去说某款游戏的销量就是推断了。</p>
+    <p>第 3 章讲过三种基本需求，其中一种是自主：觉得“这是我自己选的”，内在动机更强。看到塔、自己决定去哪，没有任务列表催促，给的正是自主感。这个理论解释的是动机本身，拿它去推断某款游戏的销量，已经超出了它能说明的范围。</p>
     <p class="src">原理出处：Deci &amp; Ryan, <i>Intrinsic Motivation and Self-Determination in Human Behavior</i>（1985）。</p></div>
   <div class="why-box"><h3>③ 好奇心的<span class="term" tabindex="0" data-def="信息缺口：Loewenstein（1994）提出，当人意识到“知道的”与“想知道的”之间有差距，会产生好奇。">信息缺口</span>：山后面露出的塔尖</h3>
-    <p>信息缺口理论认为，好奇心来自“我知道一点，但不知道全部”。山遮住一半、塔尖露出一半，正是一个<b>刚好</b>的缺口：太小没兴趣，太大又不知从何问起。这个理论有较好的实验研究支持，落到具体的关卡布置上，就是解读了。</p>
+    <p>信息缺口理论认为，好奇心来自“我知道一点，但不知道全部”。山遮住一半、塔尖露出一半，正是一个<b>刚好</b>的缺口：太小没兴趣，太大又不知从何问起。这个理论有较好的实验支持，不过落到具体的关卡布置上，只是一种解读。</p>
     <p class="src">原理出处：George Loewenstein, “The psychology of curiosity: A review and reinterpretation”, <i>Psychological Bulletin</i> 116(1): 75–98（1994）。</p></div>
   <div class="why-box"><h3>④ <span class="term" tabindex="0" data-def="机会成本：选了一个选项，就放弃了次优选项能带来的价值。">机会成本</span>：武器会坏</h3>
     <p>武器有耐久：用来砍普通怪，就少了留给强敌的。每次出手都让玩家在“现在用”和“以后用”之间取舍，选择因此有分量。前面说过，玩家对这个设计的反应分得很开，所以“有效”是因人而异的。</p>
@@ -279,7 +310,7 @@
     </div>
     <div class="msg" id="mmsg"></div>
   </div>
-  <div class="sticky c25task" id="c25task1">试试看：把上帝视角关掉，先朝看得见的地标走去。到访 3 个地标，看看新的地标是不是一个接一个从山后露出来。</div>
+  <div class="sticky c25task" id="c25task1">试试看：把上帝视角关掉。一开始什么也看不见，先点地图随便走几步，等有地标从山后露出来，再朝它走去。到访 3 个地标，看看新的地标是不是一个接一个露出来。</div>
 
   <!-- ============ 9 怎么用：化学引擎 ============ -->
   <div class="sec"><span class="n">9</span><h2><span class="tag how">怎么用</span>招牌互动二：化学引擎组合器</h2></div>
@@ -309,7 +340,8 @@
     <label>元素种类 N：<b id="c25n_v">4</b><input type="range" id="c25n" min="1" max="8" value="4"></label>
     <label>物体种类 M：<b id="c25m_v">5</b><input type="range" id="c25m" min="1" max="12" value="5"></label>
     <p>手工为每个场景写一份：约 <span class="big" id="c25add">9</span> 份。规则一致，互动约有 <span class="big" id="c25mul">20</span> 种。</p>
-    <p class="small">示意：假设每个组合都有意义。前面的规则表里，21 个组合只有 12 个有反应，另外 9 个故意留空，克制能让有反应的组合更醒目。每加一条规则，要测试的组合也会成倍增长，这是它的代价。</p>
+    <p class="small">示意：假设每个组合都有意义。前面的规则表里，21 个组合只有 12 个有反应，另外 9 个故意留空，克制能让有反应的组合更醒目。</p>
+    <p class="small">每加一条规则，要测试的组合也会成倍增长，这是它的代价。组合器里元素和物体放在同一排，所以按 7 个选项两两组合来算，一共 21 种。</p>
   </div>
 
   <h3>可偷师的设计技巧</h3>
@@ -321,13 +353,13 @@
   </div>
 
   <div class="key">
-    <h3>本章要点</h3>
+    <h3>要点</h3>
     <ul>
       <li><b>问题</b>：传统塞尔达“被动”，顺序固定、墙挡路。团队想做“主动”的游戏，让玩家自己决定去哪、做什么。</li>
       <li><b>视线引导</b>：用高低错落的地形遮挡与露出，让玩家自己给自己设定目标，对应探索者动机、自主性与信息缺口。</li>
       <li><b>系统化规则</b>产生<b>涌现</b>：同样的机制在不同情境组合，动态远多于设计者列出的清单；规则一致是前提，玩家才敢实验。</li>
       <li><b>武器会坏</b>让选择有分量，但玩家反应两极；热力图和“引力”让世界的人流分散，是一个反馈循环。</li>
-      <li>引导不是强制：设计者做的是“铺路、点灯”，不是“拽着玩家走”。</li>
+      <li>引导不等于强制：设计者做的是“铺路、点灯”，没有拽着玩家走。</li>
     </ul>
   </div>
 
@@ -350,7 +382,7 @@
 
   <div class="tldr">《旷野之息》靠“一致的少量规则”催生涌现，靠视线与信息缺口激发好奇，靠热力图校准世界，靠自主感与取舍让选择有分量。它是被反复讨论的成功案例，不是通用配方。</div>
 
-  <div class="sec"><span class="n">10</span><h2><span class="tag think">练习</span>练习</h2></div>
+  <div class="sec"><span class="n">10</span><h2><span class="tag think">练习</span>小测验</h2></div>
   <div id="quiz"></div>
 
   <div class="sec"><span class="n">11</span><h2><span class="tag think">反思</span>你的拆解</h2></div>

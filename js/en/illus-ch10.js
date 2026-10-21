@@ -12,8 +12,9 @@ ILLUS_EN_ADD({
 "a": "Diegetic interface: the glowing spine bar on the character’s back is the health, the camera follows behind, and the player reads it at a glance",
 "t": [
 "Glowing bar on the back",
-"= health",
-"The player sees it"
+"The shorter the bar",
+"the lower the health",
+"Zoom in"
 ]
 },
 "c10_corner": {

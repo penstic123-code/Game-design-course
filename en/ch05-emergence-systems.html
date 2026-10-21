@@ -39,7 +39,7 @@
     <div class="txt">
       <span class="badge">Chapter 5</span>
       <h1>Emergence &amp; Systems Thinking</h1>
-      <p class="sub">What you write down is rules; what players get is another world.</p>
+      <p class="sub">What you write down is rules, and what the player gets is another world.</p>
     </div>
     <svg viewBox="0 0 190 150" class="rough" aria-hidden="true">
       <g stroke="#2b2b3a" stroke-width="5" stroke-linejoin="round" stroke-linecap="round">
@@ -57,25 +57,32 @@
     <h3>Learning goals</h3>
     <span class="time">about 40 min</span>
     <ul>
-      <li>Explain emergence in your own words, tell positive feedback from negative feedback, and say what questions the Game of Life and the predator–prey model were originally meant to answer.</li>
-      <li>Explain why negative feedback with a delay swings back and forth, and why someone who only “walks uphill” gets stuck on a small hilltop.</li>
-      <li>Judge whether a systems problem calls for “changing the numbers” or “changing the feedback structure,” and design rules that grow interesting play more easily.</li>
+      <li>Explain emergence in your own words, tell positive from negative feedback, and say what questions the Game of Life and the “predator–prey model” were originally meant to answer.</li>
+      <li>Explain two things: why negative feedback with a delay swings back and forth, and why someone who only “climbs uphill” gets stuck on a small hill.</li>
+      <li>Judge whether a system problem calls for “changing the numbers” or “changing the feedback structure,” and design rules more likely to grow interesting play.</li>
     </ul>
   </div>
 
-  
   <div class="sec"><span class="n">1</span><h2><span class="tag what">What it is</span>Emergence: simple rules, a complex whole</h2></div>
   <div class="withimg">
     <span data-illus="c05_starlings"></span>
     <div>
-      <p>At dusk a huge flock of starlings churns across the sky like a flowing black curtain. You are bound to wonder: who is directing them?</p>
-      <p>The answer often given is: nobody. Each bird does just three things: don’t bump into the birds near you, fly in about the same direction, and don’t stray too far from the flock. All three rules care only about the few birds beside it, and none mentions “the shape of the whole flock.” Yet put thousands of such birds together and an enormous pattern that no single bird “knows” appears.</p>
-      <p>This is <span class="term" tabindex="0" data-def="A pattern or behavior of the whole that can’t be seen by looking at any one part alone; it comes from the interactions between the parts.">emergence</span>: <b>the whole has behavior that the parts lack, and this behavior comes from the interactions between the parts.</b></p>
+      <p>At dusk a great flock of starlings wheels across the sky like a flowing black curtain. Who is directing them?</p>
+      <p>The answer often given is: nobody. Each bird does just three things: don’t bump the birds beside you, fly in about the same direction, don’t stray too far from the flock. All three rules care only about the few birds nearby, and none mentions “the shape of the whole flock.” Put thousands of such birds together and a huge pattern that no single bird “knows” appears.</p>
+      <p><b>The whole has behavior that the parts lack, and this behavior comes from the interactions between the parts.</b> This is <span class="term" tabindex="0" data-def="Emergence: a pattern or behavior of the whole that can’t be seen by looking at any one part alone; it comes from the interactions between the parts.">emergence</span>.</p>
     </div>
   </div>
+  <aside class="cc-card" aria-label="Concept card: emergence">
+    <span class="cc-tag">Concept card</span>
+    <p class="cc-name"><span>Emergence</span></p>
+    <p class="cc-en">Emergence</p>
+    <p class="cc-by">G. H. Lewes · <i>Problems of Life and Mind</i>, 1875, which first used the word “emergent,” in contrast with “resultant”</p>
+    <p class="cc-def">The whole shows patterns its parts do not have. They come from the interactions between the parts, and no single rule writes them out.</p>
+    <p class="cc-eg"><span class="cc-k">Example</span>Each starling only avoids bumping into neighbors, flies the same way as neighbors and stays with the flock. Put thousands together and they fly a huge wheeling pattern.</p>
+  </aside>
   <div class="grid2">
-    <div class="card y"><h3>Designed</h3><p>What the designer writes down directly: rules, numbers, assets. You can count them one by one.</p></div>
-    <div class="card p"><h3>Emerged</h3><p>What “grows” once the rules interact: tactics, schools of play, economic bubbles, unexpected ways to play. You can’t count them; you can only observe.</p></div>
+    <div class="card y"><h3>Designed</h3><p>What the designer writes directly: rules, numbers, assets. They can be counted one by one.</p></div>
+    <div class="card p"><h3>Emerged</h3><p>What “grows” out of rules interacting: tactics, schools of play, economic bubbles, unexpected play. They can’t be counted, only observed.</p></div>
   </div>
   <div class="card">
     <svg viewBox="0 0 700 344" width="100%" role="img" aria-label="Emergence levels: the bottom is simple individual rules, the middle is interaction, and the top is the pattern of the whole. Three columns of examples: bird flocks, the Game of Life, predators and prey.">
@@ -106,21 +113,28 @@
 
   <h3>Emergence in games</h3>
   <div class="eg" data-ic="♟️"><span data-illus="c05_chess"></span><div class="egt"><b>Board games</b>. The rules of chess fit on one page, yet they grew opening theory, endgame studies and schools of play. No rule says “control the center”; players “discovered” it by running into the rules again and again.</div></div>
-  <div class="eg" data-ic="🔴"><span data-illus="c05_redstone"></span><div class="egt"><b>Redstone in <i>Minecraft</i></b>. Redstone was added around July 2010, in a “secret update” during testing, as a material that carries signals. Its rules are plain, yet players built logic gates, calculators and even whole computers with it. None of that was on the design list.</div></div>
-  <div class="eg" data-ic="🥊"><span data-illus="c05_combo"></span><div class="egt"><b>Combos in fighting games</b>. Noritaka Funamizu, the producer of <i>Street Fighter II</i>, found while checking for bugs that with the right timing another hit could be chained on. At first he thought the timing too hard and left it as a hidden trick; later the team loosened the timing window and made it an official feature. An interaction nobody had foreseen became the cornerstone of a whole genre (sources differ a little on the details).</div></div>
+  <div class="eg" data-ic="🔴"><span data-illus="c05_redstone"></span><div class="egt"><b>Redstone in <i>Minecraft</i></b>. Redstone is a material that carries signals, with plain rules, yet players built logic gates, calculators and even complete computers with it. None of this was on the design list.</div></div>
+  <div class="eg" data-ic="🥊"><span data-illus="c05_combo"></span><div class="egt"><b>Combos in fighting games</b>. Noritaka Funamizu, producer of <i>Street Fighter II</i>, found while checking for bugs that another hit could be chained at a certain timing. The team later relaxed the detection and made it an official feature. An interaction nobody expected became the cornerstone of a whole genre (sources differ somewhat on the details).</div></div>
   <h3>Emergence beyond games</h3>
-  <div class="eg" data-ic="🐦"><span data-illus="c05_boids3"></span><div class="egt"><b>The computer version of a flock: Boids</b>. Craig Reynolds made an animation program around 1986, introduced in his 1987 SIGGRAPH paper “Flocks, Herds, and Schools”: each “boid” follows just three local rules, <b>separation</b> (don’t get too close), <b>alignment</b> (head the same way as neighbors) and <b>cohesion</b> (steer toward the center of neighbors). There is no leader, yet a convincing flock appears.</div></div>
-  <div class="eg" data-ic="🚗"><span data-illus="c05_jam"></span><div class="egt"><b>Phantom traffic jams</b>. In 2008, Sugiyama and colleagues ran an experiment in Japan: twenty-odd cars drove on a circular road at similar speeds with no obstacles. After a few minutes a jam wave appeared by itself and propagated backward against the flow of traffic. Their conclusion: a traffic jam is a collective phenomenon of the cars’ interactions, and an obstacle is only a trigger.</div></div>
-  <div class="eg bad" data-ic="👾"><span data-illus="c05_monsters"></span><div class="egt"><b>A pile of things is not emergence</b>. A level holds 50 monsters, each patrolling on its own script and ignoring one another. That is just “a lot of them.” Emergence needs interaction: monsters, monsters and player, player and environment must be able to pull on each other.</div></div>
-  <div class="eg bad" data-ic="🎲"><span data-illus="c05_dicevslife"></span><div class="egt"><b>“Random” is not emergence</b>. The chaos from rolling dice has no “new structure of the whole.” The Game of Life you will play shortly has no randomness at all, yet grows a walking glider. That is emergence.</div></div>
+  <div class="eg" data-ic="🐦"><span data-illus="c05_boids3"></span><div class="egt"><b>The computer version of a flock: Boids</b>. Craig Reynolds introduced it in his 1987 SIGGRAPH paper “Flocks, Herds, and Schools.” Each “boid” obeys just three local rules: <b>separation</b> (don’t get too close), <b>alignment</b> (head the same way as neighbors), <b>cohesion</b> (move toward the neighbors’ center). There is no leader, and a lifelike flock comes out.</div></div>
+  <div class="eg" data-ic="🚗"><span data-illus="c05_jam"></span><div class="egt"><b>Phantom traffic jams</b>. In 2008 Sugiyama and colleagues ran an experiment in Japan: twenty-odd cars drove at about the same speed on a ring road with no obstacle. A few minutes later a jam wave appeared on its own and traveled against the direction of the traffic. The jam is the result of the cars’ interaction, and a roadblock is only a trigger.</div></div>
+  <div class="eg bad" data-ic="👾"><span data-illus="c05_monsters"></span><div class="egt"><b>Counterexample: a pile of things is not emergence</b>. A level holds 50 monsters, each patrolling on its own script and ignoring one another. That is just “a lot of them.” Emergence needs interaction: monsters, monsters and player, player and environment must be able to pull on each other.</div></div>
+  <div class="eg bad" data-ic="🎲"><span data-illus="c05_dicevslife"></span><div class="egt"><b>Counterexample: “random” is not emergence</b>. The chaos of rolling dice has no “new overall structure.” The Game of Life later has no randomness at all, yet grows gliders that walk. That is emergence.</div></div>
 
-  
   <div class="sec"><span class="n">2</span><h2><span class="tag what">What it is</span>The first tool for making the whole “come alive”: feedback loops</h2></div>
-  <p>Remember the circle of cause in <i>Monopoly</i>: “collect rent, buy more property, collect more rent”? A structure in which a result goes around and affects its own cause is called a <span class="term" tabindex="0" data-def="A system’s output flows back to affect its input, forming a causal circle. It comes in two kinds: positive feedback, which amplifies change, and negative feedback, which damps it.">feedback loop</span>. It has two basic forms:</p>
+  <p>In <i>Monopoly</i>, collecting rent lets you buy more property, and more property collects more rent. A result that circles back to affect its cause is a structure called a <span class="term" tabindex="0" data-def="Feedback loop: a system’s output comes back to affect its input, forming a causal loop. It comes as positive feedback, which amplifies change, and negative feedback, which suppresses it.">feedback loop</span>. It has two basic forms:</p>
   <ul>
     <li><b>Positive feedback (a reinforcing loop)</b>: change is amplified. More money, better gear, more wins, even more money. The result is a snowball, winner-takes-all, or a crash.</li>
     <li><b>Negative feedback (a balancing loop)</b>: change is cancelled out and the system is pulled toward a target. Body too hot, you sweat; temperature falls, sweating stops.</li>
   </ul>
+  <aside class="cc-card" aria-label="Concept card: positive and negative feedback">
+    <span class="cc-tag">Concept card</span>
+    <p class="cc-name"><span>Positive and negative feedback</span></p>
+    <p class="cc-en">Positive feedback and negative feedback</p>
+    <p class="cc-by">Norbert Wiener · <i>Cybernetics</i>, 1948, which set out feedback as a general concept</p>
+    <p class="cc-def">A result comes back to affect its cause: one that amplifies change is positive feedback, and one that pulls change back toward a target is negative feedback.</p>
+    <p class="cc-eg"><span class="cc-k">Example</span>In a competitive game, kills buy gear and gear brings more kills, which is positive feedback. A thermostat that turns the heating off when it is hot and on when it is cold is negative feedback.</p>
+  </aside>
   <div class="card">
     <svg viewBox="0 0 700 250" width="100%" role="img" aria-label="Left: a positive feedback loop, more money means better gear and more wins, which gives more money. Right: a negative feedback loop, the further behind you are the stronger your items, which shrinks the gap.">
       <g class="rough" stroke="#2b2b3a" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -140,10 +154,13 @@
       <g font-size="17" text-anchor="middle" fill="#2b2b3a">
         <text x="80" y="78">more money</text><text x="260" y="78">better gear</text><text x="170" y="178">more wins</text>
         <text x="445" y="78">further behind</text><text x="620" y="78">stronger items</text><text x="535" y="178">gap shrinks</text>
+        <g font-size="30" font-weight="700"><text x="169" y="58" fill="#1d6b32">+</text><text x="282" y="140" fill="#1d6b32">+</text><text x="46" y="140" fill="#1d6b32">+</text>
+        <text x="534" y="58" fill="#1d6b32">+</text><text x="650" y="140" fill="#1d6b32">+</text><text x="408" y="140" fill="#c0272d">−</text></g>
         <text x="170" y="228" font-weight="700">Positive feedback: it grows as it turns</text>
         <text x="535" y="228" font-weight="700">Negative feedback: it steadies as it turns</text>
       </g>
     </svg>
+    <p class="small">A + beside an arrow means “when the first goes up, the second goes up too,” and − means “when the first goes up, the second goes down.” The whole loop on the left is all +, so it grows ever larger; the loop on the right has one −, which pulls the change back a bit on each lap.</p>
   </div>
   <div class="card">
     <svg viewBox="0 0 700 260" width="100%" role="img" aria-label="Curves over time compared: positive feedback makes a value accelerate away from its start; negative feedback pulls the value toward the target line and stabilizes it">
@@ -156,6 +173,7 @@
       <g font-size="17" fill="#2b2b3a" text-anchor="middle">
         <text x="180" y="248">time → Positive feedback: ever faster</text><text x="530" y="248">time → Negative feedback: pulled to the target</text>
         <text x="526" y="48" font-size="16">target</text>
+        <text x="26" y="125" font-size="16" transform="rotate(-90 26 125)">Numbers</text><text x="376" y="125" font-size="16" transform="rotate(-90 376 125)">Numbers</text>
         <text x="110" y="120" font-size="16">gap widens</text><text x="590" y="110" font-size="16">gap narrows</text>
       </g>
     </svg>
@@ -163,17 +181,16 @@
   <div class="eg" data-ic="⛄"><span data-illus="c05_snowball"></span><div class="egt"><b>Snowballing in a competitive game</b>. Kills give gold, gold buys gear, and gear brings more kills. The first lead is small, but a few minutes later it is an overwhelming advantage.</div></div>
   <div class="eg" data-ic="📱"><span data-illus="c05_video"></span><div class="egt"><b>Recommendations on a video platform</b>. Videos with high view counts are pushed to more people, and more viewers push the count higher. Nobody decides “this video should go viral”; the loop lifts it by itself.</div></div>
   <div class="eg" data-ic="🌡️"><span data-illus="c05_thermo"></span><div class="egt"><b>A thermostat</b>. When the room gets hot the heating goes off, when it gets cold the heating comes on, and the temperature is always pulled back to the setting. This is the classic negative feedback.</div></div>
-  <div class="eg" data-ic="🏎️"><span data-illus="c05_kart"></span><div class="egt"><b>Catch-up items in <i>Mario Kart</i></b>. Players who are behind are more likely to get powerful items, which pull the gap back (the exact weights aren’t public and differ between entries). It gives those trailing a chance to stay in the race.</div></div>
-  <div class="eg bad" data-ic="🪢"><span data-illus="c05_rubber"></span><div class="egt"><b>Negative feedback overdone</b>. If the catch-up mechanism is too strong, every bit of effort by the leader gets flattened and players feel “being ahead is meaningless.” This is what the “rubber band” mechanic is often criticized for. Negative feedback is meant to help the losing stay in the game, not to erase the success of the winning.</div></div>
+  <div class="eg" data-ic="🏎️"><span data-illus="c05_kart"></span><div class="egt"><b>The catch-up items in <i>Mario Kart</i></b>. Players further behind are likelier to get a powerful item, pulling the gap back (the official weights aren’t public and differ by title). Those behind therefore have a chance to stay in the race.</div></div>
+  <div class="eg bad" data-ic="🪢"><span data-illus="c05_rubber"></span><div class="egt"><b>Counterexample: negative feedback overdone</b>. If the catch-up mechanic is too strong, every bit of the leader’s effort is flattened, and players feel “leading means nothing.” This is where “rubber-band” mechanics are often criticized. Negative feedback is for helping those failing stay in the race, not for erasing success for the successful.</div></div>
 
-  
   <div class="sec"><span class="n">3</span><h2><span class="tag what">What it is</span>Stocks and flows: why big systems turn slowly</h2></div>
   <div class="withimg rev">
     <span data-illus="c05_bank"></span>
     <div>
-      <p>Look at your bank balance. Your salary is a tap, a little flowing in every month; rent and food are drains, a little flowing out every month; and the total lying in the account right now is your money.</p>
-      <p>These are a <span class="term" tabindex="0" data-def="A quantity accumulated up to a given moment, such as health, gold or the number of rabbits; it can only be changed by inflow and outflow.">stock</span> and a <span class="term" tabindex="0" data-def="The rate at which something enters or leaves a stock per unit time, such as health regenerated per second or gold produced per turn.">flow</span>. A stock is the total saved up at a moment, and a flow is the speed at which something enters or leaves per unit of time. Health, gold and monster counts in a game are all stocks.</p>
-      <p>The key intuition: a stock can only be changed bit by bit by its flows, and you can’t make a bathtub’s water level double in an instant. So a system with a large stock reacts slowly and is not easily knocked over by a single shock.</p>
+      <p>Start with a bank balance. Pay is the faucet, a little flowing in each month. Rent and meals are the drain, a little flowing out each month. The total lying in the account at this moment is the real money.</p>
+      <p>The total in the account is the <span class="term" tabindex="0" data-def="The total accumulated of some quantity at a given moment, such as health, gold, the number of rabbits; it can be changed only by inflow and outflow.">stock</span>, and the speed at which money comes in and goes out each month is the <span class="term" tabindex="0" data-def="The rate at which a quantity enters or leaves a stock per unit time, such as health regenerated per second or gold produced per turn.">flow</span>. Health, gold and monster counts in a game are all stocks.</p>
+      <p>A stock can change only through flows, bit by bit, and the water level in a bathtub can’t double in an instant. So a system with a big stock reacts slowly and isn’t easily knocked down by a single shock.</p>
     </div>
   </div>
   <div class="card">
@@ -193,25 +210,23 @@
     </svg>
   </div>
 
-  
   <div class="sec"><span class="n">4</span><h2><span class="tag what">What it is</span>Delay and oscillation: why well-meant adjustments swing wilder and wilder</h2></div>
-  <p>Put negative feedback and stocks together and a counterintuitive phenomenon pops up. Think of taking a shower: the water is too cold, so you turn the tap toward hot; but the pipe still holds cold water that hasn’t warmed up, so you turn it again; by the time the hot water finally arrives it’s scalding, you hurriedly turn it back, and the water slowly turns cold again…</p>
-  <p>You aren’t stupid. The problem is the <b>delay between the action and its result</b>. This time gap is called <span class="term" tabindex="0" data-def="The time gap between an action and its result showing up. Negative feedback plus delay often makes a system swing back and forth around its target.">delay</span>. Add a delay to negative feedback and the system swings back and forth around its target, which is called <span class="term" tabindex="0" data-def="Oscillation: a value that rises and falls periodically around a target or equilibrium point, instead of settling quietly onto it.">oscillation</span>.</p>
-  <div class="eg" data-ic="🚿"><span data-illus="c05_shower"></span><div class="egt"><b>Shower temperature</b>. Between turning the tap and the hot water actually arriving there are a few seconds of delay; you adjust to the temperature “now” while affecting the temperature a few seconds from now, so it swings cold, scalding, cold.</div></div>
+  <p>Put negative feedback together with a stock and a counterintuitive phenomenon pops out. Think of taking a shower: the water is too cold, so you turn the tap toward hot. The pipe still holds cold water, which hasn’t warmed, so you turn it again. When the hot water finally arrives, it is scalding, and you hurry to turn back, and the water slowly turns cold again…</p>
+  <p>The reason is that <b>there is a delay between action and result</b>. This <span class="term" tabindex="0" data-def="Lag: the time gap between an action and its result showing up. Negative feedback plus a lag often makes a system swing back and forth around its target.">lag</span> keeps negative feedback always half a beat late, so the system swings back and forth around its target, which is <span class="term" tabindex="0" data-def="Oscillation: a quantity rises and falls periodically around a target or equilibrium instead of settling quietly on the target.">oscillation</span>.</p>
+  <div class="eg" data-ic="🚿"><span data-illus="c05_shower"></span><div class="egt"><b>Shower temperature</b>. There is a delay of several seconds between turning the tap and the hot water actually arriving. People adjust by the water temperature “now,” yet affect the temperature several seconds later, and so swing back and forth between cold, scalding, cold.</div></div>
   <div class="eg" data-ic="🌊"><span data-illus="c05_tide"></span><div class="egt"><b>Tides in a game economy</b>. Monsters are wiped out, drops decrease, players move elsewhere, monsters pile up at the respawn points, and the spawn points fill up with players again. Prices, dungeon popularity and class strength on a server often rise and fall like this.</div></div>
-  <div class="eg" data-ic="🍺"><span data-illus="c05_beer"></span><div class="egt"><b>The Beer Game</b>. A teaching game from MIT in which participants play the four stations of retailer, wholesaler, distributor and factory, placing orders and waiting for shipments, with delays in between. John Sterman of MIT used it in experiments in 1989 and found that people often overlook how their own ordering decisions feed back into the system, and the swings in orders grow larger at each station.</div></div>
-  <div class="eg bad" data-ic="💧"><span data-illus="c05_instant"></span><div class="egt"><b>No delay, no swing</b>. If the water temperature changed the instant you turned the tap, you could quickly settle it at the spot you wanted. So the culprit behind the swinging is not negative feedback itself but that it <b>reacts too slowly</b>.</div></div>
+  <div class="eg" data-ic="🍺"><span data-illus="c05_beer"></span><div class="egt"><b>The Beer Game</b>. This is a teaching game from MIT in which participants play four stations, retailer, wholesaler, distributor and factory, placing orders and waiting for shipments with delays in between. John Sterman of MIT ran experiments with it in 1989 and found the swings in orders grew larger from one station to the next, because people often overlook that their ordering decisions in turn affect the system.</div></div>
+  <div class="eg bad" data-ic="💧"><span data-illus="c05_instant"></span><div class="egt"><b>Counterexample: no lag, no swinging</b>. If the water temperature changed the instant the tap was turned, you could soon hold it steady where you want. The culprit of the swings is <b>reacting too slowly</b>, and negative feedback itself is not at fault.</div></div>
 
-  
   <div class="sec"><span class="n">5</span><h2><span class="tag origin">How it was invented</span>The Game of Life: how far can the simplest rules go?</h2></div>
   <div class="story">
     <h3>A game “nobody would actually play,” and why it became the emblem of emergence</h3>
     <div class="withimg rev">
       <span data-illus="c05_vn"></span>
       <div>
-        <p>In the 1940s, John von Neumann and Stanisław Ulam were studying “cellular automata”: cut the world into squares and let each square interact with its neighbors by rules. Von Neumann wanted to know one thing: could a machine <b>build itself</b>? The cellular machine he designed had frighteningly intricate rules.</p>
-        <p>More than twenty years later, the Cambridge mathematician John Conway took up the question and asked it differently: <b>could extremely simple rules also produce unexpected behavior?</b> From 1968 he tried various two-dimensional rules with pencil and paper (there were no personal computers then). In October 1970, Martin Gardner introduced it in his “Mathematical Games” column in <i>Scientific American</i>, under the title “The fantastic combinations of John Conway’s new solitaire game ‘life.’” Letters from readers poured in, and everyone started studying patterns.</p>
-        <p>Now <b>you be Conway</b>: here are 4 rules and a small 5-cell pattern. Don’t look at the answer yet; work it out yourself.</p>
+        <p>In the 1940s John von Neumann and Stanisław Ulam were studying “cellular automata”: cut the world into squares, each square interacting with its neighbors by rules. Von Neumann wanted to know whether a machine could <b>build itself</b>. The cellular machine he designed had frighteningly complicated rules.</p>
+        <p>Twenty-some years later, the Cambridge mathematician John Conway asked it another way: <b>with only extremely simple rules, can we still get surprising behavior?</b> Over the following years he tried all sorts of two-dimensional rules with pen and paper. In October 1970 Martin Gardner introduced it in his “Mathematical Games” column in <i>Scientific American</i>. Letters from readers poured in, and everyone began to study the patterns.</p>
+        <p>Now <b>be Conway for a moment</b>: below are 4 rules and a small pattern of 5 cells; don’t look at the answer yet, work it out yourself.</p>
       </div>
     </div>
   </div>
@@ -219,10 +234,10 @@
     <b>Try it yourself first: work out the Game of Life by hand</b>
     <div class="chain"><span class="st">alive + neighbors &lt;2</span><span class="ar">→</span><span class="st">dies (loneliness)</span><span class="st">alive + neighbors =2 or 3</span><span class="ar">→</span><span class="st">stays alive</span></div>
     <div class="chain"><span class="st">alive + neighbors &gt;3</span><span class="ar">→</span><span class="st">dies (crowding)</span><span class="st">dead + neighbors =3</span><span class="ar">→</span><span class="st">comes alive</span></div>
-    <p class="small">Neighbors = the 8 surrounding squares. On the left is “now” (black = alive). On the right, <b>click squares</b> to mark which are alive in the “next generation” you worked out; press “Check” to see if you’re right: green = correct, a red frame = marked by mistake or missed. If you’re stuck, turn on “Show neighbor counts.” Work out 4 generations in all.</p>
+    <p class="small">Neighbors = the 8 surrounding cells. On the left is “now” (black = alive). On the right <b>click cells</b> to mark which are alive in the “next generation” you worked out, then click “Check”: green = right, red frame = marked in excess or missed. If you’re stuck, turn on “Show neighbor counts.” Work out 4 generations in all.</p>
     <div class="c5hands">
       <div class="c5gw"><h4>Now: generation <span id="c5gen">0</span></h4><div class="c5g" id="c5now"></div></div>
-      <div class="c5gw"><h4>Your generation <span id="c5gen2">1</span></h4><div class="c5g me" id="c5me"></div></div>
+      <div class="c5gw"><h4>Generation <span id="c5gen2">1</span> worked out</h4><div class="c5g me" id="c5me"></div></div>
     </div>
     <div class="row">
       <button class="btn" id="c5chk">Check my work</button>
@@ -233,18 +248,21 @@
     <div class="msg" id="c5hmsg" style="font-size:1.1rem;font-family:var(--body)">Click squares on the right to mark the ones you think are alive in the next generation.</div>
   </div>
   <div class="sticky">Try it: keep working until generation 4 and see how the pattern relates to generation 0.</div>
-  <p>There is no word “move” in the rules, but by generation 4 you will find that the whole pattern has shifted one square to the lower right. It was later called the <b>glider</b>. Conway conjectured that <b>no pattern can grow without limit</b>, and offered a $50 prize for a proof. But that same November, Bill Gosper’s group at MIT found a “glider gun” that emits a glider every 30 generations, and the conjecture was overturned. In 1982, <i>Winning Ways</i> argued further that the Game of Life can be used to build a universal computer.</p>
+  <p>The word “move” is nowhere in the rules, yet by generation 4 you will find that the whole pattern has shifted one cell toward the lower right. This walking pattern is what people later called the <b>glider</b>.</p>
+  <p>Conway then conjectured that <b>no pattern can grow without limit</b>, and offered a 50-dollar prize for a proof. In November the same year, Bill Gosper’s group at MIT found a “glider gun” that spits out a glider every 30 generations, and the conjecture was overturned.</p>
+  <p>The 1982 book <i>Winning Ways</i> then gave an argument that the Game of Life can build a universal computer.</p>
   <div class="timeline">
     <div class="ev hasimg"><span data-illus="c05_vn2"></span><div><b class="yr">1940s</b> Von Neumann and Ulam study cellular automata; von Neumann wants to build a “machine that can copy itself,” and the rules are intricate.</div></div>
-    <div class="ev hasimg"><span data-illus="c05_conway"></span><div><b class="yr">1968</b> Conway begins experimenting with two-dimensional cellular automata on paper, looking for much simpler rules.</div></div>
+    <div class="ev hasimg"><span data-illus="c05_conway"></span><div><b class="yr">Late 1960s</b> Conway begins experimenting with two-dimensional cellular automata on paper, looking for much simpler rules.</div></div>
     <div class="ev hasimg"><span data-illus="c05_gardner"></span><div><b class="yr">October 1970</b> Gardner’s column introduces “Life” to the public, and readers pour in.</div></div>
     <div class="ev hasimg"><span data-illus="c05_gun"></span><div><b class="yr">November 1970</b> Gosper’s group finds the glider gun and wins the $50 prize: unbounded growth can arise from simple rules.</div></div>
     <div class="ev hasimg"><span data-illus="c05_computer"></span><div><b class="yr">1982</b> <i>Winning Ways</i> (Berlekamp, Conway, Guy) argues that the Game of Life can build a universal computer.</div></div>
   </div>
-  <p class="small">Sources: Gardner, “Mathematical Games,” <i>Scientific American</i>, October 1970; LifeWiki and the Wikipedia entry “Conway’s Game of Life” (the prize, Gosper’s glider gun: the first glider appears at generation 15 and then one every 30 generations; <i>Winning Ways</i>). That Conway was inspired by von Neumann’s self-replicating machine is agreed on by all sources; exactly how he settled on these 4 rules is not asserted here. The glider’s translation was checked in code for this page.</p>
+  <p class="small">Sources: Gardner, October 1970, “Mathematical Games,” <i>Scientific American</i>, which introduced “Life” to the public. LifeWiki and Wikipedia’s “Conway’s Game of Life” entry, which record the prize, Gosper’s glider gun and <i>Winning Ways</i>. Conway was inspired by von Neumann’s self-replicating machine.</p>
 
   <h3>Try it by hand: a Game of Life sketchpad</h3>
-  <p>Click or drag to draw squares (hitting a live square erases it). First place a “glider” and press play to see how it walks; then place the “R-pentomino” (only 5 squares) and guess what it will turn into. The edges are <b>wrapped around</b>: whatever leaves on the right comes back on the left.</p>
+  <p>Click or drag on the grid to draw cells (touching a live cell erases it). First place a “glider” and press play to see how it moves. Then press “Clear,” place the “R-pentomino” (just 5 cells), and guess what it will turn into.</p>
+  <p>Clicking a preset adds it next to existing patterns without erasing them. The edges are <b>wraparound</b>: what leaves on the right comes back on the left.</p>
   <div class="board">
     <canvas id="life" width="720" height="450" aria-label="Game of Life sketchpad, 48 columns by 30 rows"></canvas>
     <div class="row">
@@ -264,18 +282,17 @@
     <div id="lstat"></div>
     <div class="msg" id="lmsg">Click on the board, or pick a preset.</div>
   </div>
-  <div class="sticky">Try it: place a glider and let it run into a block to see what happens. Because the edges wrap, it will come back around.</div>
+  <div class="sticky">Try it: first click “Glider,” then “Block” (presets are added to the board without erasing what is there), press play, and see what happens when the glider hits the block. The edges wrap around, so it comes back after a lap.</div>
 
-  
   <div class="sec"><span class="n">6</span><h2><span class="tag origin">How it was invented</span>The puzzle of the Adriatic catch</h2></div>
   <div class="story">
     <h3>With no fishing, why were there more big fish?</h3>
     <div class="withimg">
       <span data-illus="c05_adriatic"></span>
       <div>
-        <p>During World War I (around 1915–1918), fishermen in the Adriatic Sea could hardly put to sea. After the war, the Italian marine biologist Umberto D’Ancona went through fish-market data and found something strange: <b>with less fishing, the share of the catch made up of fish that eat other fish (mainly sharks and rays) had actually gone up.</b> He couldn’t understand it: wouldn’t not fishing be good for all the fish?</p>
-        <p>He handed the problem to a mathematician, his father-in-law Vito Volterra. Volterra built a minimal two-species equation, published in <i>Nature</i> in 1926. The American Alfred Lotka had written down the same equations in his 1925 book, which is where the name “Lotka–Volterra model” comes from.</p>
-        <p>Before seeing how he explained it, <b>take a guess</b>: if rabbits and foxes are removed in equal proportion (standing in for “fishing”), then <b>fishing stops</b>, will the foxes’ share among all animals go up, go down, or stay the same?</p>
+        <p>During the First World War (around 1915–1918), fishermen on the Adriatic could hardly go out to fish. After the war the Italian marine biologist Umberto D’Ancona went through the fish-market data and found something odd: <b>with less fishing, the share of fish that eat other fish (mainly sharks and rays) in the catch actually grew.</b> Isn’t not fishing good for all fish?</p>
+        <p>He gave the problem to a mathematician, his father-in-law Vito Volterra. Volterra built the simplest two-species equations, published in <i>Nature</i> in 1926. The American Alfred Lotka had already written the same equations in his 1925 book, so it is called the “Lotka–Volterra model.”</p>
+        <p>Before seeing how he explained it, <b>guess</b>: if rabbits and foxes are both removed in proportion (standing for “fishing”) and then <b>fishing stops</b>, will the foxes’ share of all the animals go up, go down, or stay the same?</p>
       </div>
     </div>
   </div>
@@ -307,53 +324,66 @@
       <div class="row"><button class="btn" id="ppreset">Restore defaults</button></div>
     </details>
   </div>
-  <div class="sticky">Try it: first pick “My guess,” then press “Wartime halt” and see whether the foxes’ share matches your guess. Then drag the fishing intensity and see how the share changes.</div>
-  <p class="small">Simplification note: a discrete-time simulation; each small step, rabbits increase by <code>(birth rate − fishing) × rabbits</code> and decrease by <code>hunting efficiency × rabbits × foxes</code>; foxes increase by <code>0.5 × hunting efficiency × rabbits × foxes</code> (0.5 is the fraction at which eaten rabbits turn into new foxes) and decrease by <code>(death rate + fishing) × foxes</code>. The blue line is rabbits, the red line is foxes. There is no space, age, randomness or other food. Starting with 60 rabbits and 30 foxes; 100 time units in all; a number below 0.5 counts as extinct. The “share” is the average after time unit 40.</p>
-  <p>Why? The pattern Volterra’s model gives is: <b>fishing pushes down both populations, but hurts the predators more</b>. The average number of foxes is proportional to (rabbit birth rate − fishing), and the average number of rabbits is proportional to (fox death rate + fishing). When fishing stops, the fox average rises, the rabbit average falls, and the predator share goes up. This is the conclusion later called “Volterra’s principle.”</p>
+  <div class="sticky">Try it: first choose “My guess,” then click “Wartime halt,” and see whether the foxes’ share matches your guess. Then drag the fishing intensity and see how the share changes.</div>
+  <p class="small">The blue line is rabbits, the red line foxes. This is a simplified illustrative model: there is no space, age, randomness or other food. It starts with 60 rabbits and 30 foxes, 100 time units in all, and a number below 0.5 counts as extinct. The “share” is computed as the average after time unit 40.</p>
+  <details>
+    <summary>Advanced: how the model computes</summary>
+    <p class="small">A discrete-time simulation. In each small step, rabbits increase by <code>(birth rate − fishing) × rabbits</code> and decrease by <code>predation efficiency × rabbits × foxes</code>. Foxes increase by <code>0.5 × predation efficiency × rabbits × foxes</code> (0.5 is the share of eaten rabbits turned into new foxes) and decrease by <code>(death rate + fishing) × foxes</code>.</p>
+  </details>
+  <p>The pattern Volterra’s model gives is: <b>fishing presses down both populations at once, but hurts the predator more</b>. Once fishing stops, the foxes’ average rises, the rabbits’ average falls, and the predators’ share goes up. Ecology calls this conclusion the “Volterra principle.”</p>
   <div class="timeline">
     <div class="ev hasimg"><span data-illus="c05_lotka"></span><div><b class="yr">1925</b> Lotka sets out the predator–prey equations in <i>Elements of Physical Biology</i>.</div></div>
     <div class="ev hasimg"><span data-illus="c05_volterra"></span><div><b class="yr">1926</b> To explain D’Ancona’s catch data, Volterra independently builds a model, published in <i>Nature</i>; Lotka later points out his priority, and the model gets its name.</div></div>
     <div class="ev hasimg"><span data-illus="c05_lynx"></span><div><b class="yr">1942</b> Elton and Nicholson compile the Hudson’s Bay Company’s fur purchase records, in which the lynx–snowshoe hare cycle is widely cited, with the lynx peak always a little after the hare’s.</div></div>
-    <div class="ev hasimg"><span data-illus="c05_kluane"></span><div><b class="yr">1995</b> Krebs and colleagues run an eight-year field experiment at Kluane in the Yukon, adding food and keeping out predators, and find that the hare cycle can’t be put down to predation alone, since food plays a part too; when both are manipulated together, hare density rises about 11-fold.</div></div>
+    <div class="ev hasimg"><span data-illus="c05_kluane"></span><div><b class="yr">1995</b> Krebs and colleagues ran an eight-year field experiment at Kluane in the Yukon, giving snowshoe hares extra food and fencing out predators, and found that the hares’ cycle can’t be put down to predation alone: food has a part too.</div></div>
   </div>
-  <p class="small">Sources: Volterra (1926), <i>Nature</i>, October 16; Lotka (1925), <i>Elements of Physical Biology</i> (Lotka’s 1927 letter to <i>Nature</i> pointed out his priority); D’Ancona’s data and motive are from historical accounts of Volterra and textbook retellings (sources differ slightly on exact years and proportions). Elton &amp; Nicholson (1942), lynx fur records. Krebs et al. (1995), <i>Science</i> 269: 1112–1115.</p>
+  <p class="small">Sources: Volterra, 1926, <i>Nature</i>, which built a predator–prey model to explain the Adriatic catch. Lotka, 1925, <i>Elements of Physical Biology</i>, which wrote down the same equations a year earlier (his 1927 letter to <i>Nature</i> points out his priority). D’Ancona’s catch data and motive come from Volterra-related historical material and textbook retellings, and sources differ somewhat on the exact years and proportions. Elton and Nicholson, 1942, compiled lynx fur records. Krebs et al., 1995, <i>Science</i> 269: 1112–1115, the snowshoe hare field experiment.</p>
 
-  
   <div class="sec"><span class="n">7</span><h2><span class="tag why">Why it works</span>Knowing the rules, why can’t you work out the result?</h2></div>
   <div class="withimg">
     <span data-illus="c05_zoo"></span>
     <div>
-      <p>Anyone can read the 4 rules of the Game of Life in under a minute. But a whole “zoo” grows out of those four.</p>
-      <p><b>Stable states</b>, such as the 2×2 “block,” where every square has exactly 3 neighbors and nothing ever changes. <b>Oscillators</b>, such as the “blinker,” three in a row that flips between horizontal and vertical each generation. And the walking <b>glider</b>, 5 squares that shift 1 square along the diagonal every 4 generations. The “R-pentomino” has only 5 squares, yet on an infinite board it takes 1,103 generations to settle down, ending with 116 live cells, of which 6 are gliders that have escaped.</p>
+      <p>The 4 rules of the Game of Life can be read in a minute. But a “zoo” grew out of these four rules.</p>
+      <p><b>Still lifes</b>, such as the 2×2 “block,” where every cell has exactly 3 neighbors and never changes. <b>Oscillators</b>, such as the “blinker,” three in a row, flipping between horizontal and vertical each generation.</p>
+      <p>Then there is the walking <b>glider</b>, 5 cells, shifting 1 cell diagonally every 4 generations. The “R-pentomino,” with only 5 cells, takes 1103 generations on an infinite board to settle down.</p>
     </div>
   </div>
   <div class="why-box">
     <h3>Knowing all the rules doesn’t mean you can foresee the result</h3>
-    <p>This is the most unsettling thing about emergence: to know what generation 200 looks like, most of the time you can only run it honestly, one generation at a time. The simpler the rules, the less you can tell the ending by “looking at the rules.” A designer who writes rules is like someone releasing a seed: what it grows into, you have to watch it grow.</p>
-    <p class="src">Sources: the “Conway’s Game of Life” entries (Wikipedia / LifeWiki: R-pentomino 1,103 generations, 116 live cells, 6 escaped gliders, are results on an infinite grid; the board on this page wraps around, so the outcome differs). Extending it to game design is an analogy borrowed here, not a theorem.</p>
+    <p>This is the most unsettling thing about emergence: to know what generation 200 looks like, you mostly have to run it one generation at a time, with no shortcut. A designer writing rules is like releasing a seed, and what it grows into you have to watch grow.</p>
+    <p class="src">Source: the “Conway’s Game of Life” entry (Wikipedia / LifeWiki). The R-pentomino’s 1103 generations, 116 live cells and 6 escaping gliders are results on an infinite grid; this page’s board has a ring border, so the result will differ. Extending it to game design is only an analogy.</p>
   </div>
   <h3>Negative feedback plus delay equals oscillation</h3>
-  <p>Picture an island with rabbits and foxes. Rabbits eat grass (unlimited) and breed; foxes eat only rabbits. The chain of cause goes like this: with lots of rabbits, the foxes eat well and breed a lot; with lots of foxes, many rabbits get eaten; with few rabbits left, the foxes starve; with few foxes, the rabbits breed again…</p>
-  <p>This is negative feedback with a delay: the stock of foxes has to wait for the rabbits to become plentiful before it slowly climbs, so the foxes always peak <b>later than the rabbits</b>, and by the time the foxes overshoot, the rabbits have already started to fall. Two stocks chasing each other draw two waves offset in time.</p>
+  <p>Imagine an island with rabbits and foxes. Rabbits eat grass (unlimited) and breed. Foxes eat only rabbits. The causal chain goes like this: more rabbits, foxes eat well and breed more; more foxes, more rabbits eaten; fewer rabbits, foxes starve again; fewer foxes, rabbits breed again…</p>
+  <p>This is negative feedback with a lag: the foxes rise slowly only after the rabbits become many, so the foxes always reach their peak <b>later than the rabbits</b>, and when the foxes overshoot, the rabbits have already begun to fall. Two stocks chasing each other draw two staggered waves.</p>
   <div class="why-box">
     <h3>The Lotka–Volterra model: what it shows and what it doesn’t</h3>
-    <p>In the simplest model, the populations cycle around an equilibrium point forever instead of settling quietly onto it. For small amplitudes the period is about 2π/√((birth rate − fishing) × (death rate + fishing)). <b>Verification experiment:</b> go back to the simulation above, expand “other parameters,” raise the fox death rate and watch the period get shorter; then tick “food cap,” which adds an <b>extra negative feedback</b>, and the oscillation gradually dies away.</p>
-    <p class="src">This is a deliberately simplified model. Real field data (such as the often-cited “lynx–snowshoe hare” records) are not this clean: the hare cycle is thought to involve both predation and food, and scholars are still debating it. The safest use of the model is “to explain why oscillation appears,” not to predict precisely.</p>
+    <p>In the simplest model the populations cycle forever around an equilibrium point and never settle quietly on it. <b>Verification experiment:</b> go back to the simulation above, open “Other parameters,” raise the foxes’ death rate and see the period shorten. Then tick “Food limit,” which amounts to adding an <b>extra negative feedback</b>, and the oscillation gradually dies away.</p>
+    <p class="src">This is a deliberately simplified model. Real field data (such as the lynx–hare record) is not so clean: the hares’ cycle is thought to be tied to both predation and food. The model is used to explain why oscillation appears, not to predict precisely.</p>
   </div>
 
-  
   <div class="sec"><span class="n">8</span><h2><span class="tag why">Why it works</span>Why does walking uphill get you stuck on a small hilltop?</h2></div>
-  <p>After every patch, a player community “solves” the strongest build very quickly, and then nearly everyone uses it and the game becomes monotonous. Designers often complain that players “aren’t creative enough.” But think of a climber in thick fog: he can’t see far, only his feet, so every step goes to higher ground. He climbs the small hill next to him and finds it slopes down on every side. He did nothing wrong, and has no way of knowing there is a higher mountain on the other side.</p>
+  <p>After every patch, the player community soon “solves” a strongest build, and then almost everyone uses it and the game becomes uniform. Some designers complain that players are “not creative enough.”</p>
+  <p>Think of a climber in thick fog: he can’t see far, only what is underfoot, so each step goes to higher ground. He climbs the small hill beside him and everything around slopes down. He hasn’t gone wrong; he just can’t know there is a higher mountain on the other side.</p>
   <div class="why-box">
     <h3>Local optimum: every step is better, but it isn’t the best</h3>
-    <p>This image comes from evolutionary biology. In 1932, the geneticist Sewall Wright proposed the “adaptive landscape” at the International Congress of Genetics: picture each possible combination of genes as a point on a landscape, where the better adapted, the higher the elevation. Natural selection is like a climber who can only go uphill, easily trapped on a <span class="term" tabindex="0" data-def="Local optimum: the best among all the options nearby, but not the best overall. If you only move in small steps toward better, you easily stop here.">local optimum</span>, a peak that is the highest nearby but not the highest overall.</p>
-    <p>To get out takes something more: now and then not following the rule of “walk uphill” and trying somewhere unfamiliar. Reinforcement learning calls this <span class="term" tabindex="0" data-def="Exploration versus exploitation: exploiting means using the best-known approach to get a steady return, and exploring means trying approaches not yet tried to discover possibly better ones. The two have to be traded off.">exploration versus exploitation</span>: to exploit is to keep using the best-known approach, and to explore is to pay a little to try what you haven’t tried. Relying only on exploitation, you get trapped on a small hill; relying only on exploration, you never save up any gains.</p>
+    <p>This image comes from evolutionary biology. In 1932 the geneticist Sewall Wright proposed the “adaptive landscape.” He imagined each possible gene combination as a point on a terrain: the better adapted, the higher the elevation.</p>
+    <p>Natural selection is like a climber who only climbs uphill, easily trapped at a <span class="term" tabindex="0" data-def="Local optimum: the best among the choices around you, but not the best overall. Moving in small steps toward whatever is better, you easily stop here.">local optimum</span>, the hill that is highest nearby but not highest overall.</p>
+    <p>To get out, you must now and then break the “go uphill” rule and try somewhere unfamiliar. Reinforcement learning discusses exactly this trade-off, <span class="term" tabindex="0" data-def="Exploration and exploitation: exploiting is using the best known approach to take a sure return; exploring is trying what hasn’t been tried to find something possibly better. The two must be traded off.">exploration and exploitation</span>: exploiting is to keep using the best known approach; exploring is to pay a little to try what hasn’t been tried. All exploiting easily traps you on a small hill; all exploring never banks any gain.</p>
     <p><b>Verification experiment:</b> in the little experiment below, put the climber at the foot of the small hill on the left and see where he gets stuck. Then drag “Exploration” so that he occasionally jumps at random.</p>
-    <p class="src">Sources: Sewall Wright, “The roles of mutation, inbreeding, crossbreeding and selection in evolution,” <i>Proceedings of the Sixth International Congress of Genetics</i> 1: 356–366 (1932); Sutton &amp; Barto, <i>Reinforcement Learning: An Introduction</i> (the classic textbook on exploration versus exploitation). The adaptive-landscape metaphor is itself debated in biology; only its image is borrowed here.</p>
+    <p class="src">Sources:<br>Sewall Wright, 1932, who proposed the “adaptive landscape” metaphor: natural selection is like climbing uphill and easily gets stuck on a local peak (<i>Proceedings of the Sixth International Congress of Genetics</i> 1: 356–366).<br>Sutton and Barto, <i>Reinforcement Learning: An Introduction</i>, on the trade-off between exploration and exploitation. The adaptive-landscape metaphor is also disputed in biology, and only its image is borrowed here.</p>
   </div>
+  <aside class="cc-card" aria-label="Concept card: local optimum">
+    <span class="cc-tag">Concept card</span>
+    <p class="cc-name"><span>Local optimum</span></p>
+    <p class="cc-en">Local optimum (from Wright’s adaptive landscape)</p>
+    <p class="cc-by">Sewall Wright · proposed the adaptive-landscape metaphor in 1932</p>
+    <p class="cc-def">The best among all the choices nearby, but not the best overall. Moving only in small steps toward whatever is better, you stop here.</p>
+    <p class="cc-eg"><span class="cc-k">Example</span>The player community “solves” a strongest build, everyone uses it, the game turns uniform, and nobody tries another route.</p>
+  </aside>
   <div class="board">
     <b>⛰️ The climber in the fog</b>
-    <p class="small">The climber only compares the heights a small step to his left and right, and goes whichever way is higher. Click anywhere on the chart to put him there, then press “Go.” The higher the “Exploration,” the more often he jumps at random to look elsewhere, staying only if it is higher.</p>
+    <p class="small">The fog is thick and the climber can only see what is at his feet. He compares only the height a small step to his left and right, and goes to whichever side is higher. Click anywhere on the chart to put him there, then press “Start.” The higher the “exploration,” the more often he jumps at random somewhere else to look, keeping the new place only if it is higher.</p>
     <svg id="c5hl" viewBox="0 0 700 284" role="img" aria-label="A terrain line with two peaks: the smaller hill on the left and the higher main peak on the right; the dot is the climber, and clicking the chart changes the starting point"></svg>
     <label class="ctl">Exploration <output id="c5exv">0%</output></label>
     <input type="range" id="c5ex" min="0" max="60" step="5" value="0">
@@ -365,26 +395,33 @@
     </div>
     <div class="c5out" id="c5hmsg2">Press “Go” and watch where the climber ends up.</div>
   </div>
-  <div class="sticky">Try it: put the start at the foot of the left hill, keep exploration at 0, and see where he gets stuck; then raise exploration above 30% and let him reach the main peak on the right.</div>
-  <div class="eg" data-ic="🌫️"><span data-illus="c05_fog"></span><div class="egt"><b>The climber in the fog</b>. Always going uphill is nothing wrong; it’s just that the little hill nearby isn’t the highest in the world.</div></div>
-  <div class="eg" data-ic="⚔️"><span data-illus="c05_meta"></span><div class="egt"><b>The “best build” in a game</b>. Every player tries to improve their own play, improving step by step, and in the end everyone lands on the same hilltop. If designers want to see varied play, someone has to encourage “going down to explore”: give other routes a chance to stand out.</div></div>
-  <div class="eg" data-ic="🍜"><span data-illus="c05_restaurant"></span><div class="egt"><b>Always going to the same restaurant</b>. You tried a few, picked the tastiest and have gone every day since. Safe, but you’ll never know if the place next door is better. Switching now and then is exploring.</div></div>
-  <div class="eg bad" data-ic="🧺"><span data-illus="c05_good"></span><div class="egt"><b>A local optimum isn’t always bad</b>. If the little hill is already good enough and there is no need to risk climbing a higher mountain, have your picnic right here. Exploring has a cost, and whether it’s worth it depends on what you want.</div></div>
+  <div class="sticky">Try it: put the start at the foot of the left hill, keep exploration at 0, and see where he gets stuck. Then raise exploration above 30% and let him climb the main peak on the right.</div>
+  <div class="eg" data-ic="🌫️"><span data-illus="c05_fog"></span><div class="egt"><b>The climber in the fog</b>. Going uphill at every step is nothing wrong. Unfortunately the small hill beside him is not the highest mountain in the world.</div></div>
+  <div class="eg" data-ic="⚔️"><span data-illus="c05_meta"></span><div class="egt"><b>The “best build” in a game</b>. Every player is improving their own play, step by step, and in the end everyone lands on the same hill. A designer who wants to see varied play must encourage “going downhill to explore”: let other routes have a chance to stand out too.</div></div>
+  <div class="eg" data-ic="🍜"><span data-illus="c05_restaurant"></span><div class="egt"><b>Always going to the same restaurant</b>. You tried a few, picked the tastiest, and have gone every day since. Safe, but you never know whether the one next door is better. Switching occasionally is exploring.</div></div>
+  <div class="eg bad" data-ic="🧺"><span data-illus="c05_good"></span><div class="egt"><b>Counterexample: a local optimum is not necessarily bad</b>. If the small hill is already good enough, there is no need to risk climbing a higher mountain, and you can picnic right here. Exploring has a cost, and whether it is worth it depends on what you want.</div></div>
 
-  
   <div class="sec"><span class="n">9</span><h2><span class="tag why">Why it works</span>Meadows’s “leverage points”: where is intervention most effective?</h2></div>
   <p>If the whole grows out of loops, which knob should you turn to change the whole? Donella Meadows, the systems-dynamics author, found in “Leverage Points: Places to Intervene in a System” that there are many “places” to intervene in a system, with very different effects.</p>
   <div class="why-box">
     <h3>One view of Meadows: the closer to structure, the bigger the leverage</h3>
     <p>Meadows first drew up a short list of 9 points and later expanded it to 12 kinds (the 1999 version). The gist:</p>
     <ul>
-      <li>The least conspicuous and most often adjusted are <b>parameters / numbers</b> (tax rates, health, drop rates), which often change system behavior very little;</li>
-      <li>More powerful are <b>the strength of feedback loops, how information flows, and the rules of the system</b>, which is to say changing the “structure”;</li>
+      <li>The most inconspicuous and most often adjusted are <b>parameters / numbers</b> (tax rates, health, drop rates), which often change the system’s behavior very little.</li>
+      <li>More powerful are <b>the strength of feedback loops, the way information flows, and the rules of the system</b>, that is, changing the “structure.”</li>
       <li>Most powerful are <b>the goals of the system and the mindset (paradigm) behind it</b>.</li>
     </ul>
     <p>Her 12 kinds (from weakest to strongest) are: constants and parameters, buffers, stock-and-flow structure, delays, strength of negative feedback, gain of positive feedback, information flows, rules, self-organization, goals, paradigms, and transcending paradigms. Tap the steps below to see what each level corresponds to in a game.</p>
-    <p class="src">This is an empirical view and classification of Meadows, not a strict theorem; some think its ordering doesn’t fit every situation. But “don’t just turn the knobs, look at the loops first” is a very useful design habit.</p>
+    <p class="src">Source: Donella Meadows, 1999, “Leverage Points: Places to Intervene in a System,” which sorts the places to intervene in a system into 12 kinds: the closer to structure, goals and paradigms, the bigger the leverage. This is her empirical view, and the ranking does not apply to every situation. “Look at the loops first, then turn the knobs” is a useful design habit.</p>
   </div>
+  <aside class="cc-card" aria-label="Concept card: leverage points">
+    <span class="cc-tag">Concept card</span>
+    <p class="cc-name"><span>Leverage points</span></p>
+    <p class="cc-en">Leverage points</p>
+    <p class="cc-by">Donella Meadows · “Leverage Points: Places to Intervene in a System,” 1999</p>
+    <p class="cc-def">Places in a system where a small change brings a big effect. Changing numbers has little leverage, while changing the feedback structure, the rules and the goals has a lot.</p>
+    <p class="cc-eg"><span class="cc-k">Example</span>In a game where the leader wins more and more, turning the “lead bonus” from 0.5 down to 0.1 only delays the ending. Adding a catch-up mechanic is what changes it.</p>
+  </aside>
   <div class="card c5ldr">
     <svg viewBox="0 0 700 330" width="100%" role="img" aria-label="A leverage-points ladder: from bottom to top, parameters, structure and delays, feedback loops, information and rules, self-organization and goals, and paradigms; the higher, the more leverage; on the right are examples from games">
       <g class="rough" stroke="#2b2b3a" stroke-width="3.5" stroke-linejoin="round">
@@ -412,12 +449,11 @@
       <rect class="hit" data-i="5" x="30" y="28" width="370" height="48" tabindex="0" role="button" aria-label="Paradigm level"/>
     </svg>
     <div class="c5out" id="c5ldrmsg">Click any level on the ladder.</div>
-    <p class="small">The figure is a sketch: Meadows’s 12 kinds are merged into 6 levels, and the game examples on the right are analogies borrowed here, not from her original text.</p>
+    <p class="small">The figure is illustrative: Meadows’s 12 kinds are merged into 6 layers, and the game examples on the right are borrowed analogies, not from her original.</p>
   </div>
 
-  
   <div class="sec"><span class="n">10</span><h2><span class="tag how">Try it</span>The leverage test bench: change the numbers, or change the structure?</h2></div>
-  <p>Recall that designers write mechanics, players experience aesthetics, and dynamics sit in between. Emergence tells us: <b>you can’t design dynamics directly, only the soil from which dynamics grow.</b> Below are two common “system trouble” scenarios. Turn the <b>numbers</b> knob first, then the <b>structure</b>, and see how the results differ.</p>
+  <p>Designers write mechanics, players experience aesthetics, and dynamics lie between. Emergence says: <b>dynamics can’t be designed directly, only the soil that grows them.</b> Below are two common scenarios of a “system gone wrong.” First turn the <b>numbers</b> knob, then touch the <b>structure</b>, and see how the results differ.</p>
   <div class="board">
     <div class="c5tabs"><button class="btn" id="c5t1">① Snowball</button><button class="btn alt" id="c5t2">② Gold inflation</button></div>
 
@@ -444,16 +480,16 @@
     </div>
     <div class="row"><button class="btn pink" id="c5reset">Restore defaults</button></div>
   </div>
-  <div class="sticky">Try it: in “Snowball,” first lower k to 0.1 only and see whether the ending changes; then tick the catch-up mechanic and bring A’s share back to around 50%. In “Gold inflation,” try to make the total gold settle at a stable number instead of rising forever.</div>
-  <p>You should have seen: <b>turning the numbers changes only “how fast the ending arrives,” not the ending itself; changing the structure changes the ending.</b> This is no coincidence. In the snowball, as long as the “lead bonus” stays positive, however small, the leader eventually wins; in the inflation, as long as output exceeds fixed spending, the total keeps rising. Only negative feedback (catch-up, proportional spending) pulls the system toward a target.</p>
-  <p>Of course, not every problem needs a structural change. <b>If the boss has so little health that players beat it in 10 seconds</b>, the number is simply too small, and adjusting the health directly is cheapest and also right; structural changes cost more and should be considered when the numbers are already reasonable but it is still dull. Meadows also admitted that parameters are the “lowest-leverage” point, but not “useless.”</p>
+  <div class="sticky">Try it: in “Snowball,” first change only k to 0.1 and see whether the ending changes; then tick the catch-up mechanic and bring A’s share back near 50%. In “Gold inflation,” make the total gold stop at a stable number instead of climbing forever.</div>
+  <p>You should see: <b>turning numbers only changes “how fast the ending arrives,” not the ending itself; changing the structure changes the ending.</b> In the snowball, as long as the “lead bonus” stays positive, even if tiny, the leader eventually wins. In inflation, as long as production exceeds fixed consumption, the total keeps rising. Only negative feedback (catch-up, proportional consumption) pulls the system toward a target.</p>
+  <p>Some problems need only a change of numbers. <b>The boss has too little health and the player beats it in 10 seconds</b>: that is a number too small, and adjusting health directly is cheapest and also right. Structural changes cost more and should be considered when the numbers are already reasonable and it is still dull.</p>
 
   <h3>Designing soil that can “grow” good play</h3>
   <div class="withimg rev">
     <span data-illus="c05_garden"></span>
     <div>
-      <p>If you used to think “design means writing out every detail,” emergence invites you to change posture: you are more like a <b>gardener</b> than an architect. You pick the seeds, prepare the soil, set up the fence, then watch what grows, and prune.</p>
-      <p>What kind of soil grows good things easily? Three traits: few but deep rules, systems that can interact, and consistent rules.</p>
+      <p>Emergence brings a new role: the designer is more like a <b>gardener</b>. Choose seeds, prepare the soil, set up the fence, then see what grows, and prune.</p>
+      <p>Soil that easily grows good things has three traits: few rules but deep, systems that can interact, and rules that are consistent.</p>
     </div>
   </div>
   <div class="grid3">
@@ -464,45 +500,49 @@
   <div class="eg" data-ic="⚫"><span data-illus="c05_go"></span><div class="egt"><b>Few but deep rules: Go</b>. The rules take a few lines to write, yet the variations of play are so many that nobody can calculate them all.</div></div>
   <div class="eg" data-ic="🧱"><span data-illus="c05_lego"></span><div class="egt"><b>Few but deep rules: LEGO</b>. A few shapes and one uniform way of connecting can build endless things.</div></div>
   <div class="eg" data-ic="💬"><span data-illus="c05_words"></span><div class="egt"><b>Few but deep rules: language</b>. A limited set of words plus a grammar can say sentences nobody has ever said.</div></div>
-  <div class="eg" data-ic="⚡"><span data-illus="c05_chem"></span><div class="egt"><b>Interacting systems: <i>Breath of the Wild</i></b>. Metal conducts electricity, fire ignites grassland, wind carries flames. Each system is simple, but where they meet, solutions that players work out for themselves grow.</div></div>
-  <div class="eg bad" data-ic="📦"><span data-illus="c05_isolated"></span><div class="egt"><b>Lots of content, but each isolated</b>. A game has 30 kinds of items, each working only in its own level, with no interaction between them. That is “breadth,” not “depth,” and it will not grow new play.</div></div>
-  <p>Two more “brake” principles. First, <b>give positive feedback an outlet</b>: snowballing mechanics are thrilling, but there should be ways to reverse them, such as catch-up mechanics, resources that can be seized, and extra conditions needed to win. Second, <b>close the economic loop</b>: where there is output there should be spending, and the “tap” and the “drain” should be designed together, otherwise the stock only rises out of control. Some emergence lengthens a game’s life (tactical depth, player creation) and some wrecks it (infinite-money exploits, a snowball ending the match early). The designer’s job is not to eliminate surprise but to <b>raise the odds of good surprises and put brakes on bad ones</b>.</p>
+  <div class="eg" data-ic="⚡"><span data-illus="c05_chem"></span><div class="egt"><b>Interacting systems: <i>Breath of the Wild</i></b>. Metal conducts, flame ignites grass, and wind carries fire. Each system is simple, and when they meet, solutions the player works out grow from it.</div></div>
+  <div class="eg bad" data-ic="📦"><span data-illus="c05_isolated"></span><div class="egt"><b>Counterexample: lots of content, each isolated</b>. A game has 30 items, each working only in its own level, with no interaction among them. That is “breadth,” not “depth,” and no new play will grow.</div></div>
+  <p>Two more “brake” principles.</p>
+  <p>First, <b>leave an exit for positive feedback</b>: a snowball mechanic is exciting, but there must be ways to reverse it, such as catch-up mechanics, resources that can be seized, and extra conditions needed to win.</p>
+  <p>Second, <b>close the economic loop</b>: where there is production there must be consumption, and the “faucet” and “drain” must be designed together, or the stock only climbs out of control.</p>
+  <p>Surprise can’t be eliminated. The design job is to <b>raise the odds of good surprises and fit brakes to bad ones</b>.</p>
 
   <div class="misc">
     <h3>Common misconceptions</h3>
     <ul>
-      <li><b>“Emergence = randomness / chaos”</b>: the Game of Life has no randomness at all, and every step is deterministic. The unpredictability of emergence comes from the complexity of interactions between rules, not from rolling dice.</li>
-      <li><b>“The more rules, the deeper the game”</b>: depth comes from the <em>interactions</em> between rules, not the number of rules. Many “content-rich” games have systems that are isolated from each other, with breadth but no emergence.</li>
-      <li><b>“Find an exploit and cut the numbers”</b>: cutting numbers only treats the symptom. If the exploit comes from positive feedback or a missing closed loop, however much you cut, players will take another path around it (you already verified this on the leverage test bench).</li>
-      <li><b>“Everyone using the same build means players lack creativity”</b>: more likely everyone is walking uphill reasonably, and together they are stuck in the same local optimum.</li>
+      <li><b>“Emergence = randomness / chaos”</b>: the Game of Life has no randomness at all, and every step is deterministic. Emergence is hard to predict because the interactions among rules are complicated, which has nothing to do with rolling dice.</li>
+      <li><b>“The more rules, the deeper the game”</b>: depth comes from the <em>interactions</em> among rules, regardless of how many rules there are. Many “content-rich” games in fact have systems isolated from one another, with only breadth and no emergence.</li>
+      <li><b>“When there’s an exploit, nerf the numbers”</b>: nerfing numbers only treats the symptom. If the exploit comes from positive feedback or a missing closed loop, however much you nerf, players will take another path around it (already verified in the leverage testbed).</li>
+      <li><b>“Players all use the same build because they lack creativity”</b>: more likely everyone is reasonably going uphill and they are stuck together in the same local optimum.</li>
     </ul>
   </div>
 
   <div class="reflect">
     <h3>Reflection and debate</h3>
-    <p><b>Limits.</b> The Game of Life and the Lotka–Volterra model are both extremely simplified. They show “why a certain kind of phenomenon appears,” but can’t tell you directly “what to set it to” in your own game. Real players learn, imitate and band together, and the “feedback” the rules give them keeps changing, which is far harder than rabbits and foxes.</p>
-    <p><b>Debate.</b> “Emergence” itself is disputed in philosophy and science: some think it is just another way of saying “we haven’t worked it out yet” (weak emergence), while others think irreducible new properties really exist at the level of the whole (strong emergence). Game design usually uses only the “weak” sense, meaning “hard to predict, but the rules are explicit.” Also, Meadows’s ranking of leverage points is one view of Meadows, and in games “changing the numbers” is sometimes the right answer.</p>
-    <p>Think about it: in a game you have played, which kinds of play were “not written by the designer but grown by the players themselves”?</p>
+    <p><b>Limits.</b> The Game of Life and the Lotka–Volterra model are both extremely simplified models. They show “why some kind of phenomenon appears,” and can’t directly tell a designer “what to set it to” in their own game. Real players learn, imitate and team up, which is far harder than rabbits and foxes.</p>
+    <p><b>Debate.</b> “Emergence” itself is disputed in philosophy and science: some think it is just another way of saying “not yet worked out” (weak emergence), and others that irreducible new properties really exist at the level of the whole (strong emergence). Game design usually uses only the “weak” sense: “hard to predict, but the rules are explicit.”</p>
+    <p>Meadows’s ranking of leverage points is only her view, and in games “changing the numbers” is sometimes the right answer.</p>
+    <p>Think about it: in a game you’ve played, what play did “the designers didn’t write and the players grew themselves”?</p>
   </div>
 
   <div class="key">
     <h3>Key points</h3>
     <ul>
       <li><b>Emergence</b>: the behavior of the whole comes from interactions between the parts, and is not written by any single rule.</li>
-      <li><b>Positive feedback amplifies, negative feedback stabilizes</b>; stocks change slowly through flows, so feedback often comes with <b>delay</b>, and <b>negative feedback plus delay oscillates</b>.</li>
-      <li>The Game of Life uses 4 rules to show that “<b>knowing the rules ≠ knowing the result</b>”; Volterra used equations to answer “why do predators increase when fishing decreases?” Both models appeared to answer a specific puzzle.</li>
+      <li><b>Positive feedback amplifies and negative feedback stabilizes</b>. Stocks change slowly through flows, so feedback often has <b>lag</b>, and <b>negative feedback plus lag oscillates</b>.</li>
+      <li>The Game of Life uses 4 rules to show “<b>knowing the rules ≠ knowing the result</b>.” Volterra used equations to answer “why, with less fishing, predators actually became more.” Both models appeared to answer a specific puzzle.</li>
       <li>Only walking uphill easily gets you stuck at a <b>local optimum</b>; getting out takes a little exploration.</li>
-      <li>Design points: rules that are <b>few but deep</b>, systems that <b>can interact</b>, physics that is <b>consistent</b>; for problems, look at the <b>feedback structure</b> first, then consider changing numbers (Meadows’s view).</li>
+      <li>Design points: rules <b>few but deep</b>, systems <b>able to interact</b>, physics <b>consistent</b>. For a problem, first look at the <b>feedback structure</b>, then consider changing numbers (Meadows’s view).</li>
     </ul>
   </div>
-  <div class="tldr">What you write down is rules, and what players get is the world that grows from the rules’ interactions; so design feedback structures like a gardener, instead of just turning the number knobs.</div>
+  <div class="tldr">What you write is rules, and what the player gets is the world that grows when the rules interact. So design the feedback structure like a gardener, and don’t just turn the numbers knob.</div>
 
   <div class="sec"><span class="n">11</span><h2><span class="tag think">Practice</span>Quick quiz</h2></div>
   <div id="quiz"></div>
 
   <div class="sec"><span class="n">12</span><h2><span class="tag how">Your design</span>Find the loops in a game</h2></div>
   <div class="card o">
-    <p>Think of a game you know: which <b>positive feedback</b> loop and which <b>negative feedback</b> loop does it contain? If a “player found a way to play the designer didn’t expect” ever happened, which rules interacting caused it? How would you adjust the structure, rather than the numbers?</p>
+    <p>Think of a familiar game: which <b>positive feedback</b> loop and which <b>negative feedback</b> loop does it have? If “players found play the designer hadn’t thought of” ever occurred, which rules interacting caused it? How would you adjust the structure, not the numbers?</p>
     <textarea rows="6" data-save="ch5" placeholder="Example: in some game, the stronger your gear, the easier it is to get even stronger gear (positive feedback); I would add…"></textarea>
     <p class="small">✍️ Saved automatically in your browser.</p>
   </div>
@@ -575,13 +615,13 @@ const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
     let miss = 0, wrong = 0;
     for (let i = 0; i < N * N; i++) { if (truth[i] && !guess[i]) miss++; if (!truth[i] && guess[i]) wrong++; }
     $("c5chk").disabled = true; $("c5nx").disabled = false;
-    $("c5hmsg").textContent = (!miss && !wrong) ? "✔ All correct! Your work matches the rules exactly." : "There are " + wrong + " squares marked by mistake and" + miss + " missed. Green is a correctly worked-out live square and the red frame marks the mistakes: turn on “Show neighbor counts” and compare against the rules.";
+    $("c5hmsg").textContent = (!miss && !wrong) ? "✔ All correct! Your work matches the rules exactly." : "There are " + wrong + " squares marked by mistake and " + miss + " missed. Green is a correctly worked-out live square and the red frame marks the mistakes: turn on “Show neighbor counts” and compare against the rules.";
   };
   $("c5nx").onclick = () => {
     cur = next(cur); gen++; guess = new Uint8Array(N * N); checked = false;
     $("c5chk").disabled = false; $("c5nx").disabled = true;
     if (gen === 4) {
-      $("c5hmsg").innerHTML = "You reached generation 4: the pattern is <b>exactly the same as generation 0, just shifted one square to the lower right as a whole</b>. The rules contain no word for “move,” and you have just worked out by hand something that walks. Keep going, or press “Start over.”";
+      $("c5hmsg").innerHTML = "Worked out to generation 4: the pattern is <b>exactly the same as generation 0, only shifted one cell toward the lower right as a whole</b>. The rules don’t contain the word “move,” yet you worked out a thing that walks with your own hands. You can keep working, or click “Start over.”";
     } else $("c5hmsg").textContent = "It is generation " + gen + " now; keep marking the next generation.";
     render();
   };
@@ -637,6 +677,7 @@ const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
     block: [[0, 0], [1, 0], [0, 1], [1, 1]],
     rpent: [[1, 0], [2, 0], [0, 1], [1, 1], [1, 2]]
   };
+  const POS = { glider: [8, 8], blinker: [34, 8], block: [22, 22], rpent: [20, 12] };
   const MSG = {
     glider: "Glider: 5 squares that shift 1 square along the diagonal every 4 generations. Press play to watch it walk.",
     blinker: "Blinker: it alternates between horizontal and vertical, period 2. Step twice to see.",
@@ -646,10 +687,11 @@ const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
   };
   document.querySelectorAll("[data-pre]").forEach(b => b.onclick = () => {
     const k = b.dataset.pre;
-    g = new Uint8Array(W * H); gen = 0;
-    if (k === "random") { for (let i = 0; i < g.length; i++) g[i] = Math.random() < 0.25 ? 1 : 0; }
-    else place(PRE[k], k === "glider" || k === "rpent" ? 20 : 22, 12);
-    $("lmsg").textContent = MSG[k]; draw();
+    const had = k !== "random" && count() > 0;
+    if (k === "random") { g = new Uint8Array(W * H); for (let i = 0; i < g.length; i++) g[i] = Math.random() < 0.25 ? 1 : 0; }
+    else place(PRE[k], POS[k][0], POS[k][1]);
+    gen = 0;
+    $("lmsg").textContent = MSG[k] + (had ? " This piece has been added next to the existing patterns on the board; to start over, press “Clear.”" : ""); draw();
   });
   $("lplay").onclick = () => { if (!count()) { $("lmsg").textContent = "Draw some live squares first."; return; } setRun(!running); };
   $("lstep").onclick = () => { setRun(false); step(); draw(); };
@@ -695,7 +737,7 @@ const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
     const ts = [0], rs = [R], fs = [F];
     const steps = Math.round(T / DT);
     for (let i = 1; i <= steps; i++) {
-      
+
       const growth = useCap ? (b - f) * R * (1 - R / K) : (b - f) * R;
       R = Math.max(0, R + DT * (growth - a * R * F));
       F = Math.max(0, F + DT * (CONV * a * R * F - (d + f) * F));
@@ -749,7 +791,7 @@ const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
     const gb = s.b - s.f, gd = s.d + s.f;
     let theo = "n/a";
     if (!s.useCap && gb > 0) theo = (aF + aR >= 0 ? ((gb / s.a) / (gb / s.a + gd / (CONV * s.a))) * 100 : 0).toFixed(0) + "%";
-    $("ppstat").innerHTML = `<span class="stat">Rabbits avg <b>${aR.toFixed(0)}</b></span><span class="stat">Foxes avg <b>${aF.toFixed(0)}</b></span><span class="stat">Fox share <b>${(share * 100).toFixed(0)}%</b></span><span class="stat">Theory share <b>${theo}</b></span><span class="stat">Peak gap <b>${per}</b></span><span class="stat">Foxes lag by <b>${lag}</b></span>`;
+    $("ppstat").innerHTML = `<span class="stat">Rabbit average <b>${aR.toFixed(0)}</b></span><span class="stat">Fox average <b>${aF.toFixed(0)}</b></span><span class="stat">Fox share <b>${(share * 100).toFixed(0)}%</b></span><span class="stat">Theoretical share (average share worked out from the equations) <b>${theo}</b></span><span class="stat">Peak interval <b>${per}</b></span><span class="stat">Fox lags by about <b>${lag}</b></span>`;
     let m;
     if (rEnd === 0 || fEnd === 0) {
       const when = s.ts.findIndex((_, i) => (s.rs[i] === 0) || (s.fs[i] === 0));
@@ -779,7 +821,7 @@ const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
     let t = "";
     if (before !== null) {
       t = `The share went from ${(before * 100).toFixed(0)}% to ${(after * 100).toFixed(0)}%: after fishing stopped, the foxes’ (predators’) share ${after > before ? "went up" : "did not go up"}.`;
-      if (guess) t += (guess === "up") === (after > before) ? " You guessed right!" : " The opposite of your guess, which is exactly what puzzled D’Ancona back then.";
+      if (guess) t += (guess === "up") === (after > before) ? " You guessed right!" : " Contrary to the guess, this is exactly what puzzled D’Ancona back then.";
       else t += " (Next time, pick a “My guess” first and then press.)";
     }
     t += "Reason: fishing pushes down both animals but hurts predators more; after fishing stops predators recover more.";
@@ -804,11 +846,10 @@ const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
   }
   const line = (pts, col, w, dash) => `<polyline fill="none" stroke="${col}" stroke-width="${w}" ${dash ? 'stroke-dasharray="6 6"' : ""} stroke-linejoin="round" points="${pts.map(p => p[0].toFixed(1) + "," + p[1].toFixed(1)).join(" ")}"/>`;
 
-  
   const TT = 300, R = 0.1;
-  function snow(keff) {
+  function snow(keff, n) {
     let a = 105, b = 100; const out = [];
-    for (let t = 0; t <= TT; t++) {
+    for (let t = 0; t <= (n || TT); t++) {
       const s = a / (a + b); out.push(s);
       const e = keff * (2 * s - 1);
       a *= 1 + R * (1 + e); b *= 1 + R * (1 - e);
@@ -820,19 +861,23 @@ const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
     const k = +$("c5k").value, on = $("c5cu").checked, c = +$("c5c").value;
     $("c5kv").textContent = k.toFixed(2); $("c5cv").textContent = c.toFixed(2); $("c5c").disabled = !on;
     const keff = k - (on ? c : 0);
-    const X = t => 60 + t / TT * 620, Y = v => 270 - (v - 0.4) / 0.6 * 250;
-    let s = axes(60, 270, 680, 20, [0, 100, 200, 300].map(t => [X(t), t]), [0.5, 0.6, 0.7, 0.8, 0.9, 1].map(v => [Y(v), Math.round(v * 100) + "%"]), "Turns → dashed gray: k = 0.2 / 0.5 / 1.0");
+    const long = snow(keff, 3000);
+    let H = TT;
+    if (keff > 0.0001) { const t99 = long.findIndex(v => v >= 0.99); H = t99 > 0 ? Math.min(1500, Math.max(TT, Math.ceil(t99 * 1.1 / 100) * 100)) : 1500; }
+    const stepT = H <= 300 ? 100 : H <= 800 ? 200 : 500, tk = []; for (let t = 0; t <= H; t += stepT) tk.push(t);
+    const X = t => 60 + t / H * 620, Y = v => 270 - (v - 0.4) / 0.6 * 250;
+    let s = axes(60, 270, 680, 20, tk.map(t => [X(t), t]), [0.5, 0.6, 0.7, 0.8, 0.9, 1].map(v => [Y(v), Math.round(v * 100) + "%"]), "Turns → dashed gray: k = 0.2 / 0.5 / 1.0");
     s += `<line x1="60" x2="680" y1="${Y(0.8)}" y2="${Y(0.8)}" stroke="#e5484d" stroke-dasharray="5 6" stroke-width="2.5"/><text x="676" y="${Y(0.8) - 10}" text-anchor="end" font-size="16" fill="#e5484d">80% = the outcome is basically decided</text>`;
     [[0.2, "k=0.2"], [0.5, "k=0.5"], [1, "k=1.0"]].forEach(([kk, lab]) => {
-      const arr = snow(kk); s += line(arr.map((v, t) => [X(t), Y(v)]), "#9a9aa8", 2.5, true);
+      const arr = snow(kk, H); s += line(arr.map((v, t) => [X(t), Y(v)]), "#9a9aa8", 2.5, true);
       
     });
-    const live = snow(keff);
+    const live = long.slice(0, H + 1);
     s += line(live.map((v, t) => [X(t), Y(Math.max(0.4, v))]), "#e5484d", 5);
     $("c5sv1").innerHTML = s;
-    const t80 = live.findIndex(v => v >= 0.8), fin = live[TT];
+    const t80 = long.findIndex(v => v >= 0.8), fin = long[TT];
     let m;
-    if (keff > 0.0001) m = `Net loop gain k${on ? "−c" : ""} = <b>${keff.toFixed(2)} &gt; 0</b>: positive feedback dominates, and the leader’s share climbs all the way to 100%.` + (t80 >= 0 ? `The outcome is basically decided around turn <b>${t80}</b>.` : `Not at 80% within 300 turns, but <b>the direction is set, just slower</b>.`) + (on ? "" : " Try lowering k: it is only later, and the end point is the same. Then tick “catch-up mechanic” and set c above k.");
+    if (keff > 0.0001) m = `Net loop gain k${on ? "−c" : ""} = <b>${keff.toFixed(2)} &gt; 0</b>: positive feedback dominates, and the leader’s share climbs all the way to 100%.` + (t80 >= 0 ? `The outcome is basically decided around turn <b>${t80}</b>.` : `Not at 80% within 3000 rounds, but <b>the direction is set and it is only slower</b>.`) + (H > TT ? ` To show the ending, the horizontal axis has been stretched automatically to ${H} rounds.` : "") + (on ? "" : " Try lowering k: it is only later, and the end point is the same. Then tick “catch-up mechanic” and set c above k.");
     else if (Math.abs(keff) <= 0.0001) m = "The two loops <b>exactly cancel</b>: the lead neither grows nor shrinks, and stays where it is.";
     else m = `Net loop gain = <b>${keff.toFixed(2)} &lt; 0</b>: negative feedback dominates, the gap is pulled back, and A’s share converges to <b>${(fin * 100).toFixed(0)}%</b> (close to 50%). Note that catching up too hard has a cost too: when c is far larger than k, the leader’s effort is flattened out.`;
     $("c5o1").innerHTML = m;
@@ -840,7 +885,6 @@ const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
   ["c5k", "c5cu", "c5c"].forEach(id => $(id).addEventListener("input", draw1));
   $("c5cu").addEventListener("change", draw1);
 
-  
   const T2 = 200;
   function eco(I, D, tau) {
     let g = 0; const out = [0];
@@ -886,9 +930,11 @@ const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
   function render() {
     let pts = "";
     for (let x = 0; x <= 700; x += 4) pts += x + "," + Y(x).toFixed(1) + " ";
-    let s = '<polygon points="0,262 ' + pts + '700,262" fill="#b6e8a8" stroke="#2b2b3a" stroke-width="3.5"/>';
-    s += '<text x="170" y="' + (Y(170) - 44) + '" text-anchor="middle" font-size="17">Small hill</text>';
-    s += '<text x="520" y="' + (Y(520) - 24) + '" text-anchor="middle" font-size="17">Main peak</text>';
+    let s = '<defs><radialGradient id="c5fgr"><stop offset="0.55" stop-color="#000"/><stop offset="1" stop-color="#fff"/></radialGradient><mask id="c5fgm"><rect width="700" height="284" fill="#fff"/><circle cx="' + hx + '" cy="' + (Y(hx) - 10) + '" r="85" fill="url(#c5fgr)"/></mask></defs>';
+    s += '<polygon points="0,262 ' + pts + '700,262" fill="#b6e8a8" stroke="#2b2b3a" stroke-width="3.5"/>';
+    s += '<rect width="700" height="284" fill="#e6edf3" fill-opacity=".72" mask="url(#c5fgm)" pointer-events="none"/>';
+    s += '<text x="200" y="142" text-anchor="start" font-size="17">Small hill</text>';
+    s += '<text x="540" y="44" text-anchor="start" font-size="17">Main peak</text>';
     s += '<text x="20" y="22" font-size="16">Click anywhere on the chart to put the climber there</text>';
     const cy = Y(hx) - 10;
     s += '<circle cx="' + hx + '" cy="' + cy + '" r="10" fill="#e5484d" stroke="#2b2b3a" stroke-width="3"/>';
@@ -953,10 +999,10 @@ const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
 GD.mountQuiz($("quiz"), [
   { q: "Which of the following is closest to the meaning of “emergence”?", opts: ["The designer writes every kind of play into the rules one by one", "The whole shows behavior not visible in any single rule, arising from the interactions between rules", "The game uses random numbers", "The player cheats"], a: 1, why: "Emergence is new behavior at the level of the whole, arising from interactions between the parts. It does not depend on randomness (the Game of Life is fully deterministic), nor is it written out one by one by the designer." },
   { q: "[Why] Why do predator and prey numbers rise and fall periodically, with the foxes’ peak always later than the rabbits’?", opts: ["Because random numbers are at work", "Because of negative feedback with a delay: foxes increase only after rabbits become plentiful, and then fall because they ate the rabbits out", "Because rabbits learned to hide", "Because the model has a bug"], a: 1, why: "More rabbits, more foxes (with a delay); fewer rabbits left, foxes starve (with another delay). Negative feedback plus delay produces oscillation, with no randomness or “learning” needed." },
-  { q: "A game economy is badly inflated (gold only comes in, never goes out). By Meadows’s “leverage points” view, which change is worth considering first?", opts: ["Cut the gold dropped by each monster a tiny bit", "Add gold sinks so that outflow and inflow form a balancing loop (such as a tax or upkeep that grows with the stock)", "Raise all prices by 1%", "Do nothing and wait for players to adapt"], a: 1, why: "Changing the feedback structure is usually more powerful than changing numbers. Only cutting inflow without any outflow still lets the stock rise; adding a “drain” that grows with the water level is what changed the system’s structure (you verified this by hand on the leverage test bench)." },
+  { q: "A game economy is badly inflated (gold only comes in, never goes out). By Meadows’s “leverage points” view, which change is worth considering first?", opts: ["Cut the gold dropped by each monster a tiny bit", "Add gold sinks so that outflow and inflow form a balancing loop (such as a tax or upkeep that grows with the stock)", "Raise all prices by 1%", "Do nothing and wait for players to adapt"], a: 1, why: "Changing the feedback structure is usually more powerful than changing numbers. Reducing only the inflow without outflow still lets the stock rise. Adding a “drain” that grows with the water level changed the system’s structure (already verified by hand in the leverage testbed)." },
   { q: "[Why] After a new version goes live, almost every player uses the same strongest build. From the angle of “local optimum,” what is the most likely reason?", opts: ["Players have no creativity", "Every player improves their own play step by step, and they all climb the same hill together", "The game has a bug", "The designer favors this build"], a: 1, why: "Improving in small steps toward “better” easily traps you on the highest hill nearby. To get diversity, other routes have to be given a chance to stand out, or a little exploration encouraged." },
   { q: "[Why it was invented] What question was Conway mainly trying to answer in designing the Game of Life?", opts: ["How to make the best-looking game", "Whether extremely simple rules could produce complex, hard-to-predict behavior (inspired by von Neumann’s self-replicating machine)", "How to make computers beat humans at Go", "How to set difficulty for players"], a: 1, why: "Conway, inspired by von Neumann’s self-replicating machine, wanted much simpler rules; he also conjectured that “no pattern can grow without limit” and offered a $50 prize, later overturned by Gosper’s group’s glider gun." },
-  { q: "[Why it was invented] During World War I, with less fishing in the Adriatic, the share of predatory fish in the catch went up. How does Volterra’s model explain it?", opts: ["Predators are naturally better at dodging nets", "Fishing pushes down prey and predators together but hurts predators more; when fishing stops, predators recover more", "The war killed off all the prey", "It is statistical error and can’t be explained"], a: 1, why: "In the simplest model, fishing is equal to raising the death rates of both: the average prey number is proportional to (predator death rate + fishing), and the average predator number is proportional to (prey birth rate − fishing). So with less fishing, the predators’ share rises. This model was proposed precisely to explain this puzzle." },
+  { q: "[Why it was invented] During World War I, with less fishing in the Adriatic, the share of predatory fish in the catch went up. How does Volterra’s model explain it?", opts: ["Predators are naturally better at dodging nets", "Fishing pushes down prey and predators together but hurts predators more; when fishing stops, predators recover more", "The war killed off all the prey", "It is statistical error and can’t be explained"], a: 1, why: "In the simplest model, fishing amounts to raising both death rates at once: the prey’s average is proportional to (predator death rate + fishing), and the predator’s average is proportional to (prey birth rate − fishing). So with less fishing, the predators’ share rises." },
 ]);
 
 </script>

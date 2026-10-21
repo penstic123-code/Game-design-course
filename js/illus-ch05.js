@@ -53,7 +53,7 @@
 
   illusAdd("c05_monsters", "关卡里摆满怪物，每只各走各的巡逻线，彼此毫无联系",
     Array.from({ length: 18 }, (_, i) => { const x = 22 + (i % 6) * 32, y = 44 + Math.floor(i / 6) * 32; return C(x, y, 6, "#ffb3c6") + P("M" + (x - 11) + " " + (y + 11) + " h22", "none", ' stroke-width="2" stroke-dasharray="3 3"'); }).join(""),
-    T(100, 22, 13, "50 个怪，各走各的", "middle") + T(100, 136, 12, "只是数量多，不是涌现", "middle"));
+    T(100, 22, 13, "50 个怪（只画一部分）", "middle") + T(100, 136, 12, "只是数量多，不是涌现", "middle"));
 
   illusAdd("c05_dicevslife", "左边是随机撒的一堆点，乱成一团；右边是完全确定的规则，却让五个格子拼成的滑翔机一格格走下去",
     '<path d="M100 28 V120" stroke-dasharray="4 6" stroke-width="2.5"/>' +
@@ -79,11 +79,12 @@
     P("M56 50 Q100 28 142 50 M134 42 l10 8 l-12 4", "none", ' stroke-width="3"') + P("M144 90 Q100 114 56 74 M64 74 l-10 2 l6 -10", "none", ' stroke-width="3" stroke-dasharray="3 5"'),
     T(100, 18, 13, "太热就关，太冷就开", "middle") + T(32, 100, 12, "恒温器", "middle") + T(100, 132, 12, "拉回设定值", "middle"));
 
-  illusAdd("c05_kart", "赛车游戏：落后的车拿到发光的强力道具箱，正在追上前面的车",
+  illusAdd("c05_kart", "赛车游戏：落后的粉色车拿到发光的强力道具箱，正在追上前面的蓝色车",
     ground + R(20, 92, 40, 16, "#ffb3c6") + C(28, 112, 6, "#6b6b7d") + C(52, 112, 6, "#6b6b7d") + C(40, 84, 7, SK) +
     R(130, 100, 30, 12, "#a8dcf0") + C(136, 116, 5, "#6b6b7d") + C(154, 116, 5, "#6b6b7d") + C(145, 94, 5, SK) +
-    R(78, 52, 26, 26, "#ffe58a") + P("M91 60 v8 M91 72 v1", "none", ' stroke-width="3"') + P("M66 96 h-10 M66 104 h-14", "none", ' stroke-width="2.5"') + P("M70 40 l-6 -8 M110 40 l6 -8 M91 40 v-10", "none", ' stroke-width="2.5"'),
-    T(100, 22, 13, "落后 → 强道具", "middle") + T(91, 72, 15, "？", "middle"));
+    R(78, 52, 26, 26, "#ffe58a") + P("M91 60 v8 M91 72 v1", "none", ' stroke-width="3"') + P("M14 98 h-8 M14 106 h-10", "none", ' stroke-width="2.5"') + P("M70 40 l-6 -8 M110 40 l6 -8 M91 40 v-10", "none", ' stroke-width="2.5"') +
+    P("M80 78 Q64 80 54 88", "none", ' stroke-width="2.5" stroke-dasharray="4 4"') + P("M61 85 L53 89 L57 81", "none", ' stroke-width="2.5"'),
+    T(100, 22, 13, "落后 → 强道具", "middle") + T(91, 72, 15, "？", "middle") + T(40, 74, 12, "落后", "middle") + T(145, 82, 12, "领先", "middle"));
 
   illusAdd("c05_rubber", "领先的火柴人使劲往前跑，身后被一根越拉越紧的橡皮筋拽着",
     ground + G(150, 0.8, { arms: "stand", face: "sad", legs: "run", look: 1 }) + G(36, 0.8, { arms: "up", face: "grin", legs: "run" }) +
@@ -125,7 +126,7 @@
   illusAdd("c05_conway", "康威戴着眼镜伏在桌前，在方格纸上用笔一格格试规则",
     R(60, 106, 126, 6, "#c98f5a") + P("M66 112 v14 M180 112 v14", "none", ' stroke-width="4"') + R(96, 30, 78, 76, "#fff") + P("M96 56 h78 M96 82 h78 M122 30 v76 M148 30 v76", "none", ' stroke-width="1.5"') + sq(122, 56, 26, "#ffe58a") + sq(148, 82, 26, "#ffe58a") + sq(96, 82, 26, "#ffe58a") +
     G(46, 0.85, { arms: "desk", legs: "sit", face: "smile", glasses: true, hair: true }) + P("M60 100 L90 96", "none", ' stroke-width="4"'),
-    T(135, 22, 12, "1968 纸笔试规则", "middle"));
+    T(135, 22, 12, "纸笔试规则", "middle"));
 
   illusAdd("c05_gardner", "杂志专栏的版面上画着一只滑翔机，几位读者拿着信涌来",
     R(30, 18, 66, 90, "#fff") + R(30, 18, 66, 18, "#ffb3c6") + sq(54, 56, 10, "#ffe58a") + sq(64, 66, 10, "#ffe58a") + sq(44, 76, 10, "#ffe58a") + sq(54, 76, 10, "#ffe58a") + sq(64, 76, 10, "#ffe58a") +
@@ -153,12 +154,12 @@
     '<g stroke="#fff" fill="none"><path d="M96 66 q12 -22 24 0 t24 0 t24 0" stroke-width="2.5"/></g>',
     '<text x="136" y="42" font-size="13" text-anchor="middle" fill="#fff" stroke="none">兔子 × 狐狸</text>' + T(136, 108, 12, "1926 年的方程", "middle"));
 
-  illusAdd("c05_adriatic", "战时海上渔船很少，海里大鱼反而更多",
+  illusAdd("c05_adriatic", "战时海上渔船很少，捕食性的大鱼占的比例反而变高",
     R(0, 62, 200, 70, "#a8dcf0", ' stroke="none"') + P("M0 62 q12 -6 24 0 t24 0 t24 0 t24 0 t24 0 t24 0 t24 0 t24 0", "none", ' stroke-width="3"') +
     P("M150 56 h30 l-5 10 h-20z", "#c98f5a") + P("M165 56 V36 l12 12z", "#fff") +
     EL(50, 100, 22, 10, "#ffc078") + P("M72 100 l10 -8 v16z", "#ffc078") + eye(38, 98) + EL(100, 112, 22, 10, "#ffc078") + P("M122 112 l10 -8 v16z", "#ffc078") + eye(88, 110) +
     EL(150, 100, 9, 5, "#fff") + P("M159 100 l6 -4 v8z", "#fff"),
-    T(100, 22, 13, "停战捕捞，大鱼反而更多", "middle"));
+    T(100, 22, 13, "战时少捕捞，捕食者占比变高", "middle"));
 
   illusAdd("c05_lynx", "毛皮收购记录里，猞猁数量的高峰总比雪兔晚一两年",
     P("M12 112 H190 M12 112 V30", "none", ' stroke-width="3"') + P("M14 84 q16 -52 32 0 t32 0 t32 0 t32 0", "none", ' stroke="' + BLUE + '" stroke-width="4"') +
@@ -191,7 +192,7 @@
 
   illusAdd("c05_isolated", "三十种道具各自关在自己的小格子里，用不到别的格子里的东西",
     Array.from({ length: 6 }, (_, i) => { const x = 14 + (i % 3) * 62, y = 34 + Math.floor(i / 3) * 52; return R(x, y, 52, 42, "#fff7cf") + C(x + 26, y + 21, 8, ["#ffb3c6", "#a8dcf0", "#b6e8a8", "#d8c8ff", "#ffc078", "#ffe58a"][i]); }).join(""),
-    T(100, 22, 13, "30 种道具，互不相识", "middle"));
+    T(100, 14, 12, "30 种道具，互不相识", "middle") + T(100, 28, 11.5, "（示意：只画了 6 种）", "middle"));
 
   illusAdd("c05_fog", "大雾里的登山者只能看脚下，顺着往高处走，爬上了身边的小山头，远处真正的高峰被雾遮住了",
     P("M0 126 Q40 76 84 126 Z", "#b6e8a8") + P("M96 126 Q150 8 200 126 Z", "#a8dcf0") +

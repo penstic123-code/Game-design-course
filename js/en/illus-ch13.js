@@ -120,7 +120,7 @@ ILLUS_EN_ADD({
 "c13_tl_berk": {
 "a": "On a city map, all four corners of an intersection are marked with small orange dots, showing that these corners have been rebuilt as gentle ramps",
 "t": [
-"15 corners"
+"Corner ramps"
 ]
 },
 "c13_tl_ada": {

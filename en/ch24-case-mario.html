@@ -21,6 +21,7 @@
   .stop{cursor:pointer}
   .stop:focus{outline:none}
   .stop:focus .hl,.stop:hover .hl{stroke-width:6}
+  .stop.sel .hl{stroke-width:8;stroke:#c0272d}
   .wbpal{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
   .wbpal .el{font:inherit;font-size:1rem;border:2.5px solid var(--ink);background:#fff;border-radius:14px 8px 14px 8px;padding:3px 12px;cursor:grab;touch-action:none;user-select:none}
   .wbpal .el.sel{background:var(--yellow);transform:rotate(-2deg)}
@@ -72,17 +73,18 @@
   </div>
 
   <div class="goals"><span class="time">⏱ about 45 min</span><h3>Learning goals</h3><ul>
-    <li>Explain why the opening of 1-1 puts just one Goomba, what the designers swapped out at the time, and why.</li>
-    <li>Take apart the teaching order of any level with “introduce → practice → vary,” and explain with the zone of proximal development and scaffolding why it teaches.</li>
-    <li>Say what forgiving feel and cheap failure each protect in the player, and know which statements are the designers’ recollections and which are only our reading afterward.</li>
+    <li>Explain why the opening of 1-1 puts out just one Goomba, what the designers swapped out then, and why.</li>
+    <li>Use “introduce → practice → vary” to break down the teaching order of any level, and explain with the zone of proximal development and scaffolding why it teaches well.</li>
+    <li>Say what forgiving feel and cheap failure each protect in the player, and also know which claims are the designers’ recollections and which are only after-the-fact readings.</li>
   </ul></div>
 
   
   <div class="sec"><span class="n">1</span><h2><span class="tag what">What it is</span>A first level without a single word</h2></div>
-  <p>Someone playing <i>Super Mario Bros.</i> for the first time sees not a word: no “press A to jump,” no “stomp enemies,” and nobody tells you to go right. Yet within a minute, most people have learned to run, jump, stomp and bump bricks.</p>
-  <p>This is Nintendo’s 1985 work, generally credited as designed mainly by Shigeru Miyamoto and Takashi Tezuka, with music by Koji Kondo. Its first level, 1-1, became the most-cited model of “teaching without text” in game design. What exactly did it do?</p>
+  <p>Someone playing <i>Super Mario Bros.</i> for the first time faces not a single word: no “press A to jump,” no “stomp enemies,” and nobody says to go right. Yet most people, in under a minute, have already learned to run, jump, stomp and bump bricks.</p>
+  <p>This is Nintendo’s 1985 work, generally credited as designed mainly by Shigeru Miyamoto and Takashi Tezuka, with music by Koji Kondo. Its first level, 1-1, became the most-cited model of “teaching without text” in game design. Its way of teaching breaks into three moves.</p>
   <div class="card">
     <svg viewBox="0 0 760 300" width="100%" role="img" aria-label="Mario’s core loop: run right, meet an obstacle, jump, clear it and collect, a harder next stretch">
+      <defs><marker id="c24lpar" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="14" refX="12" refY="7" orient="auto"><path d="M0,0 L14,7 L0,14 z" fill="#2b2b3a" stroke="none"/></marker></defs>
       <g class="rough" stroke="#2b2b3a" stroke-width="4" stroke-linejoin="round">
         <rect x="20" y="105" width="150" height="80" rx="22" fill="#ffe58a"/>
         <rect x="215" y="20" width="150" height="80" rx="22" fill="#a8dcf0"/>
@@ -90,8 +92,8 @@
         <rect x="590" y="105" width="150" height="80" rx="22" fill="#b6e8a8"/>
         <rect x="305" y="205" width="160" height="80" rx="22" fill="#d8c8ff"/>
         <g fill="none" stroke-width="4.5" stroke-linecap="round">
-          <path d="M172 128 Q195 80 213 66"/><path d="M367 60 L408 60"/><path d="M562 66 Q580 80 598 103"/>
-          <path d="M660 187 Q620 260 467 250"/><path d="M303 250 Q150 260 105 187"/>
+          <path d="M172 128 Q195 80 213 66" marker-end="url(#c24lpar)"/><path d="M367 60 L408 60" marker-end="url(#c24lpar)"/><path d="M562 66 Q580 80 598 103" marker-end="url(#c24lpar)"/>
+          <path d="M660 187 Q620 260 467 250" marker-end="url(#c24lpar)"/><path d="M303 250 Q150 260 105 187" marker-end="url(#c24lpar)"/>
         </g>
       </g>
       <g font-size="22" text-anchor="middle" fill="#2b2b3a">
@@ -109,28 +111,28 @@
   <div class="withimg">
     <span data-illus="c24_screen"></span>
     <div>
-      <p>Look at the very first screen after the game starts. You, a stretch of flat ground, a question-mark block overhead, and a Goomba walking toward you in the distance. There is nothing else: no second threat, no second thing to learn.</p>
-      <p>This screen does just one thing: it sets the concept of “enemy” alone in front of you. You have only two paths: run into it, or jump over it or onto it. Whichever you take, you understand at once: this thing hurts, and a stomp flattens it.</p>
+      <p>Look first at the very first screen when the game opens: the player, a stretch of flat ground, a question block overhead, and a Goomba walking in from far away. Nothing else: no second threat, no second thing to learn.</p>
+      <p>This screen does one thing: it sets the concept of “enemy” alone before the player. There are only two ways: run into it, or jump over it and stomp it. Whichever way you go, you understand at once: this guy hurts, and if you stomp on him, he flattens.</p>
       <p>1-1 teaches the player in three ways. The first is what you just saw: introduce alone first, then combine.</p>
     </div>
   </div>
   <div class="eg" data-ic="🍄"><span data-illus="c24_e_goomba"></span><div class="egt"><b>Mario</b>: the opening has only one Goomba and no other threat beside it. Only later come combinations like “pipe + enemy” and “pit + platform.”</div></div>
-  <div class="eg" data-ic="🚗"><span data-illus="c24_e_drive"></span><div class="egt"><b>Learning to drive</b>: practice starting and stopping on an empty lot first, then merge and change lanes on the road. Nobody throws you into rush hour on day one.</div></div>
+  <div class="eg" data-ic="🚗"><span data-illus="c24_e_drive"></span><div class="egt"><b>Learning to drive</b>: first practice starting and stopping on an empty lot, then go on the road to meet other cars and change lanes. Nobody is thrown into the morning rush hour on day one.</div></div>
   <div class="eg" data-ic="🎹"><span data-illus="c24_e_piano"></span><div class="egt"><b>Learning the piano</b>: master one hand first, then play with both. Practicing both hands at once is learning two new things at once.</div></div>
   <div class="eg bad" data-ic="🪧"><span data-illus="c24_e_wall"></span><div class="egt"><b>The “tutorial wall”</b>: ten pop-up boxes in the first minute, eight systems explained at once. With so much information, the player remembers nothing, and might as well just play. <b>The point of this counterexample: not teaching too little, but teaching too much at once.</b></div></div>
 
   
-  <div class="sec"><span class="n">2</span><h2><span class="tag origin">How it was invented</span>With no text, how do you teach a first-time player?</h2></div>
+  <div class="sec"><span class="n">2</span><h2><span class="tag origin">How it was invented</span>Teaching a first-time player with no text at all</h2></div>
   <div class="story">
     <h3>1985: plug in the cartridge and play, and few opened the manual</h3>
-    <p>Home consoles then had no such thing as “onboarding.” Players got a cartridge and started playing, and the manual might lie in a drawer for a lifetime. The designers faced a very real problem: at the start of the first level the player knows nothing, so how do you, without writing a word, get them to learn to run, jump, stomp enemies and bump bricks?</p>
-    <p>More interesting, according to Takashi Tezuka’s recollection, 1-1 was not made first, but fixed in the last stage of development to balance the difficulty of the whole game. That is, this “teaching model” was tuned again and again, not a single flash of inspiration.</p>
-    <p>Before looking at how they did it, <b>play level designer yourself</b>.</p>
+    <p>Home consoles back then had no such thing as an “onboarding tutorial.” Players got a cartridge and started playing, and the manual lay in a drawer for life. The designer’s problem was very real: at the start of the first level the player knows nothing, so how can he be taught, without a single word, to run, jump, stomp enemies and bump bricks?</p>
+    <p>According to Takashi Tezuka’s recollection, 1-1 was fixed in the last stage of development to balance the difficulty of the whole game; it was not made first. That is, this “teaching model” was tuned again and again, with no single flash of inspiration.</p>
+    <p>First, <b>play level designer yourself</b>.</p>
   </div>
 
   <div class="board" id="c24wb">
     <h3>🧰 Experiment A: design your opening (6 slots)</h3>
-    <p class="small">Drag elements into the slots below (or click an element first, then a slot; click a filled slot to take it back). The “danger” in the curve below is an illustrative value I assigned each element, and the “skill” assumes the player learns a bit more with each slot passed. See where it gets too steep to get past.</p>
+    <p class="small">Drag elements into the slots below (you can also click an element first, then a slot; click a placed slot to take it back). The “danger” in the curve below is an illustrative value assigned to each kind of element, and “skill” assumes the player learns a little more with each slot passed. See where it gets too steep to get past.</p>
     <div class="wbpal" id="c24pal"></div>
     <div class="wbslots" id="c24slots"></div>
     <svg viewBox="0 0 600 200" width="100%" role="img" aria-label="The danger and player-skill curve of your opening" id="c24curve"></svg>
@@ -141,13 +143,13 @@
   </div>
   <div class="sticky">Try it: arrange an opening with “no red warnings”; then deliberately put “Goomba + pit” in slot 1 and see how wide the gap between the skill line and the danger line splits.</div>
 
-  <p>Below are several public accounts of the design process of 1-1. They come from interviews with Miyamoto and Tezuka around 2015, some retold through the media, so take them as the designers’ own recollections, not word-for-word history:</p>
+  <p>Below are a few public accounts of the design process of 1-1. They come from interviews with Miyamoto and Takashi Tezuka around 2015, some relayed through the media, so take them as the designers’ own recollections, not verbatim historical fact:</p>
   <div class="timeline">
     <div class="ev hasimg"><span data-illus="c24_t_graph"></span><div><b class="yr">Graph paper</b> Tezuka said levels were first drawn on graph paper and handed to the programmers, with a playable version coming back only the next day, “a slow turnaround.” Small changes were made by laying tracing paper over the original, drawn and handed back in. Trial and error was costly, so every encounter had to be thought through beforehand.</div></div>
     <div class="ev hasimg"><span data-illus="c24_t_koopa"></span><div><b class="yr">The first enemy</b> According to a report of a 2015 <i>Eurogamer</i> interview, Miyamoto said they first wanted a Koopa (a turtle) as the opening enemy, then felt that for a first-time player “jump on it and kick it away” was a bit too hard. A shell is not dealt with by a single stomp, so they made a “bad mushroom” instead, the Goomba.</div></div>
-    <div class="ev hasimg"><span data-illus="c24_t_mush"></span><div><b class="yr">The mushroom</b> According to a report of the same interview, Miyamoto wanted the player to feel the reaction of “Mario getting big,” and getting big needed a power-up, hence the Super Mushroom. It looks a bit like the Goomba, and newcomers often dodge it; but the low bricks overhead make it hard not to touch, and one touch makes you big, and only then do you understand “it’s a good thing.”</div></div>
+    <div class="ev hasimg"><span data-illus="c24_t_mush"></span><div><b class="yr">Mushroom</b> According to a report on the same interview, Miyamoto wanted players to feel the reaction of “Mario growing big,” and growing needed an item, hence the Super Mushroom. It looks a bit like a Goomba, and beginners often dodge it. But the low-hanging bricks overhead make it hard not to touch, and one touch makes Mario big, so only then do they understand “it’s a good thing.”</div></div>
     <div class="ev hasimg"><span data-illus="c24_t_hole"></span><div><b class="yr">Learning as you play</b> Miyamoto said the purpose of the first level is to let players “learn what this game is about”; he wanted players to grasp the rules while doing the things they would naturally do, with no tutorial. He also said one line: once players understand what to do, “it becomes their game.”</div></div>
-    <div class="ev hasimg"><span data-illus="c24_t_watch"></span><div><b class="yr">Repeated playtesting</b> Tezuka (2015 <i>Sankei Shimbun</i> interview) said levels almost never succeed the first time, “people rarely play the way you intended,” so he watches from the side and then adjusts; when designers make levels themselves, because they know the answer, “they inevitably make them too hard.”</div></div>
+    <div class="ev hasimg"><span data-illus="c24_t_watch"></span><div><b class="yr">Testing again and again</b> Takashi Tezuka (2015 <i>Sankei Shimbun</i> interview) said a level almost never works the first time, that “people seldom play the way designers imagine,” so he watches from the side and then adjusts. When designers build levels themselves, “they inevitably make them too hard.”</div></div>
   </div>
   <p class="small">Sources: <a href="https://www.gamerevolution.com/features/362525-perfect-level-super-mario-bros-world-1-1-changed-everything">Game Revolution’s quotation of Miyamoto’s <i>Eurogamer</i> interview</a>; <a href="https://www.gigazine.net/gsc_news/en/20150914-mario-world-making">GIGAZINE (2015-09-14, retelling the Eurogamer interview)</a>; <a href="https://soranews24.com/2015/09/09/super-mario-bros-creator-explains-how-and-why-he-designed-world-1-1-of-the-8-bit-classic-%E3%80%90video%E3%80%91/amp/">SoraNews24 (2015-09-09)</a>; <a href="https://shmuplations.com/?p=22080">Tezuka’s <i>Sankei Shimbun</i> interview (2015-11-30, English translation by shmuplations)</a>. Retold content may differ slightly from the original words, and only the parts on which the sources agree are taken here.</p>
 
@@ -182,8 +184,8 @@
   <div class="card">
     <svg viewBox="0 0 760 330" width="100%" role="img" aria-label="1-1’s teaching timeline: Goomba, question block, pipe, pit, stairs and flagpole">
       <g class="rough" stroke="#2b2b3a" stroke-width="4" stroke-linejoin="round">
-        <rect x="20" y="200" width="270" height="22" fill="#e0a06a"/>
-        <rect x="330" y="200" width="410" height="22" fill="#e0a06a"/>
+        <rect x="20" y="200" width="465" height="22" fill="#e0a06a"/>
+        <rect x="545" y="200" width="195" height="22" fill="#e0a06a"/>
       </g>
       <g class="stop" tabindex="0" role="button" data-i="0" aria-label="Station 1 Goomba">
         <rect class="hl" x="30" y="40" width="120" height="46" rx="14" fill="#ffe58a" stroke="#2b2b3a" stroke-width="4"/>
@@ -198,13 +200,13 @@
       <g class="stop" tabindex="0" role="button" data-i="2" aria-label="Station 3 pipe">
         <rect class="hl" x="340" y="40" width="110" height="46" rx="14" fill="#b6e8a8" stroke="#2b2b3a" stroke-width="4"/>
         <text x="395" y="72" font-size="20" text-anchor="middle" fill="#2b2b3a">③ Pipe</text>
-        <g class="rough" stroke="#2b2b3a" stroke-width="4"><rect x="350" y="160" width="22" height="40" fill="#7ed17f"/><rect x="392" y="135" width="22" height="65" fill="#7ed17f"/></g>
+        <g class="rough" stroke="#2b2b3a" stroke-width="4"><rect x="346" y="170" width="22" height="30" fill="#7ed17f"/><rect x="378" y="150" width="22" height="50" fill="#7ed17f"/><rect x="410" y="128" width="22" height="72" fill="#7ed17f"/></g>
       </g>
       <g class="stop" tabindex="0" role="button" data-i="3" aria-label="Station 4 pit">
         <rect class="hl" x="470" y="110" width="90" height="46" rx="14" fill="#ffb3c6" stroke="#2b2b3a" stroke-width="4"/>
         <text x="515" y="142" font-size="20" text-anchor="middle" fill="#2b2b3a">④ Pit</text>
-        <path d="M292 205 L292 262 M328 205 L328 262" stroke="#2b2b3a" stroke-width="3" stroke-dasharray="6 5" fill="none"/>
-        <text x="310" y="282" font-size="17" text-anchor="middle" fill="#4b4b5e">Pit</text>
+        <path d="M485 205 L485 232 M545 205 L545 232" stroke="#2b2b3a" stroke-width="3" stroke-dasharray="6 5" fill="none"/>
+        <text x="515" y="224" font-size="17" text-anchor="middle" fill="#4b4b5e">Pit</text>
       </g>
       <g class="stop" tabindex="0" role="button" data-i="4" aria-label="Station 5 stairs and flagpole">
         <rect class="hl" x="590" y="40" width="150" height="46" rx="14" fill="#d8c8ff" stroke="#2b2b3a" stroke-width="4"/>
@@ -231,39 +233,48 @@
   <div class="withimg rev">
     <span data-illus="c24_weight"></span>
     <div>
-      <p>Teaching alone isn’t enough; the controls themselves must also be trustworthy. When you press the jump key, the character should jump when you want, as high as you want. If it is off by a little, the player doesn’t feel “I need more practice,” only “it doesn’t listen to me.”</p>
-      <p>According to GIGAZINE’s retelling of Miyamoto, he felt the earlier <i>Donkey Kong</i> had “low freedom,” so he let Mario move in the air after jumping; the “slide” while running was to give Mario a sense of weight. Jumping with a running start goes farther, and holding the jump key goes higher (<span class="term" tabindex="0" data-def="Variable jump height: the longer you hold the jump key, the higher you jump, and releasing early makes the jump lower, so the player can fine-tune where they land.">variable jump height</span>), and these later became standard in platformers.</p>
-      <p>Many such games add a more hidden layer of forgiveness: for a short time just after walking off a platform edge you can still jump, called <span class="term" tabindex="0" data-def="Coyote time: a short window after the character leaves a platform edge in which a jump is still allowed; the name comes from the coyote in cartoons who falls only after running off the cliff.">coyote time</span>; pressing jump an instant before landing and jumping as soon as you land is called <span class="term" tabindex="0" data-def="Input buffering: storing an action the player pressed slightly early and carrying it out when the conditions are met.">input buffering</span>. Which of these the original <i>Mario</i> used exactly, the community accounts differ, so no conclusion is drawn here; the mini level on the page makes them switches so you can feel them yourself.</p>
+      <p>Being able to teach is not enough; the controls themselves must be trustworthy. Press the jump key and the character should jump when the player wants, to the height the player wants. If it is off by a little, the player won’t think “I need to practice more,” only “it doesn’t listen to me.”</p>
+      <p>According to GIGAZINE’s relay of Miyamoto’s words, he felt the earlier <i>Donkey Kong</i> had “little freedom,” so he let Mario still move in the air after taking off. The “slide” when running gives Mario a sense of weight. A running start jumps farther, and holding the jump key jumps higher (<span class="term" tabindex="0" data-def="Variable jump height: the longer the jump key is held, the higher the jump; the earlier it is released, the lower, letting the player fine-tune where to land.">variable jump height</span>), and these later became standard features of platformers.</p>
+      <p>Many such games add a quieter layer of forgiveness: for a short moment after walking off the edge of a platform, jumping is still allowed. This is <span class="term" tabindex="0" data-def="Coyote time: a very short window after the character leaves the edge of a platform during which a jump is still allowed. The name comes from the cartoon coyote who only falls after running off a cliff.">coyote time</span>.</p>
+      <p>Pressing jump a moment before landing and jumping as soon as you land relies on <span class="term" tabindex="0" data-def="Input buffering: storing an action the player pressed a little earlier and executing it once the conditions are met.">input buffering</span>. Exactly which of these the original <i>Mario</i> used is reported differently in the community. The mini-level on the page makes them switches, so you can feel them yourself.</p>
     </div>
   </div>
-  <div class="eg" data-ic="🦊"><span data-illus="c24_e_coyote"></span><div class="egt"><b>Coyote time</b>: for a short time after stepping off the edge you can still jump. You won’t notice it exists, and only feel “I definitely pressed it right, and it did jump” (the mini level below lets you switch it on and off).</div></div>
-  <div class="eg" data-ic="⏱️"><span data-illus="c24_e_buffer"></span><div class="egt"><b>Input buffering</b>: pressing jump an instant before landing, then jumping right on landing. The hand is a little faster than the eye, and the game remembers the intention for you.</div></div>
-  <div class="eg" data-ic="📱"><span data-illus="c24_e_phone"></span><div class="egt"><b>A phone keyboard’s error tolerance</b>: if your finger lands a little off, you still type the letter you wanted. The same idea in life: don’t punish “almost.”</div></div>
-  <div class="eg bad" data-ic="🎯"><span data-illus="c24_e_frame"></span><div class="egt"><b>Frame-perfect, zero tolerance</b>: one frame off counts as failure, and the player feels “it isn’t my fault” rather than “I should practice.” <b>The point of this counterexample: forgiveness isn’t lowering difficulty, it is making the controls match the intention.</b></div></div>
+  <aside class="cc-card" aria-label="Concept card: Coyote Time and Input Buffering">
+    <span class="cc-tag">Concept card</span>
+    <p class="cc-name"><span>Coyote Time and Input Buffering</span></p>
+    <p class="cc-en">Coyote time and input buffering</p>
+    <p class="cc-by">Terms from the platformer community, with no agreed originator</p>
+    <p class="cc-def">Coyote time: for a short moment after walking off a platform edge, a jump is still allowed. Input buffering: an action pressed slightly early is stored and executed once the conditions are met. Both make the controls match the intention.</p>
+    <p class="cc-eg"><span class="cc-k">Example</span>You press jump a little late at the platform edge and the character still jumps; you press jump a moment before landing and jump the instant you land.</p>
+  </aside>
+  <div class="eg" data-ic="🦊"><span data-illus="c24_e_coyote"></span><div class="egt"><b>Coyote time</b>: for a short moment after walking off the edge of a platform, you can still jump. Players won’t notice it exists, only feel that “I pressed right, and it did jump” (the mini-level below lets you toggle it).</div></div>
+  <div class="eg" data-ic="⏱️"><span data-illus="c24_e_buffer"></span><div class="egt"><b>Input buffering</b>: press jump a moment before landing and jump as soon as you land. The hand is a little faster than the eye, and the game remembers the intention for the player.</div></div>
+  <div class="eg" data-ic="📱"><span data-illus="c24_e_phone"></span><div class="egt"><b>Error tolerance of a phone keyboard</b>: your finger taps a little off and you still get the letter you wanted. The same principle in daily life: don’t punish “almost.”</div></div>
+  <div class="eg bad" data-ic="🎯"><span data-illus="c24_e_frame"></span><div class="egt"><b>Frame-perfect judgment, zero tolerance</b>: failing by one frame makes the player feel “it’s not my fault,” not “I should practice.” <b>The point of the counterexample: forgiveness exists to make the controls match the intention, and the difficulty stays in the level.</b></div></div>
 
   
   <div class="sec"><span class="n">5</span><h2><span class="tag what">What it is</span>The third way: make failure cheap</h2></div>
-  <p>The third way is the least conspicuous and the most crucial. In 1-1 you will certainly fail several times: bumped by a Goomba, dropped into a pit. But a few seconds later you are standing near the start again, with your hand already on the jump key.</p>
+  <p>The third practice is the least conspicuous, yet the most crucial. In 1-1 you are sure to fail several times: hit by a Goomba, fall into a pit. But a few seconds later you are standing near the start again, with your hand already on the jump key.</p>
   <p>The cheaper failure is, the more the player dares to try jumps they are unsure of, and those “unsure tries” are exactly the main way they learn the game.</p>
   <div class="eg" data-ic="🔁"><span data-illus="c24_e_respawn"></span><div class="egt"><b>Mario</b>: fall in a pit or get hit, and you restart within seconds, with no need to rewatch an opening or walk a long road.</div></div>
   <div class="eg" data-ic="🏊"><span data-illus="c24_e_pool"></span><div class="egt"><b>Learning to swim</b>: splash about in the shallow end first, and you don’t go into deep water right away. The shallow end is a protected place for trial and error.</div></div>
-  <div class="eg" data-ic="📝"><span data-illus="c24_e_draft"></span><div class="egt"><b>Writing a draft</b>: you can scribble freely on scratch paper, with no pressure that “one mistake voids the whole book.” So you dare to write sentences you haven’t thought through.</div></div>
-  <div class="eg bad" data-ic="🥾"><span data-illus="c24_e_longrun"></span><div class="egt"><b>Half an hour to redo after failing</b>: each death means a long walk before you can try again, and the player chooses “not to take risks.” <b>The point of this counterexample: not failure itself, but the price of failure decides whether people dare to learn.</b></div></div>
+  <div class="eg" data-ic="📝"><span data-illus="c24_e_draft"></span><div class="egt"><b>Drafting</b>: scribble freely on scratch paper, with no pressure that “one mistake voids the whole notebook.” So you dare to write sentences you haven’t thought through.</div></div>
+  <div class="eg bad" data-ic="🥾"><span data-illus="c24_e_longrun"></span><div class="egt"><b>Half an hour to redo after failing</b>: each death means a long walk before you can try again, and the player chooses “not to take risks.” <b>The point of this counterexample: what decides whether people dare to learn is the price of failure, not failure itself.</b></div></div>
 
   <!-- 6 ZPD -->
   <div class="sec"><span class="n">6</span><h2><span class="tag why">Why it works</span>Why does climbing one step at a time teach</h2></div>
   <div class="withimg">
     <span data-illus="c24_ramp"></span>
     <div>
-      <p>Look back at the pipes: first short, then medium, then tall. Why not put the tallest first? Because the player’s question is never “can I jump?” but “can I clear it?” A short pipe he clears at once, and confidence is built; a medium pipe he must hold longer, and he learns something new; the tall pipe needs everything accumulated before. Each step asks a little more than what was just learned, and not so much more that it can’t be jumped.</p>
-      <p>Educational psychologists call this “a little more” range the <span class="term" tabindex="0" data-def="Zone of proximal development (ZPD): the range of what a learner cannot yet do alone but can do with help from a person or from design. (Vygotsky)">zone of proximal development</span>: what a learner can’t yet do alone but can reach with a helping hand. Too close, and there is nothing to learn; too far, and only frustration is left.</p>
-      <p>The “helping hand” in 1-1 is not a teacher but the level itself: the lonely first enemy, the flat runway, the pipes growing taller one notch at a time. They are like <span class="term" tabindex="0" data-def="Scaffolding: giving support while the learner temporarily can’t do something, then withdrawing it step by step as ability grows. (Wood, Bruner, Ross, 1976)">scaffolding</span> built beside a wall, taken away bit by bit as you get stronger.</p>
+      <p>Look back at the pipes: first short, then medium, finally tall. Why not put the tallest first? Because the player’s question is “can I make it over?”, not “can I jump?” The short pipe is cleared in one go, and confidence is built. The medium pipe needs holding the button a bit longer, and something new is learned. The tall pipe needs everything accumulated before. Each step asks a little more than what was just learned, but never so much that it can’t be cleared.</p>
+      <p>This range of “a little more” is, in educational psychology, the <span class="term" tabindex="0" data-def="Zone of proximal development (ZPD): the range of what a learner cannot yet do alone but can do with help from a person or from the design. (Vygotsky)">zone of proximal development</span>: what the learner cannot yet do alone but can reach with a helping hand. Too near, and there is nothing to learn. Too far, and only frustration remains.</p>
+      <p>The “helping hand” in 1-1 is not a teacher but the level itself: the lone first enemy, the flat runway, the pipes growing taller one notch at a time. They are like <span class="term" tabindex="0" data-def="Scaffolding: giving support while the learner can’t yet manage, and gradually taking it away as ability grows. (Wood, Bruner and Ross, 1976)">scaffolding</span> put up outside a wall, taken away bit by bit as the player grows stronger.</p>
     </div>
   </div>
   <div class="why-box">
     <h3>Who said it: Vygotsky and scaffolding</h3>
     <p>The zone of proximal development was proposed by the Soviet psychologist Lev Vygotsky, whose ideas were written mainly in the 1930s and later collected in <i>Mind in Society</i> (1978). The “scaffolding” metaphor comes from another body of work: in 1976 David Wood, Jerome Bruner and Gail Ross observed how tutors guided children through a building task, helping with the parts the child temporarily couldn’t do and gradually withdrawing as the child improved.</p>
-    <p>Note that moving this educational psychology onto game levels is an analogy, not strict experimental evidence. The zone of proximal development is itself a rather broad concept, often loosely cited in education, and how to measure it exactly is still debated.</p>
+    <p>Moving this educational psychology onto game levels is an analogy, with no strict experimental evidence. The zone of proximal development is itself a broad concept, and how to measure it is still debated.</p>
     <div class="src">Sources: L. S. Vygotsky, <i>Mind in Society</i> (1978); David Wood, Jerome S. Bruner &amp; Gail Ross, “The role of tutoring in problem solving,” <i>Journal of Child Psychology and Psychiatry</i> 17(2): 89–100 (1976).</div>
   </div>
 
@@ -273,13 +284,21 @@
     <span data-illus="c24_safe"></span>
     <div>
       <p>In reality, learning often costs you for failing: a bad exam leaves a transcript, a slip leaves consequences. So people are naturally conservative in reality and pick the safe road. Games can rewrite this account: fall in a pit and it costs a few seconds at most.</p>
-      <p>The education scholar James Paul Gee, in <i>What Video Games Have to Teach Us About Learning and Literacy</i> (2003), listed this as one of the learning principles of good games, using the psychologist Erikson’s term “psychosocial moratorium”: learners can take risks in a space where the consequences are turned down. His point is that bold attempts are themselves learning.</p>
-      <p>The small experiment below lets you turn two knobs yourself: whether the level’s difficulty is a staircase or a “cliff” from the start, and how long it takes to try again after failing.</p>
+      <p>The education scholar James Paul Gee, in <i>What Video Games Have to Teach Us About Learning and Literacy</i> (2003), listed this as one of the learning principles of good games. He used the psychologist Erikson’s term “<span class="term" tabindex="0" data-def="Psychosocial moratorium: a space where consequences are turned down, in which learners can take risks and make mistakes without bearing all the consequences at once. (proposed by Erikson; borrowed by Gee for learning through games)">psychosocial moratorium</span>,” meaning that learners can take risks in a space where the consequences are turned down, and that bold attempts are themselves learning.</p>
+      <p>In the small experiment below you can turn two knobs yourself: whether the level difficulty is stepped or a “cliff” from the start, and how long a restart takes after failure.</p>
     </div>
   </div>
+  <aside class="cc-card" aria-label="Concept card: Psychosocial Moratorium">
+    <span class="cc-tag">Concept card</span>
+    <p class="cc-name"><span>Psychosocial Moratorium</span></p>
+    <p class="cc-en">Psychosocial moratorium</p>
+    <p class="cc-by">Proposed by Erik Erikson; James Paul Gee · borrowed it for learning through games in <i>What Video Games Have to Teach Us About Learning and Literacy</i>, 2003</p>
+    <p class="cc-def">A space where consequences are turned down: learners can take risks and make mistakes in it without bearing all the consequences at once.</p>
+    <p class="cc-eg"><span class="cc-k">Example</span>Fall into a pit in 1-1 and a few seconds later you are standing near the start again, so players dare to try jumps they are not sure of.</p>
+  </aside>
   <div class="board">
     <h3>🧪 Experiment B: stairs versus cliff, and the price of failure</h3>
-    <p class="small"><b>This is this page’s illustrative model, with parameters set by this page, not measured.</b> 2000 simulated players face 6 obstacles in turn: the success rate depends on the obstacle’s difficulty and the player’s current skill; success teaches a lot and failure teaches a little; after each failure the player may quit because “retrying is too much trouble,” and the chance of quitting rises with the retry time.</p>
+    <p class="small"><b>This is an illustrative model for this page, with parameters set for this page, not measured.</b> 2000 simulated players face 6 obstacles in turn: the success rate depends on the obstacle’s difficulty and the player’s current skill. Success teaches quite a lot and failure teaches a little. After each failure, the player may give up because “restarting is too much trouble,” and the chance of quitting rises with the restart time.</p>
     <label class="ctl">Difficulty arrangement
       <select id="c24mode"><option value="ramp">Stairs: each obstacle a bit harder than the last</option><option value="cliff">Cliff: high difficulty from the start</option></select>
     </label>
@@ -287,16 +306,16 @@
     <button class="btn green" id="c24run">Run 2000 simulated players</button>
     <div class="c24sim" id="c24res" aria-live="polite"></div>
   </div>
-  <div class="sticky">Try it: first pick “Stairs,” drag the retry time to 3 seconds and to 60 seconds and run each once; then pick “Cliff” and repeat. See which knob has the bigger effect on “how many finish.” <span id="c24simtask" class="small"></span></div>
+  <div class="sticky">Try it: first choose “steps,” drag the restart time to 3 seconds and to 60 seconds and run each once; then choose “cliff” and repeat. Which knob affects “how many people clear it” more? <span id="c24simtask" class="small"></span></div>
 
   <div class="why-box">
     <h3>Gee’s argument and its limits</h3>
-    <p>Gee’s argument comes from his observation and theoretical thinking about game learning environments, not from controlled experiments. “Lowering the cost of failure helps learning” also has its range of application: it speaks of teaching and the beginner stage; for games that pursue high-risk thrills, high stakes are exactly the source of the fun, and other trade-offs apply. In 1-1 retrying is fast, which fits this principle of his.</p>
+    <p>Gee’s argument comes from his observation of, and theoretical thinking about, game learning environments, not from a controlled experiment. “Lowering the cost of failure helps learning” also has its range of application: it speaks of teaching and the beginner stage. For games that chase high-risk thrills, a high cost is exactly the source of the fun, and a different trade-off must be made. Restarting in 1-1 is fast, which fits this point of his.</p>
     <div class="src">Source: James Paul Gee, <i>What Video Games Have to Teach Us About Learning and Literacy</i> (2003), on “psychosocial moratorium” (the concept comes from Erik Erikson).</div>
   </div>
 
   <h3>Interactive: connect a principle to a phenomenon</h3>
-  <p>Hold one of the principle cards on the left and <b>drag a line</b> to the matching phenomenon on the right (or click the principle card first, then the phenomenon). A right link turns green and gives an explanation, a wrong one flashes red with a hint; a principle card can be reused.</p>
+  <p>Hold a principle card on the left and <b>drag a line</b> to the matching phenomenon on the right (you can also click the principle card first, then the phenomenon). A correct link turns green and gives an explanation; a wrong one flashes red with a hint. Principle cards can be reused.</p>
   <div class="card b" id="c24pair"></div>
   <div class="small" id="c24paircnt"></div>
 
@@ -336,7 +355,7 @@
     <button class="btn" id="kreset">Restore defaults</button>
     <p class="small">Jump height is roughly estimated as “strength² ÷ (2 × gravity),” in units of one brick; with variable jump height off, a tap and a hold are equally high.</p>
   </div>
-  <div class="sticky">Try it: ① with “Forgiving feel” on, deliberately jump a little late at a platform edge until the “Forgiveness saves” counter shows a number; ② turn off “Variable jump height” and go stomp the first Goomba: is it harder to fine-tune where you land?  <span id="c24task" class="small"></span></div>
+  <div class="sticky">Try it: ① With “forgiving feel” on, jump a little late off a platform edge on purpose, until a number pops up in “forgiveness saves” above. ② Turn off “variable jump height” and then go stomp the first Goomba: is it harder now to fine-tune where you land? <span id="c24task" class="small"></span></div>
 
   <div class="grid2">
     <div class="card y"><h3>① Safety first, then danger</h3><p>In a space without pressure, let the player learn the first move through their own trial and error. The lower the cost of failure, the bolder the learning.</p></div>
@@ -349,16 +368,16 @@
     <h3>Common misconceptions</h3>
     <ul>
       <li><b>“1-1 is the one right answer to teaching”</b>: it is just one effective approach; text tutorials and coach-style hints work equally well in other games.</li>
-      <li><b>“Teaching without text means giving no hints at all”</b>: 1-1’s hints are hidden in the layout, and the design work is not small; and, according to the designers, it was tuned through repeated playtesting.</li>
+      <li><b>“Teaching without text means no hints at all”</b>: the hints in 1-1 are hidden in the layout, and the design work is not small. And according to the designers, it was tuned through repeated playtests.</li>
       <li><b>“Forgiving feel means lowering difficulty”</b>: it makes the controls more “responsive,” and the difficulty is still in the level.</li>
-      <li><b>“Applying the principles equals understanding the design”</b>: the zone of proximal development and psychosocial moratorium are explanations after the fact, and we are not sure the designers thought that way at the time. The real test is to see how players play.</li>
+      <li><b>“Applying a principle means understanding the design”</b>: the zone of proximal development and the psychosocial moratorium are both after-the-fact explanations, and whether the designers thought this way back then cannot be confirmed. The real test is seeing how players play.</li>
     </ul>
   </div>
 
   <div class="reflect">
     <h3>Think about it: <span class="term" tabindex="0" data-def="Seeing only the successful cases and mistaking their practices for the cause of success; cases with the same practices that failed and were forgotten are ignored.">survivorship bias</span></h3>
-    <p>1-1 is cited countless times because <i>Super Mario Bros.</i> was a huge success. We rarely see the games that used similar “teaching without text” and remained unknown. So “it taught this way and so it succeeded” may be only survivorship bias: success also has hardware timing, brand, overall quality and many other factors.</p>
-    <p>Write a sentence: <b>in your own game, which design that “copies 1-1” might not suit it? Why?</b></p>
+    <p>1-1 is cited countless times because <i>Super Mario Bros.</i> was a huge success. We rarely see the games that used a similar “teaching without text” and remained unknown. So “it taught this way, therefore it succeeded” may be only survivorship bias: success also depends on hardware timing, brand, overall quality and many other factors.</p>
+    <p>Write one sentence: <b>in your own game, which design would be a poor fit if copied straight from 1-1? Why?</b></p>
     <textarea rows="3" data-save="ch24reflect" placeholder="E.g. my game is story-driven, and players need to be told the goal…"></textarea>
   </div>
 
@@ -368,18 +387,18 @@
       <li>1-1 teaches through designed situations, not text: introduce safely, practice repeatedly, then add variation.</li>
       <li>The key decision: the first enemy should be “one stomp and done” (according to Miyamoto’s recollection, the turtle was given up for this) and should appear alone; the mushroom comes out of an overhead block so newcomers can’t dodge it.</li>
       <li>Difficulty should climb along the player’s zone of proximal development; the level itself is the scaffolding.</li>
-      <li>Feel is a set of parameters: inertia, gravity, variable jump height, forgiveness time; the point of forgiveness is to make the controls match the intention.</li>
-      <li>Cheap failure makes players dare to try; and difficulty has to be tuned by watching players play, because the designer knows the answer.</li>
+      <li>Feel is a set of parameters: inertia, gravity, variable jump height, forgiveness windows. The purpose of forgiveness is to make the controls match the intention.</li>
+      <li>When failure is cheap, players dare to try. And difficulty has to be tuned by watching players play, because a level the designer builds is inevitably too hard.</li>
     </ul>
   </div>
-  <div class="tldr">1-1 builds scaffolding with the level itself, gives the controls forgiveness and makes failure cheap, so it teaches without a word, but it is only a much-discussed surviving case.</div>
+  <div class="tldr">1-1 builds scaffolding with the level itself, gives the controls forgiveness and makes failure cheap, so it teaches without a single word. But this is only a much-discussed successful case, not a universal recipe.</div>
 
-  <div class="sec"><span class="n">9</span><h2><span class="tag think">Practice</span>Practice</h2></div>
+  <div class="sec"><span class="n">9</span><h2><span class="tag think">Practice</span>Quiz</h2></div>
   <div id="quiz"></div>
 
   <div class="sec"><span class="n">10</span><h2><span class="tag think">Reflection</span>Your breakdown</h2></div>
   <div class="card o">
-    <p>Pick a game you like and recall its <b>first level (or starting village)</b>. What did it teach you without any text? Following “introduce → practice → vary,” write its first three encounters; then think: <b>if its first enemy were swapped for a harder one, what would happen?</b></p>
+    <p>Pick a game you like and recall its <b>first level (or starting village)</b>. What did it teach without text? Following “introduce → practice → vary,” write out its first three encounters. Then think: <b>what would happen if its first enemy were swapped for a harder one?</b></p>
     <textarea rows="6" data-save="ch24" placeholder="E.g. Hollow Knight: the narrow passage at the start → teaches me to attack → the same enemy moved up high, needing a jump to hit…"></textarea>
   </div>
 </main>
@@ -420,10 +439,10 @@ function mountLinkPair(root, cnt, P, items) {
     const it = items[i];
     if (it.a === p) {
       got[i] = true; done++; pairs.push({ p, i }); rb[i].classList.remove("bad"); rb[i].classList.add("ok");
-      fb[i].innerHTML = "✅ <b>" + P[p] + "</b>:" + it.why;
+      fb[i].innerHTML = "✅ <b>" + P[p] + "</b>: " + it.why;
     } else {
       miss++; rb[i].classList.remove("bad"); void rb[i].offsetWidth; rb[i].classList.add("bad");
-      fb[i].textContent = "❌ “" + P[p] + "” doesn’t quite fit. Hint:" + it.hint;
+      fb[i].textContent = "❌ “" + P[p] + "” doesn’t quite fit. Hint: " + it.hint;
       flash = { p, i }; setTimeout(() => { flash = null; draw(); }, 900);
     }
     upd(); draw();
@@ -519,11 +538,12 @@ function mountLinkPair(root, cnt, P, items) {
     
     let sv = '<g class="rough" fill="none" stroke="#2b2b3a" stroke-width="4" stroke-linecap="round"><path d="M50 34 V160 H580"/></g>';
     sv += '<g font-size="17" fill="#2b2b3a"><text x="58" y="26">Danger / skill</text><text x="470" y="190">Slot 1 → 6</text></g>';
-    const X = i => 90 + i * 85, Y = v => 160 - v * 25;
+    const X = i => 90 + i * 85, Y = v => 160 - v * 21;
     let ds = "", ss = "";
     pts.forEach(p => { if (!p) return; ds += (ds ? " " : "") + X(p.i) + "," + Y(p.d); ss += (ss ? " " : "") + X(p.i) + "," + Y(p.s); });
     if (ss) sv += '<polyline points="' + ss + '" fill="none" stroke="#4a7de0" stroke-width="5" stroke-dasharray="9 6"/>';
     if (ds) sv += '<polyline points="' + ds + '" fill="none" stroke="#e5484d" stroke-width="5"/>';
+    pts.forEach(p => { if (p) sv += '<circle cx="' + X(p.i) + '" cy="' + Y(p.s) + '" r="6" fill="#4a7de0" stroke="#2b2b3a" stroke-width="2"/>'; });
     pts.forEach(p => { if (p) sv += '<circle cx="' + X(p.i) + '" cy="' + Y(p.d) + '" r="9" fill="' + (flagged.includes(p.i) ? "#e5484d" : "#ffe58a") + '" stroke="#2b2b3a" stroke-width="3"/>'; });
     sv += '<g font-size="16" fill="#e5484d"><text x="320" y="26">━ Danger</text></g><g font-size="16" fill="#4a7de0"><text x="440" y="26">┅ Player skill</text></g>';
     $("c24curve").innerHTML = sv;
@@ -534,6 +554,7 @@ function mountLinkPair(root, cnt, P, items) {
       if (flagged.includes(i)) f.push("❗ Slot " + (i + 1) + "  “" + e.n + "”" + (i === 0 ? ": you meet it right at the start, when the player hasn’t learned anything yet." : ": the danger is above the player’s skill at this point, and it is easy to get stuck (try putting it later, or put a few practice ones first)."));
     });
     const filled = slots.filter(Boolean);
+    if (filled.length === 1) f.push("📈 Only one cell is filled, so there is no line yet. Place a few more and you will see the skill line (blue dashed) and the danger line (red) slowly pull apart.");
     if (filled.length === 6) {
       if (!filled.some(id => BY[id].d === 0)) f.push("💨 There is no “zero-risk” slot of breathing room anywhere, and the player will stay tense throughout.");
       const cnt = {}; filled.forEach(id => cnt[id] = (cnt[id] || 0) + 1);
@@ -547,18 +568,18 @@ function mountLinkPair(root, cnt, P, items) {
     const same = slots.filter((id, i) => id === ACTUAL[i]).length;
     $("c24rev").innerHTML = '<div class="card y"><p><b>The actual arrangement of the first half of 1-1 (simplified summary):</b>' + ACTUAL.map(id => BY[id].em + BY[id].n).join(" → ") + ".</p>" +
       "<p>Your arrangement matches it in the same slot in <b>" + same + " / 6</b> slots. Note a few key points: <b>① the opening is a single Goomba</b> (according to the designers’ recollection, so the first enemy could be solved with one stomp, no turtle was used); <b>② the question block follows right after</b>, letting you discover without pressure that “bumping a block gives a reward”; <b>③ the pipes go from low to high</b>, to practice “jumping” thoroughly; <b>④ pits and stairs come later</b>, to face higher risk with the skill already learned.</p>" +
-      '<p class="small">This order is a simplified summary of 1-1, not a cell-by-cell reconstruction; the “danger / skill” above is this page’s illustrative model, not the designers’ algorithm of the time. Your version being different doesn’t mean it’s wrong: it reminds you that <b>a good opening keeps the danger always a little higher than the skill, not far higher.</b></p></div>';
+      '<p class="small">This order is a simplified summary of 1-1, not a slot-by-slot reconstruction; the “danger/skill” above is this page’s illustrative model, and has nothing to do with the designers’ algorithm back then. Arranging it differently is fine too; what it reminds you is: <b>a good opening keeps the danger always a little above the skill, and far above is too hard.</b></p></div>';
   };
   render();
 })();
 
 const DX = [
-  ["Four pillars", "Goal · rules · feedback · voluntary", "<b>Goal</b>: reach the flagpole.<br><b>Rules</b>: stomping an enemy destroys it, touching it means failure; falling into a pit means failure; bumping a question block drops a coin.<br><b>Feedback</b>: the coin sound, the instant of the squash, the visuals and music.<br><b>Voluntary</b>: each attempt costs very little, and you can restart at any time."],
+  ["The four traits", "Goal · rules · feedback · voluntary", "<b>Goal</b>: reach the flagpole.<br><b>Rules</b>: stomping an enemy destroys it, touching it means failure; falling into a pit means failure; bumping a question block drops a coin.<br><b>Feedback</b>: the coin sound, the instant of the squash, the visuals and music.<br><b>Voluntary</b>: each attempt costs very little, and you can restart at any time."],
   ["Core loop", "Run → jump → clear", "Seconds: run up, take off, land. Minutes: a string of obstacles met in a level. Longer: level after level, difficulty and elements gradually increasing. Every obstacle is a small “action → immediate feedback” loop."],
   ["Player motivation", "Autonomy · competence", "<b>Competence</b>: from “killed by a Goomba” to “stomping it steadily,” the progress is visible to the eye.<br><b>Autonomy</b>: on the same stretch of road you can dash at full speed, collect coins, or explore the bricks. The designers gave one main road and left a few side paths."],
   ["Flow and difficulty", "The difficulty staircase", "The beginning is almost risk-free, then pipe heights, pits and more enemies are introduced gradually. The challenge advances along a slowly rising line, the player’s skill grows along the way, and it is easy to stay in the flow channel."],
   ["Feedback and feel", "Inertia and jump height", "Mario has the inertia of acceleration and deceleration, and the longer you hold the jump key the higher you jump (variable jump height), and with subtle forgiving design added, “jump as high as you want” becomes bodily intuition. The feel lab is its miniature."],
-  ["Levels and teaching", "Introduce · practice · vary", "The first enemy appears alone with no other distraction; the question block teaches the player “you can bump it”; then the same action is repeated on pipes and pits, with higher difficulty. <b>Alone first, then combined</b> is what this level most wants you to take away."],
+  ["Levels and teaching", "Introduce · practice · vary", "The first enemy appears alone, with no other distraction; the question block teaches the player “you can bump it”; after that the same action repeats on pipes and pits, at a higher difficulty. <b>Alone first, then combined</b> is what this level most wants the player to take away."],
 ];
 const seen = new Set();
 DX.forEach((d, i) => {
@@ -574,13 +595,13 @@ DX.forEach((d, i) => {
 });
 
 const TL = [
-  ["① The lone Goomba (introduce)", "The first screen often has only one enemy walking toward you, with no other threat beside it. You either jump or get hit: either way, you understand at once that “this thing hurts.” The cost of failure is small (restart), so it is a <b>safe introduction</b>."],
+  ["① The lone Goomba (introduce)", "The first screen has only one enemy walking toward you, with no other threat beside it. You either jump or get hit: either way, you understand at once that “this thing hurts.” The cost of failure is small (restart), so it is a <b>safe introduction</b>."],
   ["② The question block (introduce)", "The question block appears overhead in a conspicuous color and position, encouraging you to jump and bump it. It is often analyzed as: the designers wanted the player to discover without pressure the rule “bump a block for a reward,” hooking “jumping” to “reward.”"],
   ["③ Pipes (practice)", "The pipes grow taller gradually, requiring jumps of different lengths to clear. This is <b>practice</b> of “jumping”: the same action, with the difficulty scale rising notch by notch, and you learn “hold longer to jump higher” at the same time."],
-  ["④ The pit (vary)", "The pit is a “variation”: before, you couldn’t fall; now you fail. It is the same jump, but the consequence is raised, exactly putting the skill already learned into a higher-risk setting. By then you usually already have enough practice."],
+  ["④ The pit (vary)", "The pit is a “variation”: fall down a bottomless pit and you fail. It is the same jump, but the consequence is raised, and the skill already learned is put into a higher-risk setting. By then you usually already have enough practice."],
   ["⑤ Stairs and flagpole (vary / wrap up)", "The stairs require continuous jumps, a small synthesis of skill; the flagpole makes “arrival” clearly visible. Grabbing the pole higher usually scores more, a small “reward for mastery.” The whole stretch is like an easy graduation exam."],
 ];
-function showTL(i) { $("tlpanel").innerHTML = "<h3 style='margin:0'>" + TL[i][0] + "</h3><p>" + TL[i][1] + "</p>"; }
+function showTL(i) { document.querySelectorAll(".stop").forEach(x => x.classList.toggle("sel", +x.dataset.i === i)); $("tlpanel").innerHTML = "<h3 style='margin:0'>" + TL[i][0] + "</h3><p>" + TL[i][1] + "</p>"; }
 document.querySelectorAll(".stop").forEach(g => {
   const i = +g.dataset.i;
   g.addEventListener("click", () => showTL(i));
@@ -612,7 +633,7 @@ document.querySelectorAll(".stop").forEach(g => {
     for (let i = 0; i < N; i++) { const r = learner(mode, cost); if (r.done) { ok++; secs += r.secs; } tries += r.tries; }
     $("c24res").innerHTML = '<div class="stat">Players who finished <b>' + (ok / N * 100).toFixed(0) + '</b> %</div><div class="stat">Average number of tries <b>' + (tries / N).toFixed(1) + '</b></div>' +
       '<div class="stat">Average time of finishers <b>' + (ok ? (secs / ok).toFixed(0) : "–") + '</b> s</div><div class="stat">Players who quit midway <b>' + ((N - ok) / N * 100).toFixed(0) + '</b> %</div>';
-    $("c24simtask").textContent = "  ✔ Run once:" + (mode === "ramp" ? "Stairs" : "Cliff") + ", retry " + cost + "  s.";
+    $("c24simtask").textContent = "  ✔ Run once: " + (mode === "ramp" ? "Stairs" : "Cliff") + ", retry " + cost + "  s.";
   };
 })();
 
@@ -802,7 +823,7 @@ knobs(); reset(true); requestAnimationFrame(loop);
 GD.mountQuiz($("quiz"), [
   { q: "Why does 1-1 open by having the player face “one lone enemy”?", opts: ["To make the level look easy", "To let the player learn the basic rules by themselves in a safe, isolated situation", "To save production cost", "To increase the number of enemies"], a: 1, why: "Introducing one element alone first lets the player clearly connect “cause” and “result,” and this is a safe introduction." },
   { q: "[Why it was invented] According to Miyamoto’s recollection, why was the first enemy not a turtle (a Koopa) but made a Goomba?", opts: ["The turtle’s art was too expensive", "A turtle can’t be solved with one stomp, which is a bit too hard for a newcomer as the first enemy, so an enemy that is “one stomp and done” was needed", "Because a shell couldn’t be drawn", "Because players don’t like turtles"], a: 1, why: "His account: they first wanted to use a turtle, but felt that for a first-time player, jumping on it and then kicking it was a bit hard; so they made the “bad mushroom.” The first enemy should let the player solve it with the most basic move (jumping)." },
-  { q: "[Why it was invented] Why did Tezuka say to “watch how players play, then adjust,” instead of getting it right in one go himself?", opts: ["Because players like being watched", "Designers know the answer and easily make levels too hard, and people rarely play the way designers expect; only watching how new players actually play reveals it", "Because it saves money", "Because the rules require it"], a: 1, why: "This is his own recollection: making levels yourself, you inevitably make them too hard, and players rarely play the way you imagine." },
+  { q: "[Why it was invented] Why did Tezuka say to “watch how players play, then adjust,” instead of getting it right in one go himself?", opts: ["Because players like being watched", "Levels that designers build themselves inevitably come out too hard, and people rarely play the way designers expect; only watching how new players actually play reveals it", "Because it saves money", "Because the rules require it"], a: 1, why: "This is his own recollection: making levels oneself inevitably makes them too hard, and players seldom play the way the designer imagined." },
   { q: "In “introduce → practice → vary,” the pipes growing gradually taller are?", opts: ["Introduce", "Practice", "Vary", "Ending"], a: 1, why: "The same jump, with the difficulty rising notch by notch, is practice." },
   { q: "[Why] Why do the pipes get taller one notch at a time, rather than putting the tallest first?", opts: ["To save map space", "Each notch is only a little more than what was just learned, always within the player’s reach (the zone of proximal development), and the level itself acts as scaffolding", "Because tall pipes are harder to draw", "To make the player die more"], a: 1, why: "The zone of proximal development: what you can’t do alone but can reach with support. Too close, nothing to learn; too far, only frustration." },
   { q: "[Why] Why does “still being able to jump a short time after leaving a platform” make players feel the controls are precise?", opts: ["Because it makes the game easier", "It counts an “almost” action as success too, matching feedback to intention, and the player feels “I made it jump”", "Because players can’t see this mechanism", "Because it reduces the number of enemies"], a: 1, why: "Players are sensitive to the cause-and-effect of “key → result”; forgiving detection avoids the frustration of “but I did press it.”" },

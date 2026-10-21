@@ -97,8 +97,8 @@ ILLUS_EN_ADD({
 "c02_designers": {
 "a": "Game designers gather around a whiteboard covered in “drop rates,” one holding a treasure chest, borrowing rules from the lab to design rewards",
 "t": [
-"Drop rate 20%",
-"One every 5?"
+"On average 1 item per 5 monsters",
+"Which one? No telling"
 ]
 },
 "c02_gacha": {
@@ -119,11 +119,11 @@ ILLUS_EN_ADD({
 ]
 },
 "c02_kamin": {
-"a": "Kamin’s blocking experiment: a light already announces the shock, so when a bell is added, the animal does not learn what the bell means",
+"a": "Kamin’s blocking experiment: first a light announces the shock, then the light and a bell sound together, and the animal still does not learn what the bell means",
 "t": [
-"Light",
-"{y=4}Bell",
-"Shock",
+"First: light → shock",
+"Then: light + bell",
+"{y=4}Bell? Useless",
 "{y=-4}Already announced, nothing to learn"
 ]
 },
@@ -180,8 +180,8 @@ ILLUS_EN_ADD({
 "c02_stampcard": {
 "a": "Loyalty cards: two cards, one blank and one with two squares already stamped, and the stick figure holds the stamped one",
 "t": [
-"Blank",
-"2 free"
+"Blank, 8 squares",
+"10 squares, 2 free"
 ]
 },
 "c02_coffee": {

@@ -109,7 +109,10 @@ ILLUS_EN_ADD({
 },
 "c03_explorer": {
 "a": "Explorer: a stick figure holding a magnifying glass lies in front of a wall at the edge of the map, with a hidden room behind the wall",
-"t": []
+"t": [
+"Hidden room",
+"Magnifier"
+]
 },
 "c03_socializer": {
 "a": "Socializer: two stick figures sit side by side chatting happily, with overlapping speech bubbles and hearts overhead",
@@ -122,13 +125,13 @@ ILLUS_EN_ADD({
 ]
 },
 "c03_tour": {
-"a": "The same tour group: four stick figures each doing their own thing, one with a phone taking a landmark photo, one ducking into an alley, one chatting with a companion, one grabbing a better spot",
+"a": "The same tour group: four stick figures each doing their own thing, one with a phone taking a landmark photo, one ducking into an alley, one chatting as they walk, one rushing toward a good spot marked by a flag",
 "t": [
 "chat chat chat"
 ]
 },
 "c03_context": {
-"a": "Counterexample: the same stick figure in three scenes wearing three different hats, studying the map, climbing ranks, and chatting with friends",
+"a": "Counterexample: the same stick figure in three scenes holding different things: a magnifying glass while studying the map, a trophy while climbing ranks, and talking while playing with friends",
 "t": [
 "Newly hooked",
 "At max level",

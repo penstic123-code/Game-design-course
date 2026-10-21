@@ -41,7 +41,7 @@
     <div class="txt">
       <span class="badge">Chapter 12</span>
       <h1>Audio &amp; Visual Design</h1>
-      <p class="sub">Mute a game, then paint it as a pure black silhouette, and see what is left.</p>
+      <p class="sub">Mute the game and paint it in plain black silhouettes, and see what is left.</p>
     </div>
     <svg viewBox="0 0 190 150" class="rough" aria-hidden="true">
       <g stroke="#2b2b3a" stroke-width="5" stroke-linejoin="round" stroke-linecap="round">
@@ -57,9 +57,9 @@
   <div class="goals">
     <h3>Learning goals</h3>
     <ul>
-      <li>Name the <b>four functions</b> of sound in games, and use “envelope, pitch, duration” to design a sound effect that is understood at once.</li>
+      <li>Name the <b>four functions</b> of sound in a game, and design a sound effect that is understood the moment it is heard, using “envelope, pitch and duration.”</li>
       <li>Explain why <b>adaptive music</b> was invented, and tell “horizontal switching” from “vertical layering.”</li>
-      <li>Use color, shape, <b>silhouette</b> and <b>easing</b> to check whether a picture “reads at a glance and feels right,” and say why exaggeration and grouping grab attention.</li>
+      <li>Use color, shape, <b>silhouette</b> and <b>easing</b> to check whether a picture is “read at a glance and feels right,” and say why exaggeration and grouping catch attention.</li>
     </ul>
     <span class="time">about 45 min</span>
   </div>
@@ -68,9 +68,9 @@
   <div class="withimg">
     <span data-illus="c12_mute"></span>
     <div>
-      <p>Try a little experiment: play a small game you know well on your phone, and this time <b>turn the sound off</b>. You will find yourself dulled: you can’t tell whether you picked up the coin, whether someone is behind you, or even whether “that hit landed.”</p>
-      <p>Sound isn’t only there to be “pleasant”; it has been quietly passing along information for you all along. With the picture already so busy, why open another channel? Because eyes can look in only one direction, while ears can take in messages from all around at once without using up your line of sight.</p>
-      <p>Sound in a game broadly serves <b>four functions</b>, a split commonly used in the industry:</p>
+      <p>Play a familiar little game on a phone, this time with the <b>sound off</b>, and a person goes dull: no idea whether a coin was collected, no idea whether someone is behind them, not even sure whether “that hit landed.”</p>
+      <p>Sound is more than “pleasant to hear.” It is quietly carrying information all the time. The picture is already busy, and a second channel is still worth opening because the eyes can only look in one direction, while the ears take in messages from every side at once without using up the line of sight.</p>
+      <p>Sound in games does <b>four jobs</b>, a split commonly used in the industry:</p>
     </div>
   </div>
   <div class="card">
@@ -92,13 +92,13 @@
       </g>
     </svg>
   </div>
-  <div class="eg" data-ic="🪙"><span data-illus="c12_coin"></span><div class="egt"><b>Feedback</b>: the “ding” of collecting a coin in <i>Super Mario</i>. Short, bright, almost impossible to mishear. When we talked about game feel, we said sound often accounts for half of it.</div></div>
-  <div class="eg" data-ic="🎧"><span data-illus="c12_foot"></span><div class="egt"><b>Information</b>: in many shooters, footsteps tell you whether the enemy is upstairs or downstairs, even which side of a wall. You haven’t seen him, yet you already know where to hide.</div></div>
-  <div class="eg" data-ic="🍳"><span data-illus="c12_daily"></span><div class="egt"><b>Daily life</b>: the microwave’s “ding” is feedback, an ambulance siren is information, a violin tremolo in a film is emotion, and hearing, eyes closed, that someone is walking in from the left is space. You have long been a skilled “listener designer.”</div></div>
+  <div class="eg" data-ic="🪙"><span data-illus="c12_coin"></span><div class="egt"><b>Feedback:</b> the “ding” of a coin in <i>Super Mario</i>. Short, bright and almost impossible to mishear. Chapter 7, on game feel, mentioned that sound is an important part of feel.</div></div>
+  <div class="eg" data-ic="🎧"><span data-illus="c12_foot"></span><div class="egt"><b>Information</b>: in many shooters, the sound of footsteps tells you whether an enemy is upstairs or downstairs, even on which side of a wall. You haven’t seen him at all, yet already know where to take cover.</div></div>
+  <div class="eg" data-ic="🍳"><span data-illus="c12_daily"></span><div class="egt"><b>Everyday life:</b> a microwave’s “ding” is feedback, an ambulance siren is information, a violin tremolo in a film is mood, and with your eyes closed you can still tell someone is walking in from the left, which is space.</div></div>
   <div class="eg bad" data-ic="🔊"><span data-illus="c12_loud"></span><div class="egt"><b>Counterexample: everything makes a sound.</b> Every button click plays a gorgeous 3-second effect: cool the first time, annoying the tenth, and by the fiftieth you want to mute. The sound has become noise, the player suffers “listening fatigue,” and the sound that really matters is drowned out.</div></div>
 
   <div class="sec"><span class="n">2</span><h2><span class="tag what">What it is</span>Some principles of sound-effect design, and the “envelope”</h2></div>
-  <p>Designing a sound effect is really turning a few knobs. The most critical is the <span class="term" tabindex="0" data-def="The contour of a sound’s loudness over time, often described in four ADSR stages: Attack, Decay, Sustain, Release.">envelope</span>, that is, “how the sound starts and how it falls away.” With the same pitch, whether it starts fast or slow makes two entirely different things to the ear:</p>
+  <p>Designing a sound effect is tuning a few knobs. The most crucial is the <span class="term" tabindex="0" data-def="The contour of a sound’s loudness over time, often described in four ADSR stages: Attack, Decay, Sustain, Release.">envelope</span>, that is, “how this sound starts and how it ends.” At the same pitch, whether it starts fast or slow makes it sound like two completely different things:</p>
   <div class="card">
     <svg viewBox="0 0 700 290" width="100%" role="img" aria-label="ADSR envelope: the volume rises quickly to a peak (attack), falls to the sustain level (decay), holds for a while, and finally falls to zero (release).">
       <g class="rough" stroke="#2b2b3a" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -113,7 +113,7 @@
       </g>
     </svg>
   </div>
-  <p>A very short attack with no sustain is the <b>crisp</b> of a plucked string, a knock or a coin; a slow attack with a long release is the <b>soft</b> of a string pad or a magic incantation. This four-stage description comes from synthesizers, and the sound chips of early home machines handed you ADSR knobs directly.</p>
+  <p>A very short attack with no sustain is the <b>crisp</b> of a plucked string, a knock, a coin. A slow attack and long release is the <b>soft</b> of a string pad or a magic chant. This four-stage description comes from synthesizers, and the sound chips of early home machines directly offered ADSR knobs.</p>
   <div class="board">
     <div class="row">
       <button class="btn" id="c12_pl1">▶ Hear “crisp”: attack 2 ms</button>
@@ -123,7 +123,7 @@
     <div class="msg" id="c12_plmsg">The two notes have the same pitch, with only the envelope changed. Press either one first.</div>
   </div>
   <div class="sticky">Try it: listen to both, then close your eyes and think: which one is more like “picking up a coin,” and which is more like “charging a spell”?</div>
-  <p>A few more design rules of thumb, common practice in the industry rather than laws:</p>
+  <p>A few more design rules of thumb, all common practice in the industry:</p>
   <div class="grid3">
     <div class="card y mini"><div class="ico">🎚️</div><h3>Layering</h3><p>An “explosion” is often built from a low-frequency thump, a mid-frequency burst and high-frequency debris stacked together. Each layer handles one band of frequencies, so it doesn’t turn muddy.</p></div>
     <div class="card b mini"><div class="ico">👂</div><h3>Distinguishable</h3><p>Important sounds should be set apart from others in frequency, timbre or rhythm. “Getting hit” and “picking up” must never sound alike.</p></div>
@@ -134,7 +134,7 @@
   </div>
 
   <div class="sec"><span class="n">3</span><h2><span class="tag what">What it is</span>Music: looping, switching and silence</h2></div>
-  <p>Music has an inborn difficulty: <b>the player’s time is uncertain</b>. A film score can be written to a timeline; in a game you don’t know whether the player will stay in this room for 5 seconds or 5 minutes, nor on which beat a fight will break out. There are three common answers:</p>
+  <p>Music has an inborn problem: <b>the player’s time is uncertain</b>. A film score can just be written along the timeline. In a game you don’t know whether the player will stay 5 seconds or 5 minutes in this room, or on which beat the fight will break out. There are three common answers:</p>
   <ul>
     <li><b>Looping</b>: a piece of music plays over and over, end joined to start. The simplest, and the difficulty is keeping people from noticing the seam and the repetition.</li>
     <li><span class="term" tabindex="0" data-def="Switching between different music segments according to the game state, usually waiting for a bar line or the end of a phrase so it isn’t abrupt.">Horizontal switching</span>: when the state changes (from exploring to fighting), switch to a different piece of music, cutting in on a beat or a bar line.</li>
@@ -159,13 +159,13 @@
       </g>
     </svg>
   </div>
-  <p>The last often underrated tool is <b>silence</b>. The brain filters out something that is always sounding; if the music is suddenly pulled before a boss appears, leaving only breathing, the tension is actually greatest. Treat “quiet” as a deliberately designed “timbre,” not a blank.</p>
-  <div class="eg" data-ic="🍃"><span data-illus="c12_quiet"></span><div class="egt"><b>Silence as reward</b>: in some puzzle and exploration games, big areas have only wind and water, and music comes in only when you find the key object, so the music itself becomes the signal “you got it right.”</div></div>
-  <div class="eg" data-ic="🎬"><span data-illus="c12_horror"></span><div class="egt"><b>In daily life: horror films.</b> What really scares is often not the screaming strings but the second the music <b>stops</b>: something you have been listening to suddenly vanishes, and the body goes on alert before the mind.</div></div>
-  <div class="eg bad" data-ic="🔁"><span data-illus="c12_loop"></span><div class="egt"><b>Counterexample: forgetting that people stay a long time.</b> A 90-second loop plays for 40 minutes in a single level, restarting from the top each time and clashing with the rhythm of the footsteps. Nine times in ten the player goes into settings and turns the music off.</div></div>
+  <p>The last often underrated tool is <b>silence</b>. Whatever sounds all the time gets filtered out by the brain. When the music suddenly cuts before the boss appears, leaving only breathing, the tension is greatest. Treat “quiet” as a deliberately designed “timbre,” not as a blank.</p>
+  <div class="eg" data-ic="🍃"><span data-illus="c12_quiet"></span><div class="egt"><b>Silence as reward</b>: in large areas of some puzzle and exploration games there is only the sound of wind and water, and music is saved until the player finds a key object, so the music itself becomes a signal of “you did it right.”</div></div>
+  <div class="eg" data-ic="🎬"><span data-illus="c12_horror"></span><div class="egt"><b>Everyday: horror films.</b> More frightening than a screaming string section is the second when the music <b>stops</b>. When something you have been listening to suddenly vanishes, the body goes on alert before the brain does.</div></div>
+  <div class="eg bad" data-ic="🔁"><span data-illus="c12_loop"></span><div class="egt"><b>Counterexample: forgetting that people stay a long time.</b> A 90-second music loop plays for 40 minutes on the same level, restarting from the top each time and clashing with the rhythm of the footsteps. The player goes into the settings and turns the music off.</div></div>
 
   <div class="sec"><span class="n">4</span><h2><span class="tag what">What it is</span>Visuals (part 1): the language of color and shape</h2></div>
-  <p>The first job of visual design is not “looking nice” but <b>letting the player tell within 0.5 seconds: what is this, can I touch it, where should I look first</b>. The two most powerful tools are color and shape.</p>
+  <p>The first task of visual design is to <b>let the player tell within 0.5 seconds what it is, whether it can be touched, and where to look first</b>, and looking nice comes after. The two strongest tools are color and shape.</p>
   <h3>Color: hue, contrast and saturation</h3>
   <p>Hues often bring associations: red is danger and health, green is safety and healing, blue is calm and magic, yellow is attention and coins, purple is rare. But these associations <b>vary with culture and genre</b>, and the more reliable use is: <b>be consistent within one game</b>, so the player learns it once.</p>
   <div class="card">
@@ -188,7 +188,7 @@
       </g>
     </svg>
   </div>
-  <p>Two common tools: <b>contrast</b>, so that what you want the player to see stands apart from the background in lightness, saturation or hue; and <b>saturation is a limited budget</b>: if the whole screen is highly saturated there is no focus, so keep backgrounds low in saturation and save high saturation for things that are “interactive and important.”</p>
+  <p>Two methods are common. One is <b>contrast</b>: make what you want the player to see differ from the background in lightness, saturation or hue. The other is that <b>saturation is a limited budget</b>: if the whole picture is highly saturated, nothing stands out, so keep the background low in saturation and save the highly saturated colors for things that are “interactive and important.”</p>
   <h3>The language of shape</h3>
   <p>There is a famous experiment in psychology: show people a rounded shape and a spiky one and ask which is “bouba” and which is “kiki,” and the great majority say the round one is bouba. Designers have taken over this intuition that “shapes have personalities”:</p>
   <div class="card">
@@ -208,15 +208,15 @@
   <p class="small">This is design experience plus a little psychological support. <i>Super Mario</i> has round yet dangerous enemies and pointy yet cute characters, and breaking expectations is sometimes exactly the joke.</p>
   <div class="eg" data-ic="👾"><span data-illus="c12_enemy"></span><div class="egt"><b>Round and sharp</b>: in many games the enemies have pointed corners and asymmetric outlines, while the hero is rounder, with friendly proportions. The player hasn’t read a word, yet already knows whom to approach and whom to avoid.</div></div>
   <div class="eg" data-ic="🚸"><span data-illus="c12_signs"></span><div class="egt"><b>In daily life: road signs.</b> A triangle is a warning, a circle is a command or prohibition, a square gives information. The shape is itself a code, and a driver reads it at a glance from far off with no need to read.</div></div>
-  <div class="eg bad" data-ic="🔴"><span data-illus="c12_redclash"></span><div class="egt"><b>Counterexample: red doing two jobs.</b> Good pickups are red, while red also marks an enemy’s attack range. The player can only rely on memorizing text, not “knowing at a glance.”</div></div>
+  <div class="eg bad" data-ic="🔴"><span data-illus="c12_redclash"></span><div class="egt"><b>Counterexample: red doing two jobs</b>. Good pickups are red, and red also marks an enemy’s attack range. The player can only rely on memorizing words and can’t “know at a glance.”</div></div>
 
   <div class="sec"><span class="n">5</span><h2><span class="tag what">What it is</span>Visuals (part 2): hierarchy, silhouette and motion</h2></div>
   <div class="withimg rev">
     <span data-illus="c12_sil"></span>
     <div>
       <p><span class="term" tabindex="0" data-def="The order in which elements of a picture get noticed, controlled by size, contrast, color, position, motion and so on.">Visual hierarchy</span> decides where the player looks first: themselves first, then threats and goals, then interactive objects, and the background last. A homemade way to check: <b>squint</b>, or blur or desaturate the picture, and see whether the focus can still be made out.</p>
-      <p>Character design has a similar test, called <span class="term" tabindex="0" data-def="After a character is filled in as a solid silhouette, it can still be recognized at a glance, who it is and what it is doing.">silhouette readability</span>. Fill the character in solid black, and if you can still tell who it is, the outline is a success. In fast combat the player has no time to make out the patterns on clothes and can only recognize characters by outline.</p>
-      <p>Conversely, if a row of characters differ only in color and have exactly the same outline, filled in black they become five black blobs, and no pretty palette can save that.</p>
+      <p>Character design has a similar <span class="term" tabindex="0" data-def="Silhouette readability: after a character is filled in as a solid silhouette, you can still tell at a glance who it is and what it is doing.">silhouette readability</span> test: fill the character in solid black, and if you can still tell who it is, the outline is a success. In fast combat, players have no time to make out the pattern on the clothes and can only recognize people by outline.</p>
+      <p>Conversely, if a row of characters differs only in color and has exactly the same outline, once painted black it becomes five black blobs, and no pretty color scheme can save it.</p>
     </div>
   </div>
   <h3>Motion: why should movement “have expression”?</h3>
@@ -227,7 +227,7 @@
     <li><span class="term" tabindex="0" data-def="How an action’s speed changes over time, such as ease-in (slow to fast), ease-out (fast to slow) and bounce (overshoot then settle).">Easing</span> (slow in &amp; slow out): slower at the start and end, fast in the middle. Ease-out is the most comfortable for pop-ups, and a touch of “bounce” makes them look elastic.</li>
   </ul>
   <div class="card">
-    <svg viewBox="0 0 700 270" width="100%" role="img" aria-label="Five easing curves: linear, ease-in, ease-out, ease-in-out, bounce (overshoot). The horizontal axis is time and the vertical axis is position.">
+    <svg viewBox="0 0 700 276" width="100%" role="img" aria-label="Five easing curves: linear, ease-in, ease-out, ease-in-out, bounce (overshoot). The horizontal axis is time and the vertical axis is position.">
       <g class="rough" stroke="#2b2b3a" stroke-width="4" fill="none" stroke-linecap="round">
         <g transform="translate(30,40)"><path d="M0 0 V110 H100" stroke-width="2.5"/><path d="M0 110 L100 0" stroke="#e5484d"/></g>
         <g transform="translate(160,40)"><path d="M0 0 V110 H100" stroke-width="2.5"/><path d="M0 110 C42 110 100 0 100 0" stroke="#e5484d"/></g>
@@ -237,21 +237,21 @@
       </g>
       <g font-size="17" text-anchor="middle" fill="#2b2b3a">
         <text x="80" y="206">Linear</text><text x="210" y="206">Ease-in</text><text x="340" y="206">Ease-out</text><text x="470" y="206">Ease-in-out</text><text x="600" y="206">Bounce</text>
-        <text x="80" y="236" font-size="16">mechanical</text><text x="210" y="236" font-size="16">like speeding up</text><text x="340" y="236" font-size="16">like braking</text><text x="470" y="236" font-size="16">natural</text><text x="600" y="236" font-size="16">springy</text>
+        <text x="350" y="266" font-size="15" fill="#3f3f50" text-anchor="middle">In each small chart the horizontal axis is time and the vertical axis is how far it has gone; the dashed line in the bounce chart is the finish line</text><text x="80" y="236" font-size="16">mechanical</text><text x="210" y="236" font-size="16">like speeding up</text><text x="340" y="236" font-size="16">like braking</text><text x="470" y="236" font-size="16">natural</text><text x="600" y="236" font-size="16">springy</text>
       </g>
     </svg>
   </div>
-  <div class="eg" data-ic="🦘"><span data-illus="c12_landing"></span><div class="egt"><b>Squash and stretch</b>: in many side-scrolling action games the character stretches on takeoff and drops into a slight crouch on landing, kicking up dust. You don’t need to look at any numbers to know “it landed,” and you feel the character has some weight.</div></div>
-  <div class="eg" data-ic="📱"><span data-illus="c12_popup"></span><div class="egt"><b>In daily life: pop-ups and elevator doors.</b> A pop-up that “springs” out on a phone is friendlier than one that appears with a snap; an elevator door starts slowly, moves fast in the middle, and stops slowly. All easing, you just never noticed.</div></div>
+  <div class="eg" data-ic="🦘"><span data-illus="c12_landing"></span><div class="egt"><b>Squash and stretch</b>: in many side-scrolling action games the character is stretched taller on takeoff, and on landing squats slightly and kicks up dust. Without looking at any numbers you know “it landed,” and also feel the character has some weight.</div></div>
+  <div class="eg" data-ic="📱"><span data-illus="c12_popup"></span><div class="egt"><b>Daily life: pop-ups and elevator doors</b>. A phone pop-up that “springs” out is friendlier than one that appears with a “snap.” An elevator door starts gently, goes quickly in the middle, and stops gently. All of these are easing, never noticed.</div></div>
   <div class="eg bad" data-ic="🩸"><span data-illus="c12_hpbar"></span><div class="egt"><b>Counterexample: health that drains at a constant rate.</b> A health bar falls from full to 0 at constant speed, and every hit feels like “falling into a spreadsheet.” Add a small delay and a bounce, and the same number immediately has impact.</div></div>
   <h3>Style, consistency and the performance trade-off</h3>
-  <p>There is no “best” art style, only the “most suitable.” Pixel art, low-poly, hand-drawn and realistic each have costs: <b>realism</b> needs a lot of assets and performance, while a <b>stylized</b> look can reach a unified feel with very few resources. <b>Consistency</b> matters more than fineness: one set of lines, one palette and one set of proportions feels more like “one world” than a few top-class assets used together. Indie developers often start from “limits,” a fixed palette (say 16 colors) and a fixed resolution; the limit itself is the style.</p>
+  <p>Art style has no “best,” only “most suitable.” Pixel art, low poly, hand-drawn and realistic each have their costs: <b>realism</b> needs lots of assets and performance, while <b>stylization</b> can reach a sense of unity with very few resources. <b>Consistency</b> matters more than detail: one unified set of lines, palette and proportions feels more like “one world” than several top-grade assets mixed together. Indie developers often start from “limits,” such as a limited palette (16 colors) or limited resolution, and the limit itself becomes the style.</p>
 
   <div class="sec"><span class="n">6</span><h2><span class="tag origin">How it was invented</span>Limits create style: from 3 voices to music that “breathes”</h2></div>
   <div class="story">
-    <h3>Problem one: you have only three “mouths,” yet the player may interrupt you at any time</h3>
-    <p>In the early-1980s home computers and consoles, the sound chip was <b>a fixed piece of hardware, not a player</b>. It had only a handful of voices, each able to sound only one note at a time. You had to fit melody, bass and rhythm into those few voices, and keep one for sound effects. On top of that came another difficulty: a game is not a film, and <b>the player decides what happens and when</b>.</p>
-    <p>Now be the designer first. The little instrument below is looping “exploration” music, and imagine a fight suddenly breaks out: <b>how would you make the music keep up?</b> Try all three approaches and hear the difference (sound plays only after you click).</p>
+    <h3>Problem one: only three “mouths,” and the player may interrupt at any time</h3>
+    <p>In the early-1980s home computers and consoles, the sound chip was <b>a fixed piece of hardware, not a player</b>. It had only a handful of voices, each able to sound only one note at a time. Melody, bass and rhythm had to be squeezed into these voices, with one spared for sound effects. Another difficulty: a game is not a film, and <b>the player decides when what happens</b>.</p>
+    <p>The little instrument below is looping “exploration” music. If a fight suddenly breaks out, <b>how should the designer make the music keep up?</b> Try all three approaches and hear the difference (sound plays only after you click).</p>
     <div class="board">
       <div class="row">
         <button class="btn" id="c12_mgo">▶ Start exploration music</button>
@@ -266,18 +266,26 @@
       </div>
       <div class="msg" id="c12_mmsg">Press “Start” first, then press “Enter combat” at any moment. Press each button a few times and try different timings.</div>
     </div>
-    <div class="sticky" id="c12_mtry">Try it: use each of the three “enter combat” methods once (press “Back to exploring” after each to switch to the next), and notice which one makes you feel “the music is listening to me.”</div>
+    <div class="sticky" id="c12_mtry">Try it: use each of the three ways of “entering combat” once (after each, click “Back to exploration” before the next), and notice which one makes you feel “the music is listening to me.”</div>
     <button class="btn alt" id="c12_reveal">I’m done; show me how it was done back then</button>
     <div id="c12_hist" class="c12-hide">
-      <p>The differences you just heard are the wall that programmers and composers hit in history. A <b>hard cut</b> chops the phrase off mid-sentence, and the keys may even clash; <b>waiting for the bar line</b> is clean, but you lag half a beat; <b>layering</b> is instant and unbroken, provided the piece was written from the start to be “taken apart.”</p>
+      <p>The difference you just heard is the wall that programmers and composers hit in history. A <b>hard cut</b> chops a phrase off in the middle of the sentence, and the keys may clash. <b>Waiting for the bar line</b> is clean but half a beat slow. <b>Stacked layers</b> are instant and uninterrupted, provided the piece was written from the start to be “separable.”</p>
       <p>First came the limits of the hardware, and the first move musicians thought of was to turn the limits into a style: carefully distributing melody, bass and drum beats among those few voices. But as games grew longer and less predictable, “writing cleverly” was no longer enough, and music had to learn to <b>follow the game</b>.</p>
       <div class="timeline">
-        <div class="ev hasimg"><span data-illus="c12_tl_sid"></span><div><b class="yr">1981–1982</b> Bob Yannes at MOS Technology leads a small team designing the SID sound chip (6581), put into the Commodore 64. It has <b>3 voices</b>, each with four waveforms (triangle, sawtooth, variable pulse width, noise), its own ADSR envelope, and a programmable filter. It is said they originally wanted more voices, and under time pressure copied a single oscillator three times.</div></div>
+        <div class="ev hasimg"><span data-illus="c12_tl_sid"></span><div><b class="yr">1981–1982</b> Bob Yannes at MOS Technology led a small team designing the SID sound chip (6581), put into the Commodore 64. It has <b>3 voices</b>, each with four waveforms (triangle, sawtooth, variable pulse width, noise) and its own ADSR envelope, plus a programmable filter.</div></div>
         <div class="ev hasimg"><span data-illus="c12_tl_nes"></span><div><b class="yr">1980s</b> The Ricoh 2A03 in Famicom-class consoles has 5 channels: 2 pulse waves, 1 triangle wave, 1 noise and 1 DPCM sample channel. Musicians could only distribute melody, bass and drums among those few “mouths,” and this limit gradually became a highly recognizable “chiptune” style.</div></div>
         <div class="ev hasimg"><span data-illus="c12_tl_imuse"></span><div><b class="yr">1991</b> Michael Land and Peter McConnell, composers at LucasArts, dissatisfied with the audio systems of the day, create <b>iMUSE</b> (Interactive Music Streaming Engine). It lets music transition seamlessly with the action on screen, and was first used in <i>Monkey Island 2</i>. They later filed a patent for it (US 5,315,057).</div></div>
         <div class="ev hasimg"><span data-illus="c12_tl_mw"></span><div><b class="yr">Afterward</b> Horizontal switching and vertical layering become common tools, and audio middleware such as Wwise and FMOD make “control music by game parameters” standard: a designer pushes a “tension” fader and the drums and bass come in by themselves.</div></div>
       </div>
-      <p><b>Key insight</b>: <b>music is no longer a recorded timeline, but a system that responds to the game state</b>. The limit hasn’t gone away; it has just moved from “a few voices” to “how to synchronize and transition.”</p>
+      <aside class="cc-card" aria-label="Concept card: iMUSE and adaptive music">
+        <span class="cc-tag">Concept card</span>
+        <p class="cc-name"><span>Adaptive music</span></p>
+        <p class="cc-en">Adaptive music (iMUSE: Interactive Music Streaming Engine)</p>
+        <p class="cc-by">Michael Land, Peter McConnell · LucasArts’ iMUSE, 1991</p>
+        <p class="cc-def">Music that changes with the game state: either switching clips on a bar line (horizontal switching) or turning parts on and off by intensity (vertical layering).</p>
+        <p class="cc-eg"><span class="cc-k">Example</span>As danger rises, drums and bass come in layer by layer while the melody carries on, and the player feels “the music is listening to me.”</p>
+      </aside>
+      <p><b>Music is no longer a recorded timeline but a system that reacts to the game state</b>. The limits did not disappear; they just changed from “how many voices” to “how to synchronize and transition.”</p>
       <p class="src">Sources: the Wikipedia entries on iMUSE and the MOS 6581, and the Land/McConnell interviews they cite; accounts of the patent date differ a little, so only the patent number is given here. The Famicom channel count is from the Ricoh 2A03 entry.</p>
     </div>
   </div>
@@ -285,7 +293,7 @@
   <div class="story">
     <h3>Problem two: how do you make something drawn on paper “look like it has weight”?</h3>
     <p>Animators faced a different limit: every frame had to be drawn by hand, and as soon as the audience felt it was “fake,” they wouldn’t believe the thing in the picture was alive. If a little ball falls from a height and bounces, and moves the same distance every frame, it looks like a button sliding along a rail.</p>
-    <p>Don’t look at the answer yet. The three balls below set off together and travel the same distance, differing only in how their speed changes. <b>Which one looks most like a ball with weight?</b> Choose by instinct, then reveal.</p>
+    <p>The three balls below set off at the same time and cover the same distance; only the way their speed changes differs. <b>Which one looks most like a ball with weight?</b> Go by intuition, then see the reveal.</p>
     <div class="board">
       <div class="row"><button class="btn" id="c12_ezgo">▶ Set off together</button><button class="btn alt" id="c12_ezrev">I’ve chosen; reveal</button></div>
       <div class="c12-lab">A Constant speed</div><div class="c12-lane"><i id="c12_ea"></i></div>
@@ -293,31 +301,47 @@
       <div class="c12-lab">C Fast then slow, with a little bounce at the end</div><div class="c12-lane"><i id="c12_ec"></i></div>
       <div class="msg" id="c12_ezmsg">Press “Set off together,” and watch it several times.</div>
     </div>
-    <div class="sticky">Try it: watch each option three times, then say why you chose it. Then think: which of A, B and C is the phone pop-up you use every day?</div>
+    <div class="sticky">Try it: look at each option three times, then say why you chose it. Then think which of A, B and C the phone pop-ups you use every day are.</div>
     <div id="c12_ezans" class="c12-hide">
-      <p>Many people find C the most natural, B like accelerating in a fall, and A like a machine. Over the course of making feature films, Disney’s animators gradually discovered this kind of lesson that makes motion “alive”: speeding up as it falls, flattening on landing, stretching as it springs up, and slowing a little at the top.</p>
+      <p>There is no single standard answer; it depends on what the ball is doing. A ball falling gets faster and faster, and B, the ease-in, looks most like that. A ball bouncing up toward its peak gets slower and slower, which looks more like C, fast first and then slow, with a little spring at the end. A moves at constant speed, as if dragged along a rail, and has the least weight. While making feature films, Disney’s animators gradually discovered this kind of rule for making motion “alive”: faster and faster as it falls, squashed on landing, stretched on the bounce up, slower at the top.</p>
       <div class="timeline">
         <div class="ev hasimg"><span data-illus="c12_tl_disney"></span><div><b class="yr">From the 1930s</b> In the course of making feature films, Disney’s animators gradually sum up a set of lessons for making motion “alive” (anticipation, squash and stretch, slow in and slow out…), later organized into the “twelve principles.”</div></div>
         <div class="ev hasimg"><span data-illus="c12_tl_book"></span><div><b class="yr">1981</b> Frank Thomas and Ollie Johnston publish <i>The Illusion of Life: Disney Animation</i>, writing down these twelve systematically, the one they valued most being “squash and stretch.” Game and UI motion design have borrowed from it ever since.</div></div>
       </div>
-      <p>The key insight: the “weight” and “life” an audience feels lie not in how finely each frame is drawn but in <b>how the speed changes</b>. Jumps, hits and pop-ups in games today all repeat this discovery.</p>
+      <aside class="cc-card" aria-label="Concept card: The twelve principles of animation">
+        <span class="cc-tag">Concept card</span>
+        <p class="cc-name"><span>The twelve principles of animation</span></p>
+        <p class="cc-en">The twelve basic principles of animation</p>
+        <p class="cc-by">Frank Thomas, Ollie Johnston · their 1981 book <i>The Illusion of Life: Disney Animation</i></p>
+        <p class="cc-def">Twelve rules of thumb collected by Disney animators for making motion “alive and weighty,” including anticipation, squash and stretch, and slow in and slow out.</p>
+        <p class="cc-eg"><span class="cc-k">Example</span>A character crouches before jumping (anticipation), stretches on takeoff and squashes on landing (squash and stretch).</p>
+      </aside>
+      <p>The “weight” and “life” the audience feels come from <b>how the speed changes</b>, and have little to do with how finely each frame is drawn. Jumps, hits and pop-ups in games today all repeat this discovery.</p>
       <p class="src">Sources: Wikipedia, “Twelve basic principles of animation,” and the details of Thomas and Johnston’s 1981 book.</p>
     </div>
   </div>
 
   <div class="sec"><span class="n">7</span><h2><span class="tag why">Why it works</span>Why do exaggerated things grab us more: supernormal stimuli</h2></div>
-  <p>We have said a lot of “design experience”: pointy feels like a threat, red feels like danger, a landing should squash. Is there a more basic reason? There is one lead from ethology that many designers bring up.</p>
+  <p>Plenty of “design rules of thumb” came up above: pointy things feel like threats, red feels like danger, a landing should squash. The deeper reason starts with a thread from animal behavior research that many designers mention.</p>
   <div class="withimg">
     <span data-illus="c12_gull"></span>
     <div>
       <p>A herring gull chick, from the moment it hatches, pecks at the red spot on its parent’s beak, and the parent coughs up food to feed it. The Dutch zoologist Niko Tinbergen wanted to know: is the chick drawn by the “beak,” or by the “red spot”?</p>
-      <p>He and his colleague Perdeck made a batch of models. The result was odd: a simple red rod with three white rings painted on it drew more pecks than a realistic model of a gull’s head. The real thing was not the most attractive; <b>something that exaggerates the key feature past the limit</b> was stronger. Tinbergen called such things “supernormal stimuli.”</p>
-      <p>This is what comics, mascots and game effects do: draw big eyes bigger, make a coin burst fuller, hold the frame of a hit longer. What is exaggerated is not everything, but <b>the feature that lets you recognize it</b>.</p>
+      <p>He and his colleague Perdeck made a set of models. The result was odd: a simple red rod with three white rings painted on it drew more pecks than a realistic model of a gull’s head. The real thing was not the most attractive; <b>something that exaggerates the key feature past the limit</b> was stronger. Tinbergen later summed up this kind of thing as the “supernormal stimulus.”</p>
+      <p>This is what comics, mascots and game effects do: draw big eyes bigger, make a coin burst fuller, hold the hit frame longer. What is exaggerated is only <b>the feature that makes the thing recognizable</b>, while the rest stays as it was.</p>
     </div>
   </div>
+  <aside class="cc-card" aria-label="Concept card: Supernormal stimulus">
+    <span class="cc-tag">Concept card</span>
+    <p class="cc-name"><span>Supernormal stimulus</span></p>
+    <p class="cc-en">Supernormal stimulus</p>
+    <p class="cc-by">Niko Tinbergen, Albert Perdeck · their 1950 experiment with herring gull chicks pecking at a red spot</p>
+    <p class="cc-def">A stimulus more exaggerated than the natural one can draw a stronger response than the real thing. Enlarging the key feature grabs attention more than drawing it more realistically.</p>
+    <p class="cc-eg"><span class="cc-k">Example</span>A red rod with white rings drew more pecks from chicks than a realistic gull-head model.</p>
+  </aside>
   <div class="why-box">
     <h3>Supernormal stimulus</h3>
-    <p>The principle: an organism’s response to certain key features can be triggered more strongly by a model that is “more exaggerated” than the natural object. The counterpart in design is to “amplify the one feature you want the player to perceive,” not to draw everything more realistically.</p>
+    <p>The principle: an organism’s response to certain key features can be triggered more strongly by a model “more exaggerated” than the natural object. The counterpart in design is “enlarge the one feature you want the player to perceive,” not draw everything more lifelike.</p>
     <svg viewBox="0 0 700 270" width="100%" role="img" aria-label="Sketch: the horizontal axis is how exaggerated the stimulus is, the vertical axis is response strength, and the curve rises toward the upper right; the natural gull beak is in the middle, and the exaggerated red rod is farther right and higher.">
       <g class="rough" stroke="#2b2b3a" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round">
         <path d="M70 30 V200 H660"/>
@@ -331,14 +355,14 @@
         <text x="430" y="176">(sketch: the trend, not a measured curve)</text>
       </g>
     </svg>
-    <p class="src">Sources: Tinbergen &amp; Perdeck (1950), “On the stimulus situation releasing the begging response in the newly hatched herring gull chick,” <i>Behaviour</i> 3: 1–39; Deirdre Barrett, <i>Supernormal Stimuli</i> (2010). Controversy: John Whitfield pointed out in <i>Nature</i> in 2009 that the data of these classic experiments are not as clean as textbooks say, and whether the red spot really is the strongest stimulus is still doubtful; “supernormal stimulus” is a handy metaphor in design, not a law.</p>
+    <p class="src">Sources:<br>Tinbergen and Perdeck · 1950 · tested herring gull chicks’ pecking with a red rod and a gull-head model · the exaggerated model drew more pecks (“On the stimulus situation releasing the begging response in the newly hatched herring gull chick,” <i>Behaviour</i> 3: 1–39).<br>Deirdre Barrett · 2010 · <i>Supernormal Stimuli</i> · extended the concept to human behavior.<br>Dispute: John Whitfield noted in <i>Nature</i> in 2009 that the data in this classic experiment is not as clean as the textbooks tell it, and it is still unclear whether the red spot really was the strongest stimulus. The “supernormal stimulus” remains a handy metaphor in design.</p>
   </div>
 
   <div class="sec"><span class="n">8</span><h2><span class="tag why">Why it works</span>Why do eyes “group” by themselves: Gestalt</h2></div>
   <div class="withimg rev">
     <span data-illus="c12_gestalt"></span>
     <div>
-      <p>Why does visual hierarchy work? Because your brain never reads a picture as a heap of pixels; it <b>automatically sorts things into gangs</b>. Dots close together are a group, dots that look alike are a group, and dots moving the same way are a group.</p>
+      <p>Why does visual hierarchy work? Because the brain never reads a picture as a pile of pixels; it <b>automatically sorts things into gangs</b>. Dots close together are a group, dots that look alike are a group, and dots moving the same way are a group.</p>
       <p>In the early twentieth century, the German psychologist Max Wertheimer set these regularities out and opened the “Gestalt” school. What lets a health bar, skill bar and minimap in a game interface be “seen as one block” at a glance is exactly this: <b>put related things close together and make them look the same</b>.</p>
     </div>
   </div>
@@ -348,28 +372,36 @@
       <button class="chip" data-g="sim">By color (similarity)</button><button class="chip" data-g="clash">Conflict: color by rows, distance by columns</button>
     </div>
     <svg id="c12_gs" viewBox="0 0 300 300" role="img" aria-label="An 8×8 array of dots, shown evenly spaced, in rows, in columns, or with color and distance in conflict, depending on the option"></svg>
-    <div class="msg" id="c12_gmsg">Press the buttons above and see how the same dots get “divided into groups” by your eyes.</div>
+    <div class="msg" id="c12_gmsg">Click the buttons above and see how the same set of dots is “divided into groups” by the eye.</div>
   </div>
-  <div class="sticky" id="c12_gtry">Try it: press all five buttons. In the last, “conflict,” color and distance fight over the grouping: whose word do your eyes take first?</div>
+  <div class="sticky" id="c12_gtry">Try it: click all five buttons. In the last one, “Conflict,” color and distance are fighting over the grouping: whom does the eye listen to first?</div>
   <div class="why-box">
     <h3>Gestalt grouping (proximity, similarity)</h3>
     <p>The principle: perception has its own organizing rules, and things close together tend to be seen as a group, as do things that look alike. In design it decides “what goes together,” with no need to draw a frame line.</p>
-    <p class="src">Source: Wertheimer (1923), “Untersuchungen zur Lehre von der Gestalt II,” <i>Psychologische Forschung</i> 4: 301–350. Later researchers differ on exactly how many laws there are, and some think proximity, common fate and others are all special cases of “similarity.”</p>
+    <p class="src">Source: Wertheimer (1923), “Untersuchungen zur Lehre von der Gestalt II,” <i>Psychologische Forschung</i> 4: 301–350. How many laws there really are, later researchers differ, and some think proximity, common fate and the like are special cases of “similarity.”</p>
   </div>
 
   <div class="sec"><span class="n">9</span><h2><span class="tag why">Why it works</span>Are ears faster? Do shapes have personality? (And how to check)</h2></div>
-  <p>Now two more claims that are often cited, to see how far the research actually supports them.</p>
+  <p>Below are two often-cited claims, to see how far the research actually goes.</p>
   <div class="why-box">
     <h3>1) Hearing reacts faster than vision: say it carefully</h3>
     <p>The common claim: “People react to sound faster than to a picture.” Some simple reaction-time studies support this: Shelton and Kumar (2010, <i>Neuroscience &amp; Medicine</i>) had only 14 participants, measured about 331 ms on average for vision and about 284 ms for hearing, a gap of about 47 ms; later literature often cites “hearing is about 20–40 ms faster.”</p>
-    <p class="src">The key points: the sample is small, the gap is on the order of “tens of milliseconds,” and it is <b>simple reaction</b> (press a key on seeing or hearing). Don’t stretch it to “sound matters more than picture.” For games the conclusion is: <b>for events needing the fastest feedback, pair sound and picture</b>, and any mismatch between them is hard to bear.</p>
+    <p class="src">Takeaways: the sample is small, the difference is on the scale of “tens of milliseconds,” and it is a <b>simple reaction</b> (press a key on seeing or hearing). Don’t stretch it into “sound matters more than picture.” The lesson for games: <b>for events that need the fastest feedback, pair sound with picture</b>, and when the two disagree it is very unpleasant.</p>
   </div>
   <div class="why-box">
     <h3>2) Round and sharp: bouba/kiki</h3>
-    <p>Wolfgang Köhler (1929) had people match words to shapes with “takete / baluba,” and they tended to pair the spiky shape with takete. In 2001 Ramachandran and Hubbard redid it with “bouba/kiki,” and about 95–98% of American undergraduates and Tamil speakers in India called the round one bouba. A 2022 study of about 900 people across 25 languages also found a cross-language tendency, but its strength varies by language.</p>
-    <p class="src">This suggests that the “shape and sound” association has a cross-cultural part, but it isn’t the same for every person and every language. In design it is “borrowing a common intuition,” not “proof.”</p>
+    <p>Wolfgang Köhler (1929) had people match words to shapes using “takete / baluba,” and they tended to match the spiky shape to takete. In 2001 Ramachandran and Hubbard redid it with “bouba/kiki,” and about 95–98% of American undergraduates and Tamil speakers in India matched the round shape to bouba. A 2022 study of about 900 people in 25 languages also found a cross-language tendency, though its strength varied by language.</p>
+    <p class="src">This shows that the link between “shape and sound” has a cross-cultural part, and its strength differs from person to person and language to language. Design borrows it as a common intuition.</p>
   </div>
-  <p><b>Check it yourself:</b> below is a small reaction-time test. Choose “sight” or “sound,” press ready, wait for the stimulus to appear, then click the big area. Note: the browser’s audio output itself has latency, so the difference on a web page may not reproduce the study’s result. That is itself a good example of “don’t trust a single number.”</p>
+  <aside class="cc-card" aria-label="Concept card: The bouba/kiki effect">
+    <span class="cc-tag">Concept card</span>
+    <p class="cc-name"><span>The bouba/kiki effect</span></p>
+    <p class="cc-en">Bouba/kiki effect</p>
+    <p class="cc-by">Wolfgang Köhler · used takete / baluba in 1929; V. S. Ramachandran, Edward Hubbard · redid it with bouba/kiki in 2001</p>
+    <p class="cc-def">Most people match a rounded shape to bouba and a pointy shape to kiki. There is a cross-language association between shape and pronunciation.</p>
+    <p class="cc-eg"><span class="cc-k">Example</span>In many games enemies get pointy outlines and the hero is rounder, so players know whom to approach and whom to avoid without reading any text.</p>
+  </aside>
+  <p><b>Test it yourself:</b> below is a small reaction-time test. Choose “see” or “hear,” press ready, wait for the stimulus, then click the big area. Note that the browser’s audio output has latency of its own, so the gap measured on a web page may not reproduce the research result. This is also an example of “don’t trust a single number.”</p>
   <div class="board">
     <div class="row">
       <button class="chip on" data-rm="v">Sight (turns green)</button><button class="chip" data-rm="a">Sound (beep)</button>
@@ -378,7 +410,7 @@
     <div id="c12_rt" role="button" tabindex="0">Click here to start</div>
     <div id="c12_rstat"></div>
   </div>
-  <div class="sticky" id="c12_rtry">Try it: measure “sight” and “sound” 5 times each and compare the two averages. Is your gap close to the 47 ms in the paper?</div>
+  <div class="sticky" id="c12_rtry">Try it: test “see” and “hear” 5 times each and compare the two averages. Is the gap close to the 47 ms in the paper?</div>
 
   <div class="sec"><span class="n">10</span><h2><span class="tag how">Try it</span>The sensory mixing desk: design “a pickup” yourself</h2></div>
   <p>Imagine an event: the player touches something. Turn the knobs below to design its <b>sound plus picture</b>. Press “Trigger” to see and hear it, and switch presets (reward, danger, level-up, neutral) to compare. Below you will get a readout of “how this feels to people”; it is a rule of thumb, not a law, labeled as a sketch.</p>
@@ -418,10 +450,10 @@
     <div id="c12_fb" class="small"></div>
     <div id="c12_warn"></div>
   </div>
-  <div class="sticky" id="c12_task">Try it: first press “Reward,” then rework it into an event that makes people feel “danger” at one hearing and one look (hint: pitch, slide direction, shape, hue and motion should all go the same way). When you succeed a ✔ appears here. Then try again: change only the sound and not the picture, and see when the “sound–picture mismatch” note appears.</div>
+  <div class="sticky" id="c12_task">Try it: first click “Reward” and turn it into an event that feels “dangerous” the moment you hear and see it (hint: pitch, glide direction, shape, hue and motion must all lean the same way). Clicking the “Danger” preset doesn’t count; you have to adjust by hand. On success a ✔ appears here. Then try once more: change only the sound and not the picture, and see when the “audio and picture disagree” hint appears.</div>
 
   <h3>Supporting interaction: the silhouette test</h3>
-  <p>Below are 5 characters. Press “Switch” to take away the color and detail and guess who is who; then press “Same outline” and see what happens to a cast told apart only by color.</p>
+  <p>Below are 5 characters. Click “Switch” to take away color and detail, and guess who it is. Then click “Make the same outline” and see what happens to a cast told apart only by color.</p>
   <div class="board">
     <div class="row"><button class="btn" id="c12_sil">Switch: color / silhouette</button><button class="btn alt" id="c12_bad">Switch to the same outline (counterexample)</button></div>
     <div class="c12-chars" id="c12_chars"></div>
@@ -431,35 +463,35 @@
     <div class="row" id="c12_ans" style="justify-content:center"></div>
     <div class="msg" id="c12_smsg">Press “Ask one.”</div>
   </div>
-  <div class="sticky">Try it: first answer 5 questions with “same outline,” then switch back to “own outlines” and answer 5 more, and compare the two accuracy rates. A little summary appears here for every 5 questions.</div>
+  <div class="sticky">Try it: first answer 5 questions with “same outline,” then switch back to “own outlines” and answer 5, and compare the accuracy of the two. A small summary appears here for every 5 questions.</div>
 
   <div class="misc">
     <h3>Common misconceptions</h3>
     <ul>
       <li><b>“The louder and more gorgeous the sound effects, the better.”</b> The most common result is listening fatigue and a volume war. A good mix <b>makes trade-offs</b>: the important sounds loud, the minor ones stepping back.</li>
-      <li><b>“Colors have fixed meanings.”</b> Red isn’t necessarily danger and green isn’t necessarily safe; they mean something only within your game’s rules. <b>Consistency</b> matters more than “convention.”</li>
+      <li><b>“Colors have fixed meanings.”</b> Red is not always danger and green is not always safe. The meaning of a color is set by the game’s own rules. <b>Consistency</b> matters more than “convention.”</li>
       <li><b>“The finer the picture, the better.”</b> What players need is to <b>see clearly</b>. Too much detail drowns the focus and eats performance.</li>
       <li><b>“Hearing is faster than vision, so sound is more important.”</b> The gap is tens of milliseconds, from small experiments, and doesn’t support “more important.”</li>
-      <li><b>“Music is just background.”</b> It also conveys state and emotion; and some players play with the sound off, in public places for instance, or because they can’t hear, so <b>key information can’t rely on sound alone</b>.</li>
+      <li><b>“Music is just background”</b>: it also conveys state and mood. And some players play muted, for example in public, or can’t hear, so <b>key information can’t rely on sound alone</b>.</li>
     </ul>
   </div>
 
   <div class="reflect">
     <h3>Reflection and debate</h3>
-    <p><b>Culture and individuals.</b> Color associations depend heavily on culture and context: red is festive in many East Asian contexts and dangerous in many Western games. Shape associations (bouba/kiki) show a cross-language trend, but with differences in strength too. Treat them as <b>starting points</b>, not <b>conclusions</b>.</p>
-    <p><b>Style versus legibility.</b> A cool “dark, low-contrast” picture may be unreadable for players with low vision; a game that can be played only with the music on is unfriendly to deaf and hard-of-hearing players. Good audio-visual design gives players <b>adjustable options</b>: separate volume tracks, subtitles, a colorblind mode, reduced motion.</p>
+    <p><b>Color associations depend heavily on culture and context:</b> red means celebration in many East Asian settings and danger in many Western games. Shape associations (bouba/kiki) have a cross-language tendency, but the strength varies too. Treat them as <b>starting points</b>, not <b>conclusions</b>.</p>
+    <p><b>Conflicts between style and readability.</b> A very cool “dark, low-contrast” picture may be unreadable to low-vision players. A game that must be played with the music on is unfriendly to deaf and hard-of-hearing players. Good audio-visual design gives the player <b>adjustable options</b>: separate volume tracks, subtitles, a colorblind mode, reduced motion.</p>
     <p><b>“Pleasant to hear” and “useful” don’t always agree.</b> The loveliest music may actually be distracting, such as a melody in a puzzle game taking up the room for thinking. There is no standard answer here, and it has to be verified with real playtesters.</p>
-    <p><b>Something that may change your mind.</b> Design is not “making sound and picture pretty” but <b>translating rules into sensory signals</b>: so that a player who never reads the manual can still “hear the rules and see the rules.”</p>
+    <p><b>The job of design is to translate rules into sensory signals</b>, so that players can “hear the rules and see the rules” without reading a manual, and not merely to make the sound and picture pretty.</p>
   </div>
 
   <div class="key">
     <h3>Key points</h3>
     <ul>
       <li>Sound has four functions: <b>feedback, information, emotion, space</b>; sound effects are designed through <b>envelope, pitch, duration and timbre</b>, and should be short, distinguishable, layered and fatigue-free.</li>
-      <li>The difficulty of music is that the player’s time is uncertain: <b>looping, horizontal switching, vertical layering</b>; systems like iMUSE make music a “system that responds to the game state”; <b>silence</b> is also a tool.</li>
+      <li>The problem with music is that the player’s time is uncertain: <b>looping, horizontal switching, vertical layering</b>. Systems like iMUSE made music a system that “reacts to game state.” <b>Silence</b> is also a tool.</li>
       <li>Visuals first serve <b>legibility</b>: color (consistent, contrasting, not color alone), the language of shape, hierarchy, the <b>silhouette test</b>.</li>
       <li>Motion borrows the twelve principles of animation: <b>anticipation, squash and stretch, easing</b>, which decide “feel” and “weight.”</li>
-      <li>Underneath are two leads: <b>supernormal stimuli</b> (exaggerate the key feature) and <b>Gestalt grouping</b> (proximity, similarity); research gives “tendencies,” not laws. <b>Matching sound and picture</b> matters more than any single technique.</li>
+      <li>Two threads lie underneath: <b>supernormal stimuli</b> (exaggerating the key feature) and <b>Gestalt grouping</b> (proximity, similarity). Research gives “tendencies,” not laws. <b>Audio-visual agreement</b> matters more than any single technique.</li>
     </ul>
   </div>
   <div class="tldr">Sound and picture are the language through which a game translates rules into sensory signals: be short, be clear, be consistent, and never let one channel carry all the information alone.</div>
@@ -469,7 +501,7 @@
 
   <div class="sec"><span class="n">12</span><h2>Your design / your reflection</h2></div>
   <div class="card o">
-    <p>Pick a game event you have designed (or want to design), such as “getting hit,” “leveling up” or “finding a chest.” Write in one sentence its <b>sound</b> (pitch, timbre, duration, envelope) and its <b>picture</b> (color, shape, motion). With the sound off, can it still be understood? Reduced to a silhouette, can it still be recognized?</p>
+    <p>Pick a game event you have designed (or want to design), such as “getting hit,” “leveling up,” “finding a chest.” In one sentence write its <b>sound</b> (pitch, timbre, duration, envelope) and its <b>picture</b> (color, shape, motion). Muted, can it still be understood? As a silhouette, can it still be recognized?</p>
     <textarea rows="6" data-save="ch12" placeholder="Example: getting hit: a low sawtooth wave, 180 ms, sliding down; red triangular fragments shake outward. It is still understood with the sound off, because…"></textarea>
   </div>
 </main>
@@ -572,7 +604,7 @@ const AU = (function () {
     if (k === "back") { battle = false; pending = null; say("Back to the exploration segment."); return; }
     if (battle) { say("Already in combat; press “Back to exploring” first and then try another."); return; }
     tried.add(k);
-    if (tried.size === 3) { const m = $("c12_mtry"); m.textContent = "✔ You have tried all three. Which one felt most like “the music listening to you”? Press the button below to see how it was done back then."; m.style.background = "#eaf9e4"; }
+    if (tried.size === 3) { const m = $("c12_mtry"); m.textContent = "✔ You tried all three ways. Which is most like “the music is listening to me”? Click the buttons below to see how people did it back then."; m.style.background = "#eaf9e4"; }
     if (k === "hard") {
       const at = step % N;
       battle = true; style = "hard"; pending = null; step = 0;
@@ -607,10 +639,10 @@ const AU = (function () {
 (function () {
   const seen = new Set();
   const MSG = {
-    even: "Evenly spaced: no cue, and your eyes can’t tell for a moment how to divide it.",
+    even: "Even layout: no clues, and the eye doesn’t know at first how to divide it.",
     rows: "Close horizontally: each row “connects” into a line by itself.",
     cols: "Close vertically: the same dots, but now in columns.",
-    sim: "By color: the positions are unchanged, and the alternating red and yellow dots automatically sort into rows of two colors.",
+    sim: "by color: positions stay put, and the alternating blue and yellow dots group themselves automatically into rows of two colors.",
     clash: "Conflict: color divides the dots into rows, distance divides them into columns. Which do most people see first? This shows that the regularities have their own strengths too."
   };
   function draw(k) {
@@ -628,7 +660,7 @@ const AU = (function () {
     const k = b.dataset.g;
     document.querySelectorAll("#c12_gb .chip").forEach(x => x.classList.toggle("on", x === b));
     draw(k); $("c12_gmsg").textContent = MSG[k]; seen.add(k);
-    if (seen.size === 5) { const t = $("c12_gtry"); t.textContent = "✔ You have seen all five. Your eyes did not “choose” the grouping; the grouping happened by itself: this is the organizing law of perception."; t.style.background = "#eaf9e4"; }
+    if (seen.size === 5) { const t = $("c12_gtry"); t.textContent = "✔ You have seen all five. The eye didn’t “choose” the grouping; the grouping happened by itself: this is the law of perceptual organization."; t.style.background = "#eaf9e4"; }
   });
   draw("even");
 })();
@@ -643,7 +675,7 @@ const AU = (function () {
     if (res.v.length >= 5 && res.a.length >= 5) {
       const m = a => a.reduce((x, y) => x + y, 0) / a.length, d = Math.round(m(res.v) - m(res.a));
       const t = $("c12_rtry"); t.style.background = "#eaf9e4";
-      t.textContent = "✔ 5 trials each done. Compared with hearing, sight is" + (d > 0 ? "slower by" : "faster by") + " " + Math.abs(d) + " ms. In the paper it is about 47 ms. Is your number close? A sample of 5 is tiny, which is exactly why you shouldn’t trust a single number.";
+      t.textContent = "✔ 5 trials each done. Compared with hearing, sight is " + (d > 0 ? "slower by" : "faster by") + " " + Math.abs(d) + " ms. In the paper it was about 47 ms. Is your number close to it? A sample of 5 is very small, and a single number cannot be trusted.";
     }
   }
   $$("[data-rm]").forEach(b => b.onclick = () => {
@@ -674,6 +706,7 @@ const AU = (function () {
 
 (function () {
   const S = { wave: "square", shape: "star", motion: "pop", ease: "back" };
+  let manual = false;
   const NAMES = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
   const hz = n => 440 * Math.pow(2, (n - 69) / 12);
   const EASE = { linear: "linear", out: "cubic-bezier(0,0,.58,1)", back: "cubic-bezier(.34,1.56,.64,1)" };
@@ -730,7 +763,7 @@ const AU = (function () {
     $("c12_warn").innerHTML = w2;
     const mism = w2.indexOf("Sound–picture mismatch") >= 0;
     const tk = $("c12_task");
-    if (D - R >= 2.5 && !mism) { tk.textContent = "✔ Done: sound and picture both say “danger,” in the same direction. Try again: change only the sound and not the picture, and see when “Sound–picture mismatch” appears."; tk.style.background = "#eaf9e4"; }
+    if (D - R >= 2.5 && !mism && manual) { tk.textContent = "✔ Done: sound and picture both say “danger,” in the same direction. Try again: change only the sound and not the picture, and see when “Sound–picture mismatch” appears."; tk.style.background = "#eaf9e4"; }
     else if (mism) { tk.style.background = ""; }
   }
 
@@ -754,11 +787,11 @@ const AU = (function () {
 
   function chips(box, key, attr) {
     $$("#" + box + " .chip").forEach(b => b.onclick = () => {
-      S[key] = b.dataset[attr]; $$("#" + box + " .chip").forEach(x => x.classList.toggle("on", x === b)); refresh();
+      S[key] = b.dataset[attr]; $$("#" + box + " .chip").forEach(x => x.classList.toggle("on", x === b)); manual = true; refresh();
     });
   }
   chips("c12_wave", "wave", "w"); chips("c12_shape", "shape", "s"); chips("c12_motion", "motion", "m"); chips("c12_ease", "ease", "e");
-  ["c12_note", "c12_slide", "c12_dur", "c12_att", "c12_rel", "c12_vol", "c12_hue", "c12_size"].forEach(id => $(id).addEventListener("input", refresh));
+  ["c12_note", "c12_slide", "c12_dur", "c12_att", "c12_rel", "c12_vol", "c12_hue", "c12_size"].forEach(id => $(id).addEventListener("input", () => { manual = true; refresh(); }));
   $("c12_fire").onclick = () => fire(0);
   $("c12_combo").onclick = () => { for (let i = 0; i < 6; i++) setTimeout(() => fire(i), i * 130); };
 
@@ -774,7 +807,7 @@ const AU = (function () {
     $("c12_rel").value = p.rel; $("c12_vol").value = p.vol; $("c12_hue").value = p.hue; $("c12_size").value = p.size;
     [["c12_wave", "w", p.w], ["c12_shape", "s", p.s], ["c12_motion", "m", p.m], ["c12_ease", "e", p.e]].forEach(([b, a, v]) =>
       $$("#" + b + " .chip").forEach(x => x.classList.toggle("on", x.dataset[a] === v)));
-    refresh();
+    manual = false; refresh();
   }
   $$("[data-mp]").forEach(b => b.onclick = () => { apply(PRE[b.dataset.mp]); fire(0); });
   apply(PRE.reward);
@@ -835,8 +868,8 @@ const AU = (function () {
       const ok = +b.dataset.a === cur; if (ok) { sc++; rk++; } round++;
       $("c12_sc").textContent = sc; $("c12_tot").textContent = tot;
       $("c12_big").innerHTML = draw(cur, false);
-      $("c12_smsg").textContent = ok ? "✔ Correct:" + chars[cur].name + "." + (bad ? "(Mostly luck: the outlines are the same, so you can only guess)" : "The outline is distinctive enough.")
-        : "✘ It was actually" + chars[cur].name + "." + (bad ? "With the same outline, the characters simply can’t be told apart in silhouette, and that is a design problem." : "Look at its outline features again.");
+      $("c12_smsg").textContent = ok ? "✔ Correct: " + chars[cur].name + "." + (bad ? "(Mostly luck: the outlines are the same, so you can only guess)" : "The outline is distinctive enough.")
+        : "✘ It was actually " + chars[cur].name + "." + (bad ? "With the same outline, the characters simply can’t be told apart in silhouette, and that is a design problem." : "Look at its outline features again.");
       if (round === 5) { $("c12_smsg").textContent += " Summary: of these 5 questions (" + (bad ? "same outline" : "own outlines") + ") you got " + rk + " right. Switch to the other outline type and answer 5 more to compare."; round = 0; rk = 0; }
     });
     $("c12_smsg").textContent = "Who is this?";

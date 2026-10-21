@@ -43,23 +43,30 @@
     <h3>Learning goals</h3>
     <span class="time">about 40 min</span>
     <ul>
-      <li>Name the three conditions flow needs, and tell which one a game moment is missing.</li>
-      <li>Explain why “scaffolding” has to be withdrawn as skill grows, and design a schedule for removing hints for newcomers.</li>
-      <li>Use the “peak–end rule” to arrange a level’s highlight and its closing, and know what it can and can’t account for.</li>
+      <li>Name the three conditions flow needs, and judge which one a moment in a game is missing.</li>
+      <li>Explain why “scaffolding” should be withdrawn step by step as skill grows, and design a rhythm of withdrawing hints for beginners.</li>
+      <li>Use the “peak-end rule” to arrange a level’s highlight and ending, and know what it governs and what it doesn’t.</li>
     </ul>
   </div>
 
-  
   <div class="sec"><span class="n">1</span><h2><span class="tag what">What it is</span>The flow channel: why three hours feel like three minutes</h2></div>
   <div class="withimg">
     <span data-illus="c06_rapt"></span>
     <div>
-      <p>You have probably had an evening like this: you meant to play just one more level, and when you looked up it was dark outside. Dinner went cold and you didn’t notice, your phone rang and you didn’t hear it, and three hours felt like three minutes.</p>
-      <p>This state of total absorption, where you forget the time, is called <span class="term" tabindex="0" data-def="Flow: the optimal experience of full absorption, in which you lose track of time and action and awareness merge.">flow</span> in psychology. The condition for it sounds plain: the thing in front of you has to be a bit hard, but hard in just the way you can reach.</p>
-      <p>Picture a channel. The horizontal axis is your skill and the vertical axis is the challenge of the task. When the challenge is far above your skill, you panic; when it is far below, you doze off; when the two roughly match, you are in the channel. This state is called <span class="term" tabindex="0" data-def="Challenge–skill balance: the difficulty of a task is roughly equal to current ability, with a slight stretch.">challenge–skill balance</span>.</p>
+      <p>Many people have had a night like this: they only meant to play one more level, and when they look up, it is dark outside. Dinner went cold unnoticed, the phone rang unheard, and three hours felt like three minutes.</p>
+      <p>This state of full absorption in which time is forgotten is called <span class="term" tabindex="0" data-def="Flow: the best-experience state of total absorption, forgetting time, with action and awareness merged.">flow</span> in psychology. The condition for it is plain: the thing in front of you should be a little hard, hard in just the way you can reach.</p>
+      <p>Put skill on the horizontal axis and the challenge of the task on the vertical, and a channel appears in the middle. When challenge is far above skill, people panic; far below, people grow sleepy; only when the two are about even are they in the channel. This is <span class="term" tabindex="0" data-def="Challenge–skill balance: task difficulty roughly matches current ability, with a slight stretch.">challenge–skill balance</span>.</p>
     </div>
   </div>
-  <p>The diagram below is that channel. Drag the dot, or move the two sliders, and see which zone you are in.</p>
+  <aside class="cc-card" aria-label="Concept card: flow">
+    <span class="cc-tag">Concept card</span>
+    <p class="cc-name"><span>Flow</span></p>
+    <p class="cc-en">Flow</p>
+    <p class="cc-by">Mihaly Csikszentmihalyi · <i>Beyond Boredom and Anxiety</i>, 1975; <i>Flow</i>, 1990, for general readers</p>
+    <p class="cc-def">A state of full absorption in which time is forgotten. Challenge close to skill, plus a clear goal and immediate feedback, makes it easy to enter.</p>
+    <p class="cc-eg"><span class="cc-k">Example</span>In <i>Tetris</i> the blocks fall a little faster with every level while the hands quietly get practiced, and many people lose track of time as they play.</p>
+  </aside>
+  <p>The figure below is the channel. Drag the dot, or pull the two sliders, and see which zone the position falls in.</p>
   <div class="board">
     <svg viewBox="-16 -4 476 330" width="100%" style="max-width:560px;display:block;margin:auto" id="flowsvg" role="img" aria-label="Flow channel diagram with skill on the horizontal axis and challenge on the vertical: the upper left is the anxiety zone, the lower right is the boredom zone, and the diagonal band in the middle is the flow zone">
       <rect x="40" y="10" width="400" height="270" fill="#fffef7" stroke="#2b2b3a" stroke-width="3"/>
@@ -67,31 +74,30 @@
       <polygon points="40,10 40,231 368,10" fill="#ffc9c9" opacity=".7"/>
       <polygon points="112,280 440,59 440,280" fill="#a8dcf0" opacity=".7"/>
       <g font-size="22" fill="#2b2b3a" text-anchor="middle">
-        <text x="110" y="60">Anxiety 😰</text><text x="370" y="240">Boredom 😴</text>
+        <text x="92" y="38">Anxiety 😰</text><text x="388" y="266">Boredom 😴</text>
         <text x="260" y="140" transform="rotate(-33 260 140)">Flow 🌊</text>
         <text x="240" y="308">Skill →</text><text x="22" y="150" transform="rotate(-90 22 150)">Challenge →</text>
       </g>
-      <circle id="dot" cx="240" cy="140" r="13" fill="#ffe58a" stroke="#2b2b3a" stroke-width="4" style="cursor:grab;touch-action:none"/>
+      <circle id="dot" cx="240" cy="140" r="13" fill="#ffe58a" fill-opacity=".85" stroke="#2b2b3a" stroke-width="4" style="cursor:grab;touch-action:none"/>
     </svg>
     <label class="ctl">Skill <output id="o1">50</output></label><input type="range" id="skill" min="0" max="100" value="50">
     <label class="ctl">Challenge <output id="o2">58</output></label><input type="range" id="chal" min="0" max="100" value="58">
     <div class="msg" id="state"></div>
   </div>
   <div class="sticky" id="c6t1">Try it: first drag the dot into the anxiety zone at upper left, then to the boredom zone at lower right, and finally back to the green channel. Once you have visited all three zones, a check mark appears here.</div>
-  <p>One thing is easy to overlook: the player’s skill keeps growing. Yesterday’s “just right” is a bit easy today, so the challenge has to climb too, or the dot will slowly slide horizontally into “boredom.”</p>
+  <p>The player’s skill keeps rising, which is easy to overlook. The difficulty that was just right yesterday is a bit easy today, so the challenge must climb too, or the dot slides horizontally into “boredom.”</p>
 
-  <div class="eg" data-ic="🧩"><span data-illus="c06_tetrisflow"></span><div class="egt"><b>Tetris</b>: the pieces fall a little faster with each level while your hands quietly get practiced. Every level is a bit harder than the last yet you can just about keep up, so many people lose track of time as they play.</div></div>
-  <div class="eg" data-ic="🧗"><span data-illus="c06_climb"></span><div class="egt"><b>Rock climbing</b>: a good route is like a string of holds just within reach; the next one needs a stretch on tiptoe and a straight arm, but not a flying leap. With the right route, a person can’t stop all day; with one far beyond you, your arm shakes and all that is left in your head is “how do I get down.”</div></div>
+  <div class="eg" data-ic="🧩"><span data-illus="c06_tetrisflow"></span><div class="egt"><b>Tetris</b>: the falling speed rises little by little with level while the hands quietly get practiced. Each level is a bit harder than the last yet can still barely be handled, and so many people lose track of time as they play.</div></div>
+  <div class="eg" data-ic="🧗"><span data-illus="c06_climb"></span><div class="egt"><b>Rock climbing</b>: a good route is like a string of holds just within reach, the next needing a stretch on tiptoe with the arm straight, but not a flight. With the route chosen right, a person can’t stop all day. Choose one far beyond you, and with your arm trembling, all that is left in your head is “how do I get down.”</div></div>
   <div class="eg bad" data-ic="😴"><span data-illus="c06_bored"></span><div class="egt"><b>A veteran dropped into the starter village</b>: with challenge far below skill, he won’t get angry, only sleepy. Many games’ “difficulty options” exist so that veterans don’t fall asleep here.</div></div>
-  <div class="eg bad" data-ic="🌫️"><span data-illus="c06_lost"></span><div class="egt"><b>The difficulty is right, but nobody tells you where to go</b>: this is the most “almost right” case. The dot is in the channel, but you wander around an open world, and half an hour later you close the game. Flow needs more than the right difficulty.</div></div>
+  <div class="eg bad" data-ic="🌫️"><span data-illus="c06_lost"></span><div class="egt"><b>Difficulty just right, but nobody says where to go</b>: this is the most “nearly right” kind. The dot is in the channel, yet in an open world you wander all over, and half an hour later the player closes the game. Flow needs more than just-right difficulty.</div></div>
 
-  
   <div class="sec"><span class="n">2</span><h2><span class="tag origin">How it was invented</span>People who couldn’t stop, and weren’t paid for it</h2></div>
   <div class="story">
     <h3>Why painters skip meals</h3>
     <p>In the 1960s in Chicago, a young psychologist named Mihaly Csikszentmihalyi was doing his doctoral research, watching art students paint. He saw something that psychology at the time couldn’t easily explain: these people painted for hours at a stretch, until they forgot to eat and forgot to be tired. Nobody was paying them wages, and nobody was urging them on.</p>
-    <p>The mainstream in psychology then was behaviorism, and its answer was blunt: people do things for rewards, whether money or grades. But where was these painters’ reward? The canvas wasn’t finished, and no reward had come yet.</p>
-    <p>He and his colleagues took this question to chess players, rock climbers, dancers and surgeons. Before reading on, <b>guess</b> what they mostly said when asked “what is the moment you enjoy most when doing this?”</p>
+    <p>Then the mainstream of psychology was behaviorism, and its line was blunt: people act for rewards, either money or points. But where were these painters’ rewards? The canvas wasn’t finished, and no reward had come yet.</p>
+    <p>With this question he and his colleagues went and asked chess players, rock climbers, dancers and surgeons. Don’t read on yet; <b>guess</b> how they would mostly answer when asked “what moment do you enjoy most when doing this?”</p>
     <div class="c6guess" id="c6g1">
       <div class="c6row">
         <button class="chip" data-g="0">When I win, when I get the reward</button>
@@ -103,17 +109,16 @@
   </div>
   <div class="timeline">
     <div class="ev hasimg"><span data-illus="c06_artist"></span><div><b class="yr">1960s</b> Csikszentmihalyi watches art students in Chicago. What puzzles him is that they are so deeply absorbed, yet the cause is nothing given from outside: it seems that the act of painting itself has caught them.</div></div>
-    <div class="ev hasimg"><span data-illus="c06_interviews"></span><div><b class="yr">1970s</b> His team widens the interviews to chess players, rock climbers, free dancers and surgeons, asking about their most enjoyable moments. Different people say almost the same thing, and several of them use the same metaphor: it is like being carried along by a current. This is where the word “flow” comes from.</div></div>
+    <div class="ev hasimg"><span data-illus="c06_interviews"></span><div><b class="yr">1970s</b> His team widened the interviews to chess players, rock climbers, free dancers and surgeons, asking them for the moments they enjoyed most. Different people described almost the same thing, and several used the same metaphor: like being carried along by a current. The word “flow” came from this.</div></div>
     <div class="ev hasimg"><span data-illus="c06_book"></span><div><b class="yr">1975, 1990</b> In 1975 he publishes <i>Beyond Boredom and Anxiety</i>. The title already gives the core: an absorbed person has to avoid two pits at once, boredom and anxiety. His 1990 book <i>Flow: The Psychology of Optimal Experience</i> brings these ideas to general readers.</div></div>
     <div class="ev hasimg"><span data-illus="c06_designer"></span><div><b class="yr">Today</b> Game designers who read this find it is almost the very problem they solve every day: the player’s skill keeps changing, so how do you make the difficulty change along with it and keep people in the channel?</div></div>
   </div>
 
-  
   <div class="sec"><span class="n">3</span><h2><span class="tag why">Why it works</span>Is the right difficulty enough?</h2></div>
-  <p>Drawing the channel is easy; the hard part is asking: if the difficulty is right, is absorption guaranteed? The open world where you wandered around has already given one counterexample. Think of another: every step makes you wait ten seconds with a spinner before you know the result. However well matched the difficulty, it is hard to sink in.</p>
+  <p>Drawing the channel is easy, but just-right difficulty does not guarantee immersion. The open world where you wander all over was already a counterexample. Think of another case: you wait ten seconds, spinning, after every step to learn the result, and however suitable the difficulty, it is hard to sink in.</p>
   <div class="why-box">
     <h3>The three conditions of flow</h3>
-    <p>Csikszentmihalyi summed up the experience of people in flow in eight or nine features. The ones game design cites most are the three he calls “conditions”: <b>clear goals</b> (you always know what to do now), <b>immediate feedback</b> (you always know how you are doing) and <b>a balance of challenge and skill</b>. Total absorption and losing track of time are the <b>results</b> once the conditions are met.</p>
+    <p>Csikszentmihalyi summed up the experience of people in flow in eight or nine features. The three most often cited in game design are those he calls “conditions”: <b>clear goals</b> (always knowing what to do now), <b>immediate feedback</b> (always knowing how you are doing) and <b>a balance of challenge and skill</b>. Total absorption and forgetting time are the <b>result</b> once the conditions are met.</p>
     <svg viewBox="0 -12 700 282" width="100%" role="img" aria-label="Diagram: the three conditions, clear goals, immediate feedback and a challenge–skill balance, point together to flow, and flow brings two results, full concentration and losing track of time">
       <g class="rough" stroke="#2b2b3a" stroke-width="3.5" fill="none" stroke-linecap="round">
         <rect x="14" y="16" width="210" height="62" rx="12" fill="#fff7cf"/>
@@ -135,7 +140,7 @@
     <p class="small" style="margin-top:4px">The “three conditions” are a common simplification in game design, not the full list from the original book. Researchers have since reworked flow into models made specifically for assessing games, such as GameFlow.</p>
     <div class="src">Sources: Mihaly Csikszentmihalyi, <i>Beyond Boredom and Anxiety</i> (1975) and <i>Flow: The Psychology of Optimal Experience</i> (1990).</div>
   </div>
-  <p>Below is a small experiment. Note that its “absorption” is a made-up illustrative formula: for every condition that is missing a discount is multiplied in, and the numbers are not measured values, only there to feel that “the three conditions multiply, not add.” Fix one, and the other weak spots still drag you down.</p>
+  <p>The small experiment below computes “immersion” with a made-up illustrative formula: each missing condition multiplies in a discount, and the numbers are not measured values. It shows that the three conditions multiply rather than add: fix one, and the other shortfalls still drag the result down.</p>
   <div class="board">
     <b>Flow conditions checker (a sketch model)</b>
     <div class="c6row">
@@ -153,9 +158,8 @@
     <div class="c6meter"><i id="c6bar"></i></div>
     <div class="c6out" id="c6ans"></div>
   </div>
-  <div class="sticky" id="c6t2">Try it: press “a maze with no known goal,” then drag the slider to the best spot (close to 0). See how high the absorption can get at most; that is the price of “missing just one condition.”</div>
+  <div class="sticky" id="c6t2">Try it: click “A maze with no known goal,” then pull the slider to the best position (close to 0). What is the highest immersion you can reach? That is the cost of “missing just one condition.”</div>
 
-  
   <div class="sec"><span class="n">4</span><h2><span class="tag how">Try it</span>Difficulty-curve tuning bench: you design the difficulty along the way</h2></div>
   <p>Stretch time out and the channel becomes a green band rising with skill. As a player goes from beginner to skilled, whether the difficulty curve can stay inside the band decides whether they leave halfway. First try three common designs, then press “I’ll tune it” and do it yourself.</p>
   <div class="board">
@@ -168,28 +172,38 @@
       <div><label class="ctl">Ending difficulty <output id="c6bo2">50</output></label><input type="range" id="c6b" min="0" max="100" value="50"></div>
       <div><label class="ctl">Size of the waves <output id="c6po">0</output></label><input type="range" id="c6p" min="0" max="25" value="0"></div>
     </div>
-    <svg viewBox="-14 0 574 290" width="100%" id="curve" style="margin-top:6px" role="img" aria-label="Difficulty-curve chart: the green band is the flow channel growing with skill, red segments show anxiety, blue segments show boredom, and the green line shows flow">
+    <svg viewBox="-14 0 574 318" width="100%" id="curve" style="margin-top:6px" role="img" aria-label="Difficulty-curve chart: the green band is the flow channel growing with skill, red segments show anxiety, blue segments show boredom, and the green line shows flow">
       <rect x="40" y="10" width="500" height="240" fill="#fffef7" stroke="#2b2b3a" stroke-width="3"/>
       <path id="band" fill="#b6e8a8" opacity=".75"/>
       <g id="segs" fill="none" stroke-width="6" stroke-linecap="round"></g>
       <text x="290" y="274" text-anchor="middle" font-size="20">Game progress →</text>
       <text x="22" y="130" transform="rotate(-90 22 130)" text-anchor="middle" font-size="20">Difficulty →</text>
+      <g font-size="15" fill="#2b2b3a"><rect x="40" y="288" width="22" height="14" fill="#b6e8a8" stroke="#2b2b3a" stroke-width="1.5"/><text x="68" y="300">Green = flow channel</text>
+      <rect x="236" y="294" width="22" height="5" fill="#e5484d"/><text x="264" y="300">Red = too hard</text>
+      <rect x="378" y="294" width="22" height="5" fill="#3b8fd0"/><text x="406" y="300">Blue = too easy</text></g>
     </svg>
     <div class="msg" id="curvemsg">Pick a curve 👆</div>
   </div>
-  <div class="sticky" id="c6t3">Try it: press “I’ll tune it” and keep the whole curve in the green channel for more than 85% of the time. Think about where the curve should start and where it should go.</div>
-  <p>You probably found that the safest curve is not a straight line that “gets harder and harder,” but one that hugs the growth of skill, with a few ups and downs. The ups and downs let players practice what they just learned in the easy stretches, so they can handle the next wave of pressure.</p>
+  <div class="sticky" id="c6t3">Try it: click “I’ll tune it,” and keep the whole curve in the green channel for more than 85% of the time. Where should the curve start and where should it go?</div>
+  <p>The safest curve is not a straight line of “harder and harder,” but one hugging the line of skill growth, with a little undulation added. The undulation lets players practice what they just learned in the relaxed stretches, so the next wave of pressure can be met.</p>
 
-  
   <div class="sec"><span class="n">5</span><h2><span class="tag what">What it is</span>The zone of proximal development and scaffolding: how many hints to give</h2></div>
   <div class="withimg rev">
     <span data-illus="c06_zpdband"></span>
     <div>
-      <p>Almost every designer who has made a tutorial level has stepped into the same pit: give too few hints and newcomers leave at level two; give too many and players become machines that “press the button the hint points to,” and at level ten, with no hints, they are lost.</p>
-      <p>How many hints should you give? Educational psychologists have been wondering about this for a long time. The Soviet psychologist Vygotsky gave a very useful way to put it: a task is either one you <b>can do alone</b>, or one you <b>can do with someone’s help</b>, or one you <b>can’t do however you’re helped</b>. Real learning happens in the middle band.</p>
-      <p>That band is called the <span class="term" tabindex="0" data-def="Zone of Proximal Development: the range between what a learner can do alone and what they can do with others’ help.">zone of proximal development</span>. The temporary support given within it is called <span class="term" tabindex="0" data-def="Scaffolding: temporary support given when a learner needs it, gradually withdrawn as ability grows.">scaffolding</span>, like the frame put up when constructing a building, which comes down once the building stands.</p>
+      <p>Almost every designer who has made a tutorial level has fallen into the same pit. Too few hints, and a newcomer gets stuck in level two and leaves. Too many, and players become machines that “press the button the hint says,” and are lost by level ten when there are no hints.</p>
+      <p>How many hints should there be? Educational psychologists have long thought about this question. The Soviet psychologist Vygotsky had a very useful way of putting it: a thing is either <b>doable alone</b>, <b>doable with someone’s help</b>, or <b>undoable however you are helped</b>. Real learning happens in the middle band.</p>
+      <p>The middle band is the <span class="term" tabindex="0" data-def="Zone of proximal development: the range between what a learner can do alone and what they can do with others’ help.">zone of proximal development</span>. The temporary support given in this band is <span class="term" tabindex="0" data-def="Scaffolding: temporary support given when a learner needs it, withdrawn step by step as ability grows.">scaffolding</span>, like the frame put up to build a house, taken down once the building stands.</p>
     </div>
   </div>
+  <aside class="cc-card" aria-label="Concept card: zone of proximal development">
+    <span class="cc-tag">Concept card</span>
+    <p class="cc-name"><span>Zone of proximal development</span></p>
+    <p class="cc-en">Zone of proximal development (ZPD)</p>
+    <p class="cc-by">Lev Vygotsky · proposed in the 1930s; the English collection <i>Mind in Society</i> appeared in 1978</p>
+    <p class="cc-def">The band between what a person can do alone and what they can do with someone’s help. Learning happens in this band.</p>
+    <p class="cc-eg"><span class="cc-k">Example</span>Learning to ride a bicycle: an adult holds the seat, the child wobbles, and the adult grips only when a fall looks near. The child can’t ride alone but can with help, and that is the zone of proximal development.</p>
+  </aside>
   <div class="card">
     <h3>🧱 Three bands: can do alone, can do with help, can’t do yet</h3>
     <svg viewBox="0 0 700 264" width="100%" role="img" aria-label="Task difficulty from low to high in three bands: can do alone, can do with someone’s help (the zone of proximal development, where scaffolding goes), can’t do yet; as skill grows everything shifts right">
@@ -209,39 +223,46 @@
     </svg>
     <p class="small">The yellow band is the zone of proximal development. As skill grows it all moves right, so the scaffolding has to move with it and finally come down.</p>
   </div>
-  <div class="eg" data-ic="🚲"><span data-illus="c06_bike"></span><div class="egt"><b>Learning to ride a bike</b>: a grown-up first runs along holding the saddle, the child wobbles, and the adult grips firmly only when it looks like a fall. A few days later the hand only rests lightly, and a few days after that the child glances back and finds nobody there.</div></div>
-  <div class="eg" data-ic="🎮"><span data-illus="c06_tutorial"></span><div class="egt"><b>A tutorial level</b>: the first time, a big arrow points straight at it; the second time, only a little icon is left; the third time, nothing, and you’re on your own. The hints are withdrawn one notch at a time, and the player hardly notices.</div></div>
+  <div class="eg" data-ic="🚲"><span data-illus="c06_bike"></span><div class="egt"><b>Learning to ride a bicycle</b>: an adult first runs holding the seat, the child wobbles, and the adult grips firmly only when it looks like a fall. A few days later, the hand rests lightly. A few days after that the child turns to look back and finds nobody behind.</div></div>
+  <div class="eg" data-ic="🎮"><span data-illus="c06_tutorial"></span><div class="egt"><b>The tutorial level</b>: the first time, a thick arrow points straight out the direction. The second time, only a small icon is left. The third time, nothing, and the player does it alone. The hints are taken away one notch at a time, and the player hardly notices.</div></div>
   <div class="eg bad" data-ic="🩹"><span data-illus="c06_fullhint"></span><div class="egt"><b>Hints always full</b>: at level 30 the arrow is still flashing on every screen. The player never has to think and so never learns. This isn’t helping them, it is playing for them.</div></div>
 
-  
   <div class="sec"><span class="n">6</span><h2><span class="tag origin">How it was invented</span>Two children with the same score</h2></div>
   <div class="story">
     <h3>What the intelligence tests missed</h3>
-    <p>In the early twentieth century, schools liked to score children with intelligence tests: shut a child in a room, have them answer questions alone, and see what age level they reach. Lev Vygotsky (1896–1934) saw a loophole: it measured only what a child can do “now,” not what they could learn “very soon.”</p>
-    <p>He gave an example: two children both test at the level of an eight-year-old. Then he gives both harder problems, with a little guidance alongside. Guess how high each can be brought?</p>
+    <p>In the early twentieth century, scoring children with intelligence tests was in fashion at schools: shut the child in a room, have them answer questions alone, and see what age level they reach. Lev Vygotsky (1896–1934) felt there was a loophole: the test measured only what the child can do “now,” not what they could “learn right away.”</p>
+    <p>He gave an example: two children both tested at an eight-year-old level. Then both were given harder problems with a little guidance beside them. Guess how high they could be taken.</p>
     <div class="c6guess" id="c6g2">
-      <label class="ctl">Your guess: after guidance, up to what age level can the more promising child do problems? <output id="c6g2o">10</output> years</label>
+      <label class="ctl">Guess: after guidance, up to what age’s problems can the child with more potential do? <output id="c6g2o">10</output> years</label>
       <input type="range" id="c6g2s" min="8" max="14" step="1" value="10">
       <button class="btn" id="c6g2b">Reveal</button>
       <div class="res" id="c6g2r"></div>
     </div>
   </div>
   <div class="timeline">
-    <div class="ev hasimg"><span data-illus="c06_twokids"></span><div><b class="yr">1930s</b> Vygotsky writes: two children both answer alone at an eight-year-old level, but with some guidance one can do twelve-year-old problems and the other reaches only nine. Their scores working alone are the same, yet their true potential differs greatly. He calls the gap between “what they can do alone” and “what they can do with help” the zone of proximal development. (This is his own example, not a controlled experiment.)</div></div>
+    <div class="ev hasimg"><span data-illus="c06_twokids"></span><div><b class="yr">1930s</b> Vygotsky wrote: two children both at an eight-year level on their own, and with guidance one could do twelve-year problems and the other only reached nine. Their scores working alone were the same, yet their real potential differed a great deal. He called the gap between “what can be done alone” and “what can be done with help” the zone of proximal development. (This is his own example, not a controlled experiment.)</div></div>
     <div class="ev hasimg"><span data-illus="c06_pyramid"></span><div><b class="yr">1976</b> David Wood, Jerome Bruner and Gail Ross study how tutors help three- to five-year-olds build a block pyramid: break the task down, point out the key spots, demonstrate once, and step back when the child can do it alone. They call this temporary help that gets taken away “scaffolding.”</div></div>
-    <div class="ev hasimg"><span data-illus="c06_hintdial"></span><div><b class="yr">Today</b> Tutorial levels, aim assist, easy modes and fading hints are in essence all one knob: turn it slowly from “full” to “none.” The one difficulty is how fast to turn it.</div></div>
+    <div class="ev hasimg"><span data-illus="c06_hintdial"></span><div><b class="yr">Today</b> Tutorial levels, aim assist, easy mode and fading hints are all the same knob: turned slowly from “full” to “none.” The one hard part is how fast to turn it.</div></div>
   </div>
+  <aside class="cc-card" aria-label="Concept card: scaffolding">
+    <span class="cc-tag">Concept card</span>
+    <p class="cc-name"><span>Scaffolding</span></p>
+    <p class="cc-en">Scaffolding</p>
+    <p class="cc-by">David Wood, Jerome Bruner and Gail Ross · the 1976 paper “The role of tutoring in problem solving”</p>
+    <p class="cc-def">Temporary help given when a learner needs it, taken away bit by bit as they learn, until they can do it alone.</p>
+    <p class="cc-eg"><span class="cc-k">Example</span>A tutorial level first points the way with a thick arrow, then leaves only a small icon, and finally gives no hint at all, and the player finds the way alone.</p>
+  </aside>
 
-  
   <div class="sec"><span class="n">7</span><h2><span class="tag why">Why it works</span>Why scaffolding has to come down</h2></div>
   <div class="why-box">
     <h3>The zone of proximal development and scaffolding</h3>
-    <p>Vygotsky’s core judgment is that learning doesn’t happen where you “already can,” nor where you “absolutely can’t,” but where you “can reach if you stretch.” Scaffolding temporarily turns a task that was out of reach into one within reach; once you can do it alone, it should come down, or you stay stuck in the state of “only works with help.”</p>
-    <p>The <b>sketch model</b> below writes this idea as the simplest rule: the speed at which a learner’s skill grows depends on how far the “effective difficulty with hints” sits above current skill. About 12 points above is easiest to learn from, and too close (too easy) or too far (too hard) both give slow learning. It is just a simplified assumption, used to compare three hint strategies.</p>
-    <div class="src">Sources: Lev Vygotsky, <i>Mind in Society</i> (1978, English collection); David Wood, Jerome Bruner and Gail Ross, “The role of tutoring in problem solving,” <i>Journal of Child Psychology and Psychiatry</i> 17(2): 89–100 (1976). This is an influential theory in education, not a law directly tested in games; the numeric model below is an illustration made up for this course, not an experimental result.</div>
+    <p>Vygotsky’s core judgment is that learning happens neither where one “already can” nor where one “can’t at all,” but where one “can reach it with a stretch.” Scaffolding temporarily turns an out-of-reach task into a reachable one.</p>
+    <p>Once the learner can do it alone, scaffolding should be withdrawn, or they will stay stuck in the state of “only works with help.”</p>
+    <p>The <b>illustrative model</b> below writes this idea as the simplest rule: the speed at which the learner’s skill grows depends on how much the “effective difficulty with hints” exceeds current skill. About 12 points above is easiest to learn; too close (too easy) or too far (too hard) and learning is very slow. This is only a simplifying assumption, for comparing three hint strategies.</p>
+    <div class="src">Sources:<br>Vygotsky, 1930s, who proposed the zone of proximal development (<i>Mind in Society</i>, 1978 English collection).<br>Wood, Bruner and Ross, 1976, a study of how tutors help children build a block pyramid, which proposed “scaffolding” (<i>Journal of Child Psychology and Psychiatry</i> 17(2): 89–100).<br>This is a highly influential theory in education that has not been directly tested in games. The numerical model below is a made-up illustration, not an experimental result.</div>
   </div>
   <div class="board">
-    <label class="ctl">Initial hint strength (0 = no hint, 100% = nearly tells you how)<output id="c6ho">80</output></label>
+    <label class="ctl">Initial hint strength (0 = no hints, 100% = almost telling you how)<output id="c6ho">80</output></label>
     <input type="range" id="c6h" min="0" max="100" value="80">
     <svg id="c6sc" viewBox="0 0 560 292" width="100%" role="img" aria-label="Curves of learner skill over practice under three hint strategies"></svg>
     <div class="c6leg">
@@ -252,21 +273,21 @@
     <div class="c6out" id="c6scr"></div>
   </div>
   <div class="sticky" id="c6t4">Try it: set the slider so that strategy C (green line) reaches the target of 80 within 70 steps, and watch where the red and blue lines stop. Then pull the slider very low and see why even C struggles to get started.</div>
-  <p class="small">The task difficulty is fixed at 80, the learner starts at 20, and practices for 100 steps. The red line stops because hints “pin” the effective difficulty low, so once skill catches up there is nothing higher to reach for; the blue line is withdrawn too abruptly, and the difficulty suddenly outruns the ability. The starting hints also have to be enough, or it is hard even to begin.</p>
+  <p class="small">The task difficulty is fixed at 80, the learner starts at 20, with 100 steps of practice.</p>
+  <p class="small">The red line stops because hints “pin” the effective difficulty low, and once skill catches up there is no goal left to reach for. The blue line withdraws too sharply, and the difficulty at once exceeds ability. The starting level of hints must also be enough, or even starting is hard.</p>
 
-  
-  <div class="sec"><span class="n">8</span><h2><span class="tag origin">How it was invented</span>What you remember is not what you went through</h2></div>
+  <div class="sec"><span class="n">8</span><h2><span class="tag origin">How it was invented</span>The cold-water experiment: how memory scores an experience</h2></div>
   <div class="withimg">
     <span data-illus="c06_remember"></span>
     <div>
-      <p>There is an experience like this: a level is great all the way through, but the last moment you die for no clear reason, and you tell your friend “this level is terrible.” Yet for the ten minutes before, you were smiling.</p>
-      <p>Are you lying? No. Your memory does the scoring, and memory scores with a different algorithm. The psychologist Daniel Kahneman and colleagues noticed that when people look back on an episode, the score they give is often not the sum of every moment but built on a few snapshots.</p>
+      <p>There is a kind of experience: a level is fun all the way through, but dies senselessly on the very last move, and you tell a friend “this level is terrible.” Yet you had been smiling for the whole ten minutes before.</p>
+      <p>Is that lying? No. Memory is the one scoring, and memory uses another algorithm. The psychologist Daniel Kahneman and colleagues noticed that when people look back on an experience, the score is often not the moments added up, but a grab of a few fragments.</p>
     </div>
   </div>
   <div class="story">
     <h3>Suffer 30 seconds more, and be more willing to do it again</h3>
     <p>To test this, the researchers thought up a rather cruel method: have people put a hand into cold water. In the first trial, the hand goes into water at about 14 °C for 60 seconds. In the second, 60 seconds again, and then 30 seconds more, during which the water is quietly warmed by about a degree: still uncomfortable, but less cold.</p>
-    <p>After both are over, you are asked to pick one to repeat. <b>Guess first</b>: which would you choose?</p>
+    <p>After both are over, people are asked to choose one to redo. <b>Guess first</b>: which would you choose?</p>
     <div class="c6guess" id="c6g3">
       <div class="c6row">
         <button class="chip" data-g="0">Repeat the first (60 seconds)</button>
@@ -278,17 +299,17 @@
   <div class="timeline">
     <div class="ev hasimg"><span data-illus="c06_coldwater"></span><div><b class="yr">1993</b> Kahneman, Barbara Fredrickson, Charles Schreiber and Donald Redelmeier run the cold-water experiment above. The result: most people chose the one that had 30 seconds more suffering in total. The extra stretch was uncomfortable too, but it felt better than what came before, so the feeling left at the end in memory was better.</div></div>
     <div class="ev hasimg"><span data-illus="c06_clinic"></span><div><b class="yr">1996, 2003</b> Could the lab result be a coincidence? Redelmeier and Kahneman went to a hospital and made the same observation in patients undergoing colonoscopy, finding that patients’ ratings of the whole procedure depended mainly on the most painful moment and how it felt at the end, and little on how long it lasted. In 2003 they ran a randomized trial with 682 patients: for half of them the procedure was extended at the end by a short stretch of mild discomfort. The group that suffered more afterward actually found the whole procedure not so bad.</div></div>
-    <div class="ev hasimg"><span data-illus="c06_designerend"></span><div><b class="yr">Later</b> These findings came to be popularly called the “peak–end rule.” For designers it gives a concrete handle: you don’t have to make every second the best, but the strongest moment and the final wrap-up must shine.</div></div>
+    <div class="ev hasimg"><span data-illus="c06_designerend"></span><div><b class="yr">Later</b> Such findings came to be popularly called the “peak-end rule.” For designers it gives a concrete handle: you needn’t make every second the best, but the strongest moment and the final wrap-up must shine.</div></div>
   </div>
   <div class="eg" data-ic="👑"><span data-illus="c06_boss"></span><div class="egt"><b>Beating the final boss</b>: the boss falls, confetti bursts across the screen, and the music swells. Even if the first half dragged a little, what the player takes away from the level is this moment.</div></div>
-  <div class="eg" data-ic="🍰"><span data-illus="c06_dessert"></span><div class="egt"><b>A meal</b>: the early dishes were so-so, then a good piece of cake comes last, and on the way home you will most likely say “that was a good meal.” It is no coincidence that restaurants save dessert for last.</div></div>
-  <div class="eg bad" data-ic="💥"><span data-illus="c06_oneshot"></span><div class="egt"><b>Killed instantly in the final second</b>: the line climbs all the way and then drops straight down at the end. The whole level’s rating is dragged away by that one blow. What needs fixing is the ending, not cutting the fun stretches before it.</div></div>
+  <div class="eg" data-ic="🍰"><span data-illus="c06_dessert"></span><div class="egt"><b>A meal</b>: the earlier dishes were so-so, and then a good piece of cake comes last, and on the way home you will probably say “that was a good meal.” A restaurant saving dessert for last is no coincidence.</div></div>
+  <div class="eg bad" data-ic="💥"><span data-illus="c06_oneshot"></span><div class="egt"><b>Killed in one hit in the last second</b>: the line climbs all the way and then drops straight down at the end, and the rating of the whole level is pulled away by that one blow. What needs fixing is the ending, and there is no need to cut the fun stretches before it.</div></div>
 
-  
   <div class="sec"><span class="n">9</span><h2><span class="tag why">Why it works</span>The peak–end rule: why memory plays favorites</h2></div>
   <div class="why-box">
     <h3>The peak–end rule</h3>
-    <p>Kahneman’s view is that we really have two “selves.” One lives in the moment and feels each instant; the other looks back afterward, gives the whole experience a score, and decides whether to come again. <span class="term" tabindex="0" data-def="Retrospective evaluation: the overall rating given when recalling an experience afterward, which is not the sum of the experience at each moment.">Retrospective evaluation</span> is often closer to the average of <b>the most intense moment (the peak)</b> and <b>the feeling at the end (the end)</b>, and is relatively insensitive to <b>how long it lasted</b>, which is called <span class="term" tabindex="0" data-def="Duration neglect: retrospective evaluation is not very sensitive to how long an experience lasted.">duration neglect</span>.</p>
+    <p>Kahneman’s view is that people actually have two “selves.” One lives through the moment, feeling each instant. The other looks back afterward and gives the whole experience one score, deciding whether to do it again.</p>
+    <p><span class="term" tabindex="0" data-def="Retrospective evaluation: the overall rating given when recalling an experience afterward, not equal to the sum of the experience of each moment.">Retrospective evaluation</span> is closer to the average of <b>the most intense moment (peak)</b> and <b>the feeling at the end (end)</b>, and is relatively insensitive to <b>how long it lasted</b>, which is called <span class="term" tabindex="0" data-def="Duration neglect: retrospective evaluation is not very sensitive to how long an experience lasted.">duration neglect</span>.</p>
     <svg viewBox="0 0 700 302" width="100%" role="img" aria-label="A level’s experience line: a highest point (the peak) in the middle, a drop at the end; dashed lines mark the overall average and the peak–end average, with the peak–end average clearly lower than the overall average">
       <g class="rough" fill="none" stroke="#2b2b3a" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
         <rect x="60" y="30" width="580" height="210" fill="#fffef7"/>
@@ -301,15 +322,23 @@
         <text x="620" y="214" text-anchor="end">End: the feeling at the finish</text>
         <text x="60" y="262">○ Experience line (pleasantness, higher is better)</text>
         <text x="60" y="284" font-size="17">dashed = overall average (7.2) dotted = peak–end average (6.0)</text>
-        <text x="640" y="262" text-anchor="end">time →</text>
+        <text x="640" y="262" text-anchor="end">time →</text><text x="52" y="245" text-anchor="end" font-size="14">0</text><text x="52" y="205" text-anchor="end" font-size="14">2</text><text x="52" y="165" text-anchor="end" font-size="14">4</text><text x="52" y="125" text-anchor="end" font-size="14">6</text><text x="52" y="85" text-anchor="end" font-size="14">8</text><text x="52" y="45" text-anchor="end" font-size="14">10</text>
       </g>
     </svg>
-    <p>One thing to keep apart: this is a finding about <b>remembered evaluation</b>, not “the experience at every moment.” Looking at the total amount of experience, longer good times are still more; it is just that when people recall, and when they decide “whether to play again,” they depend more on the peak and the end. In later research the strength of this effect varies with the situation.</p>
-    <div class="src">Sources: Kahneman, Fredrickson, Schreiber and Redelmeier, “When more pain is preferred to less: Adding a better end,” <i>Psychological Science</i> 4(6) (1993); Redelmeier and Kahneman, <i>Pain</i> 66(1): 3–8 (1996); Redelmeier, Katz and Kahneman, “Memories of colonoscopy: a randomized trial,” <i>Pain</i> 104: 187–194 (2003). The “peak–end rule” is a popular name later people gave this kind of finding.</div>
+    <p>Keep this straight: this is a finding about <b>memory evaluation</b>, not “the experience of each moment at the time.” Looking at the total of the experience, a longer good time is still more. It is only that when people recall and decide “play again or not,” they lean on the peak and the end. In later research the strength of this effect varies with the situation.</p>
+    <div class="src">Sources:<br>Kahneman, Fredrickson, Schreiber and Redelmeier, 1993, in which people put a hand in cold water, once for 60 seconds and once for 90 seconds with a slightly warmer end: most chose the one with more suffering (“When more pain is preferred to less: Adding a better end,” <i>Psychological Science</i> 4(6)).<br>Redelmeier and Kahneman, 1996, observing colonoscopy patients: ratings depended mainly on the most painful moment and the end (<i>Pain</i> 66(1): 3–8).<br>Redelmeier, Katz and Kahneman, 2003, a randomized trial with 682 patients: a short stretch of mild discomfort added at the end of the procedure made ratings better (<i>Pain</i> 104: 187–194). “Peak-end rule” is a later popular name.</div>
   </div>
+  <aside class="cc-card" aria-label="Concept card: the peak–end rule">
+    <span class="cc-tag">Concept card</span>
+    <p class="cc-name"><span>The peak–end rule</span></p>
+    <p class="cc-en">Peak–end rule</p>
+    <p class="cc-by">Daniel Kahneman et al. · the 1993 cold-water experiment; “peak–end rule” is a later popular name</p>
+    <p class="cc-def">When people look back on an experience, their rating depends mainly on the most intense moment and on how it felt at the end, and little on how long it lasted.</p>
+    <p class="cc-eg"><span class="cc-k">Example</span>Compared with 60 seconds in cold water, most people were willing to repeat the version with 30 more seconds in slightly warmer water, because its ending was less unpleasant.</p>
+  </aside>
   <div class="board">
     <b>Small experiment: “experience” first, then rate</b>
-    <p class="small">Below are two playbacks of the “pleasantness” (0–10) of two levels over time, about 7 seconds each. Press “Experience A” and “Experience B” to watch them play in turn, then choose the one you feel is better overall.</p>
+    <p class="small">The two clips below play two levels’ “enjoyment” (0–10) over time, about 7 seconds each. First click “Experience A” and “Experience B” to watch them play in turn, then choose the one you feel is better overall.</p>
     <div class="c6row">
       <button class="btn alt" id="c6pa">▶ Experience A</button><button class="btn pink" id="c6pb">▶ Experience B</button>
       <div class="c6face" id="c6fc">🙂</div>
@@ -321,30 +350,31 @@
     </div>
     <div class="c6out" id="c6pres" style="display:none"></div>
   </div>
-  <div class="sticky" id="c6t5">Try it: experience both, then make a choice. Afterward see whether your choice matches the “peak–end average” or the “overall average.”</div>
+  <div class="sticky" id="c6t5">Try it: after experiencing both, make your choice. After choosing, see whether your choice agrees with the “peak-end average” or with the “whole-course average.”</div>
 
   <div class="misc">
     <h3>Common misconceptions</h3>
     <ul>
-      <li><b>“The harder, the more immersive.”</b> No: a challenge far beyond skill is anxiety; immersion comes from a “match,” and also needs a goal and feedback.</li>
-      <li><b>“The more hints, the friendlier.”</b> Hints that are always full make learning stall; good hints are withdrawn as skill grows, or left to the player to choose.</li>
-      <li><b>“As long as the ending is good, the middle doesn’t matter.”</b> The peak–end rule describes remembered evaluation, not that the process is unimportant. If the process is too poor, players leave on the spot and never reach the ending.</li>
-      <li><b>“Flow is always good.”</b> Flow only says “deeply engaged”; it does not mean “good for you.” Designs that make people unable to stop rely on it too.</li>
+      <li><b>“The higher the difficulty, the more immersive.”</b> No: a challenge far above skill is anxiety. Immersion comes from “matching,” and still needs goals and feedback.</li>
+      <li><b>“The more hints the friendlier.”</b> Hints always at full make learning stall. Good hints withdraw as skill grows, or are left for the player to choose.</li>
+      <li><b>“As long as the ending is good, the middle can be anything.”</b> The peak-end rule describes memory evaluation, and the process still matters. If the process is too poor, players leave on the spot and never reach the ending.</li>
+      <li><b>“Flow is simply a good thing.”</b> Flow shows only “very engaged,” which doesn’t mean “good for the person.” Designs that make people unable to stop rely on it just the same.</li>
     </ul>
   </div>
 
   <div class="reflect">
     <h3>Reflection and debate</h3>
     <p>Flow research depends on respondents’ reports of their own states, so measurement is not easy, and the “challenge–skill” diagram does not suit every person or every activity. Some criticize game models like GameFlow for oversimplifying a complex experience.</p>
-    <p>The game designer Raph Koster proposed another explanation in <i>A Theory of Fun for Game Design</i> (2004): much of the fun of a game is the feedback of the brain learning new patterns, and once a game is fully mastered it becomes a “solved problem” and is no longer fun. This is his view; it can explain “getting bored once you’re good,” but not necessarily the pleasures of socializing or of the senses.</p>
-    <p>“Scaffolding” comes from education, and players don’t always want to be “taught”: too much hand-holding spoils the pleasure of exploring, and how to balance it is a design trade-off. Think about it: in a game you have played, which “ending” changed your view of the whole game? Was that the peak–end rule, or something else?</p>
+    <p>In <i>A Theory of Fun for Game Design</i> (2004), the game designer Raph Koster offered another explanation: the fun of a game is largely the brain’s feedback as it learns new patterns, and once fully mastered, the game becomes a “solved problem” and is no longer fun. This is his view. It can explain “getting tired once practiced,” while the pleasure of socializing and of the senses lies outside what it explains.</p>
+    <p>“Scaffolding” comes from education, and players don’t always want to be “taught.” Too much hand-holding spoils the pleasure of exploring, and how to balance is a design trade-off.</p>
+    <p>Think about it: in a game you have played, which “ending” changed your view of the whole game? Was that the peak-end rule, or something else?</p>
   </div>
 
   <div class="key">
     <h3>Key points</h3>
     <ul>
       <li><b>Flow = a match between challenge and skill</b>, plus a clear goal and immediate feedback; if any one is missing, absorption is discounted.</li>
-      <li>Csikszentmihalyi found flow in “people who can’t stop even without rewards”; a player’s skill keeps growing, so <b>difficulty has to grow with it</b>.</li>
+      <li>Csikszentmihalyi found flow in “people who can’t stop even without a reward.” A player’s skill keeps rising, so <b>the difficulty must rise too</b>.</li>
       <li>A good difficulty curve hugs the growth of skill and has ups and downs: apply pressure, release, apply pressure again.</li>
       <li>The zone of proximal development is the band of “can do with someone’s help”; <b>scaffolding</b> goes only in this band and is withdrawn as skill grows.</li>
       <li>When players rate a level, the <b>peak and the ending</b> carry a lot of weight; but this is a finding about memory and can’t be used to cut corners on the process.</li>
@@ -357,8 +387,8 @@
 
   <div class="sec"><span class="n">11</span><h2><span class="tag how">Your design</span>Lay out difficulty and hints</h2></div>
   <div class="card o">
-    <p>Think of a game you have played and recall its <b>hardest moment</b> and its <b>most relaxed moment</b>. How did the game arrange the two? What “hints” did it have, and how were they later withdrawn? What impression did the <b>ending</b> of a level leave you with?</p>
-    <textarea rows="5" data-save="ch6" placeholder="Example: <i>Super Mario</i>: each world ends in a boss (the most tense), followed by a bonus stage or the safe start of the next world…"></textarea>
+    <p>Think of a game you’ve played, and recall its <b>hardest moment</b> and <b>most relaxed moment</b>. How did the game arrange the two? What “hints” did it have, and how were they later withdrawn? What impression did the level’s <b>ending</b> leave?</p>
+    <textarea rows="5" data-save="ch6" placeholder="Example: Super Mario: each world ends in a boss (the most tense), followed by a bonus stage or the safe start of the next world…"></textarea>
     <p class="small">✍️ Saved automatically in your browser.</p>
   </div>
 </main>
@@ -374,14 +404,13 @@
   const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
   const done = (id, msg) => { const e = g(id); if (!e || e.classList.contains("c6ok")) return; e.classList.add("c6ok"); e.innerHTML += " ✅ <b>" + msg + "</b>"; };
 
-  
   const dot = g("dot"), seen = {};
   function place() {
     const s = +g("skill").value, c = +g("chal").value;
     g("o1").textContent = Math.round(s); g("o2").textContent = Math.round(c);
     dot.setAttribute("cx", 40 + s / 100 * 400); dot.setAttribute("cy", 280 - c / 100 * 270);
     const d = c - s; let t, k;
-    if (d > 18) { t = "😰 Anxiety: the challenge is far above your skill. Either lower the difficulty, or give the player teaching and a chance to grow."; k = "a"; }
+    if (d > 18) { t = "😰 Anxiety: the challenge is far above skill. Either lower the difficulty, or give the player chances to be taught and to grow."; k = "a"; }
     else if (d < -18) { t = "😴 Boredom: the challenge is too easy. Add some new challenge."; k = "b"; }
     else { t = "🌊 Flow! The challenge matches the skill, and the player is most immersed."; k = "f"; }
     g("state").textContent = t; seen[k] = 1;
@@ -399,7 +428,6 @@
   dot.addEventListener("pointerup", () => (drag = false));
   place(); seen.a = seen.b = seen.f = 0;
 
-  
   const guessChips = (boxId, resId, texts) => {
     const box = g(boxId), res = g(resId);
     box.querySelectorAll("[data-g]").forEach(b => b.onclick = () => {
@@ -414,7 +442,7 @@
   ]);
   guessChips("c6g3", "c6g3r", [
     "You chose the shorter one. In the experiment that was the minority.",
-    "<b>You chose what most people chose.</b> Most picked the longer one: it had 30 seconds more suffering in all, but the end was not so cold. When people rate a painful experience, they weigh the feeling of the final moment more than how long it lasted in total."
+    "<b>You chose the one most people choose.</b> Most chose the longer one: that one had 30 seconds more suffering in all, yet its ending wasn’t as cold. In judging painful experiences, people weigh the feeling of the last moment more, and care little about how long it lasted in all."
   ]);
   g("c6g2s").oninput = () => (g("c6g2o").textContent = g("c6g2s").value);
   g("c6g2b").onclick = () => {
@@ -422,7 +450,6 @@
     r.innerHTML = "You guessed <b>" + v + " years</b>. In Vygotsky’s example, one child can do <b>twelve-year-old</b> problems and the other only reaches <b>nine</b>. Their scores working alone were the same, but after a little guidance they were three years apart. This gap is the part the intelligence test didn’t measure.";
   };
 
-  
   function immersion() {
     const goal = g("c6goal").checked, fb = g("c6fb").checked, d = +g("c6bal").value;
     const G = goal ? 1 : 0.45, F = fb ? 1 : 0.5, B = Math.exp(-Math.pow(d / 22, 2));
@@ -437,17 +464,16 @@
     if (!r.fb) miss.push("feedback too slow (the player can’t tell how well they’re doing)");
     if (r.d > 12) miss.push("challenge clearly above skill (anxiety)");
     if (r.d < -12) miss.push("challenge clearly below skill (boredom)");
-    g("c6ans").innerHTML = "Sketch absorption: <b>" + r.v.toFixed(0) + "</b> / 100." + (miss.length ? "Weak spots:" + miss.join(";") + "." : "All three conditions are basically met.");
+    g("c6ans").innerHTML = "Sketch absorption: <b>" + r.v.toFixed(0) + "</b> / 100. " + (miss.length ? "Weak spots: " + miss.join(";") + "." : "All three conditions are basically met.");
     if (!r.goal && Math.abs(r.d) <= 3) done("c6t2", "With an unclear goal, however finely the difficulty is tuned, absorption is only " + r.v.toFixed(0) + ".");
   }
   ["c6goal", "c6fb", "c6bal"].forEach(id => g(id).addEventListener("input", flowUpdate));
-  const PRESET = { tetris: [1, 1, 2], fog: [0, 1, 0], slow: [1, 0, 0], boss: [1, 1, 45] };
+  const PRESET = { tetris: [1, 1, 2], fog: [0, 1, 25], slow: [1, 0, 0], boss: [1, 1, 45] };
   document.querySelectorAll("[data-p]").forEach(b => b.onclick = () => {
     const p = PRESET[b.dataset.p]; g("c6goal").checked = !!p[0]; g("c6fb").checked = !!p[1]; g("c6bal").value = p[2]; flowUpdate();
   });
   flowUpdate();
 
-  
   const X = t => 40 + t * 500, Yy = v => 250 - v * 240;
   const skill = t => 0.12 + 0.72 * Math.pow(t, 0.9);
   const curves = {
@@ -476,13 +502,13 @@
     }
     const names = { wall: "Steep", flat: "Flat", wave: "Waves", mine: "Yours" };
     const adv = { wall: "Red = anxiety zone: the player is quickly left behind and easily gives up.", flat: "Blue = boredom zone: the player feels no challenge in the second half.", wave: "The curve rises and falls around the channel, with both pressure and breathing room, and keeps growing overall.", mine: inN >= 85 ? "Lovely, inside the channel almost the whole way." : "Red is anxiety and blue is boredom. Try starting the curve lower and letting it rise with skill." };
-    g("curvemsg").innerHTML = "“" + names[k] + "”: about <b>" + inN + "%</b> of the time is in the flow channel (green line)." + adv[k];
+    g("curvemsg").innerHTML = "“" + names[k] + "”: about <b>" + inN + "%</b> of the time is in the flow channel (green line). " + adv[k];
     if (k === "mine" && inN >= 85) done("c6t3", "You tuned in " + inN + "% of time in flow.");
   }
   document.querySelectorAll("[data-c]").forEach(b => (b.onclick = () => show(b.dataset.c)));
   [["c6a", "c6ao"], ["c6b", "c6bo2"], ["c6p", "c6po"]].forEach(([s, o]) => g(s).addEventListener("input", () => { g(o).textContent = g(s).value; show("mine"); }));
+  show("wave");
 
-  
   const D = 80, S0 = 20, STEPS = 100, HM = 60;
   const lf = gap => Math.exp(-Math.pow((gap - 12) / 14, 2));
   function simulate(kind, h0) {
@@ -510,14 +536,14 @@
       res.push({ k, end: a[STEPS], reach: a.findIndex(v => v >= D - 0.5) });
     });
     g("c6sc").innerHTML = s;
-    const f = r => "Skill <b>" + r.end.toFixed(0) + "</b>," + (r.reach >= 0 ? "reached the target at step <b>" + r.reach + "</b>" : "<b>did not reach the target</b>");
+    const f = r => "Skill <b>" + r.end.toFixed(0) + "</b>, " + (r.reach >= 0 ? "reached the target at step <b>" + r.reach + "</b>" : "<b>did not reach the target</b>");
     const [A, B, C] = res;
-    g("c6scr").innerHTML = "A (hints always full):" + f(A) + "<br>B (all removed suddenly):" + f(B) + "<br>C (gradual withdrawal):" + f(C);
-    if (C.reach >= 0 && C.reach <= 70) done("c6t4", "C reached the target at step " + C.reach + " while A stopped at " + A.end.toFixed(0) + ".");
+    g("c6scr").innerHTML = "A (hints always full): " + f(A) + "<br>B (all removed suddenly): " + f(B) + "<br>C (gradual withdrawal): " + f(C);
+    if (touched4 && C.reach >= 0 && C.reach <= 70) done("c6t4", "C reached the target at step " + C.reach + " while A stopped at " + A.end.toFixed(0) + ".");
   }
-  g("c6h").addEventListener("input", scUpdate); scUpdate();
+  let touched4 = false;
+  g("c6h").addEventListener("input", () => { touched4 = true; scUpdate(); }); scUpdate();
 
-  
   const CA = [7, 8, 8, 9, 9, 8, 8, 7, 5, 3], CB = [5, 6, 6, 5, 6, 6, 7, 8, 9, 9];
   const seenAB = { A: false, B: false }; let playing = false;
   const face = v => v >= 8 ? "😄" : v >= 6 ? "🙂" : v >= 4 ? "😐" : "🙁";
@@ -527,7 +553,7 @@
     const tick = () => {
       if (i >= arr.length) {
         playing = false; seenAB[key] = true; g("c6pa").disabled = g("c6pb").disabled = false;
-        g("c6ptxt").textContent = "Experience " + key + " finished." + (seenAB.A && seenAB.B ? "Now choose the one you feel is better overall." : "Go and experience the other one.");
+        g("c6ptxt").textContent = "Experience " + key + " finished. " + (seenAB.A && seenAB.B ? "Now choose the one you feel is better overall." : "Go and experience the other one.");
         if (seenAB.A && seenAB.B) g("c6ca").disabled = g("c6cb").disabled = false; return;
       }
       g("c6pbar").style.width = arr[i] * 10 + "%"; g("c6fc").textContent = face(arr[i]); i++; setTimeout(tick, 700);
@@ -542,8 +568,8 @@
     const row = (n, s) => "<tr><th>" + n + "</th><td>" + s.mean.toFixed(1) + "</td><td>" + s.peak + "</td><td>" + s.end + "</td><td><b>" + s.pe.toFixed(1) + "</b></td></tr>";
     const el = g("c6pres"); el.style.display = "block";
     el.innerHTML = "You chose <b>" + choice + "</b>.<table class='c6tbl'><tr><th></th><th>Overall avg</th><th>Peak</th><th>End</th><th>Peak–end avg</th></tr>" + row("A", sa) + row("B", sb) + "</table>" +
-      "A has the higher overall average (A holds more “total” experience), and B has the higher peak–end average. Choosing B means your rating matches the tendency the peak–end rule describes; choosing A is perfectly normal too, as this is only a small example, not a proof.<br>" +
-      "<span class='small'>In design: do the strongest highlight and the final wrap-up well, and avoid ending on frustration or drag; but this is a finding about <b>retrospective evaluation</b>, not the moment-by-moment experience.</span>";
+      "By the whole-course average A is higher (A has more “total” experience), and by the peak-end average B is higher. Choosing B means your evaluation agrees with the tendency the peak-end rule describes. This is only a small example and proves nothing.<br>" +
+      "<span class='small'>In design use: do the strongest highlight and the final wrap-up well, and avoid ending on frustration or drag. But this is a finding about <b>retrospective evaluation</b>, not about the experience of every moment as it happens.</span>";
     done("c6t5", choice === "B" ? "You chose B, which has the higher peak–end average." : "You chose A, which has the higher overall average.");
   }
   g("c6ca").onclick = () => reveal("A"); g("c6cb").onclick = () => reveal("B");

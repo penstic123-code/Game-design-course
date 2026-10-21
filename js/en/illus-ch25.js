@@ -129,7 +129,7 @@ ILLUS_EN_ADD({
 ]
 },
 "c25_ants": {
-"a": "On the left a single ant can only walk and leave a scent; on the right a colony of ants, with no one in command, lines up into a route to food",
+"a": "On the left a single ant can only walk and leave a scent; on the right a colony of ants, with no one in command, lines up into a winding route to food",
 "t": [
 "One:",
 "Simple rules",

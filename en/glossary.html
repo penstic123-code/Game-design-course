@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Glossary</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+  .terms{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px;margin-top:10px}
+  .tc{background:#fff;border:3px solid var(--ink);border-radius:12px 22px 12px 20px;padding:8px 14px;box-shadow:3px 4px 0 var(--ink)}
+  .tc h3{margin:0;font-size:1.25rem}
+  .tc p{margin:2px 0 4px;font-size:.95rem;line-height:1.6}
+  .tc a{font-size:.85rem;margin-right:6px;border:2px solid var(--ink);border-radius:10px;padding:0 6px;text-decoration:none;background:var(--c,#ffe58a)}
+  input.search{max-width:320px}
+</style>
+</head>
+<body data-ch="0">
+<main class="wrap">
+  <div class="hero"><div class="txt"><span class="badge">Quick reference</span><h1>Glossary</h1><p class="sub" id="sub"></p></div></div>
+  <div class="board">
+    <input type="text" class="search" id="q" placeholder="🔍 Search terms or definitions">
+    <div class="pchips" id="chips" style="margin-top:8px"></div>
+    <a href="flashcards.html"><span class="btn green">🃏 Review with flashcards</span></a>
+    <a href="index.html"><span class="btn alt">📖 Back to contents</span></a>
+  </div>
+  <div class="terms" id="list"></div>
+</main>
+<script src="../js/common.js"></script>
+<script src="../js/glossary-data.js"></script>
+<script>
+const T = (window.GLOSSARY || []).filter(e => e.te).map(e => ({ ...e, t: e.te, d: e.de })).sort((a, b) => a.t.toLowerCase() < b.t.toLowerCase() ? -1 : 1), P = GD.PARTS;
+let part = -1, q = "";
+document.getElementById("sub").textContent = T.length + " terms in the whole course. Click a chapter tag to jump to the source; words with a dotted underline in the text also show their definition on hover.";
+const chips = document.getElementById("chips");
+["All", ...P.map(p => p.en)].forEach((n, i) => {
+  const b = document.createElement("button"); b.className = "chip" + (i === 0 ? " on" : ""); b.textContent = n;
+  if (i) b.style.background = P[i - 1].accent;
+  b.onclick = () => { part = i - 1; [...chips.children].forEach((c, k) => c.classList.toggle("on", k === i)); draw(); };
+  chips.appendChild(b);
+});
+document.getElementById("q").oninput = e => { q = e.target.value.trim().toLowerCase(); draw(); };
+function draw() {
+  const L = T.filter(e => (part < 0 || GD.partOf(e.ch) === part) && (!q || e.t.toLowerCase().includes(q) || e.d.toLowerCase().includes(q)));
+  document.getElementById("list").innerHTML = L.map(e => `<div class="tc"><h3>${e.t}</h3><p>${e.d}</p>${e.chs.map(c => `<a href="${GD.CH[c - 1][1]}" style="--c:${P[GD.partOf(c)].accent}">Ch. ${c}</a>`).join("")}</div>`).join("") || "<p>No matching terms.</p>";
+}
+draw();
+</script>
+</body>
+</html>

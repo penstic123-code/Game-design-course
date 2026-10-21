@@ -74,11 +74,19 @@
     <span data-illus="c28_pretty"></span>
     <div>
       <p>设想有个点子：在 5×5 的地图上，玩家躲着猫抢奶酪。周五晚上兴冲冲地开工，花三个晚上给 30 张卡画了精美的插图，还拿去过塑。</p>
-      <p>周日约朋友来玩。第一局还没结束，朋友就问：“这张卡抽到之后，到底能不能立刻用？”设计者愣住了，因为规则里根本没写。抽卡的规则不成立，而 30 张漂亮的卡已经印好了。</p>
-      <p>三个晚上的画功，一分钟就被一个问题否掉了。要是当初用铅笔在便利贴上写卡名，撕掉重写只要十秒钟。这就是<span class="term" tabindex="0" data-def="用纸、卡片、骰子、棋子等最简单的材料，做出能当场试玩的游戏版本；不写代码，不画精美美术。">纸面原型</span>要解决的事：<b>最快地知道“这个玩法有没有意思”</b>。</p>
+      <p>周日约朋友来玩，第一局还没结束，朋友就问：“这张卡抽到之后，到底能不能立刻用？”设计者愣住了，因为规则里根本没写。抽卡的规则不成立，而 30 张漂亮的卡已经印好了。</p>
+      <p>三个晚上的画功，一分钟就被一个问题否掉了。要是当初用铅笔在便利贴上写卡名，撕掉重写只要十秒钟。用最便宜的材料做出来的这类版本是<span class="term" tabindex="0" data-def="纸面原型（paper prototype）：用纸、卡片、骰子、棋子等最简单的材料，做出能当场试玩的游戏版本；不写代码，不画精美美术。">纸面原型</span>，它要做的是<b>最快地知道“这个玩法有没有意思”</b>。</p>
     </div>
   </div>
-  <p>它的做法并不神秘，六步走完一圈，改完再来：</p>
+  <aside class="cc-card" aria-label="概念卡：纸面原型">
+    <span class="cc-tag">概念卡</span>
+    <p class="cc-name"><span>纸面原型</span></p>
+    <p class="cc-en">Paper prototype</p>
+    <p class="cc-by">Marc Rettig · 1994 年《Prototyping for Tiny Fingers》介绍用纸做界面原型；Carolyn Snyder · 2003 年《Paper Prototyping》把做法系统化</p>
+    <p class="cc-def">用纸、卡片、骰子这类最便宜的材料，做出能当场试玩的版本，先回答“这个玩法有没有意思”，再决定要不要写代码。</p>
+    <p class="cc-eg"><span class="cc-k">例子</span>用便利贴写 30 张卡名，第一局就发现“抽到能不能立刻用”没写清，撕掉重写只要十秒钟。</p>
+  </aside>
+  <p>做法不复杂，六步走完一圈，改完再来：</p>
   <div class="card">
     <svg viewBox="0 0 760 360" width="100%" role="img" aria-label="纸面原型六步流程：选主题与一句话玩法，列组件，写一页规则，自己独玩，找人试玩并记录，修改后回到第四步再玩一圈">
       <g class="rough" stroke="#2b2b3a" stroke-width="4">
@@ -92,8 +100,12 @@
           <path d="M240 62H270"/><path d="M500 62H530"/>
           <path d="M645 114V190"/>
           <path d="M530 242H500"/><path d="M270 242H240"/>
-          <path d="M125 294V316H645V294" stroke-dasharray="8 8"/>
+          <path d="M125 294V316H645V300" stroke-dasharray="8 8"/>
         </g>
+      </g>
+      <g fill="#2b2b3a" stroke="#2b2b3a" stroke-width="2" stroke-linejoin="round">
+        <path d="M272 62 L256 53 L256 71z"/><path d="M532 62 L516 53 L516 71z"/><path d="M645 192 L636 176 L654 176z"/>
+        <path d="M498 242 L514 233 L514 251z"/><path d="M238 242 L254 233 L254 251z"/><path d="M645 288 L636 304 L654 304z"/>
       </g>
       <g font-size="21" text-anchor="middle">
         <text x="125" y="54">① 选主题</text><text x="125" y="84">一句话玩法</text>
@@ -109,11 +121,19 @@
   <div class="grid3">
     <div class="card y mini"><div class="ico">🎯</div><h3>一句话玩法</h3><p>“在 5×5 的地图上，躲开对手抢先拿到 3 块奶酪。”说不清，就是还没想清。</p></div>
     <div class="card b mini"><div class="ico">🧑‍🎮</div><h3>先自己玩</h3><p>独玩就能抓出不少漏洞：规则互相矛盾，或者某一步走不下去。</p></div>
-    <div class="card p mini"><div class="ico">📝</div><h3>记下来才算数</h3><p>记忆会美化<span class="term" tabindex="0" data-def="让真实的玩家（而不是设计者自己）玩你的原型，并观察、记录。">试玩</span>。用表格记录，才看得出反复出现的问题。</p></div>
+    <div class="card p mini"><div class="ico">📝</div><h3>记下来才算数</h3><p>记忆会美化<span class="term" tabindex="0" data-def="让真实的玩家（而不是设计者自己）玩你的原型，并观察、记录。">试玩</span>，用表格记录，才看得出反复出现的问题。</p></div>
   </div>
 
   <div class="sec"><span class="n">2</span><h2><span class="tag what">是什么</span>保真度：糙到“刚好能回答问题”</h2></div>
-  <p>“纸”只是材料之一，真正的标尺叫<span class="term" tabindex="0" data-def="原型和最终成品有多像：越像成品保真度越高，做起来越贵，改起来也越难。">保真度</span>。越像成品，能验证的东西越多，可每改一次也越贵。下面这张图把这个交换摆开了：</p>
+  <p>“纸”只是材料之一，衡量原型的标尺是<span class="term" tabindex="0" data-def="保真度（fidelity）：原型和最终成品有多像：越像成品保真度越高，做起来越贵，改起来也越难。">保真度</span>。越像成品，能验证的东西越多，可每改一次也越贵。下面这张图把这个交换摆开了：</p>
+  <aside class="cc-card" aria-label="概念卡：保真度">
+    <span class="cc-tag">概念卡</span>
+    <p class="cc-name"><span>保真度</span></p>
+    <p class="cc-en">Prototype fidelity（lo-fi / hi-fi）</p>
+    <p class="cc-by">Marc Rettig · 1994 年《Prototyping for Tiny Fingers》主张先做低保真（lo-fi）原型，高保真（hi-fi）原型做得慢、改起来难（“lo-fi”一词是否由他首创，未能确定）</p>
+    <p class="cc-def">原型和最终成品有多像。越像成品，能验证的东西越多，做一版和改一版也越贵。</p>
+    <p class="cc-eg"><span class="cc-k">例子</span>想知道规则成不成立，用纸就够；想知道跳起来爽不爽，纸回答不了，得做能运行的灰盒数字版。</p>
+  </aside>
   <div class="card">
     <svg viewBox="0 0 760 330" width="100%" role="img" aria-label="柱状示意图：纸片、表格、灰盒数字版、精美成品，改一次的时间依次从几分钟增长到几天">
       <g class="rough" stroke="#2b2b3a" stroke-width="4">
@@ -131,16 +151,16 @@
       </g>
     </svg>
   </div>
-  <p>所以口诀是：<b>先用最低的、刚好能回答问题的那一档</b>。想知道规则成不成立，纸就够。想知道跳起来爽不爽，就得往右走。下面五个例子，前三个是对的用法，后两个是错位：</p>
-  <div class="eg" data-ic="🃏"><span data-illus="c28_magic"></span><div class="egt"><b>《万智牌》的 Alpha 试玩版</b>：Richard Garfield 最早的试玩版只有 120 张牌，随机分给两位玩家。牌是手工做的，设计在后面几轮试玩里一步步改。要验证的是“抽牌对打好不好玩”，纸牌足够了。</div></div>
-  <div class="eg" data-ic="🎭"><span data-illus="c28_armello"></span><div class="egt"><b>《Armello》的纸面迭代</b>：团队在访谈里说，他们先用纸面原型迭代了大约八个月，由两位“主持人”在幕后手动处理隐藏规则，像是在模拟电脑。电脑版要写的东西，人脑先顶着。</div></div>
+  <p>所以口诀是：<b>先用最低的、刚好能回答问题的那一档</b>。想知道规则成不成立，纸就够。想算清数值和经济，一张表格就够：把数字摆成行和列，改一格就能看到后果。想知道跳起来爽不爽，就得往右走。下面五个例子，前三个是对的用法，后两个是错位：</p>
+  <div class="eg" data-ic="🃏"><span data-illus="c28_magic"></span><div class="egt"><b>《万智牌》的 Alpha 试玩版</b>：前面讲迭代时提到的那 120 张牌，就是手工做的纸面原型。要验证的是“抽牌对打好不好玩”，纸牌足够了，改一张牌只要一支笔。</div></div>
+  <div class="eg" data-ic="🎭"><span data-illus="c28_armello"></span><div class="egt"><b>《Armello》的纸面迭代</b>：数字游戏也从纸开始。前面说过，它的团队先在纸上迭代了好几个月，由“主持人”替电脑算那些隐藏规则。电脑版要写的东西，人脑先顶着。</div></div>
   <div class="eg" data-ic="🛋️"><span data-illus="c28_sofa"></span><div class="egt"><b>装修时的纸板沙发</b>：把纸板剪成沙发的大小，摆进平面图里，看过道还剩多宽。不合适就挪一下，一分钱不花。道理和游戏原型一样。</div></div>
-  <div class="eg bad" data-ic="🎨"><span data-illus="c28_pretty"></span><div class="egt"><b>反例：先画精美卡面</b>（假想）：花了三个晚上给 30 张卡画插图、过塑，第一次试玩才发现抽卡规则不成立。图全白画，还舍不得改规则。纸面原型应该糙到“撕了不心疼”。</div></div>
+  <div class="eg bad" data-ic="🎨"><span data-illus="c28_pretty2"></span><div class="egt"><b>反例：先画精美卡面</b>（假想）：花了三个晚上给 30 张卡画插图、过塑，第一次试玩才发现抽卡规则不成立。图全白画，还舍不得改规则。纸面原型应该糙到“撕了不心疼”。</div></div>
   <div class="eg bad" data-ic="🦘"><span data-illus="c28_jump"></span><div class="egt"><b>反例：用纸验证跳跃手感</b>：纸上没有实时的手眼配合，“跳得爽不爽”这种问题，纸回答不了，要尽快做出能运行的数字原型。工具选错，再糙也没用。</div></div>
-  <p class="src">来源：<a href="https://magic.wizards.com/en/news/making-magic/creation-magic-gathering-2013-03-12" target="_blank" rel="noopener">Garfield 自述</a>；<a href="https://gamecloud.net.au/features/interviews/paxaus-2015-interview-with-armello-developer-jason-bakker" target="_blank" rel="noopener">Armello 开发者访谈</a>。</p>
+  <p class="src">来源：<br>Richard Garfield · 自述《万智牌》Alpha 版的做法（<a href="https://magic.wizards.com/en/news/making-magic/creation-magic-gathering-2013-03-12" target="_blank" rel="noopener">Garfield 自述</a>）。<br>Armello 开发者 · 2015 · 在 PAX AUS 采访里谈纸面迭代阶段（<a href="https://gamecloud.net.au/features/interviews/paxaus-2015-interview-with-armello-developer-jason-bakker" target="_blank" rel="noopener">Armello 开发者访谈</a>）。</p>
 
   <div class="sec"><span class="n">3</span><h2><span class="tag origin">发明故事</span>为什么人们开始“先用纸”？</h2></div>
-  <p>先自己体验一下它要解决的麻烦。<b>有 6 小时验证一个新游戏，每一步都要花时间。</b>点按钮花时间，看能完成几轮“改规则 → 试玩”。（耗时是示意数字，用来对比量级，不是实测。）</p>
+  <p>先自己体验一下它要解决的麻烦。<b>假设手里有 6 小时来验证一个新游戏，每一步都要花掉时间。</b>点按钮用掉时间，看能完成几轮“改规则 → 试玩”。（耗时是示意数字，用来对比量级，不是实测。）</p>
   <div class="card b no-print">
     <div id="c28used"><i></i></div>
     <div class="msg" id="c28bmsg">预算 6 小时，已用 0 小时。</div>
@@ -162,13 +182,13 @@
     <div class="withimg rev">
       <span data-illus="c28_sixhrs"></span>
       <div>
-        <p><b>问题：</b>做出一个能运行的游戏或软件很贵，而最想回答的两个问题，“规则好不好玩”“人们看不看得懂界面”，在做出来之前根本没法回答。做完才发现不对，改动的代价最大。</p>
-        <p><b>来源一：桌游本来就是纸、卡、骰。</b>设计桌游的人天然用手工原型。Garfield 回忆，《万智牌》1991 年的 Alpha 版是 120 张牌。之后设计经历了 Alpha、Beta、Gamma 等几套试玩牌，朋友们的试玩不断推动修改。比如 Gamma 版里，许多生物的费用被调高，能永久抢走对手生物的牌被拿掉。游戏在 1993 年正式发售。</p>
-        <p><b>来源二：软件界面的“低保真原型”。</b>1994 年 4 月，Marc Rettig 在《Communications of the ACM》上发表《Prototyping for Tiny Fingers》，介绍用纸做界面原型，让真实用户拿去试用（他称为 lo-fi 原型）。据摘要，文章还建议测试时分配角色：迎接者、主持人、扮演“计算机”的人，以及做记录的观察者。2003 年，Carolyn Snyder 出版了专著《Paper Prototyping》，把这套做法系统化。</p>
+        <p>做出一个能运行的游戏或软件很贵，而最想回答的两个问题，“规则好不好玩”“人们看不看得懂界面”，在做出来之前根本没法回答。做完才发现不对，改动的代价最大。</p>
+        <p>最早的办法来自桌游，桌游本来就是纸、卡、骰，设计桌游的人天然用手工原型。《万智牌》就是这样：据 Garfield 回忆，1991 年的 Alpha 版是手工做的牌，朋友们的试玩一轮轮推动修改，游戏在 1993 年正式发售。</p>
+        <p>软件界面设计也走到了同一个办法，路径不同，用的是“低保真原型”。1994 年 4 月，Marc Rettig 在《Communications of the ACM》上发表《Prototyping for Tiny Fingers》。文章介绍用纸做界面原型，让真实用户拿去试用，作者称之为 lo-fi 原型。据摘要，文章还建议测试时分配角色：迎接者、主持人、扮演“计算机”的人，以及做记录的观察者。2003 年，Carolyn Snyder 出版了专著《Paper Prototyping》，把这套做法系统化。</p>
       </div>
     </div>
-    <p><b>一个流传很广的实物版本：</b>据报道，Palm 的 Jeff Hawkins 曾把一块木头削成预想中掌上设备的尺寸，揣在衬衫口袋里，拿笔“假装”在上面记事，体会拿着它的感觉。Donna Dubinsky 回忆说，他会在会议里这样假装做笔记。他带了多久，不同来源说法不一（一周到数月不等）。计算机历史博物馆（CHM）收藏了一件约 1995 年的 Palm 原型。</p>
-    <p><b>关键洞察：</b>要验证的是<b>想法</b>，不是<b>制作水平</b>。把一切不影响“规则与选择”的东西拿掉，改一条规则只要一支笔、一分钟，有限的时间就能换成更多轮试玩。数字游戏团队后来也借用了这一点，比如前面提到的 Armello。</p>
+    <p>实物版本的原型也有个流传很广的故事。据报道，Palm 的 Jeff Hawkins 曾把一块木头削成预想中掌上设备的尺寸，揣在衬衫口袋里，拿笔“假装”在上面记事，体会拿着它的感觉。Donna Dubinsky 回忆说，他会在会议里这样假装做笔记。他带了多久，不同来源说法不一（一周到数月不等）。计算机历史博物馆（CHM）收藏了一件约 1995 年的 Palm 原型。</p>
+    <p>这些做法背后是同一个想法：要验证的是<b>想法</b>，不是<b>制作水平</b>。把一切不影响“规则与选择”的东西拿掉，改一条规则只要一支笔、一分钟，有限的时间就能换成更多轮试玩。数字游戏团队后来也借用了这一点，比如前面提到的 Armello。</p>
     <div class="card">
       <svg viewBox="0 0 760 290" width="100%" role="img" aria-label="演化图：桌游的手工原型传统和软件界面的低保真原型两条线，汇合成数字游戏团队也先用纸试玩的做法">
         <g class="rough" stroke="#2b2b3a" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -191,7 +211,7 @@
       <div class="ev hasimg"><span data-illus="c28_palm"></span><div><b class="yr">1990 年代中期</b>　Palm 木块原型的故事：先假装它是掌上电脑（CHM 藏有约 1995 年的原型）。</div></div>
       <div class="ev hasimg"><span data-illus="c28_book"></span><div><b class="yr">2003</b>　Snyder 的《Paper Prototyping》出版，把做法整理成方法。</div></div>
     </div>
-    <p class="src">来源：Garfield，<a href="https://magic.wizards.com/en/news/making-magic/creation-magic-gathering-2013-03-12" target="_blank" rel="noopener">The Creation of Magic: The Gathering</a>；Rettig，CACM 37(4)，1994，<a href="https://dx.doi.org/10.1145/175276.175288" target="_blank" rel="noopener">DOI 10.1145/175276.175288</a>（读到的是摘要与二手总结，角色细节来自 <a href="https://acawiki.org/Prototyping_for_Tiny_Fingers" target="_blank" rel="noopener">AcaWiki 摘要</a>）；<a href="https://www.oreilly.com/library/view/paper-prototyping/9781558608702" target="_blank" rel="noopener">Snyder 书目页</a>；Hawkins 木块：<a href="https://www.redhat.com/en/command-line-heroes/season-4/smarter-phones" target="_blank" rel="noopener">Red Hat Command Line Heroes</a> 与 <a href="https://computerhistory.org/collections/catalog/102716262" target="_blank" rel="noopener">CHM 藏品页</a>（属行业轶事，各来源细节不完全一致）。</p>
+    <p class="src">来源：<br>Richard Garfield · 1994 年文章（2013 年转载） · 回忆《万智牌》Alpha 版怎样做出来（<a href="https://magic.wizards.com/en/news/making-magic/creation-magic-gathering-2013-03-12" target="_blank" rel="noopener">The Creation of Magic: The Gathering</a>）。<br>Marc Rettig · 1994 · 介绍用纸做界面原型并让真实用户试用（CACM 37(4)，<a href="https://dx.doi.org/10.1145/175276.175288" target="_blank" rel="noopener">DOI 10.1145/175276.175288</a>；读到的是摘要与二手总结，角色细节来自 <a href="https://acawiki.org/Prototyping_for_Tiny_Fingers" target="_blank" rel="noopener">AcaWiki 摘要</a>）。<br>Carolyn Snyder · 2003 · 出版《Paper Prototyping》，把做法系统化（<a href="https://www.oreilly.com/library/view/paper-prototyping/9781558608702" target="_blank" rel="noopener">书目页</a>）。<br>Jeff Hawkins 的木块：<a href="https://www.redhat.com/en/command-line-heroes/season-4/smarter-phones" target="_blank" rel="noopener">Red Hat Command Line Heroes</a> 与 <a href="https://computerhistory.org/collections/catalog/102716262" target="_blank" rel="noopener">CHM 藏品页</a>。这是行业轶事，各来源细节不完全一致。</p>
   </div>
 
   <div class="sec"><span class="n">4</span><h2><span class="tag why">为什么成立</span>为什么“糙”的原型反而好用？</h2></div>
@@ -199,10 +219,10 @@
     <ul>
       <li><b>低成本试错：</b>纸可以撕、可以涂、可以重写，改一版几乎不花钱，人就更敢大改，也更舍得推翻。这和“做一版、试玩、再改”的迭代逻辑一脉相承。</li>
       <li><b>物理触感降低表达门槛：</b>不会编程、不会画画的人也能做。卡牌拿在手里，棋子能直接移动，别人看一眼就能参与，也能当场提议“要不要这样改”。</li>
-      <li><b>注意力集中在规则而非美术：</b>原型明显是草稿，试玩者的评价自然落在“规则清不清楚、好不好玩”上，不会落在颜色好不好看上。设计者自己也更不会为精美的外观而舍不得改。这是<span class="term" tabindex="0" data-def="只有基本结构和功能、外观粗糙的早期原型，用来先验证想法本身。">低保真原型</span>的常见思路。</li>
+      <li><b>注意力集中在规则而非美术：</b>原型明显是草稿，试玩者的评价自然落在“规则清不清楚、好不好玩”上，不会落在颜色好不好看上。设计者自己也更不会为精美的外观而舍不得改。这是<span class="term" tabindex="0" data-def="低保真原型（low-fidelity prototype）：只有基本结构和功能、外观粗糙的早期原型，用来先验证想法本身。">低保真原型</span>的常见思路。</li>
     </ul>
     <p>边界：纸适合验证规则与选择，验证不了操作手感、画面表现、实时节奏，这些得在数字原型里试。</p>
-    <p class="src">原理出处：Rettig（1994）与 Snyder（2003）代表的低保真原型做法，以及<span class="term" tabindex="0" data-def="把“做出一版 → 试玩 → 修改”重复多轮。">迭代</span>思路。“糙原型让反馈集中在设计本身”是这个领域的常见主张，没有找到量化的实验数据，所以不引用数字。</p></div>
+    <p class="src">原理出处：<br>Marc Rettig · 1994 与 Carolyn Snyder · 2003 · 代表低保真原型的做法，沿用<span class="term" tabindex="0" data-def="迭代（iteration）：把“做出一版 → 试玩 → 修改”重复多轮。">迭代</span>的思路。<br>“糙原型让反馈集中在设计本身”是这个领域的常见主张，没有找到量化的实验数据，所以不引用数字。</p></div>
 
   <div class="sec"><span class="n">5</span><h2><span class="tag why">为什么成立</span>两条更底层的道理：玩耍与“知识的诅咒”</h2></div>
   <div class="withimg">
@@ -210,27 +230,36 @@
     <div>
       <p>还记得小猫扑毛线球、幼狮互相摔打吗？玩耍看起来浪费力气，生物学家却一直想弄明白它图什么。</p>
       <p>Špinka、Newberry 和 Bekoff 在 2001 年提出一个很有影响的假说：<b>玩耍是在“训练应对意外”</b>。动物在玩的时候会故意让自己失控：幼狮翻身露出肚皮，追的和逃的互换角色。这样就能在没有后果的环境里，反复练习从突然失控中恢复。</p>
-      <p>纸面原型是设计者的“玩耍”。在没有后果的桌面上，故意把规则放到会出岔子的地方，让它摔几跤。摔在纸上不疼，摔在发售后很疼。</p>
+      <p>纸面原型是设计者的“玩耍”。在没有后果的桌面上，故意把规则放到会出岔子的地方，让它摔几跤。摔在纸上不疼，摔在发售以后就疼了。</p>
     </div>
   </div>
   <div class="why-box"><h3>原理一：玩耍是“训练应对意外”</h3>
-    <p>前面讲过玩耍的“练习说”，这是它的升级版：不是练习某个固定技能，而是练习<b>应付没料到的事</b>。纸面原型的价值正好在这里：不知道试玩者会做出什么事，原型让这个意外发生在便宜的地方。</p>
-    <p>争议：这是一个有影响的假说，不是定论。后来的综述指出，它推出的许多具体预测还没被充分检验。玩耍也很可能不止一种功能（前面谈到的“说不太通的玩耍”就是一个提醒）。</p>
-    <p class="src">原理出处：Špinka, M., Newberry, R. C., &amp; Bekoff, M. (2001). Mammalian play: training for the unexpected. <i>Quarterly Review of Biology</i>, 76(2), 141–168. <a href="https://pubmed.ncbi.nlm.nih.gov/11409050/" target="_blank" rel="noopener">PubMed</a></p></div>
+    <p>前面讲过玩耍的“练习说”：玩耍是在练习某个固定技能。这个假说是它的升级版，练习的是<b>应付没料到的事</b>。纸面原型的价值正好在这里：设计者不知道试玩者会做出什么事，原型让这个意外发生在便宜的地方。</p>
+    <p>争议：这是一个有影响的假说，还没有定论。后来的综述指出，它推出的许多具体预测还没被充分检验。玩耍也可能不止一种功能，前面谈到的“说不太通的玩耍”便是一例。</p>
+    <p class="src">原理出处：<br>Špinka、Newberry 与 Bekoff · 2001 · 提出玩耍是在训练应对意外（Mammalian play: training for the unexpected. <i>Quarterly Review of Biology</i>, 76(2), 141–168. <a href="https://pubmed.ncbi.nlm.nih.gov/11409050/" target="_blank" rel="noopener">PubMed</a>）。</p></div>
+
+  <aside class="cc-card" aria-label="概念卡：玩耍是训练应对意外">
+    <span class="cc-tag">概念卡</span>
+    <p class="cc-name"><span>玩耍是训练应对意外</span></p>
+    <p class="cc-en">Play as training for the unexpected</p>
+    <p class="cc-by">Marek Špinka、Ruth C. Newberry、Marc Bekoff · 2001 年《Mammalian play: training for the unexpected》</p>
+    <p class="cc-def">动物玩耍时会故意让自己失控，再从失控里恢复，在没有后果的环境里练习应付没料到的事。</p>
+    <p class="cc-eg"><span class="cc-k">例子</span>幼狮互相扑咬时翻身露出肚皮，追的和逃的互换角色。纸面原型里故意把规则放到会出岔子的地方，是设计者的同类练习。</p>
+  </aside>
 
   <div class="withimg rev">
     <span data-illus="c28_curse"></span>
     <div>
-      <p>另一个麻烦在设计者自己身上：为什么“自己觉得好玩”不算数？因为太懂这个游戏了。读规则时，脑子里自动补全了所有没写的东西。</p>
+      <p>另一个麻烦在设计者自己身上：自己觉得好玩不算数，因为设计者太懂这个游戏了。读规则时，脑子里会自动补全所有没写的东西。</p>
       <p>这件事在实验里有个经典版本。1990 年，Stanford 的研究生 Elizabeth Newton 让一些人“敲桌子”敲出一首大家都熟悉的歌的节奏，另一些人来猜。敲的人事先估计，大约一半的人能猜出。结果 120 首里只有 3 首被猜中，约 2.5%。</p>
       <p>敲的人耳朵里响着整首歌，听的人却只听到一串咚咚声。设计者和试玩者之间就隔着这样一道沟。</p>
     </div>
   </div>
   <div class="why-box"><h3>原理二：知识的诅咒，所以必须让别人来玩</h3>
-    <p>这类现象有个名字，叫<span class="term" tabindex="0" data-def="知识的诅咒：一旦知道了某件事，就很难想象不知道它的人是什么感受，会高估别人理解的程度。">知识的诅咒</span>。这不是不够用心，而是知道之后很难“忘掉”。所以检验“一页写完、三分钟讲完”的规则，不能自己读一遍，要让一个不知情的人读一遍。</p>
-    <p>说明：数字来自 Newton 的博士论文研究，经《Made to Stick》（Heath 兄弟，2007）广为流传。它是一个样本不大的演示实验，用来说明方向，不必当作精确的比例。</p>
+    <p>这就是前面讲过的<span class="term" tabindex="0" data-def="知识的诅咒（curse of knowledge）：一旦知道了某件事，就很难想象不知道它的人是什么感受，会高估别人理解的程度。">知识的诅咒</span>。设计者并非不够用心，是知道了就很难“忘掉”。所以检验“一页写完、三分钟讲完”的规则，不能自己读一遍，要让一个不知情的人读一遍。</p>
+    <p>数字来自 Newton 的博士论文研究，经《Made to Stick》（Heath 兄弟，2007）广为流传。样本不大，用来说明方向，不要当作精确的比例。</p>
     <p><b>亲手验证（5 分钟）：</b>找一个朋友，在桌上敲三首大家都熟的歌的节奏，让他猜。敲之前先写下预计他能猜中几首，再对比结果。然后用同样的方式检验游戏：不给他看任何东西，只用口头讲规则，数他漏听了几条。</p>
-    <p class="src">出处：Newton, E. (1990), Stanford 博士论文；转述见 Heath, C. &amp; Heath, D., <i>Made to Stick</i> (2007)。“curse of knowledge”一词最早见于 Camerer, Loewenstein &amp; Weber (1989)。</p></div>
+    <p class="src">出处：<br>Elizabeth Newton · 1990 · Stanford 博士论文，让一些人敲歌曲节奏、另一些人猜，猜中率约 2.5%；转述见 Heath &amp; Heath, <i>Made to Stick</i> (2007)。<br>Camerer、Loewenstein 与 Weber · 1989 · 论文里最早出现“curse of knowledge”一词，实验显示知情者很难忽略自己已知的信息。</p></div>
 
   <div class="sec"><span class="n">6</span><h2><span class="tag how">怎么用</span>你的纸面原型工作台</h2></div>
   <p>三件工具：<b>① 组件清单</b>（准备什么）→ <b>② 卡牌 / 骰面台</b>（招牌：直接写、抽、掷）→ <b>③ 试玩记录表</b>（试完记什么）。数据都存在这台设备上。</p>
@@ -272,7 +301,7 @@
     <div class="msg" id="c28pmsg">先在上面的格子里写几张卡，再抽牌试试。</div>
   </div>
   <div class="sticky no-print" id="c28t2">试试看：写满 3 张牌（或 3 个骰面），抽牌 / 掷骰至少 3 次，留意哪一张读起来最别扭。<b id="c28t2ok"></b></div>
-  <p class="small">提示：骰子不一定是 1~6 点。可以让 6 个面分别代表“前进 / 抽卡 / 攻击 / 防御 / 空白 / 双倍”，一颗骰子就变成了一个小系统。这里的<span class="term" tabindex="0" data-def="某件事发生的可能性大小，例如公平六面骰每个面出现的概率约为 1/6。">概率</span>，掷几十次就能亲眼看到。</p>
+  <p class="small">提示：骰子不必只有 1~6 点。可以让 6 个面分别代表“前进 / 抽卡 / 攻击 / 防御 / 空白 / 双倍”，一颗骰子就变成了一个小系统。这里的<span class="term" tabindex="0" data-def="某件事发生的可能性大小，例如公平六面骰每个面出现的概率约为 1/6。">概率</span>，掷几十次就能亲眼看到。</p>
 
   <h3>③ 试玩记录表（辅助）</h3>
   <p>每试玩一局，就填一条。多记几条，页面会告诉你<b>哪个问题出现最多</b>，先修它。</p>
@@ -319,7 +348,7 @@
   </div>
   <div class="tldr">纸面原型用最低的成本，把设计的“摔跤”提前到不疼的地方。它不好看，所以才好用。</div>
 
-  <div class="sec"><span class="n">7</span><h2><span class="tag think">练习</span>练习</h2></div>
+  <div class="sec"><span class="n">7</span><h2><span class="tag think">练习</span>小测验</h2></div>
   <div id="quiz"></div>
 
   <div class="sec"><span class="n">8</span><h2><span class="tag think">你的设计</span>你的成果</h2></div>

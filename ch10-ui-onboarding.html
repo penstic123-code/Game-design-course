@@ -98,8 +98,8 @@
     <span data-illus="c10_dead"></span>
     <div>
       <p>激战正酣，屏幕“啪”地一黑，写着“你被击倒”。愣了一下，脑子里冒出的第一个问题是：刚才到底还剩多少血？</p>
-      <p>血条明明一直挂在屏幕上，却没有看。这不是不专心，是屏幕上同时有十几样东西在抢眼睛。界面（<span class="term" tabindex="0" data-def="User Interface，用户界面：玩家和游戏交换信息的窗口，包括画面上的信息、菜单、操作提示等。">UI</span>）的活儿，就是在“让玩家知道什么”和“别挡玩家的路”之间找平衡。</p>
-      <p>先问一个看似无聊的问题：这条信息“住”在哪儿？设计者常用两个问题来分：<b>它存在于故事世界里吗？它存在于游戏的 3D 空间里吗？</b>由此得到四类。</p>
+      <p>血条明明一直挂在屏幕上，却没有看见：屏幕上同时有十几样东西在抢眼睛，玩家并没有不专心。界面（<span class="term" tabindex="0" data-def="User Interface，用户界面：玩家和游戏交换信息的窗口，包括画面上的信息、菜单、操作提示等。">UI</span>）的设计，要在“让玩家知道什么”和“别挡玩家的路”之间找平衡。</p>
+      <p>每条信息都“住”在某个地方。设计者常用两个问题来分：<b>它存在于故事世界里吗？它存在于游戏的 3D 空间里吗？</b>由此得到四类。</p>
     </div>
   </div>
   <div class="card">
@@ -122,7 +122,7 @@
     </svg>
   </div>
   <div class="grid2">
-    <div class="card g"><h3>叙事内</h3><p>角色自己也看得见。优点：沉浸感最强。缺点：不一定清楚好读，做起来最费功夫。</p></div>
+    <div class="card g"><h3>叙事内</h3><p>角色自己也看得见，沉浸感最强。缺点：清晰度全靠设计者额外下功夫，做起来最费力。</p></div>
     <div class="card p"><h3>非叙事（最常见）</h3><p>纯粹为玩家服务、贴在屏幕上的 HUD。优点：清楚、好改。缺点：容易破坏沉浸，也容易越堆越多。</p></div>
   </div>
   <p><span class="term" tabindex="0" data-def="Head-Up Display，平视显示：一直叠在游戏画面上的信息层，如血条、弹药、小地图。">HUD</span>指一直叠在画面上的信息层。选哪类没有对错，要看更需要<b>清晰</b>还是更需要<b>沉浸</b>。</p>
@@ -130,15 +130,15 @@
   <div class="eg" data-ic="🔫"><span data-illus="c10_corner"></span><div class="egt"><b>非叙事：屏幕角落的数字</b>竞技射击游戏的血量和弹药贴在屏幕角落。它们不属于故事世界，但一眼读懂，胜负攸关时清晰度比沉浸更重要。</div></div>
   <div class="eg" data-ic="🚗"><span data-illus="c10_dash"></span><div class="egt"><b>日常：仪表盘和电量条</b>汽车的仪表盘真的装在车里，对司机来说是“叙事内”的。手机顶部的电量条不是手机世界里的物体，是系统叠上去的一层，是“非叙事”的。</div></div>
   <div class="eg bad" data-ic="🕯️"><span data-illus="c10_tiny"></span><div class="egt"><b>差一点就对：叙事内不等于好用</b>为了沉浸，把血量做成角色衣服上一个很小的指示灯。激战里镜头乱晃，玩家根本看不清。要么把它放大成更醒目的发光，要么危急时补一层屏幕泛红的元 UI。</div></div>
-  <p class="small">这套四分法常被追溯到 Fagerholt 与 Lorentzon 2009 年 Chalmers 理工大学的硕士论文《Beyond the HUD》。“叙事内”这个词借自影视，用在游戏上有人觉得并不总是合适（Jørgensen 等人对游戏声音就提过类似批评）。</p>
+  <p class="small">这套四分法常被追溯到 Fagerholt 与 Lorentzon 2009 年 Chalmers 理工大学的硕士论文《Beyond the HUD》。“叙事内”这个词借自影视，也有人批评它用在游戏上不合适（Jørgensen 等人对游戏声音就提过类似批评）。</p>
 
   <!-- 2 信息层级 -->
   <div class="sec"><span class="n">2</span><h2><span class="tag what">是什么</span>信息层级：不是所有信息都一样重要</h2></div>
-  <p>知道信息住在哪儿还不够。屏幕空间和玩家的注意力都是稀缺资源，得决定每条信息有多抢眼。这个“抢眼程度”叫<span class="term" tabindex="0" data-def="Visual weight：一个元素在画面中有多抢眼，由大小、对比、位置、动画等因素决定。">视觉权重</span>。一个简单的三档办法是：</p>
+  <p>知道信息住在哪儿还不够。屏幕空间和玩家的注意力都是稀缺资源，得决定每条信息有多抢眼。这个“抢眼程度”就是<span class="term" tabindex="0" data-def="Visual weight：一个元素在画面中有多抢眼，由大小、对比、位置、动画等因素决定。">视觉权重</span>。一个简单的三档办法是：</p>
   <div class="grid3">
     <div class="card y mini"><div class="ico">1</div><h3>常驻突出</h3><p>当前决策马上要用的信息，如战斗中的生命值。</p></div>
     <div class="card b mini"><div class="ico">2</div><h3>弱化显示</h3><p>偶尔瞄一眼，如小地图。小一点、淡一点。</p></div>
-    <div class="card v mini"><div class="ico">3</div><h3>需要时才出现</h3><p>用不上就别放。弹出菜单、事件触发时才显示。</p></div>
+    <div class="card v mini"><div class="ico">3</div><h3>需要时才出现</h3><p>弹出菜单、事件触发时才显示，用不上就别放。</p></div>
   </div>
   <p>难点在于：<b>同一个元素在不同时刻，该在哪一档是不一样的</b>。下图是同一套 HUD 在三个时刻的“座次表”。</p>
   <div class="card">
@@ -189,7 +189,7 @@
   <div class="eg" data-ic="🚪"><span data-illus="c10_rooms"></span><div class="egt"><b>渐进式披露：一间房一个新东西</b>设计者常称赞这种做法：前几个房间每次只引入一个新机制，学会了才叠加下一个（《Portal》常被当作这类例子）。</div></div>
   <div class="eg" data-ic="💬"><span data-illus="c10_bubble"></span><div class="egt"><b>日常里的情境提示：App 的小气泡</b>手机 App 首次打开时，只在第一次点到某个按钮的时候才冒出一条小气泡，不会一上来就塞一份说明书。</div></div>
   <div class="eg bad" data-ic="📚"><span data-illus="c10_wall"></span><div class="egt"><b>反例：二十页的强制教程</b>开场弹出 20 页图文教程，要求“全部看完才能开始”。玩家点跳过，之后真遇到问题又找不到入口。好的做法是<b>可跳过、可回看</b>。</div></div>
-  <div class="sticky">最好的教学，常常发生在玩家<b>没发现自己在被教</b>的时候：用关卡设计造一个只有学会了才能通过的小房间，比弹窗有效。别忘了让提示可跳过、可回看，老玩家和新玩家都该被尊重。</div>
+  <div class="sticky">最好的教学发生在玩家<b>没发现自己在被教</b>的时候：用关卡设计造一个只有学会了才能通过的小房间，比弹窗有效。提示要可跳过、可回看，老玩家和新玩家都该被尊重。</div>
 
   <!-- 4 发明故事 -->
   <div class="sec"><span class="n">4</span><h2><span class="tag origin">发明故事</span>HUD 为什么被发明？为什么偏偏要“少”？</h2></div>
@@ -206,7 +206,7 @@
     <p>新问题很快出现了：玻璃上能投的信息越来越多，飞行员的注意力和记忆却没有变多。设计者不得不决定：<b>哪些信息值得占用这块宝贵的“正前方”？</b>游戏借来了同一个名字，也借来了同一个难题。</p>
     <div class="timeline">
       <div class="ev hasimg"><span data-illus="c10_tl_sight"></span><div><b class="yr">二战前后</b>　战斗机上的反射式瞄准具，把瞄准环投影到前方的玻璃上。</div></div>
-      <div class="ev hasimg"><span data-illus="c10_tl_radar"></span><div><b class="yr">1942</b>　英国的雷达研究人员做了一个实验装置，把雷达图像和陀螺瞄准具的投影合到同一块挡风玻璃上。据维基百科，这个装置当时并未装上飞机，但已经具备现代 HUD 的核心特征。</div></div>
+      <div class="ev hasimg"><span data-illus="c10_tl_radar"></span><div><b class="yr">1942</b>　英国电信研究所（TRE）的雷达研究人员做了一次实验，把雷达图像和陀螺瞄准具的投影合到同一块挡风玻璃上，让夜间战斗机的飞行员不必低头看雷达屏。这被看作 HUD 的早期雏形。</div></div>
       <div class="ev hasimg"><span data-illus="c10_tl_miller"></span><div><b class="yr">1956</b>　心理学家米勒发表《神奇的数字 7±2》：人一次能保持的信息有限，但可以用<b>组块</b>把多个小信息捏成一个，变相扩大“装得下”的内容。</div></div>
       <div class="ev hasimg"><span data-illus="c10_tl_sweller"></span><div><b class="yr">1988</b>　斯威勒提出认知负荷理论：糟糕的呈现会白白占用有限的工作记忆。</div></div>
       <div class="ev hasimg"><span data-illus="c10_tl_cowan"></span><div><b class="yr">2001</b>　考恩回顾大量实验，认为在排除复述和组块的情形下，容量更像是约 4 个组块。</div></div>
@@ -227,7 +227,7 @@
     <div class="c10_bars" id="c10_bars"></div>
     <div class="small" id="c10_cmp"></div>
   </div>
-  <div class="sticky">试试看：把同一个 N（比如 9）先用“连写”测一次，再用“每 3 位一组”测一次。同样的数字，分组后要记的“单位”少了，多半会亲身体会到什么叫组块。一次测试波动很大，请多试几轮，这不是严格的实验。</div>
+  <div class="sticky">试试看：把同一个 N（比如 9）先用“连写”测一次，再用“每 3 位一组”测一次。同样的数字，分组后要记的“单位”少了，就能亲身体会什么叫组块。一次测试波动很大，多试几轮。这不是严格的实验。</div>
 
   <div class="story">
     <h3>故事二：为什么我们“看得见整体”？</h3>
@@ -238,29 +238,55 @@
       <button class="btn alt" id="c10_slow">慢（1 秒一换）</button><button class="btn" id="c10_fast">快（约 0.2 秒一换）</button>
       <div class="msg" id="c10_phit">慢的时候，看到两个独立的灯。快的时候，多数人看到“一个点在左右跳”。</div>
     </div>
-    <p>据常被讲述的版本，心理学家韦特海默（Max Wertheimer）1910 年前后在火车上被闪烁的灯光触动，回去用频闪装置做实验，并在 1912 年发表了关于“似动”（phi 现象）的长篇论文。（“火车上的灵感”是流传的轶事，细节有出入，能确定的是 1912 年那篇论文。）他的结论是：知觉不是零件相加，<b>大脑先抓整体结构</b>。这就是<span class="term" tabindex="0" data-def="Gestalt psychology：德语“整体”之意。主张人先感知整体结构，而不是孤立的部件。">格式塔</span>（德语“整体”）学派的起点。</p>
-    <p>对界面设计者来说，这意味着：<b>玩家不会逐个读 12 个图标，先看到的是“几块”</b>。设计者可以用摆放，替玩家分好块。</p>
+    <p>据常被讲述的版本，心理学家韦特海默（Max Wertheimer）1910 年前后在火车上被闪烁的灯光触动，回去用频闪装置做实验。“火车上的灵感”是流传的轶事，细节有出入。能确定的是，他在 1912 年发表了关于“似动”（phi 现象）的长篇论文。</p>
+    <p>他的结论是：知觉不是零件相加，<b>大脑先抓整体结构</b>。这就是<span class="term" tabindex="0" data-def="格式塔（Gestalt）心理学：德语“整体”之意。主张人先感知整体结构，而不是孤立的部件。">格式塔</span>（德语“整体”）学派的起点。</p>
+    <p>对界面设计者来说，<b>玩家不会逐个读 12 个图标，先看到的是“几块”</b>。设计者可以用摆放，替玩家分好块。</p>
     <div class="timeline">
       <div class="ev hasimg"><span data-illus="c10_tl_phi"></span><div><b class="yr">1912</b>　韦特海默发表《关于运动视觉的实验研究》，描述 phi 现象。</div></div>
       <div class="ev hasimg"><span data-illus="c10_tl_laws"></span><div><b class="yr">1923</b>　韦特海默发表关于知觉组织的论文，总结出接近、相似等分组倾向。</div></div>
       <div class="ev hasimg"><span data-illus="c10_tl_ui"></span><div><b class="yr">今天</b>　界面设计里“把同类放近、同色同形”，就是这些倾向的应用。它们是经验性的描述，不是精确的定律。</div></div>
     </div>
   </div>
+  <aside class="cc-card" aria-label="概念卡：格式塔">
+    <span class="cc-tag">概念卡</span>
+    <p class="cc-name"><span>格式塔</span></p>
+    <p class="cc-en">Gestalt psychology（德语 Gestalt，“整体”）</p>
+    <p class="cc-by">马克斯·韦特海默（Max Wertheimer） · 1912 年发表 phi 现象论文，1923 年总结知觉分组原则</p>
+    <p class="cc-def">人先看到整体结构，再看到零件。距离近、样子像、轮廓有缺口、排成一线的东西，会被看成一组。</p>
+    <p class="cc-eg"><span class="cc-k">例子</span>血、蓝、体力三个条紧挨着，技能图标另放一排，玩家不读字就知道“这是资源，那是技能”。</p>
+  </aside>
 
   <!-- 5 认知负荷 -->
   <div class="sec"><span class="n">5</span><h2><span class="tag why">为什么成立</span>为什么 HUD 不能塞太满？认知负荷与工作记忆</h2></div>
-  <p>开场弹出 12 条操作说明，多半一条都没记住。电话号码分成 3-4-4 段，就容易记多了。这背后是同一件事：<b>人脑同时能处理的信息很少</b>。</p>
+  <p>开场弹出 12 条操作说明，一条都记不住。电话号码分成 3-4-4 段，就容易记多了。这背后是同一件事：<b>人脑同时能处理的信息很少</b>。</p>
   <div class="why-box">
     <h3>认知负荷理论与工作记忆的上限</h3>
-    <p><span class="term" tabindex="0" data-def="Working memory：大脑暂时保存并加工信息的“工作台”，容量很小，信息不复述就会很快消失。">工作记忆</span>是临时保存、加工信息的地方，容量非常有限。斯威勒（John Sweller）1988 年的论文从“解题时的认知负担”出发，后来发展出<span class="term" tabindex="0" data-def="Cognitive load theory：学习和操作时占用工作记忆的负荷分为内在、外在、相关三类，总负荷超过容量时，学习与表现都会变差。">认知负荷理论</span>。后续文献常把负荷分成三类：</p>
+    <p><span class="term" tabindex="0" data-def="工作记忆（working memory）：大脑暂时保存并加工信息的“工作台”，容量很小，信息不复述就会很快消失。">工作记忆</span>是临时保存、加工信息的地方，容量非常有限。斯威勒（John Sweller）1988 年的论文从“解题时的认知负担”出发，后来发展出<span class="term" tabindex="0" data-def="认知负荷理论（cognitive load theory）：学习和操作时占用工作记忆的负荷分为内在、外在、相关三类，总负荷超过容量时，学习与表现都会变差。">认知负荷理论</span>。后续文献常把负荷分成三类：</p>
     <ul>
       <li><b>内在负荷</b>：任务本身的复杂度（要同时处理多少个变量）。</li>
       <li><b>外在负荷</b>：由<b>糟糕的呈现方式</b>带来的额外负担（杂乱的 HUD、文字墙），是设计者最该砍掉的。</li>
       <li><b>相关负荷</b>：用于把新知识整合成“套路”（图式）的有益投入。</li>
     </ul>
-    <p>容量到底多大？米勒 1956 年那篇论文的重点，是人能保持约 7±2 个<span class="term" tabindex="0" data-def="Chunk：被大脑当作一个整体来记忆的信息单位。通过熟悉的模式把多个小信息捏成一个组块，可以变相扩大容量。">组块</span>，不是 7 个“位”，并且可以通过重新编码来扩大“装得下”的内容。考恩 2001 年回顾大量实验后提出：排除组块和复述之后，真正的容量更保守，<b>约 4 个组块</b>。两个数字之间的争论至今没有完全平息，但大家都同意：<b>很小，所以要省着用。</b></p>
-    <div class="src">出处：Sweller (1988)，Cognitive load during problem solving: Effects on learning，Cognitive Science 12(2)：257–285；Miller (1956)，The magical number seven, plus or minus two，Psychological Review 63(2)：81–97；Cowan (2001)，The magical number 4 in short-term memory，Behavioral and Brain Sciences 24(1)：87–114（<a href="https://pubmed.ncbi.nlm.nih.gov/11515286/">PubMed</a>）。三类负荷的划分来自 Sweller 等人后续的综述（如 Sweller, van Merriënboer &amp; Paas, 1998）。</div>
+    <p>至于容量，米勒 1956 年那篇论文的重点，是人能保持约 7±2 个<span class="term" tabindex="0" data-def="组块（chunk）：被大脑当作一个整体来记忆的信息单位。通过熟悉的模式把多个小信息捏成一个组块，可以变相扩大容量。">组块</span>，不是 7 个“位”。重新编码可以扩大“装得下”的内容。</p>
+    <p>考恩 2001 年回顾大量实验后提出：排除组块和复述之后，真正的容量更保守，<b>约 4 个组块</b>。两个数字之间的争论至今没有完全平息，但大家都同意：<b>很小，所以要省着用。</b></p>
+    <div class="src">出处：<br>Sweller · 1988 · 研究解题时的认知负担 · 提出认知负荷理论（Cognitive load during problem solving: Effects on learning，Cognitive Science 12(2)：257–285）。三类负荷的划分来自 Sweller 等人后续的综述（如 Sweller、van Merriënboer、Paas，1998）。<br>Miller · 1956 · 人能保持约 7±2 个组块（The magical number seven, plus or minus two，Psychological Review 63(2)：81–97）。<br>Cowan · 2001 · 回顾大量实验 · 排除组块和复述后容量约 4 个组块（The magical number 4 in short-term memory，Behavioral and Brain Sciences 24(1)：87–114，<a href="https://pubmed.ncbi.nlm.nih.gov/11515286/">PubMed</a>）。</div>
   </div>
+  <aside class="cc-card" aria-label="概念卡：认知负荷理论">
+    <span class="cc-tag">概念卡</span>
+    <p class="cc-name"><span>认知负荷理论</span></p>
+    <p class="cc-en">Cognitive load theory</p>
+    <p class="cc-by">约翰·斯威勒（John Sweller） · 1988 年论文《Cognitive load during problem solving: Effects on learning》</p>
+    <p class="cc-def">工作记忆的容量很小。任务本身的复杂、杂乱的呈现、整合知识的投入，三者加起来超过容量，表现就会变差。</p>
+    <p class="cc-eg"><span class="cc-k">例子</span>战斗界面同时亮着 12 个元素，玩家反而漏看了血量。</p>
+  </aside>
+  <aside class="cc-card" aria-label="概念卡：组块">
+    <span class="cc-tag">概念卡</span>
+    <p class="cc-name"><span>组块</span></p>
+    <p class="cc-en">Chunk</p>
+    <p class="cc-by">乔治·米勒（George Miller） · 1956 年《The Magical Number Seven, Plus or Minus Two》</p>
+    <p class="cc-def">大脑当作一个整体来记的信息单位。把小信息捏成组块，同样的容量能装更多东西。</p>
+    <p class="cc-eg"><span class="cc-k">例子</span>电话号码 13912345678 分成 139-1234-5678，要记的单位从 11 个变成 3 个。</p>
+  </aside>
   <div class="card">
     <svg viewBox="0 0 700 300" width="100%" role="img" aria-label="工作记忆容量约 4 个组块：干净的 HUD 装得下，杂乱的 HUD 溢出">
       <g class="rough" stroke="#2b2b3a" stroke-width="3.5">
@@ -270,11 +296,11 @@
       </g>
       <g font-size="18" fill="#2b2b3a" text-anchor="middle">
         <text x="98" y="82">内在</text><text x="176" y="82">内在</text><text x="254" y="82">相关</text><text x="332" y="82">空余</text>
-        <text x="98" y="208">内在</text><text x="176" y="208">内在</text><text x="254" y="208">外在</text><text x="332" y="208">外在</text><text x="410" y="208">外在</text><text x="488" y="208">外在</text>
+        <text x="98" y="208">内在</text><text x="176" y="208">内在</text><text x="254" y="208">外在</text><text x="332" y="208">外在</text><text x="410" y="208">外在</text><text x="488" y="208" font-weight="700">血量</text>
       </g>
       <g font-size="20" fill="#2b2b3a"><text x="60" y="34">干净的 HUD：装得下，还有余力思考策略</text><text x="60" y="160">杂乱的 HUD：外在负荷塞满，超出约 4 个组块的容量</text></g>
       <path d="M372 252 V276 H526 V252" stroke="#e5484d" stroke-width="4" fill="none" class="rough"/>
-      <text x="360" y="276" font-size="18" fill="#b3303a" text-anchor="end">溢出：漏看血量</text>
+      <text x="360" y="276" font-size="18" fill="#b3303a" text-anchor="end">溢出：排在最后的血量被漏看</text>
       <path d="M60 106 H370" stroke="#2b2b3a" stroke-width="3" class="rough"/><text x="380" y="112" font-size="16" fill="#3f3f50">≈ 4 个组块（示意）</text>
     </svg>
   </div>
@@ -295,7 +321,7 @@
       <li><b>封闭</b>：大脑会自动补全有缺口的轮廓，把它看成完整图形。</li>
       <li><b>连续</b>：沿着平滑路线排列的东西，被看成一条线。</li>
     </ul>
-    <div class="src">出处：Wertheimer, M. (1923). Untersuchungen zur Lehre von der Gestalt II. <i>Psychologische Forschung</i>, 4, 301–350（英文节译“Laws of organization in perceptual forms”见 Ellis 编，<i>A Source Book of Gestalt Psychology</i>, 1938；<a href="https://psychclassics.yorku.ca/Wertheimer/Forms/forms.htm">在线全文</a>）。这些“原则”更像描述性的经验规律，不是精确的定量定律；后来的学者也改写、扩充过。</div>
+    <div class="src">出处：Wertheimer · 1923 · 总结接近、相似等知觉分组倾向（Untersuchungen zur Lehre von der Gestalt II，<i>Psychologische Forschung</i> 4：301–350；英文节译 “Laws of organization in perceptual forms” 见 Ellis 编，<i>A Source Book of Gestalt Psychology</i>，1938，<a href="https://psychclassics.yorku.ca/Wertheimer/Forms/forms.htm">在线全文</a>）。这些“原则”是描述性的经验规律，后来的学者也改写、扩充过。</div>
   </div>
   <div class="card">
     <svg viewBox="0 0 700 250" width="100%" role="img" aria-label="格式塔四原则示意：接近、相似、封闭、连续">
@@ -323,16 +349,26 @@
   <div class="eg" data-ic="⭕"><span data-illus="c10_ring"></span><div class="egt"><b>游戏内（封闭）：冷却圆环</b>技能冷却用一个“还差一小段的圆环”表示，大脑自动补全，一眼知道“快好了”。任务路径点沿一条线排开，目光自然顺着走，这是“连续”。</div></div>
   <div class="eg" data-ic="🛗"><span data-illus="c10_elev"></span><div class="egt"><b>日常：电梯按钮板</b>楼层、开关门、报警分成三块，靠间距而不是文字说明。手机主屏幕的“文件夹”，也是把相近的 App 圈成一个整体。</div></div>
   <div class="eg bad" data-ic="🔳"><span data-illus="c10_grid"></span><div class="egt"><b>反例：12 个均匀排开的图标</b>间距完全均匀、颜色形状各异，没有任何分组线索。玩家只能逐个读，每个都成了一个独立组块，正好把容量吃光。</div></div>
-  <p>所以做 HUD 的时候，把<b>同类信息放近、不同类拉开</b>（接近）。同类用同色同形（相似）。冷却用不闭合的圆环（封闭）。路径点沿着一条线（连续）。玩家<b>无需阅读文字</b>就读懂布局，外在负荷也降下来了。后面的“HUD 摆放台”里，右侧的分组诊断检查的就是这件事。</p>
+  <p>所以做 HUD 的时候，把<b>同类信息放近、不同类拉开</b>（接近）。同类用同色同形（相似）。冷却用不闭合的圆环（封闭）。路径点沿着一条线（连续）。玩家<b>无需阅读文字</b>就读懂布局，外在负荷也降下来了。</p>
 
   <!-- 7 默认值 -->
   <div class="sec"><span class="n">7</span><h2><span class="tag why">为什么成立</span>为什么“默认值”这么重要？默认效应与选择架构</h2></div>
-  <p>买新手机，有没有改过出厂的铃声？大多数人没改，哪怕改起来只要点两下。<b>人们常常接受默认选项</b>，这对新手引导影响很大：设置里的开关默认开着还是关着，会决定多数玩家的最终体验。</p>
+  <p>买新手机，有没有改过出厂的铃声？大多数人没改，哪怕改起来只要点两下。<b>多数人会接受默认选项</b>，这对新手引导影响很大：设置里的开关默认开着还是关着，会决定多数玩家的最终体验。</p>
   <div class="why-box">
     <h3>默认效应与选择架构</h3>
-    <p><span class="term" tabindex="0" data-def="Default effect：当有预设选项时，人们倾向于保持预设，哪怕可以轻松更改。原因包括惰性、认为默认是被推荐的、以及改动的心理成本。">默认效应</span>：预设选项会明显影响最终选择。Johnson 与 Goldstein 2003 年在《Science》上比较了欧洲多国的器官捐献登记：“默认同意、可选择退出”的国家，同意登记的比例远高于“默认不同意、需主动同意”的国家，常被引用的例子是奥地利接近 100% 对德国约 12%。（这是跨国比较，混杂因素很多，而且“登记同意”不等于“实际捐献”。）泰勒与桑斯坦在《助推》里提出了<span class="term" tabindex="0" data-def="Choice architecture：设计者如何安排选项的呈现方式（默认值、顺序、措辞等），这种安排本身就会影响人的选择。">选择架构</span>：<b>没有“中立”的设计</b>，因为总得有个默认值，总得有个排列顺序。</p>
-    <div class="src">出处：Johnson, E. J. &amp; Goldstein, D. (2003). Do defaults save lives? <i>Science</i>, 302(5649), 1338–1339；Thaler, R. &amp; Sunstein, C. (2008). <i>Nudge</i>（《助推》）。</div>
+    <p><span class="term" tabindex="0" data-def="默认效应（default effect）：当有预设选项时，人们倾向于保持预设，哪怕可以轻松更改。原因包括惰性、认为默认是被推荐的、以及改动的心理成本。">默认效应</span>：预设选项会明显影响最终选择。Johnson 与 Goldstein 2003 年在《Science》上比较了欧洲多国的器官捐献登记。“默认同意、可选择退出”的国家，同意登记的比例远高于“默认不同意、需主动同意”的国家。常被引用的例子是奥地利接近 100% 对德国约 12%。</p>
+    <p>这是跨国比较，混杂因素很多，登记同意也不等于实际捐献。</p>
+    <p>泰勒与桑斯坦在《助推》里提出了<span class="term" tabindex="0" data-def="选择架构（choice architecture）：设计者如何安排选项的呈现方式（默认值、顺序、措辞等），这种安排本身就会影响人的选择。">选择架构</span>：<b>没有“中立”的设计</b>，因为总得有个默认值，总得有个排列顺序。</p>
+    <div class="src">出处：<br>Johnson 与 Goldstein · 2003 · 比较欧洲多国器官捐献登记 · 默认选项大幅影响登记比例（Do defaults save lives?，<i>Science</i> 302(5649)：1338–1339）。<br>Thaler 与 Sunstein · 2008 · 《Nudge》（《助推》） · 提出选择架构。</div>
   </div>
+  <aside class="cc-card" aria-label="概念卡：默认效应">
+    <span class="cc-tag">概念卡</span>
+    <p class="cc-name"><span>默认效应</span></p>
+    <p class="cc-en">Default effect</p>
+    <p class="cc-by">约翰逊（Eric Johnson）、戈尔茨坦（Daniel Goldstein） · 2003 年《Science》器官捐献研究</p>
+    <p class="cc-def">有预设选项时，多数人会保持预设，哪怕改起来很容易。</p>
+    <p class="cc-eg"><span class="cc-k">例子</span>“自动显示新手提示”默认关闭，几乎没有新手看到提示；默认开启，多数新手就看到了。</p>
+  </aside>
   <div class="board">
     <b>微实验：默认值能挪动多少人？（示意模型）</b>
     <p class="small">假设有一部分玩家真心想开启某个功能。再假设改默认值需要一点力气，有一部分“想改的人”懒得改。拖动滑块，看两种默认设置下最终开启的比例。</p>
@@ -341,7 +377,11 @@
     <div class="c10_defbar"><i id="c10_don" style="background:#b6e8a8"></i><b id="c10_dont"></b></div>
     <div class="c10_defbar"><i id="c10_doff" style="background:#ffb3c6"></i><b id="c10_dofft"></b></div>
     <div class="msg" id="c10_defm"></div>
-    <p class="small">公式是：默认开 = q + (1−q)·惰性；默认关 = q·(1−惰性)。数字全是示意，真实比例要靠 A/B 测试得到。</p>
+    <p class="small">数字全是示意，真实比例要靠 A/B 测试得到。</p>
+    <details>
+      <summary>进阶：这两根条是怎么算的</summary>
+      <p class="small">默认开 = q + (1−q)·惰性；默认关 = q·(1−惰性)。q 是真心想开启的比例，惰性是想改却懒得改的比例。比如 q = 60%、惰性 = 40%：默认开时，不想开的 40% 里有 40% 懒得关，开启比例 = 60% + 16% = 76%；默认关时，想开的 60% 里有 40% 懒得开，开启比例 = 60% × 60% = 36%。</p>
+    </details>
   </div>
   <div class="sticky">试试看：把“懒得改的比例”拖到 0，两根条会变成一样长，说明默认值的威力全来自惰性。再拖到 90%，看看设计者的一个选择能让多少玩家“被决定”。</div>
   <div class="eg" data-ic="💡"><span data-illus="c10_tips"></span><div class="egt"><b>游戏内：新手提示开关</b>“自动显示新手提示”默认关闭，结果几乎没有新手看到提示。如果提示对新手有益，应该默认开启，并且让关闭它很容易。</div></div>
@@ -374,8 +414,12 @@
     </div>
     <div class="msg" id="c10_sum"></div>
   </div>
-  <div class="sticky">试试看：在“战斗中”把右下角的“场景匹配”调到 12 以上，同时让“视觉负担”低于 3.5、分组诊断里没有 ✘。做到时底部会出现 🎉。然后切到“探索中”，看看哪些元素该换档。</div>
-  <p class="small"><b>怎么算（示意模型）：</b>视觉负担 = 把靠得近的元素合成一个“组块”后，每组算（最显眼的权重 + 0.25×其余成员权重），常驻权重 1、弱化 0.35。中心遮挡 = 中间虚线区域被元素盖住的粗略比例（弱化按 0.4 算）。分组诊断按“同类成组、异类分开”打分。这些规则是教学简化，不是实测标准。参考摆法只是一种常见思路，<b>没有唯一答案</b>：当前这一秒的决策用到的，就该显眼，其余的让路。</p>
+  <div class="sticky">试试看：在“战斗中”摆放元素，让下方的“场景匹配”达到 12 以上，同时让“视觉负担”低于 3.5、分组诊断里没有 ✘。做到时底部会出现 🎉。然后切到“探索中”，看看哪些元素该换档。</div>
+  <p class="small">参考摆法只是一种常见思路，<b>没有唯一答案</b>：当前这一秒的决策用到的，就该显眼，其余的让路。</p>
+  <details>
+    <summary>进阶：诊断是怎么算的（示意模型）</summary>
+    <p class="small">视觉负担 = 把靠得近的元素合成一个“组块”后，每组算（最显眼的权重 + 0.25×其余成员权重），常驻权重 1、弱化 0.35。中心遮挡 = 中间虚线区域被元素盖住的粗略比例（弱化按 0.4 算）。分组诊断按“同类成组、异类分开”打分。这些规则是教学简化，不是实测标准。</p>
+  </details>
 
   <!-- 9 对比度 -->
   <div class="sec"><span class="n">9</span><h2><span class="tag how">怎么用</span>可读性：对比度与“不只靠颜色”</h2></div>
@@ -389,17 +433,19 @@
     <div class="msg"><span id="c10_ratio">—</span>　<span id="c10_verdict"></span></div>
     <button class="btn" id="c10_gray">切换灰度视角</button>
     <div class="c10_cbox" id="c10_cbox">
-      <div><div class="mk"><span class="c10_dotr" style="background:#e5484d"></span><span class="c10_dotr" style="background:#3aa655"></span></div><h3>❌ 只靠颜色</h3><p class="small">红=敌，绿=友。变灰后两个圆几乎一样，分不出。</p></div>
+      <div><div class="mk"><span class="c10_dotr" style="background:#c83c32"></span><span class="c10_dotr" style="background:#1e6c46"></span></div><h3>❌ 只靠颜色</h3><p class="small">红色是敌，绿色是友，变灰后两个圆几乎一样，分不出。</p></div>
       <div><div class="mk"><span class="c10_tri"></span><span class="c10_dotr" style="background:#3aa655;text-align:center;line-height:28px;color:#fff;font-weight:700">✔</span></div><h3>✔ 颜色 + 形状</h3><p class="small">敌=三角，友=圆+对勾。即使没有颜色也能分清。</p></div>
     </div>
   </div>
-  <div class="sticky">试试看：点“灰字灰底”，让对比度低于 3；再把文字色和背景色调到至少 4.5 : 1，看提示变成“✔ 普通文字也达标”。最后点“灰度视角”，确认两种做法里只有一种在没有颜色时还分得清。</div>
-  <p>几个常见的情形：敌人血条不只用红色，还配一个“头顶的骷髅图标”。重要的声音提示（如脚步声）配一个视觉提示。地铁线路图除了颜色，还给每条线标数字。反过来，白字叠在明亮的天空背景上，截图里看起来“还行”，换到阳光下的手机屏就消失了。红绿色觉差异比较常见（常被引用的数字是男性中约 1/12，因人群而异）。灰度只是近似的模拟，但足以检验“去掉颜色后信息还在不在”。</p>
+  <div class="sticky">试试看：点“灰字灰底”，让对比度低于 3；再把文字色和背景色调到至少 4.5 : 1，看提示变成“✔ 普通文字也达标”。最后点“切换灰度视角”，确认两种做法里只有一种在没有颜色时还分得清。</div>
+  <p>几个常见的情形：敌人血条不只用红色，还配一个“头顶的骷髅图标”。重要的声音提示（如脚步声）配一个视觉提示。地铁线路图除了颜色，还给每条线标数字。</p>
+  <p>反过来，白字叠在明亮的天空背景上，截图里看起来“还行”，换到阳光下的手机屏就消失了。</p>
+  <p>红绿色觉差异比较常见，常被引用的数字是男性中约 1/12，因人群而异。灰度只是近似的模拟，但足以检验“去掉颜色后信息还在不在”。</p>
 
   <div class="misc">
     <h3>常见误区</h3>
     <ul>
-      <li><b>“信息给得越全，玩家越满意”</b>：多出来的信息增加外在负荷，常常让重要信息被淹没。</li>
+      <li><b>“信息给得越全，玩家越满意”</b>：多出来的信息增加外在负荷，让重要信息被淹没。</li>
       <li><b>“记忆容量就是 7±2 个数字”</b>：米勒谈的是<b>组块</b>；后来的估计（如考恩）更保守，约 4 个组块。</li>
       <li><b>“默认值是中立的”</b>：不存在中立，设计者必须选一个，这个选择会影响结果。</li>
       <li><b>“HUD 越少越高级”</b>：对新手和对老手的最佳密度不同；极简 HUD 也可能让新手找不到信息。</li>
@@ -410,13 +456,13 @@
     <ul>
       <li><b>认知负荷理论本身有争议</b>：三类负荷的划分很难在实验里清楚区分，“相关负荷”的地位在学界有过较大调整，理论仍在发展。</li>
       <li><b>格式塔原则偏经验性</b>：它们描述的是大体趋势，不同文化、年龄、视力的玩家未必完全一致。</li>
-      <li><b>助推的效果有争议</b>：Mertens 等人 2022 年在《PNAS》上汇总的研究发现助推有一定效果，可 Maier 等人随后在同一期刊指出，校正发表偏倚后几乎看不到整体效应，不过个别助推仍可能有效。所以在自己的游戏里，应该<b>用 A/B 测试验证</b>，不能直接相信某个平均效应。</li>
-      <li><b>助推和操纵之间没有一条清晰的线</b>：有人认为温和的助推可以接受，也有人批评这是“家长式”干预。这涉及价值判断，请结合自己项目的玩家群体来权衡。</li>
+      <li><b>助推的效果有争议</b>：Mertens 等人 2022 年在《PNAS》上汇总的研究发现助推有一定效果。Maier 等人随后在同一期刊指出，校正发表偏倚后几乎看不到整体效应，个别助推仍可能有效。所以在自己的游戏里，应该<b>用 A/B 测试验证</b>，不能直接相信某个平均效应。</li>
+      <li><b>助推和操纵之间没有一条清晰的线</b>：有人认为温和的助推可以接受，也有人批评这是“家长式”干预。这涉及价值判断，要结合自己项目的玩家群体来权衡。</li>
     </ul>
   </div>
 
   <div class="key">
-    <h3>本章要点</h3>
+    <h3>要点</h3>
     <ul>
       <li>UI 按“是否在故事里、是否在空间里”分为<b>叙事内、空间、元、非叙事</b>四类，没有对错，只有清晰与沉浸之间的取舍。</li>
       <li><b>HUD 为什么被发明</b>：飞行员不该低头找信息，于是把信息投到视线前方。游戏继承了这个办法，也继承了难题：能放的越来越多，脑容量没变。</li>

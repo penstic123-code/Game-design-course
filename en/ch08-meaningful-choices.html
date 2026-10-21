@@ -36,7 +36,7 @@
     <div class="txt">
       <span class="badge">Chapter 8</span>
       <h1>Meaningful Choices</h1>
-      <p class="sub">At heart, a game is a string of decisions. But which decisions are worth stopping to think about?</p>
+      <p class="sub">A game is a series of decisions. What kind of decision is worth making the player stop and think?</p>
     </div>
     <svg viewBox="0 0 190 150" class="rough" aria-hidden="true">
       <path d="M95 135 V80 M95 80 L40 30 M95 80 L150 30" fill="none" stroke="#2b2b3a" stroke-width="6" stroke-linecap="round"/>
@@ -50,9 +50,9 @@
     <h3>Learning goals</h3>
     <span class="time">about 45 min</span>
     <ul>
-      <li>Use “information, trade-off, consequence” to check whether a choice is meaningful, and catch “dominated options” and “always-best options.”</li>
-      <li>Explain why a coin-flipping bet in 1713 made “just calculate the expected value” hit a wall, and how later thinkers got step by step to utility and prospect theory.</li>
-      <li>Explain why repeated options lose value, why losing points hurts more than gaining them, and use that to assemble a set of options with moderate numbers and different strengths and weaknesses.</li>
+      <li>Check with “information, trade-offs, consequences” whether a choice is meaningful, and root out “dominated options” and “always-best options.”</li>
+      <li>Explain why a coin-toss game of 1713 ran the “just count the expected value” approach into a wall, and how later people went step by step to utility and prospect theory.</li>
+      <li>Explain why repeated options lose value and why losing points hurts more than gaining them, and use that to build a set of options with pros and cons and a moderate number.</li>
     </ul>
   </div>
 
@@ -61,18 +61,18 @@
   <div class="withimg">
     <span data-illus="c08_fork"></span>
     <div>
-      <p>Chapter 2 said the core loop turns because the player makes decisions on every lap. But decisions can be real or fake. You walk into a game’s potion shop, and on the shelf are a red potion and a blue potion. The red one heals 50, the blue one heals 50, the price is the same, and only the bottle color differs. You grab the red one without thinking.</p>
-      <p>Strictly speaking, no decision has happened here. Whichever you take, the result is the same, and nothing makes you think for even a second. Game design calls this a <span class="term" tabindex="0" data-def="A choice that looks like it has options but where every pick gives the same result, or where one option is always best.">false choice</span>.</p>
-      <p>So what does a real choice look like? Think of a fork in the road in a game: the short path has guards, the long path is safe but misses a treasure chest. You have to think about what you are short of right now, and that thinking is the evidence that the choice is meaningful.</p>
+      <p>Chapter 2 said the core loop turns because the player makes a decision every lap. But decisions come real and fake. Walk into the game’s apothecary, and on the shelf stand a bottle of red potion and a bottle of blue. Red heals 50, blue heals 50, same price, and only the bottle color differs. You grab the red one.</p>
+      <p>Strictly speaking, no decision happens here at all: whichever bottle is taken, the result is the same, and nothing makes the player think for even a second. In game design an option like this is a <span class="term" tabindex="0" data-def="False choice: a choice that looks like it has options, but every option gives the same result, or one option is always the best.">false choice</span>.</p>
+      <p>A fork in the road is different. The short way has a guard, the long way is safe but misses a treasure chest, and the player has to think about what they need more right now.</p>
     </div>
   </div>
-  <p>Take the fork apart and there are three things in it. The player has to <b>know</b> where each path leads, or it is just a guess; each path has to <b>give and take</b>, or there is no need to think; and after choosing, the situation has to <b>really be different</b> in a way the player can see, or the choice was pointless.</p>
+  <p>A fork has three ingredients. The player has to <b>know</b> where each road leads, otherwise they are only guessing. Each road has to <b>give something and cost something</b>, otherwise there is nothing to think about. And after choosing, the situation has to be <b>truly different</b>, in a way the player can see, otherwise the choice was wasted.</p>
   <div class="grid3">
     <div class="card y mini"><div class="ico">👀</div><h3>Information</h3><p>The player knows what the options are and can judge.</p></div>
     <div class="card p mini"><div class="ico">⚖️</div><h3><span class="term" tabindex="0" data-def="Trade-off: getting one thing means giving up another, and no option is best in every respect.">Trade-off</span></h3><p>Each option gains and loses something; none is “always best.”</p></div>
     <div class="card b mini"><div class="ico">🌱</div><h3>Consequence</h3><p>The choice affects the situation afterward, and the player notices.</p></div>
   </div>
-  <p>A line often quoted in design circles is: “A game is a series of interesting decisions.” It is mostly credited to Sid Meier (designer of the <i>Civilization</i> series), though the exact source is unclear; he looked back on and developed the idea himself in his GDC 2012 talk “Interesting Decisions.”</p>
+  <p>A line often quoted in design circles is “A game is a series of interesting decisions.” It is usually attributed to Sid Meier, designer of the <i>Civilization</i> series, though the exact source is unclear. He looked back on and expanded the idea in his GDC 2012 talk “Interesting Decisions.”</p>
   <div class="card">
     <svg viewBox="0 0 700 210" width="100%" role="img" aria-label="On the left there is a trade-off: the greatsword hits hard but slowly, and the bow hits weakly but from range, so choose by situation; on the right one is obviously best: the steel sword hits harder and costs less than the iron sword, so nobody picks the iron sword">
       <g class="rough" stroke="#2b2b3a" stroke-width="4">
@@ -87,16 +87,16 @@
       </g>
     </svg>
   </div>
-  <div class="eg" data-ic="🛣️" data-t="Short path or long path"><span data-illus="c08_road"></span><div class="egt"><b>Short path or long path</b>: the short path has guards, and the long path is safe but skips a treasure chest. You can see what each path costs and know what happens when you choose, so you have to think seriously about whether you are short of health or of money right now.</div></div>
-  <div class="eg" data-ic="🃏" data-t="Cheap card and costly card"><span data-illus="c08_cards"></span><div class="egt"><b>Two cards in a card game</b>: one is cheap but weak, one costly but strong. Which one goes in the deck depends on how you want your whole deck to play, not on which is “better to begin with.”</div></div>
-  <div class="eg" data-ic="🏠" data-t="Renting"><span data-illus="c08_rent"></span><div class="egt"><b>Renting a home</b>: the one close to work is expensive, and the one farther away is cheap but costs an extra forty minutes on the subway each day. Neither wins in every respect, which is why you hesitate over a calculator.</div></div>
+  <div class="eg" data-ic="🛣️" data-t="Short path or long path"><span data-illus="c08_road"></span><div class="egt"><b>Short path or long path</b>: the short path has guards, and the long path is safe but skips a chest. The player can see what each path costs and knows what choosing will do, so they have to think hard: do I lack health or money more right now?</div></div>
+  <div class="eg" data-ic="🃏" data-t="Cheap card and costly card"><span data-illus="c08_cards"></span><div class="egt"><b>Two cards in a card game</b>: one cheap but weak, one expensive but strong. Which goes into the deck depends on how the whole deck wants to play, not on which is “inherently better.”</div></div>
+  <div class="eg" data-ic="🏠" data-t="Renting"><span data-illus="c08_rent"></span><div class="egt"><b>Renting a flat</b>: the one near work is dear, and the one farther off is cheaper but costs forty more minutes of subway each day. None wins on every count, and that is why people hesitate over a calculator.</div></div>
   <div class="eg bad" data-ic="🧪" data-t="Identical potions"><span data-illus="c08_potions"></span><div class="egt"><b>Red potion and blue potion</b>: the same healing, the same price, just a different color. Whichever you take is the same, so there is no decision here, only an act of “picking.”</div></div>
-  <div class="eg bad" data-ic="🍶" data-t="Big, medium, small flasks"><span data-illus="c08_flasks"></span><div class="egt"><b>A near-miss: big, medium and small flasks</b>: the small one heals 30 for 10 coins, the medium 60 for 15, the large 100 for 20, the bigger the costlier. They are <b>not</b> dominated: cost and benefit change together, so it is still a normal trade-off. To judge dominance you must look at benefit and cost together, not stare at one number.</div></div>
+  <div class="eg bad" data-ic="🍶" data-t="Big, medium, small flasks"><span data-illus="c08_flasks"></span><div class="egt"><b>A near-miss misjudgment: large, medium and small health potions</b>: the small one gives 30 for 10 coins, the medium 60 for 15, the large 100 for 20, the bigger the dearer. They are <b>not</b> dominated: cost and benefit change together, still a normal trade-off. To judge domination, look at benefit and cost together, not at one number.</div></div>
 
   
   <div class="sec"><span class="n">2</span><h2><span class="tag what">What it is</span>How to “see” a dominated option</h2></div>
-  <p>The flaw in the iron sword and steel sword pair is easy to spot, but with many options the flaw hides. One way is to plot each option on a “cost–gain” plane, with the horizontal axis for costs such as price and cooldown, and the vertical axis for gains such as damage and healing.</p>
-  <p>Once drawn, the rule is intuitive: the whole region to the <b>lower right</b> of an option (higher cost, lower gain) is the territory it dominates. An option that falls inside has no reason to exist. Truly meaningful options each hold a different position, such as lower left (cheap but weak) and upper right (costly but strong), and joined up they form a frontier of trade-offs.</p>
+  <p>The iron-sword and steel-sword pair makes the flaw easy to see, but with many options the flaw hides. One way is to plot each option on a “cost–benefit” plane: the horizontal axis is costs like price and cooldown, and the vertical axis benefits like damage and healing.</p>
+  <p>Once drawn, the rule is intuitive: the whole area <b>to the lower right</b> of an option (higher cost, lower benefit) is the ground it dominates. An option that falls in has no reason to exist. Meaningful options each hold a different place, such as lower left (cheap but weak) and upper right (dear but strong), joined into a frontier of trade-offs.</p>
   <div class="card">
     <svg viewBox="0 0 700 320" width="100%" role="img" aria-label="Cost–gain plane: the region to the lower right of the steel sword is dominated, with the iron sword inside it; the bow, steel sword and greatsword form a frontier with trade-offs">
       <g class="rough" stroke="#2b2b3a" stroke-width="3.5" fill="none" stroke-linecap="round">
@@ -108,7 +108,7 @@
         <circle cx="110" cy="215" r="14" fill="#b6e8a8"/><circle cx="250" cy="100" r="14" fill="#ffe58a"/><circle cx="500" cy="55" r="14" fill="#b6e8a8"/><circle cx="400" cy="190" r="14" fill="#ddd" stroke-dasharray="4 3"/>
       </g>
       <g font-size="18" fill="#2b2b3a">
-        <text x="125" y="248">🏹 Bow</text><text x="206" y="80">⚔️ Steel sword</text><text x="410" y="40">🗡️ Greatsword</text><text x="338" y="226">🗡️ Iron sword</text>
+        <text x="125" y="248">🏹 Bow</text><text x="206" y="80">⚔️ Steel sword</text><text x="410" y="40">🗡️ Greatsword</text><text x="338" y="226">🗡️ Iron sword</text><text x="338" y="248" font-size="16">Damage 5 · Price 100</text><text x="206" y="58" font-size="16">Damage 9 · Price 80</text>
         <text x="420" y="130" fill="#a8242e">Region dominated by the steel sword</text>
         <text x="355" y="302" text-anchor="middle">Cost (price, risk, cooldown…) rising →</text>
         <text x="30" y="150" transform="rotate(-90 30 150)" text-anchor="middle">Gain rising →</text>
@@ -116,7 +116,7 @@
       </g>
     </svg>
   </div>
-  <p>This diagram also explains “always best”: if one option pushes every other option into its lower right, the others are mere decoration, and the player’s “choosing” collapses back into the state of the red and blue potions.</p>
+  <p>The chart also explains “always best”: if one option presses all the others into its lower right, the others are only decoration, and the player’s “choosing” collapses back into the red-and-blue potion state.</p>
 
   
   <div class="sec"><span class="n">3</span><h2><span class="tag origin">How it was invented</span>The St. Petersburg game: why “calculate the expected value” isn’t enough</h2></div>
@@ -125,9 +125,9 @@
     <div class="withimg rev">
       <span data-illus="c08_stpete"></span>
       <div>
-        <p>Faced with a trade-off, people’s first reaction is to do the sums: multiply each outcome’s money by its probability and add them up to get the <span class="term" tabindex="0" data-def="Expected value: each outcome’s amount multiplied by its probability, then summed, representing the “average gain over many repeats.”">expected value</span>, and take whichever is bigger. Seventeenth-century mathematicians handled gambling this way, and it worked well and never caused trouble.</p>
-        <p>On September 9, 1713, Nicolaus Bernoulli, in a letter to Pierre Rémond de Montmort, tossed out a game that made this method look foolish. The rules are simple: flip a fair coin until heads first appears. Heads on the 1st flip pays 2 dollars; heads first on the 2nd flip pays 4; on the 3rd, 8… first heads on flip n pays 2ⁿ dollars.</p>
-        <p>How much would you pay to play? <b>Don’t read on yet</b>; try it yourself.</p>
+        <p>Faced with a trade-off, people’s first reaction is to count: multiply each outcome’s money by its probability and add up to get the <span class="term" tabindex="0" data-def="Expected value: multiply each outcome’s amount by its probability and sum, standing for “the average gain over many repetitions.”">expected value</span>, and pick the larger. This is how seventeenth-century mathematicians handled gambling. It worked well, and never ran into trouble.</p>
+        <p>On September 9, 1713, Nicolaus Bernoulli, in a letter to Pierre Rémond de Montmort, tossed out a game that made this method look foolish. The rules are simple: toss a fair coin until the first heads. Heads on the 1st toss pays 2 yuan; heads first on the 2nd, 4 yuan; on the 3rd, 8 yuan… heads first on the nth toss pays 2ⁿ yuan.</p>
+        <p>How much would you pay to take part? <b>Don’t read on yet</b>; try it yourself.</p>
       </div>
     </div>
   </div>
@@ -140,19 +140,28 @@
     </div>
     <div class="c8row"><span class="stat">Played <b id="c8s_cnt">0</b> times</span><span class="stat">Average per play <b id="c8s_avg">0</b></span><span class="stat">Biggest single win <b id="c8s_max">0</b></span><span class="stat">Net profit or loss at your price <b id="c8s_net">0</b></span></div>
     <svg id="c8s_svg" class="plot" viewBox="0 0 560 254" role="img" aria-label="Curve of average winnings as the number of plays grows, with a line for the entry fee"></svg>
-    <div class="msg" id="c8s_msg">Drag the entry fee, then press “Play.” The dashed red line is your price, and the green line is the “average per play.”</div>
+    <div class="msg" id="c8s_msg">Drag the entry fee and click “Play.” The red dashed line is your bid, and the green line is “average gain per game.”</div>
     <div class="c8row"><button class="btn green" id="c8s_rev">Step 2: what the math says</button></div>
     <div class="c8out" id="c8s_revout" style="display:none"></div>
   </div>
   <div class="sticky" id="c8k1" data-done="Drag the entry fee above 30 dollars, play the full 10,000 times, and see whether the average can sit steadily above the red line.">Try it: drag the entry fee above 30 dollars, play the full 10,000 times, and see whether the average can sit steadily above the red line.<span class="c8ok"></span></div>
   <div class="story">
-    <p><b>Why the early method fails.</b> Mathematically, the nth term, “probability × prize,” is exactly 1: (½)ⁿ × 2ⁿ = 1. Infinitely many 1s add up to infinity, so by expected value you should be willing to pay any price. Yet almost nobody will pay a hundred dollars. Either people are all irrational, or the method of “only look at the expected value” itself has a problem.</p>
-    <p><b>The key step.</b> Two mathematicians found the way out almost at once. In 1728, Gabriel Cramer wrote to Nicolaus that the value of money to a person grows roughly like a square root rather than in proportion to the amount. In 1738, Daniel Bernoulli published a paper in the journal of the St. Petersburg Imperial Academy of Sciences with a fuller idea: <b>the same dollar is worth more to a poor person than to a rich one</b>. What should be calculated is not the expectation of money but the expectation of the satisfaction money brings, that is, <span class="term" tabindex="0" data-def="Utility: an abstract measure in economics of “satisfaction / sense of value.” The same sum of money tends to bring less utility the more wealth one already has.">utility</span>. He used a logarithmic curve, with utility growing more and more slowly. The game got the name “St. Petersburg paradox” because his paper was published in St. Petersburg.</p>
-    <p>Once you switch to utility, the infinity disappears. Drag the slider below and see what price a person with 1,000 dollars would offer for this game.</p>
+    <p>Mathematically, “probability × prize” for the nth term is exactly 1 every time: (½)ⁿ × 2ⁿ = 1. Infinitely many 1s add up to infinity, so by expected value one ought to be willing to pay any price. Yet almost nobody will pay a hundred dollars. Either people are all irrational, or “look only at expected value” is itself the wrong method.</p>
+    <p>The way out was found by two mathematicians, one after the other. In 1728 Gabriel Cramer wrote in a letter to Nicolaus that the value of money to a person grows like a square root, not in proportion to the amount.</p>
+    <p>In 1738 Daniel Bernoulli published a paper in the journal of the Imperial Academy of Sciences in St. Petersburg and proposed a fuller idea: <b>the same dollar is worth more to a poor person than to a rich one</b>. What should be averaged is <b>the satisfaction the money brings</b>, that is, the expected <span class="term" tabindex="0" data-def="Utility: an abstract measure in economics of “satisfaction” or “sense of value.” The utility of the same sum of money usually shrinks as existing wealth grows.">utility</span>. He used a logarithmic curve, along which utility rises more and more slowly. Because his paper appeared in St. Petersburg, the gamble got the name “the St. Petersburg paradox.”</p>
+    <p>Switch to utility and the infinity disappears. Drag the slider below and see what price a person with 1000 yuan would put on this game.</p>
   </div>
+  <aside class="cc-card" aria-label="Concept card: St. Petersburg paradox">
+    <span class="cc-tag">Concept card</span>
+    <p class="cc-name"><span>St. Petersburg paradox</span></p>
+    <p class="cc-en">St. Petersburg paradox</p>
+    <p class="cc-by">Nicolaus Bernoulli · posed it in a letter in 1713; Daniel Bernoulli · explained it with utility in 1738</p>
+    <p class="cc-def">A gamble whose value is infinite by expected value, yet nobody will pay much to play it. It shows that value is not the same as the amount of money.</p>
+    <p class="cc-eg"><span class="cc-k">Example</span>Flip a coin; if the first heads comes on flip n, you win 2ⁿ dollars. The expected value is infinite, yet almost nobody will pay a hundred dollars to enter.</p>
+  </aside>
   <div class="board">
     <b>Step 3: the more money, the less each dollar is worth</b>
-    <p class="small">Price the game again using “logarithmic utility” (later writers often sum up Bernoulli’s idea this way); then see what happens to the expected value if the casino’s ability to pay out is limited.</p>
+    <p class="small">Reprice this game with “logarithmic utility” (how later writers often sum up Bernoulli’s idea). Then see what happens to the expected value if the casino’s ability to pay is limited.</p>
     <label class="ctl">Your current wealth <output id="c8s_wo">1000</output> dollars</label>
     <input type="range" id="c8s_w" min="10" max="70" value="30">
     <label class="ctl">Casino payout cap (bankroll) <output id="c8s_bo">1,000,000</output> dollars</label>
@@ -160,7 +169,9 @@
     <div class="c8out" id="c8s_calc"></div>
   </div>
   <div class="story">
-    <p><b>Then a new problem appeared.</b> In 1944, von Neumann and Morgenstern axiomatized “expected utility” in <i>Theory of Games and Economic Behavior</i>, and it became the standard tool of economics. But experiments from the mid-twentieth century on kept finding that real people’s choices often violate it, such as the counterexample Allais gave in the 1950s, and phenomena like “losing points hurts more than gaining them.” In 1979, Kahneman and Tversky changed the question altogether: don’t ask how people “should” choose, only record how they “actually” choose. This is prospect theory.</p>
+    <p>In 1944, von Neumann and Morgenstern axiomatized “expected utility” in <i>Theory of Games and Economic Behavior</i>, and it became the standard tool of economics.</p>
+    <p>But experiments in the mid-20th century kept finding that real people often violate it, for example Allais’s counterexample from the 1950s, and effects like “losing points hurts more than gaining them.”</p>
+    <p>In 1979 Kahneman and Tversky changed the question. They stopped asking how people “should” choose and recorded how people “actually” choose. The theory built on that approach is prospect theory.</p>
     <div class="card">
       <svg viewBox="0 0 700 380" width="100%" role="img" aria-label="Evolution from the St. Petersburg game to prospect theory: problem, solution, new problem, new solution, four steps downward">
         <g class="rough" stroke="#2b2b3a" stroke-width="3.5" fill="none" stroke-linecap="round">
@@ -183,18 +194,26 @@
       <div class="ev hasimg"><span data-illus="c08_axioms"></span><div><b class="yr">1944</b><br>Von Neumann and Morgenstern write “expected utility” as axioms, making it the standard tool of economics.</div></div>
       <div class="ev hasimg"><span data-illus="c08_prospect"></span><div><b class="yr">1979</b><br>Kahneman and Tversky publish “Prospect Theory: An Analysis of Decision under Risk,” describing with experiments how people actually choose. Kahneman won the 2002 Nobel Memorial Prize in Economics for related work (Tversky died in 1996).</div></div>
     </div>
-    <p>What does this line of thought mean for game designers? <b>Value is not the number itself</b>: the same 50 points of damage weighs differently for a player with lots of health and one with little; losing 18 points also differs for someone who has saved 100 points and someone who has saved 20. The next two sections are the two legs of this relay that get used most.</p>
+    <p>For the game designer, <b>value is not the same as the number itself</b>. The same 50 points of damage weigh differently on a player with a lot of health and one with little. Losing the same 18 points also differs for someone who has saved 100 points and someone who has saved 20.</p>
   </div>
 
   
   <div class="sec"><span class="n">4</span><h2><span class="tag why">Why it works</span>Why a “second identical sword” has no meaning</h2></div>
-  <p>You already have a health potion in your bag, and picking up another makes you happy. By the ninth, you barely feel anything. The same “+1” is worth less and less, which is just what Daniel Bernoulli’s curve looks like in a game.</p>
-  <p>There is another half. If you spend 100 gold on the iron sword, you can’t buy the shield. <b>The best alternative you gave up is the true cost of this choice</b>. Put the two together and you can answer “should I take one more?”: take it as long as the extra one is still worth more than “spending the resource elsewhere”; once it isn’t, stop.</p>
+  <p>You already have a health potion in your bag, and picking up another is a pleasure. By the ninth, you hardly feel anything. The same “+1” is worth less and less, which is exactly what Daniel Bernoulli’s curve looks like inside a game.</p>
+  <p>The same choice has another half. If you spend 100 gold on an iron sword, you cannot buy the shield, and <b>the best alternative you gave up is the price of this choice</b>. Put the two together and they answer “should I take one more?” If the added item is worth more than “spending the resources elsewhere,” take it; if not, stop.</p>
   <div class="why-box">
     <h3>Diminishing marginal utility + opportunity cost</h3>
-    <p>Diminishing <span class="term" tabindex="0" data-def="Marginal utility: the added value of getting one more “unit.” For most everyday goods, the added value shrinks as the quantity grows.">marginal utility</span>: the more you hold of the same kind of thing, the smaller the added value each extra one brings. <span class="term" tabindex="0" data-def="Opportunity cost: choosing one option means giving up the value the next-best alternative would have brought, and that forgone value is the opportunity cost.">Opportunity cost</span>: the real cost of making a choice is the best other option you gave up.</p>
-    <div class="src">Sources: the idea of marginal utility was proposed independently around the 1870s by Jevons (1871), Menger (1871) and Walras (1874), often called the “marginal revolution”; earlier, in 1738, Daniel Bernoulli used “utility of wealth grows slower and slower” to explain the St. Petersburg paradox. The term “opportunity cost” is often traced to Friedrich von Wieser of the Austrian school (<i>Social Economics</i>, 1914).</div>
+    <p><span class="term" tabindex="0" data-def="Marginal utility: the added value from getting one more “portion.” For most everyday goods the added value shrinks as the quantity grows.">Marginal utility</span> diminishes: the more of the same thing you hold, the less each extra one adds. <span class="term" tabindex="0" data-def="Opportunity cost: choosing an option means giving up the value the next-best alternative would have brought, and that forgone value is the opportunity cost.">Opportunity cost</span>: the real cost of a choice is the best other option given up.</p>
+    <div class="src">Sources:<br>Jevons · 1871, Menger · 1871, Walras · 1874 · each proposed marginal utility independently · often called the “marginal revolution.” Earlier still, Daniel Bernoulli in 1738 had explained the St. Petersburg paradox with the idea that utility from wealth grows more and more slowly.<br>Friedrich von Wieser · 1914 · <i>Social Economics</i> · the term “opportunity cost” is often traced to him.</div>
   </div>
+  <aside class="cc-card" aria-label="Concept card: Diminishing marginal utility">
+    <span class="cc-tag">Concept card</span>
+    <p class="cc-name"><span>Diminishing marginal utility</span></p>
+    <p class="cc-en">Diminishing marginal utility</p>
+    <p class="cc-by">William Stanley Jevons, Carl Menger · 1871; Léon Walras · 1874, all three independently</p>
+    <p class="cc-def">The more of the same thing you have, the less each additional one adds in value.</p>
+    <p class="cc-eg"><span class="cc-k">Example</span>The first health potion in the bag can save a life; the ninth just gathers dust.</p>
+  </aside>
   <div class="card">
     <svg viewBox="0 0 700 320" width="100%" role="img" aria-label="Utility curve: adding the same sixty coins gives a big jump in utility when poor and only a small jump when rich">
       <g class="rough" stroke="#2b2b3a" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -206,16 +225,16 @@
       <g stroke="#2b2b3a" stroke-width="3"><circle cx="100" cy="197.5" r="7" fill="#ffe58a"/><circle cx="160" cy="167" r="7" fill="#ffe58a"/><circle cx="500" cy="76" r="7" fill="#b6e8a8"/><circle cx="560" cy="64.4" r="7" fill="#b6e8a8"/></g>
       <g font-size="17" fill="#2b2b3a">
         <text x="360" y="306" text-anchor="middle">Wealth (number of coins) →</text><text x="24" y="150" transform="rotate(-90 24 150)" text-anchor="middle">Utility (satisfaction) →</text>
-        <text x="170" y="240">Poor, +60 coins: utility jumps a lot</text><text x="250" y="205">Rich, +60 coins: only a small rise</text>
+        <text x="170" y="240">Poor, +60 coins: utility jumps a lot</text><text x="620" y="108" text-anchor="middle">Rich times +60 coins:</text><text x="620" y="130" text-anchor="middle">only a small bump</text>
         <text x="380" y="40" font-size="16">(sketch curve, not measured data)</text>
       </g>
     </svg>
   </div>
-  <p>This curve directly governs item design: for repeated, interchangeable options, the added value of the second one quickly drops below the opportunity cost, and at that point “take another of the same kind” is a dominated option. To keep the second one valuable there is only one way, which is to make it different in some other respect, that is, to go back to the trade-off described earlier.</p>
+  <p>This curve governs item design directly. For repeated, interchangeable options, the second one’s added value quickly falls below the opportunity cost, and from then on “take one more of the same” is a dominated option. For the second to stay worth having, it must differ from the first in some other way, which brings us back to the trade-offs described earlier.</p>
   <div class="eg" data-ic="🧪" data-t="The 9th potion"><span data-illus="c08_pile"></span><div class="egt"><b>The 9th health potion</b>: the first saves your life, and the ninth gathers dust in the bag. So good design either caps the potions or gives later potions different uses.</div></div>
-  <div class="eg" data-ic="💰" data-t="What to buy with 100 gold"><span data-illus="c08_choice100"></span><div class="egt"><b>100 gold for a sword or a shield</b>: buy the sword and you lose the survival the shield would have brought. The shield’s value is the opportunity cost of this choice, invisible but real.</div></div>
-  <div class="eg" data-ic="🍔" data-t="The fourth burger"><span data-illus="c08_burgers"></span><div class="egt"><b>Four burgers in a row</b>: when hungry, the first is wonderful and the fourth is almost a burden. If you picked a movie on Saturday afternoon, the opportunity cost is the game you didn’t go to.</div></div>
-  <div class="eg bad" data-ic="🃏" data-t="Sets get more valuable"><span data-illus="c08_setbonus"></span><div class="egt"><b>A counterexample: sets in collectible card games</b>: the more cards you collect, the more valuable the set, and the fifth card is worth more than the first. Marginal utility is increasing here. Diminishing is a common pattern, not an iron law.</div></div>
+  <div class="eg" data-ic="💰" data-t="What to buy with 100 gold"><span data-illus="c08_choice100"></span><div class="egt"><b>100 gold: a sword or a shield</b>: buy the sword and you lose the survival the shield would bring. The shield’s value is the opportunity cost of this choice, unseen but real.</div></div>
+  <div class="eg" data-ic="🍔" data-t="The fourth burger"><span data-illus="c08_burgers"></span><div class="egt"><b>Four burgers in a row</b>: when you’re hungry the first is wonderfully good, and the fourth is almost a burden. Choosing a film on Saturday afternoon, the opportunity cost is the game you didn’t go to.</div></div>
+  <div class="eg bad" data-ic="🃏" data-t="Sets get more valuable"><span data-illus="c08_setbonus"></span><div class="egt"><b>Counterexample: collectible card sets</b>: the more you collect, the more the whole set is worth, and the fifth card is worth more than the first, so marginal utility here is increasing. Diminishing is a common pattern, not an iron law.</div></div>
 
   
   <div class="sec"><span class="n">5</span><h2><span class="tag why">Why it works</span>Why losing points hurts so much: prospect theory and loss aversion</h2></div>
@@ -223,15 +242,26 @@
     <span data-illus="c08_pig"></span>
     <div>
       <p>Chapter 6 said players fear boredom most, and also anxiety. And “possibly losing what you already have” is the cheapest way to create anxiety. Try it with a small game: take turns rolling a die and adding the points to a “turn score”; roll a 1 and the whole turn score is lost; at any time you may “bank,” moving the turn score into your total.</p>
-      <p>When you have 18 points saved up, haven’t you already started to hesitate? Rolling a 1 at that moment feels far worse, usually, than the pleasure of “getting 18 more.” That isn’t you being stingy; it is a fairly stable tendency in human decision-making.</p>
-      <p>The psychologists <span class="term" tabindex="0" data-def="Daniel Kahneman and Amos Tversky: founders of behavioral economics; Kahneman shared the 2002 Nobel Memorial Prize in Economics for this work.">Kahneman and Tversky</span> wrote it into <span class="term" tabindex="0" data-def="A theory of how people actually decide under risk: outcomes are evaluated as gains and losses relative to a reference point, not as final total wealth, with losses weighing heavier and probabilities being distorted.">prospect theory</span>.</p>
+      <p>By the time the score reaches 18, have you started to hesitate? Rolling a 1 now hurts far more than “18 more points” would please. This is a very stable tendency in human decision-making, and it has nothing to do with being stingy.</p>
+      <p>The psychologists <span class="term" tabindex="0" data-def="Daniel Kahneman and Amos Tversky: founding figures of behavioral economics. Kahneman shared the 2002 Nobel Prize in Economics for this work.">Kahneman and Tversky</span> wrote it into <span class="term" tabindex="0" data-def="Prospect theory: a theory of how people actually decide under risk. It evaluates outcomes as gains or losses relative to a reference point rather than as final total wealth, weighs losses more heavily, and distorts probabilities.">prospect theory</span>.</p>
     </div>
   </div>
-  <p>It has roughly three points. First, people judge “more or less than the status quo,” and the status quo is the <span class="term" tabindex="0" data-def="Reference point: the baseline used to judge “gain” or “loss,” usually the status quo or an expectation. Changing the reference point can turn the same outcome from a win into a loss.">reference point</span>, not the final absolute number. Second, <span class="term" tabindex="0" data-def="Loss aversion: the pain of a loss is usually greater than the pleasure of an equal-sized gain.">loss aversion</span>: a loss weighs about twice as much as a gain of the same size. Third, people distort probabilities, often overestimating small ones, which is why they both buy lottery tickets and buy insurance.</p>
+  <aside class="cc-card" aria-label="Concept card: Prospect theory">
+    <span class="cc-tag">Concept card</span>
+    <p class="cc-name"><span>Prospect theory</span></p>
+    <p class="cc-en">Prospect theory</p>
+    <p class="cc-by">Daniel Kahneman, Amos Tversky · their 1979 paper “Prospect Theory: An Analysis of Decision under Risk”</p>
+    <p class="cc-def">People judge gains and losses by whether they have more or less than the status quo. A loss of a given size hurts more than a gain of the same size (loss aversion).</p>
+    <p class="cc-eg"><span class="cc-k">Example</span>You have built up 18 points rolling dice, and one more roll could wipe them all out; most people hesitate over whether to bank them.</p>
+  </aside>
+  <p>Prospect theory has three main points.</p>
+  <p>People judge “more or less than the status quo,” and the status quo is the <span class="term" tabindex="0" data-def="Reference point: the baseline used to judge a “gain” or a “loss,” usually the status quo or an expectation. Change the reference point and the same outcome can feel like a win instead of a loss.">reference point</span>, not the final absolute number.</p>
+  <p><span class="term" tabindex="0" data-def="Loss aversion: the pain of losing a given amount is usually greater than the pleasure of gaining the same amount.">Loss aversion</span>: a loss of a given size weighs roughly twice as much as a gain of the same size.</p>
+  <p>People also distort probabilities and overestimate small ones, which is why they buy both lottery tickets and insurance.</p>
   <div class="why-box">
     <h3>A classic finding: play it safe when winning, gamble when losing</h3>
-    <p>“A sure 100, or a half chance of 200”: the expected value is the same, and most people take the sure thing. Flip it into losses, “a sure loss of 100, or a half chance of losing 200”: many people are now willing to gamble. The same mathematical structure, on the “gain” side or the “loss” side, reverses the choice, which is called the reflection effect.</p>
-    <div class="src">Source: Daniel Kahneman &amp; Amos Tversky, “Prospect Theory: An Analysis of Decision under Risk,” <i>Econometrica</i> 47(2), 1979; Tversky &amp; Kahneman, 1992, “Advances in Prospect Theory,” <i>Journal of Risk and Uncertainty</i> 5: the typical estimates given for the value function are an exponent of about 0.88 and a loss-aversion coefficient λ of about 2.25 (median of the participants; individual differences are large).</div>
+    <p>“A sure 100, or a half chance of 200”: the expected value is the same, and most people take the sure thing. Flip it into losses, “a sure loss of 100, or a half chance of losing 200,” and many people are suddenly willing to gamble. With the same mathematical structure, switching from the “gain” side to the “loss” side reverses the choice. This is the reflection effect in prospect theory.</p>
+    <div class="src">Sources:<br>Kahneman and Tversky · 1979 · recorded how people actually choose under risk in experiments · proposed prospect theory (“Prospect Theory: An Analysis of Decision under Risk,” <i>Econometrica</i> 47(2)).<br>Tversky and Kahneman · 1992 · estimated the value function · exponent about 0.88, loss-aversion coefficient λ about 2.25, which are medians across participants, with large individual differences (“Advances in Prospect Theory,” <i>Journal of Risk and Uncertainty</i> 5).</div>
   </div>
   <div class="board">
     <b>Guess first, then reveal: how would you choose?</b>
@@ -255,69 +285,86 @@
       </g>
     </svg>
   </div>
-  <p><b>Try it by hand: risky dice with your own “pain coefficient.”</b> First to 50 points wins. The λ on the right is the pain coefficient; λ = 1 means gains and losses count equally. Drag it larger and see how the “stopping line” in your mind moves forward.</p>
+  <p><b>Verify by hand: the risk dice with a “pain coefficient.”</b> First to reach 50 points wins. The λ on the right is the pain coefficient, and λ = 1 means gains and losses count equally. Drag it larger and see how the “stop line” moves forward.</p>
   <div class="board">
     <div><span class="die" id="die">🎲</span></div>
     <span class="stat">Turn score <b id="turn">0</b></span><span class="stat">Total <b id="total">0</b></span><span class="stat">Rounds <b id="rounds">0</b></span>
     <div>
       <button class="btn" id="roll">🎲 Roll again</button><button class="btn green" id="bank">🏦 Bank</button><button class="btn alt" id="reset">Replay</button>
     </div>
-    <div class="msg" id="dmsg">Before every roll you are making a choice: “keep going or bank?”</div>
+    <div class="msg" id="dmsg">Before every roll you are making a choice: “keep going or bank the points?”</div>
     <label class="ctl">Pain coefficient λ <output id="c8d_lo">2.0</output>(the pain of losing T points equals the pleasure of winning λ·T points)</label>
     <input type="range" id="c8d_l" min="10" max="40" value="20">
-    <div class="small">Subjective net gain of “roll again” = average gain 3.33 − λ × T / 6 (T is the turn score). Left (pink) = not worth it, right (green) = worth it:</div>
+    <div class="small">Whether “roll again” pays off is shown by the bar below: left (pink) = not worth it, right (green) = worth it.</div>
+    <details>
+      <summary>Advanced: how this is calculated</summary>
+      <p class="small">Subjective net gain of “roll again” = average gain 3.33 − λ × T / 6 (T is the points this turn). A roll of 2 to 6 adds points, about 3.33 on average per roll; a roll of 1 has probability one in six and loses T points, and that pain is multiplied by λ.</p>
+    </details>
     <div class="c8bi"><i id="c8d_i"></i><u></u></div>
     <div class="c8out" id="c8d_t"></div>
     <p class="small" id="advice"></p>
   </div>
   <div class="sticky" id="c8k2" data-done="First drag λ to 3.5 and play by gut feeling to 50 points; then drag λ to 1 and compare the two “stopping lines.”">Try it: first drag λ to 3.5 and play a game to 50 points; then drag λ to 1 and compare how far apart the two “stopping lines” are.<span class="c8ok"></span></div>
-  <p class="small">Objectively, the break-even point between “keep going” and “bank” is a turn score of T = 20 (maximizing expected score per turn, the “bank at 20” familiar from dice games like Pig; in a race to 50 the best strategy also changes with the score). If your pain is λ times your pleasure, your subjective stopping line is 20/λ. Designers can use this: letting players first own something and then face losing it produces much more tension than merely “might gain.”</p>
-  <div class="eg" data-ic="☠️" data-t="Lose all gear"><span data-illus="c08_permadeath"></span><div class="egt"><b>Permadeath in roguelikes</b>: if you die you lose all the gear from the run. The more gear you pile up, the tenser every step gets, because what you are guarding is already yours.</div></div>
-  <div class="eg" data-ic="🔥" data-t="Login streaks"><span data-illus="c08_streak"></span><div class="egt"><b>Login streak rewards</b>: miss a day and it resets to zero. Players don’t open the game for the reward but to avoid losing that string of numbers. It works very well, which is exactly why you should ask yourself whether you are giving players fun or trading on their loss aversion for playtime.</div></div>
+  <p class="small">Objectively, the break-even point between “keep rolling” and “bank” is T = 20 turn points. This is the well-known “stop at 20” rule in dice games like Pig, which maximizes expected score in a single turn. In a race to 50, the best strategy also shifts with the score.</p>
+  <p class="small">If the pain is λ times the gain, the subjective stopping line is 20/λ. Designers can use this: let the player own something first and then face losing it, and the tension is far higher than with a mere “might gain.”</p>
+  <div class="eg" data-ic="☠️" data-t="Lose all gear"><span data-illus="c08_permadeath"></span><div class="egt"><b>Roguelike death resetting everything</b>: on dying you lose all the gear from this run. The more gear piled up, the tenser each step, because what you are guarding already belongs to you.</div></div>
+  <div class="eg" data-ic="🔥" data-t="Login streaks"><span data-illus="c08_streak"></span><div class="egt"><b>Login-streak rewards</b>: miss one day and it resets to zero. Players open the game to avoid losing the streak, and the reward comes second. It works so well that it deserves a second thought: is it giving players enjoyment, or trading on their loss aversion to buy their time?</div></div>
   <div class="eg" data-ic="🏷️" data-t="Struck-through price tags"><span data-illus="c08_tag"></span><div class="egt"><b>Struck-through price tags</b>: “was 500, now 400” makes people want to buy more than “we always sell it at 400.” The reference point changed, and the same 400 is a bargain in one case and merely a price in the other.</div></div>
-  <div class="eg bad" data-ic="💥" data-t="Penalties everywhere"><span data-illus="c08_penalty"></span><div class="egt"><b>A counterexample: every small slip resets you</b>: loss aversion magnifies penalties by more than double, so excessive “point deductions” bring not tension but frustration. Players feel the game is out to get them.</div></div>
+  <div class="eg bad" data-ic="💥" data-t="Penalties everywhere"><span data-illus="c08_penalty"></span><div class="egt"><b>Counterexample: every small slip resets</b>: loss aversion magnifies punishment more than twofold, so excessive “point deductions” bring not tension but frustration. The player feels the game is targeting them.</div></div>
 
   
   <div class="sec"><span class="n">6</span><h2><span class="tag why">More</span>Are more options always better? Choice overload</h2></div>
   <div class="withimg">
     <span data-illus="c08_jam"></span>
     <div>
-      <p>Open a three-hundred-dish menu and you may feel more anxious, and in the end order “the usual.” This phenomenon is called <span class="term" tabindex="0" data-def="Choice overload: when there are too many options, people may find it harder to decide, be less satisfied, or even give up choosing altogether.">choice overload</span>, and the most famous evidence is the 2000 “jam study”: at a supermarket, a display with 24 jams drew 60% of passersby to stop, while a display with 6 drew only 40%; but of those who stopped, only 3% at the 24-jam display actually bought, against nearly 30% at the 6-jam display.</p>
-      <p>This result has been cited for twenty years to show that “more options aren’t necessarily better.” But its later fate has been rocky: people who redid it in other settings often failed to get the same result.</p>
+      <p>Open a menu with three hundred dishes and you feel more anxious, and finally order “the usual.” This phenomenon is <span class="term" tabindex="0" data-def="Choice overload: when there are too many options, people can find it harder to decide, be less satisfied, or give up choosing altogether.">choice overload</span>. The best-known evidence is the “jam study” of 2000: at a supermarket, a stall with 24 jams drew 60% of passers-by to stop, while a stall with 6 drew 40%. But of those who stopped, only 3% bought at the 24-jam stall, against nearly 30% at the 6-jam stall.</p>
+      <p>For twenty years the result was cited to show that “more options make choosing harder.” Its later fate has been less kind: studies that repeated it in other settings often failed to find the same thing.</p>
     </div>
   </div>
   <div class="why-box">
     <h3>The jam study, and its controversy</h3>
-    <p>In 2010, Scheibehenne, Greifeneder and Todd pooled many related experiments and found that, on average, the effect was close to zero and varied a great deal between studies. Later work suggested that whether the effect appears depends on conditions: whether options are hard to compare, whether people already have a clear preference, whether they can filter by category, and whether there is time pressure. A safer statement is: more options add to the decision burden, and whether that becomes a bad outcome depends on the situation.</p>
-    <div class="src">Sources: Sheena Iyengar &amp; Mark Lepper, “When Choice is Demotivating,” <i>Journal of Personality and Social Psychology</i>, 2000; meta-analysis: Scheibehenne, Greifeneder &amp; Todd, 2010; review of moderating factors: Chernev, Böckenholt &amp; Goodman, 2015.</div>
+    <p>In 2010, Scheibehenne, Greifeneder and Todd pooled a large number of related experiments and found that the average effect is close to zero, with big differences between studies. Later work proposed that whether the effect appears depends on conditions: whether the options are hard to compare, whether people already have a clear preference, whether they can filter by category, and whether there is time pressure. Many options do add to the burden of deciding; whether that turns into a bad outcome depends on the situation.</p>
+    <div class="src">Sources:<br>Iyengar and Lepper · 2000 · supermarket jam-stall experiment · purchase rates differed greatly between the 24-jam and 6-jam stalls (“When Choice is Demotivating,” <i>Journal of Personality and Social Psychology</i>).<br>Scheibehenne, Greifeneder, Todd · 2010 · meta-analysis · average effect close to zero.<br>Chernev, Böckenholt, Goodman · 2015 · review of moderating factors.</div>
   </div>
   <div class="board">
     <label class="ctl">Number of options <input type="range" id="co_n" min="3" max="30" value="6"><output id="co_no">6</output></label>
     <label class="ctl"><input type="checkbox" id="co_m"> Options are clearly categorized / the player has clear preferences (lowers the burden of each extra option)</label>
-    <svg id="co_svg" class="plot" viewBox="0 0 520 260" role="img" aria-label="Sketch curves of decision time and satisfaction against the number of options"></svg>
+    <svg id="co_svg" class="plot" viewBox="0 0 520 272" role="img" aria-label="Sketch curves of decision time and satisfaction against the number of options"></svg>
     <div class="msg" id="co_t"></div>
   </div>
   <div class="sticky" id="c8k3" data-done="Drag the options above 20, then tick “clearly categorized,” and see which way the peak of the satisfaction line goes.">Try it: drag the options above 20, then tick “clearly categorized,” and see which way the peak of the satisfaction line goes.<span class="c8ok"></span></div>
   <p class="small">⚠ <b>These are sketch curves, not measured data</b>: they are generated by a simple formula of “diminishing returns + a fixed burden per option” to show the trend, and the peak position varies with the game and the player.</p>
-  <p>So “3 to 5 distinct options are usually enough” is only a rule of thumb. Players of skill-tree and building games often <b>enjoy</b> huge numbers of options; the key is to use categories, staged unlocking and recommendations to push down the burden of each added option.</p>
-  <div class="eg" data-ic="🌳" data-t="40 skills"><span data-illus="c08_skills40"></span><div class="egt"><b>Showing 40 skills at once</b>: newcomers often just close the window. Switch to staged unlocking and pick-one-of-three each time, and with the same content the choosing gets lighter.</div></div>
-  <div class="eg" data-ic="🎬" data-t="Picked for you"><span data-illus="c08_recommend"></span><div class="egt"><b>“Recommended for you” on a video site</b>: out of tens of thousands of films you don’t know what to watch, but the platform picks 6 and you click one right away. With fewer options, choosing actually happens faster.</div></div>
-  <div class="eg bad" data-ic="🗡️" data-t="Ten similar swords"><span data-illus="c08_swords10"></span><div class="egt"><b>A counterexample: 10 nearly identical items in a shop</b>: there are many, but none is distinct. The player has to compare a pile of noise, not a set of trade-offs, which is worse than having few options.</div></div>
+  <p>“3 to 5 distinct options is usually enough” is a rule of thumb. Players of skill-tree and building games <b>love</b> huge numbers of options; the key is to use categories, staged unlocks and recommendations to keep the burden of each added option low.</p>
+  <div class="eg" data-ic="🌳" data-t="40 skills"><span data-illus="c08_skills40"></span><div class="egt"><b>Forty skills shown at once</b>: a new player just closes the window. Switch to staged unlocks with a pick-one-of-three each time, and the same content makes choosing easy.</div></div>
+  <div class="eg" data-ic="🎬" data-t="Picked for you"><span data-illus="c08_recommend"></span><div class="egt"><b>The “recommended for you” on a video site</b>: among tens of thousands of films you don’t know what to watch, and the platform picks 6, and you click one at once. With fewer options, the choosing actually happens faster.</div></div>
+  <div class="eg bad" data-ic="🗡️" data-t="Ten similar swords"><span data-illus="c08_swords10"></span><div class="egt"><b>Counterexample: ten almost identical pieces of gear in the shop</b>: though there are many, none is distinct. The player compares a pile of noise, not a set of trade-offs, which is worse than having fewer options.</div></div>
 
   
   <div class="sec"><span class="n">7</span><h2><span class="tag why">More</span>How to measure “suspense”: information</h2></div>
   <div class="withimg rev">
     <span data-illus="c08_coin"></span>
     <div>
-      <p>An outcome you can guess one hundred percent teaches you nothing when it appears; an outcome you can never quite guess is what makes you say “oh” when it comes. Dominated options and always-best options are meaningless partly because their results are too easy to guess.</p>
-      <p>This “how easy to guess” can be measured. In his founding paper of information theory in 1948, Claude Shannon gave a quantity called <span class="term" tabindex="0" data-def="Entropy: a quantity in information theory measuring the uncertainty of an outcome, in bits. For a two-way choice, entropy is greatest at p = 0.5 (1 bit), and the closer p gets to 0 or 1, the smaller it is.">information entropy</span>.</p>
+      <p>An outcome that can be guessed with certainty teaches nothing when it happens. An outcome that is never quite predictable makes people go “oh” when it arrives. Dominated options and always-best options are meaningless partly because their results are too easy to guess.</p>
+      <p>How easy something is to guess can be measured. Claude Shannon gave the measure in his foundational 1948 paper on information theory, and its name is <span class="term" tabindex="0" data-def="Entropy: in information theory, a measure of the uncertainty of an outcome, in bits. For a two-way choice, entropy is greatest at p=0.5 (1 bit) and shrinks as p approaches 0 or 1.">information entropy</span>.</p>
     </div>
   </div>
   <div class="why-box">
     <h3>Information entropy: one number for “how uncertain”</h3>
-    <p>For a two-way outcome where one result has probability p, the information entropy is<br><code>H(p) = −p·log₂p − (1−p)·log₂(1−p)</code> (in bits). For a coin flip (p = 0.5), H = 1, the most suspense; at p = 0.99, H ≈ 0.08, almost no suspense.</p>
-    <div class="src">Source: Claude Shannon, “A Mathematical Theory of Communication,” <i>Bell System Technical Journal</i>, 1948. Using it as an analogy for “whether a choice carries information” is borrowed for this course and is not an accepted law of game design.</div>
+    <p>For a two-way outcome, when the two results are equally likely (a coin flip, say), suspense is greatest and the entropy is 1 bit. If one result has a 99% chance, the entropy is only about 0.08 bit, and there is almost no suspense.</p>
+    <details>
+      <summary>Advanced: as a formula</summary>
+      <p class="small">Let the probability of one outcome be p. The information entropy is H(p) = −p·log₂p − (1−p)·log₂(1−p), in bits. At p = 0.5, H = 1; at p = 0.99, H ≈ 0.08.</p>
+    </details>
+    <div class="src">Source: Claude Shannon · 1948 · proposed information entropy to measure the uncertainty of outcomes (“A Mathematical Theory of Communication,” <i>Bell System Technical Journal</i>). Using it as an analogy for whether “a choice carries information” is this course’s own borrowing.</div>
   </div>
+  <aside class="cc-card" aria-label="Concept card: Information entropy">
+    <span class="cc-tag">Concept card</span>
+    <p class="cc-name"><span>Information entropy</span></p>
+    <p class="cc-en">Information entropy</p>
+    <p class="cc-by">Claude Shannon · his 1948 paper “A Mathematical Theory of Communication”</p>
+    <p class="cc-def">A number measuring how hard an outcome is to guess, in bits. The harder to guess, the higher the entropy.</p>
+    <p class="cc-eg"><span class="cc-k">Example</span>A coin flip is the hardest to guess, with entropy of 1 bit; if 97% of players buy the same weapon, the entropy of that choice is close to 0.</p>
+  </aside>
   <div class="card">
     <svg viewBox="0 0 700 300" width="100%" role="img" aria-label="Binary information entropy curve: highest at p = 0.5 with 1 bit, approaching 0 as p nears 0 or 1">
       <g class="rough" stroke="#2b2b3a" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -331,14 +378,14 @@
       </g>
     </svg>
   </div>
-  <p>Treat “how players will choose” as a probability distribution: if 99% of players pick the same one, the choice carries almost no information, which makes it equal to a false choice; if the shares of the options are fairly balanced, real trade-offs exist. When developers read data, they use each option’s pick rate to check for dominated options.</p>
+  <p>Think of “how will players choose” as a probability distribution: if 99% of players pick the same one, the information in that choice is close to 0, the same as a false choice. If the shares picked are fairly balanced, the trade-off is real. When reading data, a developer can check each option’s pick rate to see whether any is dominated.</p>
   <div class="eg" data-ic="📊" data-t="97% buy the same one"><span data-illus="c08_top97"></span><div class="egt"><b>97% of players buy the same weapon first</b>: that weapon is “always best,” and in the players’ eyes the shop offers no choice.</div></div>
-  <div class="eg" data-ic="🕵️" data-t="Guess the killer"><span data-illus="c08_whodunit"></span><div class="egt"><b>Guessing the killer in the first ten minutes</b>: for the remaining ninety minutes of the mystery, the information is close to zero. It isn’t that you dislike the film; it just hasn’t told you anything new.</div></div>
+  <div class="eg" data-ic="🕵️" data-t="Guess the killer"><span data-illus="c08_whodunit"></span><div class="egt"><b>Guessing the murderer in the first ten minutes</b>: the remaining ninety minutes of a mystery carry almost no information. The audience doesn’t dislike the film; it just gives nothing new.</div></div>
   <div class="eg bad" data-ic="🎲" data-t="Pure randomness"><span data-illus="c08_dice"></span><div class="egt"><b>A counterexample: a pure lottery draw</b>: entropy is at its highest, but the player’s choice changes nothing; it is just rolling dice. Information entropy measures only suspense, not consequence, so a meaningful choice still needs trade-offs and consequences added.</div></div>
 
   
   <div class="sec"><span class="n">8</span><h2><span class="tag how">Try it</span>Build it yourself: the decision-tree builder</h2></div>
-  <p>You are now a level designer who has to lay out a set of options for the player. Below is the simplest decision tree: the root is “which one?”, each branch is an option, and it has three values: <b>gain</b> (higher is better), <b>risk</b> and <b>cost</b> (lower is better). <b>Drag the colored bars</b> in an option to change the values (or use the sliders below), and the system highlights in real time: <span style="background:#ffd6dc">pink = dominated</span>, <span style="background:#fff0a8">gold = always best</span>, <span style="background:#dff5d4">green = has its own place</span>, with suggestions for improvement.</p>
+  <p>This time, take the level designer’s seat and lay out a set of options for the player. Below is the simplest decision tree: the root is “Which one?”, each branch is an option, and each has three values: <b>payoff</b> (higher is better), <b>risk</b> and <b>cost</b> (lower is better). <b>Drag the colored bars inside the options</b> to change the values (or use the sliders below), and the system highlights live: <span style="background:#ffd6dc">pink = dominated</span>, <span style="background:#fff0a8">gold = always best</span>, <span style="background:#dff5d4">green = has its own place</span>, and gives hints for improvement.</p>
   <div class="board">
     <div class="c8row">
       <button class="btn alt" data-pre="weapons">Load: weapon shop</button><button class="btn alt" data-pre="roads">Load: three roads</button><button class="btn alt" data-pre="good">Load: strengths and weaknesses</button>
@@ -351,21 +398,21 @@
     <div class="c8out" id="c8t_arch"></div>
   </div>
   <div class="sticky" id="c8k4" data-done="Load the “weapon shop,” find the dominated iron sword, and find a way to save it, so that the three types of players (shown below) choose at least two different options.">Try it: load the “weapon shop,” find the dominated iron sword and find a way to save it, until the “three types of players” below choose at least two different options.<span class="c8ok"></span></div>
-  <p class="small">Rule of judgment: A dominates B = A’s gain is not lower than B’s, its risk and cost are not higher than B’s, and at least one is strictly better. “Always best” = dominating <b>all</b> the other options. The “three types of players” are a sketch: they score the options with different weights to see whether they pick the same one; if everybody picks it, the information is close to 0.</p>
+  <p class="small">Rule of judgment: A dominates B = A’s benefit is no lower than B’s, and its risk and cost are both no higher than B’s, with at least one strictly better. “Always best” = dominating <b>all</b> the other options. “Three kinds of players” is illustrative: score the options with different weights and see whether they pick the same one. If everyone picks it, the information is close to 0.</p>
 
   <div class="misc">
     <h3>Common misconceptions</h3>
     <ul>
-      <li><b>“More options means more freedom.”</b> Quantity is only one dimension; distinctness and presentation matter more, and lots of similar options create noise.</li>
+      <li><b>“More options mean more freedom.”</b> Number is only one dimension, and distinctness and presentation matter more. A lot of similar options create noise.</li>
       <li><b>“Risk means meaning.”</b> If you can’t tell how big the risk is, or choosing has no consequence, it is just a roll of the dice.</li>
-      <li><b>“Delete every dominated option.”</b> A newcomer’s starter gear or an upgradeable precursor is sometimes a deliberate growth ladder; the question is whether players will be misled by it.</li>
-      <li><b>“Higher expected value means you should pick it.”</b> The St. Petersburg game is the counterexample; value depends on circumstances and the reference point, not only on numbers.</li>
+      <li><b>“Delete every dominated option.”</b> A newcomer’s starter gear or an upgradeable precursor is sometimes a deliberate growth ladder. The question is whether it will mislead the player.</li>
+      <li><b>“Pick whatever has the higher expected value.”</b> The St. Petersburg game is the counterexample. Value depends on the situation and the reference point, not just the numbers.</li>
     </ul>
   </div>
   <div class="reflect">
     <h3>Reflection and debate</h3>
     <ul>
-      <li><b>Prospect theory describes how people choose, not how they should.</b> The strength of loss aversion is also disputed: Gal and Rucker (2018, <i>Journal of Consumer Psychology</i>) argue its universality and size have been exaggerated, which is one view in the field; others reply that loss aversion has moderating factors but has not disappeared.</li>
+      <li><b>Prospect theory describes how people choose, not how they should.</b> The strength of loss aversion is disputed too: Gal and Rucker (2018, <i>Journal of Consumer Psychology</i>) hold that its generality and size are overstated, which is one view in the field. Others reply that loss aversion has moderating factors, but has not disappeared.</li>
       <li><b>Experiments versus games.</b> Gains and losses in experiments are often money; in games they often come with emotion, social ties and a sense of achievement, so behavior may differ from questionnaires.</li>
       <li><b>“Logarithmic utility” is only one way out.</b> The St. Petersburg paradox has other resolutions (such as a finite bankroll), and some have built variants that logarithmic utility still can’t resolve.</li>
       <li><b>Information entropy is only an analogy.</b> A fully random outcome has the highest entropy, but random does not mean meaningful.</li>
@@ -376,12 +423,12 @@
     <h3>Key points</h3>
     <ul>
       <li>A meaningful choice = <b>information + trade-off + consequence</b>; avoid “dominated options” and “always-best” options.</li>
-      <li>Only calculating expected value hits a wall (the St. Petersburg game): value depends on circumstances, hence utility and diminishing marginal utility; people also don’t quite choose by expected utility, hence prospect theory.</li>
+      <li>Looking only at expected value hits a wall (the St. Petersburg game): value depends on the situation, hence utility and diminishing marginal utility. People also don’t choose entirely by expected utility, hence prospect theory.</li>
       <li><b>Opportunity cost</b> makes repeated options lose value; <b>loss aversion</b> makes losing what you have hurt more than never getting it.</li>
-      <li>More options are not always better, and 3 to 5 distinct ones are usually enough (a rule of thumb; results on choice overload are inconsistent); the easier the result is to guess, the less information the choice carries.</li>
+      <li>More options are not always better; 3 to 5 distinct ones are usually enough. This is a rule of thumb, and the research on choice overload is not consistent. The easier an outcome is to guess, the less information the choice carries.</li>
     </ul>
   </div>
-  <div class="tldr">A meaningful choice is one the player can see clearly, is reluctant to make, and yet has to make: each option has its gains and its losses, and after choosing, the situation really is different.</div>
+  <div class="tldr">A meaningful choice is one where the player can see each option clearly, every option gives something and costs something, and after choosing, the situation really is different.</div>
 
   <div class="sec"><span class="n">9</span><h2><span class="tag think">Practice</span>Quick quiz</h2></div>
   <div id="quiz"></div>
@@ -426,8 +473,8 @@ GD.mountQuiz($("quiz"), [
     $("c8d_lo").textContent = l.toFixed(1);
     const w = Math.min(50, Math.abs(v) / 6 * 50), i = $("c8d_i");
     i.style.width = w + "%"; i.style.left = v >= 0 ? "50%" : (50 - w) + "%"; i.style.background = v >= 0 ? "#b6e8a8" : "#ffb3c6";
-    $("c8d_t").innerHTML = "Turn score T = " + turn + ": subjective net gain <b>" + v.toFixed(2) + "</b>," + (v >= 0 ? "still worth it, you can keep going." : "subjectively no longer worth it, time to bank.") +
-      "<br>Your subjective stopping line is about T ≈ <b>" + (20 / l).toFixed(1) + "</b> (objective break-even: T = 20).";
+    $("c8d_t").innerHTML = "Turn score T = " + turn + ": subjective net gain <b>" + v.toFixed(2) + "</b>, " + (v >= 0 ? "still worth it, you can keep going." : "subjectively no longer worth it, time to bank.") +
+      "<br>The subjective stop line is about T ≈ <b>" + (20 / l).toFixed(1) + "</b> (objective break-even: T = 20).";
   }
   function upd() { $("turn").textContent = turn; $("total").textContent = total; $("rounds").textContent = rounds; subj(); }
   $("roll").onclick = () => {
@@ -445,7 +492,7 @@ GD.mountQuiz($("quiz"), [
     if (total >= 50) {
       over = true;
       $("dmsg").textContent = "🎉 Reached 50 points in " + rounds + " rounds!";
-      $("advice").innerHTML = "Your style leans more toward " + (rolls / rounds > 5 ? "<b>risk-taker</b>" : "<b>cautious player</b>") + "(on average " + (rolls / rounds).toFixed(1) + " rolls per round).";
+      $("advice").innerHTML = "Your style leans more toward " + (rolls / rounds > 5 ? "<b>risk-taker</b>" : "<b>cautious player</b>") + " (on average " + (rolls / rounds).toFixed(1) + " rolls per round).";
     }
   };
   $("reset").onclick = () => { turn = total = rounds = rolls = 0; over = false; $("dmsg").textContent = "Start over!"; $("advice").textContent = ""; $("die").textContent = "🎲"; upd(); };
@@ -462,7 +509,7 @@ GD.mountQuiz($("quiz"), [
   }
   function fmt(x) { return x >= 1e6 ? x.toExponential(2).replace("e+", "×10^") : Math.round(x).toLocaleString("en-US"); }
   function drawS() {
-    const f = fee(), ymax = Math.max(30, f * 1.5), X = n => 50 + Math.log10(n) / 5 * 490, Y = v => 205 - Math.min(v, ymax) / ymax * 180;
+    const f = fee(), ymax = Math.max(30, f * 1.5, pts.reduce((m, p) => Math.max(m, p[1]), 0) * 1.1), X = n => 50 + Math.log10(n) / 5 * 490, Y = v => 205 - Math.min(v, ymax) / ymax * 180;
     let s = '<rect x="50" y="25" width="490" height="180" fill="#fffef7" stroke="#2b2b3a" stroke-width="3"/>';
     for (let e = 0; e <= 5; e++) s += '<text x="' + X(Math.pow(10, e)) + '" y="224" text-anchor="middle" font-size="14">' + Math.pow(10, e).toLocaleString("en-US") + '</text>';
     s += '<text x="295" y="240" text-anchor="middle" font-size="14">Number of plays (log scale)</text>';
@@ -483,7 +530,7 @@ GD.mountQuiz($("quiz"), [
     drawS();
     const avg = sum / cnt, f = fee();
     $("c8s_msg").textContent = cnt < 20 ? "Too few samples yet; play a few hundred or a few thousand more times before looking at the average." :
-      avg >= f ? "Average winnings so far " + avg.toFixed(1) + " ≥ your price: you came out ahead this batch. But play some more and see whether it keeps climbing." :
+      avg >= f ? "Average winnings so far " + avg.toFixed(1) + " ≥ your bid: this batch made money. But play more and see whether it keeps rising." :
       "Average winnings so far " + avg.toFixed(1) + " < your price " + f + ": you lost this batch.";
   });
   $("c8s_f").oninput = drawS;
@@ -492,8 +539,8 @@ GD.mountQuiz($("quiz"), [
     const o = $("c8s_revout"); o.style.display = "block";
     const log2n = cnt > 1 ? Math.log2(cnt) : 0;
     o.innerHTML = "<b>Mathematically:</b> the probability of first heads on flip n is (½)ⁿ, the prize is 2ⁿ, and each term’s “probability × prize” is 1. 1 + 1 + 1 + … never finishes, so <b>the expected value is infinite</b>.<br>" +
-      "<b>But in your own play:</b>" + (cnt ? "You played " + cnt.toLocaleString("en-US") + " times, averaging only about " + (sum / cnt).toFixed(1) + " dollars (roughly around log₂(plays) ≈" + log2n.toFixed(1) + " , and swinging with the odd big prize)." : "You haven’t played yet; press “Play” above first.") +
-      "<br>The reason: the prize doubles while the probability halves, and all that “infinity” comes from extremely rare giant prizes that you will hardly ever meet in reality. This is why looking only at the expected value can’t explain the prices people offer. Read on to see Bernoulli’s way out.";
+      "<b>But in your own play:</b>" + (cnt ? "You played " + cnt.toLocaleString("en-US") + " times, about " + (sum / cnt).toFixed(1) + " yuan each time on average. With many tries, the typical level of the average roughly follows log₂(tries) ≈" + log2n.toFixed(1) + " which is on the order of a dozen yuan; if this run’s average is clearly higher, an occasional jackpot has pulled it up." : "You haven’t played yet; press “Play” above first.") +
+      "<br>Why: the prize doubles while the probability halves, and that “infinity” comes entirely from extremely rare giant prizes that are almost never met in reality. This is why looking only at expected value can’t explain what people bid. Read on to see Bernoulli’s way out.";
   };
   function utilFair(W) {
     const EU = c => { let s = 0; for (let n = 1; n <= 80; n++) s += Math.pow(2, -n) * Math.log(W - c + Math.pow(2, n)); return s; };
@@ -505,7 +552,7 @@ GD.mountQuiz($("quiz"), [
     const W = Math.round(Math.pow(10, +$("c8s_w").value / 10)), B = Math.round(Math.pow(10, +$("c8s_b").value / 10));
     $("c8s_wo").textContent = W.toLocaleString("en-US"); $("c8s_bo").textContent = B.toLocaleString("en-US");
     const fair = utilFair(W), k = Math.floor(Math.log2(B)), ev = k + B / Math.pow(2, k);
-    $("c8s_calc").innerHTML = "<b>Logarithmic utility:</b> With " + W.toLocaleString("en-US") + " dollars, the “fair price” of this game is only about <b>" + fair.toFixed(2) + " dollars</b> (any higher and the expected satisfaction is lower than not playing). The more wealth you have, the more you will pay, but it grows very slowly.<br>" +
+    $("c8s_calc").innerHTML = "<b>Logarithmic utility:</b> With " + W.toLocaleString("en-US") + " dollars, the “fair price” of this game is only about <b>" + fair.toFixed(2) + " yuan</b> (any dearer, and the expected satisfaction is lower than not playing). The more wealth, the higher the price one will pay, but it grows very slowly.<br>" +
       "<b>Limited bankroll:</b> if the casino pays out at most " + B.toLocaleString("en-US") + " dollars, the expected value is no longer infinite, at about <b>" + ev.toFixed(1) + " dollars</b>.<br>" +
       "<span class='small'>(Teaching demo: logarithmic utility and a finite bankroll are two common ways out, not the only answers.)</span>";
   }
@@ -532,7 +579,9 @@ GD.mountQuiz($("quiz"), [
       '<path d="M' + X(n) + ' 20V220" stroke="#ff7a59" stroke-width="3"/>' +
       '<circle cx="' + X(n) + '" cy="' + YS(sat(n, m)).toFixed(1) + '" r="7" fill="#3aa655" stroke="#2b2b3a"/>' +
       '<circle cx="' + X(n) + '" cy="' + YT(tim(n, m)).toFixed(1) + '" r="7" fill="#4a9ac4" stroke="#2b2b3a"/>' +
-      '<g font-size="15" fill="#2b2b3a"><text x="440" y="244">Options →</text><text x="50" y="34" fill="#3aa655">Sketch satisfaction (solid)</text><text x="50" y="54" fill="#4a9ac4">Sketch decision time (dashed)</text></g>';
+      [3, 10, 20, 30].map(k => '<path d="M' + X(k).toFixed(1) + ' 220v4" stroke="#2b2b3a" stroke-width="2"/><text x="' + X(k).toFixed(1) + '" y="243" font-size="13" text-anchor="middle" fill="#2b2b3a">' + k + '</text>').join("") +
+      '<circle cx="' + X(best).toFixed(1) + '" cy="' + YS(bv).toFixed(1) + '" r="9" fill="none" stroke="#b8860b" stroke-width="3"/><text x="' + X(best).toFixed(1) + '" y="' + (YS(bv) - 14).toFixed(1) + '" font-size="14" text-anchor="middle" fill="#7a5a00">peak n≈' + best + '</text>' +
+      '<g font-size="15" fill="#2b2b3a"><text x="440" y="262" font-size="14">Number of options →</text><text x="50" y="34" fill="#3aa655">Illustrative satisfaction (solid)</text><text x="50" y="54" fill="#4a9ac4">Illustrative decision time (dashed)</text></g>';
     $("co_t").textContent = "n=" + n + ": sketch decision time about " + tim(n, m).toFixed(1) + " seconds, sketch satisfaction about " + sat(n, m).toFixed(1) + " / 10. The sketch curve peaks at n ≈" + best + ". (sketch, not measured)";
   }
   $("co_n").oninput = co; $("co_m").onchange = co; co();
@@ -607,17 +656,18 @@ GD.mountQuiz($("quiz"), [
         });
         let h = "“" + esc(o.name) + "” dominates all its rivals: this level effectively has <b>only one answer</b>, and the other options are just decoration.";
         if (bestPlan) {
-          h += " Weaken it: set its" + DIM[bestPlan.k] + "to " + bestPlan.val + ", so that “" + esc(bestPlan.p.name) + "” wins on this measure.";
+          h += " Weaken it: set its " + DIM[bestPlan.k] + "to " + bestPlan.val + ", so that “" + esc(bestPlan.p.name) + "” wins on this measure.";
           add("gold", h, () => { snap(); o[bestPlan.k] = bestPlan.val; });
         } else add("gold", h + " Give the other options some strength it lacks.");
       } else if (o.by.length) {
         let plan = null;
         o.by.forEach(p => {
           [["b", p.b + 1 - o.b, p.b + 1, p.b + 1 <= 10], ["r", o.r - (p.r - 1), p.r - 1, p.r - 1 >= 0], ["c", o.c - (p.c - 1), p.c - 1, p.c - 1 >= 0]].forEach(([k, cost, val, ok]) => {
-            if (ok && (!plan || cost < plan.cost)) plan = { k, cost, val, p };
+            const t = Object.assign({}, o, { [k]: val });
+            if (ok && !opts.some(x => x !== o && dom(t, x)) && (!plan || cost < plan.cost)) plan = { k, cost, val, p };
           });
         });
-        if (plan) add("warn", "“" + esc(o.name) + "” is completely dominated by “" + esc(plan.p.name) + "”. Give it a strength of its own: set" + DIM[plan.k] + "to " + plan.val + "(it is now " + o[plan.k] + ", the rival has " + plan.p[plan.k] + "). If it is a starter item or an upgrade precursor, it can stay, but make that obvious to players at a glance.", () => { snap(); o[plan.k] = plan.val; });
+        if (plan) add("warn", "“" + esc(o.name) + "” is completely dominated by “" + esc(plan.p.name) + "”. Give it a strength of its own: set " + DIM[plan.k] + "to " + plan.val + " (it is now " + o[plan.k] + ", the rival has " + plan.p[plan.k] + "). If it is a starter item or an upgrade precursor, it can stay, but make that obvious to players at a glance.", () => { snap(); o[plan.k] = plan.val; });
         else add("warn", "“" + esc(o.name) + "” is dominated, and is hard to rescue with one measure alone: consider weakening the rival or deleting it.");
       } else if (o.dup) {
         add("warn", "“" + esc(o.name) + "” and “" + esc(o.dup.name) + "” have exactly the same values: the player has nothing to choose between, so widen the difference or delete one.");
@@ -626,7 +676,7 @@ GD.mountQuiz($("quiz"), [
     if (n >= 2 && opts.every(o => status(o) === "ok")) {
       const close = [];
       for (let i = 0; i < n; i++) for (let j = i + 1; j < n; j++) if (Math.abs(opts[i].b - opts[j].b) <= 1 && Math.abs(opts[i].r - opts[j].r) <= 1 && Math.abs(opts[i].c - opts[j].c) <= 1) close.push([opts[i], opts[j]]);
-      add("ok", "✅ Every option has its own place, none is dominated, and none is “always best.”" + (n < 3 ? " But there are only " + n + " options, so the room is small." : n > 5 ? " Note there are already " + n + " options; watch out for choice overload." : " " + n + " options, a moderate number."));
+      add("ok", "✅ Every option has its own place, none is dominated, and none is “always best.” " + (n < 3 ? " But there are only " + n + " options, so the room is small." : n > 5 ? " Note there are already " + n + " options; watch out for choice overload." : " " + n + " options, a moderate number."));
       close.forEach(p => add("warn", "“" + esc(p[0].name) + "” and “" + esc(p[1].name) + "” differ by ≤ 1 on every measure: not dominated, but players will find it hard to feel the difference."));
       if (opts.every(o => o.r <= 3)) add("warn", "All options have very low risk: nobody has to take a chance, so try adding one with high risk and high gain.");
     }
@@ -705,14 +755,14 @@ GD.mountQuiz($("quiz"), [
 <script>
 (function () {
   const q = id => document.getElementById(id);
-  function done(id, msg) { const e = q(id); if (!e || e.classList.contains("done")) return; e.classList.add("done"); e.querySelector(".c8ok").textContent = " ✅ Done!" + msg; }
+  function done(id, msg) { const e = q(id); if (!e || e.classList.contains("done")) return; e.classList.add("done"); e.querySelector(".c8ok").textContent = " ✅ Done! " + msg; }
   document.querySelectorAll("[data-n]").forEach(b => b.addEventListener("click", () => setTimeout(() => {
     const f = +q("c8s_f").value, n = +q("c8s_cnt").textContent.replace(/,/g, ""), avg = +q("c8s_avg").textContent;
-    if (f >= 30 && n >= 10000) done("c8k1", avg < f ? "Average winnings were only " + avg + ", which didn’t catch up with your price: the theoretical “infinity” all comes from extremely rare big prizes." : "This batch averaged " + avg + ", and you happened to come out ahead; press “Start over” and play again, and the result will probably change.");
+    if (f >= 30 && n >= 10000) done("c8k1", avg < f ? "Average winnings were only " + avg + ", it didn’t reach your bid: the theoretical “infinity” comes entirely from extremely rare big prizes." : "This batch averaged " + avg + ", it happened to win; click “Start over” and play again, and the result will most likely change.");
   }, 80)));
   let hi = false, lo = false;
   const adv = q("advice"), dl = q("c8d_l");
-  function chk2() { if (hi && lo && adv.textContent.trim()) done("c8k2", "With a high λ your subjective stopping line is at T ≈ 6, and with a low λ it is close to 20: the same die, but different pain, and the right time to stop is completely different."); }
+  function chk2() { if (hi && lo && adv.textContent.trim()) done("c8k2", "At high λ the subjective stop line is at T≈6, and at low λ it is close to 20: the same dice, a different pain, and a completely different time to stop."); }
   dl.addEventListener("input", () => { const v = +dl.value / 10; if (v >= 3.5) hi = true; if (v <= 1.2 && adv.textContent.trim()) lo = true; chk2(); });
   new MutationObserver(chk2).observe(adv, { childList: true, characterData: true, subtree: true });
   function chk3() { if (+q("co_n").value >= 20 && q("co_m").checked) done("c8k3", "With clear categories, the burden of each added option shrinks and the peak shifts right: many options aren’t the original sin; failing to organize them is."); }
@@ -730,7 +780,7 @@ GD.mountQuiz($("quiz"), [
     if (pick.g && pick.l) {
       const o = q("c8g_out"); o.style.display = "block";
       const flip = pick.g === "a" && pick.l === "d";
-      o.innerHTML = "You chose " + pick.g.toUpperCase() + " and " + pick.l.toUpperCase() + ". The expected values of the two rows are exactly symmetric (both ±100). In experiments of this kind, most people choose the sure thing (A) on the gain side and the gamble (D) on the loss side." + (flip ? "You fit this typical pattern exactly: the same mathematical structure, depending on whether it falls on gain or loss, flips the choice." : "Your choices differ from the typical pattern, which is perfectly normal, as individual differences are not small; but try it on the people around you and you will often see this flip.");
+      o.innerHTML = "You chose " + pick.g.toUpperCase() + " and " + pick.l.toUpperCase() + ". The expected values of the two rows are exactly symmetric (both ±100). In experiments of this kind, most people choose the sure thing (A) on the gain side and the gamble (D) on the loss side. " + (flip ? "exactly this typical pattern: the same mathematical structure, and because it falls on gain or loss, the choice flipped." : "Your choices differ from the typical pattern, which is normal, as individual differences are sizable. But try people around you and you can often see this flip.");
     }
   }));
 })();

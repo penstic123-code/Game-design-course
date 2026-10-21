@@ -1,7 +1,7 @@
 /* English text for illus-ch22.js: only alt and text strings; shapes come from the Chinese pack. Generated from tools notes, edit with care. */
 ILLUS_EN_ADD({
 "c22_pretend": {
-"a": "Inside a dashed circle a horned stick figure pretends to be a monster chasing another screaming stick figure, while a real little dog watches outside the circle: the chase inside is pretend",
+"a": "Inside a dashed circle a stick figure in a green monster mask (with horns) pretends to be a monster chasing another screaming stick figure, while a real little dog outside the circle walks toward it: the chase inside is pretend",
 "t": [
 "Right now, we’re playing",
 "Real dog"
@@ -36,12 +36,12 @@ ILLUS_EN_ADD({
 ]
 },
 "c22_leak": {
-"a": "A dashed magic circle with four arrows passing out from it, labeled money, identity, relationships, irreversibility, showing that the circle leaks",
+"a": "A dashed magic circle with four arrows passing out from it, labeled money, identity, social consequences, irreversibility, showing that the circle leaks",
 "t": [
 "Circle",
 "Money",
 "Identity",
-"Relations",
+"Social consequences",
 "Irreversible"
 ]
 },
@@ -76,12 +76,11 @@ ILLUS_EN_ADD({
 ]
 },
 "c22_certificate": {
-"a": "On the left a child draws and receives a little star saying you’ve improved, and the interest is amplified; on the right a child draws staring at a certificate, only for the certificate, and the interest is replaced",
+"a": "A child draws while staring at a certificate board beside them, and an arrow pulls the original interest in drawing toward the certificate, until it is only for the certificate and the interest is replaced",
 "t": [
-"Amplifies interest",
 "Replaces interest",
 "Certificate",
-"You improved",
+"Interest",
 "For the certificate"
 ]
 },

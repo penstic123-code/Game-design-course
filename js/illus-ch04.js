@@ -22,7 +22,7 @@
   illusAdd("c04_catmouse", "猫速度比老鼠慢一点：老鼠绕着柱子兜圈，猫追不上",
     R(88, 44, 24, 74, "#cfd3dc") + '<ellipse cx="100" cy="84" rx="58" ry="38" fill="none" stroke-dasharray="6 6" stroke-width="3"/>' +
     P("M80 47 l10 -2 l-5 9", "none", ' stroke-width="3"') + catAt(158, 84) + mouseAt(44, 84),
-    T(100, 22, 13, "绕着柱子兜圈", "middle") + T(158, 130, 12, "猫", "middle") + T(30, 130, 12, "老鼠", "middle"));
+    T(100, 22, 13, "绕着柱子兜圈", "middle") + T(158, 130, 13, "猫", "middle") + T(30, 130, 13, "老鼠", "middle"));
 
   illusAdd("c04_count30", "捉迷藏：鬼闭眼数到30，躲的人趁机跑向远处",
     ground + G(34, 0.85, { arms: "cover", face: "closed" }) + bub(66, 26, 46, 16) +
@@ -55,14 +55,14 @@
   illusAdd("c04_threefun", "三个火柴人玩不同的东西：躲避球、象棋、魔方，各自得到不同的乐趣",
     G(34, 0.55, { arms: "throw", face: "grin" }) + C(54, 62, 7, "#ff8fab") + G(100, 0.55, { arms: "hold", face: "flat", look: 1 }) +
     R(84, 102, 32, 5, "#fff") + P("M88 107 v19 M112 107 v19", "none", ' stroke-width="3"') + G(166, 0.55, { arms: "hold", face: "o" }) + R(174, 100, 14, 14, "#ffe58a") + P("M181 100 v14 M174 107 h14", "none", ' stroke-width="1.8"'),
-    T(34, 16, 11, "友谊·感官", "middle") + T(100, 16, 11, "挑战", "middle") + T(166, 16, 11, "发现", "middle") +
-    T(34, 34, 12, "躲避球", "middle") + T(100, 34, 12, "象棋", "middle") + T(166, 34, 12, "魔方", "middle"));
+    T(37, 16, 12, "友谊·感官", "middle") + T(100, 16, 12.5, "挑战", "middle") + T(166, 16, 12.5, "发现", "middle") +
+    T(34, 34, 13, "躲避球", "middle") + T(100, 34, 13, "象棋", "middle") + T(166, 34, 13, "魔方", "middle"));
 
   illusAdd("c04_pickone", "同一个方块世界里，有人盖房子，有人拿火把探洞，有人和朋友击掌，没法只给它贴一个标签",
     ground + R(12, 92, 28, 28, "#c98f5a") + R(40, 92, 28, 28, "#b6e8a8") + R(26, 64, 28, 28, "#ffe58a") +
-    G(86, 0.55, { arms: "wave", face: "grin" }) + G(110, 0.55, { arms: "wave", face: "grin" }) +
-    R(144, 100, 40, 26, "#3a3a4d") + G(156, 0.55, { arms: "point", face: "o" }) + P("M172 76 v8", "none", ' stroke="#ff8f1f" stroke-width="4"'),
-    T(40, 52, 13, "表达", "middle") + T(98, 52, 13, "友谊", "middle") + T(166, 52, 13, "发现", "middle") + T(100, 18, 13, "同一个游戏，三种玩法", "middle"));
+    R(80, 100, 40, 26, "#3a3a4d") + G(92, 0.55, { arms: "point", face: "o" }) + P("M110 76 v8", "none", ' stroke="#ff8f1f" stroke-width="4"') +
+    G(146, 0.55, { arms: "wave", face: "grin" }) + G(172, 0.55, { arms: "wave", face: "grin" }),
+    T(40, 52, 14, "表达", "middle") + T(100, 52, 14, "发现", "middle") + T(160, 52, 14, "友谊", "middle") + T(100, 18, 13, "同一个游戏，三种玩法", "middle"));
 
   illusAdd("c04_rich", "越富越容易更富：一个火柴人坐拥高高的金币堆，另一个只有一枚",
     ground + G(44, 0.85, { arms: "up", face: "grin" }) +

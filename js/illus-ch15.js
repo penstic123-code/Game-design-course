@@ -25,7 +25,7 @@
     person(34, 63, { arms: "hold", face: "grin", look: 1 }) + person(166, 63, { arms: "hold", face: "grin", look: -1 }) +
     circ(68, 84, 8, SK) + rect(124, 74, 16, 20, SK) + path("M132 74 v-6 M127 74 v-5 M137 74 v-5", "none", 'stroke-width="2.5"') +
     path("M100 84 L90 102 H110 Z", "none", 'stroke-width="2.5"') + path("M104 100 l6 4 -2 -7z", INK, 'stroke="none"'),
-    T(68, 62, 13, "石头", "middle") + T(132, 56, 13, "布", "middle") + T(100, 132, 13, "谁也不是最强", "middle"));
+    T(68, 62, 13, "石头", "middle") + T(132, 56, 13, "布", "middle") + T(100, 77, 13, "剪刀", "middle") + T(100, 132, 13, "谁也不是最强", "middle"));
 
   add("c15_triangle", "骑兵克弓手，弓手克长枪兵，长枪兵克骑兵：三个兵种用箭头连成一个圈，没有哪个兵种永远最强",
     circ(100, 34, 13, Y) + circ(38, 98, 13, GR) + circ(162, 98, 13, PK) +

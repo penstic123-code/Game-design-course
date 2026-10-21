@@ -9,10 +9,10 @@
   .field{margin:10px 0}
   .field label{font-family:var(--hand);font-size:1.3rem;display:block}
   #onepage{white-space:pre-wrap;font-size:1rem;line-height:1.7}
-  .c26track{position:relative;height:54px;margin:14px 6px 8px;border-bottom:4px solid var(--ink)}
-  .c26track .tk{position:absolute;bottom:-12px;font-size:.85rem;color:var(--soft);transform:translateX(-50%)}
+  .c26track{position:relative;height:54px;margin:14px 6px 30px;border-bottom:4px solid var(--ink)}
+  .c26track .tk{position:absolute;bottom:-28px;font-size:.85rem;color:var(--soft);transform:translateX(-50%)}
   .c26dot{position:absolute;top:6px;width:22px;height:22px;margin-left:-11px;border:3px solid var(--ink);border-radius:50%;transition:left .35s}
-  .c26dot.g{background:#a8dcf0}.c26dot.t{background:#ffe58a;border-radius:4px;transform:rotate(45deg)}
+  .c26dot.g{background:#a8dcf0}.c26dot.t{background:#ffe58a;border-radius:4px;transform:rotate(45deg);top:26px}
   .c26dot.h{background:#fff;border-style:dashed;opacity:.6}
   #c26hill{touch-action:manipulation;cursor:crosshair}
   .c26tab td,.c26tab th{border:2px solid var(--ink);padding:2px 10px;text-align:center}
@@ -54,10 +54,18 @@
     <span data-illus="c26_second"></span>
     <div>
       <p>设想坐在桌前，写好了一页规则：目标、移动方式、得分办法，每一条都推敲过，看上去天衣无缝。然后朋友拿起来玩了十分钟，做了一件根本没想过的事：他发现只要一直往墙角跑，就能永远赢。</p>
-      <p>这不是设计者笨。写下的是规则，玩家得到的是体验，中间隔着一层“玩家会怎么玩”。规则怎么碰撞、人会怎么钻空子，在脑子里推不完整，只能让真人去玩。</p>
-      <p>所以专业团队不靠一次想清楚，靠一个反复转的圈：做一个<span class="term" tabindex="0" data-def="为了验证想法而做的、尽量便宜的试玩版本，不追求完整和美观。">原型</span>，找人玩，看他们怎么玩，改一点，再玩。这个圈就叫<span class="term" tabindex="0" data-def="把“做出一版 → 试玩 → 修改”重复多轮，每一轮都比上一轮更好。">迭代</span>。</p>
+      <p>这和设计者笨不笨无关。写下的是规则，玩家得到的是体验，中间隔着一层“玩家会怎么玩”。规则怎么碰撞、人会怎么钻空子，在脑子里推不完整，只能让真人去玩。</p>
+      <p>所以专业团队不靠一次想清楚，靠一个反复转的圈：做一个<span class="term" tabindex="0" data-def="原型（prototype）：为了验证想法而做的、尽量便宜的试玩版本，不追求完整和美观。">原型</span>，找人玩，看他们怎么玩，改一点，再玩。这样一圈圈地转，就是<span class="term" tabindex="0" data-def="迭代（iteration）：把“做出一版 → 试玩 → 修改”重复多轮，每一轮都比上一轮更好。">迭代</span>。</p>
     </div>
   </div>
+  <aside class="cc-card" aria-label="概念卡：迭代设计">
+    <span class="cc-tag">概念卡</span>
+    <p class="cc-name"><span>迭代设计</span></p>
+    <p class="cc-en">Iterative design</p>
+    <p class="cc-by">埃里克·齐默尔曼（Eric Zimmerman） · 2003 年《Play as Research: The Iterative Design Process》系统阐述游戏的迭代设计</p>
+    <p class="cc-def">做一小块、试玩、观察、修改，再来一轮。每一轮都用玩家的真实反应，决定下一步往哪里改。</p>
+    <p class="cc-eg"><span class="cc-k">例子</span>《万智牌》的 Alpha 版 120 张牌随机分给两位玩家就开始玩，之后经过 Beta、Gamma 几轮修改，才定下来。</p>
+  </aside>
   <div class="card">
     <svg viewBox="0 0 700 250" width="100%" role="img" aria-label="迭代循环：想法、原型、试玩、观察、修改，再回到原型">
       <g class="rough" stroke="#2b2b3a" stroke-width="4">
@@ -86,23 +94,23 @@
         <path d="M60 30 V215 H670"/>
         <path d="M80 200 C200 195 300 180 400 140 S560 50 650 30" stroke="#e5484d" stroke-width="5"/>
       </g>
-      <g fill="#ffe58a" stroke="#2b2b3a" stroke-width="3"><circle cx="100" cy="199" r="9"/><circle cx="250" cy="188" r="9"/><circle cx="410" cy="137" r="9"/><circle cx="650" cy="30" r="9"/></g>
-      <g font-size="18" text-anchor="middle" fill="#2b2b3a"><text x="100" y="240">想法</text><text x="250" y="240">纸原型</text><text x="410" y="240">可玩版</text><text x="550" y="240">美术完成</text><text x="640" y="266">发布</text></g>
-      <g font-size="18" fill="#2b2b3a"><text x="70" y="26">改一次的代价（示意）</text><text x="110" y="165" fill="#1f7a3a">在这里发现：一支笔</text><text x="330" y="96" fill="#b3262e">在这里：推倒重来</text></g>
+      <g fill="#ffe58a" stroke="#2b2b3a" stroke-width="3"><circle cx="100" cy="199" r="9"/><circle cx="250" cy="188" r="9"/><circle cx="410" cy="137" r="9"/><circle cx="552" cy="66" r="9"/><circle cx="650" cy="30" r="9"/></g>
+      <g font-size="18" text-anchor="middle" fill="#2b2b3a"><text x="100" y="240">想法</text><text x="250" y="240">纸原型</text><text x="410" y="240">可玩版</text><text x="550" y="240">美术完成</text><text x="650" y="240">发布</text></g>
+      <g font-size="18" fill="#2b2b3a"><text x="70" y="26">改一次的代价（示意）</text><text x="110" y="165" fill="#1f7a3a">在这里发现：一支笔</text><text x="600" y="122" text-anchor="middle" fill="#b3262e">在这里：推倒重来</text><path d="M557 78 L585 100" stroke="#b3262e" stroke-width="2.5" fill="none"/></g>
     </svg>
     <p class="small">这是示意曲线，用来建立直觉，不是实测数据；不同项目的曲线形状不同。</p>
   </div>
-  <div class="eg" data-ic="🃏"><span data-illus="c26_magic"></span><div class="egt"><b>《万智牌》的第一版试玩</b>：设计者 Richard Garfield 自述，最早的 Alpha 试玩版是 120 张牌，随机分给两位玩家，就这样开玩。之后又经过 Beta、Gamma 几轮修改，到 Gamma 版，许多生物的费用被调高，“能永久抢走对手生物”的牌被拿掉了。牌放在一起才暴露的问题，是一轮轮玩出来的。</div></div>
-  <div class="eg" data-ic="🎲"><span data-illus="c26_armello"></span><div class="egt"><b>《Armello》的纸面期</b>：独立团队在访谈里说，明知最终要做成数字游戏，仍先用纸面原型迭代了大约八个月，试玩时由两位“主持人”躲在屏风后手动处理隐藏规则，相当于人肉模拟电脑。</div></div>
+  <div class="eg" data-ic="🃏"><span data-illus="c26_magic"></span><div class="egt"><b>《万智牌》的第一版试玩</b>：设计者 Richard Garfield 自述，最早的 Alpha 试玩版是 120 张牌，随机分给两位玩家，就这样开玩。之后又经过 Beta、Gamma 几轮修改，到 Gamma 版，许多生物的费用被调高，“能永久抢走对手生物”的那类牌已经很少，后来干脆拿掉了。牌放在一起才暴露的问题，是一轮轮玩出来的。</div></div>
+  <div class="eg" data-ic="🎲"><span data-illus="c26_armello"></span><div class="egt"><b>《Armello》的纸面期</b>：独立团队在访谈里说，明知最终要做成数字游戏，仍先用纸面原型迭代了大约八个月。试玩时由两位“主持人”手动处理隐藏的规则，相当于人肉模拟电脑。</div></div>
   <div class="eg" data-ic="🍲"><span data-illus="c26_taste"></span><div class="egt"><b>做一道新菜</b>：没人一次就把盐放准。先放一点，尝一口，再加。“尝一口”就是最便宜的试玩。写文章先给朋友看提纲，是同一个道理。</div></div>
-  <div class="eg bad" data-ic="🏚️"><span data-illus="c26_year"></span><div class="egt"><b>闭门一年的“完整版”（假想情景，不是某个具体项目）</b>：精美的美术、二十个关卡都做完了，发布后才发现玩家在第一关就卡住。这时要改的不是一条规则，而是整条关卡和教学。一张纸片原型，一个下午就能暴露这个问题。</div></div>
+  <div class="eg bad" data-ic="🏚️"><span data-illus="c26_year"></span><div class="egt"><b>闭门一年的“完整版”（假想情景，不是某个具体项目）</b>：精美的美术、二十个关卡都做完了，发布后才发现玩家在第一关就卡住。这时要改的是整条关卡和教学，一条规则远远不够。一张纸片原型，一个下午就能暴露这个问题。</div></div>
   <p class="src">来源：Garfield，<a href="https://magic.wizards.com/en/news/making-magic/creation-magic-gathering-2013-03-12" target="_blank" rel="noopener">The Creation of Magic: The Gathering</a>（Wizards of the Coast 网站，2013 年转载自 1994 年的文章）；Armello 开发者访谈：<a href="https://gamecloud.net.au/features/interviews/paxaus-2015-interview-with-armello-developer-jason-bakker" target="_blank" rel="noopener">PAX AUS 2015 采访</a>（开发者自述，具体时长以其为准）。</p>
 
   <!-- 3 发明故事 -->
-  <div class="sec"><span class="n">3</span><h2><span class="tag origin">发明故事</span>迭代是怎么被想出来的？</h2></div>
-  <p>先别看历史，自己试一次。<b>假设是项目负责人，客户只模糊地说了“要做到这一档左右”，真正的需求藏在某个不知道的位置。</b>有两种做法：一次定稿，只有一次机会；或者分四轮，每轮交付后玩家会说偏哪边、偏多少。各玩几局，看看结果。</p>
+  <div class="sec"><span class="n">3</span><h2><span class="tag origin">发明故事</span>迭代是怎么被想出来的</h2></div>
+  <p>先自己试一次。<b>假设是项目负责人，客户只模糊地说了“要做到这一档左右”，真正的需求藏在某个不知道的位置。</b>有两种做法：一次定稿，只有一次机会；或者分四轮，每轮交付后玩家会说偏哪边、偏多少。各玩几局，看看结果。</p>
   <div class="card b no-print" id="c26game">
-    <div class="small">蓝点 = 自己的方案位置；🟨 = 真正的需求（交付后才揭晓）。每局目标位置随机（0–100）。示意实验，不是真实数据。</div>
+    <div class="small">蓝点 = 自己现在的方案位置（拖滑块时跟着动）；虚线圈 = 已经交付过的位置；黄色菱形 = 真正的需求（交付后才揭晓）。每局目标位置随机（0–100）。示意实验，不是真实数据。</div>
     <div>
       <button class="btn" id="c26mA">📦 一次定稿（只有 1 次机会）</button>
       <button class="btn alt" id="c26mB">🔁 分 4 轮（每轮能看到试玩反应）</button>
@@ -120,11 +128,15 @@
 
   <div class="story">
     <h3>历史上的人也撞上了同一堵墙</h3>
-    <p><b>问题：</b>软件越做越大，需求在开工时往往说不清。如果把工作排成一条直线：先写完所有需求，再设计，再编码，最后测试，那就像上面的“一次定稿”。第一次看到真实反应已经是交付那天，那时想改也来不及了。</p>
-    <p><b>早期尝试：</b>迭代不是软件界发明的。据 Larman 与 Basili 的历史综述，它的源头可以追溯到 1930 年代 Walter Shewhart 在贝尔实验室的质量改进工作：计划、执行、检查、行动，转一圈再转一圈，后来由 Deming 推广。20 世纪 50 年代的 X-15 高超音速飞机项目已经用迭代、增量的做法。NASA 水星计划的软件团队在 60 年代初用过很短的时间盒迭代（各来源年份略有出入）。</p>
-    <p><b>一个流传很广的误会：</b>1970 年，Winston Royce 发表了《Managing the Development of Large Software Systems》，里面有一张“需求 → 设计 → 编码 → 测试 → 运维”的顺序流程图，后来被叫作“<span class="term" tabindex="0" data-def="把软件开发排成需求、设计、编码、测试的一条直线，前一步做完才做下一步。">瀑布模型</span>”。但 Royce 自己没有用过“waterfall”这个词，据多种资料，它最早可能出现在 1976 年 Bell 与 Thayer 的论文里。Royce 的论文恰恰指出这种最简单的做法风险很大，建议加入迭代和提前试做。（学界对这篇论文到底“反对”到什么程度仍有不同解读，这里取保守说法。）</p>
-    <p><b>关键洞察：</b>别把“想清楚”和“做出来”排成先后两步，而是做一小块、试一下、再据此决定下一步。1986 到 1988 年，Barry Boehm 提出“<span class="term" tabindex="0" data-def="按风险一圈圈推进的开发模型，每圈先用原型去试最大的不确定性。">螺旋模型</span>”：按风险一圈圈推进，每圈都先用原型去试最大的不确定性。2001 年 2 月，17 位软件从业者在美国犹他州 Snowbird 滑雪场写下《敏捷宣言》，把“响应变化”放到了“遵循计划”前面。</p>
-    <p><b>游戏为什么格外需要它：</b>Salen 与 Zimmerman 在《Rules of Play》（2003）里把游戏设计叫作“二阶设计问题”：设计的是规则，体验却是玩家玩出来的，所以没法直接设计体验，只能做出能玩的东西再看。Eric Zimmerman 在《Play as Research: The Iterative Design Process》里，用 SiSSYFiGHT 2000、LOOP 和 LEGO Junkbot 三个项目说明了这套做法：尽快做出可玩的原型，试玩，再根据试玩的体验决定游戏往哪里长。</p>
+    <p>软件越做越大，需求在开工时很难说清。如果把工作排成一条直线：先写完所有需求，再设计，再编码，最后测试，那就像上面的“一次定稿”。第一次看到真实反应已经是交付那天，那时想改也来不及了。</p>
+    <p>这个办法最早不是软件界想出来的。据 Larman 与 Basili 的历史综述，它的源头可以追溯到 1930 年代 Walter Shewhart 在贝尔实验室的质量改进工作：计划、执行、检查、行动，转一圈再转一圈，后来由 Deming 推广。</p>
+    <p>20 世纪 50 年代的 X-15 高超音速飞机项目已经用迭代、增量的做法。NASA 水星计划的软件团队在 60 年代初用过很短的时间盒迭代（各来源年份略有出入）。</p>
+    <p>顺序做法的名声，和 1970 年 Winston Royce 的一篇论文有关。他在《Managing the Development of Large Software Systems》里画了一张“需求 → 设计 → 编码 → 测试 → 运维”的顺序流程图，后来这张图被称为“<span class="term" tabindex="0" data-def="把软件开发排成需求、设计、编码、测试的一条直线，前一步做完才做下一步。">瀑布模型</span>”。可 Royce 自己没有用过“waterfall”这个词，据多种资料，它最早可能出现在 1976 年 Bell 与 Thayer 的论文里。</p>
+    <p>Royce 的论文恰恰指出这种最简单的做法风险很大，建议加入迭代和提前试做。学界对这篇论文到底“反对”到什么程度，解读不一。</p>
+    <p>后来的人一步步转到了另一种想法：别把“想清楚”和“做出来”排成先后两步，要做一小块、试一下、再据此决定下一步。</p>
+    <p>1986 到 1988 年，Barry Boehm 提出“<span class="term" tabindex="0" data-def="螺旋模型（spiral model）：按风险一圈圈推进的开发模型，每圈先用原型去试最大的不确定性。">螺旋模型</span>”：按风险一圈圈推进，每圈都先用原型去试最大的不确定性。2001 年 2 月，17 位软件从业者在美国犹他州 Snowbird 滑雪场写下《敏捷宣言》，把“响应变化”放到了“遵循计划”前面。</p>
+    <p>对游戏来说，这个办法格外要紧。Salen 与 Zimmerman 在《Rules of Play》（2003）里把游戏设计叫作“二阶设计问题”：设计的是规则，体验却是玩家玩出来的，所以没法直接设计体验，只能做出能玩的东西再看。</p>
+    <p>Eric Zimmerman 在《Play as Research: The Iterative Design Process》里，用 SiSSYFiGHT 2000、LOOP 和 LEGO Junkbot 三个项目说明了这套做法：尽快做出可玩的原型，试玩，再根据试玩的体验决定游戏往哪里长。</p>
     <div class="card">
       <svg viewBox="0 0 720 300" width="100%" role="img" aria-label="对比图：一次定稿只在最后得到一次反馈，迭代则每一小轮都得到反馈并调整方向">
         <g class="rough" fill="none" stroke="#2b2b3a" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
@@ -133,6 +145,7 @@
           <path d="M30 230 C80 150 140 150 180 215 S260 280 300 210 S380 150 430 215 S500 270 560 230" stroke="#e5484d"/>
           <circle cx="180" cy="215" r="10" fill="#fff"/><circle cx="300" cy="210" r="10" fill="#fff"/><circle cx="430" cy="215" r="10" fill="#fff"/><circle cx="560" cy="230" r="10" fill="#b6e8a8"/>
         </g>
+        <g font-size="16" font-weight="700" fill="#2b2b3a"><text x="30" y="28">顺序做法</text><text x="30" y="144">迭代做法</text></g>
         <g font-size="18" text-anchor="middle" fill="#2b2b3a"><text x="90" y="76">需求</text><text x="230" y="76">设计</text><text x="370" y="76">编码</text><text x="510" y="76">测试</text>
           <text x="640" y="154" text-anchor="end">一条直线，最后才看到结果</text>
           <text x="180" y="262">试</text><text x="300" y="262">试</text><text x="430" y="262">试</text><text x="560" y="262">试</text>
@@ -153,9 +166,9 @@
 
   <!-- 4 为什么：复杂系统 -->
   <div class="sec"><span class="n">4</span><h2><span class="tag why">为什么成立</span>规则一多，推演就推不动了</h2></div>
-  <p>“试出来”听起来像设计师偷懒，其实有三个很实在的理由。第一个是数学上的：规则的组合增长得比规则本身快得多。</p>
+  <p>“试出来”听起来像设计师偷懒，背后有三个很实在的理由。头一个来自数学：规则的组合增长得比规则本身快得多。</p>
   <div class="why-box"><h3>复杂系统不可预测：设计空间太大，推演不完</h3>
-    <p>20 条规则，两两组合就有 190 对，还没算三条以上一起起作用的情况。每一对都可能互相加成、抵消或者变出新玩法。还记得涌现吗？这些相互作用会长出设计者没有逐条写下的整体行为。Salen 与 Zimmerman 把这叫作“<span class="term" tabindex="0" data-def="设计者设计的是规则，而体验是玩家玩出来的，设计的对象与最终效果之间隔了一层。">二阶设计问题</span>”。所以哪怕再有经验，也只能先提出假设，再让原型去验证。</p>
+    <p>20 条规则，两两组合就有 190 对，还没算三条以上一起起作用的情况。每一对都可能互相加成、抵消或者变出新玩法。第 5 章讲过涌现：这些相互作用会长出设计者没有逐条写下的整体行为。这就是 Salen 与 Zimmerman 所说的“<span class="term" tabindex="0" data-def="二阶设计问题（second-order design problem）：设计者设计的是规则，而体验是玩家玩出来的，设计的对象与最终效果之间隔了一层。">二阶设计问题</span>”。所以哪怕再有经验，也只能先提出假设，再让原型去验证。</p>
     <div class="card">
       <svg id="c26pairs" viewBox="0 0 700 250" width="100%" role="img" aria-label="三个圆圈，上面分别有 4、8、20 个规则点，点与点之间两两连线，连线数分别是 6、28、190，越来越密">
         <g id="c26pg"></g>
@@ -168,7 +181,15 @@
     <div class="eg" data-ic="🃏"><span data-illus="c26_gamma"></span><div class="egt"><b>万智牌的 Gamma 版</b>：单看一张“永久抢走对手生物”的牌很酷，放进整副牌的相互作用里才暴露问题。</div></div>
     <div class="eg" data-ic="🚦"><span data-illus="c26_oneway"></span><div class="egt"><b>城市里加一条单行道</b>：局部看很合理，却可能让隔壁街道堵死。系统里的改动会沿着连接传播。</div></div>
     <div class="eg bad" data-ic="📚"><span data-illus="c26_doc"></span><div class="egt"><b>“50 页设计文档滴水不漏，所以不用试玩”</b>：文档只能描述规则，描述不了规则互相碰撞后玩家会做出的事。</div></div>
-    <p class="src">原理出处：Salen &amp; Zimmerman，《Rules of Play》（MIT Press，2003）。20 条规则的两两组合数为 20×19÷2=190。</p></div>
+    <p class="src">原理出处：Salen 与 Zimmerman · 2003 · 《Rules of Play》（MIT Press） · 提出“二阶设计问题”。20 条规则的两两组合数为 20×19÷2=190。</p></div>
+  <aside class="cc-card" aria-label="概念卡：二阶设计问题">
+    <span class="cc-tag">概念卡</span>
+    <p class="cc-name"><span>二阶设计问题</span></p>
+    <p class="cc-en">Second-order design problem</p>
+    <p class="cc-by">凯蒂·萨伦（Katie Salen）、埃里克·齐默尔曼（Eric Zimmerman） · 2003 年《Rules of Play》</p>
+    <p class="cc-def">设计者设计的是规则，体验却是玩家玩出来的。设计的对象和最终效果之间隔了一层，所以不能直接设计体验。</p>
+    <p class="cc-eg"><span class="cc-k">例子</span>写好的规则里没人想到“一直往墙角跑就能永远赢”，朋友试玩十分钟就发现了。</p>
+  </aside>
 
   <!-- 5 为什么：局部最优 -->
   <div class="sec"><span class="n">5</span><h2><span class="tag why">为什么成立</span>小步改进，为什么会卡在“还行”</h2></div>
@@ -177,14 +198,22 @@
     <div>
       <p>知道要迭代之后，下一个问题是：每一轮往哪个方向改？最自然的办法是小步改进。这版调高一点，不好就退回来，好就留下。每一版都比上一版强一点，听上去万无一失。</p>
       <p>可是想想雾里的登山人：他每一步都往更高处走，走到一个点，四周全是下坡，于是停下，以为到顶了。其实隔着一道山谷，还有一座高得多的山，他从来没看见。</p>
-      <p>这种“比邻居都好，但不是最好”的点，叫<span class="term" tabindex="0" data-def="在附近看起来最好、但并不是全局最好的点：向任何一个相邻方向走都更差，于是停在这里。">局部最优</span>。</p>
+      <p>这种“比邻居都好，但不是最好”的点，在优化里属于<span class="term" tabindex="0" data-def="在附近看起来最好、但并不是全局最好的点：向任何一个相邻方向走都更差，于是停在这里。">局部最优</span>。</p>
     </div>
   </div>
   <div class="why-box"><h3>探索与利用：多数时间打磨，偶尔大胆跳一次</h3>
-    <p>在决策论里，这个困境叫<span class="term" tabindex="0" data-def="决策里的取舍：是继续用已知还不错的做法（利用），还是花代价去试未知的做法（探索）。">探索—利用</span>：身边有台还不错的老虎机，是继续拉它，还是花几次去试别的？经典的“多臂老虎机”问题问的就是这个。全靠利用，就卡在局部最优。全靠探索，又把时间烧在永远没磨好的东西上。组织学者 James March 在 1991 年的论文里指出：只顾打磨已知做法的组织，短期效果好，长期会被拖垮。</p>
+    <p>在决策论里，这个困境是<span class="term" tabindex="0" data-def="探索与利用（exploration and exploitation）：是继续用已知还不错的做法（利用），还是花代价去试未知的做法（探索）。">探索与利用</span>：身边有台还不错的老虎机，是继续拉它，还是花几次去试别的？经典的“多臂老虎机”问题问的就是这个。全靠利用，就卡在局部最优。全靠探索，又把时间烧在永远没磨好的东西上。组织学者 James March 在 1991 年的论文里指出：只顾打磨已知做法的组织，短期效果好，长期会被拖垮。</p>
     <p>优化算法里有个相通的办法：1983 年，Kirkpatrick、Gelatt 和 Vecchi 提出“模拟退火”，一开始允许偶尔往更差的方向走，随着时间推移越来越保守。给设计的启发是：<b>前期多敢跳，后期多打磨</b>。比例没有标准答案，要看时间和风险。</p>
-    <div class="src">出处：James G. March，“Exploration and Exploitation in Organizational Learning”，Organization Science 2(1)：71–87（1991）；S. Kirkpatrick、C. D. Gelatt、M. P. Vecchi，“Optimization by Simulated Annealing”，Science 220(4598)：671–680（1983）。这里的游戏类比是教学演绎，不是这两篇论文的原话。</div>
+    <div class="src">出处：<br>James G. March · 1991 · 提出组织学习中的探索与利用（“Exploration and Exploitation in Organizational Learning”，Organization Science 2(1)：71–87）。<br>S. Kirkpatrick、C. D. Gelatt、M. P. Vecchi · 1983 · 提出模拟退火（“Optimization by Simulated Annealing”，Science 220(4598)：671–680）。<br>这里的游戏类比是教学演绎，不是这两篇论文的原话。</div>
   </div>
+  <aside class="cc-card" aria-label="概念卡：探索与利用">
+    <span class="cc-tag">概念卡</span>
+    <p class="cc-name"><span>探索与利用</span></p>
+    <p class="cc-en">Exploration and exploitation</p>
+    <p class="cc-by">詹姆斯·马奇（James G. March） · 1991 年论文《Exploration and Exploitation in Organizational Learning》</p>
+    <p class="cc-def">继续用已知还不错的做法（利用），还是花代价去试没试过的做法（探索）。全靠利用会卡在局部最优，全靠探索又永远磨不好。</p>
+    <p class="cc-eg"><span class="cc-k">例子</span>设计师连调十版塔的伤害数值，每版都好一点点，真正的问题却是地图只有一条路，得换地图结构。</p>
+  </aside>
   <div class="eg" data-ic="🏰"><span data-illus="c26_tower"></span><div class="egt"><b>塔防游戏（假想）</b>：设计师连调十版塔的伤害数值，每版都好一点点。真正的问题是“地图只有一条路”，调数值永远解决不了，得换地图结构。</div></div>
   <div class="eg" data-ic="🍜"><span data-illus="c26_diner"></span><div class="egt"><b>挑餐厅</b>：只在家附近的几家里挑，永远选“最不差的那家”。偶尔去一家没去过的店，才可能发现更好的。</div></div>
   <div class="eg" data-ic="📄"><span data-illus="c26_resume"></span><div class="egt"><b>改简历</b>：改了十版措辞，每版都顺了一点，可是投的方向本身就不对。小步改进碰不到“方向”这种问题。</div></div>
@@ -194,7 +223,7 @@
   <div class="sec"><span class="n">6</span><h2><span class="tag why">为什么成立</span>反馈越快，学得越快</h2></div>
   <p>最后一个理由最朴素：同样 12 周，一轮 2 周只能经历 6 次“猜测被现实检验”，一轮 2 天则有 42 次。检验的次数就是学习的次数。</p>
   <div class="why-box"><h3>快速反馈</h3>
-    <p>一般认为，及时的反馈有助于学习与修正。但要老实说一句：记忆研究里，延迟反馈有时更利于长期保持（Schmidt &amp; Bjork 提出的“合意困难”）。那讲的是学习者的记忆，这里讲的是设计师获取信息的速度，两者情境不同。快不等于草率：试玩的人不对，快只是更早地得到错误结论。</p>
+    <p>一般认为，及时的反馈有助于学习与修正。记忆研究里，延迟反馈有时更利于长期保持（Schmidt &amp; Bjork 提出的“合意困难”）。那讲的是学习者的记忆，这里讲的是设计师获取信息的速度，两者情境不同。快不等于草率：试玩的人不对，快只是更早地得到错误结论。</p>
     <div class="src">原理出处：迭代式开发与快速原型的行业共识；Schmidt &amp; Bjork（1992），Psychological Science 3(4)，关于训练中的反馈与保持。</div>
   </div>
   <div class="eg" data-ic="🎚️"><span data-illus="c26_slider"></span><div class="egt"><b>网页小游戏调难度</b>：拖滑块就能立刻看到难度变化，一分钟能试十组参数。如果每次都要重新打包发布，一天可能只试一组。</div></div>
@@ -241,10 +270,12 @@
         <polyline id="c26ref" stroke="#6b6b80" stroke-width="3" stroke-dasharray="6 6"/>
         <polyline id="c26cur" stroke="#e5484d" stroke-width="5"/>
       </g>
+      <path d="M40 46 H572" stroke="#1f7a3a" stroke-width="2.5" stroke-dasharray="3 6" fill="none"/>
+      <text x="568" y="40" font-size="16" fill="#1f7a3a" text-anchor="end">90% 线</text>
       <g font-size="16" fill="#2b2b3a"><text x="52" y="22">已学到的信息（示意）</text><text x="400" y="220">时间（共 12 周）→</text><text x="330" y="165" fill="#4a4a60">灰虚线：每轮 14 天</text><text x="330" y="181" fill="#b3262e">红线：你选的速度</text></g>
     </svg>
     <div class="msg" id="c26smsg"></div>
-    <p class="small">速度不是全部：如果试玩的人不对、记录不认真，快也只是快速地得到错误结论。</p>
+    <p class="small">试玩的人找错了、记录又马虎，再快也只会更快地得到错误结论。</p>
   </div>
   <div class="sticky no-print">试试看：把一轮压到多少天，才能在 12 周里学到 90% 以上？再想想，真实的项目能做到吗？</div>
 
@@ -259,7 +290,7 @@
     <ul>
       <li><b>“迭代就是不断加东西”</b>：很多时候迭代是在删、简化、合并。</li>
       <li><b>“原型做得越像成品越好”</b>：越像成品越舍不得改，也容易把注意力放在美术而不是玩法。</li>
-      <li><b>“玩家说要什么就做什么”</b>：玩家擅长指出问题，解决方案往往要由设计师找。</li>
+      <li><b>“玩家说要什么就做什么”</b>：玩家擅长指出哪里不对，怎么改还得设计师自己找。</li>
       <li><b>“一直小步改进，总会到最好”</b>：可能只是爬上了最近的小山头。</li>
       <li><b>“瀑布模型是 Royce 推荐的做法”</b>：Royce 的论文没有用这个词，也在讨论这种做法的风险。</li>
       <li><b>“上面的爬山图、成本曲线和速度图是真实数据”</b>：它们都是示意，用来建立直觉。</li>
@@ -270,7 +301,7 @@
     <h3>反思与争议</h3>
     <p>回想最近一次“改了又改”的作品（游戏、文章、PPT 都行）：<b>当时是在小步打磨，还是大胆换过方向？现在回头看，可能卡在了哪个“小山头”？</b></p>
     <textarea rows="3" data-save="ch23reflect" placeholder="例：我一直在调关卡难度，其实问题可能是核心循环本身不好玩……"></textarea>
-    <p>迭代并不是万能的。敏捷与迭代常被奉为标准答案，但对于需求非常明确、改动代价极高的工程（例如不能反复试射的火箭），先做足设计也有道理。迭代在“不确定性大、试错便宜”时最有力。</p>
+    <p>敏捷与迭代常被奉为标准答案，但对于需求非常明确、改动代价极高的工程（例如不能反复试射的火箭），先做足设计也有道理。迭代在“不确定性大、试错便宜”时最有力。</p>
   </div>
 
   <div class="key">
@@ -284,7 +315,7 @@
   </div>
   <div class="tldr">没人能在纸上预知好不好玩：系统太复杂，容易卡在局部最优，反馈快才学得快。所以先做糙的，尽快试，勤改，偶尔跳一次。</div>
 
-  <div class="sec"><span class="n">10</span><h2><span class="tag think">练习</span>练习</h2></div>
+  <div class="sec"><span class="n">10</span><h2><span class="tag think">练习</span>小测验</h2></div>
   <div id="quiz"></div>
 
   <div class="sec"><span class="n">11</span><h2><span class="tag how">你的设计</span>生成你的“一页纸设计”</h2></div>
@@ -296,7 +327,7 @@
     <div class="field"><label>🔄 核心循环（第2章）</label><input type="text" id="f_loop" data-save="ch10loop" placeholder="动词链：移动 → 躲避 → 吃奶酪 → 变快……"></div>
     <div class="field"><label>👥 目标玩家与动机（第3章）</label><input type="text" id="f_who" data-save="ch10who" placeholder="例：喜欢和朋友一起玩的社交者，满足“关联”"></div>
     <div class="field"><label>⚖️ 一个有意义的选择（第8章）</label><input type="text" id="f_choice" data-save="ch10choice" placeholder="例：冒险去拿高分奶酪，还是安全慢慢来？"></div>
-    <div class="field"><label>📈 进度与成长：玩家凭什么想玩第二局？（第16章）</label><input type="text" id="f_prog" data-save="ch26prog" placeholder="例：每局解锁一张新卡；最高分榜"></div>
+    <div class="field"><label>📈 进度与成长：玩家为什么想玩第二局？（第16章）</label><input type="text" id="f_prog" data-save="ch26prog" placeholder="例：每局解锁一张新卡；最高分榜"></div>
     <div class="field"><label>♿ 可访问性：谁可能玩不了？怎么降低门槛？（第13章）</label><input type="text" id="f_acc" data-save="ch26access" placeholder="例：不只靠颜色区分；难度可调；按键可换"></div>
     <div class="field"><label>📄 最小原型：今天能做出来的版本</label><textarea rows="2" id="f_proto" data-save="ch10proto" placeholder="例：一张 5×5 纸地图 + 两个棋子 + 一颗骰子"></textarea></div>
     <div class="field"><label>❓ 试玩时我想验证的问题</label><textarea rows="2" id="f_test" data-save="ch10test" placeholder="例：玩家会不会愿意冒险？一局时间是否合适？"></textarea></div>
@@ -337,7 +368,8 @@ const $ = id => document.getElementById(id);
   function newT() { T = 8 + Math.floor(Math.random() * 85); round = 0; done = false; guesses = []; }
   function dots() {
     track.querySelectorAll(".c26dot").forEach(function (d) { d.remove(); });
-    guesses.forEach(function (g, i) { var d = document.createElement("i"); d.className = "c26dot " + (i === guesses.length - 1 ? "g" : "h"); d.style.left = g + "%"; track.appendChild(d); });
+    guesses.forEach(function (g, i) { var d = document.createElement("i"); d.className = "c26dot " + (done && i === guesses.length - 1 ? "g" : "h"); d.style.left = g + "%"; track.appendChild(d); });
+    if (!done) { var cur = document.createElement("i"); cur.className = "c26dot g"; cur.style.left = $("c26gs").value + "%"; track.appendChild(cur); }
     if (done) { var t = document.createElement("i"); t.className = "c26dot t"; t.style.left = T + "%"; track.appendChild(t); }
   }
   function words(d) { var a = Math.abs(d); return a > 25 ? "差得很远" : a > 10 ? "有点偏" : a > 3 ? "差一点" : "很接近"; }
@@ -356,7 +388,7 @@ const $ = id => document.getElementById(id);
     $("c26gmsg").textContent = m === "A" ? "只有 1 次机会：凭感觉猜，然后交付。" : "共 4 轮：每轮交付后，玩家会说偏哪边、偏多少。";
     $("c26go_btn").disabled = false; $("c26go_btn").textContent = "📮 交付给玩家试玩";
   }
-  $("c26gs").oninput = function () { $("c26go").textContent = this.value; };
+  $("c26gs").oninput = function () { $("c26go").textContent = this.value; dots(); };
   $("c26mA").onclick = function () { setMode("A"); };
   $("c26mB").onclick = function () { setMode("B"); };
   $("c26go_btn").onclick = function () {
@@ -502,7 +534,7 @@ const $ = id => document.getElementById(id);
     ["p", "第四篇 · 立场（第21–22章）", [
       [21, "ch21-ethics-monetization", "伦理与商业化", "变现方式会塑造玩家行为，需要权衡对玩家的影响。", "设计决定会带来真实后果，立场是设计的一部分。"],
       [22, "ch22-games-and-reality", "游戏与现实", "游戏的力量可以迁移到学习与生活，也有局限与风险。", "弄清游戏能做什么、不能做什么，才不夸大也不妖魔化。"]]],
-    ["o", "第五篇 · 案例与实战（第23–26章已读）", [
+    ["o", "第五篇 · 案例与实战（第23–26章）", [
       [23, "ch23-case-tetris", "案例：俄罗斯方块", "极简规则 + 一个速度旋钮，挑战追着玩家跑。", "看一个“极简”如何命中心流、惊喜与低认知负荷。"],
       [24, "ch24-case-mario", "案例：马力欧 1-1", "用关卡本身教学，用宽容手感与视觉引导让人敢试。", "看“无文字教学”的原理，而不是照搬形式。"],
       [25, "ch25-case-zelda-botw", "案例：旷野之息", "一致的规则催生涌现，视线与好奇引导探索。", "看系统化设计如何换来玩家自己的故事。"],

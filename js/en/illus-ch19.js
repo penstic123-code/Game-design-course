@@ -106,7 +106,7 @@ ILLUS_EN_ADD({
 "c19_endgame": {
 "a": "The calendar for the last day of a season: one stick figure idles with eyes closed, while another runs off holding a pile of loot to grab points",
 "t": [
-"{s=.7}Season",
+"{s=.7,y=-2}Season",
 "Last",
 "Day",
 "AFK zzz",

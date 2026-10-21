@@ -68,8 +68,8 @@ ILLUS_EN_ADD({
 "a": "In the same blocky world, one person builds a house, one explores a cave with a torch, and one high-fives a friend, so it can’t be given just one label",
 "t": [
 "Expression",
-"Fellowship",
 "Discovery",
+"Fellowship",
 "One game, three ways to play"
 ]
 },

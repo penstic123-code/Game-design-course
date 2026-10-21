@@ -30,9 +30,9 @@ ILLUS_EN_ADD({
 "c20_gplat": {
 "a": "A platformer’s level is the tutorial: learn the move in a safe place first, then add spikes, and finally combine them",
 "t": [
-"① Safe",
-"② Danger",
-"③ Mix"
+"{s=.8,y=-4}① Safe",
+"{s=.8,y=-4}② Danger",
+"{s=.8,y=-4}③ Mix"
 ]
 },
 "c20_grogue": {
@@ -141,11 +141,11 @@ ILLUS_EN_ADD({
 ]
 },
 "c20_planeback": {
-"a": "Comparison: on the left three returning planes covered in bullet holes, on the right two dashed outlines of planes that never came back",
+"a": "Comparison: on the left three returning planes covered in bullet holes, on the right two dashed outlines of planes that never came back, with the bullet holes clustered at the engines",
 "t": [
 "Made it back",
 "Didn’t return",
-"Holes are here"
+"Holes at the engine"
 ]
 },
 "c20_hits": {

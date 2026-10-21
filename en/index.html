@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The Hand-Drawn Game Design Notebook</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+  .tools{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0}
+  .tools a{text-decoration:none}
+  .paths{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin:10px 0}
+  .path-card{border:3px solid var(--ink);border-radius:14px 26px 14px 24px;padding:10px 14px;background:#fff;cursor:pointer;text-align:left;font:inherit;box-shadow:4px 5px 0 var(--ink);transition:transform .12s}
+  .path-card:hover{transform:translateY(-3px) rotate(-.5deg)}
+  .path-card.on{background:var(--yellow);transform:rotate(-.6deg)}
+  .path-card h4{margin:0;font-family:var(--hand);font-weight:400;font-size:1.3rem}
+  .path-card p{margin:2px 0 0;font-size:.88rem;color:var(--soft);line-height:1.5}
+  .intro-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px 22px}
+  .intro h3{margin:0 0 4px}
+  .intro p,.intro li{line-height:1.6}
+  .intro ul{margin:0;padding-left:1.2em}
+  .intro-meta{margin:12px 0 4px;padding-top:10px;border-top:2px dashed var(--ink)}
+  .chcard.dim{opacity:.28}
+  .board-svg a:hover rect{filter:brightness(.94)}
+  .board-svg a.dim{opacity:.25}
+  .prog{height:14px;border:2.5px solid var(--ink);border-radius:10px;background:#fff;overflow:hidden;margin:6px 0}
+  .prog i{display:block;height:100%;background:linear-gradient(90deg,var(--green),var(--yellow));width:0;transition:width .5s}
+</style>
+</head>
+<body data-ch="0">
+<main class="wrap">
+  <div class="hero">
+    <div class="txt">
+      <span class="badge" id="badge">Interactive course</span>
+      <h1 style="font-size:2.6rem">The Hand-Drawn Game Design Notebook</h1>
+      <p class="sub">29 interactive web chapters that teach game design from scratch. No programming needed.</p>
+    </div>
+    <svg viewBox="0 0 190 150" class="rough" aria-hidden="true">
+      <rect x="20" y="40" width="150" height="85" rx="22" fill="#a8dcf0" stroke="#2b2b3a" stroke-width="4"/>
+      <rect x="40" y="58" width="70" height="48" rx="8" fill="#fff" stroke="#2b2b3a" stroke-width="3.5"/>
+      <path d="M62 70v24M50 82h24" stroke="#2b2b3a" stroke-width="6" stroke-linecap="round"/>
+      <circle cx="136" cy="72" r="10" fill="#ff8fab" stroke="#2b2b3a" stroke-width="3.5"/>
+      <circle cx="150" cy="96" r="10" fill="#ffe58a" stroke="#2b2b3a" stroke-width="3.5"/>
+      <path d="M30 40 C20 10 60 6 70 30M160 40 C176 12 130 4 124 30" fill="none" stroke="#2b2b3a" stroke-width="3.5"/>
+      <text x="48" y="22" font-size="26">★</text>
+    </svg>
+  </div>
+
+  <div class="card intro">
+    <div class="intro-grid">
+      <section>
+        <h3>🎮 What it covers</h3>
+        <p>Why games are fun, and how to turn a fun idea into a real game. From the core loop and player motivation through balance and ethics, ending with a prototype of your own.</p>
+      </section>
+      <section>
+        <h3>👥 Who it is for</h3>
+        <ul>
+          <li>Beginners who want to make games</li>
+          <li>Students of design, product or programming who want to understand games</li>
+          <li>Players of many games who want to know “why is it fun?”</li>
+        </ul>
+        <p class="small">No background needed.</p>
+      </section>
+      <section>
+        <h3>✅ What you will be able to do</h3>
+        <ul>
+          <li>Take apart a game’s core loop</li>
+          <li>Design and playtest a paper prototype</li>
+          <li>See why a game keeps people hooked</li>
+        </ul>
+      </section>
+    </div>
+    <p class="intro-meta"><b>Time:</b> 29 chapters of about 30 minutes each, roughly 15 hours in all. <b>Tips:</b> click a section title to fold it; the ☰ at the bottom right is the chapter outline; progress and notes are saved in your browser.</p>
+    <div class="prog"><i id="progbar"></i></div>
+    <div class="small" id="progtxt"></div>
+  </div>
+
+  <div class="tools">
+    <a href="map.html"><span class="btn alt">🕸️ Concept map</span></a>
+    <a href="glossary.html"><span class="btn pink">📖 Glossary</span></a>
+    <a href="flashcards.html"><span class="btn green">🃏 Review flashcards</span></a>
+  </div>
+
+  <h2>🧭 Pick a learning path</h2>
+  <p class="small">You don’t have to read from start to finish. Click a path and only the chapters it needs stay highlighted below. Click again to clear it.</p>
+  <div class="paths" id="paths"></div>
+
+  <div class="card">
+    <h3>🗺️ The learning map: walk all 29 chapters like a board game</h3>
+    <p class="small">Start at square 1 and follow the winding route; click any square to jump there. Colors show the part each chapter belongs to.</p>
+    <svg id="board" class="board-svg" viewBox="0 0 700 560" width="100%" role="img" aria-label="Board-game route map of the 29 chapters"></svg>
+  </div>
+
+  <div id="parts"></div>
+
+  <div class="sticky">Every chapter has: learning goals, diagrams, examples, an invention story, sources for the principles, interactive experiments, common misconceptions, reflections and controversies, and a one-line summary. What you finish with is a complete toolkit running from concepts and principles to a finished piece of work.</div>
+  <footer class="credit">Hand-drawn style · plain HTML, playable offline (fonts look nicer when online)</footer>
+</main>
+<script src="../js/common.js"></script>
+<script>
+const info = [
+  ["The four elements, the function of play, and why games resist definition.", ""], ["Action → feedback → reward → growth: the engine behind “one more run.”", ""], ["Autonomy, competence, relatedness; the overjustification effect and player types.", ""],
+  ["Mechanics, dynamics, aesthetics: designer and player look in opposite directions.", ""], ["How simple rules give rise to complex behavior; feedback loops and leverage points.", ""],
+  ["Flow as challenge matching skill; the zone of proximal development; the peak-end rule.", ""], ["Delay, easing, sound, shake: the same rules, a different feel.", ""], ["Information, trade-offs, consequences; prospect theory and opportunity cost.", ""],
+  ["Branching structure, three acts, environmental storytelling, suspense.", ""], ["HUD placement, cognitive load, Gestalt and the default effect.", ""], ["Teaching without a tutorial: introduce → practice → vary.", ""],
+  ["How sound and visuals carry information and emotion.", ""], ["Not relying on a single sense: letting more people play.", ""],
+  ["Probability intuition, pity timers and shuffle bags, the central limit theorem.", ""], ["Counter-balance, faucets and sinks, hedonic adaptation, power laws.", ""], ["Experience curves, skill trees, meta-progression and the pace of growth.", ""], ["Once a metric becomes a target, it stops being a good metric.", ""],
+  ["Cooperation and competition, Elo, reciprocity and reputation, comparative advantage.", ""], ["The prisoner’s dilemma, Nash equilibrium, how cooperation evolves; mechanism design.", ""], ["Platformers, roguelikes, card games, strategy, puzzles: the playbook of each genre.", ""],
+  ["Business models, retention, dark patterns and the ethical bottom line.", ""], ["The limits of gamification, the magic circle, finite and infinite games.", ""],
+  ["Take apart Tetris with the tools learned so far, and play a round.", ""], ["Take apart the wordless teaching of Mario 1-1, and play a mini level.", ""], ["System-driven emergent play and sightline guidance in an open world.", ""],
+  ["The iteration loop, local optima, a course-wide review and a one-page design.", ""], ["How to watch players, avoid bias, and how many testers are enough.", ""], ["Build a playable tabletop prototype from paper, dice and cards.", ""], ["Tune parameters and see the effect: run and modify a small web game yourself.", ""],
+];
+const short = ["What is a game","Core loop","Motivation","Rules & MDA","Emergence","Flow","Game feel","Choices","Narrative","UI & onboarding","Level teaching","Audio-visual","Accessibility","Randomness","Balance","Progression","Goodhart","Multiplayer","Game theory","Genres","Ethics","Games & reality","Tetris","Mario 1-1","Breath of the Wild","Prototyping","Playtesting","Paper prototype","Web game"];
+const PATHS = [
+  ["⚡ One-week start", "You just want to get going: from concepts to your first prototype.", [1,2,3,4,6,7,8,11,26,29]],
+  ["🎓 The full route", "All 29 chapters in the order of the parts.", Array.from({length:29},(_,i)=>i+1)],
+  ["🔬 Underlying principles", "You most want to know “why”: psychology, systems, games, metrics.", [2,3,5,6,8,14,15,17,19,21,22]],
+  ["🛠️ Hands-on game making", "More practical: systems, levels, prototypes, playtests, web games.", [4,5,11,14,15,16,18,20,26,27,28,29]],
+  ["🎨 Experience & expression", "About feelings: feel, narrative, interface, audio-visual, accessibility.", [6,7,9,10,12,13,23,24,25]],
+];
+const prog = GD.Progress.get(), CH = GD.CH, P = GD.PARTS;
+const done = Object.keys(prog).filter(k => prog[k]).length;
+document.getElementById("badge").textContent = "Interactive course · " + CH.length + " chapters";
+document.getElementById("progbar").style.width = (done / CH.length * 100) + "%";
+document.getElementById("progtxt").textContent = "Cleared " + done + " / " + CH.length + " chapters";
+
+const PDESC = ["What a game is, why we play, and how rules turn into experience.", "Difficulty, feel, choice, story, interface, levels, audio-visual and accessibility: how a player’s experience is built.", "Probability, economy, growth, metrics, multiplayer, game theory and genres.", "The ethics of monetization, and the border between games and reality.", "Take apart classic games, then build a piece of your own."];
+document.getElementById("parts").innerHTML = P.map((p, pi) =>
+  `<div class="part-title">${p.en}</div><p class="part-desc">${PDESC[pi]}</p><div class="path">` +
+  CH.slice(p.from - 1, p.to).map((c, k) => { const i = p.from + k;
+    return `<a class="chcard ${prog[i] ? "done" : ""}" data-n="${i}" href="${c[1]}" style="--c:${p.accent}"><span class="no">${i}</span><h3>${c[2]}</h3><p>${info[i - 1][0]}</p></a>`; }).join("") + "</div>").join("");
+
+const W = 112, H = 60, G = 20, pos = [];
+for (let i = 0; i < CH.length; i++) { const r = Math.floor(i / 5), c = i % 5, col = r % 2 === 0 ? c : 4 - c; pos.push([15 + col * (W + G), 12 + r * (H + 30)]); }
+let lines = "", boxes = "";
+for (let i = 0; i < CH.length - 1; i++) {
+  const [x1, y1] = pos[i], [x2, y2] = pos[i + 1];
+  lines += y1 === y2 ? `M${x2 > x1 ? x1 + W : x1} ${y1 + H / 2} L${x2 > x1 ? x2 : x2 + W} ${y2 + H / 2} ` : `M${x1 + W / 2} ${y1 + H} L${x1 + W / 2} ${y2} `;
+}
+pos.forEach(([x, y], i) => {
+  const p = P[GD.partOf(i + 1)];
+  boxes += `<a href="${CH[i][1]}" data-n="${i + 1}" style="cursor:pointer"><rect class="rough" x="${x}" y="${y}" width="${W}" height="${H}" rx="14" fill="${prog[i + 1] ? "#b6e8a8" : p.accent}" stroke="#2b2b3a" stroke-width="3.5"/><text x="${x + 12}" y="${y + 22}" font-size="19" fill="#555">${i + 1}${prog[i + 1] ? " ✔" : ""}</text><text x="${x + W / 2}" y="${y + 47}" text-anchor="middle" font-size="15" fill="#2b2b3a">${short[i]}</text></a>`;
+});
+const rows = Math.ceil(CH.length / 5), Hs = 12 + rows * (H + 30);
+const legend = P.map((p, k) => `<rect x="${15 + k * 135}" y="${Hs}" width="16" height="16" rx="4" fill="${p.accent}" stroke="#2b2b3a" stroke-width="2"/><text x="${38 + k * 135}" y="${Hs + 14}" font-size="13" fill="#2b2b3a">${p.en.replace(/^[IV]+\.\s*/, "")}</text>`).join("");
+const bs = document.getElementById("board"); bs.setAttribute("viewBox", `0 0 700 ${Hs + 28}`);
+bs.innerHTML = `<path class="rough" d="${lines}" fill="none" stroke="#2b2b3a" stroke-width="4" stroke-linecap="round" stroke-dasharray="2 9"/>${boxes}${legend}`;
+
+let curPath = -1;
+document.getElementById("paths").innerHTML = PATHS.map((p, i) => `<button class="path-card" data-i="${i}"><h4>${p[0]}</h4><p>${p[1]}<br><b>${p[2].length} chapters</b></p></button>`).join("");
+document.querySelectorAll(".path-card").forEach(b => b.onclick = () => {
+  const i = +b.dataset.i; curPath = curPath === i ? -1 : i;
+  document.querySelectorAll(".path-card").forEach(x => x.classList.toggle("on", +x.dataset.i === curPath));
+  const set = curPath < 0 ? null : new Set(PATHS[curPath][2]);
+  document.querySelectorAll(".chcard, .board-svg a").forEach(el => el.classList.toggle("dim", !!set && !set.has(+el.dataset.n)));
+  if (set) document.querySelector(".chcard:not(.dim)").scrollIntoView({ behavior: "smooth", block: "center" });
+});
+</script>
+</body>
+</html>

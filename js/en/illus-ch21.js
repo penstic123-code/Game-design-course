@@ -14,23 +14,26 @@ ILLUS_EN_ADD({
 ]
 },
 "c21_f2p": {
-"a": "Free plus in-app purchases: many players pour free into a funnel, and only a very few drop coins in at the bottom",
+"a": "Free plus in-app purchases: many players pour free into a funnel, and only a very few (the gold dots) drop coins in at the bottom",
 "t": [
 "Everyone enters free",
-"A few pay, everyone is looked after"
+"A few pay, everyone is looked after",
+"Gold dot = paying"
 ]
 },
 "c21_ads": {
-"a": "Watching ads voluntarily: a stick figure points at a fifteen-second ad on a phone, and after watching, a gem drops out as a reward",
+"a": "Watching ads voluntarily: a stick figure points at a fifteen-second ad on a phone, and after watching, a heart pops out of the phone reading “Revive”",
 "t": [
 "Ad 15s",
+"Revive!",
 "Watch an ad by choice, get a revive"
 ]
 },
 "c21_p2w": {
 "a": "Pay to get strong: the rich stick figure is big and burly waving a giant sword, and the non-paying little stick figure with a small sword is suppressed into a sparring partner",
 "t": [
-"Payment decides who wins"
+"Payment decides who wins",
+"+9999 paid stat"
 ]
 },
 "c21_onboard": {
@@ -152,8 +155,8 @@ ILLUS_EN_ADD({
 "c21_lossframe": {
 "a": "On the left a stick figure finds a hundred yuan and smiles for a moment; on the right a stick figure loses a hundred yuan and a rain cloud gathers overhead",
 "t": [
-"Found 100 yuan",
-"Lost 100 yuan"
+"{s=.85}Found 100 yuan",
+"{s=.85}Lost 100 yuan"
 ]
 }
 });

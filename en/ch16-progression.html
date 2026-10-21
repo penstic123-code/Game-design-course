@@ -54,8 +54,9 @@
 
   
   <div class="sec"><span class="n">1</span><h2><span class="tag what">What it is</span>Progression: five ways a player “gets stronger”</h2></div>
-  <p>Why do you stay an hour longer in a game? Often it is not because “this round was especially fun” but because of <b>“one more monster and I level up.”</b> That pull is <span class="term" tabindex="0" data-def="The visible, lasting changes a player accumulates over time in a game: numbers, abilities, items, knowledge, unlocked content and so on.">progression</span>. Remember the core loop? Do something, get something, do something better. A progression system keeps the “get something” from evaporating with every lap of the loop, and stacks it up layer by layer instead.</p>
-  <p>But “getting stronger” is really five different things, and mixing them up leads to muddled design.</p>
+  <p>When a player stays another hour in a game, it is often because of <b>“one more monster and I level up,”</b> and not because “this round is especially fun.” That pull is <span class="term" tabindex="0" data-def="Progression: the changes a player builds up over time in a game that can be seen and kept: stats, abilities, items, knowledge, unlocked content and so on.">progression</span>.</p>
+  <p>Chapter 2 covered the core loop: do something, get something, do better things. A progression system keeps the “get” from evaporating with every lap of the loop, and lets it pile up layer by layer.</p>
+  <p>“Getting stronger” covers five different things, and mixing them together muddies the design.</p>
   <div class="card">
     <svg class="c16-svg" id="c16_types" viewBox="0 0 700 340" role="img" aria-label="Diagram of progression types: progression in the center, surrounded by stat growth, ability growth, gear and collection, player skill growth and meta-progression, with prestige resetting back to the start.">
       <g class="rough" stroke="#2b2b3a" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -82,18 +83,26 @@
   </div>
   <div class="grid2">
     <div class="card b"><h3>Stat growth (the character gets stronger)</h3><p>When <span class="term" tabindex="0" data-def="Experience points (XP): points a player accumulates by doing things; once enough are collected, the character levels up. They compress “did a lot of things” into one number.">experience points</span> fill up, the <span class="term" tabindex="0" data-def="Level: a discrete step bought with experience points; each level usually brings stats and unlocks.">level</span> goes up by one and health and attack rise. It is the easiest to make, and the easiest to turn a game into “numbers chasing numbers.”</p></div>
-    <div class="card g"><h3>Ability growth (the character learns new things)</h3><p>Unlocking a double jump, a grappling hook, a new skill. It changes <b>what you can do</b>, not just how well you do it. “You can only get across once you have the hook” uses an ability as a key.</p></div>
-    <div class="card p"><h3>Gear and collection</h3><p>Swapping weapons, collecting sets, completing a codex. Growth comes from “finding” rather than “accumulating,” so the surprise is stronger, but it depends on drops, and drops are random.</p></div>
-    <div class="card y"><h3>Player skill growth</h3><p>The character’s numbers haven’t changed at all, but <b>you</b> have learned to read the boss’s wind-up. Soulslikes, fighting games and speedrunning all rely on it. This kind of growth is not diluted by number inflation, but it is invisible, and design has to “light it up.”</p></div>
+    <div class="card g"><h3>Ability growth (the character learns new things)</h3><p>Unlock a double jump, a grappling hook, new skills. It changes <b>what the player can do</b>, and not only how well. When “you can only get past after you get the hook,” the ability becomes a key.</p></div>
+    <div class="card p"><h3>Gear and collection</h3><p>Swapping weapons, collecting sets, completing a codex. Growth comes from “finding,” not “accumulating,” so the surprise is stronger, but it depends on drops, and drops are random.</p></div>
+    <div class="card y"><h3>Player skill growth</h3><p>The character’s numbers haven’t changed at all, but <b>the player</b> has learned to read the boss’s wind-up. Soulslikes, fighting games and speedrunning all rely on it. This kind of growth is not diluted by number inflation, but it is invisible, and design has to “light it up.”</p></div>
   </div>
   <div class="grid2">
-    <div class="card v"><h3><span class="term" tabindex="0" data-def="Meta-progression: growth that is kept after a single run ends, such as unlocking new characters or permanent bonuses; it connects one run to the next.">Meta-progression</span> (growth outside a run)</h3><p>A run fails, but you take something away: a new character unlocked, a permanent bonus, more options. “Losing” is no longer pure loss.</p></div>
-    <div class="card o"><h3><span class="term" tabindex="0" data-def="Prestige/reset: voluntarily zeroing out progress in exchange for a permanent bonus, so the player can relive the fast growth of the early game.">Prestige / reset</span></h3><p>Zero out on purpose, take a permanent bonus, and climb again. A staple trick of idle games, covered in detail shortly.</p></div>
+    <div class="card v"><h3><span class="term" tabindex="0" data-def="Meta-progression: growth that is kept after a single run ends, such as unlocking new characters or permanent bonuses. It connects one run to the next.">Meta-progression</span> (growth outside a run)</h3><p>A run fails, but the player takes something away: a new character unlocked, a permanent bonus, more options. “Losing” is no longer pure loss.</p></div>
+    <div class="card o"><h3><span class="term" tabindex="0" data-def="Prestige/reset: voluntarily zeroing out progress in exchange for a permanent bonus, so the player can relive the fast growth of the early game.">Prestige / reset</span></h3><p>Zero out on purpose, take a permanent bonus, and climb again. A staple trick of idle games.</p></div>
   </div>
+  <aside class="cc-card" aria-label="Concept card: meta-progression">
+    <span class="cc-tag">Concept card</span>
+    <p class="cc-name"><span>Meta-Progression</span></p>
+    <p class="cc-en">Meta-progression</p>
+    <p class="cc-by">Industry vocabulary from roguelike and roguelite games, with no single originator</p>
+    <p class="cc-def">Growth that is kept after a run ends: unlocked characters, permanent bonuses, more options. Even a lost run takes something away.</p>
+    <p class="cc-eg"><span class="cc-k">Example</span>You lose this run but have saved up enough unlock points, so the next run can unlock a new character or new options.</p>
+  </aside>
   <div class="eg" data-ic="🗡️" data-t="Loot grinding"><span data-illus="c16_loot"></span><div class="egt"><b>Diablo-style loot grinding</b>: character level is only an entry ticket, and the real pursuit is the dropped gear. Growth comes mainly from “gear and collection,” plus a little stat growth.</div></div>
   <div class="eg" data-ic="🪝" data-t="Getting a new ability"><span data-illus="c16_ability"></span><div class="egt"><b>Hollow Knight and other metroidvanias</b>: health goes up only a little, but every new ability suddenly opens a place on the map you couldn’t get past before. Growth comes mainly from “ability growth,” and the numbers hardly matter.</div></div>
   <div class="eg" data-ic="🚲" data-t="Learning to ride a bike"><span data-illus="c16_bike"></span><div class="egt"><b>Learning to ride a bike</b> (daily life): your “gear” hasn’t changed and there are no “numbers,” but today you can ride 100 meters without falling. This is pure player-skill growth, and one of the oldest and most lasting sources of joy for humans.</div></div>
-  <div class="eg bad" data-ic="🔢" data-t="Numbers go up"><span data-illus="c16_numbers"></span><div class="egt"><b>Counterexample: leveling up is just “bigger numbers.”</b> Monster health grows in step with your level, so from level 1 to level 50 every monster takes 10 hits. Leveling up changed only the numbers on the screen, not how you play. It looks like progress and is not.</div></div>
+  <div class="eg bad" data-ic="🔢" data-t="Numbers go up"><span data-illus="c16_numbers"></span><div class="egt"><b>Counterexample: leveling up is just “bigger numbers.”</b> Monster health grows in step with the player’s level, so from level 1 to level 50 every monster takes 10 hits. Leveling up changed only the numbers on the screen, not how you play. It looks like progress and is not.</div></div>
 
   
   <div class="sec"><span class="n">2</span><h2><span class="tag what">What it is</span>The experience curve: how much to reach the next level?</h2></div>
@@ -102,11 +111,15 @@
     <svg class="c16-svg" id="c16_curves" viewBox="0 0 700 330" role="img" aria-label="Comparison of three experience curves: linear, polynomial and exponential, with level on the horizontal axis and experience needed for the next level on the vertical axis."></svg>
     <p class="c16-note">Illustrative: all three curves are generated from the same “growth rate” parameter (r=0.10), and the vertical axis is the experience needed for the next level. Linear is “a steady increase,” polynomial (here a square) speeds up as it goes, and exponential is “each level is a fixed multiple of the last”: slower than polynomial at first, then it overtakes and keeps shooting up.</p>
   </div>
-  <p>Linear is easy to grasp and keeps a steady rhythm, but late in the game it can feel “weightless.” Polynomial (square, cube) speeds up gradually, gentler than exponential, and is a common compromise; real games often hand-fix the table on top of it. Exponential races through the first few levels and then hits an ever-taller wall, and is mostly used in “endless growth” idle games, together with resets.</p>
-  <p>Beyond the curve are three more knobs. The first is the level cap: a <span class="term" tabindex="0" data-def="Hard cap: a value at which growth stops completely (for example max level 60).">hard cap</span> is clear-cut, while a <span class="term" tabindex="0" data-def="Soft cap: growth is not impossible, but it gets slower and more expensive (diminishing returns).">soft cap</span> means “you can still grow, but it is less and less worth it,” which keeps deep players busy without breaking balance. The second is that income grows too: monsters in high-level zones give more experience, the curve is the denominator and income is the numerator, and judging how fast leveling is has to look at both. The third is the <span class="term" tabindex="0" data-def="Power fantasy: the experience of imagining and feeling “I have become strong,” a core selling point of many games.">power fantasy</span>: you go back to the starting village and cut down in one stroke the monster that once beat you down, and that thrill requires old content not to have grown stronger along with you.</p>
+  <p>Linear is easy to grasp and steady in rhythm, but late in the game it feels “weightless.” Polynomial (square, cube) climbs faster and faster, more gently than exponential, and is a common compromise. Real games often hand-edit the table on top of it.</p>
+  <p>Exponential is very quick for the first few levels, then hits a wall that keeps getting higher. It is mostly used in idle games with “endless growth,” and needs resets alongside it.</p>
+  <p>Beyond the curve there are three more knobs.</p>
+  <p>The first is the level cap: a <span class="term" tabindex="0" data-def="Hard cap: once this value is reached, it can’t go up at all (such as max level 60).">hard cap</span> is plain and clear, while a <span class="term" tabindex="0" data-def="Soft cap: not that it can’t grow, but that it grows ever more slowly and costs ever more (diminishing returns).">soft cap</span> means “you can still grow, but it pays less and less.” That suits keeping deep players busy without breaking balance.</p>
+  <p>The second is that the rewards grow too: monsters in higher-level zones give more experience. The curve is the denominator and the reward is the numerator, so how fast leveling feels has to be judged with both together.</p>
+  <p>The third is the <span class="term" tabindex="0" data-def="Power fantasy: the experience of imagining and feeling “I have become powerful,” the core selling point of many games.">power fantasy</span>: go back to the starting village and cut down in one blow a monster that once made you scramble, and the thrill depends on the old content not having grown stronger along with the player.</p>
   <div class="eg" data-ic="🪜" data-t="Slower and slower"><span data-illus="c16_stairs"></span><div class="egt"><b>Many Japanese role-playing games</b>: in the early game each level takes just a few battles, and later a level takes a long grind; the curve clearly bends, and players get through on “the next level is right in front of me” (a general description of the experience, not any one game’s numbers).</div></div>
   <div class="eg" data-ic="🔥" data-t="Streak levels"><span data-illus="c16_streak"></span><div class="egt"><b>The “streak levels” of a language-learning app</b> (daily life): the first few levels arrive in days, and later ones take longer and longer; newcomers get quick wins and veterans get a long-term goal.</div></div>
-  <div class="eg bad" data-ic="⚖️" data-t="Level scaling"><span data-illus="c16_scaling"></span><div class="egt"><b>Counterexample: level scaling.</b> Every enemy grows stronger in step with you, which looks like “always a challenge” but cancels the power fantasy: you gain 20 levels and the small fry are still a headache. Many players dislike it for exactly this reason, that growth is cancelled out.</div></div>
+  <div class="eg bad" data-ic="⚖️" data-t="Level scaling"><span data-illus="c16_scaling"></span><div class="egt"><b>Counterexample: level scaling.</b> Every enemy grows stronger in step with the player, which looks like “always a challenge” but cancels the power fantasy: you gain 20 levels and the small fry are still a headache. Many players dislike it for exactly this reason, that growth is cancelled out.</div></div>
 
   
   <div class="sec"><span class="n">3</span><h2><span class="tag what">What it is</span>Making progress visible, and how “zeroing out” can also be progress</h2></div>
@@ -131,18 +144,18 @@
     </svg>
     <p class="c16-note">Illustrative: the shorter the feedback, the more “fine-grained”; the longer, the more “ceremonial.” A good progression system has something to see at every time scale, and if any layer is missing, players may “feel no progress” during that stretch.</p>
   </div>
-  <p>The magic of a progress bar is that “only 5% from leveling up” makes it very hard to put the phone down. It is tied to the goal gradient, in which people try harder the closer they get to a goal, and the “Why it works” part below gives the research. When a new feature unlocks, <b>tell the player</b>: in quite a few games players unlock a new skill and never notice it, and the progress is wasted. And when leveling up, don’t just hand over numbers; let the player feel the difference right away: a staging of the new move, an enemy knocked flying in one hit. Numbers are the ledger, and the feeling is the reward.</p>
-  <p>Progression has a natural enemy: <b>reaching the end</b>. When numbers grow far enough, they either hit a wall or become “hundreds of millions” everywhere, and the player feels nothing. Designers came up with two ways to turn “zeroing out” into a reward: prestige lets the player voluntarily clear everything in exchange for a permanent multiplier, and meta-progression lets even a failed run earn something. The key is that every round has to be faster than the last, or the reset is just a punishment.</p>
+  <p>The magic of a progress bar is that being “only 5% from leveling up” makes it hard to put the phone down, which is tied to the goal gradient: the closer to the goal, the harder one pushes. When a new feature unlocks, <b>tell the player</b>. In quite a few games players unlock a skill and never notice, and the progress is wasted. A level-up should also give more than a number: let the player feel the difference at once, with a flourish for the new move or an enemy knocked flying in one hit.</p>
+  <p>Progression has a natural enemy: <b>reaching the end</b>. The numbers grow huge, then either hit a wall or become “hundreds of millions” everywhere, and the player feels nothing. Designers came up with two ways to turn “resetting to zero” into a reward: prestige lets players reset voluntarily in exchange for a permanent multiplier, and meta-progression lets even a failed run buy something. The key is that every round must be faster than the last, or the reset is only a punishment.</p>
   <div class="eg" data-ic="🏔️" data-t="Idle-game ascension"><span data-illus="c16_prestige"></span><div class="egt"><b>The “ascension” of idle games</b>: numbers climb from single digits into scientific notation, and each ascension takes away a permanent bonus; restarting takes only a few minutes to catch up with what a whole day used to give, and the player experiences it as “faster and faster.”</div></div>
-  <div class="eg" data-ic="🗝️" data-t="Unlocks outside the run"><span data-illus="c16_meta"></span><div class="egt"><b>Meta-unlocks in roguelikes</b>: you lost this run, but you took a key away, and next run you can unlock a new character or new options. Losing is no longer pure loss but groundwork for the next run (a general description of this kind of design, not any one game’s numbers).</div></div>
+  <div class="eg" data-ic="🗝️" data-t="Unlocks outside the run"><span data-illus="c16_meta"></span><div class="egt"><b>Meta-unlocks in roguelikes</b>: the player lost this run, but took a key away, and next run can unlock a new character or new options. Losing is no longer pure loss but groundwork for the next run (a general description of this kind of design, not any one game’s numbers).</div></div>
   <div class="eg bad" data-ic="🐌" data-t="Slower after reset"><span data-illus="c16_slower"></span><div class="egt"><b>Counterexample: slower after a reset.</b> If the early game after a reset is even slower than the last round, or the permanent bonus is too small to notice, players feel “that was for nothing” and won’t reset again. The next round must be visibly faster.</div></div>
 
   
   <div class="sec"><span class="n">4</span><h2><span class="tag origin">How it was invented</span>How were experience points and levels “invented”?</h2></div>
   <div class="story">
-    <h3>The problem: the battle is over, but the story isn’t</h3>
-    <p>In the late 1960s and early 1970s the “war games” hobbyists played meant setting out little figures on a table, and when a battle ended it was over, and next time you set them up again. But someone thought: <b>what if each little figure were a “character” who had to keep existing across many games?</b> How would that character “get stronger”? What would measure it? When would it count as having “gone up a step”?</p>
-    <p>Before looking at history, try it yourself. You are the designer, a player earns an average of 100 experience per play session, and you want the pace of leveling from level 2 to level 12 to be “a little anticipation but not too much torment.” Drag the slider to decide “how much more each level asks than the last,” and see about how many sessions each level takes.</p>
+    <h3>When a battle ends, the story isn’t over</h3>
+    <p>In the late 1960s and early 1970s, the “war games” hobbyists played put little figures on a table. One battle ended and that was it; next time you set them up again. But somebody thought: <b>what if each figure were a “character” that had to persist across many games?</b> How would that character “get stronger”? Measured by what? When does it count as having “gone up a step”?</p>
+    <p>Try it yourself first. Suppose a player earns an average of 100 experience points per play session, and the designer wants the leveling rhythm from level 2 to level 12 to carry “some anticipation but not too much grind.” Drag the slider to decide “how much more each level asks than the one before,” and see about how many sessions each level takes.</p>
     <div class="board">
       <label class="ctl">Experience needed per level is more than the last by <output id="c16_or_v">40</output>% (level 1 needs 200 points)</label>
       <input type="range" id="c16_or" min="0" max="120" step="5" value="40">
@@ -156,25 +169,41 @@
   <div class="timeline">
     <div class="ev hasimg"><span data-illus="c16_chainmail"></span><div><b class="yr">1971</b> <i>Chainmail</i> (medieval wargame rules by Gary Gygax and Jeff Perren) is published. Its “fantasy supplement” already has stronger units like “Hero,” “Superhero” and “Wizard,” but when a battle ends, the pieces go back in the box.</div></div>
     <div class="ev hasimg"><span data-illus="c16_blackmoor"></span><div><b class="yr">About 1971–73</b> In the Blackmoor campaign based on <i>Chainmail</i>, Dave Arneson let a single character persist across many games. According to the player Greg Svenson’s recollection, early on a monster’s hit points were the experience points earned for killing it, players did not keep the tally themselves, and Arneson announced when it was time to level up (accounts differ somewhat between sources).</div></div>
-    <div class="ev hasimg"><span data-illus="c16_dnd"></span><div><b class="yr">1974</b> <i>Dungeons &amp; Dragons</i> (Gygax and Arneson, TSR) is published and writes “experience” into explicit rules: kill monsters and take treasure to gain experience, and level up when the total reaches a threshold. According to the rule tables compiled by fans, the thresholds of the first few levels roughly double each level and get harder higher up; and according to Jon Peterson’s research, in the original game treasure brought in far more experience than killing monsters.</div></div>
+    <div class="ev hasimg"><span data-illus="c16_dnd"></span><div><b class="yr">1974</b> <i>Dungeons &amp; Dragons</i> (Gygax and Arneson, TSR) is published and writes “experience” into explicit rules: kill monsters and take treasure to gain experience, and level up when the total reaches a threshold. According to the rule tables compiled by fans, the thresholds of the first few levels roughly double each level and get harder higher up. And according to Jon Peterson’s research, in the original game treasure brought in far more experience than killing monsters.</div></div>
     <div class="ev hasimg"><span data-illus="c16_plato"></span><div><b class="yr">1974–75</b> The earliest computer role-playing games appear on large mainframes (such as <i>dnd</i> and <i>pedit5</i> on the PLATO system; which came first and the details vary by source), and they carry the whole “experience and levels” scheme over. The computer keeps the books for the player, and from then on the experience curve can be written as a formula.</div></div>
   </div>
   <div class="story">
-    <h3>The key insight: compress “what you’ve done” into one comparable number</h3>
-    <p>Why “points”? Without numbers, there is only the game master saying “you’ve leveled up.” Points let players know how far they are from the goal, and make the rules public, open to argument and open to design. Why “levels”? Continuous points are bland; cut into steps, each step brings a concentrated reward: new stats, new abilities, and that is the ceremony of leveling up.</p>
-    <p>Why do the thresholds keep getting higher? If every level were equally easy, high-level characters would quickly become “gods,” so how the thresholds are set has been a parameter repeatedly fixed from the start. The trade-off you just made on the slider is the same one the designers made back then.</p>
-    <p class="c16-note">Fact-check note: the usual account of the “starting point” of experience points and levels is Arneson’s Blackmoor campaign and then <i>D&amp;D</i> in 1974; scholars and fans dispute “who deserves the credit” (Arneson and TSR later also had a royalties lawsuit). Only the parts on which sources agree are written here.</p>
+    <h3>Squeezing “what has been done” into a number that can be compared</h3>
+    <p>Points are used because without a number there is only the referee saying “you leveled up.” Points tell players how far they are from the goal, and make the rules public, so they can be argued about and designed. They are then cut into “levels” because continuous points are flat. Once cut into steps, each step brings a concentrated reward: new stats, new abilities.</p>
+    <p>The threshold rises because, if every level were equally easy, high-level characters would soon become “gods.” How to set the thresholds has been a parameter under constant revision from the start. The trade-off you just made on the slider is one the designers of the time made too.</p>
+    <p class="c16-note">Note: the usual account of the “origin” of experience points and levels is Arneson’s Blackmoor campaign, which then led into the 1974 <i>D&amp;D</i>. Scholars and hobbyists dispute “who deserves the credit” (Arneson and TSR later had a royalty lawsuit), so only the parts on which the sources agree are written here.</p>
   </div>
+  <aside class="cc-card" aria-label="Concept card: experience points and levels">
+    <span class="cc-tag">Concept card</span>
+    <p class="cc-name"><span>Experience Points and Levels</span></p>
+    <p class="cc-en">Experience points and levels</p>
+    <p class="cc-by">Dave Arneson’s Blackmoor campaign, c. 1971–73; Gary Gygax and Arneson · 1974 <i>Dungeons &amp; Dragons</i> wrote it into explicit rules</p>
+    <p class="cc-def">Squeeze what a character “has done” into points that can be compared. Gather enough to cross the threshold and the character goes up a level, and each level brings a concentrated reward.</p>
+    <p class="cc-eg"><span class="cc-k">Example</span>Killing monsters and taking treasure earn experience, which accumulates to a threshold and then levels up; the higher up, the higher the threshold.</p>
+  </aside>
 
   <div class="withimg">
     <span data-illus="c16_techtree"></span>
     <div>
-      <p>With levels, a new trouble appeared: if leveling up just raises stats automatically, then all characters of the same class and level are exactly alike. Designers wanted each level-up to bring a <b>choice</b>. The earlier approach was a fixed level-up table, where you automatically learned certain things at certain levels; the newer idea was to give players a few points and let them decide where to put them, with “learn A before B” prerequisites between skills, which drawn out became a tree.</p>
-      <p>Strategy games already had this prerequisite structure in the “tech tree,” and a character’s skill tree is related to it. The 1996 <i>Diablo</i> gave each class a page of skills unlocked by level; what is often said to be the prototype of the modern skill tree is <i>Diablo II</i> in 2000 (how much credit belongs to which designer differs by source, so no conclusion is drawn here). Later online games developed it into the “talent tree,” letting even the same class follow different schools. There is no agreed answer to “who made the first skill tree,” so it is left out.</p>
+      <p>With levels, a new trouble appeared: if leveling up just raises stats automatically, then all characters of the same class and level are exactly alike. Designers wanted each level-up to bring a <b>choice</b>. The earlier approach was a fixed level-up table, where you automatically learned certain things at certain levels. The newer idea was to give players a few points and let them decide where to put them, with “learn A before B” prerequisites between skills, which drawn out became a tree.</p>
+      <p>Strategy games already had the prerequisite structure of a “tech tree,” and a character’s skill tree is a relative of it. The 1996 <i>Diablo</i> gave each class a page of skills unlocked by level. The 2000 <i>Diablo II</i> is often called the forerunner of the modern skill tree. Later online games developed it into the “talent tree,” letting the same class follow different builds. There is no agreed answer to “who made the first skill tree.”</p>
     </div>
   </div>
+  <aside class="cc-card" aria-label="Concept card: skill trees">
+    <span class="cc-tag">Concept card</span>
+    <p class="cc-name"><span>Skill Tree</span></p>
+    <p class="cc-en">Skill tree</p>
+    <p class="cc-by">Game industry vocabulary with no agreed inventor; its close relative is the tech tree in strategy games</p>
+    <p class="cc-def">A level-up gives the player a few points to decide where to put. Skills have prerequisites, “learn A before B,” and drawn out they look like a tree.</p>
+    <p class="cc-eg"><span class="cc-k">Example</span>Course prerequisites at a university: take calculus first, then linear algebra and probability, and only after both can you take machine learning.</p>
+  </aside>
   <div class="story">
-    <h3>Reset for a reward: why would anyone think of “zeroing out”</h3>
+    <h3>Why would anyone think of making players “reset to zero”?</h3>
     <p>This one has no reliable single origin, so only the motivation is told. The numbers in an idle game swell along an exponential curve, progress gets slower and slower, and the player eventually meets a wall. The designers did not tear down the wall. They gave the player a choice: zero yourself out in exchange for a permanent multiplier, then climb the same mountain at greater speed. That gives back the thrill of “fast early growth,” lifts the scale of the numbers to a new level, and still keeps the main thread of “the more you play, the stronger you get.”</p>
   </div>
   <div class="card">
@@ -204,32 +233,33 @@
   <p>Before designing an experience curve, it helps to know what it is catching in the player. The first thing is <b>the sense of competence</b>.</p>
   <div class="why-box">
     <h3>Competence: I am becoming “capable”</h3>
-    <p>In their 2000 self-determination theory, Ryan and Deci hold that people have three basic psychological needs: autonomy, competence and relatedness. Visible growth is the most direct source of competence: you did something, and the world answers “you are stronger now.” So the basic job of a progression system is to make progress visible: unseen, it is not felt.</p>
+    <p>In their 2000 self-determination theory, Ryan and Deci hold that people have three basic psychological needs: autonomy, competence and relatedness. Visible growth is the most direct source of competence: you did something, and the world answers “you are stronger now.” So the basic job of a progression system is to make progress visible.</p>
     <div class="src">Source: Ryan, R. M., &amp; Deci, E. L. (2000). Self-determination theory and the facilitation of intrinsic motivation, social development, and well-being. <i>American Psychologist</i>, 55(1), 68–78. Applying it to game progression is an analogy.</div>
   </div>
   <div class="withimg rev">
     <span data-illus="c16_coffee"></span>
     <div>
       <p>The second is that the closer people get to a goal, the harder they push, which is the goal gradient. The psychologist Hull (1932) had already proposed that animals run faster the closer they get to the goal. Kivetz, Urminsky and Zheng (2006), using real data from coffee-shop punch cards, found that the closer a customer got to “a free cup once the card is full,” the shorter the gap between visits.</p>
-      <p>There is an even neater experiment. Nunes and Drèze (2006) randomly handed out two kinds of punch cards at a car wash: one with 8 blank spaces, one with 10 spaces but with 2 already stamped for you. Either way another 8 washes were needed, yet after nine months only 19% of the first kind were completed against 34% of the second. The feeling of “already having progress” itself pushes people forward.</p>
+      <p>There is an even neater experiment. Nunes and Drèze (2006) randomly handed out two kinds of punch cards at a car wash: one with 8 blank spaces, one with 10 spaces but with 2 already stamped for the customer. Either way another 8 washes were needed, yet after nine months only 19% of the first kind were completed against 34% of the second. The feeling of “already having progress” itself pushes people forward.</p>
     </div>
   </div>
   <div class="why-box">
     <h3>The goal gradient and “endowed progress”</h3>
-    <p>A progress bar is <b>making this visible closeness</b>: give the player a little progress from the very start (the tutorial gives a few levels), and give plenty of “almost there” pictures before a level-up. The effect is clear in the car-wash experiment, but how much of it carries over to games still has to be checked in playtests.</p>
+    <p>A progress bar is there to <b>manufacture this visible closeness</b>: give the player a little progress at the very start (a tutorial that gifts a few levels), and give plenty of “almost there” on-screen moments before a level-up. The effect is clear in the car-wash experiment. How much it does inside a game still has to be checked by playtesting.</p>
     <div class="src">Sources: Kivetz, R., Urminsky, O., &amp; Zheng, Y. (2006). The goal-gradient hypothesis resurrected. <i>Journal of Marketing Research</i>, 43(1), 39–58; Nunes, J. C., &amp; Drèze, X. (2006). The endowed progress effect. <i>Journal of Consumer Research</i>, 32(4), 504–512 (a field experiment, about 300 cards).</div>
   </div>
   <div class="why-box">
     <h3>Growth should rise together with challenge</h3>
     <p>Flow requires challenge and ability to roughly match, and the zone of proximal development says that tasks just out of reach but within a stretch are best for learning. The job of a growth system is this: each time the player’s ability goes up a step, the challenge rises with it, so the two advance alternately inside the “flow channel.”</p>
     <svg class="c16-svg" viewBox="0 0 700 300" role="img" aria-label="Growth and challenge in step: player ability rises in steps, challenge rises smoothly, the two stay within the flow channel; at each level-up the player’s ability jumps one step.">
+      <polygon points="60,190 240,130 420,70 600,16 680,16 680,68 600,90 420,150 240,210 60,250" fill="#fff0b0" opacity=".85"/>
       <g class="rough" stroke="#2b2b3a" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round">
         <path d="M60 250 L60 20"/><path d="M60 250 H680"/>
         <path d="M60 230 L240 170 L420 110 L600 50 L680 28" stroke="#e5484d" stroke-dasharray="10 8"/>
         <path d="M60 235 H150 V190 H260 V145 H370 V100 H480 V58 H590 V25 H680" stroke="#3b82f6"/>
       </g>
       <g font-size="17" fill="#2b2b3a">
-        <text x="70" y="26">Ability / challenge</text><text x="600" y="282" text-anchor="end">Time →</text>
+        <text x="70" y="26">Ability / challenge</text><text x="200" y="26" fill="#7a5a00">Pale yellow band: the flow channel</text><text x="600" y="282" text-anchor="end">Time →</text>
         <text x="410" y="205" fill="#c4262c">Challenge (rises smoothly)</text>
         <text x="90" y="130" fill="#1d5fc9">Player ability (steps up)</text>
       </g>
@@ -242,32 +272,40 @@
   <div class="withimg">
     <span data-illus="c16_monkey"></span>
     <div>
-      <p>Remember Schultz’s monkeys? Once they had learned that “light on means juice,” the juice itself no longer excited the dopamine neurons, and only an unexpected extra portion did. Move that idea to leveling up and something a bit painful appears: when leveling up becomes entirely predictable, the 30th ding is just like the 30th sip of juice.</p>
-      <p>That is also why progression systems often need “a bit of surprise”: an occasional extra piece of good gear, an occasional crit, so that prediction comes out a little wrong. But it is a double-edged sword, because the same mechanism is exactly how slot machines hold people.</p>
+      <p>Chapter 2 covered Schultz’s monkeys: once they learned that “light on means juice,” the juice itself no longer excited the dopamine neurons, and only an unexpected extra portion did. Carried over to leveling, something painful follows: when a level-up becomes fully predictable, the 30th ding is like the 30th sip of juice.</p>
+      <p>Progression systems therefore often “add a little surprise”: occasionally an extra good drop, occasionally a crit, so the prediction misses a little. This is also a double-edged sword, and the same mechanism is how slot machines hold people.</p>
     </div>
   </div>
   <div class="why-box">
     <h3>Reward prediction error, and the other side of hedonic adaptation</h3>
     <p>Schultz, Dayan and Montague (1997) concluded that the monkeys’ dopamine neurons report a “prediction error”: they fire more when things are better than expected, barely respond when things are as expected, and fall below baseline when things are worse. So <b>a fully predictable reward gets duller and duller</b>, which is the same thing as hedonic adaptation in the previous chapter told two ways: the baseline is moving up. Conversely, only when each level teaches the player something new can the “above expectation” part keep being produced.</p>
-    <p>A reminder: converting neuroscience findings straight into design rules is a common practice in the design world, but it is not an accepted one-to-one mapping.</p>
+    <p>Converting neuroscience findings directly into design rules is common in the design world, and the two do not correspond one to one in any agreed way.</p>
     <div class="src">Sources: Schultz, W., Dayan, P., &amp; Montague, P. R. (1997). A neural substrate of prediction and reward. <i>Science</i>, 275(5306), 1593–1599. For hedonic adaptation see Brickman &amp; Campbell (1971).</div>
   </div>
-  <p>Number inflation also brings up a perception problem. How people feel a change depends roughly on the relative change: going from 10 attack to 15 and going from 1000 to 1005 feel completely different. To make every level “feel like something,” growth has to be proportional, and proportional growth is exponential in shape, so the numbers just keep doubling up, and this is the root of number inflation.</p>
+  <p>Number inflation also brings up a perception problem. How a change feels depends roughly on its relative size: going from 10 attack to 15 and going from 1000 to 1005 feel completely different. To make every level “felt,” growth has to be proportional. Proportional growth has an exponential shape, so the numbers double their way up, and that is where stat inflation comes from.</p>
   <div class="withimg rev">
     <span data-illus="c16_farm"></span>
     <div>
-      <p>The last trouble is more hidden. You give the player experience points meaning to reflect “how well you are playing.” But once experience becomes the goal, players look for the least effort way to farm it: swinging at the same rat in a hole again and again, numbers shooting up, while the chests and signposts go completely unseen.</p>
-      <p>The number isn’t lying. It just no longer stands for what you wanted it to stand for.</p>
+      <p>The last trouble is more hidden. You give the player experience points meaning to reflect “how well you are playing.” But once experience becomes the goal, players look for the least-effort way to farm it: swinging at the same rat in a hole again and again, numbers shooting up, while the chests and signposts go completely unseen.</p>
+      <p>The number isn’t lying. It just no longer stands for what the designer wanted it to stand for.</p>
     </div>
   </div>
   <div class="why-box">
     <h3>Goodhart’s law: when a measure becomes a target</h3>
-    <p>The British economist Charles Goodhart pointed out in 1975, discussing monetary policy, that once a statistical regularity is used as the basis for control, it stops holding. In 1997 the anthropologist Marilyn Strathern summed it up in the widely repeated form: “When a measure becomes a target, it ceases to be a good measure.” Experience points are a proxy for “how engaged and how skilled the player is,” and once players play directly for them, they and the real play come apart. The remedy is to have experience come from <b>the behavior you really want to encourage</b>, and to give diminishing returns for repeating the same thing.</p>
-    <div class="src">Sources: Goodhart, C. A. E. (1975), “Problems of Monetary Management: The UK Experience”, <i>Papers in Monetary Economics</i> (Reserve Bank of Australia); Strathern, M. (1997), “‘Improving ratings’: audit in the British University system”, <i>European Review</i> 5(3): 305–321.</div>
+    <p>The British economist Charles Goodhart pointed out in 1975, while discussing monetary policy, that a statistical regularity breaks down once it is used as a basis for control. The anthropologist Marilyn Strathern in 1997 boiled it down to the widely repeated version: “When a measure becomes a target, it ceases to be a good measure.” Experience points are a proxy for “how invested and how skilled the player is.” Once players play directly for them, they and the real way of playing part ways. The remedy is to let experience come from <b>the behavior the designer actually wants to encourage</b>, and to give diminishing returns for grinding the same thing over and over.</p>
+    <div class="src">Sources:<br>Goodhart · 1975 · on British monetary policy · a statistical regularity breaks down once it is used as a basis for control (“Problems of Monetary Management: The UK Experience,” <i>Papers in Monetary Economics</i>, Reserve Bank of Australia).<br>Strathern · 1997 · boiled it down to “when a measure becomes a target, it ceases to be a good measure” (“‘Improving ratings’: audit in the British University system,” <i>European Review</i> 5(3): 305–321).</div>
   </div>
+  <aside class="cc-card" aria-label="Concept card: Goodhart’s law">
+    <span class="cc-tag">Concept card</span>
+    <p class="cc-name"><span>Goodhart’s Law</span></p>
+    <p class="cc-en">Goodhart’s law</p>
+    <p class="cc-by">Charles Goodhart · 1975, on British monetary policy; Marilyn Strathern · 1997, boiled it down to the usual wording</p>
+    <p class="cc-def">When a measure becomes a target, it ceases to be a good measure.</p>
+    <p class="cc-eg"><span class="cc-k">Example</span>Experience points were meant to reflect “how well you play,” but players keep cutting down the same rat in a hole to farm them: the number goes up and the play doesn’t get better.</p>
+  </aside>
 
   <h3>Verification experiment: is growth actually “cancelled out”? A number-inflation comparison</h3>
-  <p>Below is an illustrative model: your attack grows by g per level, and the health of enemies in the current zone grows by gz per level. Watch three things: how many hits it takes to kill a mob back in the starter zone (power fantasy); how many hits to kill an enemy in the current zone (sense of challenge); and how long the attack number gets (inflation).</p>
+  <p>Below is an illustrative model: attack grows by g per level, and the health of enemies in the current zone grows by gz per level. Watch three things: how many hits it takes to kill a mob back in the starter zone (power fantasy); how many hits to kill an enemy in the current zone (sense of challenge); and how long the attack number gets (inflation).</p>
   <div class="board">
     <label class="ctl">Level <output id="c16_iv_n">20</output></label>
     <input type="range" id="c16_in" min="1" max="60" step="1" value="20">
@@ -278,12 +316,16 @@
     <div id="c16_irows"></div>
     <div class="c16-diag" id="c16_imsg"></div>
   </div>
-  <p class="c16-note">Illustrative: attack = 10×(1+g)^(level−1); starter-zone enemy health is fixed at 100; current-zone enemy health = 100×(1+gz)^(level−1). Set gz equal to g and you get “level scaling”: fighting in the current zone always takes the same number of hits.</p>
+  <p class="c16-note">In the illustrative model, set gz equal to g and you get “level scaling”: fighting in the current zone always takes the same number of hits.</p>
+  <details>
+    <summary>Advanced: how the model is computed</summary>
+    <p class="c16-note">Attack = 10×(1+g)^(level−1); newbie-zone enemy HP is fixed at 100; current-zone enemy HP = 100×(1+gz)^(level−1). For example, with g = 15% at level 20: attack ≈ 10×1.15<sup>19</sup> ≈ 143.</p>
+  </details>
   <p>Old content has to “fall behind” for there to be a power fantasy, and current content has to “keep up” for there to be a challenge. Both are needed, so gz should be slightly below g, but then the numbers inevitably swell; try pulling the level up to 60.</p>
 
   
   <div class="sec"><span class="n">7</span><h2><span class="tag how">How to use it</span>Signature interactive: the experience curve designer</h2></div>
-  <p>You are this game’s numbers designer. Choose a curve type, adjust the base experience, growth rate and level cap, and set how much experience the player gets <b>per day</b>. The page draws in real time the experience needed per level and the time per level, and marks: <span style="color:#1d6a2c"><b>green</b></span> = normal, <span style="color:#8a5d00"><b>yellow</b></span> = getting steep, <span style="color:#b3261e"><b>red</b></span> = “wall” (time suddenly balloons), and also gives a diagnosis of “max level before the story is even finished.”</p>
+  <p>This time you are the numbers designer for this game. Choose a curve type, adjust the base experience, growth rate and level cap, and set how much experience the player earns <b>per day</b>. The page draws the experience each level needs and the time per level in real time, and marks: <span style="color:#1d6a2c"><b>green</b></span> = normal, <span style="color:#8a5d00"><b>yellow</b></span> = steepening, <span style="color:#b3261e"><b>red</b></span> = a “wall” (time suddenly balloons), and also gives a diagnosis of “max level before the end of the game.”</p>
   <div class="board" id="c16_designer">
     <div class="row" id="c16_types_btn">
       <button class="chip on" data-t="lin">Linear</button>
@@ -309,7 +351,11 @@
     <div class="c16-diag" id="c16_ddiag"></div>
   </div>
   <div class="sticky" id="c16_task1">Try it: first choose “Exponential,” raise the growth rate, and watch the red bars grow; then find a way for it to have no red wall while the time to max level roughly matches the time to finish the story (the diagnosis shows a green “reasonable range”). Hint: add a little income bonus, or switch to linear.</div>
-  <p class="c16-note">Illustrative: linear need=base×(1+r×(n−1)); polynomial need=base×(1+r×(n−1))²; exponential need=base×(1+r)^(n−1). Time for level n = need(n) ÷ (daily experience×(1+bonus)^(n−1)). A “wall” = a level taking more than 2 times the average of the previous three (yellow: 1.4 times).</p>
+  <p class="c16-note">A “wall” is a level whose time exceeds 2 times the average of the previous three (yellow is 1.4 times).</p>
+  <details>
+    <summary>Advanced: how the three curves are computed (illustrative)</summary>
+    <p class="c16-note">Linear: need = base×(1+r×(n−1)); polynomial: need = base×(1+r×(n−1))²; exponential: need = base×(1+r)^(n−1). Time for level n = need(n) ÷ (daily experience × (1+bonus)^(n−1)).</p>
+  </details>
 
   
   <div class="sec"><span class="n">8</span><h2><span class="tag how">How to use it</span>Supporting interactive: building a skill tree</h2></div>
@@ -340,6 +386,7 @@
       <span class="stat">Mobility <b id="c16_t_m">0</b></span>
     </div>
     <svg class="c16-svg" id="c16_tsvg" viewBox="0 0 700 580" role="img" aria-label="Skill tree: three branches and three merge nodes; click a node to spend skill points."></svg>
+    <p class="c16-note">Legend: blue = melee, green = ranged, orange = support; the three nodes with a <b style="color:#6a35c2">purple border</b> (Poison Blade, Nimble, Iron Crossbow) are merge nodes, sitting between two branches, and need the prerequisites on both sides lit to unlock.</p>
     <div class="c16-info" id="c16_tinfo">Hover a node for its description and click to spend (click again to undo; when you undo a prerequisite, nodes that depend on it are taken back too).</div>
     <div class="row">
       <button class="btn pink" id="c16_treset">Reset</button>
@@ -354,39 +401,39 @@
   <p class="c16-note">“Analyze this tree” randomly generates 6000 valid builds, takes the top 10 for each goal of damage, survival, mobility and overall (the weighted product of the three), and checks whether some node appears in the top 10 of every goal (<b>must-pick</b>) or never appears (<b>trap</b>). This is an estimate from random sampling, not a strict optimum; the numbers are illustrative.</p>
 
   <div class="eg" data-ic="🌳" data-t="A good skill tree"><span data-illus="c16_goodtree"></span><div class="egt"><b>A good skill tree</b>: the melee, ranged and support lines all have strong builds, merge nodes encourage mixing, and no node is “you lose if you skip it.” You have to weigh things before clicking.</div></div>
-  <div class="eg" data-ic="🎓" data-t="Course prerequisites"><span data-illus="c16_prereq"></span><div class="egt"><b>Prerequisites for university courses</b> (daily life): you study calculus before linear algebra and probability, and finish both before you can take machine learning. It is a “skill tree” with a merge node, and you really do have choices.</div></div>
+  <div class="eg" data-ic="🎓" data-t="Course prerequisites"><span data-illus="c16_prereq"></span><div class="egt"><b>Prerequisites for university courses</b> (daily life): you study calculus before linear algebra and probability, and finish both before you can take machine learning. It is a “skill tree” with a merge node, and students really do have choices.</div></div>
   <div class="eg bad" data-ic="🚧" data-t="A bad skill tree"><span data-illus="c16_badtree"></span><div class="egt"><b>A bad skill tree</b>: one entry node (such as “+20% health”) is cheap and strong, and everyone takes it; some ultimate node costs an absurd amount and is not strong, and nobody takes it. It looks like twenty-some choices, but there is really one best path, which is a “false choice.”</div></div>
 
   <div class="misc">
     <h3>Common misconceptions</h3>
     <ul>
-      <li><b>“The more progression, the better”:</b> if everything carries growth, players are flooded; and the more progression there is, the easier it is for players to “play only for the numbers,” whether or not the gameplay in their hands is fun.</li>
-      <li><b>“Bigger numbers feel great”:</b> when numbers swell to astronomical sizes, each level’s change is just one more digit and nobody feels anything; the real thrill comes from changes in play (new abilities, new ways of fighting).</li>
-      <li><b>“Max level is the end”:</b> if there is no new goal after max level, players leave; either have soft caps, meta-progression or resets, or let “player skill growth” be the long-term goal.</li>
+      <li><b>“The more progression, the better”:</b> if everything carries growth, players are flooded. And the more progression there is, the easier it is for players to “play only for the numbers,” whether or not the gameplay in their hands is fun.</li>
+      <li><b>“Bigger numbers feel great”:</b> when numbers swell to astronomical sizes, each level’s change is just one more digit and nobody feels anything. The real thrill comes from changes in play (new abilities, new ways of fighting).</li>
+      <li><b>“Max level is the end”:</b> if there is no new goal after max level, players leave. Either have soft caps, meta-progression or resets, or let “player skill growth” be the long-term goal.</li>
       <li><b>“Level scaling keeps the game always challenging”:</b> it also wipes out the power fantasy and cancels the sense of growth (see the number-inflation comparison above).</li>
-      <li><b>“Variable drops are free stickiness”:</b> random rewards are very attractive, but they cut both ways; once tied to spending, they come close to the edge of ethics.</li>
+      <li><b>“Variable drops are free stickiness”:</b> random rewards are very attractive, but they cut both ways. Once tied to spending, they come close to the edge of ethics.</li>
     </ul>
   </div>
 
   <div class="reflect">
     <h3>Reflection and debate</h3>
-    <p><b>Can extrinsic rewards “crowd out” intrinsic enjoyment?</b> This is the “overjustification” question psychology has discussed for a long time: adding a reward to something already fun can sometimes weaken a person’s original interest. Does a progress bar in a game amplify the fun, or turn the game into clocking in? This is a contested view, the conditions and conclusions of studies are inconsistent, and designers are best off running their own playtests.</p>
+    <p><b>Can an outside reward “crowd out” inner enjoyment?</b> This is the long-debated “overjustification” question in psychology: adding a reward to something already fun can sometimes weaken the interest a person had. Does a progress bar in a game amplify the fun, or turn the game into clocking in? The research conditions and conclusions are not consistent, so designers had better playtest themselves.</p>
     <p><b>Are “grinding” and “the grind” good design?</b> Some think a moderate “numbers chase” gives casual players something to do; others think it uses “time” to pass for “content.” Both positions hold up, and it depends on the target player.</p>
-    <p>If you used to think “progression = leveling up,” I hope you now think differently: progression is a system, which makes the player’s investment seen, kept and amplified; whether numbers are the lead is a design choice.</p>
+    <p>Progression is not the same as leveling. It is a system that lets the player’s investment be seen, kept and amplified, and whether the numbers are the star is a design choice.</p>
   </div>
 
   <div class="key">
     <h3>Key points</h3>
     <ul>
-      <li><b>Five kinds of growth:</b> stats, abilities, gear and collection, player skill, meta-progression; plus prestige resets. Don’t understand “progression” as only “levels.”</li>
+      <li><b>Five kinds of growth:</b> stats, abilities, gear and collection, player skill, meta-progression, plus prestige resets. Don’t understand “progression” as only “levels.”</li>
       <li><b>The experience curve</b> sets the pace: linear, polynomial and exponential each have their character; look at both experience needed and income, or you can’t see the “wall.”</li>
-      <li><b>The logic of invention:</b> a character must persist across many plays, hence points and levels; leveling must offer choices, hence skill points and skill trees; numbers run out, hence resets and meta-progression.</li>
-      <li><b>Why it works:</b> competence, the goal gradient and endowed progress, prediction error and hedonic adaptation, relative perception; so growth must be visible and keep supplying new stimulation.</li>
-      <li><b>Don’t let a measure lead the player astray:</b> once experience points become the goal, players will farm them; have experience come from the behavior you want to encourage.</li>
+      <li><b>The logic of invention:</b> a character must persist across many plays, hence points and levels. Leveling must offer choices, hence skill points and skill trees. Numbers run out, hence resets and meta-progression.</li>
+      <li><b>Why it works:</b> competence, the goal gradient and endowed progress, prediction error and hedonic adaptation, relative perception. So growth must be visible and keep supplying new stimulation.</li>
+      <li><b>Don’t let a measure lead the player astray:</b> once experience points become the goal, players will farm them. Have experience come from the behavior you want to encourage.</li>
       <li><b>Design check:</b> Is there a wall? Will players hit max level before finishing? Are there must-pick nodes and trap options? Have the numbers swollen until they mean nothing?</li>
     </ul>
   </div>
-  <div class="tldr">A progression system turns “what you have done” into “getting stronger that you can see”; a good design lets growth and challenge rise together, instead of numbers chasing numbers.</div>
+  <div class="tldr">A progression system turns “what you have done” into “getting stronger that you can see.” A good design lets growth and challenge rise together, instead of numbers chasing numbers.</div>
 
   <div class="sec"><span class="n">9</span><h2><span class="tag think">Practice</span>Quick quiz</h2></div>
   <div id="quiz"></div>
@@ -406,7 +453,7 @@
 <script>
 const $ = id => document.getElementById(id);
 const NS = "http://www.w3.org/2000/svg";
-function c16done(el, msg) { if (el.classList.contains("c16done")) return; el.classList.add("c16done"); el.insertAdjacentHTML("beforeend", " <b>✅ Done!" + msg + "</b>"); }
+function c16done(el, msg) { if (el.classList.contains("c16done")) return; el.classList.add("c16done"); el.insertAdjacentHTML("beforeend", " <b>✅ Done! " + msg + "</b>"); }
 function fmt(x) {
   if (x >= 1e9) return (x / 1e9).toFixed(1) + "B";
   if (x >= 1e6) return (x / 1e6).toFixed(1) + "M";
@@ -441,9 +488,10 @@ function fmtDays(d) {
   g += "</g>";
   h += g + '<g font-size="17" fill="#2b2b3a">';
   h += `<text x="470" y="52" fill="${cols.exp}">Exponential: ever steeper</text>`;
-  h += `<text x="560" y="196" fill="${cols.poly}">Polynomial</text>`;
-  h += `<text x="640" y="206" fill="${cols.lin}">Linear</text>`;
-  h += '<text x="68" y="26">Experience to level up</text><text x="680" y="314" text-anchor="end">Level →</text>';
+  h += `<text x="560" y="186" fill="${cols.poly}">Polynomial</text>`;
+  h += `<text x="688" y="203" text-anchor="end" fill="#1d5fc9">Linear: fixed step per level</text>`;
+  [10, 20, 30, 40].forEach(v => { h += `<text x="46" y="${(Y(v) + 6).toFixed(1)}" text-anchor="end" font-size="15">${v}</text><line x1="56" y1="${Y(v).toFixed(1)}" x2="60" y2="${Y(v).toFixed(1)}" stroke="#2b2b3a" stroke-width="3"/>`; });
+  h += '<text x="68" y="26">Experience needed to level up (level 1 = 1)</text><text x="680" y="314" text-anchor="end">Level →</text>';
   h += '<text x="60" y="274">1</text><text x="360" y="274">20</text><text x="640" y="274">40</text></g>';
   $("c16_curves").innerHTML = h;
 })();
@@ -467,7 +515,7 @@ function fmtDays(d) {
       const col = d < 12 ? "#8fd3f4" : (d < 40 ? "#ffe58a" : "#ffb3c6");
       h += `<rect x="${x + 4}" y="${220 - ht}" width="${bw - 8}" height="${ht}" fill="${col}" stroke="#2b2b3a" stroke-width="3"/>`;
       h += `<text x="${x + bw / 2}" y="242" font-size="16" text-anchor="middle">${i + 2}</text>`;
-      if (ht > 22 || d < sc * 0.99) h += `<text x="${x + bw / 2}" y="${220 - ht - 6}" font-size="16" text-anchor="middle">${d < 10 ? d.toFixed(1) : Math.round(d)}</text>`;
+      if (ht > 22 || d < sc * 0.99) h += `<text x="${x + bw / 2}" y="${220 - ht - 9}" font-size="16" text-anchor="middle">${d < 10 ? d.toFixed(1) : Math.round(d)}</text>`;
     });
     h += '<text x="680" y="264" font-size="16" text-anchor="end">Level reached →</text><text x="64" y="24" font-size="16">Sessions per level</text>';
     $("c16_osvg").innerHTML = h;
@@ -483,7 +531,7 @@ function fmtDays(d) {
   $("c16_oc").addEventListener("change", run);
   $("c16_oreveal").onclick = () => {
     const el = $("c16_orev"); el.style.display = "block";
-    el.innerHTML = "<b>How it was done back then:</b> according to the 1974 rule table compiled by fans, the thresholds of the first few levels roughly double each level and get harder higher up; and the deeper the dungeon, the more treasure, which is the equivalent of the “high-level zone income” above. The trade-off you just made on the slider is exactly what the designers had to make: how to raise the thresholds and how the income should follow, so that no wall appears. (The exact numbers for each level have not been checked one by one here, so they are not listed.)";
+    el.innerHTML = "<b>How it was done back then:</b> according to the 1974 rule table compiled by fans, the thresholds of the first few levels roughly double each level and get harder higher up. And the deeper the dungeon, the more treasure, which is the equivalent of the “high-level zone income” above. The trade-off you just made on the slider is exactly what the designers had to make: how to raise the thresholds and how the income should follow, so that no wall appears. (The exact numbers for each level have not been checked one by one here, so they are not listed.)";
   };
   run();
 })();
@@ -521,7 +569,8 @@ function fmtDays(d) {
     fast: { t: "lin", base: 100, r: 0.05, L: 20, inc: 400, s: 0, D: 30 }
   };
   const need = (n, base, r) => type === "lin" ? base * (1 + r * (n - 1)) : type === "poly" ? base * Math.pow(1 + r * (n - 1), 2) : base * Math.pow(1 + r, n - 1);
-  let touched = false, sawRed = false;
+  let touched = false, sawRed = false, curPre = null;
+  const lvRange = a => { const o = []; for (let i = 0; i < a.length;) { let j = i; while (j + 1 < a.length && a[j + 1] === a[j] + 1) j++; o.push(j - i >= 2 ? a[i] + "–" + a[j] : a.slice(i, j + 1).join(",")); i = j + 1; } return o.join(","); };
   function run() {
     const base = +$("c16_base").value, r = +$("c16_r").value, L = +$("c16_L").value, inc = +$("c16_inc").value, s = +$("c16_s").value / 100, D = +$("c16_D").value, lg = $("c16_log").checked;
     $("c16_v_base").textContent = base; $("c16_v_r").textContent = r.toFixed(2); $("c16_v_L").textContent = L; $("c16_v_inc").textContent = inc; $("c16_v_s").textContent = Math.round(s * 100); $("c16_v_D").textContent = D;
@@ -545,7 +594,7 @@ function fmtDays(d) {
     const mxN = Math.max(...nd.map(T)), mxD = Math.max(...dy.map(T));
     let h = '<g stroke="#2b2b3a" stroke-width="3"><line x1="60" y1="210" x2="690" y2="210"/><line x1="60" y1="30" x2="60" y2="210"/><line x1="60" y1="470" x2="690" y2="470"/><line x1="60" y1="290" x2="60" y2="470"/></g>';
     h += `<text x="64" y="22" font-size="16">Experience for the next level${lg ? " (log)" : ""} (max ${fmt(Math.max(...nd))})</text>`;
-    h += `<text x="64" y="282" font-size="16">Time per level${lg ? " (log)" : ""} (longest ${fmtDays(Math.max(...dy))})</text>`;
+    h += `<text x="64" y="278" font-size="16">Time per level${lg ? " (log)" : ""} (longest ${fmtDays(Math.max(...dy))})</text>`;
     const pts = nd.map((v, i) => X(i).toFixed(1) + "," + (210 - T(v) / mxN * 170).toFixed(1)).join(" ");
     h += `<polyline fill="none" stroke="#3b82f6" stroke-width="5" stroke-linejoin="round" points="${pts}"/>`;
     const bw = Math.max(2, 600 / m * 0.78), COL = { g: "#b6e8a8", y: "#ffe58a", r: "#ff8a8a" };
@@ -571,22 +620,23 @@ function fmtDays(d) {
     if (total < D) msg += `<div class="red">Too fast: max level at about day ${Math.round(total)}, ${Math.round(D - total)} days before the game is cleared. The later content has no growth reward and may feel “empty.” You can raise the growth rate, lower the income bonus, or lengthen the curve.</div>`;
     else if (total > D * 3) msg += `<div class="ylw">Max level takes ${fmtDays(total)}, ${(total / D).toFixed(1)} times the clear time: most players won’t reach max level. If this is a “long-term goal” for hardcore players, fine; otherwise the curve is too steep.</div>`;
     else msg += `<div class="grn">Time to max level ${fmtDays(total)} is in a reasonable range against the clear time (${D} days): players are close to or slightly below max level when they clear.</div>`;
-    if (reds.length) msg += `<div class="red">Wall: levels ${reds.slice(0, 6).join(", ")}${reds.length > 6 ? " and more" : ""} take more than 2 times the average of the levels before them (the longest takes ${fmtDays(Math.max(...reds.map(k => dy[k - 1])))}). Players will slow down or leave here, unless you compensate with “higher income” or “new zones” (try adding a little income bonus).</div>`;
+    if (reds.length) msg += `<div class="red">Wall: levels ${lvRange(reds)} each take more than twice the average of the earlier levels (the longest takes ${fmtDays(Math.max(...reds.map(k => dy[k - 1])))}). Players will slow down or leave here unless compensated by “higher income” or “new zones” (try adding a bit of income bonus).</div>`;
     else if (ylws.length) msg += `<div class="ylw">${ylws.length} levels get steeper but there is no wall: the pace is gradually slowing, which is the normal “the further, the costlier.”</div>`;
     else msg += `<div class="grn">No wall, steady pace.</div>`;
     if (dy[0] > 1) msg += `<div class="ylw">Level 1 already takes ${fmtDays(dy[0])}: too slow, and newcomers lack early quick feedback (see Chapter 10).</div>`;
     if (lg) msg += `<div class="c16-note">Log scale: bar height shows relative size, not absolute time, and big gaps are compressed.</div>`;
+    if (curPre === "calm" || curPre === "dnd" || curPre === "fast") msg += `<div class="c16-note">This preset is a starting point with flaws left in on purpose, and the yellow and red hints above are exactly what is waiting for you to fix.</div>`;
     $("c16_ddiag").innerHTML = msg;
     if (/class="red"/.test(msg)) sawRed = true;
     if (touched && sawRed && !/class="red"/.test(msg) && /class="grn">Time to max level/.test(msg)) c16done($("c16_task1"), "No wall, and a reasonable time to max level.");
   }
-  document.querySelectorAll("#c16_types_btn .chip").forEach(b => b.onclick = () => { touched = true; type = b.dataset.t; run(); });
+  document.querySelectorAll("#c16_types_btn .chip").forEach(b => b.onclick = () => { touched = true; curPre = null; type = b.dataset.t; run(); });
   document.querySelectorAll("#c16_types_btn [data-p]").forEach(b => b.onclick = () => {
-    touched = true; const p = PRE[b.dataset.p]; type = p.t;
+    touched = true; curPre = b.dataset.p; const p = PRE[b.dataset.p]; type = p.t;
     $("c16_base").value = p.base; $("c16_r").value = p.r; $("c16_L").value = p.L; $("c16_inc").value = p.inc; $("c16_s").value = p.s; $("c16_D").value = p.D;
     run();
   });
-  ["c16_base", "c16_r", "c16_L", "c16_inc", "c16_s", "c16_D"].forEach(id => $(id).addEventListener("input", () => { touched = true; run(); }));
+  ["c16_base", "c16_r", "c16_L", "c16_inc", "c16_s", "c16_D"].forEach(id => $(id).addEventListener("input", () => { touched = true; curPre = null; run(); }));
   $("c16_log").addEventListener("change", run);
   run();
 })();
@@ -677,9 +727,10 @@ function fmtDays(d) {
     svg.querySelectorAll(".c16-node").forEach(g => {
       const n = byId[g.dataset.id], c = g.querySelector(".c16-body"), on = sel.has(n.id);
       const avail = !on && reqOK(n, sel) && n.cost <= left;
-      c.setAttribute("fill", on ? (n.root ? "#fff7cf" : COLS[n.br]) : (avail ? "#fff" : "#e9e6dc"));
-      c.setAttribute("stroke-width", on ? 6 : (avail ? 4 : 2));
-      c.setAttribute("stroke", on ? "#2b2b3a" : (avail ? "#2b2b3a" : "#a9a69b"));
+      const hub = n.br === 3;
+      c.setAttribute("fill", on ? (n.root ? "#fff7cf" : COLS[n.br]) : (hub ? (avail ? "#fff" : "#efe6ff") : (avail ? "#fff" : "#e9e6dc")));
+      c.setAttribute("stroke-width", on ? 6 : (avail ? 4 : (hub ? 3 : 2)));
+      c.setAttribute("stroke", on ? "#2b2b3a" : (hub ? "#7a45d6" : (avail ? "#2b2b3a" : "#a9a69b")));
       g.style.opacity = on || avail ? 1 : .55;
       g.querySelector(".c16-must").style.display = analyzed && mustSet.has(n.id) ? "" : "none";
     });

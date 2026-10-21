@@ -116,9 +116,9 @@
   illusAdd("c25_backpack", "日常：背包只能装三样，火柴人犹豫该带哪一样，旁边第四样放不下被打了叉",
     ground +
     person(30, 62, { arms: "chin", face: "flat", look: 1 }) +
-    '<rect x="74" y="38" width="64" height="86" rx="14" fill="#ffe58a"/><rect x="82" y="58" width="48" height="20" rx="4" fill="#fff"/><rect x="82" y="84" width="48" height="20" rx="4" fill="#fff"/>' +
+    '<rect x="74" y="38" width="64" height="86" rx="14" fill="#ffe58a"/><rect x="82" y="46" width="48" height="20" rx="4" fill="#fff"/><rect x="82" y="70" width="48" height="20" rx="4" fill="#fff"/><rect x="82" y="94" width="48" height="20" rx="4" fill="#fff"/>' +
     '<rect x="154" y="86" width="26" height="26" fill="#e8f6fc"/><path d="M148 82 L186 116 M186 82 L148 116" stroke="#e5484d" stroke-width="3.5"/>',
-    E(106, 74, 16, "🗡️") + E(106, 100, 16, "🍎") + T(106, 30, 12, "只装三样", "middle") + T(167, 78, 12, "放不下", "middle"));
+    E(106, 62, 16, "🗡️") + E(106, 86, 16, "🍎") + E(106, 110, 16, "🛡️") + E(167, 106, 16, "🏹") + T(106, 30, 12, "只装三样", "middle") + T(167, 78, 12, "放不下", "middle"));
 
   illusAdd("c25_infinite", "反例：永远不坏的金剑，火柴人对每个敌人都用同一招，没有任何取舍，打到后面只剩重复",
     ground +
@@ -135,11 +135,11 @@
     '<path d="M66 40 L88 32" fill="none" stroke="#e5484d" stroke-dasharray="3 5" stroke-width="2"/>',
     T(150, 40, 12, "上去看看", "middle") + T(100, 137, 12, "想去山那边看看", "middle"));
 
-  illusAdd("c25_ants", "左边一只蚂蚁只会走和留下气味，右边一群蚂蚁没有谁指挥，却排成了一条通向食物的路线",
+  illusAdd("c25_ants", "左边一只蚂蚁只会走和留下气味，右边一群蚂蚁没有谁指挥，却排成了一条蜿蜒的路线通向食物",
     ground +
-    '<ellipse cx="28" cy="92" rx="9" ry="5" fill="#2b2b3a"/><circle cx="20" cy="90" r="4" fill="#2b2b3a"/><path d="M24 96 l-4 8 M30 96 l0 9 M34 94 l5 8 M22 90 l-6 -6" stroke-width="2" fill="none"/>' +
-    '<path d="M70 114 Q110 70 156 96" fill="none" stroke-dasharray="3 6" stroke-width="2"/>' +
-    '<ellipse cx="82" cy="104" rx="6" ry="3.5" fill="#2b2b3a"/><ellipse cx="98" cy="88" rx="6" ry="3.5" fill="#2b2b3a"/><ellipse cx="116" cy="82" rx="6" ry="3.5" fill="#2b2b3a"/><ellipse cx="134" cy="86" rx="6" ry="3.5" fill="#2b2b3a"/>' +
-    '<circle cx="168" cy="100" r="11" fill="#ffb3c6"/><path d="M52 126 Q70 110 88 126z" fill="#c58b4e"/>',
-    T(36, 56, 12, "一只：", "middle") + T(36, 70, 12, "规则很简单", "middle") + T(132, 56, 13, "一群：整条路线", "middle") + T(100, 137, 12, "没人指挥", "middle"));
+    '<g transform="translate(28 126) scale(1.5) translate(-28 -126)" stroke-width="1.6"><ellipse cx="28" cy="120" rx="9" ry="5" fill="#2b2b3a"/><circle cx="19" cy="118" r="4" fill="#2b2b3a"/><path d="M23 123 l-3 3 M29 124 l0 2 M35 123 l3 3 M21 118 l-6 -6" stroke-width="2" fill="none"/></g>' +
+    '<path d="M92 112 Q106 100 118 110 T146 110 T166 106" fill="none" stroke-dasharray="3 5" stroke-width="2"/>' +
+    '<g transform="translate(104 126) scale(1.7) translate(-104 -126)" stroke-width="1.1"><ellipse cx="104" cy="120" rx="6" ry="3.5" fill="#2b2b3a"/><circle cx="97" cy="118.5" r="2.6" fill="#2b2b3a"/><path d="M101 122 l-2 4 M104 123 l0 3 M107 122 l2 4" stroke-width="1" fill="none"/></g><g transform="translate(126 126) scale(1.7) translate(-126 -126)" stroke-width="1.1"><ellipse cx="126" cy="120" rx="6" ry="3.5" fill="#2b2b3a"/><circle cx="119" cy="118.5" r="2.6" fill="#2b2b3a"/><path d="M123 122 l-2 4 M126 123 l0 3 M129 122 l2 4" stroke-width="1" fill="none"/></g><g transform="translate(148 126) scale(1.7) translate(-148 -126)" stroke-width="1.1"><ellipse cx="148" cy="120" rx="6" ry="3.5" fill="#2b2b3a"/><circle cx="141" cy="118.5" r="2.6" fill="#2b2b3a"/><path d="M145 122 l-2 4 M148 123 l0 3 M151 122 l2 4" stroke-width="1" fill="none"/></g>' +''  +
+    '<circle cx="180" cy="114" r="11" fill="#ffb3c6"/><path d="M52 126 Q70 108 88 126z" fill="#c58b4e"/>',
+    T(36, 88, 12, "一只：", "middle") + T(36, 102, 12, "规则很简单", "middle") + T(132, 92, 13, "一群：整条路线", "middle") + T(100, 137, 12, "没人指挥", "middle"));
 })();

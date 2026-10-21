@@ -11,6 +11,7 @@ ILLUS_EN_ADD({
 "t": [
 "Rock",
 "Paper",
+"Scissors",
 "Nobody is strongest"
 ]
 },
@@ -164,7 +165,7 @@ ILLUS_EN_ADD({
 "t": [
 "99 ordinary people",
 "Billionaire",
-"Mean is high, nobody is average"
+"{y=-4}High mean, nobody typical"
 ]
 },
 "c15_pareto": {

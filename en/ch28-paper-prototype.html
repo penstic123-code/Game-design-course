@@ -1,0 +1,611 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Chapter 28 Hands-On 1: The Paper Prototype Workshop</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+  .field{margin:10px 0}
+  .field label{font-family:var(--hand);font-size:1.3rem;display:block}
+  .row{display:flex;flex-wrap:wrap;gap:12px}
+  .row>div{flex:1;min-width:150px}
+  select,input[type=number]{font:inherit;border:3px solid var(--ink);border-radius:10px 18px 12px 16px;padding:6px 10px;background:#fffef7;width:100%}
+  pre.out{white-space:pre-wrap;font-family:var(--body);font-size:1rem;line-height:1.7;margin:0;background:#fffef7;border:2.5px dashed var(--ink);border-radius:12px;padding:10px 14px}
+  #sheet{display:grid;gap:0;margin:10px 0;background:#fff}
+  #sheet.cards{grid-template-columns:repeat(3,1fr)}
+  #sheet.dice{grid-template-columns:repeat(3,1fr)}
+  .cell{border:2px dashed var(--ink);min-height:190px;padding:8px 10px;display:flex;flex-direction:column;gap:6px;background:#fff;transition:background .15s,outline-color .15s}
+  #sheet.dice .cell{min-height:130px}
+  .cell.hit{background:#ffe58a;outline:4px solid var(--ink);outline-offset:-4px}
+  .cell .ct{font-family:var(--hand);font-size:1.25rem;border-bottom:2px solid var(--ink);min-height:1.6em;outline:none}
+  .cell .cb{flex:1;font-size:.95rem;line-height:1.5;outline:none;min-height:3em;white-space:pre-wrap}
+  .cell .ct:focus,.cell .cb:focus{background:#fff7cf}
+  .cell .ct:empty::before{content:"Card name";color:#bbb}
+  .cell .cb:empty::before{content:"Click to write effect / numbers";color:#bbb}
+  .cell .face{font-family:var(--hand);font-size:1.3rem}
+  .rec{display:flex;gap:10px;align-items:flex-start;border:2.5px solid var(--ink);border-radius:12px 20px 12px 18px;padding:6px 12px;margin:8px 0;background:#fff}
+  .rec .x{margin-left:auto;flex:none}
+  .bar{display:flex;align-items:center;gap:8px;margin:4px 0}
+  .bar .b{height:18px;background:var(--orange);border:2px solid var(--ink);border-radius:8px;min-width:4px}
+  #c28hand{min-height:120px;display:flex;align-items:center;justify-content:center;margin:8px 0}
+  .c28card{width:200px;min-height:130px;border:3px solid var(--ink);border-radius:14px;background:#fff;padding:8px 12px;box-shadow:4px 5px 0 var(--ink);animation:c28flip .45s}
+  .c28card h4{margin:0 0 4px;font-family:var(--hand);font-size:1.4rem;font-weight:400;border-bottom:2px solid var(--ink)}
+  @keyframes c28flip{0%{transform:rotateY(90deg) scale(.8)}100%{transform:rotateY(0) scale(1)}}
+  .c28b{display:flex;align-items:center;gap:8px;margin:3px 0}
+  .c28b i{display:block;height:16px;background:var(--blue);border:2px solid var(--ink);border-radius:6px;min-width:2px}
+  #c28used{height:22px;border:3px solid var(--ink);border-radius:10px;background:#fff;overflow:hidden;margin:6px 0}
+  #c28used i{display:block;height:100%;width:0;background:var(--orange);transition:width .3s}
+  @media(max-width:700px){#sheet.cards,#sheet.dice{grid-template-columns:repeat(2,1fr)}}
+  @media print{
+    @page{margin:10mm}
+    body *{visibility:hidden}
+    body{background:#fff!important}
+    #sheet,#sheet *{visibility:visible}
+    #sheet{position:absolute;left:0;top:0;width:100%}
+    #sheet.cards,#sheet.dice{grid-template-columns:repeat(3,1fr)!important}
+    .cell{min-height:80mm;break-inside:avoid}
+    .cell.hit{background:#fff!important;outline:none}
+    #sheet.dice .cell{min-height:50mm}
+    .cell .ct:empty::before,.cell .cb:empty::before{content:""}
+  }
+</style>
+</head>
+<body data-ch="28">
+<main class="wrap">
+  <div class="hero">
+    <div class="txt">
+      <span class="badge">Chapter 28 · Hands-On</span>
+      <h1>The Paper Prototype Workshop</h1>
+      <p class="sub">A sheet of paper, a die and a few cards, and tonight you can be playing your own game.</p>
+    </div>
+    <svg viewBox="0 0 190 150" class="rough" aria-hidden="true">
+      <rect x="20" y="40" width="80" height="80" fill="#fff" stroke="#2b2b3a" stroke-width="4" transform="rotate(-5 60 80)"/>
+      <path d="M47 40v80M73 40v80M20 67h80M20 93h80" stroke="#2b2b3a" stroke-width="3" transform="rotate(-5 60 80)"/>
+      <rect x="115" y="60" width="50" height="50" rx="10" fill="#ffe58a" stroke="#2b2b3a" stroke-width="4" transform="rotate(12 140 85)"/>
+      <circle cx="130" cy="75" r="4" fill="#2b2b3a"/><circle cx="150" cy="95" r="4" fill="#2b2b3a"/><circle cx="140" cy="85" r="4" fill="#2b2b3a"/>
+    </svg>
+  </div>
+
+  <div class="goals"><span class="time">⏱ About 60 minutes (hands-on included)</span><h3>Learning goals</h3><ul><li>Explain where paper prototypes came from and what problem they solve, and use a 6-step process to make a paper prototype you can play tonight.</li><li>Use a component list, card and die-face templates and a playtest log to turn “I feel” into “I recorded.”</li><li>Explain why paper prototypes work (including the evolutionary function of play and the “curse of knowledge”), and know what they cannot verify.</li></ul></div>
+
+  <div class="sec"><span class="n">1</span><h2><span class="tag what">What it is</span>Don’t write code yet: six steps make one lap</h2></div>
+  <div class="withimg">
+    <span data-illus="c28_pretty"></span>
+    <div>
+      <p>Say you have an idea: on a 5×5 map, players dodge a cat to grab cheese. On Friday evening you eagerly get started and spend three evenings drawing beautiful illustrations for 30 cards, and even laminate them.</p>
+      <p>On Sunday you invite a friend to play, and before the first game is over, your friend asks: “After I draw this card, can I use it right away?” The designer is stunned, because the rules never said. The card-drawing rule doesn’t hold up, and 30 beautiful cards are already printed.</p>
+      <p>Three evenings of drawing, voided by one question in a minute. Had you written the card names in pencil on sticky notes, tearing one up and rewriting it would take ten seconds. A version made from the cheapest materials like this is a <span class="term" tabindex="0" data-def="Paper prototype: making a version of a game you can playtest on the spot with the simplest materials such as paper, cards, dice and tokens; no code, no polished art.">paper prototype</span>, and what it does is <b>find out as fast as possible whether “this play is any fun.”</b></p>
+    </div>
+  </div>
+  <aside class="cc-card" aria-label="Concept card: Paper Prototype">
+    <span class="cc-tag">Concept card</span>
+    <p class="cc-name"><span>Paper Prototype</span></p>
+    <p class="cc-en">Paper prototype</p>
+    <p class="cc-by">Marc Rettig · <i>Prototyping for Tiny Fingers</i> (1994) introduced paper interface prototypes; Carolyn Snyder · <i>Paper Prototyping</i> (2003) systematized the method</p>
+    <p class="cc-def">Use the cheapest materials, such as paper, cards and dice, to make a version that can be played on the spot, first answering “is this play any fun,” and only then deciding whether to write code.</p>
+    <p class="cc-eg"><span class="cc-k">Example</span>Thirty card names written on sticky notes: the first game shows that “can a drawn card be used at once” was never settled, and tearing one up to rewrite it takes ten seconds.</p>
+  </aside>
+  <p>The method is simple. Six steps make one lap, and after the changes you go around again:</p>
+  <div class="card">
+    <svg viewBox="0 0 760 360" width="100%" role="img" aria-label="Paper prototype in six steps: choose a theme and a one-sentence play, list the components, write a one-page rulebook, play alone, find people to playtest and record, then revise and go back to step 4 for another lap">
+      <g class="rough" stroke="#2b2b3a" stroke-width="4">
+        <rect x="20" y="20" width="210" height="84" rx="18" fill="#ffe58a"/>
+        <rect x="280" y="20" width="210" height="84" rx="18" fill="#a8dcf0"/>
+        <rect x="540" y="20" width="210" height="84" rx="18" fill="#ffb3c6"/>
+        <rect x="540" y="200" width="210" height="84" rx="18" fill="#b6e8a8"/>
+        <rect x="280" y="200" width="210" height="84" rx="18" fill="#d8c8ff"/>
+        <rect x="20" y="200" width="210" height="84" rx="18" fill="#ffc078"/>
+        <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M240 62H270"/><path d="M500 62H530"/>
+          <path d="M645 114V190"/>
+          <path d="M530 242H500"/><path d="M270 242H240"/>
+          <path d="M125 294V316H645V300" stroke-dasharray="8 8"/>
+        </g>
+      </g>
+      <g fill="#2b2b3a" stroke="#2b2b3a" stroke-width="2" stroke-linejoin="round">
+        <path d="M272 62 L256 53 L256 71z"/><path d="M532 62 L516 53 L516 71z"/><path d="M645 192 L636 176 L654 176z"/>
+        <path d="M498 242 L514 233 L514 251z"/><path d="M238 242 L254 233 L254 251z"/><path d="M645 288 L636 304 L654 304z"/>
+      </g>
+      <g font-size="21" text-anchor="middle">
+        <text x="125" y="54">① Choose a theme</text><text x="125" y="84">One-sentence play</text>
+        <text x="385" y="54">② List components</text><text x="385" y="84">Board, cards, dice</text>
+        <text x="645" y="54">③ Write 1 page of rules</text><text x="645" y="84">Explained in 3 minutes</text>
+        <text x="645" y="234">④ Play alone</text><text x="645" y="264">One person plays everyone</text>
+        <text x="385" y="234">⑤ Find playtesters</text><text x="385" y="264">Shut up, only record</text>
+        <text x="125" y="234">⑥ Revise</text><text x="125" y="264">Change one thing at a time</text>
+        <text x="385" y="346" font-size="18">After the change, go back to ④ and play another lap</text>
+      </g>
+    </svg>
+  </div>
+  <div class="grid3">
+    <div class="card y mini"><div class="ico">🎯</div><h3>One-sentence play</h3><p>“On a 5×5 map, dodge your opponent and be first to take 3 pieces of cheese.” If you can’t say it, you haven’t thought it through yet.</p></div>
+    <div class="card b mini"><div class="ico">🧑‍🎮</div><h3>Play it yourself first</h3><p>Playing alone already catches quite a few holes: rules that contradict each other, or a step that can’t be carried out.</p></div>
+    <div class="card p mini"><div class="ico">📝</div><h3>It only counts if it’s written down</h3><p>Memory flatters <span class="term" tabindex="0" data-def="Having real players (not the designer) play your prototype while you observe and record.">playtests</span>. Recording in a table is how you see the problems that keep coming back.</p></div>
+  </div>
+
+  <div class="sec"><span class="n">2</span><h2><span class="tag what">What it is</span>Fidelity: rough enough to “just answer the question”</h2></div>
+  <p>“Paper” is only one material; the yardstick for a prototype is <span class="term" tabindex="0" data-def="Fidelity: how closely a prototype resembles the final product: the closer it is, the higher the fidelity, the more it costs to make and the harder it is to change.">fidelity</span>. The more it looks like the finished thing, the more it can verify, but every change also costs more. The chart below lays out that exchange:</p>
+  <aside class="cc-card" aria-label="Concept card: Prototype Fidelity">
+    <span class="cc-tag">Concept card</span>
+    <p class="cc-name"><span>Prototype Fidelity</span></p>
+    <p class="cc-en">Prototype fidelity (lo-fi / hi-fi)</p>
+    <p class="cc-by">Marc Rettig · <i>Prototyping for Tiny Fingers</i> (1994) argued for making low-fidelity (lo-fi) prototypes first, since high-fidelity (hi-fi) ones are slow to make and hard to change (whether he coined “lo-fi” could not be confirmed)</p>
+    <p class="cc-def">How closely a prototype resembles the final product. The closer it is, the more it can verify, and the more it costs to make and to change a version.</p>
+    <p class="cc-eg"><span class="cc-k">Example</span>To know whether the rules hold up, paper is enough; to know whether jumping feels good, paper cannot answer, and you need a running grey-box digital version.</p>
+  </aside>
+  <div class="card">
+    <svg viewBox="0 0 760 330" width="100%" role="img" aria-label="Bar chart (illustrative): paper slips, spreadsheet, digital graybox, polished product; the time to make one change grows from minutes to days">
+      <g class="rough" stroke="#2b2b3a" stroke-width="4">
+        <path d="M30 250H740" fill="none"/>
+        <rect x="60" y="220" width="130" height="30" fill="#ffe58a"/>
+        <rect x="235" y="180" width="130" height="70" fill="#a8dcf0"/>
+        <rect x="410" y="130" width="130" height="120" fill="#ffb3c6"/>
+        <rect x="585" y="70" width="130" height="180" fill="#b6e8a8"/>
+      </g>
+      <g font-size="19" text-anchor="middle">
+        <text x="125" y="208">Minutes</text><text x="300" y="168">Tens of minutes</text><text x="475" y="118">Hours at least</text><text x="650" y="58">Days at least</text>
+        <text x="125" y="282">📄 Paper</text><text x="300" y="282">📊 Sheet</text><text x="475" y="282">🟦 Digital graybox</text><text x="650" y="282">✨ Polished</text>
+        <text x="40" y="26" text-anchor="start" font-size="18">How long one change takes (illustrative, not measured)</text>
+        <text x="125" y="306" font-size="15">Check rules, choices</text><text x="300" y="306" font-size="15">Work out numbers, economy</text><text x="475" y="306" font-size="15">Check feel, pacing</text><text x="650" y="306" font-size="15">Check visuals, mood</text>
+      </g>
+    </svg>
+  </div>
+  <p>So the rule of thumb is: <b>use the lowest level that can just answer the question</b>. To know whether the rules hold up, paper is enough. To work out numbers and economy, one spreadsheet is enough: lay the numbers out in rows and columns, and changing one cell shows the consequences. To know whether jumping feels good, you have to move to the right. Of the five examples below, the first three are the right use and the last two are mismatches:</p>
+  <div class="eg" data-ic="🃏"><span data-illus="c28_magic"></span><div class="egt"><b>The Alpha playtest version of <i>Magic: The Gathering</i></b>: the 120 cards mentioned in the earlier discussion of iteration were a handmade paper prototype. What needed checking was “is drawing cards and dueling fun,” and paper cards were enough; changing a card took one pen.</div></div>
+  <div class="eg" data-ic="🎭"><span data-illus="c28_armello"></span><div class="egt"><b>The paper iteration of <i>Armello</i></b>: digital games start from paper too. As said earlier, its team iterated on paper for several months, with “hosts” working out the hidden rules for the computer. What the digital version would have to write, human brains carried first.</div></div>
+  <div class="eg" data-ic="🛋️"><span data-illus="c28_sofa"></span><div class="egt"><b>A cardboard sofa when renovating</b>: cut cardboard to the size of the sofa, set it down on the floor plan, and see how wide the aisle is left. If it doesn’t fit, move it, at no cost. The principle is the same as a game prototype.</div></div>
+  <div class="eg bad" data-ic="🎨"><span data-illus="c28_pretty2"></span><div class="egt"><b>Counterexample: drawing beautiful card faces first</b> (hypothetical): spend three evenings illustrating and laminating 30 cards, and only at the first playtest find the draw rule doesn’t work. The art is wasted, and you can’t bear to change the rules. A paper prototype should be so rough that “tearing it up doesn’t hurt.”</div></div>
+  <div class="eg bad" data-ic="🦘"><span data-illus="c28_jump"></span><div class="egt"><b>Counterexample: using paper to check jump feel</b>: paper has no real-time hand-eye coordination, so a question like “does the jump feel good” can’t be answered by paper; get a running digital prototype as soon as possible. With the wrong tool, no amount of roughness helps.</div></div>
+  <p class="src">Sources:<br>Richard Garfield · his own account of how the Alpha version of <i>Magic</i> was made (<a href="https://magic.wizards.com/en/news/making-magic/creation-magic-gathering-2013-03-12" target="_blank" rel="noopener">Garfield’s own account</a>).<br>Armello developer · 2015 · talks about the paper-iteration stage in a PAX AUS interview (<a href="https://gamecloud.net.au/features/interviews/paxaus-2015-interview-with-armello-developer-jason-bakker" target="_blank" rel="noopener">interview with an Armello developer</a>).</p>
+
+  <div class="sec"><span class="n">3</span><h2><span class="tag origin">Invention story</span>Why did people start “with paper first”?</h2></div>
+  <p>First experience for yourself the trouble it solves. <b>Suppose you have 6 hours to validate a new game, and every step uses up time.</b> Click the buttons to spend time and see how many rounds of “change rules → playtest” you can finish. (The times are illustrative numbers meant to compare orders of magnitude, not measured.)</p>
+  <div class="card b no-print">
+    <div id="c28used"><i></i></div>
+    <div class="msg" id="c28bmsg">Budget 6 hours, 0 hours used.</div>
+    <button class="btn" data-a="paper">✂️ Change rules on paper and playtest one round (0.5 hours)</button>
+    <button class="btn alt" data-a="code">💻 Change rules in code and playtest one round (3 hours)</button>
+    <button class="btn pink" data-a="art">🎨 Draw the card faces beautifully first (2 hours)</button>
+    <button class="btn green" id="c28breset">↺ Restart</button>
+    <div>
+      <span class="stat">Playtest rounds <b id="c28r">0</b></span>
+      <span class="stat">Prettiness <b id="c28v">0</b></span>
+      <span class="stat">Rule problems found <b id="c28q">0</b></span>
+    </div>
+    <p class="small">Think: with the same 6 hours, where does spending all the time teach you the most about whether “this play works”? (“Rule problems found” counts 1 per playtest round, also illustrative.)</p>
+  </div>
+  <div class="sticky no-print" id="c28t0">Try it: click only “change rules on paper” until the 6 hours are used up, and count how many rounds you played. Then restart, mix clicks of “change rules in code” and “draw card faces,” and compare the number of rounds. <b id="c28t0ok"></b></div>
+
+  <div class="story">
+    <h3>From the board-game table to the phone screen, the same trouble</h3>
+    <div class="withimg rev">
+      <span data-illus="c28_sixhrs"></span>
+      <div>
+        <p>Making a game or piece of software that runs is expensive, and the two questions you most want answered, “are the rules fun” and “can people read the interface,” can’t be answered before it is made. If you find out it’s wrong after finishing, a change costs the most.</p>
+        <p>The earliest method came from board games, which were always paper, cards and dice; people who design them naturally use handmade prototypes. <i>Magic: The Gathering</i> is a case: according to Garfield, the 1991 Alpha was handmade cards, friends’ playtests pushed changes round after round, and the game was released in 1993.</p>
+        <p>Software interface design arrived at the same method by another path, the “low-fidelity prototype.” In April 1994, Marc Rettig published “Prototyping for Tiny Fingers” in <i>Communications of the ACM</i>. The article describes how to make interface prototypes out of paper for real users to try, which the author called lo-fi prototypes. According to the abstract, the article also suggested assigning roles during testing: a greeter, a facilitator, someone playing the “computer,” and an observer who takes notes. In 2003 Carolyn Snyder published the book <i>Paper Prototyping</i>, which systematized the approach.</p>
+      </div>
+    </div>
+    <p>Prototypes in physical form have a widely told story too. It is reported that Palm’s Jeff Hawkins once whittled a piece of wood to the size of the handheld device he imagined, carried it in his shirt pocket, and “pretended” to take notes on it with a pen to get a feel for holding it. Donna Dubinsky recalled that he would pretend to take notes this way in meetings. How long he carried it is reported differently by different sources (from a week to several months). The Computer History Museum (CHM) holds a Palm prototype from about 1995.</p>
+    <p>The same thought lies behind all of these: what has to be checked is the <b>idea</b>, not the <b>quality of the making</b>. Strip away everything that doesn’t affect “rules and choices,” and changing a rule takes one pen and one minute, so limited time buys more rounds of playtesting. Digital game teams later borrowed this too, as with Armello mentioned earlier.</p>
+    <div class="card">
+      <svg viewBox="0 0 760 290" width="100%" role="img" aria-label="Evolution diagram: the hand-made prototype tradition of board games and the low-fidelity prototypes of software interfaces, two lines that merge into the practice of digital game teams also testing on paper first">
+        <g class="rough" stroke="#2b2b3a" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="15" y="20" width="300" height="84" rx="16" fill="#ffe58a"/><rect x="15" y="150" width="300" height="84" rx="16" fill="#a8dcf0"/>
+          <rect x="440" y="80" width="305" height="84" rx="16" fill="#b6e8a8"/>
+          <path d="M325 62Q390 62 436 112"/><path d="M325 192Q390 192 436 132"/>
+        </g>
+        <g font-size="19" text-anchor="middle">
+          <text x="165" y="54">Board games: always paper, cards, dice</text><text x="165" y="84" font-size="17">E.g. <i>Magic</i> Alpha (1991)</text>
+          <text x="165" y="184">Software interfaces: found unreadable only after building</text><text x="165" y="214" font-size="17">E.g. lo-fi prototypes (1994)</text>
+          <text x="592" y="114">Digital game teams test on paper first too</text><text x="592" y="144" font-size="17">E.g. Armello’s paper iteration</text>
+          <text x="380" y="272" font-size="17">The shared problem: build first, change later, too expensive</text>
+        </g>
+      </svg>
+    </div>
+    <div class="timeline">
+      <div class="ev hasimg"><span data-illus="c28_t1991"></span><div><b class="yr">1991</b> Garfield’s handmade Alpha playtest version of <i>Magic: The Gathering</i>: cut-out cards, changed version by version over the next rounds of play.</div></div>
+      <div class="ev hasimg"><span data-illus="c28_t1993"></span><div><b class="yr">1993</b> <i>Magic: The Gathering</i> is released, and the playtest version becomes a product.</div></div>
+      <div class="ev hasimg"><span data-illus="c28_rettig"></span><div><b class="yr">April 1994</b> Rettig publishes “Prototyping for Tiny Fingers” in CACM: users tap an interface on paper while someone plays the “computer” and swaps pages.</div></div>
+      <div class="ev hasimg"><span data-illus="c28_palm"></span><div><b class="yr">Mid-1990s</b> The story of the Palm wooden block: pretend first that it is a handheld computer (CHM holds a prototype from about 1995).</div></div>
+      <div class="ev hasimg"><span data-illus="c28_book"></span><div><b class="yr">2003</b> Snyder’s <i>Paper Prototyping</i> is published, organizing the practice into a method.</div></div>
+    </div>
+    <p class="src">Sources:<br>Richard Garfield · 1994 article (reprinted 2013) · recalls how the Alpha version of <i>Magic</i> was made (<a href="https://magic.wizards.com/en/news/making-magic/creation-magic-gathering-2013-03-12" target="_blank" rel="noopener">The Creation of Magic: The Gathering</a>).<br>Marc Rettig · 1994 · introduced interface prototypes made of paper and tried by real users (CACM 37(4), <a href="https://dx.doi.org/10.1145/175276.175288" target="_blank" rel="noopener">DOI 10.1145/175276.175288</a>; only the abstract and secondary summaries were read; role details come from the <a href="https://acawiki.org/Prototyping_for_Tiny_Fingers" target="_blank" rel="noopener">AcaWiki summary</a>).<br>Carolyn Snyder · 2003 · published <i>Paper Prototyping</i>, which systematized the approach (<a href="https://www.oreilly.com/library/view/paper-prototyping/9781558608702" target="_blank" rel="noopener">book page</a>).<br>The Hawkins block: <a href="https://www.redhat.com/en/command-line-heroes/season-4/smarter-phones" target="_blank" rel="noopener">Red Hat Command Line Heroes</a> and the <a href="https://computerhistory.org/collections/catalog/102716262" target="_blank" rel="noopener">CHM collection page</a> (industry anecdote; details differ somewhat across sources).</p>
+  </div>
+
+  <div class="sec"><span class="n">4</span><h2><span class="tag why">Why it holds</span>Why does a “rough” prototype work better?</h2></div>
+  <div class="why-box"><h3>Roughness makes changes cheap, and puts the judgment on the rules</h3>
+    <ul>
+      <li><b>Cheap trial and error:</b> paper can be torn, scribbled on and rewritten, a new version costs almost nothing, so people dare to change a lot and are more willing to throw things out. This is of a piece with the iteration logic of “build one, playtest, change.”</li>
+      <li><b>Physical feel lowers the barrier to expressing ideas:</b> people who can’t program or draw can still make it. Cards are held in the hand and tokens moved directly, so others can join at a glance and propose on the spot “how about changing it this way?”</li>
+      <li><b>Attention goes to rules, not art:</b> a prototype is obviously a draft, so playtesters naturally comment on “are the rules clear, is it fun,” not on whether the colors look nice. The designer, too, is less likely to hesitate to change something because it looks polished. This is the common thinking behind a <span class="term" tabindex="0" data-def="Low-fidelity prototype: an early prototype with only basic structure and function and a rough appearance, used to validate the idea itself first.">low-fidelity prototype</span>.</li>
+    </ul>
+    <p>The boundary: paper suits checking rules and choices, and can’t check control feel, visual presentation or real-time rhythm; those have to be tried in a digital prototype.</p>
+    <p class="src">Source of the principle:<br>Marc Rettig · 1994 and Carolyn Snyder · 2003 · represent the low-fidelity prototype approach, which follows the idea of <span class="term" tabindex="0" data-def="Iteration: repeating the cycle of “make a version → playtest → revise” several times over.">iteration</span>.<br>“A rough prototype focuses feedback on the design itself” is a common claim in this field; no quantitative experimental data was found, so no numbers are cited.</p></div>
+
+  <div class="sec"><span class="n">5</span><h2><span class="tag why">Why it holds</span>Two more basic ideas: play, and the “curse of knowledge”</h2></div>
+  <div class="withimg">
+    <span data-illus="c28_rehearse"></span>
+    <div>
+      <p>Remember kittens pouncing on balls of yarn and lion cubs wrestling? Play looks like wasted effort, and biologists have long wanted to work out what it is for.</p>
+      <p>In 2001 Špinka, Newberry and Bekoff put forward an influential hypothesis: <b>play is “training for the unexpected.”</b> When animals play they deliberately put themselves out of control: a lion cub rolls over to bare its belly, the chaser and the chased swap roles. In an environment with no consequences, they can practice again and again recovering from sudden loss of control.</p>
+      <p>A paper prototype is the designer’s “play.” On a tabletop with no consequences, deliberately put the rules where they might go wrong, and let them stumble a few times. A fall on paper doesn’t hurt; a fall after release does.
+    </div>
+  </div>
+  <div class="why-box"><h3>Principle one: play is “training for the unexpected”</h3>
+    <p>The earlier discussion of play covered the “practice” account, in which play is practice of one fixed skill. This hypothesis is its upgrade: what is practiced is <b>dealing with what you didn’t foresee</b>. This is exactly where a paper prototype is valuable: the designer doesn’t know what playtesters will do, and the prototype lets the surprise happen in a cheap place.</p>
+    <p>Controversy: this is an influential hypothesis, and it has no settled conclusion. Later reviews note that many of its specific predictions have not been adequately tested. Play may also have more than one function; the “play that doesn’t quite fit” mentioned earlier is one example.</p>
+    <p class="src">Source of the principle:<br>Špinka, Newberry and Bekoff · 2001 · proposed that play is training for dealing with the unexpected (Mammalian play: training for the unexpected. <i>Quarterly Review of Biology</i>, 76(2), 141–168. <a href="https://pubmed.ncbi.nlm.nih.gov/11409050/" target="_blank" rel="noopener">PubMed</a>).</p></div>
+
+  <aside class="cc-card" aria-label="Concept card: Play as Training for the Unexpected">
+    <span class="cc-tag">Concept card</span>
+    <p class="cc-name"><span>Play as Training for the Unexpected</span></p>
+    <p class="cc-en">Play as training for the unexpected</p>
+    <p class="cc-by">Marek Špinka, Ruth C. Newberry, Marc Bekoff · 2001, <i>Mammalian play: training for the unexpected</i></p>
+    <p class="cc-def">When animals play they deliberately put themselves out of control and then recover, practicing in an environment with no consequences how to deal with what they didn’t foresee.</p>
+    <p class="cc-eg"><span class="cc-k">Example</span>A lion cub rolls over to bare its belly while chaser and chased swap roles. Putting the rules on purpose where they might go wrong in a paper prototype is the designer’s version of the same practice.</p>
+  </aside>
+
+  <div class="withimg rev">
+    <span data-illus="c28_curse"></span>
+    <div>
+      <p>Another trouble lies in the designer: “I think it’s fun” doesn’t count, because the designer knows the game too well. When reading the rules, the mind automatically fills in everything left unwritten.</p>
+      <p>This has a classic experimental version. In 1990 Elizabeth Newton, a Stanford graduate student, had some people “tap on a table” the rhythm of a song everyone knows, and others guess it. The tappers predicted beforehand that about half of the listeners would get it. In the result only 3 of 120 songs were guessed, about 2.5%.</p>
+      <p>The tapper hears the whole song in their head, while the listener hears only a string of thuds. Between designer and playtester lies just such a gap.</p>
+    </div>
+  </div>
+  <div class="why-box"><h3>Principle two: the curse of knowledge, so someone else must play</h3>
+    <p>This is the <span class="term" tabindex="0" data-def="Curse of knowledge: once you know something, it is hard to imagine what it is like not to know it, and you overestimate how much others understand.">curse of knowledge</span> covered earlier. The designer is not careless; once you know, it is hard to “forget.” So to test whether the rules really can be “written on one page and explained in three minutes,” don’t read them once yourself; have someone who doesn’t know read them once.</p>
+    <p>The numbers come from Newton’s doctoral research and were spread widely by <i>Made to Stick</i> (the Heath brothers, 2007). The sample is small; the experiment shows a direction and should not be taken as an exact ratio.</p>
+    <p><b>Check it yourself (5 minutes):</b> find a friend, tap on a table the rhythms of three songs you both know, and have them guess. Before tapping, write down how many you expect them to get, then compare the result. Then test a game the same way: show them nothing, explain the rules only by speech, and count how many rules they missed hearing.</p>
+    <p class="src">Sources:<br>Elizabeth Newton · 1990 · Stanford doctoral dissertation; some people tapped out song rhythms and others guessed, with a hit rate of about 2.5%; retold in Heath &amp; Heath, <i>Made to Stick</i> (2007).<br>Camerer, Loewenstein and Weber · 1989 · the term “curse of knowledge” first appears in their paper, whose experiments show that people who know something find it hard to ignore what they know.</p></div>
+
+  <div class="sec"><span class="n">6</span><h2><span class="tag how">How to use it</span>Your paper prototype workbench</h2></div>
+  <p>Three tools: <b>① Component list</b> (what to prepare) → <b>② Card and die-face table</b> (the signature one: write, draw, roll directly) → <b>③ Playtest log</b> (what to record afterward). All data is stored on this device.</p>
+
+  <h3>① Component list and rules template (supporting)</h3>
+  <p>Write down your idea, tick the components you need, click generate, and get a <b>printable list plus a one-page rules template</b>.</p>
+  <div class="board">
+    <div class="field"><label>🎮 Game name</label><input type="text" id="g_name" data-save="ch20name" placeholder="e.g. Great Cheese Escape"></div>
+    <div class="field"><label>🎯 One-sentence play</label><input type="text" id="g_pitch" data-save="ch20pitch" placeholder="e.g. Dodge the cat on a 5×5 map; first to take 3 pieces of cheese wins"></div>
+    <div class="row">
+      <div class="field"><label>👥 Players</label><select id="g_players"><option>1</option><option selected>2</option><option>3</option><option>4</option><option>5-6</option></select></div>
+      <div class="field"><label>⏱️ Estimated game length</label><select id="g_time"><option>5</option><option selected>10</option><option>15</option><option>20</option><option>30</option></select></div>
+    </div>
+    <div class="field"><label>🧩 Which components do you need? (tap to pick)</label><div id="g_chips"></div></div>
+    <button class="btn" id="g_gen">✨ Generate list and rules template</button>
+  </div>
+  <div class="card y" id="g_card" style="display:none">
+    <h3 id="g_title"></h3>
+    <pre class="out" id="g_out"></pre>
+    <button class="btn alt" id="g_copy">📋 Copy text</button>
+  </div>
+  <div class="sticky no-print" id="c28t1">Try it: write a game name and a one-sentence play, click “Generate,” and let the page list the checklist. <b id="c28t1ok"></b></div>
+
+  <h3>② Card and die-face table (signature)</h3>
+  <p>Click any cell and type directly, and once written, <b>draw a card or roll the die right away</b> to see how it “plays” in your hand. The card table draws cards (and reshuffles when they run out), and the die-face table rolls a die and counts how often each face appears, which is probability. “Print” outputs only the table below (cut it up and you have cards; die faces can be stuck onto a blank die or small paper cubes).</p>
+  <div class="no-print">
+    <button class="btn" id="m_cards">🃏 Cards 3×3 (9 cards)</button>
+    <button class="btn alt" id="m_dice">🎲 Die faces, 6 cells</button>
+    <button class="btn pink" id="m_print">🖨️ Print this table</button>
+    <button class="btn green" id="m_clear">🧹 Clear this table</button>
+  </div>
+  <div id="sheet" class="cards"></div>
+  <div class="card y no-print">
+    <button class="btn" id="m_play">🃏 Draw one</button>
+    <button class="btn alt" id="m_shuffle">🔀 Shuffle</button>
+    <span class="stat" id="m_left"></span>
+    <div id="c28hand" aria-live="polite"></div>
+    <div id="c28tally"></div>
+    <div class="msg" id="c28pmsg">Write a few cards in the cells above first, then try drawing.</div>
+  </div>
+  <div class="sticky no-print" id="c28t2">Try it: fill in 3 cards (or 3 die faces), draw or roll at least 3 times, and notice which one reads most awkwardly. <b id="c28t2ok"></b></div>
+  <p class="small">Tip: a die needn’t be limited to 1 to 6 pips. Let the 6 faces stand for “advance / draw a card / attack / defend / blank / double,” and one die becomes a little system. Here <span class="term" tabindex="0" data-def="How likely something is to happen; for example each face of a fair six-sided die comes up with probability about 1/6.">probability</span> is something you can see with your own eyes after a few dozen rolls.</p>
+
+  <h3>③ Playtest log (supporting)</h3>
+  <p>After every playtest, fill in one entry. After several entries, the page will tell you <b>which problem comes up most</b>, so you can fix it first.</p>
+  <div class="board">
+    <div class="row">
+      <div class="field"><label>⏱️ How many minutes did this game take</label><input type="number" id="r_min" min="1" max="240" value="10"></div>
+    </div>
+    <div class="field"><label>🧱 Where players got stuck or confused (multiple choice)</label><div id="r_tags"></div></div>
+    <div class="field"><label>😂 Laughs or excitement (where did players laugh or shout?)</label><input type="text" id="r_fun" placeholder="e.g. Someone drew “swap places” and the whole table screamed"></div>
+    <button class="btn" id="r_add">+ Add this game</button>
+    <button class="btn green" id="r_demo">🧪 Fill in sample data</button>
+    <button class="btn pink" id="r_reset">Clear the log</button>
+  </div>
+  <div id="r_list"></div>
+  <div class="card b" id="r_sum"></div>
+  <div class="sticky no-print" id="c28t3">Try it: add (or pad with sample data) 3 game records and see who ranks first in “times each problem came up.” <b id="c28t3ok"></b></div>
+
+  <div class="misc">
+    <h3>Common misconceptions</h3>
+    <ul>
+      <li><b>“A prototype has to look good”</b>: looking good distracts, and also makes you reluctant to change. Get the rules and choices right first.</li>
+      <li><b>“Start by making the full game”</b>: make the smallest playable game first. If the rules don’t fit on one page, they are too complicated.</li>
+      <li><b>“It’s enough that I find it fun”</b>: the designer knows the rules best, so can’t see where beginners get stuck (the curse of knowledge). Get others to play it.</li>
+      <li><b>“Changing many things at once makes faster progress”</b>: change too much and you won’t know which change did the work.</li>
+      <li><b>“A paper prototype can verify everything”</b>: it can’t verify feel or real-time rhythm.</li>
+    </ul>
+  </div>
+
+  <div class="reflect">
+    <h3>Something to think about</h3>
+    <p><b>In your prototype, which part do you least want to change? Why?</b> If a playtester says it isn’t fun, do you doubt the rules first, or the playtester?</p>
+    <textarea rows="3" data-save="ch24reflect" placeholder="e.g. I can’t bear to change that ‘ultimate card’, but all three people said it’s too strong…"></textarea>
+    <p class="small">A contested question: does low fidelity always get more “honest feedback” than high fidelity? Some researchers and practitioners think paper prototypes make testers bolder in criticizing; others think that being too rough makes it hard for testers to imagine the real experience. It depends on what you want to verify.</p>
+  </div>
+
+  <div class="key">
+    <h3>Key points</h3>
+    <ul>
+      <li>A prototype exists for <b>learning</b>, and the rougher the better: paper, dice and sticky notes are enough; the benefit of roughness is that changes are affordable and judgment lands on the rules.</li>
+      <li>The paper prototype comes from the handmade practice of board games and the lo-fi prototypes of software interfaces: trading time for more rounds of playtests.</li>
+      <li>Play is practicing, in a safe environment, how to deal with the unexpected (Špinka et al., 2001), and the paper prototype lets the design’s “surprises” happen in a cheap place.</li>
+      <li>The designer is trapped by the “curse of knowledge,” so play alone first, then find people who don’t know. In playtests, shut up, only watch and record, and change one thing at a time.</li>
+    </ul>
+  </div>
+  <div class="tldr">A paper prototype moves the design’s “falls” to a place where they don’t hurt, at the lowest cost. It isn’t pretty, which is exactly why it works.</div>
+
+  <div class="sec"><span class="n">7</span><h2><span class="tag think">Practice</span>Quiz</h2></div>
+  <div id="quiz"></div>
+
+  <div class="sec"><span class="n">8</span><h2><span class="tag think">Your design</span>Your result</h2></div>
+  <p>Here is a <b>playtest summary</b> generated from the playtest log above. Click “Save” and it is stored on this device, still there next time you open it.</p>
+  <div class="card g">
+    <h3>📊 My playtest summary</h3>
+    <pre class="out" id="s_out">(No records yet; add a few games above first.)</pre>
+    <div class="field"><label>🔧 The one thing I will change in the next version:</label><input type="text" id="s_next" data-save="ch20next" placeholder="e.g. Change drawing to a fixed 2 cards per turn"></div>
+    <button class="btn" id="s_save">💾 Save summary</button>
+    <button class="btn alt" id="s_copy">📋 Copy</button>
+    <div class="small" id="s_saved"></div>
+  </div>
+
+  <div class="sticky no-print">Print the prototype and find one person to play it tonight. <b>The first version not being fun is normal; recording why is progress.</b></div>
+</main>
+<script src="../js/illus.js"></script>
+<script src="../js/illus-ch28.js"></script>
+<script src="../js/en/illus.js"></script>
+<script src="../js/en/illus-lib.js"></script>
+<script src="../js/en/illus-ch28.js"></script>
+<script src="../js/common.js"></script>
+<script>
+const $ = id => document.getElementById(id);
+const mark = (id, m) => { const e = $(id + "ok"); if (e) e.textContent = m ? " ✅ " + m : ""; };
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const load = (k, d) => { try { const v = JSON.parse(GD.store.get(k)); return v == null ? d : v; } catch (e) { return d; } };
+const save = (k, v) => GD.store.set(k, JSON.stringify(v));
+function copyText(text, btn) {
+  const done = () => { const o = btn.dataset.o || btn.textContent; btn.dataset.o = o; btn.textContent = "✔ Copied"; setTimeout(() => (btn.textContent = o), 1500); };
+  const fallback = () => {
+    const ta = document.createElement("textarea"); ta.value = text; ta.style.position = "fixed"; ta.style.opacity = "0";
+    document.body.appendChild(ta); ta.select();
+    try { document.execCommand("copy"); done(); } catch (e) { btn.textContent = "Select and copy manually"; }
+    ta.remove();
+  };
+  if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done, fallback); else fallback();
+}
+
+(function () {
+  const COST = { paper: 0.5, code: 3, art: 2 };
+  let used, rounds, vis, found;
+  function upd(msg) {
+    $("c28used").firstChild.style.width = Math.min(100, used / 6 * 100) + "%";
+    $("c28r").textContent = rounds; $("c28v").textContent = vis; $("c28q").textContent = found;
+    $("c28bmsg").textContent = msg || ("Budget 6 hours, " + used + " hours used.");
+    document.querySelectorAll("[data-a]").forEach(b => (b.disabled = used + COST[b.dataset.a] > 6 + 1e-9));
+    mark("c28t0", used >= 5.5 && vis === 0 && rounds >= 11 ? "Done: all on paper, ran " + rounds + " rounds. In the same time, writing code would only fit 2 rounds." : "");
+  }
+  function reset() { used = 0; rounds = 0; vis = 0; found = 0; upd("Budget 6 hours, 0 hours used. Click a button to spend time."); }
+  document.querySelectorAll("[data-a]").forEach(b => (b.onclick = () => {
+    const a = b.dataset.a; used += COST[a];
+    if (a === "art") { vis++; upd("The card faces look nicer… but you learned nothing more about whether “the rules work.” " + used + " hours used."); return; }
+    rounds++; found++;
+    let m = "Finished playtest round " + rounds + " : found one rule problem. " + used + " hours used.";
+    if (used >= 5.5) m = "Nearly all 6 hours used: you ran " + rounds + " rounds, prettiness " + vis + ". All on paper gives 12 rounds, all in code only 2 (illustrative).";
+    upd(m);
+  }));
+  $("c28breset").onclick = reset; reset();
+})();
+
+const COMPS = [
+  { id: "board", name: "🗺️ Board/map", line: "Board: a sheet of A4 paper, ruled into 5×5 cells (about 3 cm each), with terrain or numbers handwritten in the cells", rule: "Which cells on the map are special? (trap/reward/start/finish)" },
+  { id: "cards", name: "🃏 Cards", line: "Cards: 9–18, cut to business-card size (you can use the template in the previous section), stacked face down as a deck", rule: "How many cards per turn? What is the hand limit? What happens when the deck runs out?" },
+  { id: "dice", name: "🎲 Dice", line: "Dice: 1–2 six-sided dice (or a phone random-number generator, or a homemade die face)", rule: "When do you roll? How does the result affect actions? (How big is the luck element?)" },
+  { id: "token", name: "♟️ Tokens/pieces", line: "Tokens: 1 piece per player plus some counters (coins, buttons or erasers will do)", rule: "What do tokens stand for? (position/life/resources) How are they gained and lost?" },
+  { id: "score", name: "📋 Score sheet", line: "Score sheet: a sheet of paper and a pen, one column per player", rule: "How do you score? How many points to win?" },
+  { id: "timer", name: "⏲️ Timer", line: "Timer: a phone timer, limiting each turn to 30 seconds or the whole game’s length", rule: "What happens when time is up?" },
+  { id: "note", name: "📌 Sticky notes", line: "Sticky notes: a few, to cover or mark states (such as “frozen”)", rule: "Which states need temporary marking? For how many turns?" },
+];
+const picked = new Set(load("gdc-ch20-comps", ["board", "dice", "token"]));
+function drawChips() {
+  $("g_chips").innerHTML = COMPS.map(c => `<button type="button" class="chip${picked.has(c.id) ? " on" : ""}" data-id="${c.id}">${c.name}</button>`).join("");
+  $("g_chips").querySelectorAll(".chip").forEach(b => (b.onclick = () => {
+    const id = b.dataset.id; picked.has(id) ? picked.delete(id) : picked.add(id);
+    save("gdc-ch20-comps", [...picked]); b.classList.toggle("on");
+  }));
+}
+drawChips();
+function buildGen() {
+  const name = $("g_name").value.trim() || "(Untitled game)";
+  const pitch = $("g_pitch").value.trim() || "(Write in one sentence: what the players do in what scene, and how one wins)";
+  const list = COMPS.filter(c => picked.has(c.id));
+  const items = list.length ? list.map(c => "☐ " + c.line).join("\n") : "☐ (No components chosen yet; a purely verbal or pen-and-paper game is fine too!)";
+  const extra = list.map(c => " · " + c.rule).join("\n");
+  return `“${name}”\nOne-sentence play: ${pitch}\nPlayers: ${$("g_players").value} Estimated game length: ${$("g_time").value} minutes\n\n—— Print / prep checklist ——\n${items}\n\n—— One-page rules template ——\n1. Goal: what do players need to achieve? (one sentence)\n2. Setup: who goes first? What does each player start with?\n3. Turn sequence: (write a turn with 2–4 verbs, e.g. draw → roll → move → resolve)\n4. Win / lose conditions:\n5. Details the rules must spell out:\n${extra || " · (Hints appear here once you choose components)"}\n6. Special cases: (a tie? the deck runs out? no legal move?)\n7. What I’m still unsure about: (watch it closely in playtests)`;
+}
+$("g_gen").onclick = () => {
+  $("g_title").textContent = "📄 " + ($("g_name").value.trim() || "My game") + " · Checklist and rules template";
+  $("g_out").textContent = buildGen(); $("g_card").style.display = "block"; $("g_card").scrollIntoView({ behavior: "smooth" });
+  mark("c28t1", $("g_name").value.trim() && $("g_pitch").value.trim() ? "The checklist is ready. Print it out and you can start cutting paper." : "");
+};
+$("g_copy").onclick = () => copyText($("g_out").textContent, $("g_copy"));
+
+let mode = load("gdc-ch20-mode", "cards"); if (mode !== "cards" && mode !== "dice") mode = "cards";
+const sheetData = load("gdc-ch20-sheet", {});
+if (!Array.isArray(sheetData.cards)) sheetData.cards = [];
+if (!Array.isArray(sheetData.dice)) sheetData.dice = [];
+let draws = 0;
+function chkCards() { const f = mode === "cards" ? filledCards().length : (sheetData.dice || []).filter(s => s && s.trim()).length; mark("c28t2", f >= 3 && draws >= 3 ? "Done: " + f + " cards / faces, drew or rolled " + draws + " times. The one that reads awkwardly is what to change in the next version." : ""); }
+let deck = [], tally = [0, 0, 0, 0, 0, 0], rolling = false;
+function filledCards() { const r = []; for (let i = 0; i < 9; i++) { const d = sheetData.cards[i]; if (d && (d[0].trim() || d[1].trim())) r.push(i); } return r; }
+function shuffleDeck() { deck = filledCards(); for (let i = deck.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [deck[i], deck[j]] = [deck[j], deck[i]]; } updLeft(); }
+function updLeft() { $("m_left").textContent = mode === "cards" ? "Deck has " + deck.length + " cards left" : "Rolled " + tally.reduce((a, b) => a + b, 0) + " times"; }
+function drawTally() {
+  if (mode !== "dice") { $("c28tally").innerHTML = ""; return; }
+  const max = Math.max(1, ...tally);
+  $("c28tally").innerHTML = tally.map((n, i) => `<div class="c28b"><span style="width:4.5em;flex:none">Face ${i + 1}</span><i style="width:${Math.round(n / max * 60)}%"></i><b>${n}</b></div>`).join("");
+}
+function renderSheet() {
+  const s = $("sheet"); s.className = mode; s.innerHTML = "";
+  const n = mode === "cards" ? 9 : 6;
+  for (let i = 0; i < n; i++) {
+    const cell = document.createElement("div"); cell.className = "cell";
+    if (mode === "cards") {
+      const d = sheetData.cards[i] || ["", ""];
+      cell.innerHTML = `<div class="ct" contenteditable="true"></div><div class="cb" contenteditable="true"></div>`;
+      const [t, b] = cell.children; t.textContent = d[0]; b.textContent = d[1];
+      const upd = () => { sheetData.cards[i] = [t.textContent, b.textContent]; save("gdc-ch20-sheet", sheetData); };
+      t.oninput = upd; b.oninput = upd;
+    } else {
+      cell.innerHTML = `<div class="face">Face ${i + 1}</div><div class="cb" contenteditable="true"></div>`;
+      const b = cell.children[1]; b.textContent = sheetData.dice[i] || "";
+      b.oninput = () => { sheetData.dice[i] = b.textContent; save("gdc-ch20-sheet", sheetData); };
+    }
+    s.appendChild(cell);
+  }
+  $("m_cards").style.outline = mode === "cards" ? "3px solid var(--ink)" : "none";
+  $("m_dice").style.outline = mode === "dice" ? "3px solid var(--ink)" : "none";
+  $("m_play").textContent = mode === "cards" ? "🃏 Draw one" : "🎲 Roll";
+  $("m_shuffle").style.display = mode === "cards" ? "" : "none";
+  $("c28hand").innerHTML = "";
+  $("c28pmsg").textContent = mode === "cards" ? "Write a few cards in the cells above first, then try drawing." : "Write an effect on each of the 6 faces, then roll. Roll many times and see how often each face appears.";
+  if (mode === "cards") shuffleDeck(); else updLeft();
+  drawTally();
+}
+$("m_cards").onclick = () => { mode = "cards"; save("gdc-ch20-mode", mode); renderSheet(); };
+$("m_dice").onclick = () => { mode = "dice"; save("gdc-ch20-mode", mode); renderSheet(); };
+$("m_print").onclick = () => window.print();
+$("m_clear").onclick = () => { sheetData[mode] = []; save("gdc-ch20-sheet", sheetData); renderSheet(); };
+$("m_shuffle").onclick = () => { shuffleDeck(); $("c28hand").innerHTML = ""; $("c28pmsg").textContent = "Shuffled: " + deck.length + " cards to draw."; };
+$("m_play").onclick = () => {
+  draws++; setTimeout(chkCards, 800);
+  if (mode === "cards") {
+    if (!deck.length) { shuffleDeck(); if (!deck.length) { $("c28pmsg").textContent = "No written cards yet: write a few in the cells above first."; return; } $("c28pmsg").textContent = "The deck ran out and was reshuffled automatically."; }
+    const i = deck.pop(), d = sheetData.cards[i];
+    $("c28hand").innerHTML = `<div class="c28card"><h4>${esc(d[0] || "(Unnamed)")}</h4><div>${esc(d[1])}</div></div>`;
+    document.querySelectorAll("#sheet .cell").forEach((c, k) => c.classList.toggle("hit", k === i));
+    $("c28pmsg").textContent = "You drew the card from cell " + (i + 1) + ". Does this card read smoothly in hand? Is the effect clear?"; updLeft();
+  } else {
+    if (rolling) return; rolling = true;
+    const cells = document.querySelectorAll("#sheet .cell"); let t = 0;
+    const iv = setInterval(() => {
+      cells.forEach((c, k) => c.classList.toggle("hit", k === t % 6)); t++;
+      if (t > 10) {
+        clearInterval(iv); const f = Math.floor(Math.random() * 6);
+        cells.forEach((c, k) => c.classList.toggle("hit", k === f));
+        tally[f]++; rolling = false;
+        $("c28hand").innerHTML = `<div class="c28card"><h4>Face ${f + 1}</h4><div>${esc(sheetData.dice[f] || "(This face isn’t written yet)")}</div></div>`;
+        $("c28pmsg").textContent = "Rolled face " + (f + 1) + ". Think: is the frequency of this face right?"; updLeft(); drawTally();
+      }
+    }, 70);
+  }
+};
+renderSheet();
+
+const TAGS = [
+  { t: "Rules not understood", adv: "Cut the rules to 1 page and add a “sample turn” example; before the playtest, explain the goal in 3 sentences." },
+  { t: "Goal unclear", adv: "Put “how to win” in the most prominent place, and have players restate it at the start." },
+  { t: "Waiting too long for others", adv: "Shorten turns: a 30-second limit, or give the other players something to do during someone else’s turn (such as responding or voting)." },
+  { t: "Too much luck", adv: "Give players choices before or after the roll: for example one reroll, or assigning points after the roll." },
+  { t: "Nothing to choose", adv: "Give at least 2 options per turn, each with a cost, and check whether one is “always best.”" },
+  { t: "Always the same best solution", adv: "Put a cost on the best solution or let opponents counter it; tune only one number at a time." },
+  { t: "Too easy/boring", adv: "Add risk or time pressure, or set a higher bar for the leader." },
+  { t: "Too hard/frustrating", adv: "Lower the starting difficulty and add catch-up mechanics or clearer feedback, so beginners can finish a game first." },
+  { t: "Other", adv: "Write the specifics in the notes and watch for them in the next playtest." },
+];
+let log = load("gdc-ch20-log", []); if (!Array.isArray(log)) log = [];
+let curTags = new Set();
+function drawTags() {
+  $("r_tags").innerHTML = TAGS.map(x => `<button type="button" class="chip${curTags.has(x.t) ? " on" : ""}" data-t="${esc(x.t)}">${esc(x.t)}</button>`).join("");
+  $("r_tags").querySelectorAll(".chip").forEach(b => (b.onclick = () => { const t = b.dataset.t; curTags.has(t) ? curTags.delete(t) : curTags.add(t); b.classList.toggle("on"); }));
+}
+drawTags();
+function summaryText() {
+  if (!log.length) return "(No records yet; add a few games above first.)";
+  const n = log.length, mins = log.map(r => r.min);
+  const avg = mins.reduce((a, b) => a + b, 0) / n;
+  const cnt = {}; log.forEach(r => r.tags.forEach(t => (cnt[t] = (cnt[t] || 0) + 1)));
+  const rank = TAGS.map(x => ({ t: x.t, c: cnt[x.t] || 0, adv: x.adv })).filter(x => x.c > 0).sort((a, b) => b.c - a.c);
+  const fun = log.map(r => r.fun).filter(Boolean);
+  let s = `Played ${n} games, average ${avg.toFixed(1)} minutes per game (shortest ${Math.min(...mins)}, longest ${Math.max(...mins)}).\n`;
+  if (avg < 3) s += "A game averages under 3 minutes: too short, players may be done before they feel the strategy.\n";
+  else if (avg > 30) s += "A game averages over 30 minutes: long for a first prototype; consider fewer turns or a lower victory threshold.\n";
+  s += "\n[Most common problems]\n";
+  if (!rank.length) s += "No stuck points recorded, good! But also check whether you observed closely enough.\n";
+  else rank.slice(0, 3).forEach((x, i) => (s += `${i + 1}. ${x.t}: came up in ${x.c}/${n} games\n`));
+  s += "\n[Laughs / highlights]\n " + (fun.length ? fun.map(f => "· " + f).join("\n") : "No laughs recorded yet, and that itself is a signal: are the players engaged?") + "\n";
+  s += "\n[Next-step suggestion]\n";
+  if (rank.length) {
+    s += `Solve “${rank[0].t}” first: ${rank[0].adv}\n`;
+    if (n < 3) s += "(Only " + n + " games in the sample; try a few more before deciding what to change.)\n";
+    else if (rank[0].c === 1) s += "(Every problem has come up only once so far, which may be a one-off; try a few more games to confirm.)\n";
+  } else s += "Keep the current play, and try it with different people to see whether new players get through it just as smoothly.\n";
+  s += "Remember: change one thing at a time, then playtest a game again to compare.";
+  return s;
+}
+function drawLog() {
+  $("r_list").innerHTML = log.map((r, i) => `<div class="rec"><div><b>Game ${i + 1}</b> ${r.min} min<br><span class="small">Stuck: ${r.tags.length ? esc(r.tags.join(", ")) : "none"}${r.fun ? " Fun: " + esc(r.fun) : ""}</span></div><button class="chip x" data-i="${i}">Delete</button></div>`).join("");
+  $("r_list").querySelectorAll(".x").forEach(b => (b.onclick = () => { log.splice(+b.dataset.i, 1); save("gdc-ch20-log", log); drawLog(); }));
+  const cnt = {}; log.forEach(r => r.tags.forEach(t => (cnt[t] = (cnt[t] || 0) + 1)));
+  const rank = Object.keys(cnt).sort((a, b) => cnt[b] - cnt[a]);
+  const max = rank.length ? cnt[rank[0]] : 1;
+  $("r_sum").innerHTML = "<h3>📈 Times each problem came up</h3>" + (rank.length ? rank.map(t => `<div class="bar"><span style="width:8.5em;flex:none">${esc(t)}</span><span class="b" style="width:${Math.round(cnt[t] / max * 55)}%"></span><b>${cnt[t]}</b></div>`).join("") : "<p class='small'>No “stuck” records yet.</p>");
+  $("s_out").textContent = summaryText();
+  mark("c28t3", log.length >= 3 ? "Done: " + log.length + " game records. Look at the bars above: the longest one is what to fix next." : "");
+}
+$("r_add").onclick = () => {
+  const m = Math.max(1, Math.min(240, parseFloat($("r_min").value) || 0));
+  if (!m) return;
+  log.push({ min: m, tags: [...curTags], fun: $("r_fun").value.trim() });
+  save("gdc-ch20-log", log); curTags = new Set(); $("r_fun").value = ""; drawTags(); drawLog();
+};
+$("r_demo").onclick = () => {
+  log = [
+    { min: 12, tags: ["Rules not understood", "Too much luck"], fun: "Drew “swap places,” whole table screamed" },
+    { min: 9, tags: ["Rules not understood", "Waiting too long for others"], fun: "" },
+    { min: 14, tags: ["Rules not understood"], fun: "Overtook at the last cell to win" },
+  ];
+  save("gdc-ch20-log", log); drawLog();
+};
+$("r_reset").onclick = () => { log = []; save("gdc-ch20-log", log); drawLog(); };
+drawLog();
+
+function fullSummary() {
+  const nx = $("s_next").value.trim();
+  const nm = $("g_name").value.trim();
+  return (nm ? `“${nm}”` : "My prototype") + " Playtest summary\n\n " + summaryText() + (nx ? "\n\nNext version changes only: " + nx : "");
+}
+function showSaved() {
+  const sv = load("gdc-ch20-summary", null);
+  $("s_saved").textContent = sv ? "Last saved: " + sv.date + " ( " + sv.n + " game records)" : "";
+}
+$("s_save").onclick = () => {
+  save("gdc-ch20-summary", { date: new Date().toLocaleString(), n: log.length, text: fullSummary() });
+  showSaved(); $("s_save").textContent = "✔ Saved"; setTimeout(() => ($("s_save").textContent = "💾 Save summary"), 1500);
+};
+$("s_copy").onclick = () => copyText(fullSummary(), $("s_copy"));
+showSaved();
+
+GD.mountQuiz($("quiz"), [
+  { q: "(Why) Špinka et al. (2001) proposed that play is “training for the unexpected.” What does this suggest for paper prototypes?", opts: ["The more seriously you play, the more polished the prototype", "Letting the rules “fall” in a place with no consequences is far cheaper than falling after release", "Prototypes can only be made by children", "Play has been proven to be the only function"], a: 1, why: "Play lets animals practice handling loss of control in a safe environment. A paper prototype is the same: it moves the design’s surprises to a place where changing costs almost nothing. This is an influential hypothesis, not a settled conclusion." },
+  { q: "(Why invented) Why did people think of making prototypes on paper before making the digital version?", opts: ["Because paper is more fun than computers", "Because “are the rules fun, can the interface be read” can’t be answered before it is made, and changing after finishing costs the most; paper cuts the cost of a change to the minimum, buying more rounds of playtesting", "Because the law requires it", "Because designers can’t write code"], a: 1, why: "Board-game design and software lo-fi prototypes (Rettig, 1994) share this motive: trading limited time for more rounds of checking." },
+  { q: "(Why) Why doesn’t the designer’s own sense that “the rules are clear” count?", opts: ["Because designers are dishonest", "Because once you know the rules it is hard to imagine what it is like not knowing them (the curse of knowledge), just as the person tapping a song thinks others can hear it", "Because designers have poor memories", "Because the clearer the rules, the more boring"], a: 1, why: "In Newton’s tapping experiment the tappers expected half to be guessed, and in fact only about 2.5% were. So have people who don’t know try it." },
+  { q: "In 5 playtests, “rules not understood” came up 4 times and “too much luck” once. What should you do first?", opts: ["Reduce the luck", "First write the rules clearly and add a sample example", "Add more cards", "Try another friend"], a: 1, why: "Sort by number of occurrences: the most common problem has the biggest impact, so solve it first. And change only one thing at a time, so you know whether the change worked." },
+  { q: "(Why) Why should a paper prototype be deliberately “rough” rather than start with beautiful art?", opts: ["Because designers can’t draw", "A rough prototype is cheap to change, and lets playtesters and yourself focus on the rules and play", "Because art doesn’t matter for games at all", "Because the teacher requires it"], a: 1, why: "A prototype’s purpose is learning. The more polished it looks, the harder it is to change, and the more judgment lands on color rather than play; art can wait until the rules stand firm." },
+  { q: "Which situation is least suited to being verified with a paper prototype alone?", opts: ["Whether the play costs of a card game are balanced", "Whether the move “feel” of a fighting game is satisfying", "Whether the turn sequence of a board game is too slow", "Whether the rules of a chess-like game are clear"], a: 1, why: "Feel depends on real-time hand-eye coordination, which paper can’t verify; you need a digital prototype." },
+]);
+</script>
+</body>
+</html>

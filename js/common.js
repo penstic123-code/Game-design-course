@@ -42,20 +42,20 @@
   ];
   const partOf = n => PARTS.findIndex(p => n >= p.from && n <= p.to);
 
-  const EN_READY = false; // 英文版翻译完成后改为 true，才会显示语言切换按钮
+  const EN_READY = true; // 英文版翻译完成后改为 true，才会显示语言切换按钮
   const EN = (document.documentElement.lang || "").toLowerCase().startsWith("en");
   const L = EN ? {
     home: "📖 Contents", toc: "Contents", next: "Next: ", back: "🎉 Back to contents",
     badge: "🎉 Chapter cleared! You've got the core ideas.",
-    score: (a, n, f) => "Correct " + a + " / " + n + "   First try: " + f,
-    qzSlot: "Drag your answer here", qzPicked: "Card selected. Press Enter on the answer slot to place it.", qzRight: "Correct.", qzWrong: "Not that one. Try another.",
+    score: (a, n, f) => "Correct " + a + " / " + n + (f === null ? "" : "   First try: " + f),
+    qzSlot: "Drag your answer here", qzPicked: "Card selected. Press Enter on the answer slot to place it.", qzRight: "Correct.", qzWrong: "Not that one. Try another.", qzPrev: "← Previous", qzNext: "Next →", qzQ: n => "Question " + n,
     sw: "中文", mapT: "Concept map", related: "Related chapters", relPre: "Builds on / explained by", relNext: "Leads to / applied in", relSee: "Compare & connect", chapterWord: n => "Ch. " + n,
     navTitle: "In this chapter", expandAll: "Expand all", collapseAll: "Collapse all", top: "Back to top", fold: "Fold / unfold",
   } : {
     home: "📖 目录", toc: "目录", next: "下一章：", back: "🎉 回到目录",
     badge: "🎉 本章通关！你已经掌握了核心概念",
     score: (a, n, f) => "已答对 " + a + " / " + n + (f === null ? "" : "　一次答对 " + f),
-    qzSlot: "把答案拖到这里", qzPicked: "已选中卡片，在答题位上按回车放入。", qzRight: "答对了。", qzWrong: "不是这个，再试试别的。",
+    qzSlot: "把答案拖到这里", qzPicked: "已选中卡片，在答题位上按回车放入。", qzRight: "答对了。", qzWrong: "不是这个，再试试别的。", qzPrev: "← 上一题", qzNext: "下一题 →", qzQ: n => "第 " + n + " 题",
     sw: "EN", mapT: "概念关系图", related: "相关章节", relPre: "先修与原理", relNext: "延伸与应用", relSee: "对照与关联", chapterWord: n => "第" + n + "章",
     navTitle: "本章目录", expandAll: "全部展开", collapseAll: "全部收起", top: "回到顶部", fold: "收起 / 展开",
   };
@@ -126,9 +126,10 @@
     const badge = document.createElement("div");
     badge.className = "done-badge";
     badge.textContent = L.badge;
+    const qs = [];
     items.forEach((it, qi) => {
       const q = document.createElement("div");
-      q.className = "q";
+      q.className = "q"; qs.push(q);
       q.innerHTML = '<div class="qt">' + (qi + 1) + ". " + it.q + "</div>";
       let tried = false, solved = false, picked = null;
       const live = document.createElement("div");
@@ -165,6 +166,7 @@
           why.classList.add("show");
           live.textContent = L.qzRight;
           answered++; right++;
+          if (nav) nav.dots[qi].classList.add("ok");
           if (!tried) firstTry++;
           score.textContent = L.score(answered, items.length, firstTry);
           if (answered === items.length) { badge.classList.add("show"); Progress.done(cur); }
@@ -222,6 +224,31 @@
       q.appendChild(slot); q.appendChild(tray); q.appendChild(live); q.appendChild(why);
       el.appendChild(q);
     });
+    // 横向翻阅：一次显示一题
+    let nav = null;
+    if (items.length > 1) {
+      const bar = document.createElement("div"); bar.className = "qz-nav";
+      const prev = document.createElement("button"); prev.type = "button"; prev.className = "btn alt"; prev.textContent = L.qzPrev;
+      const next = document.createElement("button"); next.type = "button"; next.className = "btn"; next.textContent = L.qzNext;
+      const mid = document.createElement("div"); mid.className = "qz-dots";
+      const dots = items.map((_, i) => {
+        const d = document.createElement("button"); d.type = "button"; d.className = "qz-dot"; d.textContent = i + 1;
+        d.setAttribute("aria-label", L.qzQ(i + 1)); d.addEventListener("click", () => show(i)); mid.appendChild(d); return d;
+      });
+      bar.appendChild(prev); bar.appendChild(mid); bar.appendChild(next);
+      nav = { dots };
+      let at = 0;
+      function show(i) {
+        at = Math.max(0, Math.min(items.length - 1, i));
+        qs.forEach((q, k) => q.classList.toggle("qz-hide", k !== at));
+        dots.forEach((d, k) => { d.classList.toggle("on", k === at); if (k === at) d.setAttribute("aria-current", "true"); else d.removeAttribute("aria-current"); });
+        prev.disabled = at === 0; next.disabled = at === items.length - 1;
+      }
+      prev.addEventListener("click", () => show(at - 1));
+      next.addEventListener("click", () => show(at + 1));
+      el.insertBefore(bar, qs[0]);
+      show(0);
+    }
     score.textContent = L.score(0, items.length, null);
     el.appendChild(score);
     el.appendChild(badge);

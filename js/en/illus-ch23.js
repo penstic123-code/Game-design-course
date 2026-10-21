@@ -61,10 +61,11 @@ ILLUS_EN_ADD({
 "t": []
 },
 "c23_knob": {
-"a": "A stick figure grips a big knob marked speed, and the blocks beside it fall faster and faster as it turns",
+"a": "A stick figure grips a big knob marked speed, turning it from “slow” to “fast,” and the blocks beside it fall faster and faster as it turns",
 "t": [
 "Knob: speed",
-"Slow"
+"Slow",
+"Fast"
 ]
 },
 "c23_e_tread": {
@@ -88,7 +89,8 @@ ILLUS_EN_ADD({
 "c23_e_react": {
 "a": "A stick figure sweats, staring at lights on a screen that flash faster and faster, with only hand speed left",
 "t": [
-"Flashing faster, same play"
+"Flashing faster,",
+"same play"
 ]
 },
 "c23_drought": {
@@ -133,10 +135,11 @@ ILLUS_EN_ADD({
 ]
 },
 "c23_peakend": {
-"a": "An undulating tension curve with the highest point marked peak and the last moment marked end, and a stick figure looking back at the curve",
+"a": "An undulating curve of feeling intensity with the highest point marked peak and the last moment marked end (a bit lower than the peak), and a stick figure looking back at the curve",
 "t": [
 "Peak",
 "End",
+"Feeling ↑",
 "Time →"
 ]
 }

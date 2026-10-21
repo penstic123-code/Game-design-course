@@ -46,7 +46,7 @@
   <div class="goals"><span class="time">⏱ 约 60 分钟（含动手）</span><h3>学习目标</h3><ul><li>读完能说出 HTML、CSS、JavaScript 各管什么，以及“输入 → 更新 → 绘制”的游戏循环怎样让画面动起来。</li><li>读完能讲清游戏循环为什么长成现在这样，网页游戏又为什么从 Flash 走到了 Canvas。</li><li>读完能拖动参数面板，亲眼看到“数值 → 玩法 → 感受”的关系，并知道这种调参的边界。</li></ul></div>
 
   <div class="sec"><span class="n">1</span><h2><span class="tag what">是什么</span>三个角色：谁管骨架，谁管外观，谁管规则</h2></div>
-  <p>很多人想做游戏，一看到满屏代码就关了页面。其实一个能玩的小游戏，只有大约 100 行代码。不需要先学完编程，只需要先分清三个角色各管什么。用做菜来比：</p>
+  <p>很多人想做游戏，一看到满屏代码就关了页面。一个能玩的小游戏，只有大约 100 行代码。不必先学完编程，只要先分清三个角色各管什么。用做菜来比：</p>
   <div class="card">
     <svg viewBox="0 0 760 290" width="100%" role="img" aria-label="HTML 是骨架，CSS 是外观，JavaScript 是规则与行为，三者合在一起成为网页游戏">
       <g class="rough" stroke="#2b2b3a" stroke-width="4">
@@ -89,8 +89,8 @@
     </svg>
     <p class="small">步骤顺序参考 MDN 的“关键渲染路径”页面（DOM、CSSOM、渲染树、布局、绘制）。Canvas 那条虚线是示意：它把画好的位图交给页面显示。</p>
   </div>
-  <p>为什么游戏爱用画布？普通网页是“排版”思路：元素一多，每次改动都要重新算位置。画布是“作画”思路：想画几个球、画在哪，每一帧由程序自己说了算，适合每秒要重画几十次的游戏。</p>
-  <p class="src">来源：MDN，<a href="https://developer.mozilla.org/en-US/docs/Web/Performance/Guides/Critical_rendering_path" target="_blank" rel="noopener">Critical rendering path</a>。</p>
+  <p>游戏爱用画布，是因为普通网页走的是“排版”思路：元素一多，每次改动都要重新算位置。画布是“作画”思路：想画几个球、画在哪，每一帧由程序自己说了算，适合每秒要重画几十次的游戏。</p>
+  <p class="src">来源：<br>MDN · 页面“<a href="https://developer.mozilla.org/en-US/docs/Web/Performance/Guides/Critical_rendering_path" target="_blank" rel="noopener">Critical rendering path</a>” · 说明浏览器把 DOM、CSSOM、渲染树、布局、绘制串成一条流水线。</p>
 
   <div class="sec"><span class="n">3</span><h2><span class="tag what">是什么</span>游戏循环：输入 → 更新 → 绘制</h2></div>
   <p>网页通常<b>等玩家点了才变</b>；游戏却<b>一圈一圈地转</b>，哪怕什么也不按，苹果也在往下掉。两者的区别摆在一起看：</p>
@@ -98,24 +98,41 @@
     <svg viewBox="0 0 760 320" width="100%" role="img" aria-label="对比：左边是等待输入型程序，只有玩家操作才处理一次；右边是游戏循环，每一圈都读输入、更新、绘制，不管有没有操作">
       <g class="rough" stroke="#2b2b3a" stroke-width="4" fill="none" stroke-linecap="round">
         <rect x="15" y="50" width="340" height="250" rx="18" fill="#e8f6fc"/><rect x="405" y="50" width="340" height="250" rx="18" fill="#fff7cf"/>
-        <path d="M185 114V140M185 186V212"/><path d="M690 124V150M690 196V222"/>
+        <path d="M48 112V138M48 184V210"/><path d="M280 244H322Q334 244 334 232V112Q334 100 322 100H210"/>
+        <path d="M555 122V146M555 194V218"/><path d="M660 250H715Q727 250 727 238V122Q727 110 715 110H684"/>
+        <rect x="32" y="84" width="6" height="20" fill="#2b2b3a" stroke-width="2"/><rect x="44" y="84" width="6" height="20" fill="#2b2b3a" stroke-width="2"/>
+        <circle cx="42" cy="172" r="9" stroke-width="3"/><path d="M42 156V160M42 184V188M26 172H30M54 172H58M31 161L34 164M53 161L50 164M31 183L34 180M53 183L50 180" stroke-width="3"/>
+        <rect x="28" y="228" width="28" height="22" stroke-width="3"/><path d="M30 248L38 238L44 244L48 240L54 248" stroke-width="2.5"/>
+      </g>
+      <g fill="#2b2b3a" stroke="#2b2b3a" stroke-width="2" stroke-linejoin="round">
+        <path d="M48 150L40 136H56z"/><path d="M48 222L40 208H56z"/><path d="M206 100L222 92V108z"/>
+        <path d="M555 158L547 144H563z"/><path d="M555 230L547 216H563z"/><path d="M680 110L696 102V118z"/>
       </g>
       <g font-size="20" text-anchor="middle">
         <text x="185" y="32" font-size="22">等待型（文字冒险、普通网页）</text><text x="575" y="32" font-size="22">游戏循环</text>
-        <text x="185" y="100">⏸ 等玩家输入</text><text x="185" y="172">⚙ 处理一次</text><text x="185" y="244">🖼 显示结果，回去接着等</text>
+        <text x="70" y="100" text-anchor="start">等玩家输入</text><text x="70" y="172" text-anchor="start">处理一次</text><text x="70" y="244" text-anchor="start">显示结果，回去接着等</text>
         <text x="555" y="110">① 读输入（没按也行）</text><text x="555" y="182">② 更新世界</text><text x="555" y="254">③ 绘制，马上下一圈</text>
       </g>
     </svg>
   </div>
-  <p>浏览器每秒大约调用 60 次我们的函数（约 60 <span class="term" tabindex="0" data-def="画面每刷新一次叫一帧；帧率就是每秒多少帧。">帧</span>/秒）。每一圈做三件事，这就是<span class="term" tabindex="0" data-def="玩家反复进行的“行动→反馈→奖励”的最小闭环。">核心循环</span>的技术版：</p>
+  <p>游戏程序这样一圈一圈地转，结构上属于<span class="term" tabindex="0" data-def="游戏循环（game loop）：游戏程序每一圈依次读取输入、更新状态、绘制画面，不等玩家输入，一圈接一圈地转。">游戏循环</span>。浏览器每秒大约调用 60 次我们的函数（约 60 <span class="term" tabindex="0" data-def="画面每刷新一次叫一帧；帧率就是每秒多少帧。">帧</span>/秒），每一圈做三件事，是<span class="term" tabindex="0" data-def="玩家反复进行的“行动→反馈→奖励”的最小闭环。">核心循环</span>的技术版：</p>
+  <aside class="cc-card" aria-label="概念卡：游戏循环">
+    <span class="cc-tag">概念卡</span>
+    <p class="cc-name"><span>游戏循环</span></p>
+    <p class="cc-en">Game loop</p>
+    <p class="cc-by">Robert Nystrom · 2014 年《Game Programming Patterns》把它整理成一个设计模式（让游戏时间与玩家输入、处理器速度脱钩）；1962 年《Spacewar!》是实时循环的早期雏形</p>
+    <p class="cc-def">程序每一圈依次读取输入、更新状态、绘制画面，不等玩家按键，一圈接一圈地转，画面才会自己动起来。</p>
+    <p class="cc-eg"><span class="cc-k">例子</span>接苹果游戏里，玩家不碰键盘，苹果也在每一圈往下掉一点，漏掉就扣命。</p>
+  </aside>
   <div class="card">
     <svg viewBox="0 0 760 290" width="100%" role="img" aria-label="游戏循环：读取输入，更新状态，绘制画面，然后再回到读取输入，每秒约 60 圈">
       <g class="rough" stroke="#2b2b3a" stroke-width="4">
         <rect x="20" y="70" width="190" height="86" rx="18" fill="#a8dcf0"/>
         <rect x="285" y="70" width="190" height="86" rx="18" fill="#ffe58a"/>
         <rect x="550" y="70" width="190" height="86" rx="18" fill="#ffb3c6"/>
-        <g fill="none" stroke-linecap="round"><path d="M214 113H281"/><path d="M479 113H546"/><path d="M645 160Q645 236 380 236Q115 236 115 160"/></g>
+        <g fill="none" stroke-linecap="round"><path d="M214 113H281"/><path d="M479 113H546"/><path d="M645 160Q645 236 380 236Q115 236 115 164"/></g>
       </g>
+      <g fill="#2b2b3a" stroke="#2b2b3a" stroke-width="2" stroke-linejoin="round"><path d="M283 113L267 104V122z"/><path d="M548 113L532 104V122z"/><path d="M115 160L106 176H124z"/></g>
       <g font-size="22" text-anchor="middle">
         <text x="115" y="105">① 输入</text><text x="115" y="135" font-size="19">按了哪个键？</text>
         <text x="380" y="105">② 更新</text><text x="380" y="135" font-size="16">苹果下落、判断接没接</text>
@@ -130,7 +147,7 @@
   <div class="eg bad" data-ic="🧊"><span data-illus="c29_freeze"></span><div class="egt"><b>反例：自己写死循环</b>。在函数里写 <code>while (true) {…}</code>，自己无限地更新和画图，浏览器的主线程被占满，页面卡死、按钮点不动。要让浏览器“每一帧叫程序一次”（用 requestAnimationFrame），不要自己霸占循环。</div></div>
 
   <div class="sec"><span class="n">4</span><h2><span class="tag origin">发明故事</span>游戏循环是怎么成为标准结构的？</h2></div>
-  <p>先自己试一试。<b>写了一个小球游戏：球每秒走 20 格，走满 100 格到终点。</b>在自己的电脑（60 帧/秒）上调好了速度。现在把它放到另外两台电脑上：一台很快，一台很慢。拖动滑块，比较两种写法。</p>
+  <p>先自己试一试。<b>假设写了一个小球游戏：球每秒走 20 格，走满 100 格到终点。</b>在自己的电脑（60 帧/秒）上调好了速度。现在把它放到另外两台电脑上：一台很快，一台很慢。拖动滑块，比较两种写法。</p>
   <div class="card b no-print">
     <label class="ctl">快电脑的帧率 <output id="c29fo">120</output> 帧/秒<input type="range" id="c29f" min="30" max="144" step="6" value="120"></label>
     <label class="ctl"><input type="checkbox" id="c29dt"> 用 dt 计时：每一圈移动“速度 × 距上一圈的时间”（勾选后再比赛一次）</label>
@@ -143,11 +160,14 @@
   <div class="sticky no-print" id="c29t0">试试看：先不勾 dt 比一次，再勾上 dt 比一次，对比两次“快慢差了几倍”。<b id="c29t0ok"></b></div>
   <div class="story">
     <h3>为什么游戏循环长成这个样子？</h3>
-    <p><b>问题：</b>早期的程序是“批处理”：运行一次，吐出结果，结束。后来出现了交互式程序，最早的一批是游戏，比如文字冒险《Colossal Cave Adventure》，它<b>等玩家输入一条命令，回应，再等</b>。动作类游戏不能等：玩家什么都没按，子弹也要飞，敌人也要动。（据 Robert Nystrom《Game Programming Patterns》的游戏循环一章。）</p>
-    <p><b>早期尝试：</b>1962 年，MIT 的 Steve Russell 等人在 PDP-1 小型机上做出《Spacewar!》，影响了后来许多街机游戏，循环的雏形就在其中。可当时的游戏常常<b>绑死在某一台机器的速度上</b>：每一圈走多少，是按那台机器调出来的。Nystrom 提到，换到更快的电脑上，这类游戏会变得太快，当年个人电脑上的“Turbo 按钮”就与此有关。</p>
-    <p><b>关键洞察：</b>把“游戏时间”和“处理器速度、玩家输入”<b>拆开</b>。游戏循环处理玩家输入，但不等待输入，并且让游戏在不同硬件上以一致的速度运行（Nystrom）。常见做法有两种。①<span class="term" tabindex="0" data-def="可变时间步长：每一圈按真实过去的时间 dt 推进世界，简单，但在不同机器上结果可能略有差异。">可变时间步长</span>：每一圈按“距上一圈过去的真实时间 dt”推进，简单，适合小游戏，本页用这种。②固定时间步长：每次更新走固定的一小段时间，更稳定，物理复杂的游戏更常用。</p>
-    <p><b>网页游戏的演化：</b>网页一开始是静态文档，要做带动画的小游戏，长期靠插件。Flash 的前身在 1996 年发布，后来由 Macromedia、Adobe 先后接手。Flash 让很多创作者不用深入编程就能做出带动画的小游戏，并在浏览器里分发。另一边，2004 年苹果为自家 WebKit 加入了 <code>&lt;canvas&gt;</code>，Gecko 和 Opera 随后跟进，后来由 WHATWG 纳入 HTML5。2010 年 4 月，Steve Jobs 发表公开信《Thoughts on Flash》，说明 iPhone 为何不支持 Flash，理由包括 Flash 是封闭系统，以及电池与触控等问题。Adobe 方面则认为这主要出于商业考虑。2017 年 7 月，Adobe 宣布到 2020 年 12 月 31 日终止支持 Flash。现在，原生支持的 <code>&lt;canvas&gt;</code> + JavaScript 成了网页游戏的基础。</p>
-    <p><b>配套的一环：</b><span class="term" tabindex="0" data-def="浏览器提供的函数：请它在下一次重绘之前调用你的函数，一般和显示器刷新率同步。"><code>requestAnimationFrame</code></span> 让浏览器在“下一次重绘之前”调用程序的函数，通常与显示器刷新率一致（60、75、120、144Hz 等）。回调会收到一个时间戳，要用它计算进度，否则动画在高刷新率屏幕上会跑得更快，这正是上面比赛里的坑。</p>
+    <p>早期的程序是“批处理”：运行一次，吐出结果，结束。后来出现了交互式程序，最早的一批是游戏，比如文字冒险《Colossal Cave Adventure》，它<b>等玩家输入一条命令，回应，再等</b>。动作类游戏不能等：玩家什么都没按，子弹也要飞，敌人也要动。（据 Robert Nystrom《Game Programming Patterns》的游戏循环一章。）</p>
+    <p>1962 年，MIT 的 Steve Russell 等人在 PDP-1 小型机上做出《Spacewar!》，影响了后来许多街机游戏，循环的雏形就在其中。可当时的游戏常常<b>绑死在某一台机器的速度上</b>：每一圈走多少，是按那台机器调出来的。Nystrom 提到，换到更快的电脑上，这类游戏会变得太快，当年个人电脑上的“Turbo 按钮”就与此有关。</p>
+    <p>后来的做法是把“游戏时间”和“处理器速度、玩家输入”<b>拆开</b>：游戏循环处理玩家输入，但不等待输入，并且让游戏在不同硬件上以一致的速度运行（Nystrom）。</p>
+    <p>拆开的具体办法常见有两种。①<span class="term" tabindex="0" data-def="可变时间步长（variable time step）：每一圈按真实过去的时间 dt 推进世界，简单，但在不同机器上结果可能略有差异。">可变时间步长</span>：每一圈按“距上一圈过去的真实时间 dt”推进，简单，适合小游戏，本页用这种。②固定时间步长：每次更新走固定的一小段时间，更稳定，物理复杂的游戏更常用。</p>
+    <p>游戏循环搬到网页上，又经过一段曲折。网页一开始是静态文档，要做带动画的小游戏，长期靠插件。Flash 的前身在 1996 年发布，后来由 Macromedia、Adobe 先后接手。Flash 让很多创作者不用深入编程就能做出带动画的小游戏，并在浏览器里分发。</p>
+    <p>另一边，2004 年苹果为自家 WebKit 加入了 <code>&lt;canvas&gt;</code>，Gecko 和 Opera 随后跟进，后来由 WHATWG 纳入 HTML5。2010 年 4 月，Steve Jobs 发表公开信《Thoughts on Flash》，说明 iPhone 为何不支持 Flash，理由包括 Flash 是封闭系统，以及电池与触控等问题。Adobe 方面则认为这主要出于商业考虑。</p>
+    <p>2017 年 7 月，Adobe 宣布到 2020 年 12 月 31 日终止支持 Flash。现在，原生支持的 <code>&lt;canvas&gt;</code> + JavaScript 成了网页游戏的基础。</p>
+    <p>与之配套的是 <span class="term" tabindex="0" data-def="浏览器提供的函数：请它在下一次重绘之前调用你的函数，一般和显示器刷新率同步。"><code>requestAnimationFrame</code></span>，它让浏览器在“下一次重绘之前”调用程序的函数，通常与显示器刷新率一致（60、75、120、144Hz 等）。回调会收到一个时间戳，要用它计算进度，否则动画在高刷新率屏幕上会跑得更快，上面比赛里的坑就在这里。</p>
     <div class="timeline">
       <div class="ev hasimg"><span data-illus="c29_spacewar"></span><div><b class="yr">1962</b>　《Spacewar!》在 MIT 的 PDP-1 上做出，实时交互游戏的早期代表。</div></div>
       <div class="ev hasimg"><span data-illus="c29_turbo"></span><div><b class="yr">后来</b>　游戏绑定在特定硬件速度上；个人电脑加速后，出现“Turbo 按钮”的问题（Nystrom）。</div></div>
@@ -156,7 +176,7 @@
       <div class="ev hasimg"><span data-illus="c29_iphone"></span><div><b class="yr">2010 年 4 月</b>　Jobs 发表《Thoughts on Flash》，iPhone 不支持 Flash。</div></div>
       <div class="ev hasimg"><span data-illus="c29_sunset"></span><div><b class="yr">2017–2021</b>　Adobe 2017 年 7 月宣布终止 Flash，2020 年 12 月 31 日支持结束，2021 年 1 月 12 日起阻止运行。</div></div>
     </div>
-    <p class="src">来源：Nystrom，<a href="https://gameprogrammingpatterns.com/game-loop.html" target="_blank" rel="noopener">Game Programming Patterns · Game Loop</a>；MDN <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/requestAnimationFrame" target="_blank" rel="noopener">requestAnimationFrame</a>；<a href="https://en.wikipedia.org/wiki/Spacewar!" target="_blank" rel="noopener">Spacewar!</a>；<a href="https://en.wikipedia.org/wiki/Canvas_element" target="_blank" rel="noopener">Canvas element</a>；Flash 的历史各来源在收购时间上略有出入（<a href="https://www.theregister.com/2021/01/12/flash_is_dead/" target="_blank" rel="noopener">The Register</a>）；Jobs 公开信的内容据媒体报道（<a href="https://www.pcworld.com/article/512460/steve_jobs_shares_his_thoughts_on_flash.html" target="_blank" rel="noopener">PCWorld</a>），未能直接读取 Apple 原页面。</p>
+    <p class="src">来源：<br>Robert Nystrom · 2014 · 《Game Programming Patterns》“Game Loop”一章，讲游戏循环与时间步长（<a href="https://gameprogrammingpatterns.com/game-loop.html" target="_blank" rel="noopener">Game Programming Patterns · Game Loop</a>）。<br>MDN · <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/requestAnimationFrame" target="_blank" rel="noopener">requestAnimationFrame</a> 文档。<br>Steve Russell 等 · 1962 · 在 PDP-1 上做出 <a href="https://en.wikipedia.org/wiki/Spacewar!" target="_blank" rel="noopener">Spacewar!</a>。<br>苹果 · 2004 · 为 WebKit 加入 canvas（<a href="https://en.wikipedia.org/wiki/Canvas_element" target="_blank" rel="noopener">Canvas element</a>）。<br>Flash 的历史各来源在收购时间上略有出入（<a href="https://www.theregister.com/2021/01/12/flash_is_dead/" target="_blank" rel="noopener">The Register</a>）。<br>Steve Jobs · 2010 · 公开信《Thoughts on Flash》，内容据媒体报道（<a href="https://www.pcworld.com/article/512460/steve_jobs_shares_his_thoughts_on_flash.html" target="_blank" rel="noopener">PCWorld</a>），未能直接读取 Apple 原页面。</p>
   </div>
 
   <div class="sec"><span class="n">5</span><h2><span class="tag why">为什么成立</span>为什么要乘 dt？为什么调参数是捷径？</h2></div>
@@ -169,33 +189,58 @@
       <p>反过来，每圈固定加 3 像素：60Hz 屏上每秒 180 像素，144Hz 屏上就变成每秒 432 像素。这就是上面比赛里“快电脑先到”的原因。</p>
     </div>
   </div>
+  <aside class="cc-card" aria-label="概念卡：增量时间">
+    <span class="cc-tag">概念卡</span>
+    <p class="cc-name"><span>增量时间 dt</span></p>
+    <p class="cc-en">Delta time</p>
+    <p class="cc-by">Robert Nystrom · 2014 年《Game Programming Patterns》“Game Loop”一章讲解按真实经过的时间推进游戏</p>
+    <p class="cc-def">dt 是距上一圈过去的真实时间。每圈用“速度乘 dt”来移动，物体每秒走的距离就和帧率无关。</p>
+    <p class="cc-eg"><span class="cc-k">例子</span>苹果每秒下落 200 像素：60 帧的屏幕每圈走约 3.3 像素，144 帧的屏幕每圈走约 1.4 像素，一秒之后落点相同。</p>
+  </aside>
   <div class="why-box"><p>边界：本页为了易读用“可变步长”，并把 dt 限制在 0.05 秒内（切换标签页回来不会“瞬移”）。物理更复杂的游戏，业界更常用固定步长。</p>
-    <p class="src">原理出处：Nystrom，《Game Programming Patterns》“Game Loop”一章；MDN requestAnimationFrame 文档。</p></div>
+    <p class="src">原理出处：<br>Robert Nystrom · 2014 · 《Game Programming Patterns》“Game Loop”一章，让游戏时间与处理器速度分开。<br>MDN · requestAnimationFrame 文档。</p></div>
 
   <div class="withimg rev">
     <span data-illus="c29_knob"></span>
     <div>
       <h3>② 拧旋钮，就是亲手走一遍“机制 → 动态 → 美学”</h3>
       <p><span class="term" tabindex="0" data-def="机制（Mechanics）→ 动态（Dynamics）→ 美学（Aesthetics）：规则产生玩法，玩法产生感受。">MDA</span> 框架说：设计者摆的是机制，玩家体验到的是动态和美学。参数面板把这条链摆在眼前：<b>拧的是机制</b>（下落速度、篮子宽度、炸弹概率），<b>看到的是动态</b>（接得到还是接不到，要不要冒险），<b>感到的是美学</b>（轻松、紧张、手忙脚乱）。</p>
-      <p>这些数值就是<span class="term" tabindex="0" data-def="游戏里可以调整的数值参数，如速度、数量、概率。">旋钮</span>。把炸弹概率从 15% 拉到 40%，“该不该伸手去接”的犹豫立刻变多，感觉从轻松变成紧张。一次只拧一个，才知道是哪个起了作用，就像调咖啡的研磨粗细，一次只改一个变量。</p>
+      <p>这些数值像收音机上的<span class="term" tabindex="0" data-def="游戏里可以调整的数值参数，如速度、数量、概率。">旋钮</span>，拧一下，感觉就变。把炸弹概率从 15% 拉到 40%，“该不该伸手去接”的犹豫立刻变多，感觉从轻松变成紧张。一次只拧一个，才知道是哪个起了作用，就像调咖啡的研磨粗细，一次只改一个变量。</p>
       <p>同时把速度、篮子、炸弹、生命全改了，只会得到一句“更难了”，却不知道是哪个旋钮的功劳，下一步也不知道往哪调。</p>
     </div>
   </div>
   <div class="why-box"><p>边界：调参数能打磨一个已经成立的核心循环，却救不了一个本身没意思的循环；好玩度也不只取决于数字，还取决于规则结构。</p>
-    <p class="src">原理出处：MDA 框架（Hunicke、LeBlanc、Zubek，2004）。</p></div>
+    <p class="src">原理出处：Robin Hunicke、Marc LeBlanc、Robert Zubek · 2004 · 提出 MDA 框架：机制产生动态，动态产生美学。</p></div>
 
   <div class="withimg">
     <span data-illus="c29_phi"></span>
     <div>
       <h3>③ 世界观：每一帧都是静止的，“动”是大脑补出来的</h3>
-      <p>游戏循环每圈画一张静止的画。眼睛为什么会觉得球在动？1912 年，Max Wertheimer 做了一组实验：两个静止的光点前后短暂地亮起，只要间隔合适，人看到的是一个点在移动，他把这叫作<span class="term" tabindex="0" data-def="似动现象（phi 现象）：两个静止的刺激先后短暂出现，人会感到有东西在移动。">似动现象</span>（phi 现象）。这篇论文常被视为格式塔心理学的起点。</p>
+      <p>游戏循环每圈画一张静止的画，眼睛却觉得球在动。1912 年，Max Wertheimer 做了一组实验：两个静止的光点前后短暂地亮起，只要间隔合适，人看到的是一个点在移动，这就是<span class="term" tabindex="0" data-def="似动现象（phi 现象）：两个静止的刺激先后短暂出现，人会感到有东西在移动。">似动现象</span>（phi 现象）。这篇论文常被视为格式塔心理学的起点。</p>
       <p>还记得翻页动画书吗？大脑在两张静止的图之间自己补出了运动。游戏的“流畅”靠的是足够密的静止画面，大脑负责把它们连起来。</p>
-      <p>说明：phi 与另一种“beta 运动”常被混用，实际的视觉机制比这里讲的复杂。</p>
+      <p>phi 与另一种“beta 运动”常被混用，实际的视觉机制比这里讲的复杂。</p>
     </div>
   </div>
+  <aside class="cc-card" aria-label="概念卡：似动现象">
+    <span class="cc-tag">概念卡</span>
+    <p class="cc-name"><span>似动现象</span></p>
+    <p class="cc-en">Apparent motion（phi phenomenon）</p>
+    <p class="cc-by">Max Wertheimer · 1912 年《Experimentelle Studien über das Sehen von Bewegung》</p>
+    <p class="cc-def">两个静止的光点先后短暂亮起，间隔合适时，人会看到一个点在移动。运动是大脑补出来的。</p>
+    <p class="cc-eg"><span class="cc-k">例子</span>翻页动画书每页只比前一页多动一点点，快速翻过，眼睛就看到了“动”。</p>
+  </aside>
   <div class="why-box"><h3>④ 世界观：所有模型都是错的，但有的有用</h3>
     <p>页面里的“难度指数”是用一个粗糙公式拼出来的，真正的难度取决于玩家的手速、习惯和心情，公式算不出来。统计学家 George Box 说过：“所有模型都是错的，但有些是有用的。”有用的做法是：拿模型的预测去试玩，被现实纠正，再改模型。</p>
-    <p class="src">出处：Box, G. E. P. (1976), “Science and Statistics”, <i>Journal of the American Statistical Association</i> 71(356)：“all models are wrong”；完整的“but some are useful”措辞见 Box &amp; Draper (1987), <i>Empirical Model-Building and Response Surfaces</i>。Wertheimer, M. (1912), “Experimentelle Studien über das Sehen von Bewegung”, <i>Zeitschrift für Psychologie</i>, 61, 161–265。</p></div>
+    <p class="src">出处：<br>George E. P. Box · 1976 · 在“Science and Statistics”里写下“all models are wrong”（<i>Journal of the American Statistical Association</i> 71(356)）。<br>Box 与 Draper · 1987 · 完整的“but some are useful”措辞见 <i>Empirical Model-Building and Response Surfaces</i>。<br>Max Wertheimer · 1912 · 发表似动现象实验（“Experimentelle Studien über das Sehen von Bewegung”，<i>Zeitschrift für Psychologie</i> 61，161–265）。</p></div>
+
+  <aside class="cc-card" aria-label="概念卡：所有模型都是错的，但有的有用">
+    <span class="cc-tag">概念卡</span>
+    <p class="cc-name"><span>所有模型都是错的，但有的有用</span></p>
+    <p class="cc-en">All models are wrong, but some are useful</p>
+    <p class="cc-by">George E. P. Box · 1976 年《Science and Statistics》；1987 年与 Draper 合著书中给出完整措辞</p>
+    <p class="cc-def">模型总会简化现实，所以总有出错的地方。能不能用，要看它的预测经不经得起现实检验，再拿现实来改它。</p>
+    <p class="cc-eg"><span class="cc-k">例子</span>面板里的“难度指数”只是个粗糙公式，算出“刚好”的参数，玩起来可能偏难，试玩之后就该去改公式。</p>
+  </aside>
 
   <div class="sec"><span class="n">6</span><h2><span class="tag how">怎么用</span>招牌互动：接苹果实验台</h2></div>
   <p>下面的游戏<b>就是</b>“读代码”里展示的那段代码：页面直接把它读出来运行，不是截图。用键盘 ← → 或手指/鼠标在画面上拖动来接苹果，避开炸弹。拖动下方的滑块，游戏<b>实时</b>变化（生命数在下次重新开始时生效）。</p>
@@ -221,13 +266,13 @@
     <button class="btn pink" data-pre="hard">🔥 地狱</button>
     <button class="btn green" id="export">📋 导出参数</button>
   </div>
-  <div class="sticky" id="c29t1">试试看：调出一组让提示显示“刚好”的参数，然后亲自玩满 20 秒。每次只拧一个旋钮。<b id="c29t1ok"></b></div>
+  <div class="sticky" id="c29t1">试试看：先用默认参数亲自玩满 20 秒；再找出另一组同样显示“刚好”、手感却不一样的参数（比如下落更快、篮子更宽），也玩满 20 秒。拧的时候一次只动一两个旋钮，才知道是哪个改了手感。<b id="c29t1ok"></b></div>
   <div class="card y" id="exp" style="display:none">
     <h3>你的参数对象</h3>
     <pre class="out" id="expOut"></pre>
     <p class="small">复制后粘贴到你自己 HTML 文件的 <code>&lt;script&gt;</code> 里（用法见下面的“读代码”）。</p>
   </div>
-  <p class="small">“简单 / 刚好 / 很难”的提示是用一个粗略公式估的，<b>只是经验参考</b>。真正的答案靠试玩：自己玩一遍，再让朋友玩。</p>
+  <p class="small">“简单 / 刚好 / 很难”的提示是用一个粗略公式估的，<b>仅供参考</b>。真正的答案靠试玩：自己玩一遍，再让朋友玩。</p>
 
   <div class="sec"><span class="n">7</span><h2><span class="tag how">读代码</span>约 100 行：变量 → 输入 → update → draw → loop</h2></div>
   <p>不必逐行看懂，抓住结构：<b><span class="term" tabindex="0" data-def="游戏在某一刻所有变量的总和，比如分数、篮子位置、生命数。">状态</span> → 输入 → 更新 → 绘制 → 循环</b>。<code>P</code> 就是上面的参数面板，改它就改了手感。点下面的按钮，让对应的那一段亮起来：</p>
@@ -240,7 +285,7 @@
     <button class="btn alt" data-map="none">清除高亮</button>
   </div>
   <pre class="code" id="codeView"></pre>
-  <div class="sticky no-print" id="c29t2">试试看：点“更新”，在亮起的那段里找到让苹果往下掉的那一行（带 <code>P.speed</code> 的）。<b id="c29t2ok"></b></div>
+  <div class="sticky no-print" id="c29t2">试试看：点“更新”，在亮起的那段里找到让苹果往下掉的那一行（带 <code>P.speed</code> 的），点一下它。<b id="c29t2ok"></b></div>
   <div class="card b">
     <h3>怎么放进自己的文件？</h3>
     <p>新建一个 <code>mygame.html</code>，写入下面的骨架，把“导出参数”的结果和上面的游戏代码依次粘进 <code>&lt;script&gt;</code>，双击用浏览器打开即可：</p>
@@ -298,7 +343,7 @@ const P = { /* 粘贴导出的参数 */ };
   </div>
   <div class="tldr">把规则变成数字，再亲手拧旋钮、看后果，是理解“机制 → 动态 → 美学”最快的办法。但它打磨的是一个已成立的循环，不能代替好点子。</div>
 
-  <div class="sec"><span class="n">9</span><h2><span class="tag think">练习</span>练习</h2></div>
+  <div class="sec"><span class="n">9</span><h2><span class="tag think">练习</span>小测验</h2></div>
   <div id="quiz"></div>
 
   <div class="sec"><span class="n">10</span><h2><span class="tag think">你的设计</span>你的成果</h2></div>
@@ -433,12 +478,20 @@ const spans = [...$("codeView").children];
 const at = k => LINES.findIndex(l => l.includes(k));
 const BOUND = { state: [at("游戏状态"), at("第 1 步")], input: [at("第 1 步"), at("第 2 步")], update: [at("第 2 步"), at("第 3 步")], draw: [at("第 3 步"), at("---- 循环")], loop: [at("---- 循环"), LINES.length] };
 document.querySelectorAll("[data-map]").forEach(b => (b.onclick = () => {
-  const k = b.dataset.map; spans.forEach(s => s.classList.remove("hl"));
+  const k = b.dataset.map; spans.forEach(s => { s.classList.remove("hl"); s.removeAttribute("tabindex"); });
   if (k === "none") return;
-  const [a, z] = BOUND[k]; for (let i = a; i < z; i++) spans[i].classList.add("hl");
+  const [a, z] = BOUND[k]; for (let i = a; i < z; i++) { spans[i].classList.add("hl"); if (k === "update") spans[i].tabIndex = 0; }
   const cv = $("codeView"); cv.scrollTop = Math.max(0, spans[a].offsetTop - cv.offsetTop - 12);
-  if (k === "update") mark("c29t2", "对了：就是 it.y += P.speed * dt 那一行，苹果每圈往下一点。");
 }));
+spans.forEach(sp => {
+  const pick = () => {
+    if (!sp.classList.contains("hl") || !spans.some(x => x.tabIndex === 0)) return;
+    if (sp.textContent.includes("it.y += P.speed")) mark("c29t2", "对了：就是 it.y += P.speed * dt 那一行，苹果每圈往下一点。");
+    else { const e = $("c29t2ok"); if (e) e.textContent = " 这一行不是，再找找带 P.speed 的那一行。"; }
+  };
+  sp.addEventListener("click", pick);
+  sp.addEventListener("keydown", ev => { if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); pick(); } });
+});
 
 const PRESETS = {
   easy: { speed: 100, width: 150, rate: 0.8, lives: 6, bomb: 5 },
@@ -467,14 +520,18 @@ KEYS.forEach(k => {
 document.querySelectorAll("[data-pre]").forEach(b => (b.onclick = () => { Object.assign(P, PRESETS[b.dataset.pre]); sync(); P.reset(); }));
 sync();
 
-let plays = 0, runs = [];
+let plays = 0, runs = [], okSets = {};
 function drawRuns() {
   if (!runs.length) { $("c29logbox").innerHTML = ""; return; }
   $("c29logbox").innerHTML = '<table class="c29log"><tr><th>局</th><th>速度</th><th>篮宽</th><th>频率</th><th>命</th><th>炸弹%</th><th>接到</th><th>坚持(秒)</th></tr>' +
     runs.map(r => `<tr><td>${r.n}</td><td>${r.speed}</td><td>${r.width}</td><td>${r.rate}</td><td>${r.lives}</td><td>${r.bomb}</td><td>${r.score}</td><td>${r.secs}</td></tr>`).join("") + "</table>";
 }
 P.onOver = (score, secs) => {
-  if ($("lvl").classList.contains("ok") && secs >= 20) mark("c29t1", "做到了：“刚好”的参数下坚持了 " + secs.toFixed(1) + " 秒。换一个旋钮再试，看感受有什么变化。");
+  if ($("lvl").classList.contains("ok") && secs >= 20) {
+    okSets[KEYS.map(k => P[k]).join("/")] = 1;
+    if (Object.keys(okSets).length >= 2) mark("c29t1", "做到了：两组不同的“刚好”参数下都坚持了 20 秒以上。想想这两种手感有什么不同。");
+    else mark("c29t1", "第一组做到了（" + secs.toFixed(1) + " 秒）。再找一组同样“刚好”、手感不同的参数。");
+  }
   plays++;
   runs.push({ n: plays, speed: P.speed, width: P.width, rate: P.rate, lives: P.lives, bomb: P.bomb, score, secs: secs.toFixed(1) });
   if (runs.length > 5) runs.shift();

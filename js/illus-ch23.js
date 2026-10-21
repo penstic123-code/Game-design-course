@@ -87,12 +87,13 @@
     T(128, 16, 13, "1989 · Game Boy", "middle"));
 
   /* ---------- 难度旋钮 ---------- */
-  illusAdd("c23_knob", "火柴人握着一个大旋钮，旋钮上标着速度，旁边的方块随着转动越落越快",
+  illusAdd("c23_knob", "火柴人握着一个大旋钮，旋钮上标着速度，从“慢”拧向“快”，旁边的方块随着转动越落越快",
     ground + person(36, 62, { arms: "point", face: "grin" }) +
     '<circle cx="104" cy="70" r="26" fill="#ffe58a"/><path d="M104 70 L118 50" stroke-width="5"/>' +
     '<rect x="150" y="22" width="40" height="104" fill="#fffdf3"/>' + sq(160, 30, 12, C[1]) + sq(160, 62, 12, C[3]) + sq(172, 98, 12, C[0]) +
-    '<path d="M154 46 v8 M154 80 v14" stroke-width="2.5"' + none + '/>',
-    T(100, 112, 13, "旋钮：速度", "middle") + T(104, 28, 13, "慢", "middle"));
+    '<path d="M154 46 v8 M154 80 v14" stroke-width="2.5"' + none + '/>' +
+    '<path d="M82 42 Q102 28 122 40 M115 33 L123 40 L113 45" stroke-width="2.5"' + none + '/>',
+    T(100, 112, 13, "旋钮：速度", "middle") + T(70, 48, 13, "慢", "middle") + T(136, 46, 13, "快", "middle"));
 
   illusAdd("c23_e_tread", "火柴人在跑步机上跑，机器上有一个调速度的旋钮",
     ground + '<path d="M60 108 L170 108 L162 120 L68 120 Z" fill="#c0c4cf"/><path d="M160 108 L170 52 M164 62 H184" stroke-width="4"' + none + '/><circle cx="186" cy="64" r="8" fill="#ffe58a"/>' +
@@ -117,7 +118,7 @@
     ground + person(44, 66, { arms: "desk", legs: "sit", face: "shout", look: 1 }) +
     '<rect x="90" y="40" width="90" height="64" fill="#2b2b3a"/><circle cx="112" cy="72" r="9" fill="#ff8fab"/><circle cx="135" cy="72" r="9" fill="#ffe58a"/><circle cx="158" cy="72" r="9" fill="#a8dcf0"/>' +
     '<path d="M30 36 l-6 -8 M44 32 l-2 -10" stroke-width="2.5"' + none + '/>',
-    T(135, 28, 13, "越闪越快，玩法没变", "middle"));
+    T(135, 16, 13, "越闪越快，", "middle") + T(135, 32, 13, "玩法没变", "middle"));
 
   /* ---------- 随机的设计 ---------- */
   illusAdd("c23_drought", "火柴人望着快堆到顶的方块堆，满头冷汗，等了很久的长条还是没有出现",
@@ -166,10 +167,10 @@
     person(40, 62, { arms: "up", face: "shout", legs: "stand" }) + ground,
     T(40, 28, 15, "4 行！", "middle"));
 
-  illusAdd("c23_peakend", "一条起伏的紧张度曲线，最高处标着峰，最后一刻标着终，火柴人回头看着这条曲线",
+  illusAdd("c23_peakend", "一条起伏的感受强度曲线，最高处标着峰，最后一刻标着终（比峰低一些），火柴人回头看着这条曲线",
     '<path d="M24 118 V20 M24 118 H186" stroke-width="3"' + none + '/>' +
-    '<path d="M28 100 Q48 90 62 78 T92 40 T118 74 T146 54 T176 28" stroke="#e5484d" stroke-width="4"' + none + '/>' +
-    '<circle cx="92" cy="40" r="6" fill="#ffe58a"/><circle cx="176" cy="28" r="6" fill="#ffe58a"/>' +
+    '<path d="M28 100 L62 76 L92 30 L118 68 L146 56 L176 46" stroke="#e5484d" stroke-width="4" stroke-linejoin="round"' + none + '/>' +
+    '<circle cx="92" cy="30" r="6" fill="#ffe58a"/><circle cx="176" cy="46" r="6" fill="#a8dcf0"/>' +
     person(150, 88, { s: 0.5, arms: "chin", face: "smile", look: -1 }),
-    T(104, 26, 13, "峰", "middle") + T(168, 50, 13, "终", "middle") + T(100, 136, 12, "时间 →", "middle"));
+    T(104, 34, 13, "峰", "start") + T(176, 34, 13, "终", "middle") + T(28, 15, 12, "感受强度 ↑", "start") + T(100, 132, 12, "时间 →", "middle"));
 })();

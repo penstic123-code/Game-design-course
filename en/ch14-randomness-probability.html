@@ -48,7 +48,7 @@
     <ul>
       <li>Tell input randomness from output randomness, and price a random reward with expected value.</li>
       <li>Explain why people’s probability intuition so often goes wrong (the gambler’s fallacy, small samples, base-rate neglect), and why pity systems and shuffle bags were invented.</li>
-      <li>Say why the sum of several dice is bell-shaped, how the standard deviation changes with the number of dice, and use that to decide whether a random quantity should be split into several rolls or merged into one.</li>
+      <li>Say why the sum of several dice is bell-shaped and how the standard deviation changes with the number of dice, and use that to decide whether a random quantity should be split into several rolls or merged into one.</li>
     </ul>
   </div>
 
@@ -57,8 +57,8 @@
   <div class="withimg">
     <span data-illus="c14_inout"></span>
     <div>
-      <p>Both are “up to luck,” yet some randomness is exciting and some makes you want to throw the controller. The difference often lies not in how big the probability is but in whether <b>the randomness happens before you decide or after</b>.</p>
-      <p>In Tetris, which piece comes next is random, but you see it first and then decide where to put it, so cleverness still pays. A “75% hit chance” swing is different: you have already made your decision, and all that is left is to wait for the dice.</p>
+      <p>Two kinds of randomness can both be “up to luck,” yet one is thrilling and the other makes people want to throw the controller. The difference is <b>whether the randomness happens before the decision or after it</b>, and it has little to do with how large the probability is.</p>
+      <p>In Tetris, which piece comes next is random, but the player sees it first and then decides where to put it, so cleverness still pays. A swing with a “75% hit chance” is different: the decision is already made, and all that is left is to wait for the dice.</p>
     </div>
   </div>
   <div class="grid2">
@@ -82,10 +82,10 @@
       </g>
     </svg>
   </div>
-  <div class="eg" data-ic="🧩"><span data-illus="c14_next"></span><div class="egt"><b>The next-piece preview in Tetris</b>: what each piece is is random, but you see the next piece before you drop the one in hand. Your judgment still decides success or failure, and the randomness just keeps setting you new problems.</div></div>
-  <div class="eg" data-ic="⚔️"><span data-illus="c14_hit75"></span><div class="egt"><b>An attack with a 75% hit chance</b>: which target to pick and which skill to use is your decision; whether the blow connects or misses is up to the dice. One miss in four is normal, and also exciting.</div></div>
+  <div class="eg" data-ic="🧩"><span data-illus="c14_next"></span><div class="egt"><b>The next-piece preview in Tetris</b>: which piece comes is random, but the player sees the next piece before dropping the one in hand. Judgment still decides success or failure, and the randomness just keeps setting new problems.</div></div>
+  <div class="eg" data-ic="⚔️"><span data-illus="c14_hit75"></span><div class="egt"><b>An attack with a 75% hit chance</b>: which target to pick and which skill to use are the player’s decisions. Whether the blow connects or misses is up to the dice. One miss in four is normal, and exciting too.</div></div>
   <div class="eg bad" data-ic="😡"><span data-illus="c14_miss95"></span><div class="egt"><b>Showing 95% and still MISSing</b>: this is where output randomness most easily backfires. Players feel “cheated,” yet one in twenty is bound to miss, and people are especially intolerant of failures that were “almost certain.”</div></div>
-  <div class="sticky">Rule of thumb: to make the player feel “I won because I’m smart,” use more <b>input randomness</b>; for tense, thrilling moments of burst, add a little <b>output randomness</b>, but don’t let it rule who wins.</div>
+  <div class="sticky">Rule of thumb: to make the player feel “I won because I’m smart,” use more <b>input randomness</b>. For tense, thrilling bursts, add a little <b>output randomness</b>, but don’t let it rule who wins.</div>
 
   
   <div class="sec"><span class="n">2</span><h2><span class="tag origin">How it was invented</span>A gambling match that was interrupted</h2></div>
@@ -117,12 +117,12 @@
         <text x="605" y="136">A wins the round after</text><text x="605" y="158">probability 1/4</text>
         <text x="605" y="222">B wins the round after</text><text x="605" y="244">probability 1/4</text>
         <text x="188" y="84" font-size="16">1/2</text><text x="188" y="198" font-size="16">1/2</text>
-        <text x="350" y="278" font-size="18">A’s final chance of winning = 1/2 + 1/4 = 3/4, so A should get 75</text>
+        <text x="350" y="274" font-size="18">A’s win chance = 1/2 + 1/4 = 3/4, so A gets 75</text>
       </g>
     </svg>
   </div>
   <div class="timeline">
-    <div class="ev hasimg"><span data-illus="c14_pacioli"></span><div><b class="yr">1494</b> The Italian Luca Pacioli was the first to discuss this problem, in a mathematics book, and his answer was to split by rounds already won: at 2 to 1, A gets two thirds. It sounds reasonable, but it has a loophole: if A had won 1 round and B none, this split would give A everything, even though B still has a chance of coming back.</div></div>
+    <div class="ev hasimg"><span data-illus="c14_pacioli"></span><div><b class="yr">1494</b> The Italian Luca Pacioli first discussed this problem, in a mathematics book, and his answer was to split by rounds already won: 2 to 1, so A gets two thirds. It sounds reasonable, but has a loophole: if A had won 1 round and B none, this split would give A everything, even though B still has a chance of coming back.</div></div>
     <div class="ev hasimg"><span data-illus="c14_pascal"></span><div><b class="yr">1654</b> Pascal and Fermat discussed the problem in a series of letters. Their turning point: don’t look back at who has won how many rounds, look forward and <b>list all the possible endings from here, and work out each by its probability</b>. Fermat counted with combinations and Pascal worked backward step by step, and they reached the same answer: A 75, B 25. Historians often treat these letters as the starting point of probability theory.</div></div>
     <div class="ev hasimg"><span data-illus="c14_huygens"></span><div><b class="yr">1657</b> The Dutchman Christiaan Huygens heard of the correspondence and wrote <i>On Reasoning in Games of Chance</i>, the first systematic account of the method. The concept of “expectation” also took shape in the book: what you can expect to get is the probability-weighted average of the possible outcomes.</div></div>
     <div class="ev hasimg"><span data-illus="c14_bernoulli"></span><div><b class="yr">1713</b> Jacob Bernoulli’s <i>Ars Conjectandi</i> (published after his death) proves that when the same thing is repeated enough times, the actual average gets closer and closer to the theoretical value. This is the law of large numbers, and it also explains why expected value can be used to price random rewards.</div></div>
@@ -132,24 +132,32 @@
     <button class="btn" id="c14sim1">🎲 Replay 10,000 times from 2:1</button>
     <div class="msg" id="c14sim1m">Press the button above to see how many times A ends up winning.</div>
   </div>
-  <div class="sticky" id="c14t1">Try it: first choose a split you think is fair on the slider above and reveal it, then press “Replay 10,000 times” and see whether A’s winning share comes close to 75%.</div>
+  <div class="sticky" id="c14t1">Try it: first choose a split you think is fair with the slider above and reveal it, then click “Replay 10000 times” and see whether A’s winning share comes close to 75%.</div>
 
   
   <div class="sec"><span class="n">3</span><h2><span class="tag what">What it is</span>Expected value: how to price randomness</h2></div>
-  <p>What Pascal and Fermat worked out is now called <b><span class="term" tabindex="0" data-def="Each outcome’s probability multiplied by its value and summed, i.e. the long-run average after many repeats">expected value</span> (EV)</b>: for each outcome, <b>probability × value</b>, then add them up. It answers: if you repeat many, many times, what is the average each time.</p>
+  <p>What Pascal and Fermat computed is the <b><span class="term" tabindex="0" data-def="Expected value (EV): multiply each outcome’s probability by its value and add them up. It is the long-run average if you repeat the situation many times.">expected value</span> (EV)</b>: for each outcome, <b>probability × value</b>, then add them up. It answers: if this is repeated a great many times, what is the average per try?</p>
+  <aside class="cc-card" aria-label="Concept card: expected value">
+    <span class="cc-tag">Concept card</span>
+    <p class="cc-name"><span>Expected Value</span></p>
+    <p class="cc-en">Expected value, EV for short</p>
+    <p class="cc-by">Pascal and Fermat · the method was laid down in their 1654 correspondence; Christiaan Huygens · his 1657 <i>On Reasoning in Games of Chance</i> gave “expectation” its shape</p>
+    <p class="cc-def">Multiply each outcome’s probability by its value and add them all up. Repeated many times, you get about this much per try.</p>
+    <p class="cc-eg"><span class="cc-k">Example</span>A chest gives 50 coins with 10%, 10 coins with 30%, and 0 with 60%: expected value = 0.1×50 + 0.3×10 = 8 coins.</p>
+  </aside>
   <div class="grid2">
     <div class="card g"><h3>Example: opening a chest</h3><p>10% gives 50 gold, 30% gives 10 gold, 60% gives 0.<br>EV = 0.1×50 + 0.3×10 + 0.6×0 = <b>8 gold</b>.</p></div>
     <div class="card b"><h3>Example: a six-sided die</h3><p>EV = (1+2+3+4+5+6)/6 = <b>3.5</b>.<br>You can never roll 3.5, but roll many times and the average will come close to it.</p></div>
   </div>
-  <p>In design the most common use is “pricing”: if a “20% chance to crit for ×2 damage,” the average damage rises by 1 + 0.2 = <b>1.2 times</b>, and a number-crunching designer can put it on the same scale as “a flat 20% damage bonus.”</p>
+  <p>In design the most common use is “pricing”: if a “20% chance to crit for ×2 damage,” the average damage rises by 1 + 0.2 = <b>1.2 times</b>, and a numbers designer can put it on the same scale as “a flat +20% damage.”</p>
   <div class="eg" data-ic="📦"><span data-illus="c14_chest"></span><div class="egt"><b>Opening a chest</b>: three outcomes each with a probability, and the expectation works out to 8 gold. Designers use it to decide how costly a chest should be and whether it is worth opening.</div></div>
-  <div class="eg" data-ic="🎟️"><span data-illus="c14_lottery"></span><div class="egt"><b>Buying a lottery ticket</b>: the expected value of each ticket is the average of all the prizes weighted by probability. The lottery operator has to make money, so the average payout is always less than what you spend. You are buying the chance to dream, not a return.</div></div>
+  <div class="eg" data-ic="🎟️"><span data-illus="c14_lottery"></span><div class="egt"><b>Buying a lottery ticket</b>: the expected value of each ticket is the average of all the prizes weighted by probability. The lottery operator has to make money, so the average payout is always less than what you spend. You are buying a chance to dream, not a return.</div></div>
   <div class="eg bad" data-ic="⚖️"><span data-illus="c14_samemean"></span><div class="egt"><b>Same expectation, different feel</b>: one chest “always gives a steady 8,” another “gives 80 only once in ten,” and both have an expectation of 8. The first feels solid, the second is either wild joy or empty hands. Expected value cares only about the average and says nothing about the experience. That calls for the <b>variance</b> below.</div></div>
 
   
   <div class="sec"><span class="n">4</span><h2><span class="tag how">Try it</span>A dice distribution simulator</h2></div>
   <p><b><span class="term" tabindex="0" data-def="The average of the squared differences between each outcome and the mean, measuring how spread out the outcomes are">Variance</span></b> (and its square root, the <b><span class="term" tabindex="0" data-def="The square root of the variance, in the same units as the outcomes, often used to mean “the typical deviation”">standard deviation</span></b>) describes how “scattered” the outcomes are. With the same average, play with large variance feels more like gambling, with occasional ecstasy and occasional collapse; play with small variance feels more like a game of skill, with stable and predictable results.</p>
-  <p>Dice are the best tool for seeing this. <b>1d12</b> (roll one 12-sided die) makes every number equally likely; <b>2d6</b> (roll two six-sided dice and add) mostly lands in the middle, in a bell shape. Pick one, roll many times, and see how far the red dots (theory) and the bars (your rolls) differ.</p>
+  <p>Dice are the best tool for seeing this. <b>1d12</b> (roll one 12-sided die) makes every number equally likely. <b>2d6</b> (roll two six-sided dice and add) mostly lands in the middle, in a bell shape. Pick one, roll many times, and see how far the red dots (theory) and the bars (your rolls) differ.</p>
   <div class="board">
     <div id="dchips"></div>
     <div id="nchips"></div>
@@ -164,7 +172,7 @@
 
   <!-- 5 CLT -->
   <div class="sec"><span class="n">5</span><h2><span class="tag why">Why it works</span>Why does adding several dice turn it into a bell shape?</h2></div>
-  <p>2d6 is more “concentrated” than 1d12, and this is not a special case of dice but a general rule: <b>add up many independent small random quantities and the shape of the sum tends toward a bell</b>. The intuition is easy: to get a particularly large total, you need <b>every die to be large at once</b>, and such “everything lining up” combinations get fewer and fewer; combinations that are “some large, some small, canceling each other” are far more numerous.</p>
+  <p>2d6 is more “concentrated” than 1d12, and this is a general rule: <b>when many small independent random amounts are added, the shape of the total approaches a bell</b>. The intuition is not hard. For the total to be very large, <b>every single die has to be large at the same time</b>, and such “everything lines up” combinations get rarer and rarer. Combinations where some are high and some low and they cancel out are far more numerous.</p>
   <p>Below, drag the number of dice from 1 to 20. The chart shows the <b>exactly computed</b> theoretical distribution (not a random simulation), and the red line is the normal curve with the same mean and standard deviation.</p>
   <div class="board">
     <label class="ctl">Number of six-sided dice, n <output id="cn">2</output></label><input type="range" id="clt" min="1" max="20" step="1" value="2">
@@ -177,10 +185,23 @@
   <div class="sticky" id="c14t3">Try it: drag n to 16, then switch to the “average roll” view. See what fraction of a single die’s standard deviation the standard deviation of the average roll is.</div>
   <div class="why-box">
     <h3>The central limit theorem (CLT)</h3>
-    <p>One six-sided die: mean 3.5, variance 35/12 ≈ 2.917, standard deviation ≈ 1.708. The sum of n independent dice: mean 3.5n, <b>variances add</b> to 35n/12, so the standard deviation = 1.708×<b>√n</b>. At n=4 the standard deviation is 2 times that of one die, and at n=16 it is 4 times. But the total itself is about n times as large, so <b>the relative fluctuation shrinks as 1/√n</b>; the standard deviation of the average roll is 1.708/√n, narrower the more you roll.</p>
-    <p>When the conditions are right (the terms are <b>independent</b>, with finite variance, and no one term dominates the sum), the distribution of a sum of many random quantities looks more and more like a normal distribution. The link to games: small randomness like a crit that “triggers 20% of the time” averages out over a long fight; a one-time big chest does not. To make players feel “stable most of the time, with occasional surprises,” split a big random event into many small ones; for the thrill of “one roll decides it all,” merge them into one big random event. Best-of-several matches let the stronger side win more reliably for the same reason.</p>
-    <div class="src">Source: a classic result of probability theory. The early normal approximation to the binomial distribution is often credited to de Moivre and Laplace, and was later made rigorous by Lyapunov, Lindeberg and others.</div>
+    <p>One six-sided die has a mean of 3.5 and a standard deviation of about 1.708. The sum of n independent dice has a mean of 3.5n and a standard deviation <b>√n</b> times that of one die: 2 times at n=4, 4 times at n=16. The total itself is about n times bigger, so <b>the relative spread shrinks as 1/√n</b>.</p>
+    <details>
+      <summary>Advanced: how the standard deviation is computed</summary>
+      <p class="small">One six-sided die has a variance of 35/12 ≈ 2.917 and a standard deviation of ≈ 1.708. For independent random amounts the <b>variances add</b>, so the sum of n dice has variance 35n/12 and standard deviation 1.708×√n. The standard deviation of the average roll is 1.708/√n, which narrows as you keep rolling.</p>
+    </details>
+    <p>When the conditions fit (the terms are <b>independent</b>, have finite variance, and no single term dominates the total), the distribution of the sum of many random amounts looks more and more like a normal distribution.</p>
+    <p>In a game: small random events such as a “20% chance to crit” average out over a long fight, while a one-off big chest does not. To make players feel “steady most of the time, with the occasional surprise,” split one big random event into many small ones. For the thrill of “one roll decides everything,” merge them into a single big one. Best-of-several matches let the stronger side win more reliably for the same reason.</p>
+    <div class="src">Source: a classic result of probability theory. The early normal approximation to the binomial distribution is usually credited to de Moivre (1733) and Laplace, and was later made rigorous by Lyapunov, Lindeberg and others.</div>
   </div>
+  <aside class="cc-card" aria-label="Concept card: the central limit theorem">
+    <span class="cc-tag">Concept card</span>
+    <p class="cc-name"><span>The Central Limit Theorem</span></p>
+    <p class="cc-en">Central limit theorem, CLT for short</p>
+    <p class="cc-by">Abraham de Moivre · the first normal approximation, 1733; Laplace, Lyapunov, Lindeberg and others made it rigorous later</p>
+    <p class="cc-def">When many small independent random amounts are added, the distribution of the total looks more and more like a bell (the normal distribution).</p>
+    <p class="cc-eg"><span class="cc-k">Example</span>One die gives every face equal odds; two dice added cluster in the middle; sixteen dice added form an almost perfect bell curve.</p>
+  </aside>
 
   
   <div class="sec"><span class="n">6</span><h2><span class="tag what">What it is</span>The traps of probability intuition: isn’t it red’s turn?</h2></div>
@@ -188,9 +209,17 @@
     <span data-illus="c14_roulette"></span>
     <div>
       <p>On August 18, 1913, at a roulette table in the Monte Carlo casino in Monaco, the ball fell into black 26 times in a row. The gamblers, watching the long string of black on the scoreboard, felt more and more that “it’s unscientific for it to stay black any longer, it must be red this time,” and piled their chips onto red.</p>
-      <p>The casino reportedly made a fortune that night. The roulette wheel has no memory, and every spin is independent: whether this spin lands on black or red has nothing to do with how many blacks came before. This mistake came to be called the <span class="term" tabindex="0" data-def="The mistaken belief that independent events will “compensate” for earlier results, such as feeling that tails is due after a run of heads">gambler’s fallacy</span>, also the “Monte Carlo fallacy.”</p>
+      <p>That night the casino made a fortune. The roulette wheel has no memory, and every spin is independent: whether this spin lands on black or red has nothing to do with how many blacks came before. This judgment error is the <span class="term" tabindex="0" data-def="Gambler’s fallacy: wrongly believing an independent event will “make up for” earlier results, such as feeling that tails is due after a run of heads.">gambler’s fallacy</span>, which is also called the “Monte Carlo fallacy” because of that event.</p>
     </div>
   </div>
+  <aside class="cc-card" aria-label="Concept card: the gambler’s fallacy">
+    <span class="cc-tag">Concept card</span>
+    <p class="cc-name"><span>The Gambler’s Fallacy</span></p>
+    <p class="cc-en">Gambler’s fallacy (also called the Monte Carlo fallacy)</p>
+    <p class="cc-by">The 1913 roulette run at the Monte Carlo casino is the best-known case; Amos Tversky and Daniel Kahneman · in 1971 they studied the “law of small numbers” systematically in psychology</p>
+    <p class="cc-def">Believing an independent event will “make up for” earlier results. After several blacks in a row, the next one feels due to be red.</p>
+    <p class="cc-eg"><span class="cc-k">Example</span>A coin lands heads 5 times in a row, and the next flip is still 50/50, because the coin has no memory.</p>
+  </aside>
   <div class="grid2">
     <div class="card o"><h3>🪙 The gambler’s fallacy</h3><p>“Five heads in a row, next time must be tails!” Wrong. <b>Independent events</b> have no memory, and the next flip is still 50–50. Randomness will not “make it up to you.”</p></div>
     <div class="card v"><h3>🔬 Small samples can deceive</h3><p>In 10 flips, getting 70% heads is not at all unusual; only with 1000 flips does it settle near 50%. A player plays only a few dozen times in a lifetime, so what they experience is always the “ragged small sample.”</p></div>
@@ -200,41 +229,49 @@
     <button class="btn" id="flip">🪙 Flip a set</button>
     <div id="flipout" style="margin-top:8px"></div>
   </div>
-  <p>But why do people make this mistake? Just saying “people are dumb” explains nothing. Better to answer a few questions yourself.</p>
+  <p>Why do people make this kind of mistake? Saying “people are dumb” explains nothing, so start by answering a few questions yourself.</p>
 
   
   <div class="sec"><span class="n">7</span><h2><span class="tag why">Why it works</span>Why does human probability intuition so often go wrong?</h2></div>
-  <p>A little experiment first: <b>don’t calculate, answer by gut feeling</b>. The 6 questions below are all about randomness in games. For each, give your intuitive answer first, and after you press “Reveal” you will see the exact calculation and how far your intuition is from the true value.</p>
+  <p><b>Don’t calculate; answer by feel.</b> All six questions below are about randomness in games. For each, give a gut answer first, then press “Reveal” to see the exact calculation and how far the gut answer was from the truth.</p>
   <div class="board" id="iq"></div>
   <div class="msg" id="iqsum"></div>
   <div class="sticky" id="c14t4">Try it: reveal all 6 questions. Count how many of your intuitions came close to the true value, and think about which ones you were led astray on by how things “looked.”</div>
   <div class="why-box">
     <h3>Heuristics: the brain’s “low-effort algorithms”</h3>
-    <p>We can’t do an exact calculation every time, so the brain uses <b>shortcuts</b> for quick estimates. Most of the time they are enough, but on probability questions they err systematically. Psychologists call these shortcuts <b><span class="term" tabindex="0" data-def="Rule-of-thumb shortcuts people use to judge under uncertainty; fast, but with systematic biases">heuristics</span></b>.</p>
+    <p>The brain can’t do an exact calculation every time, so it uses <b>shortcuts</b> to estimate quickly. These shortcuts are <b><span class="term" tabindex="0" data-def="Heuristics: rules of thumb people use to judge under uncertainty. They are fast but carry systematic biases.">heuristics</span></b>. They are good enough most of the time, but on probability questions they err in a consistent direction.</p>
     <ul>
-      <li><b><span class="term" tabindex="0" data-def="Judging probability by “how much it looks like”: the more it resembles the typical picture, the more likely it seems">The representativeness heuristic</span></b>: HTHTTH “looks more random,” so it feels more likely; HHHHHH “doesn’t look random,” so it feels impossible. In fact, as long as the coin is fair, any specified sequence of 6 flips has probability (1/2)<sup>6</sup> = 1/64. The gambler’s fallacy and excess trust in <b>small samples</b> both come from here (Tversky and Kahneman in 1971 called it the “law of small numbers”: people expect a small sample to be as evenly balanced as the whole). Of the same origin is neglecting the <b>base rate</b> (question 4, <span class="term" tabindex="0" data-def="Judging only by “how well the evidence fits” while ignoring the proportions that existed beforehand (the base rate)">base-rate neglect</span>).</li>
-      <li><b><span class="term" tabindex="0" data-def="Judging frequency by “how many examples come to mind”: the easier something is to recall, the more common it seems">The availability heuristic</span></b>: forums are full of screenshots showing “two golds in a ten-pull,” because those who didn’t get one don’t post, so you overestimate how common it is.</li>
+      <li><b><span class="term" tabindex="0" data-def="Representativeness heuristic: judging probability by resemblance. The more something looks like the typical case, the more likely it feels.">Representativeness heuristic</span></b>: HTHTTH “looks more random,” so it feels more likely, and HHHHHH “doesn’t look random,” so it feels impossible. With a fair coin, any specific sequence of 6 flips has probability (1/2)<sup>6</sup> = 1/64.<br>The gambler’s fallacy and too much trust in a <b>small sample</b> both come from here. Tversky and Kahneman called it the “law of small numbers” in 1971: people expect a small sample to look as even as the whole population.<br>Ignoring <b>base rates</b> has the same root (question 4, <span class="term" tabindex="0" data-def="Base rate neglect: judging only by how well the evidence fits, and ignoring the proportion that existed beforehand (the base rate).">base rate neglect</span>).</li>
+      <li><b><span class="term" tabindex="0" data-def="Availability heuristic: judging frequency by how many examples come to mind. The easier something is to recall, the more common it feels.">Availability heuristic</span></b>: forums are full of screenshots of “two golds in a ten-pull,” because people who didn’t get it don’t post, so its frequency gets overestimated.</li>
       <li><b>Misjudging accumulated small probabilities</b>: “only 1.5% each time, so ten tries should be fine” (question 2), “0.5% drop rate, and 200 runs should give me even odds” (question 5), and in the birthday problem people badly underestimate the chance that “some pair collides” (question 6).</li>
     </ul>
-    <p>The design implication: players are not calculating probabilities, they are <b>feeling</b> them. So there is always a gap between the “displayed probability” and the “probability the player feels,” which is why mechanisms like pity and shuffle bags that “adjust to feeling” exist.</p>
-    <div class="src">Sources: Tversky and Kahneman, “Belief in the law of small numbers,” <i>Psychological Bulletin</i> 76(2) (1971); “Judgment under uncertainty: Heuristics and biases,” <i>Science</i> 185 (1974); on base-rate neglect see Kahneman and Tversky, “On the psychology of prediction,” <i>Psychological Review</i> 80 (1973). Popular reading: Kahneman, <i>Thinking, Fast and Slow</i> (2011).</div>
+    <p>Design implication: players <b>feel</b> probability and don’t compute it. There is always a gap between the “displayed probability” and the “probability the player feels,” and mechanisms like pity timers and shuffle bags, which adjust for how it feels, exist because of that gap.</p>
+    <div class="src">Sources:<br>Tversky and Kahneman · 1971 · introduced the “law of small numbers” (“Belief in the law of small numbers,” <i>Psychological Bulletin</i> 76(2)).<br>Tversky and Kahneman · 1974 · summarized three heuristics and their biases (“Judgment under uncertainty: Heuristics and biases,” <i>Science</i> 185).<br>Kahneman and Tversky · 1973 · base rate neglect (“On the psychology of prediction,” <i>Psychological Review</i> 80). Popular book: Kahneman, <i>Thinking, Fast and Slow</i> (2011).</div>
   </div>
+  <aside class="cc-card" aria-label="Concept card: heuristics and biases">
+    <span class="cc-tag">Concept card</span>
+    <p class="cc-name"><span>Heuristics and Biases</span></p>
+    <p class="cc-en">Heuristics and biases</p>
+    <p class="cc-by">Amos Tversky and Daniel Kahneman · 1974 <i>Science</i> paper “Judgment under uncertainty: Heuristics and biases”</p>
+    <p class="cc-def">People estimate probability with rules of thumb. They work well enough most of the time, and on probability questions they err in a consistent direction.</p>
+    <p class="cc-eg"><span class="cc-k">Example</span>Forums are full of “two golds in a ten-pull” screenshots, and players who didn’t get one don’t post, so players overestimate how common the drop is (availability heuristic).</p>
+  </aside>
   <div class="eg" data-ic="🕵️"><span data-illus="c14_cheat"></span><div class="egt"><b>The “wrongful accusations” of an anti-cheat system</b>: the picture from question 4. Real cheaters are only 1%, and however accurate the system is, it will sweep in a batch of innocent people, and most of those flagged are innocent. Saying “how many out of 1000 people” is far easier to understand than saying “95%.”</div></div>
-  <div class="eg" data-ic="📢"><span data-illus="c14_forum"></span><div class="egt"><b>The “lucky ones” on forums</b>: those who post screenshots are the ones who got the drop, and those who didn’t don’t post. You see only the successful samples, so you overestimate how common “getting the drop” is.</div></div>
+  <div class="eg" data-ic="📢"><span data-illus="c14_forum"></span><div class="egt"><b>The “lucky ones” on forums</b>: those who post screenshots are the ones who got the drop, and those who didn’t don’t post. You see only the successful samples, and so overestimate how common “getting the drop” is.</div></div>
   <div class="eg bad" data-ic="🃏"><span data-illus="c14_deckmem"></span><div class="egt"><b>“A near-miss”: drawing cards without replacement</b>: three aces have been drawn from a deck, so there are fewer aces left, and the probability that the next card is an ace really has changed. “Having memory” is correct here. The gambler’s fallacy applies only where <b>each event is independent</b> (coins, dice, roulette).</div></div>
-  <p>People disagree about these shortcuts. Gerd Gigerenzer and others argue that they are often very “smart” in real environments, and that when stated in <b>frequency format</b> (“how many out of 1000 people”), people do much better (Gigerenzer and Hoffrage, 1995). Both views have experimental support. For a designer the conclusion is the same: don’t expect players to calculate probabilities correctly.</p>
+  <p>People disagree about these shortcuts. Gerd Gigerenzer and others argue that they are quite “smart” in real environments, and that people do much better when a problem is stated in <b>frequency format</b> (“how many out of 1,000 people”) (Gigerenzer and Hoffrage, 1995). Both claims have experiments behind them. For designers the conclusion is the same: don’t expect players to calculate probability correctly.</p>
 
   
   <div class="sec"><span class="n">8</span><h2><span class="tag origin">How it was invented</span>The person who got burned by luck for a hundred pulls</h2></div>
   <div class="withimg">
     <span data-illus="c14_unlucky"></span>
     <div>
-      <p>The “random numbers” in a computer are computed by an algorithm and are called <span class="term" tabindex="0" data-def="A sequence produced by a deterministic algorithm that looks random statistically">pseudo-random</span>, which is plenty for games. The designer’s real trouble is not whether “the randomness is real enough” but that <b>pure randomness is sometimes too cruel</b>.</p>
-      <p>Take an item with a 1% drop rate. Many players’ intuition is “after 100 pulls it should have shown up.” Guess first: of those who complete all 100 pulls, how many still end up empty-handed?</p>
+      <p>The “random numbers” in a computer come from an algorithm and are <span class="term" tabindex="0" data-def="Pseudorandom: a sequence produced by a deterministic algorithm that looks random statistically.">pseudorandom</span>, which is good enough for games. The designer’s real trouble is not whether the randomness is “random enough” but that <b>pure randomness can be too cruel</b>.</p>
+      <p>Take an item with a 1% drop rate. Many players’ gut says, “after 100 pulls, one must have dropped.” Guess first: of everyone who pulls 100 times, how many still get nothing?</p>
     </div>
   </div>
   <div class="c14guess" id="c14g2">
-    <label class="ctl">Your guess: share of people who got nothing after all 100 pulls <output id="c14g2o">10</output>%</label>
+    <label class="ctl">Guess: the share of people who got nothing after all 100 pulls <output id="c14g2o">10</output>%</label>
     <input type="range" id="c14g2s" min="0" max="100" step="1" value="10">
     <button class="btn" id="c14g2b">Reveal</button>
     <div class="res" id="c14g2r"></div>
@@ -242,7 +279,7 @@
   <p>These people quit the game, swear, and write long posts on forums. Designers found that “the probability is fair” alone couldn’t persuade them, so they came up with several ways to hold up “the unluckiest people”:</p>
   <div class="timeline">
     <div class="ev hasimg"><span data-illus="c14_drought"></span><div><b class="yr">Early on</b> Many early games were purely random: every roll independent. In Tetris this could mean waiting dozens of pieces in a row for the long bar, and the player feels “this game has it in for me.”</div></div>
-    <div class="ev hasimg"><span data-illus="c14_bag7"></span><div><b class="yr">Later</b> In the modern Tetris guideline, pieces come from a “<span class="term" tabindex="0" data-def="Shuffle a finite set of outcomes and take them out one by one, reshuffling when emptied; the proportion within each bag is guaranteed fixed">shuffle bag</span>”: seven kinds of piece go in a bag, are shuffled and taken out one by one, and when it’s empty another bag is filled. This way each kind appears exactly once in every seven pieces, and at most 12 pieces separate two long bars.</div></div>
+    <div class="ev hasimg"><span data-illus="c14_bag7"></span><div><b class="yr">Later</b> In the modern Tetris guideline, pieces come from a “<span class="term" tabindex="0" data-def="Shuffle a finite set of outcomes and take them out one by one, reshuffling when emptied; the proportion within each bag is guaranteed fixed">shuffle bag</span>”: seven kinds of piece go in a bag, are shuffled and taken out one by one, and when it’s empty another bag is filled. Each kind appears exactly once in every seven pieces, and at most 12 pieces separate two long bars.</div></div>
     <div class="ev hasimg"><span data-illus="c14_prd"></span><div><b class="yr">Another road</b> In Dota 2, effects like crits use a “pseudo-random distribution”: each time it doesn’t trigger, the chance of triggering next time rises a little, and resets to zero after a trigger. For a 20% crit, with its published constant C ≈ 0.0557, the probability on the nth attempt is 5.57% × n, the long-run average is still 20%, but it can go at most 17 attempts in a row without triggering.</div></div>
   </div>
 
@@ -264,16 +301,18 @@
 
   
   <div class="sec"><span class="n">10</span><h2><span class="tag how">Try it</span>Three designs for a 1% drop rate</h2></div>
-  <p>The base drop rate is 1%. Each of 500 players keeps pulling until they have won 20 times, and we count <b>how many pulls lie between two consecutive wins</b>. Adjust the pity cap and compare the three schemes.</p>
+  <p>Set the base drop rate to 1% and simulate 500 players, each pulling until they have won 20 times. Count <b>how many pulls lie between two consecutive wins</b>. Change the pity cap and compare the three schemes.</p>
   <div class="board">
     <label class="ctl">Pity cap (guaranteed after this many consecutive misses) <output id="capv">90</output></label><input type="range" id="cap" min="20" max="150" step="5" value="90">
     <button class="btn" id="psim">🚀 Start simulation</button>
-    <svg viewBox="0 0 700 294" width="100%" style="margin-top:8px" id="psvg" role="img" aria-label="Line chart of the interval distributions of the three schemes"></svg>
+    <svg viewBox="0 -14 700 308" width="100%" style="margin-top:8px" id="psvg" role="img" aria-label="Line chart of the interval distributions of the three schemes"></svg>
     <div id="ptbl"></div>
     <div class="msg" id="pmsg"></div>
   </div>
   <div class="sticky" id="c14t5">Try it: set the pity cap below 50 and simulate, so that the “longest single stretch” doesn’t exceed 50 pulls, and see what the average interval drops to. The lower the pity, how much of the story of luck is left?</div>
-  <p class="small">Horizontal axis: pulls between two wins (one bin per 20 pulls, the last bin 300 and above). Vertical axis: share. Look at the tail of the red line (pure random): someone always has to pull 300 times or more. Pity cuts the tail off, and a shuffle bag squeezes the distribution more evenly. Note that pity and shuffle bags <b>also improve the average</b> (pity lowers the average interval), so a real design must tune the base probability too, and not quietly change the “average cost.” Remember the “prediction error” from the core-loop chapter? Pity only cuts off the worst tail without making every pull a sure thing, so the surprise is still there.</p>
+  <p class="small">Horizontal axis: pulls between two wins (one bar per 20 pulls; the last bar is 300 and above). Vertical axis: share. Look at the tail of the red line (pure random): some players always end up pulling 300 times or more. Pity cuts the tail off, and the shuffle bag squeezes the distribution more evenly. The green line jumps to a sharp spike at the pity cap, which is the “forced win,” and drops off a cliff to 0 beyond it.</p>
+  <p class="small">Pity also <b>shortens the average gap</b>. The shuffle bag, like pure random, averages one win per 100 pulls (the table leaves out each player’s stretch before the first win, so the columns line up). A real design therefore has to adjust the base probability too, so the “average cost” isn’t changed quietly.</p>
+  <p class="small">Chapter 2 covered prediction error: pity only cuts off the worst tail and doesn’t make every pull a guaranteed win, so the surprise remains.</p>
 
   <div class="misc">
     <h3>Common misconceptions</h3>
@@ -282,7 +321,7 @@
       <li>“Same expected value, same experience”: wrong. Expected value cares only about the average, and variance decides what you actually feel.</li>
       <li>“Shuffle bags and pity are cheating, no longer random”: they are still random, only no longer independent from one draw to the next, and that is a deliberate design trade-off.</li>
       <li>“Drawing cards is also an independent event, so drawing the same card repeatedly means ‘something’s fishy’”: drawing without replacement has memory; only with replacement is it independent. Tell them apart before judging.</li>
-      <li>“The central limit theorem says everything becomes a bell”: not so, it requires independence, finite variance and no single dominating term.</li>
+      <li>“The central limit theorem says everything becomes a bell”: it requires the terms to be independent, to have finite variance, and for no single term to dominate.</li>
     </ul>
   </div>
 
@@ -291,7 +330,7 @@
     <ul>
       <li><b>Are heuristics necessarily “errors”?</b> Kahneman and Tversky stress the systematic bias they cause, while Gigerenzer and others stress their reasonableness in real environments. These are different views in the field, and both have experimental support.</li>
       <li>Pity and shuffle bags make players feel better, but players may also learn to “count the pity”: stop playing until they’re near the pity, and walk away once they get it. This is a trade-off a designer has to weigh.</li>
-      <li>Is it legitimate to exploit players’ misjudgments of probability to raise spending, such as showing only the “highest probability” and not the combined probability? This is a design-ethics question worth thinking through yourself.</li>
+      <li>Is it fair to exploit players’ misjudgment of probability to raise spending, for example showing only the “highest probability” and not the combined probability? This is a question of design ethics.</li>
     </ul>
   </div>
 
@@ -299,9 +338,9 @@
     <h3>Key points</h3>
     <ul>
       <li><b>Input randomness</b> comes before the decision and adds variety; <b>output randomness</b> comes after the decision and adds tension but weakens the sense of control.</li>
-      <li><b>Expected value = the sum of probability × value</b>, born of “how to split the money when a match is interrupted”; it prices random rewards but doesn’t describe the experience of a single game.</li>
+      <li><b>Expected value = the sum of probability × value</b>, born of “how to split the money when a match is interrupted.” It prices random rewards, and doesn’t describe the experience of a single game.</li>
       <li><b>Independent events have no memory</b> (the gambler’s fallacy), while players experience <b>small samples</b> and can see very extreme luck.</li>
-      <li>The sum of several dice forms a <b>bell curve</b>, with the standard deviation growing as √n and the fluctuation of the average shrinking as 1/√n; splitting one big random event into many small ones makes the experience steadier.</li>
+      <li>The sum of several dice forms a <b>bell curve</b>, with the standard deviation growing as √n and the fluctuation of the average shrinking as 1/√n. Splitting one big random event into many small ones makes the experience steadier.</li>
       <li>People estimate probability with <b>heuristics</b>, easily swayed by “how much it looks like” and “how many come to mind”: the probability a player feels ≠ the true probability.</li>
       <li>Use <b>pity and shuffle bags</b> to cut off the “unluckiest” tail, while watching their effect on the average and on surprise.</li>
     </ul>
@@ -401,13 +440,13 @@ $("flip").onclick = () => {
 
 function gapsPure(p, hits) {
   const g = []; let c = 0;
-  while (g.length < hits) { c++; if (Math.random() < p) { g.push(c); c = 0; } }
-  return g;
+  while (g.length < hits + 1) { c++; if (Math.random() < p) { g.push(c); c = 0; } }
+  return g.slice(1);
 }
 function gapsPity(p, cap, hits) {
   const g = []; let c = 0;
-  while (g.length < hits) { c++; if (c >= cap || Math.random() < p) { g.push(c); c = 0; } }
-  return g;
+  while (g.length < hits + 1) { c++; if (c >= cap || Math.random() < p) { g.push(c); c = 0; } }
+  return g.slice(1);
 }
 function gapsBag(size, hits) {
   const g = []; let bag = [], i = 0, c = 0;
@@ -417,12 +456,12 @@ function gapsBag(size, hits) {
     i = 0;
   };
   refill();
-  while (g.length < hits) {
+  while (g.length < hits + 1) {
     if (i >= size) refill();
     c++;
     if (bag[i++]) { g.push(c); c = 0; }
   }
-  return g;
+  return g.slice(1);
 }
 function pct(sorted, q) { return sorted[Math.min(sorted.length - 1, Math.floor(q * sorted.length))]; }
 $("cap").oninput = () => ($("capv").textContent = $("cap").value);
@@ -447,7 +486,7 @@ function psim() {
   const X = i => 50 + (i + 0.5) * (620 / B), Y = p => 230 - p / mx * 205;
   let h = '<line x1="50" y1="230" x2="680" y2="230" stroke="#2b2b3a" stroke-width="3"/>';
   for (let i = 0; i < B; i += 3) h += `<text x="${50 + i * 620 / B}" y="254" text-anchor="start" font-size="16">${i * 20}</text>`;
-  h += `<text x="46" y="30" text-anchor="end" font-size="16">${(mx * 100).toFixed(0)}%</text><text x="38" y="228" text-anchor="end" font-size="16">0</text>`;
+  h += `<text x="46" y="14" text-anchor="end" font-size="16">Share</text><text x="46" y="32" text-anchor="end" font-size="16">${(mx * 100).toFixed(0)}%</text><text x="38" y="228" text-anchor="end" font-size="16">0</text>`;
   defs.forEach(([k, , col]) => {
     h += `<polyline fill="none" stroke="${col}" stroke-width="4" stroke-linejoin="round" points="${hist[k].map((p, i) => X(i) + "," + Y(p)).join(" ")}"/>`;
   });
@@ -517,7 +556,7 @@ GD.mountQuiz($("quiz"), [
       reveal.onclick = () => {
         if (state[i].guess === null || state[i].done) { if (state[i].guess === null) res.textContent = "Pick an answer before revealing.", res.classList.add("show"); return; }
         state[i].done = true; state[i].gap = state[i].guess === it.ans ? 0 : 1;
-        res.innerHTML = "<b>You chose:" + it.opts[state[i].guess] + ". Correct:" + it.opts[it.ans] + ".</b><br>" + it.calc() + (state[i].guess === it.ans ? "<br>Your intuition was right!" : "");
+        res.innerHTML = "<b>You chose: " + it.opts[state[i].guess] + ". Correct: " + it.opts[it.ans] + ".</b><br>" + it.calc() + (state[i].guess === it.ans ? "<br>Your intuition was right!" : "");
         res.classList.add("show"); summary();
       };
     } else {
@@ -605,14 +644,14 @@ GD.mountQuiz($("quiz"), [
       '<span class="stat">Standard deviation <b>' + sdShow.toFixed(3) + '</b></span>' +
       '<span class="stat">Multiple of n=1 <b>' + (sdShow / sd1).toFixed(3) + '</b> (' + (avg ? "1/√n" : "√n") + ' = ' + (avg ? (1 / Math.sqrt(n)).toFixed(3) : Math.sqrt(n).toFixed(3)) + ')</span>' +
       '<span class="stat">Single-die standard deviation <b>' + sd1.toFixed(3) + '</b></span>';
-    g("cmsg").textContent = n === 1 ? "n=1: every number is equally tall (uniform). Drag to the right and watch how the shape changes." : n === 2 ? "2d6 already looks a little bell-shaped: its standard deviation is " + sd.toFixed(2) + ", exactly the 2.42 from section 3." : n < 4 ? "The bell shape is taking form." : "The red line (normal curve) hugs the tops of the bars almost exactly: the larger n, the closer.";
+    g("cmsg").textContent = n === 1 ? "n=1: every number is equally tall (uniform). Drag to the right and watch how the shape changes." : n === 2 ? "2d6 already looks a little bell-shaped: its standard deviation is " + sd.toFixed(2) + ", exactly the 2.42 in Section 4." : n < 4 ? "The bell shape is taking form." : "The red line (normal curve) hugs the tops of the bars almost exactly: the larger n, the closer.";
   }
   g("clt").oninput = cdraw;
   g("csamp").onclick = () => {
     const n = +g("clt").value, N = 5000; let s1 = 0, s2 = 0;
     for (let i = 0; i < N; i++) { let t = 0; for (let j = 0; j < n; j++) t += 1 + Math.floor(Math.random() * 6); s1 += t; s2 += t * t; }
     const m = s1 / N, sdv = Math.sqrt(s2 / N - m * m);
-    g("cmsg").textContent = "Rolled " + N + " times (n=" + n + "): sample mean " + m.toFixed(2) + "(theory " + (3.5 * n).toFixed(1) + "), sample standard deviation " + sdv.toFixed(2) + "(theory " + Math.sqrt(VAR1 * n).toFixed(2) + ").";
+    g("cmsg").textContent = "Rolled " + N + " times (n=" + n + "): sample mean " + m.toFixed(2) + " (theory " + (3.5 * n).toFixed(1) + "), sample standard deviation " + sdv.toFixed(2) + " (theory " + Math.sqrt(VAR1 * n).toFixed(2) + ").";
   };
   cviewChips(); cdraw();
 
@@ -626,7 +665,7 @@ GD.mountQuiz($("quiz"), [
   g("c14g1s").oninput = () => (g("c14g1o").textContent = g("c14g1s").value);
   g("c14g1b").onclick = () => {
     const v = +g("c14g1s").value, r = g("c14g1r"); r.classList.add("show");
-    r.innerHTML = "You guessed A gets <b>" + v + "</b>. The earliest answer (Pacioli) was by rounds won, 2:1, with A getting about <b>67</b>. Pascal and Fermat’s answer was <b>75</b>: looking forward, A needs to win just one more round to take everything, while B must win two in a row, so B’s chance is only 1/2×1/2 = 1/4, and B should get 25." + (Math.abs(v - 75) <= 3 ? " Your guess was very close!" : "");
+    r.innerHTML = "You guessed A gets <b>" + v + "</b>. The earliest answer (Pacioli) was by rounds won, 2:1, with A getting about <b>67</b>. Pascal and Fermat’s answer was <b>75</b>: looking forward, A needs to win just one more round to take everything, while B must win two in a row, so B’s chance is only 1/2×1/2 = 1/4, and B should get 25. " + (Math.abs(v - 75) <= 3 ? " Your guess was very close!" : "");
   };
   g("c14sim1").onclick = () => {
     let a = 0; const N = 10000;
