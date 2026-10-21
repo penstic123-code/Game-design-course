@@ -1,0 +1,964 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Chapter 5: Emergence &amp; Systems Thinking</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+  #life{width:100%;max-width:720px;display:block;margin:8px auto;border:3px solid var(--ink);border-radius:10px;background:#fffef7;touch-action:none;cursor:crosshair}
+  .row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:6px 0}
+  .pp-ctl{display:grid;grid-template-columns:1fr;gap:4px}
+  .c5hands{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:8px 0}
+  @media(max-width:700px){.c5hands{grid-template-columns:1fr}}
+  .c5gw h4{margin:0 0 4px;font-family:var(--hand);font-size:1.25rem;font-weight:400}
+  .c5g{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;max-width:320px;background:var(--ink);padding:2px;border-radius:6px}
+  .c5g div{aspect-ratio:1;background:#fffef7;display:grid;place-items:center;font-size:.8rem;color:var(--soft);user-select:none}
+  .c5g div.live{background:#2b2b3a;color:#fff}
+  .c5g.me div{cursor:pointer}
+  .c5g.me div.guess{background:#ffe58a;box-shadow:inset 0 0 0 3px #2b2b3a}
+  .c5g.me div.ok{background:#b6e8a8;box-shadow:inset 0 0 0 3px #2b2b3a}
+  .c5g.me div.miss{background:#fffef7;box-shadow:inset 0 0 0 3px #e5484d;border:2px dashed #e5484d}
+  .c5g.me div.wrong{background:#ffc9c9;box-shadow:inset 0 0 0 3px #e5484d}
+  .c5tabs{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0}
+  .c5pane{display:none}.c5pane.on{display:block}
+  .c5sv{width:100%;display:block;margin-top:6px}
+  details.c5adv{margin:8px 0;border:2px dashed var(--ink);border-radius:10px;padding:6px 12px;background:#fffef7}
+  details.c5adv summary{cursor:pointer;font-family:var(--hand);font-size:1.15rem}
+  .c5out{margin-top:8px;padding:8px 12px;border:2px dashed var(--ink);border-radius:10px;background:var(--blue);font-size:.98rem}
+  .c5out.ok{background:var(--green)}
+  .c5guess{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:6px 0}
+  #c5hl{width:100%;display:block;touch-action:none;cursor:pointer}
+  .c5ldr rect.hit{fill:transparent;cursor:pointer}
+  .c5ldr rect.hit:hover,.c5ldr rect.hit:focus{stroke:#e5484d;stroke-width:3.5;outline:none}
+</style>
+</head>
+<body data-ch="5">
+<main class="wrap">
+  <div class="hero">
+    <div class="txt">
+      <span class="badge">Chapter 5</span>
+      <h1>Emergence &amp; Systems Thinking</h1>
+      <p class="sub">What you write down is rules; what players get is another world.</p>
+    </div>
+    <svg viewBox="0 0 190 150" class="rough" aria-hidden="true">
+      <g stroke="#2b2b3a" stroke-width="5" stroke-linejoin="round" stroke-linecap="round">
+        <rect x="30" y="30" width="26" height="26" fill="#ffe58a"/>
+        <rect x="56" y="56" width="26" height="26" fill="#ffe58a"/>
+        <rect x="82" y="82" width="26" height="26" fill="#ffb3c6"/>
+        <rect x="30" y="82" width="26" height="26" fill="#8fd3f4"/>
+        <rect x="56" y="82" width="26" height="26" fill="#8fd3f4"/>
+        <path d="M125 40 q30 -10 40 20 q8 30 -25 38" fill="none"/><path d="M150 92 l-12 8 l16 6" fill="none"/>
+      </g>
+    </svg>
+  </div>
+
+  <div class="goals">
+    <h3>Learning goals</h3>
+    <span class="time">about 40 min</span>
+    <ul>
+      <li>Explain emergence in your own words, tell positive feedback from negative feedback, and say what questions the Game of Life and the predator–prey model were originally meant to answer.</li>
+      <li>Explain why negative feedback with a delay swings back and forth, and why someone who only “walks uphill” gets stuck on a small hilltop.</li>
+      <li>Judge whether a systems problem calls for “changing the numbers” or “changing the feedback structure,” and design rules that grow interesting play more easily.</li>
+    </ul>
+  </div>
+
+  
+  <div class="sec"><span class="n">1</span><h2><span class="tag what">What it is</span>Emergence: simple rules, a complex whole</h2></div>
+  <div class="withimg">
+    <span data-illus="c05_starlings"></span>
+    <div>
+      <p>At dusk a huge flock of starlings churns across the sky like a flowing black curtain. You are bound to wonder: who is directing them?</p>
+      <p>The answer often given is: nobody. Each bird does just three things: don’t bump into the birds near you, fly in about the same direction, and don’t stray too far from the flock. All three rules care only about the few birds beside it, and none mentions “the shape of the whole flock.” Yet put thousands of such birds together and an enormous pattern that no single bird “knows” appears.</p>
+      <p>This is <span class="term" tabindex="0" data-def="A pattern or behavior of the whole that can’t be seen by looking at any one part alone; it comes from the interactions between the parts.">emergence</span>: <b>the whole has behavior that the parts lack, and this behavior comes from the interactions between the parts.</b></p>
+    </div>
+  </div>
+  <div class="grid2">
+    <div class="card y"><h3>Designed</h3><p>What the designer writes down directly: rules, numbers, assets. You can count them one by one.</p></div>
+    <div class="card p"><h3>Emerged</h3><p>What “grows” once the rules interact: tactics, schools of play, economic bubbles, unexpected ways to play. You can’t count them; you can only observe.</p></div>
+  </div>
+  <div class="card">
+    <svg viewBox="0 0 700 344" width="100%" role="img" aria-label="Emergence levels: the bottom is simple individual rules, the middle is interaction, and the top is the pattern of the whole. Three columns of examples: bird flocks, the Game of Life, predators and prey.">
+      <g class="rough" stroke="#2b2b3a" stroke-width="3.5" stroke-linejoin="round" stroke-linecap="round">
+        <g fill="#ffe58a"><rect x="130" y="250" width="160" height="56" rx="10"/><rect x="310" y="250" width="160" height="56" rx="10"/><rect x="490" y="250" width="160" height="56" rx="10"/></g>
+        <g fill="#a8dcf0"><rect x="130" y="140" width="160" height="56" rx="10"/><rect x="310" y="140" width="160" height="56" rx="10"/><rect x="490" y="140" width="160" height="56" rx="10"/></g>
+        <g fill="#ffb3c6"><rect x="130" y="30" width="160" height="56" rx="10"/><rect x="310" y="30" width="160" height="56" rx="10"/><rect x="490" y="30" width="160" height="56" rx="10"/></g>
+        <g fill="none">
+          <path d="M210 246 V204"/><path d="M202 214 L210 202 L218 214"/><path d="M390 246 V204"/><path d="M382 214 L390 202 L398 214"/><path d="M570 246 V204"/><path d="M562 214 L570 202 L578 214"/>
+          <path d="M210 136 V94"/><path d="M202 104 L210 92 L218 104"/><path d="M390 136 V94"/><path d="M382 104 L390 92 L398 104"/><path d="M570 136 V94"/><path d="M562 104 L570 92 L578 104"/>
+        </g>
+      </g>
+      <g font-size="17" text-anchor="middle" fill="#2b2b3a">
+        <text x="210" y="274"><tspan font-size="15">Each bird: don’t collide,</tspan></text><text x="210" y="296"><tspan font-size="15">match heading, stay close</tspan></text>
+        <text x="390" y="274">Each cell: look at 8</text><text x="390" y="296">neighbors, 4 rules</text>
+        <text x="570" y="274">Rabbits breed, foxes</text><text x="570" y="296">eat rabbits, can starve</text>
+        <text x="210" y="164"><tspan font-size="14">neighbors affect each other</tspan></text><text x="210" y="186">(locally)</text>
+        <text x="390" y="164"><tspan font-size="14">neighbors affect each other</tspan></text><text x="390" y="186">(locally)</text>
+        <text x="570" y="164">eating and being eaten</text><text x="570" y="186">pulling on each other</text>
+        <text x="210" y="54">a flowing flock</text><text x="210" y="76">patterns</text>
+        <text x="390" y="54">a gliding walker</text><text x="390" y="76"><tspan font-size="13">stable and oscillating patterns</tspan></text>
+        <text x="570" y="54">periodic rises and falls</text><text x="570" y="76">two waves</text>
+        <text x="62" y="62" font-weight="700">Whole</text><text x="62" y="172" font-weight="700">Interaction</text><text x="62" y="282" font-weight="700">Individual rules</text>
+        <text x="350" y="326" font-size="16">Each layer has something “extra” over the one below, yet no layer was written down directly by anyone</text>
+      </g>
+    </svg>
+  </div>
+
+  <h3>Emergence in games</h3>
+  <div class="eg" data-ic="♟️"><span data-illus="c05_chess"></span><div class="egt"><b>Board games</b>. The rules of chess fit on one page, yet they grew opening theory, endgame studies and schools of play. No rule says “control the center”; players “discovered” it by running into the rules again and again.</div></div>
+  <div class="eg" data-ic="🔴"><span data-illus="c05_redstone"></span><div class="egt"><b>Redstone in <i>Minecraft</i></b>. Redstone was added around July 2010, in a “secret update” during testing, as a material that carries signals. Its rules are plain, yet players built logic gates, calculators and even whole computers with it. None of that was on the design list.</div></div>
+  <div class="eg" data-ic="🥊"><span data-illus="c05_combo"></span><div class="egt"><b>Combos in fighting games</b>. Noritaka Funamizu, the producer of <i>Street Fighter II</i>, found while checking for bugs that with the right timing another hit could be chained on. At first he thought the timing too hard and left it as a hidden trick; later the team loosened the timing window and made it an official feature. An interaction nobody had foreseen became the cornerstone of a whole genre (sources differ a little on the details).</div></div>
+  <h3>Emergence beyond games</h3>
+  <div class="eg" data-ic="🐦"><span data-illus="c05_boids3"></span><div class="egt"><b>The computer version of a flock: Boids</b>. Craig Reynolds made an animation program around 1986, introduced in his 1987 SIGGRAPH paper “Flocks, Herds, and Schools”: each “boid” follows just three local rules, <b>separation</b> (don’t get too close), <b>alignment</b> (head the same way as neighbors) and <b>cohesion</b> (steer toward the center of neighbors). There is no leader, yet a convincing flock appears.</div></div>
+  <div class="eg" data-ic="🚗"><span data-illus="c05_jam"></span><div class="egt"><b>Phantom traffic jams</b>. In 2008, Sugiyama and colleagues ran an experiment in Japan: twenty-odd cars drove on a circular road at similar speeds with no obstacles. After a few minutes a jam wave appeared by itself and propagated backward against the flow of traffic. Their conclusion: a traffic jam is a collective phenomenon of the cars’ interactions, and an obstacle is only a trigger.</div></div>
+  <div class="eg bad" data-ic="👾"><span data-illus="c05_monsters"></span><div class="egt"><b>A pile of things is not emergence</b>. A level holds 50 monsters, each patrolling on its own script and ignoring one another. That is just “a lot of them.” Emergence needs interaction: monsters, monsters and player, player and environment must be able to pull on each other.</div></div>
+  <div class="eg bad" data-ic="🎲"><span data-illus="c05_dicevslife"></span><div class="egt"><b>“Random” is not emergence</b>. The chaos from rolling dice has no “new structure of the whole.” The Game of Life you will play shortly has no randomness at all, yet grows a walking glider. That is emergence.</div></div>
+
+  
+  <div class="sec"><span class="n">2</span><h2><span class="tag what">What it is</span>The first tool for making the whole “come alive”: feedback loops</h2></div>
+  <p>Remember the circle of cause in <i>Monopoly</i>: “collect rent, buy more property, collect more rent”? A structure in which a result goes around and affects its own cause is called a <span class="term" tabindex="0" data-def="A system’s output flows back to affect its input, forming a causal circle. It comes in two kinds: positive feedback, which amplifies change, and negative feedback, which damps it.">feedback loop</span>. It has two basic forms:</p>
+  <ul>
+    <li><b>Positive feedback (a reinforcing loop)</b>: change is amplified. More money, better gear, more wins, even more money. The result is a snowball, winner-takes-all, or a crash.</li>
+    <li><b>Negative feedback (a balancing loop)</b>: change is cancelled out and the system is pulled toward a target. Body too hot, you sweat; temperature falls, sweating stops.</li>
+  </ul>
+  <div class="card">
+    <svg viewBox="0 0 700 250" width="100%" role="img" aria-label="Left: a positive feedback loop, more money means better gear and more wins, which gives more money. Right: a negative feedback loop, the further behind you are the stronger your items, which shrinks the gap.">
+      <g class="rough" stroke="#2b2b3a" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="20" y="50" width="120" height="44" rx="12" fill="#fff7cf"/>
+        <rect x="200" y="50" width="120" height="44" rx="12" fill="#fff7cf"/>
+        <rect x="110" y="150" width="120" height="44" rx="12" fill="#fff7cf"/>
+        <path d="M140 72 H198"/><path d="M188 64 L200 72 L188 80"/>
+        <path d="M260 94 Q270 140 232 168"/><path d="M244 168 L230 170 L236 156"/>
+        <path d="M110 172 Q40 160 70 96"/><path d="M60 108 L70 94 L80 106"/>
+        <rect x="380" y="50" width="130" height="44" rx="12" fill="#e8f6fc"/>
+        <rect x="560" y="50" width="120" height="44" rx="12" fill="#e8f6fc"/>
+        <rect x="470" y="150" width="130" height="44" rx="12" fill="#e8f6fc"/>
+        <path d="M510 72 H558"/><path d="M548 64 L560 72 L548 80"/>
+        <path d="M620 94 Q630 140 602 168"/><path d="M614 168 L600 170 L606 156"/>
+        <path d="M470 172 Q400 160 430 96"/><path d="M420 108 L430 94 L440 106"/>
+      </g>
+      <g font-size="17" text-anchor="middle" fill="#2b2b3a">
+        <text x="80" y="78">more money</text><text x="260" y="78">better gear</text><text x="170" y="178">more wins</text>
+        <text x="445" y="78">further behind</text><text x="620" y="78">stronger items</text><text x="535" y="178">gap shrinks</text>
+        <text x="170" y="228" font-weight="700">Positive feedback: it grows as it turns</text>
+        <text x="535" y="228" font-weight="700">Negative feedback: it steadies as it turns</text>
+      </g>
+    </svg>
+  </div>
+  <div class="card">
+    <svg viewBox="0 0 700 260" width="100%" role="img" aria-label="Curves over time compared: positive feedback makes a value accelerate away from its start; negative feedback pulls the value toward the target line and stabilizes it">
+      <g class="rough" stroke="#2b2b3a" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M40 220 H320 M40 220 V30"/><path d="M390 220 H670 M390 220 V30"/>
+        <path d="M40 200 Q150 195 200 150 T300 40" stroke="#e5484d" stroke-width="5"/>
+        <path d="M390 205 Q450 80 520 66 T660 62" stroke="#2b9a4a" stroke-width="5"/>
+        <path d="M390 62 H670" stroke-dasharray="7 7"/>
+      </g>
+      <g font-size="17" fill="#2b2b3a" text-anchor="middle">
+        <text x="180" y="248">time → Positive feedback: ever faster</text><text x="530" y="248">time → Negative feedback: pulled to the target</text>
+        <text x="526" y="48" font-size="16">target</text>
+        <text x="110" y="120" font-size="16">gap widens</text><text x="590" y="110" font-size="16">gap narrows</text>
+      </g>
+    </svg>
+  </div>
+  <div class="eg" data-ic="⛄"><span data-illus="c05_snowball"></span><div class="egt"><b>Snowballing in a competitive game</b>. Kills give gold, gold buys gear, and gear brings more kills. The first lead is small, but a few minutes later it is an overwhelming advantage.</div></div>
+  <div class="eg" data-ic="📱"><span data-illus="c05_video"></span><div class="egt"><b>Recommendations on a video platform</b>. Videos with high view counts are pushed to more people, and more viewers push the count higher. Nobody decides “this video should go viral”; the loop lifts it by itself.</div></div>
+  <div class="eg" data-ic="🌡️"><span data-illus="c05_thermo"></span><div class="egt"><b>A thermostat</b>. When the room gets hot the heating goes off, when it gets cold the heating comes on, and the temperature is always pulled back to the setting. This is the classic negative feedback.</div></div>
+  <div class="eg" data-ic="🏎️"><span data-illus="c05_kart"></span><div class="egt"><b>Catch-up items in <i>Mario Kart</i></b>. Players who are behind are more likely to get powerful items, which pull the gap back (the exact weights aren’t public and differ between entries). It gives those trailing a chance to stay in the race.</div></div>
+  <div class="eg bad" data-ic="🪢"><span data-illus="c05_rubber"></span><div class="egt"><b>Negative feedback overdone</b>. If the catch-up mechanism is too strong, every bit of effort by the leader gets flattened and players feel “being ahead is meaningless.” This is what the “rubber band” mechanic is often criticized for. Negative feedback is meant to help the losing stay in the game, not to erase the success of the winning.</div></div>
+
+  
+  <div class="sec"><span class="n">3</span><h2><span class="tag what">What it is</span>Stocks and flows: why big systems turn slowly</h2></div>
+  <div class="withimg rev">
+    <span data-illus="c05_bank"></span>
+    <div>
+      <p>Look at your bank balance. Your salary is a tap, a little flowing in every month; rent and food are drains, a little flowing out every month; and the total lying in the account right now is your money.</p>
+      <p>These are a <span class="term" tabindex="0" data-def="A quantity accumulated up to a given moment, such as health, gold or the number of rabbits; it can only be changed by inflow and outflow.">stock</span> and a <span class="term" tabindex="0" data-def="The rate at which something enters or leaves a stock per unit time, such as health regenerated per second or gold produced per turn.">flow</span>. A stock is the total saved up at a moment, and a flow is the speed at which something enters or leaves per unit of time. Health, gold and monster counts in a game are all stocks.</p>
+      <p>The key intuition: a stock can only be changed bit by bit by its flows, and you can’t make a bathtub’s water level double in an instant. So a system with a large stock reacts slowly and is not easily knocked over by a single shock.</p>
+    </div>
+  </div>
+  <div class="card">
+    <svg viewBox="0 0 700 236" width="100%" role="img" aria-label="A bathtub sketch: the tap flows in, the water level is the stock, and the drain flows out. Game equivalents: mining output, the amount of gold, spending.">
+      <g class="rough" stroke="#2b2b3a" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M210 60 V170 Q210 190 230 190 H470 Q490 190 490 170 V60"/>
+        <path d="M212 110 H488 V170 Q488 188 470 188 H232 Q212 188 212 170 Z" fill="#8fd3f4"/>
+        <path d="M120 50 H190 V80"/><path d="M180 70 L190 82 L200 70"/>
+        <path d="M490 150 H560 V190"/><path d="M550 180 L560 192 L570 180"/>
+      </g>
+      <g font-size="17" text-anchor="middle" fill="#2b2b3a">
+        <text x="110" y="38">Inflow: gold produced per second</text>
+        <text x="350" y="150" font-weight="700">Stock: amount of gold</text>
+        <text x="600" y="130">Outflow: spending, taxes</text>
+        <text x="350" y="212">Change in level = inflow − outflow (times time)</text>
+      </g>
+    </svg>
+  </div>
+
+  
+  <div class="sec"><span class="n">4</span><h2><span class="tag what">What it is</span>Delay and oscillation: why well-meant adjustments swing wilder and wilder</h2></div>
+  <p>Put negative feedback and stocks together and a counterintuitive phenomenon pops up. Think of taking a shower: the water is too cold, so you turn the tap toward hot; but the pipe still holds cold water that hasn’t warmed up, so you turn it again; by the time the hot water finally arrives it’s scalding, you hurriedly turn it back, and the water slowly turns cold again…</p>
+  <p>You aren’t stupid. The problem is the <b>delay between the action and its result</b>. This time gap is called <span class="term" tabindex="0" data-def="The time gap between an action and its result showing up. Negative feedback plus delay often makes a system swing back and forth around its target.">delay</span>. Add a delay to negative feedback and the system swings back and forth around its target, which is called <span class="term" tabindex="0" data-def="Oscillation: a value that rises and falls periodically around a target or equilibrium point, instead of settling quietly onto it.">oscillation</span>.</p>
+  <div class="eg" data-ic="🚿"><span data-illus="c05_shower"></span><div class="egt"><b>Shower temperature</b>. Between turning the tap and the hot water actually arriving there are a few seconds of delay; you adjust to the temperature “now” while affecting the temperature a few seconds from now, so it swings cold, scalding, cold.</div></div>
+  <div class="eg" data-ic="🌊"><span data-illus="c05_tide"></span><div class="egt"><b>Tides in a game economy</b>. Monsters are wiped out, drops decrease, players move elsewhere, monsters pile up at the respawn points, and the spawn points fill up with players again. Prices, dungeon popularity and class strength on a server often rise and fall like this.</div></div>
+  <div class="eg" data-ic="🍺"><span data-illus="c05_beer"></span><div class="egt"><b>The Beer Game</b>. A teaching game from MIT in which participants play the four stations of retailer, wholesaler, distributor and factory, placing orders and waiting for shipments, with delays in between. John Sterman of MIT used it in experiments in 1989 and found that people often overlook how their own ordering decisions feed back into the system, and the swings in orders grow larger at each station.</div></div>
+  <div class="eg bad" data-ic="💧"><span data-illus="c05_instant"></span><div class="egt"><b>No delay, no swing</b>. If the water temperature changed the instant you turned the tap, you could quickly settle it at the spot you wanted. So the culprit behind the swinging is not negative feedback itself but that it <b>reacts too slowly</b>.</div></div>
+
+  
+  <div class="sec"><span class="n">5</span><h2><span class="tag origin">How it was invented</span>The Game of Life: how far can the simplest rules go?</h2></div>
+  <div class="story">
+    <h3>A game “nobody would actually play,” and why it became the emblem of emergence</h3>
+    <div class="withimg rev">
+      <span data-illus="c05_vn"></span>
+      <div>
+        <p>In the 1940s, John von Neumann and Stanisław Ulam were studying “cellular automata”: cut the world into squares and let each square interact with its neighbors by rules. Von Neumann wanted to know one thing: could a machine <b>build itself</b>? The cellular machine he designed had frighteningly intricate rules.</p>
+        <p>More than twenty years later, the Cambridge mathematician John Conway took up the question and asked it differently: <b>could extremely simple rules also produce unexpected behavior?</b> From 1968 he tried various two-dimensional rules with pencil and paper (there were no personal computers then). In October 1970, Martin Gardner introduced it in his “Mathematical Games” column in <i>Scientific American</i>, under the title “The fantastic combinations of John Conway’s new solitaire game ‘life.’” Letters from readers poured in, and everyone started studying patterns.</p>
+        <p>Now <b>you be Conway</b>: here are 4 rules and a small 5-cell pattern. Don’t look at the answer yet; work it out yourself.</p>
+      </div>
+    </div>
+  </div>
+  <div class="board">
+    <b>Try it yourself first: work out the Game of Life by hand</b>
+    <div class="chain"><span class="st">alive + neighbors &lt;2</span><span class="ar">→</span><span class="st">dies (loneliness)</span><span class="st">alive + neighbors =2 or 3</span><span class="ar">→</span><span class="st">stays alive</span></div>
+    <div class="chain"><span class="st">alive + neighbors &gt;3</span><span class="ar">→</span><span class="st">dies (crowding)</span><span class="st">dead + neighbors =3</span><span class="ar">→</span><span class="st">comes alive</span></div>
+    <p class="small">Neighbors = the 8 surrounding squares. On the left is “now” (black = alive). On the right, <b>click squares</b> to mark which are alive in the “next generation” you worked out; press “Check” to see if you’re right: green = correct, a red frame = marked by mistake or missed. If you’re stuck, turn on “Show neighbor counts.” Work out 4 generations in all.</p>
+    <div class="c5hands">
+      <div class="c5gw"><h4>Now: generation <span id="c5gen">0</span></h4><div class="c5g" id="c5now"></div></div>
+      <div class="c5gw"><h4>Your generation <span id="c5gen2">1</span></h4><div class="c5g me" id="c5me"></div></div>
+    </div>
+    <div class="row">
+      <button class="btn" id="c5chk">Check my work</button>
+      <button class="btn green" id="c5nx" disabled>Confirm, next generation →</button>
+      <button class="btn alt" id="c5hint">Show neighbor counts</button>
+      <button class="btn pink" id="c5rs">Start over</button>
+    </div>
+    <div class="msg" id="c5hmsg" style="font-size:1.1rem;font-family:var(--body)">Click squares on the right to mark the ones you think are alive in the next generation.</div>
+  </div>
+  <div class="sticky">Try it: keep working until generation 4 and see how the pattern relates to generation 0.</div>
+  <p>There is no word “move” in the rules, but by generation 4 you will find that the whole pattern has shifted one square to the lower right. It was later called the <b>glider</b>. Conway conjectured that <b>no pattern can grow without limit</b>, and offered a $50 prize for a proof. But that same November, Bill Gosper’s group at MIT found a “glider gun” that emits a glider every 30 generations, and the conjecture was overturned. In 1982, <i>Winning Ways</i> argued further that the Game of Life can be used to build a universal computer.</p>
+  <div class="timeline">
+    <div class="ev hasimg"><span data-illus="c05_vn2"></span><div><b class="yr">1940s</b> Von Neumann and Ulam study cellular automata; von Neumann wants to build a “machine that can copy itself,” and the rules are intricate.</div></div>
+    <div class="ev hasimg"><span data-illus="c05_conway"></span><div><b class="yr">1968</b> Conway begins experimenting with two-dimensional cellular automata on paper, looking for much simpler rules.</div></div>
+    <div class="ev hasimg"><span data-illus="c05_gardner"></span><div><b class="yr">October 1970</b> Gardner’s column introduces “Life” to the public, and readers pour in.</div></div>
+    <div class="ev hasimg"><span data-illus="c05_gun"></span><div><b class="yr">November 1970</b> Gosper’s group finds the glider gun and wins the $50 prize: unbounded growth can arise from simple rules.</div></div>
+    <div class="ev hasimg"><span data-illus="c05_computer"></span><div><b class="yr">1982</b> <i>Winning Ways</i> (Berlekamp, Conway, Guy) argues that the Game of Life can build a universal computer.</div></div>
+  </div>
+  <p class="small">Sources: Gardner, “Mathematical Games,” <i>Scientific American</i>, October 1970; LifeWiki and the Wikipedia entry “Conway’s Game of Life” (the prize, Gosper’s glider gun: the first glider appears at generation 15 and then one every 30 generations; <i>Winning Ways</i>). That Conway was inspired by von Neumann’s self-replicating machine is agreed on by all sources; exactly how he settled on these 4 rules is not asserted here. The glider’s translation was checked in code for this page.</p>
+
+  <h3>Try it by hand: a Game of Life sketchpad</h3>
+  <p>Click or drag to draw squares (hitting a live square erases it). First place a “glider” and press play to see how it walks; then place the “R-pentomino” (only 5 squares) and guess what it will turn into. The edges are <b>wrapped around</b>: whatever leaves on the right comes back on the left.</p>
+  <div class="board">
+    <canvas id="life" width="720" height="450" aria-label="Game of Life sketchpad, 48 columns by 30 rows"></canvas>
+    <div class="row">
+      <button class="btn" id="lplay">▶ Play</button>
+      <button class="btn alt" id="lstep">Step</button>
+      <button class="btn pink" id="lclear">Clear</button>
+    </div>
+    <div class="row">
+      <button class="btn alt" data-pre="glider">Glider</button>
+      <button class="btn alt" data-pre="blinker">Blinker</button>
+      <button class="btn alt" data-pre="block">Block</button>
+      <button class="btn alt" data-pre="rpent">R-pentomino</button>
+      <button class="btn green" data-pre="random">Random</button>
+    </div>
+    <label class="ctl">Speed (further right is faster) <output id="lspv">8</output> gen/s</label>
+    <input type="range" id="lsp" min="1" max="30" step="1" value="8">
+    <div id="lstat"></div>
+    <div class="msg" id="lmsg">Click on the board, or pick a preset.</div>
+  </div>
+  <div class="sticky">Try it: place a glider and let it run into a block to see what happens. Because the edges wrap, it will come back around.</div>
+
+  
+  <div class="sec"><span class="n">6</span><h2><span class="tag origin">How it was invented</span>The puzzle of the Adriatic catch</h2></div>
+  <div class="story">
+    <h3>With no fishing, why were there more big fish?</h3>
+    <div class="withimg">
+      <span data-illus="c05_adriatic"></span>
+      <div>
+        <p>During World War I (around 1915–1918), fishermen in the Adriatic Sea could hardly put to sea. After the war, the Italian marine biologist Umberto D’Ancona went through fish-market data and found something strange: <b>with less fishing, the share of the catch made up of fish that eat other fish (mainly sharks and rays) had actually gone up.</b> He couldn’t understand it: wouldn’t not fishing be good for all the fish?</p>
+        <p>He handed the problem to a mathematician, his father-in-law Vito Volterra. Volterra built a minimal two-species equation, published in <i>Nature</i> in 1926. The American Alfred Lotka had written down the same equations in his 1925 book, which is where the name “Lotka–Volterra model” comes from.</p>
+        <p>Before seeing how he explained it, <b>take a guess</b>: if rabbits and foxes are removed in equal proportion (standing in for “fishing”), then <b>fishing stops</b>, will the foxes’ share among all animals go up, go down, or stay the same?</p>
+      </div>
+    </div>
+  </div>
+  <div class="board">
+    <b>Guess first, then try: what happens when fishing stops?</b>
+    <div class="c5guess"><span>My guess is that the fox share will:</span>
+      <button class="chip" data-g="up">go up</button><button class="chip" data-g="down">go down</button><button class="chip" data-g="same">stay the same</button>
+    </div>
+    <div class="row">
+      <button class="btn alt" id="c5war0">Before the war: fishing intensity 0.20</button>
+      <button class="btn pink" id="c5war1">Wartime halt: fishing intensity 0</button>
+    </div>
+    <label class="ctl">Fishing intensity (rabbits and foxes removed in the same proportion)<output id="ppfv">0.00</output></label>
+    <input type="range" id="ppf" min="0" max="0.5" step="0.02" value="0.2">
+    <svg viewBox="0 0 700 304" width="100%" id="ppsvg" role="img" aria-label="Line chart of rabbit and fox numbers over time"></svg>
+    <div id="ppstat"></div>
+    <div class="msg" id="ppmsg"></div>
+    <details class="c5adv"><summary>Expand: change the model’s other parameters</summary>
+      <div class="pp-ctl">
+        <label class="ctl">Rabbit birth rate <output id="ppbv">0.60</output></label>
+        <input type="range" id="ppb" min="0.2" max="1.2" step="0.05" value="0.6">
+        <label class="ctl">Fox hunting efficiency <output id="ppav">0.012</output></label>
+        <input type="range" id="ppa" min="0.004" max="0.03" step="0.001" value="0.012">
+        <label class="ctl">Fox death rate <output id="ppdv">0.40</output></label>
+        <input type="range" id="ppd" min="0.1" max="1.0" step="0.05" value="0.4">
+        <label class="ctl"><input type="checkbox" id="ppcap"> Rabbits have a food cap (above the cap rabbits stop growing) Cap <output id="ppkv">150</output></label>
+        <input type="range" id="ppk" min="80" max="400" step="10" value="150">
+      </div>
+      <div class="row"><button class="btn" id="ppreset">Restore defaults</button></div>
+    </details>
+  </div>
+  <div class="sticky">Try it: first pick “My guess,” then press “Wartime halt” and see whether the foxes’ share matches your guess. Then drag the fishing intensity and see how the share changes.</div>
+  <p class="small">Simplification note: a discrete-time simulation; each small step, rabbits increase by <code>(birth rate − fishing) × rabbits</code> and decrease by <code>hunting efficiency × rabbits × foxes</code>; foxes increase by <code>0.5 × hunting efficiency × rabbits × foxes</code> (0.5 is the fraction at which eaten rabbits turn into new foxes) and decrease by <code>(death rate + fishing) × foxes</code>. The blue line is rabbits, the red line is foxes. There is no space, age, randomness or other food. Starting with 60 rabbits and 30 foxes; 100 time units in all; a number below 0.5 counts as extinct. The “share” is the average after time unit 40.</p>
+  <p>Why? The pattern Volterra’s model gives is: <b>fishing pushes down both populations, but hurts the predators more</b>. The average number of foxes is proportional to (rabbit birth rate − fishing), and the average number of rabbits is proportional to (fox death rate + fishing). When fishing stops, the fox average rises, the rabbit average falls, and the predator share goes up. This is the conclusion later called “Volterra’s principle.”</p>
+  <div class="timeline">
+    <div class="ev hasimg"><span data-illus="c05_lotka"></span><div><b class="yr">1925</b> Lotka sets out the predator–prey equations in <i>Elements of Physical Biology</i>.</div></div>
+    <div class="ev hasimg"><span data-illus="c05_volterra"></span><div><b class="yr">1926</b> To explain D’Ancona’s catch data, Volterra independently builds a model, published in <i>Nature</i>; Lotka later points out his priority, and the model gets its name.</div></div>
+    <div class="ev hasimg"><span data-illus="c05_lynx"></span><div><b class="yr">1942</b> Elton and Nicholson compile the Hudson’s Bay Company’s fur purchase records, in which the lynx–snowshoe hare cycle is widely cited, with the lynx peak always a little after the hare’s.</div></div>
+    <div class="ev hasimg"><span data-illus="c05_kluane"></span><div><b class="yr">1995</b> Krebs and colleagues run an eight-year field experiment at Kluane in the Yukon, adding food and keeping out predators, and find that the hare cycle can’t be put down to predation alone, since food plays a part too; when both are manipulated together, hare density rises about 11-fold.</div></div>
+  </div>
+  <p class="small">Sources: Volterra (1926), <i>Nature</i>, October 16; Lotka (1925), <i>Elements of Physical Biology</i> (Lotka’s 1927 letter to <i>Nature</i> pointed out his priority); D’Ancona’s data and motive are from historical accounts of Volterra and textbook retellings (sources differ slightly on exact years and proportions). Elton &amp; Nicholson (1942), lynx fur records. Krebs et al. (1995), <i>Science</i> 269: 1112–1115.</p>
+
+  
+  <div class="sec"><span class="n">7</span><h2><span class="tag why">Why it works</span>Knowing the rules, why can’t you work out the result?</h2></div>
+  <div class="withimg">
+    <span data-illus="c05_zoo"></span>
+    <div>
+      <p>Anyone can read the 4 rules of the Game of Life in under a minute. But a whole “zoo” grows out of those four.</p>
+      <p><b>Stable states</b>, such as the 2×2 “block,” where every square has exactly 3 neighbors and nothing ever changes. <b>Oscillators</b>, such as the “blinker,” three in a row that flips between horizontal and vertical each generation. And the walking <b>glider</b>, 5 squares that shift 1 square along the diagonal every 4 generations. The “R-pentomino” has only 5 squares, yet on an infinite board it takes 1,103 generations to settle down, ending with 116 live cells, of which 6 are gliders that have escaped.</p>
+    </div>
+  </div>
+  <div class="why-box">
+    <h3>Knowing all the rules doesn’t mean you can foresee the result</h3>
+    <p>This is the most unsettling thing about emergence: to know what generation 200 looks like, most of the time you can only run it honestly, one generation at a time. The simpler the rules, the less you can tell the ending by “looking at the rules.” A designer who writes rules is like someone releasing a seed: what it grows into, you have to watch it grow.</p>
+    <p class="src">Sources: the “Conway’s Game of Life” entries (Wikipedia / LifeWiki: R-pentomino 1,103 generations, 116 live cells, 6 escaped gliders, are results on an infinite grid; the board on this page wraps around, so the outcome differs). Extending it to game design is an analogy borrowed here, not a theorem.</p>
+  </div>
+  <h3>Negative feedback plus delay equals oscillation</h3>
+  <p>Picture an island with rabbits and foxes. Rabbits eat grass (unlimited) and breed; foxes eat only rabbits. The chain of cause goes like this: with lots of rabbits, the foxes eat well and breed a lot; with lots of foxes, many rabbits get eaten; with few rabbits left, the foxes starve; with few foxes, the rabbits breed again…</p>
+  <p>This is negative feedback with a delay: the stock of foxes has to wait for the rabbits to become plentiful before it slowly climbs, so the foxes always peak <b>later than the rabbits</b>, and by the time the foxes overshoot, the rabbits have already started to fall. Two stocks chasing each other draw two waves offset in time.</p>
+  <div class="why-box">
+    <h3>The Lotka–Volterra model: what it shows and what it doesn’t</h3>
+    <p>In the simplest model, the populations cycle around an equilibrium point forever instead of settling quietly onto it. For small amplitudes the period is about 2π/√((birth rate − fishing) × (death rate + fishing)). <b>Verification experiment:</b> go back to the simulation above, expand “other parameters,” raise the fox death rate and watch the period get shorter; then tick “food cap,” which adds an <b>extra negative feedback</b>, and the oscillation gradually dies away.</p>
+    <p class="src">This is a deliberately simplified model. Real field data (such as the often-cited “lynx–snowshoe hare” records) are not this clean: the hare cycle is thought to involve both predation and food, and scholars are still debating it. The safest use of the model is “to explain why oscillation appears,” not to predict precisely.</p>
+  </div>
+
+  
+  <div class="sec"><span class="n">8</span><h2><span class="tag why">Why it works</span>Why does walking uphill get you stuck on a small hilltop?</h2></div>
+  <p>After every patch, a player community “solves” the strongest build very quickly, and then nearly everyone uses it and the game becomes monotonous. Designers often complain that players “aren’t creative enough.” But think of a climber in thick fog: he can’t see far, only his feet, so every step goes to higher ground. He climbs the small hill next to him and finds it slopes down on every side. He did nothing wrong, and has no way of knowing there is a higher mountain on the other side.</p>
+  <div class="why-box">
+    <h3>Local optimum: every step is better, but it isn’t the best</h3>
+    <p>This image comes from evolutionary biology. In 1932, the geneticist Sewall Wright proposed the “adaptive landscape” at the International Congress of Genetics: picture each possible combination of genes as a point on a landscape, where the better adapted, the higher the elevation. Natural selection is like a climber who can only go uphill, easily trapped on a <span class="term" tabindex="0" data-def="Local optimum: the best among all the options nearby, but not the best overall. If you only move in small steps toward better, you easily stop here.">local optimum</span>, a peak that is the highest nearby but not the highest overall.</p>
+    <p>To get out takes something more: now and then not following the rule of “walk uphill” and trying somewhere unfamiliar. Reinforcement learning calls this <span class="term" tabindex="0" data-def="Exploration versus exploitation: exploiting means using the best-known approach to get a steady return, and exploring means trying approaches not yet tried to discover possibly better ones. The two have to be traded off.">exploration versus exploitation</span>: to exploit is to keep using the best-known approach, and to explore is to pay a little to try what you haven’t tried. Relying only on exploitation, you get trapped on a small hill; relying only on exploration, you never save up any gains.</p>
+    <p><b>Verification experiment:</b> in the little experiment below, put the climber at the foot of the small hill on the left and see where he gets stuck. Then drag “Exploration” so that he occasionally jumps at random.</p>
+    <p class="src">Sources: Sewall Wright, “The roles of mutation, inbreeding, crossbreeding and selection in evolution,” <i>Proceedings of the Sixth International Congress of Genetics</i> 1: 356–366 (1932); Sutton &amp; Barto, <i>Reinforcement Learning: An Introduction</i> (the classic textbook on exploration versus exploitation). The adaptive-landscape metaphor is itself debated in biology; only its image is borrowed here.</p>
+  </div>
+  <div class="board">
+    <b>⛰️ The climber in the fog</b>
+    <p class="small">The climber only compares the heights a small step to his left and right, and goes whichever way is higher. Click anywhere on the chart to put him there, then press “Go.” The higher the “Exploration,” the more often he jumps at random to look elsewhere, staying only if it is higher.</p>
+    <svg id="c5hl" viewBox="0 0 700 284" role="img" aria-label="A terrain line with two peaks: the smaller hill on the left and the higher main peak on the right; the dot is the climber, and clicking the chart changes the starting point"></svg>
+    <label class="ctl">Exploration <output id="c5exv">0%</output></label>
+    <input type="range" id="c5ex" min="0" max="60" step="5" value="0">
+    <div class="row">
+      <button class="btn" id="c5hgo">Go</button>
+      <button class="btn alt" id="c5hl1">Start: foot of left hill</button>
+      <button class="btn alt" id="c5hl2">Start: random</button>
+      <span class="stat">Current height <b id="c5hh">0</b></span>
+    </div>
+    <div class="c5out" id="c5hmsg2">Press “Go” and watch where the climber ends up.</div>
+  </div>
+  <div class="sticky">Try it: put the start at the foot of the left hill, keep exploration at 0, and see where he gets stuck; then raise exploration above 30% and let him reach the main peak on the right.</div>
+  <div class="eg" data-ic="🌫️"><span data-illus="c05_fog"></span><div class="egt"><b>The climber in the fog</b>. Always going uphill is nothing wrong; it’s just that the little hill nearby isn’t the highest in the world.</div></div>
+  <div class="eg" data-ic="⚔️"><span data-illus="c05_meta"></span><div class="egt"><b>The “best build” in a game</b>. Every player tries to improve their own play, improving step by step, and in the end everyone lands on the same hilltop. If designers want to see varied play, someone has to encourage “going down to explore”: give other routes a chance to stand out.</div></div>
+  <div class="eg" data-ic="🍜"><span data-illus="c05_restaurant"></span><div class="egt"><b>Always going to the same restaurant</b>. You tried a few, picked the tastiest and have gone every day since. Safe, but you’ll never know if the place next door is better. Switching now and then is exploring.</div></div>
+  <div class="eg bad" data-ic="🧺"><span data-illus="c05_good"></span><div class="egt"><b>A local optimum isn’t always bad</b>. If the little hill is already good enough and there is no need to risk climbing a higher mountain, have your picnic right here. Exploring has a cost, and whether it’s worth it depends on what you want.</div></div>
+
+  
+  <div class="sec"><span class="n">9</span><h2><span class="tag why">Why it works</span>Meadows’s “leverage points”: where is intervention most effective?</h2></div>
+  <p>If the whole grows out of loops, which knob should you turn to change the whole? Donella Meadows, the systems-dynamics author, found in “Leverage Points: Places to Intervene in a System” that there are many “places” to intervene in a system, with very different effects.</p>
+  <div class="why-box">
+    <h3>One view of Meadows: the closer to structure, the bigger the leverage</h3>
+    <p>Meadows first drew up a short list of 9 points and later expanded it to 12 kinds (the 1999 version). The gist:</p>
+    <ul>
+      <li>The least conspicuous and most often adjusted are <b>parameters / numbers</b> (tax rates, health, drop rates), which often change system behavior very little;</li>
+      <li>More powerful are <b>the strength of feedback loops, how information flows, and the rules of the system</b>, which is to say changing the “structure”;</li>
+      <li>Most powerful are <b>the goals of the system and the mindset (paradigm) behind it</b>.</li>
+    </ul>
+    <p>Her 12 kinds (from weakest to strongest) are: constants and parameters, buffers, stock-and-flow structure, delays, strength of negative feedback, gain of positive feedback, information flows, rules, self-organization, goals, paradigms, and transcending paradigms. Tap the steps below to see what each level corresponds to in a game.</p>
+    <p class="src">This is an empirical view and classification of Meadows, not a strict theorem; some think its ordering doesn’t fit every situation. But “don’t just turn the knobs, look at the loops first” is a very useful design habit.</p>
+  </div>
+  <div class="card c5ldr">
+    <svg viewBox="0 0 700 330" width="100%" role="img" aria-label="A leverage-points ladder: from bottom to top, parameters, structure and delays, feedback loops, information and rules, self-organization and goals, and paradigms; the higher, the more leverage; on the right are examples from games">
+      <g class="rough" stroke="#2b2b3a" stroke-width="3.5" stroke-linejoin="round">
+        <rect x="30" y="268" width="220" height="48" fill="#fff7cf"/>
+        <rect x="30" y="220" width="250" height="48" fill="#ffe9ef"/>
+        <rect x="30" y="172" width="280" height="48" fill="#e8f6fc"/>
+        <rect x="30" y="124" width="310" height="48" fill="#eaf9e4"/>
+        <rect x="30" y="76" width="340" height="48" fill="#f1eaff"/>
+        <rect x="30" y="28" width="370" height="48" fill="#ffc9c9"/>
+      </g>
+      <g font-size="17" fill="#2b2b3a">
+        <text x="42" y="298" font-weight="700">Parameters</text><text x="262" y="298">health 10%, drop rate 5%</text>
+        <text x="42" y="250" font-weight="700">Stock–flow structure, delays</text><text x="290" y="250">add a “drain,” change the respawn interval</text>
+        <text x="42" y="202" font-weight="700">Strength of feedback loops</text><text x="320" y="202">catch-up mechanics, snowball gain</text>
+        <text x="42" y="154" font-weight="700">Information flows and rules</text><text x="350" y="154">show who is leading; change the win condition</text>
+        <text x="42" y="106" font-weight="700">Self-organization and goals</text><text x="380" y="106">open up player creation; change the game’s goal</text>
+        <text x="42" y="58" font-weight="700">Paradigm</text><text x="410" y="58">the very idea of “what a game is”</text>
+        <text x="690" y="318" font-size="16" text-anchor="end">The higher, the harder to change, but the bigger the change ↑</text>
+      </g>
+      <rect class="hit" data-i="0" x="30" y="268" width="220" height="48" tabindex="0" role="button" aria-label="Parameter level"/>
+      <rect class="hit" data-i="1" x="30" y="220" width="250" height="48" tabindex="0" role="button" aria-label="Structure and delay level"/>
+      <rect class="hit" data-i="2" x="30" y="172" width="280" height="48" tabindex="0" role="button" aria-label="Feedback loop level"/>
+      <rect class="hit" data-i="3" x="30" y="124" width="310" height="48" tabindex="0" role="button" aria-label="Information and rules level"/>
+      <rect class="hit" data-i="4" x="30" y="76" width="340" height="48" tabindex="0" role="button" aria-label="Self-organization and goals level"/>
+      <rect class="hit" data-i="5" x="30" y="28" width="370" height="48" tabindex="0" role="button" aria-label="Paradigm level"/>
+    </svg>
+    <div class="c5out" id="c5ldrmsg">Click any level on the ladder.</div>
+    <p class="small">The figure is a sketch: Meadows’s 12 kinds are merged into 6 levels, and the game examples on the right are analogies borrowed here, not from her original text.</p>
+  </div>
+
+  
+  <div class="sec"><span class="n">10</span><h2><span class="tag how">Try it</span>The leverage test bench: change the numbers, or change the structure?</h2></div>
+  <p>Recall that designers write mechanics, players experience aesthetics, and dynamics sit in between. Emergence tells us: <b>you can’t design dynamics directly, only the soil from which dynamics grow.</b> Below are two common “system trouble” scenarios. Turn the <b>numbers</b> knob first, then the <b>structure</b>, and see how the results differ.</p>
+  <div class="board">
+    <div class="c5tabs"><button class="btn" id="c5t1">① Snowball</button><button class="btn alt" id="c5t2">② Gold inflation</button></div>
+
+    <div class="c5pane on" id="c5p1">
+      <p class="small">Two players have about the same resources, with A ahead by 5%. <b>Lead bonus</b>: the further ahead, the faster the growth (the strength of positive feedback). The chart shows A’s share of both players’ resources; the gray lines are older parameter settings for comparison (k = 0.2 / 0.5 / 1.0).</p>
+      <label class="ctl">① Numbers: lead bonus k <output id="c5kv">0.50</output></label>
+      <input type="range" id="c5k" min="0" max="1" step="0.05" value="0.5">
+      <label class="ctl" style="display:flex;gap:8px;align-items:center"><input type="checkbox" id="c5cu"> ② Structure: add a “catch-up mechanic” (the trailing player gets extra growth) strength c <output id="c5cv">0.70</output></label>
+      <input type="range" id="c5c" min="0" max="1" step="0.05" value="0.7">
+      <svg class="c5sv" id="c5sv1" viewBox="0 0 700 320" role="img" aria-label="Curve of the leader’s share of resources over turns"></svg>
+      <div class="c5out" id="c5o1"></div>
+    </div>
+
+    <div class="c5pane" id="c5p2">
+      <p class="small">A game economy with output but not enough sinks. <b>Output</b> = the tap; <b>fixed spending</b> = the size of the drain. The gray line is the default (output 60, spending 40, no proportional spending).</p>
+      <label class="ctl">① Numbers: gold produced per turn <output id="c5iv">60</output></label>
+      <input type="range" id="c5i" min="10" max="100" step="1" value="60">
+      <label class="ctl">  Fixed spending per turn <output id="c5dv">40</output></label>
+      <input type="range" id="c5d" min="0" max="100" step="1" value="40">
+      <label class="ctl" style="display:flex;gap:8px;align-items:center"><input type="checkbox" id="c5tx"> ② Structure: add “proportional spending” (auction tax, gear upkeep: the more money, the more spent) proportion <output id="c5tv">2.0%</output></label>
+      <input type="range" id="c5t" min="0.5" max="6" step="0.5" value="2">
+      <svg class="c5sv" id="c5sv2" viewBox="0 0 700 320" role="img" aria-label="Curve of total gold over turns"></svg>
+      <div class="c5out" id="c5o2"></div>
+    </div>
+    <div class="row"><button class="btn pink" id="c5reset">Restore defaults</button></div>
+  </div>
+  <div class="sticky">Try it: in “Snowball,” first lower k to 0.1 only and see whether the ending changes; then tick the catch-up mechanic and bring A’s share back to around 50%. In “Gold inflation,” try to make the total gold settle at a stable number instead of rising forever.</div>
+  <p>You should have seen: <b>turning the numbers changes only “how fast the ending arrives,” not the ending itself; changing the structure changes the ending.</b> This is no coincidence. In the snowball, as long as the “lead bonus” stays positive, however small, the leader eventually wins; in the inflation, as long as output exceeds fixed spending, the total keeps rising. Only negative feedback (catch-up, proportional spending) pulls the system toward a target.</p>
+  <p>Of course, not every problem needs a structural change. <b>If the boss has so little health that players beat it in 10 seconds</b>, the number is simply too small, and adjusting the health directly is cheapest and also right; structural changes cost more and should be considered when the numbers are already reasonable but it is still dull. Meadows also admitted that parameters are the “lowest-leverage” point, but not “useless.”</p>
+
+  <h3>Designing soil that can “grow” good play</h3>
+  <div class="withimg rev">
+    <span data-illus="c05_garden"></span>
+    <div>
+      <p>If you used to think “design means writing out every detail,” emergence invites you to change posture: you are more like a <b>gardener</b> than an architect. You pick the seeds, prepare the soil, set up the fence, then watch what grows, and prune.</p>
+      <p>What kind of soil grows good things easily? Three traits: few but deep rules, systems that can interact, and consistent rules.</p>
+    </div>
+  </div>
+  <div class="grid3">
+    <div class="card y mini"><div class="ico">🎯</div><h3>Few but deep rules</h3><p>There are only a few rules, but each one pulls deeply on the whole. The more rules and exceptions, the harder it is for players to “reason and predict,” and emergence turns into noise.</p></div>
+    <div class="card b mini"><div class="ico">🔗</div><h3>Systems that can interact</h3><p>Fire, water, wind and electricity are each simple, but let them act on each other (water conducts electricity, fire ignites grass, wind spreads fire) and combination play grows.</p></div>
+    <div class="card g mini"><div class="ico">⚖️</div><h3>Consistent physics and chemistry</h3><p>Only when the same rule holds everywhere will players dare to “extend by analogy.” The fewer the exceptions, the easier it is to verify a player’s guesses.</p></div>
+  </div>
+  <div class="eg" data-ic="⚫"><span data-illus="c05_go"></span><div class="egt"><b>Few but deep rules: Go</b>. The rules take a few lines to write, yet the variations of play are so many that nobody can calculate them all.</div></div>
+  <div class="eg" data-ic="🧱"><span data-illus="c05_lego"></span><div class="egt"><b>Few but deep rules: LEGO</b>. A few shapes and one uniform way of connecting can build endless things.</div></div>
+  <div class="eg" data-ic="💬"><span data-illus="c05_words"></span><div class="egt"><b>Few but deep rules: language</b>. A limited set of words plus a grammar can say sentences nobody has ever said.</div></div>
+  <div class="eg" data-ic="⚡"><span data-illus="c05_chem"></span><div class="egt"><b>Interacting systems: <i>Breath of the Wild</i></b>. Metal conducts electricity, fire ignites grassland, wind carries flames. Each system is simple, but where they meet, solutions that players work out for themselves grow.</div></div>
+  <div class="eg bad" data-ic="📦"><span data-illus="c05_isolated"></span><div class="egt"><b>Lots of content, but each isolated</b>. A game has 30 kinds of items, each working only in its own level, with no interaction between them. That is “breadth,” not “depth,” and it will not grow new play.</div></div>
+  <p>Two more “brake” principles. First, <b>give positive feedback an outlet</b>: snowballing mechanics are thrilling, but there should be ways to reverse them, such as catch-up mechanics, resources that can be seized, and extra conditions needed to win. Second, <b>close the economic loop</b>: where there is output there should be spending, and the “tap” and the “drain” should be designed together, otherwise the stock only rises out of control. Some emergence lengthens a game’s life (tactical depth, player creation) and some wrecks it (infinite-money exploits, a snowball ending the match early). The designer’s job is not to eliminate surprise but to <b>raise the odds of good surprises and put brakes on bad ones</b>.</p>
+
+  <div class="misc">
+    <h3>Common misconceptions</h3>
+    <ul>
+      <li><b>“Emergence = randomness / chaos”</b>: the Game of Life has no randomness at all, and every step is deterministic. The unpredictability of emergence comes from the complexity of interactions between rules, not from rolling dice.</li>
+      <li><b>“The more rules, the deeper the game”</b>: depth comes from the <em>interactions</em> between rules, not the number of rules. Many “content-rich” games have systems that are isolated from each other, with breadth but no emergence.</li>
+      <li><b>“Find an exploit and cut the numbers”</b>: cutting numbers only treats the symptom. If the exploit comes from positive feedback or a missing closed loop, however much you cut, players will take another path around it (you already verified this on the leverage test bench).</li>
+      <li><b>“Everyone using the same build means players lack creativity”</b>: more likely everyone is walking uphill reasonably, and together they are stuck in the same local optimum.</li>
+    </ul>
+  </div>
+
+  <div class="reflect">
+    <h3>Reflection and debate</h3>
+    <p><b>Limits.</b> The Game of Life and the Lotka–Volterra model are both extremely simplified. They show “why a certain kind of phenomenon appears,” but can’t tell you directly “what to set it to” in your own game. Real players learn, imitate and band together, and the “feedback” the rules give them keeps changing, which is far harder than rabbits and foxes.</p>
+    <p><b>Debate.</b> “Emergence” itself is disputed in philosophy and science: some think it is just another way of saying “we haven’t worked it out yet” (weak emergence), while others think irreducible new properties really exist at the level of the whole (strong emergence). Game design usually uses only the “weak” sense, meaning “hard to predict, but the rules are explicit.” Also, Meadows’s ranking of leverage points is one view of Meadows, and in games “changing the numbers” is sometimes the right answer.</p>
+    <p>Think about it: in a game you have played, which kinds of play were “not written by the designer but grown by the players themselves”?</p>
+  </div>
+
+  <div class="key">
+    <h3>Key points</h3>
+    <ul>
+      <li><b>Emergence</b>: the behavior of the whole comes from interactions between the parts, and is not written by any single rule.</li>
+      <li><b>Positive feedback amplifies, negative feedback stabilizes</b>; stocks change slowly through flows, so feedback often comes with <b>delay</b>, and <b>negative feedback plus delay oscillates</b>.</li>
+      <li>The Game of Life uses 4 rules to show that “<b>knowing the rules ≠ knowing the result</b>”; Volterra used equations to answer “why do predators increase when fishing decreases?” Both models appeared to answer a specific puzzle.</li>
+      <li>Only walking uphill easily gets you stuck at a <b>local optimum</b>; getting out takes a little exploration.</li>
+      <li>Design points: rules that are <b>few but deep</b>, systems that <b>can interact</b>, physics that is <b>consistent</b>; for problems, look at the <b>feedback structure</b> first, then consider changing numbers (Meadows’s view).</li>
+    </ul>
+  </div>
+  <div class="tldr">What you write down is rules, and what players get is the world that grows from the rules’ interactions; so design feedback structures like a gardener, instead of just turning the number knobs.</div>
+
+  <div class="sec"><span class="n">11</span><h2><span class="tag think">Practice</span>Quick quiz</h2></div>
+  <div id="quiz"></div>
+
+  <div class="sec"><span class="n">12</span><h2><span class="tag how">Your design</span>Find the loops in a game</h2></div>
+  <div class="card o">
+    <p>Think of a game you know: which <b>positive feedback</b> loop and which <b>negative feedback</b> loop does it contain? If a “player found a way to play the designer didn’t expect” ever happened, which rules interacting caused it? How would you adjust the structure, rather than the numbers?</p>
+    <textarea rows="6" data-save="ch5" placeholder="Example: in some game, the stronger your gear, the easier it is to get even stronger gear (positive feedback); I would add…"></textarea>
+    <p class="small">✍️ Saved automatically in your browser.</p>
+  </div>
+</main>
+<script src="../js/illus.js"></script>
+<script src="../js/illus-ch05.js"></script>
+<script src="../js/en/illus.js"></script>
+<script src="../js/en/illus-lib.js"></script>
+<script src="../js/en/illus-ch05.js"></script>
+<script src="../js/common.js"></script>
+<script>
+const $ = id => document.getElementById(id);
+const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+
+(function () {
+  const N = 7;
+  const START = [[1, 0], [2, 1], [0, 2], [1, 2], [2, 2]].map(([x, y]) => [x + 1, y + 1]);
+  let cur, guess, gen, checked, showN;
+  const nowEl = $("c5now"), meEl = $("c5me");
+  const nowC = [], meC = [];
+  for (let i = 0; i < N * N; i++) {
+    const a = document.createElement("div"); nowEl.appendChild(a); nowC.push(a);
+    const b = document.createElement("div"); meEl.appendChild(b); meC.push(b);
+    b.onclick = () => { if (checked) return; guess[i] ^= 1; render(); };
+  }
+  function nb(a, x, y) {
+    let c = 0;
+    for (let dy = -1; dy <= 1; dy++) for (let dx = -1; dx <= 1; dx++) {
+      if (!dx && !dy) continue;
+      const X = x + dx, Y = y + dy;
+      if (X >= 0 && X < N && Y >= 0 && Y < N) c += a[Y * N + X];
+    }
+    return c;
+  }
+  function next(a) {
+    const n = new Uint8Array(N * N);
+    for (let y = 0; y < N; y++) for (let x = 0; x < N; x++) {
+      const c = nb(a, x, y);
+      n[y * N + x] = a[y * N + x] ? (c === 2 || c === 3 ? 1 : 0) : (c === 3 ? 1 : 0);
+    }
+    return n;
+  }
+  function reset() {
+    cur = new Uint8Array(N * N); START.forEach(([x, y]) => cur[y * N + x] = 1);
+    guess = new Uint8Array(N * N); gen = 0; checked = false;
+    $("c5hmsg").textContent = "Click squares on the right to mark the ones you think are alive in the next generation.";
+    $("c5nx").disabled = true; $("c5chk").disabled = false;
+    render();
+  }
+  function render() {
+    $("c5gen").textContent = gen; $("c5gen2").textContent = gen + 1;
+    const truth = next(cur);
+    for (let y = 0; y < N; y++) for (let x = 0; x < N; x++) {
+      const i = y * N + x;
+      nowC[i].className = cur[i] ? "live" : "";
+      nowC[i].textContent = showN ? nb(cur, x, y) : "";
+      let cls = "";
+      if (!checked) { if (guess[i]) cls = "guess"; }
+      else if (guess[i] && truth[i]) cls = "ok";
+      else if (guess[i] && !truth[i]) cls = "wrong";
+      else if (!guess[i] && truth[i]) cls = "miss";
+      meC[i].className = cls;
+      meC[i].textContent = checked && cls === "miss" ? "missed" : checked && cls === "wrong" ? "extra" : "";
+    }
+  }
+  $("c5hint").onclick = () => { showN = !showN; $("c5hint").textContent = showN ? "Hide neighbor counts" : "Show neighbor counts"; render(); };
+  $("c5chk").onclick = () => {
+    checked = true; render();
+    const truth = next(cur);
+    let miss = 0, wrong = 0;
+    for (let i = 0; i < N * N; i++) { if (truth[i] && !guess[i]) miss++; if (!truth[i] && guess[i]) wrong++; }
+    $("c5chk").disabled = true; $("c5nx").disabled = false;
+    $("c5hmsg").textContent = (!miss && !wrong) ? "✔ All correct! Your work matches the rules exactly." : "There are " + wrong + " squares marked by mistake and" + miss + " missed. Green is a correctly worked-out live square and the red frame marks the mistakes: turn on “Show neighbor counts” and compare against the rules.";
+  };
+  $("c5nx").onclick = () => {
+    cur = next(cur); gen++; guess = new Uint8Array(N * N); checked = false;
+    $("c5chk").disabled = false; $("c5nx").disabled = true;
+    if (gen === 4) {
+      $("c5hmsg").innerHTML = "You reached generation 4: the pattern is <b>exactly the same as generation 0, just shifted one square to the lower right as a whole</b>. The rules contain no word for “move,” and you have just worked out by hand something that walks. Keep going, or press “Start over.”";
+    } else $("c5hmsg").textContent = "It is generation " + gen + " now; keep marking the next generation.";
+    render();
+  };
+  $("c5rs").onclick = reset;
+  showN = false; reset();
+})();
+
+(function () {
+  const W = 48, H = 30, CS = 15;
+  const cv = $("life"), ctx = cv.getContext("2d");
+  let g = new Uint8Array(W * H), gen = 0, timer = null, running = false;
+  const idx = (x, y) => y * W + x;
+
+  function step() {
+    const n = new Uint8Array(W * H);
+    for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) {
+      let c = 0;
+      for (let dy = -1; dy <= 1; dy++) for (let dx = -1; dx <= 1; dx++) {
+        if (!dx && !dy) continue;
+        c += g[idx((x + dx + W) % W, (y + dy + H) % H)];
+      }
+      const alive = g[idx(x, y)];
+      n[idx(x, y)] = alive ? (c === 2 || c === 3 ? 1 : 0) : (c === 3 ? 1 : 0);
+    }
+    g = n; gen++;
+  }
+  function count() { let s = 0; for (let i = 0; i < g.length; i++) s += g[i]; return s; }
+  function draw() {
+    ctx.clearRect(0, 0, cv.width, cv.height);
+    ctx.fillStyle = "#fffef7"; ctx.fillRect(0, 0, cv.width, cv.height);
+    ctx.strokeStyle = "rgba(43,43,58,.13)"; ctx.lineWidth = 1;
+    ctx.beginPath();
+    for (let x = 0; x <= W; x++) { ctx.moveTo(x * CS + .5, 0); ctx.lineTo(x * CS + .5, H * CS); }
+    for (let y = 0; y <= H; y++) { ctx.moveTo(0, y * CS + .5); ctx.lineTo(W * CS, y * CS + .5); }
+    ctx.stroke();
+    ctx.fillStyle = "#2b2b3a";
+    for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) if (g[idx(x, y)]) ctx.fillRect(x * CS + 2, y * CS + 2, CS - 3, CS - 3);
+    const a = count();
+    $("lstat").innerHTML = `<span class="stat">Generation <b>${gen}</b></span><span class="stat">Alive <b>${a}</b></span><span class="stat">${running ? "Running" : "Paused"}</span>`;
+    if (running && a === 0) { setRun(false); $("lmsg").textContent = "Everything has died. Draw something else."; }
+  }
+  function setRun(on) {
+    running = on;
+    if (timer) { clearInterval(timer); timer = null; }
+    if (on) timer = setInterval(() => { step(); draw(); }, 1000 / +$("lsp").value);
+    $("lplay").textContent = on ? "⏸ Pause" : "▶ Play";
+    draw();
+  }
+  function place(cells, ox, oy) { cells.forEach(([x, y]) => { g[idx((x + ox) % W, (y + oy) % H)] = 1; }); }
+  const PRE = {
+    glider: [[1, 0], [2, 1], [0, 2], [1, 2], [2, 2]],
+    blinker: [[0, 0], [1, 0], [2, 0]],
+    block: [[0, 0], [1, 0], [0, 1], [1, 1]],
+    rpent: [[1, 0], [2, 0], [0, 1], [1, 1], [1, 2]]
+  };
+  const MSG = {
+    glider: "Glider: 5 squares that shift 1 square along the diagonal every 4 generations. Press play to watch it walk.",
+    blinker: "Blinker: it alternates between horizontal and vertical, period 2. Step twice to see.",
+    block: "Block: every square has exactly 3 neighbors, so it never changes (a stable state).",
+    rpent: "R-pentomino: only 5 squares; on an infinite board it takes 1,103 generations to stabilize. This board wraps around, so escaping gliders come back and hit other things, and the ending will differ. Press play to see.",
+    random: "Random: about 25% of squares alive. See what it settles into: mostly stable states, oscillators and a few gliders."
+  };
+  document.querySelectorAll("[data-pre]").forEach(b => b.onclick = () => {
+    const k = b.dataset.pre;
+    g = new Uint8Array(W * H); gen = 0;
+    if (k === "random") { for (let i = 0; i < g.length; i++) g[i] = Math.random() < 0.25 ? 1 : 0; }
+    else place(PRE[k], k === "glider" || k === "rpent" ? 20 : 22, 12);
+    $("lmsg").textContent = MSG[k]; draw();
+  });
+  $("lplay").onclick = () => { if (!count()) { $("lmsg").textContent = "Draw some live squares first."; return; } setRun(!running); };
+  $("lstep").onclick = () => { setRun(false); step(); draw(); };
+  $("lclear").onclick = () => { setRun(false); g = new Uint8Array(W * H); gen = 0; $("lmsg").textContent = "Cleared."; draw(); };
+  $("lsp").oninput = () => { $("lspv").textContent = $("lsp").value; if (running) setRun(true); };
+
+  let painting = false, val = 1, last = null;
+  function cellAt(e) {
+    const r = cv.getBoundingClientRect();
+    const x = Math.floor((e.clientX - r.left) / r.width * W), y = Math.floor((e.clientY - r.top) / r.height * H);
+    return (x >= 0 && x < W && y >= 0 && y < H) ? [x, y] : null;
+  }
+  function paintLine(a, b) {
+    const n = Math.max(Math.abs(b[0] - a[0]), Math.abs(b[1] - a[1]), 1);
+    for (let i = 0; i <= n; i++) {
+      const x = Math.round(a[0] + (b[0] - a[0]) * i / n), y = Math.round(a[1] + (b[1] - a[1]) * i / n);
+      g[idx(x, y)] = val;
+    }
+  }
+  cv.addEventListener("pointerdown", e => {
+    const c = cellAt(e); if (!c) return;
+    painting = true; cv.setPointerCapture(e.pointerId);
+    val = g[idx(c[0], c[1])] ? 0 : 1; last = c;
+    paintLine(c, c); draw();
+  });
+  cv.addEventListener("pointermove", e => {
+    if (!painting) return;
+    const c = cellAt(e); if (!c) return;
+    paintLine(last, c); last = c; draw();
+  });
+  const end = () => { painting = false; last = null; };
+  cv.addEventListener("pointerup", end); cv.addEventListener("pointercancel", end);
+  draw();
+})();
+
+(function () {
+  const DT = 0.02, T = 100, SUB = 10, CONV = 0.5, R0 = 60, F0 = 30, AVG_FROM = 40;
+  let guess = null;
+  function sim() {
+    const b = +$("ppb").value, a = +$("ppa").value, d = +$("ppd").value, f = +$("ppf").value;
+    const useCap = $("ppcap").checked, K = +$("ppk").value;
+    let R = R0, F = F0;
+    const ts = [0], rs = [R], fs = [F];
+    const steps = Math.round(T / DT);
+    for (let i = 1; i <= steps; i++) {
+      
+      const growth = useCap ? (b - f) * R * (1 - R / K) : (b - f) * R;
+      R = Math.max(0, R + DT * (growth - a * R * F));
+      F = Math.max(0, F + DT * (CONV * a * R * F - (d + f) * F));
+      if (R < 0.5) R = 0;
+      if (F < 0.5) F = 0;
+      if (i % SUB === 0) { ts.push(i * DT); rs.push(R); fs.push(F); }
+    }
+    return { ts, rs, fs, b, a, d, f, useCap };
+  }
+  function peaks(arr) {
+    const p = [], w = 6;
+    for (let i = w; i < arr.length - w; i++) {
+      let ok = arr[i] > 2;
+      for (let j = i - w; j <= i + w && ok; j++) if (j !== i && arr[j] > arr[i]) ok = false;
+      if (ok && arr[i] > arr[i - w] * 1.02 && arr[i] > arr[i + w] * 1.02) p.push(i);
+    }
+    return p;
+  }
+  function run() {
+    $("ppfv").textContent = (+$("ppf").value).toFixed(2);
+    $("ppbv").textContent = (+$("ppb").value).toFixed(2);
+    $("ppav").textContent = (+$("ppa").value).toFixed(3);
+    $("ppdv").textContent = (+$("ppd").value).toFixed(2);
+    $("ppkv").textContent = $("ppk").value;
+    $("ppk").disabled = !$("ppcap").checked;
+    const s = sim();
+    const mx = Math.max(10, ...s.rs, ...s.fs) * 1.1;
+    const X = t => 50 + t / T * 630, Y = v => 240 - v / mx * 215;
+    let h = '<line x1="50" y1="240" x2="680" y2="240" stroke="#2b2b3a" stroke-width="3"/><line x1="50" y1="20" x2="50" y2="240" stroke="#2b2b3a" stroke-width="3"/>';
+    h += `<rect x="${X(AVG_FROM)}" y="20" width="${X(T) - X(AVG_FROM)}" height="220" fill="#ffe58a" opacity=".25"/><text x="${X(AVG_FROM) + 4}" y="36" font-size="15">Period used for the share</text>`;
+    for (let t = 0; t <= T; t += 20) h += `<text x="${X(t)}" y="262" text-anchor="middle" font-size="16">${t}</text>`;
+    h += `<text x="40" y="32" text-anchor="end" font-size="16">${Math.round(mx)}</text><text x="40" y="250" text-anchor="end" font-size="16">0</text>`;
+    const pl = (arr, col) => `<polyline fill="none" stroke="${col}" stroke-width="4" stroke-linejoin="round" points="${arr.map((v, i) => X(s.ts[i]).toFixed(1) + "," + Y(v).toFixed(1)).join(" ")}"/>`;
+    h += pl(s.rs, "#3b82f6") + pl(s.fs, "#e5484d");
+    h += `<rect x="470" y="8" width="18" height="12" fill="#3b82f6" stroke="#2b2b3a" stroke-width="2"/><text x="494" y="20" font-size="16">Rabbits</text>`;
+    h += `<rect x="560" y="8" width="18" height="12" fill="#e5484d" stroke="#2b2b3a" stroke-width="2"/><text x="584" y="20" font-size="16">Foxes</text>`;
+    h += `<text x="680" y="284" text-anchor="end" font-size="16">time →</text>`;
+    $("ppsvg").innerHTML = h;
+
+    const pr = peaks(s.rs), pf = peaks(s.fs);
+    const dt = s.ts[1];
+    let per = "—", lag = "—";
+    if (pr.length >= 2) per = ((pr[pr.length - 1] - pr[0]) / (pr.length - 1) * dt).toFixed(1);
+    const lags = [];
+    pr.forEach(i => { const j = pf.find(k => k > i); if (j !== undefined) lags.push((j - i) * dt); });
+    if (lags.length) lag = (lags.reduce((a, c) => a + c, 0) / lags.length).toFixed(1);
+    const g0 = Math.round(AVG_FROM / dt);
+    const avg = arr => arr.slice(g0).reduce((a, c) => a + c, 0) / (arr.length - g0);
+    const aR = avg(s.rs), aF = avg(s.fs), share = aR + aF > 0 ? aF / (aR + aF) : 0;
+    const rEnd = s.rs[s.rs.length - 1], fEnd = s.fs[s.fs.length - 1];
+    const gb = s.b - s.f, gd = s.d + s.f;
+    let theo = "n/a";
+    if (!s.useCap && gb > 0) theo = (aF + aR >= 0 ? ((gb / s.a) / (gb / s.a + gd / (CONV * s.a))) * 100 : 0).toFixed(0) + "%";
+    $("ppstat").innerHTML = `<span class="stat">Rabbits avg <b>${aR.toFixed(0)}</b></span><span class="stat">Foxes avg <b>${aF.toFixed(0)}</b></span><span class="stat">Fox share <b>${(share * 100).toFixed(0)}%</b></span><span class="stat">Theory share <b>${theo}</b></span><span class="stat">Peak gap <b>${per}</b></span><span class="stat">Foxes lag by <b>${lag}</b></span>`;
+    let m;
+    if (rEnd === 0 || fEnd === 0) {
+      const when = s.ts.findIndex((_, i) => (s.rs[i] === 0) || (s.fs[i] === 0));
+      m = (fEnd === 0 ? "The foxes" : "The rabbits") + `went extinct (around time ${s.ts[when].toFixed(0)}). When predation is too fierce or the swings too large, the trough can get so low that there is no coming back: this is the collapse of “overpredation.”`;
+    } else if (s.useCap) {
+      const half = Math.floor(s.rs.length / 2);
+      const amp = a => Math.max(...a.slice(half)) - Math.min(...a.slice(half));
+      const amp0 = a => Math.max(...a.slice(0, half)) - Math.min(...a.slice(0, half));
+      m = amp(s.rs) < amp0(s.rs) * 0.5 ? "The oscillation is dying out: the extra food cap is a timely negative feedback that helps the system settle faster." : "There is still clear oscillation: try lowering the cap and see whether it dies out faster.";
+    } else {
+      m = "Notice the red line always trails the blue: many rabbits first, then many foxes. Try changing the “fishing intensity”: the harder the fishing, the lower the fox share; after fishing stops the share rises.";
+    }
+    $("ppmsg").textContent = m;
+    return { share };
+  }
+  ["ppb", "ppa", "ppd", "ppk", "ppcap", "ppf"].forEach(id => $(id).addEventListener("input", run));
+  $("ppcap").addEventListener("change", run);
+  $("ppreset").onclick = () => { $("ppb").value = 0.6; $("ppa").value = 0.012; $("ppd").value = 0.4; $("ppk").value = 150; $("ppcap").checked = false; run(); };
+  document.querySelectorAll("[data-g]").forEach(b => b.onclick = () => {
+    guess = b.dataset.g;
+    document.querySelectorAll("[data-g]").forEach(x => x.classList.toggle("on", x === b));
+  });
+  $("c5war0").onclick = () => { $("ppf").value = 0.2; run(); };
+  $("c5war1").onclick = () => {
+    const before = (+$("ppf").value === 0) ? null : run().share;
+    $("ppf").value = 0; const after = run().share;
+    let t = "";
+    if (before !== null) {
+      t = `The share went from ${(before * 100).toFixed(0)}% to ${(after * 100).toFixed(0)}%: after fishing stopped, the foxes’ (predators’) share ${after > before ? "went up" : "did not go up"}.`;
+      if (guess) t += (guess === "up") === (after > before) ? " You guessed right!" : " The opposite of your guess, which is exactly what puzzled D’Ancona back then.";
+      else t += " (Next time, pick a “My guess” first and then press.)";
+    }
+    t += "Reason: fishing pushes down both animals but hurts predators more; after fishing stops predators recover more.";
+    $("ppmsg").textContent = t;
+  };
+  run();
+})();
+
+(function () {
+  const NS = "http://www.w3.org/2000/svg";
+  $("c5t1").onclick = () => tab(1); $("c5t2").onclick = () => tab(2);
+  function tab(n) {
+    $("c5p1").classList.toggle("on", n === 1); $("c5p2").classList.toggle("on", n === 2);
+    $("c5t1").classList.toggle("alt", n !== 1); $("c5t2").classList.toggle("alt", n !== 2);
+  }
+  function axes(x0, y0, x1, y1, xt, yt, xl) {
+    let s = `<rect x="${x0}" y="${y1}" width="${x1 - x0}" height="${y0 - y1}" fill="#fffef7" stroke="#2b2b3a" stroke-width="3"/>`;
+    xt.forEach(([px, lab]) => s += `<text x="${px}" y="${y0 + 20}" text-anchor="middle" font-size="16">${lab}</text>`);
+    yt.forEach(([py, lab]) => s += `<text x="${x0 - 6}" y="${py + 5}" text-anchor="end" font-size="16">${lab}</text><line x1="${x0}" x2="${x1}" y1="${py}" y2="${py}" stroke="#2b2b3a" stroke-opacity=".15"/>`);
+    s += `<text x="${(x0 + x1) / 2}" y="${y0 + 42}" text-anchor="middle" font-size="16">${xl}</text>`;
+    return s;
+  }
+  const line = (pts, col, w, dash) => `<polyline fill="none" stroke="${col}" stroke-width="${w}" ${dash ? 'stroke-dasharray="6 6"' : ""} stroke-linejoin="round" points="${pts.map(p => p[0].toFixed(1) + "," + p[1].toFixed(1)).join(" ")}"/>`;
+
+  
+  const TT = 300, R = 0.1;
+  function snow(keff) {
+    let a = 105, b = 100; const out = [];
+    for (let t = 0; t <= TT; t++) {
+      const s = a / (a + b); out.push(s);
+      const e = keff * (2 * s - 1);
+      a *= 1 + R * (1 + e); b *= 1 + R * (1 - e);
+      const z = a + b; a = a / z * 205; b = b / z * 205;
+    }
+    return out;
+  }
+  function draw1() {
+    const k = +$("c5k").value, on = $("c5cu").checked, c = +$("c5c").value;
+    $("c5kv").textContent = k.toFixed(2); $("c5cv").textContent = c.toFixed(2); $("c5c").disabled = !on;
+    const keff = k - (on ? c : 0);
+    const X = t => 60 + t / TT * 620, Y = v => 270 - (v - 0.4) / 0.6 * 250;
+    let s = axes(60, 270, 680, 20, [0, 100, 200, 300].map(t => [X(t), t]), [0.5, 0.6, 0.7, 0.8, 0.9, 1].map(v => [Y(v), Math.round(v * 100) + "%"]), "Turns → dashed gray: k = 0.2 / 0.5 / 1.0");
+    s += `<line x1="60" x2="680" y1="${Y(0.8)}" y2="${Y(0.8)}" stroke="#e5484d" stroke-dasharray="5 6" stroke-width="2.5"/><text x="676" y="${Y(0.8) - 10}" text-anchor="end" font-size="16" fill="#e5484d">80% = the outcome is basically decided</text>`;
+    [[0.2, "k=0.2"], [0.5, "k=0.5"], [1, "k=1.0"]].forEach(([kk, lab]) => {
+      const arr = snow(kk); s += line(arr.map((v, t) => [X(t), Y(v)]), "#9a9aa8", 2.5, true);
+      
+    });
+    const live = snow(keff);
+    s += line(live.map((v, t) => [X(t), Y(Math.max(0.4, v))]), "#e5484d", 5);
+    $("c5sv1").innerHTML = s;
+    const t80 = live.findIndex(v => v >= 0.8), fin = live[TT];
+    let m;
+    if (keff > 0.0001) m = `Net loop gain k${on ? "−c" : ""} = <b>${keff.toFixed(2)} &gt; 0</b>: positive feedback dominates, and the leader’s share climbs all the way to 100%.` + (t80 >= 0 ? `The outcome is basically decided around turn <b>${t80}</b>.` : `Not at 80% within 300 turns, but <b>the direction is set, just slower</b>.`) + (on ? "" : " Try lowering k: it is only later, and the end point is the same. Then tick “catch-up mechanic” and set c above k.");
+    else if (Math.abs(keff) <= 0.0001) m = "The two loops <b>exactly cancel</b>: the lead neither grows nor shrinks, and stays where it is.";
+    else m = `Net loop gain = <b>${keff.toFixed(2)} &lt; 0</b>: negative feedback dominates, the gap is pulled back, and A’s share converges to <b>${(fin * 100).toFixed(0)}%</b> (close to 50%). Note that catching up too hard has a cost too: when c is far larger than k, the leader’s effort is flattened out.`;
+    $("c5o1").innerHTML = m;
+  }
+  ["c5k", "c5cu", "c5c"].forEach(id => $(id).addEventListener("input", draw1));
+  $("c5cu").addEventListener("change", draw1);
+
+  
+  const T2 = 200;
+  function eco(I, D, tau) {
+    let g = 0; const out = [0];
+    for (let t = 1; t <= T2; t++) { g = Math.max(0, g + I - D - tau * g); out.push(g); }
+    return out;
+  }
+  function draw2() {
+    const I = +$("c5i").value, D = +$("c5d").value, on = $("c5tx").checked, tau = on ? +$("c5t").value / 100 : 0;
+    $("c5iv").textContent = I; $("c5dv").textContent = D; $("c5tv").textContent = (+$("c5t").value).toFixed(1) + "%"; $("c5t").disabled = !on;
+    const base = eco(60, 40, 0), live = eco(I, D, tau);
+    const mx = Math.max(500, ...base, ...live) * 1.08;
+    const X = t => 60 + t / T2 * 620, Y = v => 270 - v / mx * 250;
+    const yt = [0, 0.25, 0.5, 0.75, 1].map(f => [Y(f * mx / 1.08), Math.round(f * mx / 1.08).toString()]);
+    let s = axes(60, 270, 680, 20, [0, 50, 100, 150, 200].map(t => [X(t), t]), yt, "Turns → vertical axis: total gold");
+    s += line(base.map((v, t) => [X(t), Y(v)]), "#9a9aa8", 2.5, true) + `<text x="${X(6)}" y="72" font-size="16" fill="#4b4b5e">dashed gray: the default</text>`;
+    s += line(live.map((v, t) => [X(t), Y(v)]), "#3b82f6", 5);
+    $("c5sv2").innerHTML = s;
+    const net = I - D, end = live[T2];
+    let m;
+    if (tau > 0) {
+      const eq = net > 0 ? net / tau : 0;
+      m = net > 0 ? `Proportional spending is a <b>drain that grows with the water level</b>: the more gold, the more flows out. The total is pulled toward the equilibrium (output − fixed spending)/proportion ≈ <b>${eq.toFixed(0)}</b> and no longer rises forever (turn 200: ${end.toFixed(0)}).` : "Output doesn’t exceed fixed spending, and with proportional spending added the total gold is pushed to 0: this is now <b>deflation</b>, and nobody has any money.";
+    } else if (net > 0) m = `Net inflow each turn is <b>${net}</b>, and the total <b>rises linearly forever</b> (turn 200: ${end.toFixed(0)}). Now try cutting “output” by 10% (60→54): it is still larger than the spending of 40, so it rises more slowly but <b>still rises forever</b>. Tick “proportional spending” and see.`;
+    else if (net === 0) m = "Inflow and outflow are exactly equal: the total doesn’t change. But this is a knife-edge balance, and the slightest deviation makes it rise or fall.";
+    else m = "Fixed spending exceeds output: the total is drained to 0, which is failure in the other direction (deflation). So <b>with fixed numbers alone, getting an exact balance is almost impossible</b>.";
+    $("c5o2").innerHTML = m;
+  }
+  ["c5i", "c5d", "c5tx", "c5t"].forEach(id => $(id).addEventListener("input", draw2));
+  $("c5tx").addEventListener("change", draw2);
+  $("c5reset").onclick = () => {
+    $("c5k").value = 0.5; $("c5cu").checked = false; $("c5c").value = 0.7;
+    $("c5i").value = 60; $("c5d").value = 40; $("c5tx").checked = false; $("c5t").value = 2;
+    draw1(); draw2();
+  };
+  draw1(); draw2();
+})();
+
+(function () {
+  const f = x => 20 + 85 * Math.exp(-(((x - 170) / 60) ** 2)) + 190 * Math.exp(-(((x - 520) / 75) ** 2));
+  const Y = x => 262 - f(x);
+  let hx = 120, timer = null, ticks = 0, stuck = 0;
+  const svg = $("c5hl");
+  function render() {
+    let pts = "";
+    for (let x = 0; x <= 700; x += 4) pts += x + "," + Y(x).toFixed(1) + " ";
+    let s = '<polygon points="0,262 ' + pts + '700,262" fill="#b6e8a8" stroke="#2b2b3a" stroke-width="3.5"/>';
+    s += '<text x="170" y="' + (Y(170) - 44) + '" text-anchor="middle" font-size="17">Small hill</text>';
+    s += '<text x="520" y="' + (Y(520) - 24) + '" text-anchor="middle" font-size="17">Main peak</text>';
+    s += '<text x="20" y="22" font-size="16">Click anywhere on the chart to put the climber there</text>';
+    const cy = Y(hx) - 10;
+    s += '<circle cx="' + hx + '" cy="' + cy + '" r="10" fill="#e5484d" stroke="#2b2b3a" stroke-width="3"/>';
+    s += '<path d="M' + hx + " " + (cy - 10) + " v-16 l12 5 l-12 5\" fill=\"#ffe58a\" stroke=\"#2b2b3a\" stroke-width=\"2\"/>";
+    svg.innerHTML = s;
+    $("c5hh").textContent = Math.round(f(hx));
+  }
+  function stop(msg, ok) {
+    clearInterval(timer); timer = null; $("c5hgo").textContent = "Go";
+    $("c5hmsg2").innerHTML = msg; $("c5hmsg2").classList.toggle("ok", !!ok);
+  }
+  function tick() {
+    ticks++;
+    const e = +$("c5ex").value / 100;
+    let moved = false;
+    if (e > 0 && Math.random() < e * 0.25) {
+      const c = 10 + Math.random() * 680;
+      if (f(c) > f(hx)) { hx = c; moved = true; }
+    }
+    if (!moved) {
+      const a = f(hx + 3), b = f(hx - 3), c0 = f(hx);
+      if (a > c0 && a >= b) { hx = Math.min(690, hx + 3); moved = true; }
+      else if (b > c0) { hx = Math.max(10, hx - 3); moved = true; }
+    }
+    stuck = moved ? 0 : stuck + 1;
+    render();
+    const onMain = Math.abs(hx - 520) < 25, onSmall = Math.abs(hx - 170) < 25;
+    if (stuck >= 12 && onMain) return stop("✔ The climber reached the <b>main peak</b> (height " + Math.round(f(hx)) + ")." + (e > 0 ? "It was thanks to those few random jumps; without them he would have stayed on the small hill." : "This time the start was already on the slope of the main peak. Try moving the start to the foot of the left hill."), true);
+    if (stuck >= 12 && e === 0) return stop("The climber stopped on the <b>small hill</b> (height " + Math.round(f(hx)) + ", the main peak is " + Math.round(f(520)) + "). Whichever way he looks it’s downhill, with no single step that makes things better for him, which is a local optimum. Drag “Exploration” and try again.", false);
+    if (ticks >= 400) return stop(onMain ? "He ended up at the main peak." : "After exploring a while, he didn’t jump anywhere higher this time and stopped at height " + Math.round(f(hx)) + ". Bad luck is part of exploring: go again, or raise the exploration.", false);
+  }
+  function go() {
+    if (timer) return stop("Paused.", false);
+    ticks = 0; stuck = 0; $("c5hmsg2").classList.remove("ok"); $("c5hmsg2").textContent = "Off we go…"; $("c5hgo").textContent = "Pause";
+    timer = setInterval(tick, 25);
+  }
+  $("c5hgo").onclick = go;
+  const setStart = x => { if (timer) stop("", false); hx = Math.max(10, Math.min(690, x)); $("c5hmsg2").classList.remove("ok"); $("c5hmsg2").textContent = "Placed. Press “Go.”"; render(); };
+  $("c5hl1").onclick = () => setStart(60);
+  $("c5hl2").onclick = () => setStart(20 + Math.random() * 660);
+  svg.addEventListener("pointerdown", e => { const r = svg.getBoundingClientRect(); setStart((e.clientX - r.left) / r.width * 700); });
+  $("c5ex").addEventListener("input", () => { $("c5exv").textContent = $("c5ex").value + "%"; });
+  hx = 60; render();
+})();
+
+(function () {
+  const TXT = [
+    "<b>Parameters</b>: health 10%, drop rate 5%. The cheapest and the first thing anyone thinks of, but often it just makes the system reach the same ending faster or slower.",
+    "<b>Stock–flow structure and delays</b>: add a “drain” (repair costs, taxes), or change the respawn interval. What changes is how the water flows and how long before you see the result.",
+    "<b>The strength of feedback loops</b>: add a catch-up mechanic, or turn down the snowball’s gain. It directly changes the force of “the winner wins more” or “the loser steadies.”",
+    "<b>Information flows and rules</b>: let players see who is leading, or change the win condition. People decide based on the information they see and the edges of the rules.",
+    "<b>Self-organization and goals</b>: open up player creation, mods and custom rooms, or change “what this game wants people to do.” The system grows new structure by itself.",
+    "<b>Paradigm</b>: the very idea of “what a game is” and “what players come here for.” When it changes, every layer above changes with it, and it is also the hardest to change."
+  ];
+  document.querySelectorAll(".c5ldr .hit").forEach(h => {
+    const pick = () => { $("c5ldrmsg").innerHTML = TXT[+h.dataset.i]; };
+    h.addEventListener("click", pick);
+    h.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); pick(); } });
+  });
+})();
+
+GD.mountQuiz($("quiz"), [
+  { q: "Which of the following is closest to the meaning of “emergence”?", opts: ["The designer writes every kind of play into the rules one by one", "The whole shows behavior not visible in any single rule, arising from the interactions between rules", "The game uses random numbers", "The player cheats"], a: 1, why: "Emergence is new behavior at the level of the whole, arising from interactions between the parts. It does not depend on randomness (the Game of Life is fully deterministic), nor is it written out one by one by the designer." },
+  { q: "[Why] Why do predator and prey numbers rise and fall periodically, with the foxes’ peak always later than the rabbits’?", opts: ["Because random numbers are at work", "Because of negative feedback with a delay: foxes increase only after rabbits become plentiful, and then fall because they ate the rabbits out", "Because rabbits learned to hide", "Because the model has a bug"], a: 1, why: "More rabbits, more foxes (with a delay); fewer rabbits left, foxes starve (with another delay). Negative feedback plus delay produces oscillation, with no randomness or “learning” needed." },
+  { q: "A game economy is badly inflated (gold only comes in, never goes out). By Meadows’s “leverage points” view, which change is worth considering first?", opts: ["Cut the gold dropped by each monster a tiny bit", "Add gold sinks so that outflow and inflow form a balancing loop (such as a tax or upkeep that grows with the stock)", "Raise all prices by 1%", "Do nothing and wait for players to adapt"], a: 1, why: "Changing the feedback structure is usually more powerful than changing numbers. Only cutting inflow without any outflow still lets the stock rise; adding a “drain” that grows with the water level is what changed the system’s structure (you verified this by hand on the leverage test bench)." },
+  { q: "[Why] After a new version goes live, almost every player uses the same strongest build. From the angle of “local optimum,” what is the most likely reason?", opts: ["Players have no creativity", "Every player improves their own play step by step, and they all climb the same hill together", "The game has a bug", "The designer favors this build"], a: 1, why: "Improving in small steps toward “better” easily traps you on the highest hill nearby. To get diversity, other routes have to be given a chance to stand out, or a little exploration encouraged." },
+  { q: "[Why it was invented] What question was Conway mainly trying to answer in designing the Game of Life?", opts: ["How to make the best-looking game", "Whether extremely simple rules could produce complex, hard-to-predict behavior (inspired by von Neumann’s self-replicating machine)", "How to make computers beat humans at Go", "How to set difficulty for players"], a: 1, why: "Conway, inspired by von Neumann’s self-replicating machine, wanted much simpler rules; he also conjectured that “no pattern can grow without limit” and offered a $50 prize, later overturned by Gosper’s group’s glider gun." },
+  { q: "[Why it was invented] During World War I, with less fishing in the Adriatic, the share of predatory fish in the catch went up. How does Volterra’s model explain it?", opts: ["Predators are naturally better at dodging nets", "Fishing pushes down prey and predators together but hurts predators more; when fishing stops, predators recover more", "The war killed off all the prey", "It is statistical error and can’t be explained"], a: 1, why: "In the simplest model, fishing is equal to raising the death rates of both: the average prey number is proportional to (predator death rate + fishing), and the average predator number is proportional to (prey birth rate − fishing). So with less fishing, the predators’ share rises. This model was proposed precisely to explain this puzzle." },
+]);
+
+</script>
+</body>
+</html>

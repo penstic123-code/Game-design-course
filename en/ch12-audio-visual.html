@@ -1,0 +1,858 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Chapter 12: Audio &amp; Visual Design</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+  .row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:6px 0}
+  .c12-two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:700px){.c12-two{grid-template-columns:1fr}}
+  .c12-stage{position:relative;height:230px;border:3px solid var(--ink);border-radius:12px;background:#fffef7;display:grid;place-items:center;overflow:hidden;transition:background .1s}
+  .c12-stage.flash{background:#fff3b0}
+  #c12_obj{will-change:transform,opacity;display:grid;place-items:center}
+  .c12-bar{height:16px;border:2.5px solid var(--ink);border-radius:10px;background:#fff;overflow:hidden;margin:2px 0 8px}
+  .c12-bar i{display:block;height:100%;width:0;transition:width .25s}
+  .c12-bar.r i{background:var(--green)}.c12-bar.d i{background:#ff9d9d}
+  .c12-note{font-size:.95rem;margin:2px 0}
+  .c12-warn{background:#ffe9ef;border:2.5px solid var(--ink);border-radius:10px;padding:6px 12px;margin:8px 0}
+  .c12-steps{display:grid;grid-template-columns:repeat(8,1fr);gap:4px;margin:8px 0}
+  .c12-steps span{height:30px;border:2.5px solid var(--ink);border-radius:6px;background:#fff;display:grid;place-items:center;font-size:.8rem}
+  .c12-steps span.on{background:var(--yellow)}
+  .c12-steps span.bar{border-width:4px 2.5px 2.5px 4px}
+  .c12-hide{display:none}
+  .c12-chars{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+  @media(max-width:600px){.c12-chars{grid-template-columns:repeat(3,1fr)}}
+  .c12-chars div{background:#fff;border:2.5px solid var(--ink);border-radius:10px;text-align:center;font-size:.9rem;padding:4px}
+  .c12-chars svg{width:100%;height:auto;display:block}
+  #c12_big{width:150px;height:150px;display:block;margin:6px auto;border:3px solid var(--ink);border-radius:12px;background:#fffef7}
+  #c12_rt{height:120px;border:3px solid var(--ink);border-radius:12px;display:grid;place-items:center;font-family:var(--hand);font-size:1.5rem;cursor:pointer;user-select:none;background:#fff;touch-action:manipulation;text-align:center;padding:6px}
+  #c12_rt.wait{background:#ffe9a8}#c12_rt.go{background:var(--green)}
+  .c12-lane{position:relative;height:40px;border:2.5px solid var(--ink);border-radius:10px;background:#fff;margin:6px 0}
+  .c12-lab{font-size:.95rem;margin-top:8px}
+  .c12-lane i{position:absolute;left:4px;top:6px;width:24px;height:24px;border-radius:50%;background:var(--yellow);border:2.5px solid var(--ink)}
+  #c12_gs{display:block;width:100%;max-width:340px;margin:6px auto;background:#fffef7;border:3px solid var(--ink);border-radius:12px}
+</style>
+</head>
+<body data-ch="12">
+<main class="wrap">
+  <div class="hero">
+    <div class="txt">
+      <span class="badge">Chapter 12</span>
+      <h1>Audio &amp; Visual Design</h1>
+      <p class="sub">Mute a game, then paint it as a pure black silhouette, and see what is left.</p>
+    </div>
+    <svg viewBox="0 0 190 150" class="rough" aria-hidden="true">
+      <g stroke="#2b2b3a" stroke-width="5" stroke-linejoin="round" stroke-linecap="round">
+        <path d="M20 60 h22 l28 -24 v78 l-28 -24 h-22z" fill="#ffe58a"/>
+        <path d="M86 54 q14 21 0 42" fill="none"/><path d="M100 40 q26 35 0 70" fill="none"/>
+        <polygon points="150,26 164,56 140,50" fill="#ffb3c6"/>
+        <circle cx="150" cy="96" r="18" fill="#8fd3f4"/>
+        <rect x="132" y="118" width="36" height="22" fill="#b6e8a8"/>
+      </g>
+    </svg>
+  </div>
+
+  <div class="goals">
+    <h3>Learning goals</h3>
+    <ul>
+      <li>Name the <b>four functions</b> of sound in games, and use “envelope, pitch, duration” to design a sound effect that is understood at once.</li>
+      <li>Explain why <b>adaptive music</b> was invented, and tell “horizontal switching” from “vertical layering.”</li>
+      <li>Use color, shape, <b>silhouette</b> and <b>easing</b> to check whether a picture “reads at a glance and feels right,” and say why exaggeration and grouping grab attention.</li>
+    </ul>
+    <span class="time">about 45 min</span>
+  </div>
+
+  <div class="sec"><span class="n">1</span><h2><span class="tag what">What it is</span>Sound is not background; it is a second screen</h2></div>
+  <div class="withimg">
+    <span data-illus="c12_mute"></span>
+    <div>
+      <p>Try a little experiment: play a small game you know well on your phone, and this time <b>turn the sound off</b>. You will find yourself dulled: you can’t tell whether you picked up the coin, whether someone is behind you, or even whether “that hit landed.”</p>
+      <p>Sound isn’t only there to be “pleasant”; it has been quietly passing along information for you all along. With the picture already so busy, why open another channel? Because eyes can look in only one direction, while ears can take in messages from all around at once without using up your line of sight.</p>
+      <p>Sound in a game broadly serves <b>four functions</b>, a split commonly used in the industry:</p>
+    </div>
+  </div>
+  <div class="card">
+    <svg viewBox="0 0 700 320" width="100%" role="img" aria-label="The four functions of sound: feedback, information, emotion, space.">
+      <g class="rough" stroke="#2b2b3a" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <ellipse cx="350" cy="160" rx="70" ry="42" fill="#ffe58a"/>
+        <rect x="20" y="20" width="240" height="96" rx="14" fill="#fff7cf"/>
+        <rect x="440" y="20" width="240" height="96" rx="14" fill="#e8f6fc"/>
+        <rect x="20" y="204" width="240" height="96" rx="14" fill="#eaf9e4"/>
+        <rect x="440" y="204" width="240" height="96" rx="14" fill="#ffe9ef"/>
+        <path d="M284 138 L262 112"/><path d="M416 138 L438 112"/><path d="M284 182 L262 208"/><path d="M416 182 L438 208"/>
+      </g>
+      <g font-size="17" text-anchor="middle" fill="#2b2b3a">
+        <text x="350" y="167" font-weight="700" font-size="22">Sound</text>
+        <text x="140" y="50" font-weight="700">① Feedback: what I did</text><text x="140" y="78">“ding” = coin collected</text><text x="140" y="102">“thud” = got hit</text>
+        <text x="560" y="50" font-weight="700">② Information: what happened</text><text x="560" y="78">alarm = health critical</text><text x="560" y="102">footsteps = someone nearby</text>
+        <text x="140" y="234" font-weight="700">③ Emotion: how to feel right now</text><text x="140" y="262">gloomy bass = unease</text><text x="140" y="286">triumphant brass = victory</text>
+        <text x="560" y="234" font-weight="700">④ Space: where things are</text><text x="560" y="262">left ear = enemy on the left</text><text x="560" y="286">big reverb = a cave</text>
+      </g>
+    </svg>
+  </div>
+  <div class="eg" data-ic="🪙"><span data-illus="c12_coin"></span><div class="egt"><b>Feedback</b>: the “ding” of collecting a coin in <i>Super Mario</i>. Short, bright, almost impossible to mishear. When we talked about game feel, we said sound often accounts for half of it.</div></div>
+  <div class="eg" data-ic="🎧"><span data-illus="c12_foot"></span><div class="egt"><b>Information</b>: in many shooters, footsteps tell you whether the enemy is upstairs or downstairs, even which side of a wall. You haven’t seen him, yet you already know where to hide.</div></div>
+  <div class="eg" data-ic="🍳"><span data-illus="c12_daily"></span><div class="egt"><b>Daily life</b>: the microwave’s “ding” is feedback, an ambulance siren is information, a violin tremolo in a film is emotion, and hearing, eyes closed, that someone is walking in from the left is space. You have long been a skilled “listener designer.”</div></div>
+  <div class="eg bad" data-ic="🔊"><span data-illus="c12_loud"></span><div class="egt"><b>Counterexample: everything makes a sound.</b> Every button click plays a gorgeous 3-second effect: cool the first time, annoying the tenth, and by the fiftieth you want to mute. The sound has become noise, the player suffers “listening fatigue,” and the sound that really matters is drowned out.</div></div>
+
+  <div class="sec"><span class="n">2</span><h2><span class="tag what">What it is</span>Some principles of sound-effect design, and the “envelope”</h2></div>
+  <p>Designing a sound effect is really turning a few knobs. The most critical is the <span class="term" tabindex="0" data-def="The contour of a sound’s loudness over time, often described in four ADSR stages: Attack, Decay, Sustain, Release.">envelope</span>, that is, “how the sound starts and how it falls away.” With the same pitch, whether it starts fast or slow makes two entirely different things to the ear:</p>
+  <div class="card">
+    <svg viewBox="0 0 700 290" width="100%" role="img" aria-label="ADSR envelope: the volume rises quickly to a peak (attack), falls to the sustain level (decay), holds for a while, and finally falls to zero (release).">
+      <g class="rough" stroke="#2b2b3a" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M60 30 V220 H660"/>
+        <path d="M70 220 L170 60 L260 110 H460 L600 220" stroke="#e5484d" stroke-width="5"/>
+      </g>
+      <g stroke="#4b4b5e" stroke-width="2" stroke-dasharray="6 6"><line x1="170" y1="60" x2="170" y2="220"/><line x1="260" y1="110" x2="260" y2="220"/><line x1="460" y1="110" x2="460" y2="220"/></g>
+      <g font-size="17" text-anchor="middle" fill="#2b2b3a">
+        <text x="120" y="250">A Attack</text><text x="215" y="250">D Decay</text><text x="360" y="250">S Sustain</text><text x="530" y="250">R Release</text>
+        <text x="110" y="34">Volume</text><text x="630" y="250" text-anchor="end">time →</text>
+        <text x="360" y="86">S is a “level,” not a length of time</text>
+      </g>
+    </svg>
+  </div>
+  <p>A very short attack with no sustain is the <b>crisp</b> of a plucked string, a knock or a coin; a slow attack with a long release is the <b>soft</b> of a string pad or a magic incantation. This four-stage description comes from synthesizers, and the sound chips of early home machines handed you ADSR knobs directly.</p>
+  <div class="board">
+    <div class="row">
+      <button class="btn" id="c12_pl1">▶ Hear “crisp”: attack 2 ms</button>
+      <button class="btn alt" id="c12_pl2">▶ Hear “soft”: attack 300 ms</button>
+      <label class="ctl" style="margin:0"><input type="checkbox" class="c12-mute"> Mute</label>
+    </div>
+    <div class="msg" id="c12_plmsg">The two notes have the same pitch, with only the envelope changed. Press either one first.</div>
+  </div>
+  <div class="sticky">Try it: listen to both, then close your eyes and think: which one is more like “picking up a coin,” and which is more like “charging a spell”?</div>
+  <p>A few more design rules of thumb, common practice in the industry rather than laws:</p>
+  <div class="grid3">
+    <div class="card y mini"><div class="ico">🎚️</div><h3>Layering</h3><p>An “explosion” is often built from a low-frequency thump, a mid-frequency burst and high-frequency debris stacked together. Each layer handles one band of frequencies, so it doesn’t turn muddy.</p></div>
+    <div class="card b mini"><div class="ico">👂</div><h3>Distinguishable</h3><p>Important sounds should be set apart from others in frequency, timbre or rhythm. “Getting hit” and “picking up” must never sound alike.</p></div>
+    <div class="card g mini"><div class="ico">⏱️</div><h3>Short</h3><p>Feedback sounds that occur often mostly end within a fraction of a second. Short, so that they don’t cover the next one.</p></div>
+    <div class="card p mini"><div class="ico">📈</div><h3>Pitch varies with intensity</h3><p>The higher the combo count, the more the pickup sound rises a semitone each time, so the player “hears” themselves climbing a slope.</p></div>
+    <div class="card o mini"><div class="ico">🔀</div><h3>Variation</h3><p>Change the pitch of the same footstep slightly each time, or alternate several recordings, to avoid “machine-gun” repetition.</p></div>
+    <div class="card v mini"><div class="ico">🙉</div><h3>Leave gaps</h3><p>A picture where everything makes a sound is a picture where nothing can be heard. Making way for the important sound is commonly called “ducking.”</p></div>
+  </div>
+
+  <div class="sec"><span class="n">3</span><h2><span class="tag what">What it is</span>Music: looping, switching and silence</h2></div>
+  <p>Music has an inborn difficulty: <b>the player’s time is uncertain</b>. A film score can be written to a timeline; in a game you don’t know whether the player will stay in this room for 5 seconds or 5 minutes, nor on which beat a fight will break out. There are three common answers:</p>
+  <ul>
+    <li><b>Looping</b>: a piece of music plays over and over, end joined to start. The simplest, and the difficulty is keeping people from noticing the seam and the repetition.</li>
+    <li><span class="term" tabindex="0" data-def="Switching between different music segments according to the game state, usually waiting for a bar line or the end of a phrase so it isn’t abrupt.">Horizontal switching</span>: when the state changes (from exploring to fighting), switch to a different piece of music, cutting in on a beat or a bar line.</li>
+    <li><span class="term" tabindex="0" data-def="Splitting one piece of music into several synchronized parts (drums, bass, melody, a tension layer) and switching them on and off layer by layer with game intensity.">Vertical layering</span>: one piece is split into several synchronized tracks (drums, bass, melody…), and when danger rises a layer is “pushed in,” without changing the piece.</li>
+  </ul>
+  <div class="card">
+    <svg viewBox="0 0 700 320" width="100%" role="img" aria-label="Left: horizontal switching, the exploration segment changes to the combat segment at a bar line. Right: vertical layering, drum and bass layers are added to the same piece.">
+      <g class="rough" stroke="#2b2b3a" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="14" y="70" width="156" height="50" rx="8" fill="#e8f6fc"/><rect x="170" y="70" width="156" height="50" rx="8" fill="#ffe9ef"/>
+        <path d="M170 48 V142" stroke="#e5484d"/><path d="M60 196 H300"/><path d="M285 186 L300 196 L285 206"/>
+        <rect x="390" y="64" width="290" height="40" rx="8" fill="#e8f6fc"/>
+        <rect x="390" y="112" width="290" height="40" rx="8" fill="#fff7cf" stroke-dasharray="2 9"/>
+        <rect x="530" y="112" width="150" height="40" rx="8" fill="#fff7cf"/>
+        <rect x="610" y="160" width="70" height="40" rx="8" fill="#ffe9ef"/>
+      </g>
+      <g font-size="17" text-anchor="middle" fill="#2b2b3a">
+        <text x="170" y="28" font-weight="700">Horizontal: swap segments</text><text x="92" y="101">Exploration</text><text x="248" y="101">Combat</text>
+        <text x="170" y="170" fill="#b3261e">bar line</text><text x="170" y="236"><tspan font-size="15">Clean, but the change can’t be “instant”</tspan></text>
+        <text x="535" y="28" font-weight="700">Vertical: add layers</text><text x="535" y="89">Melody (always on)</text><text x="605" y="137">Bass layer</text><text x="645" y="185" font-size="16">Drums</text>
+        <text x="535" y="236"><tspan font-size="14">Instant, unbroken; the piece must be written for it</tspan></text>
+        <text x="350" y="298" font-weight="700">The two are often used together</text>
+      </g>
+    </svg>
+  </div>
+  <p>The last often underrated tool is <b>silence</b>. The brain filters out something that is always sounding; if the music is suddenly pulled before a boss appears, leaving only breathing, the tension is actually greatest. Treat “quiet” as a deliberately designed “timbre,” not a blank.</p>
+  <div class="eg" data-ic="🍃"><span data-illus="c12_quiet"></span><div class="egt"><b>Silence as reward</b>: in some puzzle and exploration games, big areas have only wind and water, and music comes in only when you find the key object, so the music itself becomes the signal “you got it right.”</div></div>
+  <div class="eg" data-ic="🎬"><span data-illus="c12_horror"></span><div class="egt"><b>In daily life: horror films.</b> What really scares is often not the screaming strings but the second the music <b>stops</b>: something you have been listening to suddenly vanishes, and the body goes on alert before the mind.</div></div>
+  <div class="eg bad" data-ic="🔁"><span data-illus="c12_loop"></span><div class="egt"><b>Counterexample: forgetting that people stay a long time.</b> A 90-second loop plays for 40 minutes in a single level, restarting from the top each time and clashing with the rhythm of the footsteps. Nine times in ten the player goes into settings and turns the music off.</div></div>
+
+  <div class="sec"><span class="n">4</span><h2><span class="tag what">What it is</span>Visuals (part 1): the language of color and shape</h2></div>
+  <p>The first job of visual design is not “looking nice” but <b>letting the player tell within 0.5 seconds: what is this, can I touch it, where should I look first</b>. The two most powerful tools are color and shape.</p>
+  <h3>Color: hue, contrast and saturation</h3>
+  <p>Hues often bring associations: red is danger and health, green is safety and healing, blue is calm and magic, yellow is attention and coins, purple is rare. But these associations <b>vary with culture and genre</b>, and the more reliable use is: <b>be consistent within one game</b>, so the player learns it once.</p>
+  <div class="card">
+    <svg viewBox="0 0 700 280" width="100%" role="img" aria-label="Colors and common functional associations: red for danger, orange-yellow for reward, green for safety, blue for magic and calm, purple for rare. A note below reminds us not to rely on color alone.">
+      <g class="rough" stroke="#2b2b3a" stroke-width="4" stroke-linejoin="round">
+        <rect x="14" y="20" width="124" height="90" rx="10" fill="#e5484d"/>
+        <rect x="150" y="20" width="124" height="90" rx="10" fill="#f6b73c"/>
+        <rect x="286" y="20" width="124" height="90" rx="10" fill="#4cb85e"/>
+        <rect x="422" y="20" width="124" height="90" rx="10" fill="#4a8fe0"/>
+        <rect x="558" y="20" width="128" height="90" rx="10" fill="#9c6ad8"/>
+      </g>
+      <g font-size="17" text-anchor="middle" fill="#2b2b3a">
+        <text x="76" y="144" font-weight="700">Red</text><text x="76" y="170">danger · damage</text>
+        <text x="212" y="144" font-weight="700">Orange-yellow</text><text x="212" y="170">reward · attention</text>
+        <text x="348" y="144" font-weight="700">Green</text><text x="348" y="170">safety · healing</text>
+        <text x="484" y="144" font-weight="700">Blue</text><text x="484" y="170">calm · magic</text>
+        <text x="622" y="144" font-weight="700">Purple</text><text x="622" y="170">rare · mysterious</text>
+        <text x="350" y="228" font-weight="700">These are common associations in games, not laws of nature;</text>
+        <text x="350" y="256">and even less should you convey information <tspan font-weight="700">by color alone</tspan>, as some players can’t tell red from green.</text>
+      </g>
+    </svg>
+  </div>
+  <p>Two common tools: <b>contrast</b>, so that what you want the player to see stands apart from the background in lightness, saturation or hue; and <b>saturation is a limited budget</b>: if the whole screen is highly saturated there is no focus, so keep backgrounds low in saturation and save high saturation for things that are “interactive and important.”</p>
+  <h3>The language of shape</h3>
+  <p>There is a famous experiment in psychology: show people a rounded shape and a spiky one and ask which is “bouba” and which is “kiki,” and the great majority say the round one is bouba. Designers have taken over this intuition that “shapes have personalities”:</p>
+  <div class="card">
+    <svg viewBox="0 0 700 270" width="100%" role="img" aria-label="Shape-language contrast: circles suggest friendly and safe, squares suggest solid and reliable, triangles suggest sharp and threatening.">
+      <g class="rough" stroke="#2b2b3a" stroke-width="4" stroke-linejoin="round">
+        <circle cx="110" cy="80" r="55" fill="#a8dcf0"/>
+        <rect x="290" y="28" width="104" height="104" rx="4" fill="#ffe58a"/>
+        <polygon points="590,24 650,136 530,136" fill="#ffb3c6"/>
+      </g>
+      <g font-size="17" text-anchor="middle" fill="#2b2b3a">
+        <text x="110" y="172" font-weight="700">Circle</text><text x="110" y="198">friendly · safe · soft</text><text x="110" y="224">e.g. mascots, healing items</text>
+        <text x="342" y="172" font-weight="700">Square</text><text x="342" y="198">stable · solid · reliable</text><text x="342" y="224">e.g. buildings, tank-type characters</text>
+        <text x="590" y="172" font-weight="700">Triangle</text><text x="590" y="198">sharp · dynamic · threatening</text><text x="590" y="224">e.g. villains, spike traps</text>
+      </g>
+    </svg>
+  </div>
+  <p class="small">This is design experience plus a little psychological support. <i>Super Mario</i> has round yet dangerous enemies and pointy yet cute characters, and breaking expectations is sometimes exactly the joke.</p>
+  <div class="eg" data-ic="👾"><span data-illus="c12_enemy"></span><div class="egt"><b>Round and sharp</b>: in many games the enemies have pointed corners and asymmetric outlines, while the hero is rounder, with friendly proportions. The player hasn’t read a word, yet already knows whom to approach and whom to avoid.</div></div>
+  <div class="eg" data-ic="🚸"><span data-illus="c12_signs"></span><div class="egt"><b>In daily life: road signs.</b> A triangle is a warning, a circle is a command or prohibition, a square gives information. The shape is itself a code, and a driver reads it at a glance from far off with no need to read.</div></div>
+  <div class="eg bad" data-ic="🔴"><span data-illus="c12_redclash"></span><div class="egt"><b>Counterexample: red doing two jobs.</b> Good pickups are red, while red also marks an enemy’s attack range. The player can only rely on memorizing text, not “knowing at a glance.”</div></div>
+
+  <div class="sec"><span class="n">5</span><h2><span class="tag what">What it is</span>Visuals (part 2): hierarchy, silhouette and motion</h2></div>
+  <div class="withimg rev">
+    <span data-illus="c12_sil"></span>
+    <div>
+      <p><span class="term" tabindex="0" data-def="The order in which elements of a picture get noticed, controlled by size, contrast, color, position, motion and so on.">Visual hierarchy</span> decides where the player looks first: themselves first, then threats and goals, then interactive objects, and the background last. A homemade way to check: <b>squint</b>, or blur or desaturate the picture, and see whether the focus can still be made out.</p>
+      <p>Character design has a similar test, called <span class="term" tabindex="0" data-def="After a character is filled in as a solid silhouette, it can still be recognized at a glance, who it is and what it is doing.">silhouette readability</span>. Fill the character in solid black, and if you can still tell who it is, the outline is a success. In fast combat the player has no time to make out the patterns on clothes and can only recognize characters by outline.</p>
+      <p>Conversely, if a row of characters differ only in color and have exactly the same outline, filled in black they become five black blobs, and no pretty palette can save that.</p>
+    </div>
+  </div>
+  <h3>Motion: why should movement “have expression”?</h3>
+  <p>For a square moving from A to B, constant-speed sliding is like a machine, and speeding up then slowing down is like something with weight. Behind this are principles summed up by animators, and the ones most relevant to games are:</p>
+  <ul>
+    <li><span class="term" tabindex="0" data-def="One of the twelve principles of animation: a small opposite movement before an action, such as crouching before a jump, giving the player a cue and building a sense of force.">Anticipation</span>: crouch a little before the jump. It also gives the player a signal that “it’s coming.”</li>
+    <li><span class="term" tabindex="0" data-def="An object is flattened or stretched in motion to show weight and elasticity, while its overall volume stays roughly the same.">Squash and stretch</span>: stretched on takeoff, flattened on landing, with the volume unchanged, and the object “has weight.”</li>
+    <li><span class="term" tabindex="0" data-def="How an action’s speed changes over time, such as ease-in (slow to fast), ease-out (fast to slow) and bounce (overshoot then settle).">Easing</span> (slow in &amp; slow out): slower at the start and end, fast in the middle. Ease-out is the most comfortable for pop-ups, and a touch of “bounce” makes them look elastic.</li>
+  </ul>
+  <div class="card">
+    <svg viewBox="0 0 700 270" width="100%" role="img" aria-label="Five easing curves: linear, ease-in, ease-out, ease-in-out, bounce (overshoot). The horizontal axis is time and the vertical axis is position.">
+      <g class="rough" stroke="#2b2b3a" stroke-width="4" fill="none" stroke-linecap="round">
+        <g transform="translate(30,40)"><path d="M0 0 V110 H100" stroke-width="2.5"/><path d="M0 110 L100 0" stroke="#e5484d"/></g>
+        <g transform="translate(160,40)"><path d="M0 0 V110 H100" stroke-width="2.5"/><path d="M0 110 C42 110 100 0 100 0" stroke="#e5484d"/></g>
+        <g transform="translate(290,40)"><path d="M0 0 V110 H100" stroke-width="2.5"/><path d="M0 110 C0 110 58 0 100 0" stroke="#e5484d"/></g>
+        <g transform="translate(420,40)"><path d="M0 0 V110 H100" stroke-width="2.5"/><path d="M0 110 C42 110 58 0 100 0" stroke="#e5484d"/></g>
+        <g transform="translate(550,40)"><path d="M0 0 V110 H100" stroke-width="2.5"/><path d="M0 110 C34 110 64 -16 100 6 C112 -4 100 0 100 0" stroke="#e5484d"/><line x1="0" y1="0" x2="100" y2="0" stroke="#4b4b5e" stroke-dasharray="5 5" stroke-width="2"/></g>
+      </g>
+      <g font-size="17" text-anchor="middle" fill="#2b2b3a">
+        <text x="80" y="206">Linear</text><text x="210" y="206">Ease-in</text><text x="340" y="206">Ease-out</text><text x="470" y="206">Ease-in-out</text><text x="600" y="206">Bounce</text>
+        <text x="80" y="236" font-size="16">mechanical</text><text x="210" y="236" font-size="16">like speeding up</text><text x="340" y="236" font-size="16">like braking</text><text x="470" y="236" font-size="16">natural</text><text x="600" y="236" font-size="16">springy</text>
+      </g>
+    </svg>
+  </div>
+  <div class="eg" data-ic="🦘"><span data-illus="c12_landing"></span><div class="egt"><b>Squash and stretch</b>: in many side-scrolling action games the character stretches on takeoff and drops into a slight crouch on landing, kicking up dust. You don’t need to look at any numbers to know “it landed,” and you feel the character has some weight.</div></div>
+  <div class="eg" data-ic="📱"><span data-illus="c12_popup"></span><div class="egt"><b>In daily life: pop-ups and elevator doors.</b> A pop-up that “springs” out on a phone is friendlier than one that appears with a snap; an elevator door starts slowly, moves fast in the middle, and stops slowly. All easing, you just never noticed.</div></div>
+  <div class="eg bad" data-ic="🩸"><span data-illus="c12_hpbar"></span><div class="egt"><b>Counterexample: health that drains at a constant rate.</b> A health bar falls from full to 0 at constant speed, and every hit feels like “falling into a spreadsheet.” Add a small delay and a bounce, and the same number immediately has impact.</div></div>
+  <h3>Style, consistency and the performance trade-off</h3>
+  <p>There is no “best” art style, only the “most suitable.” Pixel art, low-poly, hand-drawn and realistic each have costs: <b>realism</b> needs a lot of assets and performance, while a <b>stylized</b> look can reach a unified feel with very few resources. <b>Consistency</b> matters more than fineness: one set of lines, one palette and one set of proportions feels more like “one world” than a few top-class assets used together. Indie developers often start from “limits,” a fixed palette (say 16 colors) and a fixed resolution; the limit itself is the style.</p>
+
+  <div class="sec"><span class="n">6</span><h2><span class="tag origin">How it was invented</span>Limits create style: from 3 voices to music that “breathes”</h2></div>
+  <div class="story">
+    <h3>Problem one: you have only three “mouths,” yet the player may interrupt you at any time</h3>
+    <p>In the early-1980s home computers and consoles, the sound chip was <b>a fixed piece of hardware, not a player</b>. It had only a handful of voices, each able to sound only one note at a time. You had to fit melody, bass and rhythm into those few voices, and keep one for sound effects. On top of that came another difficulty: a game is not a film, and <b>the player decides what happens and when</b>.</p>
+    <p>Now be the designer first. The little instrument below is looping “exploration” music, and imagine a fight suddenly breaks out: <b>how would you make the music keep up?</b> Try all three approaches and hear the difference (sound plays only after you click).</p>
+    <div class="board">
+      <div class="row">
+        <button class="btn" id="c12_mgo">▶ Start exploration music</button>
+        <label class="ctl" style="margin:0"><input type="checkbox" class="c12-mute"> Mute</label>
+      </div>
+      <div class="c12-steps" id="c12_steps"></div>
+      <div class="row">
+        <button class="btn pink" data-mm="hard">⚔ Enter combat: hard cut</button>
+        <button class="btn alt" data-mm="bar">⚔ Enter combat: wait for the bar line</button>
+        <button class="btn green" data-mm="layer">⚔ Enter combat: layer on drums and bass</button>
+        <button class="btn" data-mm="back">🕊 Back to exploring</button>
+      </div>
+      <div class="msg" id="c12_mmsg">Press “Start” first, then press “Enter combat” at any moment. Press each button a few times and try different timings.</div>
+    </div>
+    <div class="sticky" id="c12_mtry">Try it: use each of the three “enter combat” methods once (press “Back to exploring” after each to switch to the next), and notice which one makes you feel “the music is listening to me.”</div>
+    <button class="btn alt" id="c12_reveal">I’m done; show me how it was done back then</button>
+    <div id="c12_hist" class="c12-hide">
+      <p>The differences you just heard are the wall that programmers and composers hit in history. A <b>hard cut</b> chops the phrase off mid-sentence, and the keys may even clash; <b>waiting for the bar line</b> is clean, but you lag half a beat; <b>layering</b> is instant and unbroken, provided the piece was written from the start to be “taken apart.”</p>
+      <p>First came the limits of the hardware, and the first move musicians thought of was to turn the limits into a style: carefully distributing melody, bass and drum beats among those few voices. But as games grew longer and less predictable, “writing cleverly” was no longer enough, and music had to learn to <b>follow the game</b>.</p>
+      <div class="timeline">
+        <div class="ev hasimg"><span data-illus="c12_tl_sid"></span><div><b class="yr">1981–1982</b> Bob Yannes at MOS Technology leads a small team designing the SID sound chip (6581), put into the Commodore 64. It has <b>3 voices</b>, each with four waveforms (triangle, sawtooth, variable pulse width, noise), its own ADSR envelope, and a programmable filter. It is said they originally wanted more voices, and under time pressure copied a single oscillator three times.</div></div>
+        <div class="ev hasimg"><span data-illus="c12_tl_nes"></span><div><b class="yr">1980s</b> The Ricoh 2A03 in Famicom-class consoles has 5 channels: 2 pulse waves, 1 triangle wave, 1 noise and 1 DPCM sample channel. Musicians could only distribute melody, bass and drums among those few “mouths,” and this limit gradually became a highly recognizable “chiptune” style.</div></div>
+        <div class="ev hasimg"><span data-illus="c12_tl_imuse"></span><div><b class="yr">1991</b> Michael Land and Peter McConnell, composers at LucasArts, dissatisfied with the audio systems of the day, create <b>iMUSE</b> (Interactive Music Streaming Engine). It lets music transition seamlessly with the action on screen, and was first used in <i>Monkey Island 2</i>. They later filed a patent for it (US 5,315,057).</div></div>
+        <div class="ev hasimg"><span data-illus="c12_tl_mw"></span><div><b class="yr">Afterward</b> Horizontal switching and vertical layering become common tools, and audio middleware such as Wwise and FMOD make “control music by game parameters” standard: a designer pushes a “tension” fader and the drums and bass come in by themselves.</div></div>
+      </div>
+      <p><b>Key insight</b>: <b>music is no longer a recorded timeline, but a system that responds to the game state</b>. The limit hasn’t gone away; it has just moved from “a few voices” to “how to synchronize and transition.”</p>
+      <p class="src">Sources: the Wikipedia entries on iMUSE and the MOS 6581, and the Land/McConnell interviews they cite; accounts of the patent date differ a little, so only the patent number is given here. The Famicom channel count is from the Ricoh 2A03 entry.</p>
+    </div>
+  </div>
+
+  <div class="story">
+    <h3>Problem two: how do you make something drawn on paper “look like it has weight”?</h3>
+    <p>Animators faced a different limit: every frame had to be drawn by hand, and as soon as the audience felt it was “fake,” they wouldn’t believe the thing in the picture was alive. If a little ball falls from a height and bounces, and moves the same distance every frame, it looks like a button sliding along a rail.</p>
+    <p>Don’t look at the answer yet. The three balls below set off together and travel the same distance, differing only in how their speed changes. <b>Which one looks most like a ball with weight?</b> Choose by instinct, then reveal.</p>
+    <div class="board">
+      <div class="row"><button class="btn" id="c12_ezgo">▶ Set off together</button><button class="btn alt" id="c12_ezrev">I’ve chosen; reveal</button></div>
+      <div class="c12-lab">A Constant speed</div><div class="c12-lane"><i id="c12_ea"></i></div>
+      <div class="c12-lab">B Slow then fast (ease-in)</div><div class="c12-lane"><i id="c12_eb"></i></div>
+      <div class="c12-lab">C Fast then slow, with a little bounce at the end</div><div class="c12-lane"><i id="c12_ec"></i></div>
+      <div class="msg" id="c12_ezmsg">Press “Set off together,” and watch it several times.</div>
+    </div>
+    <div class="sticky">Try it: watch each option three times, then say why you chose it. Then think: which of A, B and C is the phone pop-up you use every day?</div>
+    <div id="c12_ezans" class="c12-hide">
+      <p>Many people find C the most natural, B like accelerating in a fall, and A like a machine. Over the course of making feature films, Disney’s animators gradually discovered this kind of lesson that makes motion “alive”: speeding up as it falls, flattening on landing, stretching as it springs up, and slowing a little at the top.</p>
+      <div class="timeline">
+        <div class="ev hasimg"><span data-illus="c12_tl_disney"></span><div><b class="yr">From the 1930s</b> In the course of making feature films, Disney’s animators gradually sum up a set of lessons for making motion “alive” (anticipation, squash and stretch, slow in and slow out…), later organized into the “twelve principles.”</div></div>
+        <div class="ev hasimg"><span data-illus="c12_tl_book"></span><div><b class="yr">1981</b> Frank Thomas and Ollie Johnston publish <i>The Illusion of Life: Disney Animation</i>, writing down these twelve systematically, the one they valued most being “squash and stretch.” Game and UI motion design have borrowed from it ever since.</div></div>
+      </div>
+      <p>The key insight: the “weight” and “life” an audience feels lie not in how finely each frame is drawn but in <b>how the speed changes</b>. Jumps, hits and pop-ups in games today all repeat this discovery.</p>
+      <p class="src">Sources: Wikipedia, “Twelve basic principles of animation,” and the details of Thomas and Johnston’s 1981 book.</p>
+    </div>
+  </div>
+
+  <div class="sec"><span class="n">7</span><h2><span class="tag why">Why it works</span>Why do exaggerated things grab us more: supernormal stimuli</h2></div>
+  <p>We have said a lot of “design experience”: pointy feels like a threat, red feels like danger, a landing should squash. Is there a more basic reason? There is one lead from ethology that many designers bring up.</p>
+  <div class="withimg">
+    <span data-illus="c12_gull"></span>
+    <div>
+      <p>A herring gull chick, from the moment it hatches, pecks at the red spot on its parent’s beak, and the parent coughs up food to feed it. The Dutch zoologist Niko Tinbergen wanted to know: is the chick drawn by the “beak,” or by the “red spot”?</p>
+      <p>He and his colleague Perdeck made a batch of models. The result was odd: a simple red rod with three white rings painted on it drew more pecks than a realistic model of a gull’s head. The real thing was not the most attractive; <b>something that exaggerates the key feature past the limit</b> was stronger. Tinbergen called such things “supernormal stimuli.”</p>
+      <p>This is what comics, mascots and game effects do: draw big eyes bigger, make a coin burst fuller, hold the frame of a hit longer. What is exaggerated is not everything, but <b>the feature that lets you recognize it</b>.</p>
+    </div>
+  </div>
+  <div class="why-box">
+    <h3>Supernormal stimulus</h3>
+    <p>The principle: an organism’s response to certain key features can be triggered more strongly by a model that is “more exaggerated” than the natural object. The counterpart in design is to “amplify the one feature you want the player to perceive,” not to draw everything more realistically.</p>
+    <svg viewBox="0 0 700 270" width="100%" role="img" aria-label="Sketch: the horizontal axis is how exaggerated the stimulus is, the vertical axis is response strength, and the curve rises toward the upper right; the natural gull beak is in the middle, and the exaggerated red rod is farther right and higher.">
+      <g class="rough" stroke="#2b2b3a" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M70 30 V200 H660"/>
+        <path d="M80 190 C220 180 360 120 600 46" stroke="#e5484d" stroke-width="5"/>
+        <circle cx="270" cy="162" r="9" fill="#ffe58a"/><circle cx="560" cy="62" r="9" fill="#ffb3c6"/>
+      </g>
+      <g stroke="#4b4b5e" stroke-width="2" stroke-dasharray="6 6"><line x1="270" y1="171" x2="270" y2="200"/><line x1="560" y1="71" x2="560" y2="200"/></g>
+      <g font-size="17" text-anchor="middle" fill="#2b2b3a">
+        <text x="270" y="232">Natural gull beak</text><text x="560" y="232">Over-exaggerated red rod</text>
+        <text x="130" y="34">Response strength</text><text x="620" y="258" text-anchor="end">How exaggerated the stimulus is →</text>
+        <text x="430" y="176">(sketch: the trend, not a measured curve)</text>
+      </g>
+    </svg>
+    <p class="src">Sources: Tinbergen &amp; Perdeck (1950), “On the stimulus situation releasing the begging response in the newly hatched herring gull chick,” <i>Behaviour</i> 3: 1–39; Deirdre Barrett, <i>Supernormal Stimuli</i> (2010). Controversy: John Whitfield pointed out in <i>Nature</i> in 2009 that the data of these classic experiments are not as clean as textbooks say, and whether the red spot really is the strongest stimulus is still doubtful; “supernormal stimulus” is a handy metaphor in design, not a law.</p>
+  </div>
+
+  <div class="sec"><span class="n">8</span><h2><span class="tag why">Why it works</span>Why do eyes “group” by themselves: Gestalt</h2></div>
+  <div class="withimg rev">
+    <span data-illus="c12_gestalt"></span>
+    <div>
+      <p>Why does visual hierarchy work? Because your brain never reads a picture as a heap of pixels; it <b>automatically sorts things into gangs</b>. Dots close together are a group, dots that look alike are a group, and dots moving the same way are a group.</p>
+      <p>In the early twentieth century, the German psychologist Max Wertheimer set these regularities out and opened the “Gestalt” school. What lets a health bar, skill bar and minimap in a game interface be “seen as one block” at a glance is exactly this: <b>put related things close together and make them look the same</b>.</p>
+    </div>
+  </div>
+  <div class="board">
+    <div class="row" id="c12_gb">
+      <button class="chip on" data-g="even">Evenly spaced</button><button class="chip" data-g="rows">Close horizontally</button><button class="chip" data-g="cols">Close vertically</button>
+      <button class="chip" data-g="sim">By color (similarity)</button><button class="chip" data-g="clash">Conflict: color by rows, distance by columns</button>
+    </div>
+    <svg id="c12_gs" viewBox="0 0 300 300" role="img" aria-label="An 8×8 array of dots, shown evenly spaced, in rows, in columns, or with color and distance in conflict, depending on the option"></svg>
+    <div class="msg" id="c12_gmsg">Press the buttons above and see how the same dots get “divided into groups” by your eyes.</div>
+  </div>
+  <div class="sticky" id="c12_gtry">Try it: press all five buttons. In the last, “conflict,” color and distance fight over the grouping: whose word do your eyes take first?</div>
+  <div class="why-box">
+    <h3>Gestalt grouping (proximity, similarity)</h3>
+    <p>The principle: perception has its own organizing rules, and things close together tend to be seen as a group, as do things that look alike. In design it decides “what goes together,” with no need to draw a frame line.</p>
+    <p class="src">Source: Wertheimer (1923), “Untersuchungen zur Lehre von der Gestalt II,” <i>Psychologische Forschung</i> 4: 301–350. Later researchers differ on exactly how many laws there are, and some think proximity, common fate and others are all special cases of “similarity.”</p>
+  </div>
+
+  <div class="sec"><span class="n">9</span><h2><span class="tag why">Why it works</span>Are ears faster? Do shapes have personality? (And how to check)</h2></div>
+  <p>Now two more claims that are often cited, to see how far the research actually supports them.</p>
+  <div class="why-box">
+    <h3>1) Hearing reacts faster than vision: say it carefully</h3>
+    <p>The common claim: “People react to sound faster than to a picture.” Some simple reaction-time studies support this: Shelton and Kumar (2010, <i>Neuroscience &amp; Medicine</i>) had only 14 participants, measured about 331 ms on average for vision and about 284 ms for hearing, a gap of about 47 ms; later literature often cites “hearing is about 20–40 ms faster.”</p>
+    <p class="src">The key points: the sample is small, the gap is on the order of “tens of milliseconds,” and it is <b>simple reaction</b> (press a key on seeing or hearing). Don’t stretch it to “sound matters more than picture.” For games the conclusion is: <b>for events needing the fastest feedback, pair sound and picture</b>, and any mismatch between them is hard to bear.</p>
+  </div>
+  <div class="why-box">
+    <h3>2) Round and sharp: bouba/kiki</h3>
+    <p>Wolfgang Köhler (1929) had people match words to shapes with “takete / baluba,” and they tended to pair the spiky shape with takete. In 2001 Ramachandran and Hubbard redid it with “bouba/kiki,” and about 95–98% of American undergraduates and Tamil speakers in India called the round one bouba. A 2022 study of about 900 people across 25 languages also found a cross-language tendency, but its strength varies by language.</p>
+    <p class="src">This suggests that the “shape and sound” association has a cross-cultural part, but it isn’t the same for every person and every language. In design it is “borrowing a common intuition,” not “proof.”</p>
+  </div>
+  <p><b>Check it yourself:</b> below is a small reaction-time test. Choose “sight” or “sound,” press ready, wait for the stimulus to appear, then click the big area. Note: the browser’s audio output itself has latency, so the difference on a web page may not reproduce the study’s result. That is itself a good example of “don’t trust a single number.”</p>
+  <div class="board">
+    <div class="row">
+      <button class="chip on" data-rm="v">Sight (turns green)</button><button class="chip" data-rm="a">Sound (beep)</button>
+      <label class="ctl" style="margin:0"><input type="checkbox" class="c12-mute"> Mute</label>
+    </div>
+    <div id="c12_rt" role="button" tabindex="0">Click here to start</div>
+    <div id="c12_rstat"></div>
+  </div>
+  <div class="sticky" id="c12_rtry">Try it: measure “sight” and “sound” 5 times each and compare the two averages. Is your gap close to the 47 ms in the paper?</div>
+
+  <div class="sec"><span class="n">10</span><h2><span class="tag how">Try it</span>The sensory mixing desk: design “a pickup” yourself</h2></div>
+  <p>Imagine an event: the player touches something. Turn the knobs below to design its <b>sound plus picture</b>. Press “Trigger” to see and hear it, and switch presets (reward, danger, level-up, neutral) to compare. Below you will get a readout of “how this feels to people”; it is a rule of thumb, not a law, labeled as a sketch.</p>
+  <div class="board">
+    <div class="row">
+      <button class="btn" data-mp="reward">💎 Reward</button><button class="btn pink" data-mp="danger">💥 Danger</button>
+      <button class="btn green" data-mp="level">⭐ Level-up</button><button class="btn alt" data-mp="neutral">🖱️ Neutral</button>
+      <label class="ctl" style="margin:0 0 0 auto"><input type="checkbox" class="c12-mute"> Mute</label>
+    </div>
+    <div class="c12-two">
+      <div>
+        <h3>Sound</h3>
+        <div class="row" id="c12_wave"><button class="chip" data-w="sine">Sine</button><button class="chip on" data-w="square">Square</button><button class="chip" data-w="sawtooth">Sawtooth</button><button class="chip" data-w="triangle">Triangle</button></div>
+        <label class="ctl">Pitch <output id="c12_nv"></output></label><input type="range" id="c12_note" min="36" max="96" value="76">
+        <label class="ctl">Pitch slide (semitones)<output id="c12_sv"></output></label><input type="range" id="c12_slide" min="-12" max="12" value="12">
+        <label class="ctl">Duration <output id="c12_dv"></output></label><input type="range" id="c12_dur" min="60" max="1000" step="10" value="180">
+        <label class="ctl">Attack A <output id="c12_av"></output></label><input type="range" id="c12_att" min="1" max="300" value="2">
+        <label class="ctl">Release R <output id="c12_rv"></output></label><input type="range" id="c12_rel" min="5" max="600" value="60">
+        <label class="ctl">Volume <output id="c12_vv"></output></label><input type="range" id="c12_vol" min="0" max="100" value="45">
+      </div>
+      <div>
+        <h3>Visual</h3>
+        <div class="c12-stage" id="c12_stage"><div id="c12_obj"></div></div>
+        <label class="ctl">Hue <output id="c12_hv"></output></label><input type="range" id="c12_hue" min="0" max="360" value="48">
+        <label class="ctl">Size <output id="c12_zv"></output></label><input type="range" id="c12_size" min="30" max="140" value="80">
+        <div class="row" id="c12_shape"><button class="chip" data-s="circle">Circle</button><button class="chip" data-s="square">Square</button><button class="chip" data-s="tri">Triangle</button><button class="chip on" data-s="star">Star</button><button class="chip" data-s="diamond">Diamond</button></div>
+        <div class="row" id="c12_motion"><button class="chip on" data-m="pop">Pop</button><button class="chip" data-m="shake">Shake</button><button class="chip" data-m="rise">Rise</button><button class="chip" data-m="flash">Flash</button></div>
+        <div class="row" id="c12_ease"><button class="chip" data-e="linear">Linear</button><button class="chip" data-e="out">Ease-out</button><button class="chip on" data-e="back">Bounce</button></div>
+      </div>
+    </div>
+    <div class="row">
+      <button class="btn" id="c12_fire">▶ Trigger</button>
+      <button class="btn alt" id="c12_combo">🔥 Combo ×6 (a semitone higher each time)</button>
+    </div>
+    <div class="c12-note">Sense of reward</div><div class="c12-bar r"><i id="c12_br"></i></div>
+    <div class="c12-note">Sense of danger</div><div class="c12-bar d"><i id="c12_bd"></i></div>
+    <div id="c12_fb" class="small"></div>
+    <div id="c12_warn"></div>
+  </div>
+  <div class="sticky" id="c12_task">Try it: first press “Reward,” then rework it into an event that makes people feel “danger” at one hearing and one look (hint: pitch, slide direction, shape, hue and motion should all go the same way). When you succeed a ✔ appears here. Then try again: change only the sound and not the picture, and see when the “sound–picture mismatch” note appears.</div>
+
+  <h3>Supporting interaction: the silhouette test</h3>
+  <p>Below are 5 characters. Press “Switch” to take away the color and detail and guess who is who; then press “Same outline” and see what happens to a cast told apart only by color.</p>
+  <div class="board">
+    <div class="row"><button class="btn" id="c12_sil">Switch: color / silhouette</button><button class="btn alt" id="c12_bad">Switch to the same outline (counterexample)</button></div>
+    <div class="c12-chars" id="c12_chars"></div>
+    <hr style="border:0;border-top:2px dashed var(--line);margin:12px 0">
+    <div class="row"><button class="btn green" id="c12_next">🎲 Ask one (silhouette only)</button><span class="stat">Correct <b id="c12_sc">0</b> / <b id="c12_tot">0</b></span></div>
+    <svg id="c12_big" viewBox="0 0 100 100" aria-label="Silhouette quiz"></svg>
+    <div class="row" id="c12_ans" style="justify-content:center"></div>
+    <div class="msg" id="c12_smsg">Press “Ask one.”</div>
+  </div>
+  <div class="sticky">Try it: first answer 5 questions with “same outline,” then switch back to “own outlines” and answer 5 more, and compare the two accuracy rates. A little summary appears here for every 5 questions.</div>
+
+  <div class="misc">
+    <h3>Common misconceptions</h3>
+    <ul>
+      <li><b>“The louder and more gorgeous the sound effects, the better.”</b> The most common result is listening fatigue and a volume war. A good mix <b>makes trade-offs</b>: the important sounds loud, the minor ones stepping back.</li>
+      <li><b>“Colors have fixed meanings.”</b> Red isn’t necessarily danger and green isn’t necessarily safe; they mean something only within your game’s rules. <b>Consistency</b> matters more than “convention.”</li>
+      <li><b>“The finer the picture, the better.”</b> What players need is to <b>see clearly</b>. Too much detail drowns the focus and eats performance.</li>
+      <li><b>“Hearing is faster than vision, so sound is more important.”</b> The gap is tens of milliseconds, from small experiments, and doesn’t support “more important.”</li>
+      <li><b>“Music is just background.”</b> It also conveys state and emotion; and some players play with the sound off, in public places for instance, or because they can’t hear, so <b>key information can’t rely on sound alone</b>.</li>
+    </ul>
+  </div>
+
+  <div class="reflect">
+    <h3>Reflection and debate</h3>
+    <p><b>Culture and individuals.</b> Color associations depend heavily on culture and context: red is festive in many East Asian contexts and dangerous in many Western games. Shape associations (bouba/kiki) show a cross-language trend, but with differences in strength too. Treat them as <b>starting points</b>, not <b>conclusions</b>.</p>
+    <p><b>Style versus legibility.</b> A cool “dark, low-contrast” picture may be unreadable for players with low vision; a game that can be played only with the music on is unfriendly to deaf and hard-of-hearing players. Good audio-visual design gives players <b>adjustable options</b>: separate volume tracks, subtitles, a colorblind mode, reduced motion.</p>
+    <p><b>“Pleasant to hear” and “useful” don’t always agree.</b> The loveliest music may actually be distracting, such as a melody in a puzzle game taking up the room for thinking. There is no standard answer here, and it has to be verified with real playtesters.</p>
+    <p><b>Something that may change your mind.</b> Design is not “making sound and picture pretty” but <b>translating rules into sensory signals</b>: so that a player who never reads the manual can still “hear the rules and see the rules.”</p>
+  </div>
+
+  <div class="key">
+    <h3>Key points</h3>
+    <ul>
+      <li>Sound has four functions: <b>feedback, information, emotion, space</b>; sound effects are designed through <b>envelope, pitch, duration and timbre</b>, and should be short, distinguishable, layered and fatigue-free.</li>
+      <li>The difficulty of music is that the player’s time is uncertain: <b>looping, horizontal switching, vertical layering</b>; systems like iMUSE make music a “system that responds to the game state”; <b>silence</b> is also a tool.</li>
+      <li>Visuals first serve <b>legibility</b>: color (consistent, contrasting, not color alone), the language of shape, hierarchy, the <b>silhouette test</b>.</li>
+      <li>Motion borrows the twelve principles of animation: <b>anticipation, squash and stretch, easing</b>, which decide “feel” and “weight.”</li>
+      <li>Underneath are two leads: <b>supernormal stimuli</b> (exaggerate the key feature) and <b>Gestalt grouping</b> (proximity, similarity); research gives “tendencies,” not laws. <b>Matching sound and picture</b> matters more than any single technique.</li>
+    </ul>
+  </div>
+  <div class="tldr">Sound and picture are the language through which a game translates rules into sensory signals: be short, be clear, be consistent, and never let one channel carry all the information alone.</div>
+
+  <div class="sec"><span class="n">11</span><h2>Practice</h2></div>
+  <div id="quiz"></div>
+
+  <div class="sec"><span class="n">12</span><h2>Your design / your reflection</h2></div>
+  <div class="card o">
+    <p>Pick a game event you have designed (or want to design), such as “getting hit,” “leveling up” or “finding a chest.” Write in one sentence its <b>sound</b> (pitch, timbre, duration, envelope) and its <b>picture</b> (color, shape, motion). With the sound off, can it still be understood? Reduced to a silhouette, can it still be recognized?</p>
+    <textarea rows="6" data-save="ch12" placeholder="Example: getting hit: a low sawtooth wave, 180 ms, sliding down; red triangular fragments shake outward. It is still understood with the sound off, because…"></textarea>
+  </div>
+</main>
+<script src="../js/illus.js"></script>
+<script src="../js/illus-ch12.js"></script>
+<script src="../js/en/illus.js"></script>
+<script src="../js/en/illus-lib.js"></script>
+<script src="../js/en/illus-ch12.js"></script>
+<script src="../js/common.js"></script>
+<script>
+const $ = id => document.getElementById(id);
+const $$ = s => Array.from(document.querySelectorAll(s));
+
+const AU = (function () {
+  let ctx = null, master = null, muted = false, noiseBuf = null;
+  function get() {
+    if (!ctx) {
+      const C = window.AudioContext || window.webkitAudioContext;
+      if (!C) return null;
+      try { ctx = new C(); } catch (e) { return null; }
+      master = ctx.createGain(); master.gain.value = muted ? 0 : 1; master.connect(ctx.destination);
+      noiseBuf = ctx.createBuffer(1, ctx.sampleRate * 0.2, ctx.sampleRate);
+      const d = noiseBuf.getChannelData(0);
+      for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+    }
+    if (ctx.state === "suspended") ctx.resume();
+    return ctx;
+  }
+  function setMute(m) {
+    muted = m;
+    if (master) master.gain.value = m ? 0 : 1;
+    $$(".c12-mute").forEach(c => c.checked = m);
+  }
+  $$(".c12-mute").forEach(c => c.addEventListener("change", () => setMute(c.checked)));
+  
+  function tone(o) {
+    const c = get(); if (!c) return;
+    const t = (o.t || c.currentTime) + 0.005;
+    const dur = o.dur, att = Math.min(o.att, dur * 0.5), rel = Math.min(o.rel, dur - att);
+    const osc = c.createOscillator(), g = c.createGain();
+    osc.type = o.type || "sine";
+    osc.frequency.setValueAtTime(o.f, t);
+    if (o.slide) osc.frequency.exponentialRampToValueAtTime(o.f * Math.pow(2, o.slide / 12), t + dur);
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.linearRampToValueAtTime(o.vol, t + att);
+    g.gain.setValueAtTime(o.vol, t + dur - rel);
+    g.gain.linearRampToValueAtTime(0.0001, t + dur);
+    osc.connect(g); g.connect(master);
+    osc.start(t); osc.stop(t + dur + 0.02);
+  }
+  function noise(t, dur, vol, hp) {
+    const c = get(); if (!c) return;
+    const s = c.createBufferSource(); s.buffer = noiseBuf;
+    const f = c.createBiquadFilter(); f.type = "highpass"; f.frequency.value = hp || 6000;
+    const g = c.createGain(); g.gain.setValueAtTime(vol, t); g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    s.connect(f); f.connect(g); g.connect(master); s.start(t); s.stop(t + dur + 0.02);
+  }
+  return { get, tone, noise, setMute, now: () => ctx ? ctx.currentTime : 0 };
+})();
+
+(function () {
+  const STEP_MS = 250, N = 8;
+  const base = [261.6, 329.6, 392, 329.6, 261.6, 329.6, 392, 493.9];     
+  const bat = [185.0, 220.0, 277.2, 220.0, 185.0, 220.0, 277.2, 329.6]; 
+  let timer = null, step = 0, battle = false, style = "hard", pending = null, pressed = 0; const tried = new Set();
+  const st = $("c12_steps");
+  for (let i = 0; i < N; i++) { const s = document.createElement("span"); s.textContent = i + 1; if (i === 0) s.className = "bar"; st.appendChild(s); }
+  const cells = Array.from(st.children);
+  const say = m => $("c12_mmsg").textContent = m;
+  function show(i) { cells.forEach((c, k) => c.classList.toggle("on", k === i)); }
+
+  function tick() {
+    const c = AU.get(); if (!c) return;
+    if (pending && ((pending === "bar" && step % N === 0) || (pending === "layer" && step % 2 === 0))) {
+      const waited = ((performance.now() - pressed) / 1000).toFixed(1);
+      battle = true; style = pending;
+      say(pending === "bar" ? `Waited ${waited} seconds, then switched cleanly to the combat segment at the bar line. Safe, but “half a beat slow to respond.”` : `Drums and bass were added within ${waited} seconds, and the melody never broke. Instant and unbroken.`);
+      pending = null;
+    }
+    const i = step % N, t = c.currentTime + 0.02;
+    show(i);
+    if (!battle) {
+      AU.tone({ f: base[i], t, dur: 0.22, att: 0.01, rel: 0.1, vol: 0.12, type: "triangle" });
+    } else if (style === "layer") {
+      AU.tone({ f: base[i], t, dur: 0.22, att: 0.01, rel: 0.1, vol: 0.12, type: "triangle" });
+      if (i % 4 === 0) { AU.tone({ f: 98, t, dur: 0.45, att: 0.01, rel: 0.2, vol: 0.2, type: "sine" }); AU.tone({ f: 140, t, dur: 0.12, att: 0.002, rel: 0.1, vol: 0.2, type: "sine", slide: -20 }); }
+      AU.noise(t, 0.06, 0.12, 7000);
+    } else {
+      AU.tone({ f: bat[i], t, dur: 0.2, att: 0.005, rel: 0.08, vol: 0.09, type: "square" });
+      if (i % 2 === 0) AU.tone({ f: 140, t, dur: 0.12, att: 0.002, rel: 0.1, vol: 0.2, type: "sine", slide: -20 });
+    }
+    step++;
+  }
+  function start() { AU.get(); timer = setInterval(tick, STEP_MS); $("c12_mgo").textContent = "⏹ Stop"; say("The exploration music is looping. Press “Enter combat” any time."); }
+  function stop() { clearInterval(timer); timer = null; step = 0; battle = false; pending = null; show(-1); $("c12_mgo").textContent = "▶ Start exploration music"; say("Stopped."); }
+  $("c12_mgo").onclick = () => timer ? stop() : start();
+  $$("[data-mm]").forEach(b => b.onclick = () => {
+    const k = b.dataset.mm;
+    if (!timer) { say("Press “Start exploration music” first."); return; }
+    if (k === "back") { battle = false; pending = null; say("Back to the exploration segment."); return; }
+    if (battle) { say("Already in combat; press “Back to exploring” first and then try another."); return; }
+    tried.add(k);
+    if (tried.size === 3) { const m = $("c12_mtry"); m.textContent = "✔ You have tried all three. Which one felt most like “the music listening to you”? Press the button below to see how it was done back then."; m.style.background = "#eaf9e4"; }
+    if (k === "hard") {
+      const at = step % N;
+      battle = true; style = "hard"; pending = null; step = 0;
+      say(`Hard cut at step ${at + 1} (of ${N}). The phrase is chopped in half, and the key clashes with what came before, so it sounds “abrupt.”`);
+    } else { pending = k; pressed = performance.now(); say(k === "bar" ? "Waiting for the bar line…" : "Waiting for the next beat…"); }
+  });
+  $("c12_reveal").onclick = () => { $("c12_hist").classList.remove("c12-hide"); $("c12_reveal").style.display = "none"; };
+  window.addEventListener("pagehide", () => { if (timer) stop(); });
+})();
+
+(function () {
+  const say = m => $("c12_plmsg").textContent = m;
+  $("c12_pl1").onclick = () => { AU.get(); AU.tone({ f: 988, dur: 0.3, att: 0.002, rel: 0.12, vol: 0.25, type: "square" }); say("Attack 2 ms: like a knock, crisp, good for coins."); };
+  $("c12_pl2").onclick = () => { AU.get(); AU.tone({ f: 988, dur: 1.2, att: 0.3, rel: 0.5, vol: 0.25, type: "triangle" }); say("Attack 300 ms: the sound slowly “grows,” like charging up or chanting."); };
+})();
+
+(function () {
+  const reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const E = { c12_ea: "linear", c12_eb: "cubic-bezier(.55,0,1,.45)", c12_ec: "cubic-bezier(.2,1.4,.5,1)" };
+  function go() {
+    Object.keys(E).forEach(id => {
+      const el = $(id), d = el.parentNode.clientWidth - 40;
+      if (reduce) { el.style.transform = "translateX(" + d + "px)"; return; }
+      el.animate([{ transform: "translateX(0)" }, { transform: "translateX(" + d + "px)" }], { duration: 1300, easing: E[id], fill: "forwards" });
+    });
+    $("c12_ezmsg").textContent = "Watch again: they cover exactly the same distance in exactly the same time, differing only in how the speed changes.";
+  }
+  $("c12_ezgo").onclick = go;
+  $("c12_ezrev").onclick = () => { $("c12_ezans").classList.remove("c12-hide"); $("c12_ezrev").style.display = "none"; };
+})();
+
+(function () {
+  const seen = new Set();
+  const MSG = {
+    even: "Evenly spaced: no cue, and your eyes can’t tell for a moment how to divide it.",
+    rows: "Close horizontally: each row “connects” into a line by itself.",
+    cols: "Close vertically: the same dots, but now in columns.",
+    sim: "By color: the positions are unchanged, and the alternating red and yellow dots automatically sort into rows of two colors.",
+    clash: "Conflict: color divides the dots into rows, distance divides them into columns. Which do most people see first? This shows that the regularities have their own strengths too."
+  };
+  function draw(k) {
+    const X = { even: c => c * 32, rows: c => c * 22, cols: c => c * 34, sim: c => c * 32, clash: c => (c % 2) * 22 + Math.floor(c / 2) * 54 };
+    const Yf = { even: r => r * 32, rows: r => r * 36, cols: r => r * 22, sim: r => r * 32, clash: r => r * 32 };
+    const w = X[k](7), hh = Yf[k](7), ox = (300 - w) / 2, oy = (300 - hh) / 2;
+    let h = "";
+    for (let r = 0; r < 8; r++) for (let c = 0; c < 8; c++) {
+      const col = (k === "sim" || k === "clash") ? (r % 2 ? "#f6b73c" : "#4a8fe0") : "#4a8fe0";
+      h += '<circle cx="' + (ox + X[k](c)) + '" cy="' + (oy + Yf[k](r)) + '" r="8" fill="' + col + '" stroke="#2b2b3a" stroke-width="2.5"/>';
+    }
+    $("c12_gs").innerHTML = h;
+  }
+  document.querySelectorAll("#c12_gb .chip").forEach(b => b.onclick = () => {
+    const k = b.dataset.g;
+    document.querySelectorAll("#c12_gb .chip").forEach(x => x.classList.toggle("on", x === b));
+    draw(k); $("c12_gmsg").textContent = MSG[k]; seen.add(k);
+    if (seen.size === 5) { const t = $("c12_gtry"); t.textContent = "✔ You have seen all five. Your eyes did not “choose” the grouping; the grouping happened by itself: this is the organizing law of perception."; t.style.background = "#eaf9e4"; }
+  });
+  draw("even");
+})();
+
+(function () {
+  let mode = "v", state = "idle", t0 = 0, to = null;
+  const res = { v: [], a: [] };
+  const box = $("c12_rt");
+  function stat() {
+    const f = a => a.length ? Math.round(a.reduce((x, y) => x + y, 0) / a.length) + " ms (" + a.length + " trials)" : "—";
+    $("c12_rstat").innerHTML = `<span class="stat">Sight <b>${f(res.v)}</b></span><span class="stat">Sound <b>${f(res.a)}</b></span>`;
+    if (res.v.length >= 5 && res.a.length >= 5) {
+      const m = a => a.reduce((x, y) => x + y, 0) / a.length, d = Math.round(m(res.v) - m(res.a));
+      const t = $("c12_rtry"); t.style.background = "#eaf9e4";
+      t.textContent = "✔ 5 trials each done. Compared with hearing, sight is" + (d > 0 ? "slower by" : "faster by") + " " + Math.abs(d) + " ms. In the paper it is about 47 ms. Is your number close? A sample of 5 is tiny, which is exactly why you shouldn’t trust a single number.";
+    }
+  }
+  $$("[data-rm]").forEach(b => b.onclick = () => {
+    mode = b.dataset.rm; $$("[data-rm]").forEach(x => x.classList.toggle("on", x === b));
+    reset(); box.textContent = "Click here to start (" + (mode === "v" ? "sight" : "sound") + ")";
+  });
+  function reset() { clearTimeout(to); state = "idle"; box.className = ""; }
+  function act() {
+    if (state === "idle") {
+      if (mode === "a") AU.get();
+      state = "wait"; box.className = "wait"; box.textContent = "Waiting… (click when the signal appears)";
+      to = setTimeout(() => {
+        state = "go"; t0 = performance.now();
+        if (mode === "v") { box.className = "go"; box.textContent = "Now!"; }
+        else { box.textContent = "(Listen!)"; AU.tone({ f: 880, dur: 0.25, att: 0.005, rel: 0.05, vol: 0.3, type: "sine" }); }
+      }, 1000 + Math.random() * 2000);
+    } else if (state === "wait") {
+      reset(); box.textContent = "Too early! Click here to try again";
+    } else if (state === "go") {
+      const rt = Math.round(performance.now() - t0);
+      res[mode].push(rt); reset(); box.textContent = rt + " ms. Click once more to measure again"; stat();
+    }
+  }
+  box.addEventListener("pointerdown", e => { e.preventDefault(); act(); });
+  box.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); act(); } });
+  stat();
+})();
+
+(function () {
+  const S = { wave: "square", shape: "star", motion: "pop", ease: "back" };
+  const NAMES = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
+  const hz = n => 440 * Math.pow(2, (n - 69) / 12);
+  const EASE = { linear: "linear", out: "cubic-bezier(0,0,.58,1)", back: "cubic-bezier(.34,1.56,.64,1)" };
+  const V = id => +$(id).value;
+  const reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  function shapeSvg(sz, hue) {
+    const fill = `hsl(${hue},78%,60%)`, a = `fill="${fill}" stroke="#2b2b3a" stroke-width="5" stroke-linejoin="round"`;
+    const p = {
+      circle: `<circle cx="50" cy="50" r="42" ${a}/>`,
+      square: `<rect x="10" y="10" width="80" height="80" rx="4" ${a}/>`,
+      tri: `<polygon points="50,8 94,88 6,88" ${a}/>`,
+      diamond: `<polygon points="50,4 94,50 50,96 6,50" ${a}/>`,
+      star: `<polygon points="50,4 62,36 96,38 69,58 79,92 50,72 21,92 31,58 4,38 38,36" ${a}/>`
+    }[S.shape];
+    return `<svg viewBox="0 0 100 100" width="${sz}" height="${sz}">${p}</svg>`;
+  }
+  function label() {
+    const n = V("c12_note");
+    $("c12_nv").textContent = NAMES[n % 12] + (Math.floor(n / 12) - 1) + " (" + Math.round(hz(n)) + " Hz)";
+    $("c12_sv").textContent = (V("c12_slide") > 0 ? "+" : "") + V("c12_slide");
+    $("c12_dv").textContent = V("c12_dur") + " ms"; $("c12_av").textContent = V("c12_att") + " ms";
+    $("c12_rv").textContent = V("c12_rel") + " ms"; $("c12_vv").textContent = V("c12_vol");
+    $("c12_hv").textContent = V("c12_hue") + "°"; $("c12_zv").textContent = V("c12_size");
+  }
+  function render() { $("c12_obj").innerHTML = shapeSvg(V("c12_size"), V("c12_hue")); }
+
+  function analyze() {
+    const n = V("c12_note"), sl = V("c12_slide"), du = V("c12_dur"), at = V("c12_att"), h = V("c12_hue");
+    const w = S.wave, sh = S.shape, mo = S.motion;
+    const warm = (h >= 25 && h <= 70), red = (h <= 15 || h >= 345), green = (h >= 90 && h <= 160), cold = (h >= 190 && h <= 260);
+    
+    let aR = 0, aD = 0; const lines = [];
+    if (n >= 72) { aR += 1.5; lines.push("Pitch fairly high: bright and light, like “good news.”"); } else if (n <= 52) { aD += 1.5; lines.push("Pitch very low: heavy and oppressive, like “something is coming.”"); } else lines.push("Pitch in the middle: leaning neither way.");
+    if (sl >= 3) { aR += 2; lines.push("Upward slide: like “rising / gaining.”"); } else if (sl <= -3) { aD += 2; lines.push("Downward slide: like “falling / losing / getting hurt.”"); }
+    if (w === "sawtooth") { aD += 1; lines.push("Sawtooth wave: rough and buzzing, leaning “aggressive.”"); } else if (w === "square") { aD += 0.3; aR += 0.5; lines.push("Square wave: the classic 8-bit flavor, neutral and leaning “electronic.”"); } else lines.push((w === "sine" ? "Sine wave: round, clean and soft." : "Triangle wave: soft, a little more “wooden” than sine."));
+    if (du <= 300) { aR += 1; lines.push("Very short (≤300 ms): good for frequent feedback, not tiring."); } else if (du >= 600) { aD += 0.5; lines.push("Fairly long (≥600 ms): more “weight,” but annoying when repeated many times."); }
+    if (at <= 20) lines.push("Very fast attack: “crisp,” with impact, like a knock."); else if (at >= 120) lines.push("Very slow attack: like a “fade-in,” not much like one-shot feedback.");
+    
+    let vR = 0, vD = 0;
+    if (warm || green) vR += 1.5; if (red) vD += 2; if (cold) { vR += 0.3; lines.push("Cool color: leans calm / magic / neutral, not much like “reward” or “danger.”"); }
+    if (sh === "star" || sh === "diamond") vR += 1; if (sh === "tri") vD += 1; if (sh === "circle") vR += 0.5;
+    if (mo === "pop" || mo === "rise") vR += 1; if (mo === "shake") vD += 1.5;
+    const pct = x => Math.max(0, Math.min(100, Math.round(x / 6 * 100)));
+    const R = aR + vR, D = aD + vD;
+    $("c12_br").style.width = pct(R) + "%"; $("c12_bd").style.width = pct(D) + "%";
+    lines.push(`Visual: hue ${h}° ${red ? "(red: danger association)" : warm ? "(warm yellow: reward association)" : green ? "(green: safety / healing association)" : cold ? "(cool color)" : ""}; shape ${{ circle: "circle", square: "square", tri: "triangle", star: "star", diamond: "diamond" }[sh]}; motion ${{ pop: "pop", shake: "shake", rise: "rise", flash: "flash" }[mo]}.`);
+    $("c12_fb").innerHTML = lines.map(x => "· " + x).join("<br>") + "<br><i>Sketch: these are design rules of thumb, not laws.</i>";
+    let w2 = "";
+    const aS = aR - aD, vS = vR - vD;
+    if ((aS >= 2 && vS <= -1.5) || (aS <= -2 && vS >= 1.5)) w2 = `<div class="c12-warn"><b>Sound–picture mismatch</b>: the sound says “${aS > 0 ? "good thing" : "bad thing"},” while the picture says “${vS > 0 ? "good thing" : "bad thing"}.” The player will be confused. Tune both sides to the same direction.</div>`;
+    else if (Math.abs(R - D) < 1.2) w2 = `<div class="c12-note">Overall it leans <b>neutral</b>: suited to menu clicks and ordinary notices.</div>`;
+    else w2 = `<div class="c12-note">Overall it reads as <b>${R > D ? "reward / a good thing" : "danger / a bad thing"}</b>, with sound and picture in the same direction.</div>`;
+    $("c12_warn").innerHTML = w2;
+    const mism = w2.indexOf("Sound–picture mismatch") >= 0;
+    const tk = $("c12_task");
+    if (D - R >= 2.5 && !mism) { tk.textContent = "✔ Done: sound and picture both say “danger,” in the same direction. Try again: change only the sound and not the picture, and see when “Sound–picture mismatch” appears."; tk.style.background = "#eaf9e4"; }
+    else if (mism) { tk.style.background = ""; }
+  }
+
+  function fireVisual() {
+    const o = $("c12_obj"), stg = $("c12_stage"), du = Math.max(350, V("c12_dur") + 150), ea = EASE[S.ease];
+    let kf;
+    if (reduce) kf = [{ opacity: 0 }, { opacity: 1 }];
+    else if (S.motion === "pop") kf = [{ transform: "scale(0.1)" }, { transform: "scale(1)" }];
+    else if (S.motion === "shake") kf = [{ transform: "translateX(0)" }, { transform: "translateX(-14px)" }, { transform: "translateX(14px)" }, { transform: "translateX(-10px)" }, { transform: "translateX(8px)" }, { transform: "translateX(0)" }];
+    else if (S.motion === "rise") kf = [{ transform: "translateY(30px) scale(.8)", opacity: 0.2 }, { transform: "translateY(-10px) scale(1)", opacity: 1, offset: 0.6 }, { transform: "translateY(-50px) scale(1)", opacity: 0 }];
+    else kf = [{ filter: "brightness(3)", transform: "scale(1.25)" }, { filter: "brightness(1)", transform: "scale(1)" }];
+    o.animate(kf, { duration: du, easing: S.motion === "shake" ? "linear" : ea });
+    if (S.motion === "flash" && !reduce) { stg.classList.add("flash"); setTimeout(() => stg.classList.remove("flash"), 120); }
+  }
+  function fireSound(extra) {
+    AU.get();
+    AU.tone({ f: hz(V("c12_note") + (extra || 0)), dur: V("c12_dur") / 1000, att: V("c12_att") / 1000, rel: V("c12_rel") / 1000, vol: V("c12_vol") / 100 * 0.35, type: S.wave, slide: V("c12_slide") });
+  }
+  function fire(extra) { fireSound(extra); fireVisual(); }
+  function refresh() { label(); render(); analyze(); }
+
+  function chips(box, key, attr) {
+    $$("#" + box + " .chip").forEach(b => b.onclick = () => {
+      S[key] = b.dataset[attr]; $$("#" + box + " .chip").forEach(x => x.classList.toggle("on", x === b)); refresh();
+    });
+  }
+  chips("c12_wave", "wave", "w"); chips("c12_shape", "shape", "s"); chips("c12_motion", "motion", "m"); chips("c12_ease", "ease", "e");
+  ["c12_note", "c12_slide", "c12_dur", "c12_att", "c12_rel", "c12_vol", "c12_hue", "c12_size"].forEach(id => $(id).addEventListener("input", refresh));
+  $("c12_fire").onclick = () => fire(0);
+  $("c12_combo").onclick = () => { for (let i = 0; i < 6; i++) setTimeout(() => fire(i), i * 130); };
+
+  const PRE = {
+    reward: { w: "square", note: 76, slide: 12, dur: 180, att: 2, rel: 60, vol: 45, hue: 48, size: 80, s: "star", m: "pop", e: "back" },
+    danger: { w: "sawtooth", note: 40, slide: -7, dur: 380, att: 3, rel: 200, vol: 55, hue: 2, size: 90, s: "tri", m: "shake", e: "linear" },
+    level: { w: "triangle", note: 72, slide: 12, dur: 700, att: 30, rel: 300, vol: 50, hue: 285, size: 110, s: "star", m: "rise", e: "out" },
+    neutral: { w: "sine", note: 64, slide: 0, dur: 90, att: 3, rel: 40, vol: 35, hue: 210, size: 50, s: "circle", m: "pop", e: "out" }
+  };
+  function apply(p) {
+    S.wave = p.w; S.shape = p.s; S.motion = p.m; S.ease = p.e;
+    $("c12_note").value = p.note; $("c12_slide").value = p.slide; $("c12_dur").value = p.dur; $("c12_att").value = p.att;
+    $("c12_rel").value = p.rel; $("c12_vol").value = p.vol; $("c12_hue").value = p.hue; $("c12_size").value = p.size;
+    [["c12_wave", "w", p.w], ["c12_shape", "s", p.s], ["c12_motion", "m", p.m], ["c12_ease", "e", p.e]].forEach(([b, a, v]) =>
+      $$("#" + b + " .chip").forEach(x => x.classList.toggle("on", x.dataset[a] === v)));
+    refresh();
+  }
+  $$("[data-mp]").forEach(b => b.onclick = () => { apply(PRE[b.dataset.mp]); fire(0); });
+  apply(PRE.reward);
+})();
+
+(function () {
+  const INK = "#2b2b3a";
+  const chars = [
+    { name: "Knight", f: (s) => { const c = (col) => s ? "#111" : col, k = s ? "#111" : INK; return `
+      <g stroke="${k}" stroke-width="3" stroke-linejoin="round" fill="${c('#9aa7b8')}">
+      <rect x="40" y="76" width="8" height="18"/><rect x="52" y="76" width="8" height="18"/><rect x="38" y="46" width="24" height="32" rx="4"/>
+      <circle cx="50" cy="34" r="11"/><path d="M50 23 q-4 -12 6 -14 q-2 8 2 12z" fill="${c('#e5484d')}"/>
+      <rect x="70" y="12" width="6" height="52" fill="${c('#dfe6ee')}"/><rect x="63" y="52" width="20" height="5" fill="${c('#f6b73c')}"/>
+      <path d="M12 46 h22 v18 q0 12 -11 16 q-11 -4 -11 -16z" fill="${c('#e5484d')}"/></g>`; } },
+    { name: "Mage", f: (s) => { const c = (col) => s ? "#111" : col, k = s ? "#111" : INK; return `
+      <g stroke="${k}" stroke-width="3" stroke-linejoin="round" fill="${c('#9c6ad8')}">
+      <polygon points="50,52 26,94 74,94"/><circle cx="50" cy="44" r="8" fill="${c('#ffd9b3')}"/>
+      <polygon points="50,2 35,34 65,34"/><rect x="29" y="32" width="42" height="6" rx="3"/>
+      <rect x="78" y="14" width="4" height="80" fill="${c('#8a5a2b')}"/><circle cx="80" cy="12" r="7" fill="${c('#4a8fe0')}"/></g>`; } },
+    { name: "Slime", f: (s) => { const c = (col) => s ? "#111" : col, k = s ? "#111" : INK; return `
+      <g stroke="${k}" stroke-width="3" stroke-linejoin="round">
+      <path d="M12 92 Q8 54 50 44 Q92 54 88 92 Z" fill="${c('#4cb85e')}"/><path d="M50 22 q-7 11 0 16 q7 -5 0 -16z" fill="${c('#4cb85e')}"/>
+      ${s ? "" : '<circle cx="38" cy="68" r="5" fill="#fff"/><circle cx="62" cy="68" r="5" fill="#fff"/>'}</g>`; } },
+    { name: "Archer", f: (s) => { const c = (col) => s ? "#111" : col, k = s ? "#111" : INK; return `
+      <g stroke="${k}" stroke-width="3" stroke-linejoin="round" stroke-linecap="round" fill="${c('#4a8fe0')}">
+      <rect x="37" y="76" width="8" height="18"/><rect x="50" y="76" width="8" height="18"/><rect x="36" y="40" width="22" height="38" rx="5"/>
+      <circle cx="47" cy="27" r="10" fill="${c('#ffd9b3')}"/><path d="M34 28 q13 -22 26 0z" fill="${c('#2f6d3c')}"/>
+      <path d="M72 10 Q98 52 72 94" fill="none" stroke="${s ? '#111' : '#8a5a2b'}" stroke-width="5"/>
+      <line x1="72" y1="10" x2="72" y2="94" stroke-width="2"/><line x1="40" y1="54" x2="92" y2="54" stroke-width="3"/></g>`; } },
+    { name: "Robot", f: (s) => { const c = (col) => s ? "#111" : col, k = s ? "#111" : INK; return `
+      <g stroke="${k}" stroke-width="3" stroke-linejoin="round" fill="${c('#b0b8c4')}">
+      <rect x="34" y="80" width="10" height="14"/><rect x="56" y="80" width="10" height="14"/><rect x="26" y="50" width="48" height="32"/>
+      <rect x="12" y="52" width="12" height="28"/><rect x="76" y="52" width="12" height="28"/>
+      <rect x="32" y="22" width="36" height="26"/><line x1="50" y1="22" x2="50" y2="8"/><circle cx="50" cy="7" r="4" fill="${c('#e5484d')}"/>
+      ${s ? "" : '<rect x="38" y="30" width="8" height="8" fill="#4a8fe0"/><rect x="54" y="30" width="8" height="8" fill="#4a8fe0"/>'}</g>`; } }
+  ];
+  const cols = ["#9aa7b8", "#9c6ad8", "#4cb85e", "#4a8fe0", "#f6b73c"];
+  const person = (s, i) => { const col = s ? "#111" : cols[i], k = s ? "#111" : INK; return `
+    <g stroke="${k}" stroke-width="3" stroke-linejoin="round" fill="${col}"><rect x="38" y="76" width="9" height="18"/><rect x="53" y="76" width="9" height="18"/>
+    <rect x="34" y="42" width="32" height="36" rx="6"/><circle cx="50" cy="28" r="13"/></g>`; };
+  let sil = false, bad = false, cur = -1, sc = 0, tot = 0, answered = true, round = 0, rk = 0;
+  const draw = (i, s) => bad ? person(s, i) : chars[i].f(s);
+  function grid() {
+    $("c12_chars").innerHTML = chars.map((c, i) => `<div><svg viewBox="0 0 100 100">${draw(i, sil)}</svg>${sil ? "?" : c.name}</div>`).join("");
+  }
+  $("c12_sil").onclick = () => { sil = !sil; grid(); };
+  $("c12_bad").onclick = () => {
+    bad = !bad; $("c12_bad").textContent = bad ? "Switch back to own outlines" : "Switch to the same outline (counterexample)";
+    grid();
+    $("c12_smsg").textContent = bad ? "Now the 5 characters differ only in color. Switch to silhouette and ask again: can you still tell them apart?" : "Each has its own outline: even all black they can be told apart.";
+  };
+  function ask() {
+    cur = Math.floor(Math.random() * chars.length); answered = false;
+    $("c12_big").innerHTML = draw(cur, true);
+    $("c12_ans").innerHTML = chars.map((c, i) => `<button class="btn alt" data-a="${i}" style="font-size:1rem">${c.name}</button>`).join("");
+    $$("#c12_ans [data-a]").forEach(b => b.onclick = () => {
+      if (answered) return; answered = true; tot++;
+      const ok = +b.dataset.a === cur; if (ok) { sc++; rk++; } round++;
+      $("c12_sc").textContent = sc; $("c12_tot").textContent = tot;
+      $("c12_big").innerHTML = draw(cur, false);
+      $("c12_smsg").textContent = ok ? "✔ Correct:" + chars[cur].name + "." + (bad ? "(Mostly luck: the outlines are the same, so you can only guess)" : "The outline is distinctive enough.")
+        : "✘ It was actually" + chars[cur].name + "." + (bad ? "With the same outline, the characters simply can’t be told apart in silhouette, and that is a design problem." : "Look at its outline features again.");
+      if (round === 5) { $("c12_smsg").textContent += " Summary: of these 5 questions (" + (bad ? "same outline" : "own outlines") + ") you got " + rk + " right. Switch to the other outline type and answer 5 more to compare."; round = 0; rk = 0; }
+    });
+    $("c12_smsg").textContent = "Who is this?";
+  }
+  $("c12_next").onclick = ask;
+  grid();
+})();
+
+GD.mountQuiz($("quiz"), [
+  { q: "Why is the sound effect for “picking up a coin” usually very short, very bright, with a very fast attack?", opts: ["Because short sound effects save storage space", "Because it occurs many times a minute: short, so it doesn’t cover other sounds or tire the ear; bright and crisp, so it is recognized at one hearing", "Because players like high notes", "Because it’s the law of the games industry"], a: 1, why: "Frequent feedback sounds should be “short, distinguishable, and not tiring.” A fast attack makes it a crisp knock, and one hearing says what event it is." },
+  { q: "Why was iMUSE invented?", opts: ["To make music take up less disk space", "Because the player’s time for action is uncertain, and pre-recorded music can’t transition seamlessly with the action on screen", "Because early sound cards were too expensive", "To replace composers"], a: 1, why: "In a game you don’t know when the player will enter combat, and a traditional linear score can’t keep up instantly and smoothly. iMUSE made music a system that responds to the game state (Land and McConnell, LucasArts, first used in 1991 in <i>Monkey Island 2</i>)." },
+  { q: "What is the most essential difference between “vertical layering” and “horizontal switching”?", opts: ["Vertical uses more instruments", "Horizontal swaps one piece of music for another (usually at a bar line), while vertical switches the parts of the same piece on and off layer by layer", "Horizontal costs more", "There is no difference"], a: 1, why: "Horizontal = switching between different segments, which needs the beats aligned; vertical = several synchronized tracks of the same piece, added and removed by intensity, so the response is instant and unbroken." },
+  { q: "Filled in as solid black silhouettes, several characters look the same. What does this show?", opts: ["The silhouette test is meaningless", "Their outlines aren’t distinctive enough, and players may mistake them at a fast pace, so change the outlines rather than just the colors", "Characters should be made smaller", "More detail should be added"], a: 1, why: "Silhouette readability tests how recognizable the outline is. When the outlines are told apart by silhouette, color and detail then add points; if they are told apart by color alone, players with color-vision deficiency and quick glances both lose out." },
+  { q: "Why not tell important information apart by color alone (say only red/green)?", opts: ["Red and green aren’t pretty", "Because some players (for example about 8% of men have red–green color-vision deficiency) can’t tell them apart, and color is harder to distinguish in bright light or on small screens; it should be paired with redundant coding such as shape, icons and sound", "Because color is expensive", "Because players don’t like red"], a: 1, why: "Color should be one of the redundant signals, not the only one. 8% is a commonly cited figure and differs between populations." },
+  { q: "(Why) In Tinbergen’s gull experiment, why could a red rod with white rings draw more pecks than a realistic gull-head model? What does this suggest for design?", opts: ["Because the red rod is cheaper", "When a key feature is exaggerated past the limit, the response can be stronger than to the natural object (a supernormal stimulus), so design often amplifies “the feature that lets you recognize it”", "Because the chicks can’t recognize a real gull head", "Because all animals like long rods"], a: 1, why: "The model experiments of Tinbergen and Perdeck (1950) are a classic example of supernormal stimuli; Whitfield (2009) also warns that the original data are not as clean as textbooks say, so take it as inspiration, not a law." }
+]);
+</script>
+</body>
+</html>

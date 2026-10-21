@@ -1,0 +1,528 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Chapter 22: Games &amp; Reality</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+  .pick{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
+  .pick .btn{font-size:1.05rem;padding:4px 12px;background:#fff;margin:0}
+  .pick .btn.sel{background:var(--yellow)}
+  .verdict{font-family:var(--hand);font-size:1.7rem;margin:6px 0}
+  .verdict.good{color:#2f7d32}.verdict.mid{color:#b86e00}.verdict.bad{color:#c2255c}
+  .meter{height:24px;border:2.5px solid var(--ink);border-radius:14px 8px 14px 8px;background:#fff;overflow:hidden;margin:4px 0}
+  .meter i{display:block;height:100%;width:0;transition:width .35s,background .35s}
+  .fix{margin:6px 0;padding:6px 10px;border-left:5px solid var(--pink);background:#fff}
+  .dimrow{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:6px 0}
+  .dimrow .nm{width:5.5em;font-weight:bold}
+  .dimrow input[type=range]{flex:1;min-width:140px;width:auto}
+  .dimrow .ds{flex-basis:100%;font-size:.9rem;color:var(--soft)}
+  .c22q{margin:10px 0;padding:8px 12px;border:2.5px solid var(--ink);border-radius:12px;background:#fff}
+  .c22q .qt{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap}
+  .c22q .ends{display:flex;justify-content:space-between;font-size:.85rem;color:var(--soft)}
+  .c22q .bar{height:8px;border-radius:6px;background:#eee;margin-top:4px;overflow:hidden}
+  .c22q .bar i{display:block;height:100%;transition:width .3s,background .3s}
+
+  .clsrow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:8px 0;padding:6px 10px;border:2.5px solid var(--ink);border-radius:12px;background:#fff}
+  .clsrow .clsq{flex:1 1 220px;font-weight:700}
+  .clsrow .btn{font-size:.95rem;padding:2px 10px;margin:0;background:#fff}
+  .clsrow .btn.ok{background:#b6e8a8}.clsrow .btn.no{background:#ffc9c9}
+  .clsrow .fb{flex-basis:100%;font-size:.97rem}
+  .sticky .stat{margin-left:8px}
+</style>
+</head>
+<body data-ch="22">
+<main class="wrap">
+  <div class="hero">
+    <div class="txt">
+      <span class="badge">Chapter 22</span>
+      <h1>Games &amp; Reality</h1>
+      <p class="sub">Where is the edge of a game? Why do people argue over “what a game is”?</p>
+    </div>
+    <svg viewBox="0 0 190 150" class="rough" aria-hidden="true">
+      <circle cx="95" cy="75" r="52" fill="#fff7cf" stroke="#2b2b3a" stroke-width="4" stroke-dasharray="9 6"/>
+      <rect x="72" y="55" width="22" height="22" fill="#ffb3c6" stroke="#2b2b3a" stroke-width="3.5"/>
+      <circle cx="108" cy="88" r="11" fill="#a8dcf0" stroke="#2b2b3a" stroke-width="3.5"/>
+      <path d="M150 40 Q172 30 178 52" fill="none" stroke="#2b2b3a" stroke-width="4"/>
+      <path d="M170 46 L178 54 L184 44" fill="none" stroke="#2b2b3a" stroke-width="4"/>
+    </svg>
+  </div>
+
+  <div class="goals">
+    <h3>Learning goals</h3>
+    <ul>
+      <li>Explain who each of the “magic circle,” “gamification” and “finite and infinite games” came from, and say why people proposed them in the first place.</li>
+      <li>Explain why gamification sometimes works and sometimes backfires, and evaluate a gamification plan with a checklist of questions.</li>
+      <li>Point out that the boundary between “game” and “reality” grows thin in four directions (money, identity, relationships, irreversibility), and form your own view.</li>
+    </ul>
+    <span class="time">about 35 min</span>
+  </div>
+
+  
+  <div class="sec"><span class="n">1</span><h2><span class="tag what">What it is</span>The magic circle: a “temporary world” marked out inside reality</h2></div>
+
+  <div class="withimg">
+    <span data-illus="c22_pretend"></span>
+    <div>
+      <p>A child pulls on a monster mask and chases a little brother around the yard, and the brother screams and runs, laughing until he can hardly breathe. Suddenly a real stray dog darts in at the gate, and the brother’s scream changes pitch: this time he is truly afraid.</p>
+      <p>The two screams sound much alike, yet one is a game and the other is not. What separates them? An agreement nobody said aloud and everybody understands: right now, we are playing. Once the agreement breaks, the same chase becomes a real fright.</p>
+      <p>In <i>Homo Ludens</i> (1938, first written in Dutch), the Dutch historian Johan Huizinga treated arenas, chessboards, stages, temples and courtrooms as one kind of place: marked off, temporary, with rules of their own. He called such a place a <span class="term" tabindex="0" data-def="A temporary space with its own rules that play marks out inside reality; on entering it, everyone agrees to act by the game’s rules instead of everyday rules.">magic circle</span>. Inside the circle are the circle’s rules: “capturing” the other’s piece is not violence, and losing a game is not failing at life.</p>
+    </div>
+  </div>
+  <p>In 2003 Salen and Zimmerman’s <i>Rules of Play</i> brought the term into game design. So the “magic circle” designers mean today is largely their retold and reworked version, narrower than what Huizinga originally discussed.</p>
+
+  <div class="card">
+    <svg viewBox="0 0 700 320" width="100%" role="img" aria-label="The magic circle: inside are the game’s rules, outside is reality, and arrows on both sides show consequences may cross the boundary">
+      <g class="rough" stroke="#2b2b3a" stroke-width="4" stroke-linejoin="round">
+        <rect x="10" y="10" width="680" height="300" rx="18" fill="#fdf8ec"/>
+        <circle cx="350" cy="170" r="115" fill="#fff7cf" stroke-dasharray="12 8"/>
+        <rect x="316" y="146" width="36" height="36" fill="#ffb3c6"/>
+        <circle cx="390" cy="188" r="18" fill="#a8dcf0"/>
+      </g>
+      <g font-size="20" fill="#2b2b3a" text-anchor="middle">
+        <text x="350" y="236">Inside: the game’s rules</text>
+        <text x="350" y="116">Wins count only here</text>
+        <text x="110" y="56" font-size="22">The real world</text>
+        <text x="110" y="86" font-size="18">Money · identity</text>
+        <text x="590" y="56" font-size="22">The real world</text>
+        <text x="590" y="86" font-size="18">Time · bonds · no undo</text>
+        <text x="130" y="276" font-size="19">Does the magic circle “leak”?</text>
+      </g>
+      <g class="rough" fill="none" stroke="#c2255c" stroke-width="4">
+        <path d="M140 200 Q200 190 228 192"/><path d="M216 182 L230 192 L216 204"/>
+        <path d="M560 200 Q500 190 472 192"/><path d="M484 182 L470 192 L484 204"/>
+      </g>
+    </svg>
+  </div>
+
+  <div class="eg" data-ic="♟️"><span data-illus="c22_chess"></span><div class="egt"><b>A game of chess</b>: you “capture” a friend’s queen, he laughs and scolds you, and a minute later the pieces are set up again. The consequences inside the circle stay inside, and the circle is intact.</div></div>
+  <div class="eg" data-ic="🥊"><span data-illus="c22_boxing"></span><div class="egt"><b>A boxing ring</b>: the same punch is a match in the ring and a crime in the street. It is the “agreements everyone accepts,” like the ropes and the referee, that make it legal in the ring.</div></div>
+  <div class="eg" data-ic="🎭"><span data-illus="c22_villain"></span><div class="egt"><b>Playing the villain</b>: an actor snarls on stage and shakes hands with the opponent after stepping down. Nobody takes the harsh words spoken on stage as his own thoughts.</div></div>
+  <div class="eg bad" data-ic="💰"><span data-illus="c22_rmt"></span><div class="egt"><b>Online-game gear that sells for real money</b>: once gear has a price outside the game, the wall of the circle is punctured: account theft and fraud make the loss real. It is still a game, but no longer a pure circle.</div></div>
+
+  
+  <div class="sec"><span class="n">2</span><h2><span class="tag what">What it is</span>Gamification: carrying game elements to non-game places</h2></div>
+  <p>Open a vocabulary app, and the most prominent thing on the home page is a flame and “37-day streak.” You aren’t playing a game, yet you open it because you can’t bear to break that number. Using game elements like points, badges, leaderboards, levels, quest lines and streaks in non-game settings such as study, fitness and work is called <span class="term" tabindex="0" data-def="Using game design elements (points, badges, leaderboards, levels, quests and so on) in non-game settings such as study, fitness and work.">gamification</span>.</p>
+  <p>Around 2010 the word suddenly became fashionable among internet product people. But it was used loosely: is making a full teaching game gamification? Does adding points to a weekly report count? In their 2011 MindTrek paper, the four researchers Deterding, Dixon, Khaled and Nacke gave a definition that has been cited again and again: <b>the use of game design elements in non-game contexts</b>. (Deterding himself later said he had grown more and more doubtful about “what counts as a game design element.”)</p>
+  <p>The key to this definition is to separate it from several neighboring concepts. The picture below crosses “playing” and “gaming,” “whole” and “parts,” and each cell houses one kind of thing.</p>
+
+  <div class="card">
+    <svg viewBox="0 0 700 320" width="100%" role="img" aria-label="A 2×2 diagram of gamification: playing versus gaming across, whole versus parts down; the whole holds toys and games, and the parts hold playful design and gamification">
+      <g class="rough" stroke="#2b2b3a" stroke-width="4" stroke-linejoin="round">
+        <rect x="110" y="44" width="270" height="116" rx="14" fill="#fff7cf"/>
+        <rect x="390" y="44" width="270" height="116" rx="14" fill="#eaf9e4"/>
+        <rect x="110" y="170" width="270" height="116" rx="14" fill="#e8f6fc"/>
+        <rect x="390" y="170" width="270" height="116" rx="14" fill="#ffb3c6"/>
+      </g>
+      <g font-size="22" fill="#2b2b3a" text-anchor="middle">
+        <text x="245" y="30" font-size="19">Playing (free, improvised)</text><text x="525" y="30" font-size="19">Gaming (rules, goals)</text>
+        <text x="50" y="108" font-size="19">Whole</text><text x="50" y="234" font-size="19">Parts</text>
+        <text x="245" y="92">Toy</text><text x="245" y="128" font-size="17">A free-play object</text>
+        <text x="525" y="92">Game</text><text x="525" y="128" font-size="17">Complete, with rules</text>
+        <text x="245" y="218">Playful design</text><text x="245" y="254" font-size="17">Products with a “play” flavor</text>
+        <text x="525" y="218" font-weight="bold">Gamification</text><text x="525" y="254" font-size="17">Game elements in non-games</text>
+      </g>
+    </svg>
+    <p class="small">Illustrative: adapted from the “play/game × whole/parts” idea in Deterding et al.’s paper, with the wording in the cells rewritten for explanation. A flight simulator used to train pilots is a complete game, only for a serious purpose, called a “serious game,” and it lives in the upper-right cell; “points plus badges” lives in the lower-right cell.</p>
+  </div>
+
+  <div class="eg" data-ic="🔥"><span data-illus="c22_streak"></span><div class="egt"><b>A vocabulary app’s streak</b>: putting a “game element” (the number of days in a row) into study is typical gamification.</div></div>
+  <div class="eg" data-ic="✈️"><span data-illus="c22_flightsim"></span><div class="egt"><b>A flight simulator</b>: the whole thing is itself a complete game, only used for training. This is a <span class="term" tabindex="0" data-def="A complete game whose purpose is training, teaching or another non-entertainment use, such as a flight simulator.">serious game</span>, not gamification.</div></div>
+  <div class="eg" data-ic="🎹"><span data-illus="c22_stairpiano"></span><div class="egt"><b>The piano stairs</b>: in Volkswagen’s 2009 “fun theory” campaign, a Stockholm subway station turned its steps into piano keys, beside an escalator. The organizers said noticeably more people took the stairs (this is the campaign’s own figure and has not been peer reviewed). It has no points or ranking, and only puts the flavor of “play” into the stairs, closer to playful design.</div></div>
+  <div class="eg bad" data-ic="📊"><span data-illus="c22_ticketboard"></span><div class="egt"><b>A customer-service ticket leaderboard</b>: it has points and ranking, the number handled outweighs quality, and everyone closes tickets in a rush. This is gamification gone wrong.</div></div>
+
+  <div class="board">
+    <h3>🧩 Sorting practice: which cell is this?</h3>
+    <p class="small">Click the category you think fits each example. After you click, it tells you where Deterding et al.’s thinking would put it, and why.</p>
+    <div id="c22_cls"></div>
+  </div>
+  <div class="sticky">Try it: click through all five examples and see how many agree with the 2×2 picture above. <span id="c22_clsok" class="stat" style="display:none">✓ All sorted.</span></div>
+
+  
+  <div class="sec"><span class="n">3</span><h2><span class="tag what">What it is</span>Extension: finite and infinite games</h2></div>
+  <p>Since the circle is drawn by agreement, a game inside it can live in two ways: to win, and break up once someone has won; or to keep the game going. The scholar of religion James P. Carse made exactly this split in <i>Finite and Infinite Games</i> (Free Press, 1986). A <b>finite game</b> aims to win, with clear participants, boundaries and an ending; an <b>infinite game</b> aims to keep the game going, nobody wants it to end, and the rules may change in order to continue. This is Carse’s classification, often borrowed into talk of business, politics and education, and some of those borrowings are quite disputed.</p>
+  <div class="card">
+    <svg viewBox="0 0 700 300" width="100%" role="img" aria-label="Finite versus infinite games: a finite game has an end, and the circle of an infinite game expands and changes its rules">
+      <g class="rough" stroke="#2b2b3a" stroke-width="4" stroke-linejoin="round">
+        <rect x="15" y="15" width="320" height="270" rx="16" fill="#e8f6fc"/>
+        <rect x="365" y="15" width="320" height="270" rx="16" fill="#ffe9ef"/>
+        <circle cx="130" cy="130" r="44" fill="#fff"/>
+        <path d="M190 130 H265" fill="none"/><path d="M251 116 L267 130 L251 144" fill="none"/>
+        <circle cx="470" cy="130" r="26" fill="#fff" stroke-dasharray="8 6"/>
+        <circle cx="505" cy="130" r="46" fill="none" stroke-dasharray="8 6"/>
+        <circle cx="545" cy="130" r="64" fill="none" stroke-dasharray="8 6"/>
+      </g>
+      <g font-size="24" fill="#2b2b3a" text-anchor="middle">
+        <text x="175" y="56">Finite game</text><text x="525" y="56">Infinite game</text>
+      </g>
+      <g font-size="18" fill="#2b2b3a" text-anchor="middle">
+        <text x="175" y="224">Aim: to win</text><text x="175" y="250">Fixed boundary, fixed rules</text><text x="175" y="274" font-size="17">Someone wins → it ends</text>
+        <text x="525" y="224">Aim: to keep the game going</text><text x="525" y="250" font-size="17">Boundary and rules can change to continue</text><text x="525" y="274" font-size="17">No “endgame”</text>
+        <text x="300" y="112" font-size="17">End</text>
+      </g>
+    </svg>
+  </div>
+  <div class="eg" data-ic="🏆"><span data-illus="c22_final"></span><div class="egt"><b>A World Cup final</b>: it has an end and a winner and loser, a typical finite game. Precisely because the match will end, every minute is so tense.</div></div>
+  <div class="eg" data-ic="🏠"><span data-illus="c22_house"></span><div class="egt"><b>Children playing house</b>: no winner, and the rules change any time for “keeping the game going” (“now you be the dad”).</div></div>
+  <div class="eg bad" data-ic="📢"><span data-illus="c22_boss"></span><div class="egt"><b>The slogan “our company will play an infinite game”</b>: many business books simplify Carse’s classification into “finite is bad, infinite is good,” and it ends up as “never off work.” Competition in itself is not evil; this is a simplification of the original book.</div></div>
+
+  
+  <div class="sec"><span class="n">4</span><h2><span class="tag origin">How it was invented</span>Why did the argument over “what a game is” arise?</h2></div>
+
+  <div class="story">
+    <h3>The problem: a word everyone understands and nobody can pin down</h3>
+    <p>In the early 20th century scholars began to study “play” seriously: it seemed to appear in war, law, poetry and sport, yet nowhere seemed to be its home. But to study it you must first answer: what counts as a game? Whoever offered a definition, someone raised a counterexample. This argument is not wordplay. The definition decides what you put into a “game design” course, and whether you dare bring games into schools and companies.</p>
+    <p><b>Guess first:</b> who first proposed the “magic circle” that designers always talk about?</p>
+    <div class="rk" id="c22_guess">
+      <button class="chip" data-g="a">A game designer</button><button class="chip" data-g="b">A historian</button><button class="chip" data-g="c">A programmer</button>
+    </div>
+    <div class="msg" id="c22_guessfb" style="font-size:1.05rem;font-family:var(--body)">Pick one and see if it’s right.</div>
+  </div>
+
+  <p>Below is a walk through in time. Each stop answers the gap the last one left: where the circle comes from, whether one definition can unify things, what the core of a game is, whether a game can have no end, and whether the circle can be carried out.</p>
+  <div class="timeline">
+    <div class="ev hasimg"><span data-illus="c22_huizinga"></span><div><b class="yr">1938</b> Huizinga, <i>Homo Ludens</i>. The question: war, law, poetry, ritual… why do they all seem like “play”? His answer: games are a basic ingredient of culture, and people live temporarily by their own rules in a “marked-off place.” But how strict the circle is and where the rules come from, he did not pin down.</div></div>
+    <div class="ev hasimg"><span data-illus="c22_wittgenstein"></span><div><b class="yr">1953</b> Wittgenstein, <i>Philosophical Investigations</i>. The question: chess, cards, ball games, the Olympics… can a shared essence be found? He laid them out one by one, could not find it, and found only “family resemblance”: they resemble each other in different ways, with no single line running through the whole family. The new problem: with no unified essence, can a designer still have a tool that is good enough?</div></div>
+    <div class="ev hasimg"><span data-illus="c22_hurdle"></span><div><b class="yr">1978</b> Suits, <i>The Grasshopper</i>. His answer: playing a game is voluntarily attempting to overcome unnecessary obstacles. The rules deliberately block the easy path, the player accepts them freely, and that is a game. He also imagined that in a utopia where all needs are met, people would still play. This is Suits’s view; critics ask whether love and art can also be called “overcoming obstacles.”</div></div>
+    <div class="ev hasimg"><span data-illus="c22_carse"></span><div><b class="yr">1986</b> Carse, <i>Finite and Infinite Games</i>. The question: a match ends, but communities and cultures don’t, so how to tell them apart? The answer: a finite game is for winning, an infinite game for continuing. Later simplified by business books into slogans, it was distorted.</div></div>
+    <div class="ev hasimg"><span data-illus="c22_salen"></span><div><b class="yr">2003</b> Salen and Zimmerman, <i>Rules of Play</i>. Designers needed a common word for “the boundary between game and reality,” and so reworked Huizinga’s “circle” into a design tool, the “magic circle.” The new problem: when money and identity pour into digital games, does the circle still hold?</div></div>
+    <div class="ev hasimg"><span data-illus="c22_deterding"></span><div><b class="yr">2011</b> Deterding et al., “Gamification: Toward a Definition.” Companies and apps were stuffing points and badges into products, and what was this? The answer: gamification is the use of game design elements in non-game contexts, different from making a whole game. The new problem: why are the results sometimes good and sometimes bad?</div></div>
+  </div>
+  <div class="card">
+    <svg viewBox="0 0 700 330" width="100%" role="img" aria-label="The evolution of the definition of a game: problem, solution and new problem passed along in turn">
+      <g class="rough" stroke="#2b2b3a" stroke-width="4" stroke-linejoin="round">
+        <rect x="15" y="20" width="150" height="90" rx="14" fill="#fff7cf"/>
+        <rect x="190" y="20" width="150" height="90" rx="14" fill="#a8dcf0"/>
+        <rect x="365" y="20" width="150" height="90" rx="14" fill="#b6e8a8"/>
+        <rect x="540" y="20" width="145" height="90" rx="14" fill="#ffb3c6"/>
+        <rect x="15" y="210" width="150" height="90" rx="14" fill="#f1eaff"/>
+        <rect x="190" y="210" width="150" height="90" rx="14" fill="#ffe9ef"/>
+        <rect x="365" y="210" width="320" height="90" rx="14" fill="#fff0dc"/>
+        <g fill="none" stroke-width="4.5" stroke-linecap="round">
+          <path d="M165 65 H188"/><path d="M340 65 H363"/><path d="M515 65 H538"/>
+          <path d="M612 112 Q600 160 450 208"/><path d="M165 255 H188"/><path d="M340 255 H363"/>
+        </g>
+      </g>
+      <g font-size="19" fill="#2b2b3a" text-anchor="middle">
+        <text x="90" y="56">1938 Huizinga</text><text x="90" y="86" font-size="17">Circles off play</text>
+        <text x="265" y="56">1953 Wittgenstein</text><text x="265" y="86" font-size="17">No single essence</text>
+        <text x="440" y="56">1978 Suits</text><text x="440" y="86" font-size="17">Unnecessary obstacles</text>
+        <text x="612" y="56">1986 Carse</text><text x="612" y="86" font-size="17">Finite / infinite</text>
+        <text x="90" y="246">2003 Salen et al.</text><text x="90" y="276" font-size="17">Circle in design</text>
+        <text x="265" y="246">2011 Deterding</text><text x="265" y="276" font-size="17">Defining gamification</text>
+        <text x="525" y="246">Circle leaks, metrics gamed</text><text x="525" y="276" font-size="17">So ask: why, and how</text>
+      </g>
+    </svg>
+    <p class="small">Each step answers the gap the last one left.</p>
+  </div>
+
+  
+  <div class="sec"><span class="n">5</span><h2><span class="tag why">Why it works</span>Why does gamification backfire?</h2></div>
+
+  <p>The first trouble with carrying things out of the circle is rewards. Remember the experiment that gave children certificates? In 1973 Lepper, Greene and Nisbett had kindergarteners who loved drawing be told beforehand that “drawing earns a certificate,” and afterward, in free play, they drew less than the children who had been promised nothing. This is called the <span class="term" tabindex="0" data-def="The phenomenon that when something done out of interest is promised an external reward, interest and the willingness to do it spontaneously fall; the size of the effect varies by situation, and the research is disputed.">overjustification effect</span>. Gamification is exactly handing out “certificates” for things, so it faces the same risk.</p>
+  <div class="eg" data-ic="📈"><span data-illus="c22_progress"></span><div class="egt"><b>Amplifying</b>: while memorizing words you see “30 more than last week,” and you want to go on. The reward says “you’ve improved,” which is feedback.</div></div>
+  <div class="eg" data-ic="🏅"><span data-illus="c22_certificate"></span><div class="egt"><b>Replacing</b>: a child who loved drawing, once promised a certificate, draws only for the certificate, and the interest is “bought off.” The reward says “do it the way I want,” which is control.</div></div>
+  <div class="eg bad" data-ic="🔥"><span data-illus="c22_tapclose"></span><div class="egt"><b>Gaming the number</b>: to keep the “streak” going you open the app for one second every day and close it, and take in nothing. The number wins and the purpose loses.</div></div>
+
+  <div class="why-box">
+    <h3>Three principles, one reminder</h3>
+    <p><b>Overjustification and self-determination theory</b> (covered in the discussion of player motivation): Deci and Ryan’s self-determination theory holds that if a reward is perceived as <b>control</b> (“I do it to get the prize”), it weakens the sense of autonomy and lowers intrinsic motivation; if perceived as <b>information</b> (“I’m doing well”), it can strengthen the sense of competence. In 1999 Deci, Koestner and Ryan pooled 128 experiments and held that tangible, announced-in-advance external rewards generally weaken intrinsic motivation; Cameron and Pierce and others analyzed with another method and reached much milder conclusions, and the two sides still disagree.</p>
+    <p><b><span class="term" tabindex="0" data-def="Once a measure becomes a target, it will be optimized and exploited, and so stop being a good measure.">Goodhart’s law</span></b> (covered in the discussion of metrics): the “number of check-ins” on a leaderboard will be gamed, because people optimize the number and not what lies behind it. This is the mechanism behind the “gaming the number” example.</p>
+    <p class="src">Sources: Lepper, Greene &amp; Nisbett (1973), <i>Journal of Personality and Social Psychology</i> 28(1): 129–137; Deci, Koestner &amp; Ryan (1999), <i>Psychological Bulletin</i> 125(6): 627–668; Deci &amp; Ryan’s self-determination theory; Goodhart (1975), the wording popularized via Strathern (1997). The overjustification effect is disputed, and its size varies by situation: it is a “risk to watch for,” not an iron law.</p>
+  </div>
+
+  <div class="withimg rev">
+    <span data-illus="c22_leaderboard"></span>
+    <div>
+      <p>The leaderboard is the most commonly used part in gamification, and it works through another principle: <b><span class="term" tabindex="0" data-def="People judge their own ability and situation by comparing with others, and tend to compare with those similar to themselves.">social comparison</span></b>. Leon Festinger proposed in 1954 that people need to compare themselves with others to know how they are doing, and prefer to compare with those similar to themselves.</p>
+      <p>This explains why the person at rank 38 strives hard looking at rank 37, and feels nothing about rank 1; it also explains why a server-wide leaderboard often motivates only the people at the top and makes those in the middle and lower ranks want to quit. How the board is divided and who is compared with whom matter far more than “whether there is a board.”</p>
+    </div>
+  </div>
+  <p class="small">Source: Leon Festinger, “A Theory of Social Comparison Processes,” <i>Human Relations</i> 7(2): 117–140 (1954).</p>
+  <div class="card">
+    <svg viewBox="0 0 700 280" width="100%" role="img" aria-label="Schematic: two paths by which game elements amplify or replace motivation">
+      <g class="rough" stroke="#2b2b3a" stroke-width="4" stroke-linejoin="round">
+        <rect x="20" y="105" width="150" height="70" rx="12" fill="#fff7cf"/>
+        <rect x="300" y="25" width="170" height="80" rx="12" fill="#eaf9e4"/>
+        <rect x="300" y="175" width="170" height="80" rx="12" fill="#ffe9ef"/>
+        <rect x="540" y="25" width="140" height="80" rx="12" fill="#b6e8a8"/>
+        <rect x="540" y="175" width="140" height="80" rx="12" fill="#ffb3c6"/>
+      </g>
+      <g font-size="21" text-anchor="middle" fill="#2b2b3a">
+        <text x="95" y="135">Add points</text><text x="95" y="162">and a leaderboard</text>
+        <text x="385" y="58">Reward = feedback</text><text x="385" y="88">“I’m improving”</text>
+        <text x="385" y="208">Reward = control</text><text x="385" y="238">“For the prize”</text>
+        <text x="610" y="58">Motivation up</text><text x="610" y="88">Lasts longer</text>
+        <text x="610" y="208">Motivation lost</text><text x="610" y="238">Take prize, leave</text>
+      </g>
+      <g class="rough" fill="none" stroke="#2b2b3a" stroke-width="4">
+        <path d="M170 125 Q235 90 298 72"/><path d="M170 155 Q235 200 298 212"/>
+        <path d="M470 65 H538"/><path d="M470 215 H538"/>
+      </g>
+    </svg>
+    <p class="small">Illustrative: whether gamification succeeds often depends on whether the game elements are “amplifying” the existing motivation or “replacing” it.</p>
+  </div>
+  <p>The real effects do “depend,” too. A 2014 review of empirical studies by Hamari, Koivisto and Sarsa found that gamification mostly has positive effects, but depends strongly on the context and the users.</p>
+
+  <h3>Why does the magic circle “leak”?</h3>
+  <div class="withimg">
+    <span data-illus="c22_leak"></span>
+    <div>
+      <p>The magic circle is a lovely ideal: all consequences inside the circle count only inside the circle. But real circles are often not closed. Edward Castronova, who studies virtual-world economies, in <i>Synthetic Worlds</i> (2005) called the boundary of a virtual world “almost-magic circle,” meaning the wall is <b>porous</b>.</p>
+      <p>It leaks in four directions: <b>money</b> (casino chips are real money; <i>Diablo III</i> launched in 2012 with an auction house where players could trade gear for real money, and Blizzard closed it in March 2014, saying it hurt the core fun of “killing monsters for loot”), <b>identity</b> (a pro player’s game skill is their profession and status), <b>social consequences</b> (betrayal in a game can make friends in real life drift away), and <b>irreversibility</b> (money lost gambling, years spent, cannot be redone).</p>
+    </div>
+  </div>
+  <p>Leaks are not all bad: esports gives people who love games a career path, and friendships made in games are real. The trouble is that <b>when the consequences are borne by one side (the player bears the loss and the operator profits), or participants don’t realize the circle has been broken</b>, “it’s just a game” becomes an excuse. Drag the sliders below and try it yourself:</p>
+
+  <div class="board">
+    <h3>🔬 The magic-circle leak meter (signature interactive)</h3>
+    <p class="small">Pick an activity. The four dimensions below (0 fully inside the circle, 4 heavily leaking) are my reference values, and <b>you can drag the sliders to your own judgment</b> and see how its position on the “game ↔ reality” axis moves.</p>
+    <div class="pick" id="mcPick"></div>
+    <svg viewBox="0 0 700 210" width="100%" role="img" aria-label="A continuum from game to reality" id="mcSvg"></svg>
+    <div id="mcDims"></div>
+    <div class="msg" id="mcTxt"></div>
+    <button class="btn alt" id="mcReset">Restore my reference values</button>
+  </div>
+  <div class="sticky">Try it: pick “Pro esports,” drag only the “Money” slider to 0, and see which way it moves on the axis; then pick “Casino” and find a way to bring its total below 8. <span id="c22_mcok" class="stat" style="display:none">✓ You pulled the casino back into the circle: this is what mending the circle with rules looks like.</span></div>
+
+  
+  <div class="sec"><span class="n">6</span><h2><span class="tag how">How to use it</span>What suits gamification?</h2></div>
+  <p>Turn the principles above into judgments for design. The six questions below are a checklist put together from the earlier chapters (not an academic standard, and you may add or delete). Read them through, then go “turn the knobs” in the evaluator:</p>
+  <div class="grid3">
+    <div class="card y"><h3>① Intrinsic interest</h3><p>With all the points removed, would anyone still be willing to do it?</p></div>
+    <div class="card b"><h3>② A hard-to-game measure</h3><p>Progress can be measured, and is not easy to game.</p></div>
+    <div class="card g"><h3>③ Voluntary</h3><p>Voluntariness is an element of play: a forced “game” is only an assessment.</p></div>
+    <div class="card p"><h3>④ Low cost of failure</h3><p>The virtue of the magic circle is the courage to experiment.</p></div>
+    <div class="card o"><h3>⑤ Rewards support, not replace</h3><p>Like a coach’s affirmation, not “buying the behavior.”</p></div>
+    <div class="card v"><h3>⑥ Participants accept the measure</h3><p>They don’t feel watched or controlled.</p></div>
+  </div>
+
+  <div class="board">
+    <h3>🧪 Should this be gamified? (signature interactive)</h3>
+    <p class="small">Click a scenario and the six sliders move automatically to my reference positions (illustrative, and you may disagree). <b>Drag any slider</b> and see how the gauge on the right and the “weakest link” change; the rules: intrinsic interest weighs most, then the measure, voluntariness and the nature of rewards; very low voluntariness, or “no interest and rewards that buy behavior,” triggers a hard downgrade.</p>
+    <div class="pick" id="scPick"></div>
+    <div id="scBody"></div>
+    <div id="scOut"></div>
+  </div>
+  <div class="sticky">Try it: pick “Customer-service ticket leaderboard,” which will be rated “Not advised.” Move just two sliders to rescue it to “Suitable” or “Careful.” <span id="c22_scok" class="stat" style="display:none">✓ You rescued it: look at which two knobs you moved?</span></div>
+
+  <h3>Using games to “make an argument”</h3>
+  <p>Gamification carries games “out”; the other direction is <b>letting the game speak</b>. In <i>Persuasive Games</i> (2007) the game scholar Ian Bogost proposed <span class="term" tabindex="0" data-def="Bogost’s concept: games persuade not only through words and pictures but through the rules and the system itself: forced to act within the rules, you personally experience an argument.">procedural rhetoric</span>: an essay persuades through argument, and a game persuades through <b>rules</b>. His criticism of gamification is sharp as well: just attaching “points and badges” without changing the experience of the rules grabs only the most superficial part of games, and in 2011 he half-mockingly called this “exploitationware.” This is his view, not an accepted conclusion.</p>
+  <div class="eg" data-ic="🏠"><span data-illus="c22_landlord"></span><div class="egt"><b>The Landlord’s Game</b>: Elizabeth Magie’s <i>The Landlord’s Game</i> won a US patent in 1904, meant to show how land monopoly makes landlords richer and tenants poorer, and to promote a land tax. The later <i>Monopoly</i> (1935) evolved from it. The argument isn’t in the lines but in the rules: play one round and you understand.</div></div>
+  <div class="eg bad" data-ic="💬"><span data-illus="c22_lecture"></span><div class="egt"><b>Putting the argument into a dialog box</b>: the game pops up a long sermon, and the player’s reaction is to hit “skip.” If what you want to say never changes any of the player’s choices, it has not been played out.</div></div>
+  <div class="chain">
+    <span class="st">The point to make</span><span class="ar">→</span>
+    <span class="st">What “system” lies behind it</span><span class="ar">→</span>
+    <span class="st">Turn the system into rules</span><span class="ar">→</span>
+    <span class="st">Let the player choose within the rules</span><span class="ar">→</span>
+    <span class="st">Experience the consequences</span>
+  </div>
+  <p>Also beware: the rules themselves carry the designer’s stance, and a player may reach the opposite conclusion to yours, or even learn “how to exploit loopholes” from them.</p>
+  <p class="small">Sources: Elizabeth Magie’s patent is US Patent 748,626 (granted January 5, 1904); Parker Brothers published <i>Monopoly</i> in 1935. The details of who “invented” <i>Monopoly</i> differ across sources; here we say only that <i>The Landlord’s Game</i> is one of the earliest known versions.</p>
+
+  
+  <div class="misc">
+    <h3>Common misconceptions</h3>
+    <ul>
+      <li><b>“Adding points, badges and a leaderboard is gamification.”</b> These are only the most superficial elements of games. Without a whole design of goals, choices and feedback, surface elements usually don’t last long.</li>
+      <li><b>“The magic circle is a wall, and what happens inside has nothing to do with reality.”</b> The magic circle is more like a “consensus” that needs constant upkeep: participants must agree to it, designers must respect it, and once money and identity flow in heavily, the circle thins.</li>
+      <li><b>“A game must have a strict definition or it can’t be studied.”</b> Wittgenstein reminds us that a concept can work through “family resemblance.” A definition is a tool, not a fence.</li>
+      <li><b>“Huizinga invented the magic circle of game design.”</b> He talked about the broader places of “play”; the magic-circle concept commonly used in design was reworked by later writers.</li>
+    </ul>
+  </div>
+
+  <div class="reflect">
+    <h3>Reflection and debate</h3>
+    <p><b>Suits’s utopia:</b> he held that in a world where needs are met, games remain a meaningful activity. Critics ask: does this shrink “a meaningful life” down to “overcoming artificial obstacles”? Can caring for children, art and love be seen as “games”? On the other hand, some say that if games matter so much, much of the labor in reality could be made more “playful,” which is the philosophical root of gamification.</p>
+    <p><b>Carse’s classification:</b> many examples lie between the two; many healthy infinite games (a community, for instance) also contain many small finite games.</p>
+    <p><b>On gamification:</b> Bogost’s criticism is one view; some researchers and practitioners also hold that, well designed, gamification really helps in fitness and learning. The actual effect depends on context, population and duration, and research conclusions are not uniform.</p>
+    <p>A question for you: if you had a child, would you want their homework, chores and exercise gamified? In your answer, which parts are considerations of “effectiveness” and which of “values”?</p>
+  </div>
+
+  <div class="key">
+    <h3>Key points</h3>
+    <ul>
+      <li><b>The magic circle</b> (Huizinga’s “marked-off place,” brought into design by Salen and Zimmerman): a game marks out a temporary, rule-bound world within reality; it is held by consensus, and “leaks” in four directions: money, identity, relationships and irreversibility.</li>
+      <li><b>Gamification</b> (Deterding et al., 2011): using game design elements in non-game contexts, different from serious games and playful design. Success depends on whether game elements amplify or replace existing motivation (self-determination theory, Goodhart’s law, social comparison).</li>
+      <li><b>Carse</b>: finite games are for winning, infinite games for continuing; <b>Suits</b>: playing a game is voluntarily overcoming unnecessary obstacles. Both are “one view,” usable but arguable.</li>
+      <li><b>Why they were invented:</b> these concepts arrived in a relay because “game” is a word everyone uses and nobody can pin down, each answer left a new gap, and only when games were carried into reality did new problems like “the circle leaks, measures get gamed” appear.</li>
+      <li><b>Procedural rhetoric</b>: games speak through rules; a good “game with a point” writes the point into the rules and not into the lines.</li>
+    </ul>
+  </div>
+  <div class="tldr">A game is a voluntary, restartable fence in reality; before carrying it into reality, ask whether it is amplifying motivation or buying it off.</div>
+
+  <div class="sec"><span class="n">7</span><h2><span class="tag think">Practice</span>Check yourself</h2></div>
+  <div id="quiz"></div>
+
+  <div class="sec"><span class="n">8</span><h2><span class="tag how">Your design</span>Your thoughts</h2></div>
+  <div class="card o">
+    <p>Pick something in your life that has been “gamified” (a check-in app, a points mall, a study leaderboard…), evaluate it with the six questions above, and write down: <b>is it amplifying your motivation, or replacing it?</b> Have you ever had a moment of doing something “for the number”?</p>
+    <textarea rows="6" data-save="ch22" placeholder="E.g. a vocabulary app’s streak: ① intrinsic interest: medium; ② gameability: high, opening it counts; ③ voluntary: yes; … my conclusion: …"></textarea>
+  </div>
+</main>
+<script src="../js/illus.js"></script>
+<script src="../js/illus-ch22.js"></script>
+<script src="../js/en/illus.js"></script>
+<script src="../js/en/illus-lib.js"></script>
+<script src="../js/en/illus-ch22.js"></script>
+<script src="../js/common.js"></script>
+<script>
+const $ = id => document.getElementById(id);
+
+const CLS = [
+  ["A streak in a vocabulary app", 0, "Gamification: putting the game element “consecutive days” into study, while the whole app is not a game."],
+  ["A flight simulator for training pilots", 1, "Serious game: it is itself a complete game, only with a serious purpose."],
+  ["Turning stairs into piano keys", 2, "Playful design: it only puts the flavor of “play” into an everyday object, with no points, goals or rules."],
+  ["Adding points and badges to a company weekly report", 0, "Gamification: game elements used in a non-game setting."],
+  ["A complete mobile game made specially to teach waste sorting", 1, "Serious game: a complete game whose purpose is teaching."],
+];
+(function () {
+  const root = $("c22_cls"), NM = ["Gamification", "Serious game", "Playful design"]; let done = 0;
+  CLS.forEach(c => {
+    const d = document.createElement("div"); d.className = "clsrow";
+    d.innerHTML = '<span class="clsq">' + c[0] + "</span>" + NM.map((n, k) => '<button class="btn" data-k="' + k + '">' + n + "</button>").join("") + '<span class="fb"></span>';
+    let answered = false;
+    d.querySelectorAll("button").forEach(b => b.onclick = () => {
+      const ok = +b.dataset.k === c[1];
+      d.querySelectorAll("button").forEach(x => x.classList.remove("ok", "no"));
+      b.classList.add(ok ? "ok" : "no");
+      d.querySelector(".fb").innerHTML = (ok ? "✔ " : "✘ Think again:") + (ok ? c[2] : "It actually belongs to “" + NM[c[1]] + ".”" + c[2]);
+      if (ok && !answered) { answered = true; done++; if (done === CLS.length) $("c22_clsok").style.display = ""; }
+    });
+    root.appendChild(d);
+  });
+})();
+document.querySelectorAll("#c22_guess .chip").forEach(b => b.onclick = () => {
+  $("c22_guessfb").innerHTML = b.dataset.g === "b" ? "✔ Right. It was the Dutch historian Huizinga, in <i>Homo Ludens</i> of 1938. The “magic circle” of design became popular only through Salen and Zimmerman’s 2003 retelling, and it was not originated by designers."
+    : "No. It was first the Dutch historian Huizinga, in 1938, decades before video games; designers borrowed it later.";
+});
+
+const DIMS = [
+  ["Money", "Do gains and losses inside the circle turn into real money?"],
+  ["Identity", "Does performance inside the circle define who you are (profession, status)?"],
+  ["Social consequences", "Does behavior inside the circle affect relationships and reputation outside?"],
+  ["Irreversibility", "Can wins and losses inside the circle not be redone?"],
+];
+const ACT = [
+  { n: "Hide and seek", v: [0, 0, 0, 0], t: "Almost entirely inside the magic circle: no money, no profession, and being caught is just part of the game. Children can start over in the next round." },
+  { n: "Casual board games", v: [0, 1, 1, 0], t: "Mostly inside the circle. There may be a little “I’m a chess player” identity, and results may feed friendly teasing, but it is easy to start over." },
+  { n: "Tradable gear", v: [3, 2, 2, 3], t: "Once gear in an online game can be sold for real money, the circle is punctured: the player’s time has a price, and fraud, account theft and “gold farming” studios follow; and a stolen account is hard to get back. Designers have to manage two economies at once." },
+  { n: "Casino", v: [4, 1, 3, 4], t: "A casino has the form of a game (rules, randomness, feedback), but the circle’s “can be redone” is cancelled: the money is real and so is the loss. Intermittent random rewards are most visible here." },
+  { n: "Pro esports", v: [4, 4, 3, 2], t: "It leaks into money, identity and social consequences almost at once, but participants are voluntary, the rules are public, and wins and losses can be redone, so it is an example of “a thin circle that is still carefully maintained”: referees, anti-cheating and player contracts all mend the wall of the circle." },
+];
+(function () {
+  const REF = ACT.map(a => a.v.slice());
+  const cur = ACT.map(a => a.v.slice());
+  let sel = 0;
+  const pick = $("mcPick"), svg = $("mcSvg"), dims = $("mcDims"), txt = $("mcTxt");
+  const sum = i => cur[i].reduce((a, b) => a + b, 0);
+  function buildDims() {
+    dims.innerHTML = "";
+    DIMS.forEach((d, di) => {
+      const row = document.createElement("div"); row.className = "dimrow";
+      row.innerHTML = '<span class="nm">' + d[0] + '</span><input type="range" min="0" max="4" step="1" aria-label="' + d[0] + '"><output>' + cur[sel][di] + '</output><span class="ds">' + d[1] + '</span>';
+      const r = row.querySelector("input"), o = row.querySelector("output");
+      r.value = cur[sel][di];
+      r.oninput = () => { cur[sel][di] = +r.value; o.textContent = r.value; draw(); };
+      dims.appendChild(row);
+    });
+  }
+  function drawPick() {
+    pick.innerHTML = "";
+    ACT.forEach((a, i) => {
+      const b = document.createElement("button"); b.className = "btn" + (i === sel ? " sel" : ""); b.textContent = a.n;
+      b.onclick = () => { sel = i; drawPick(); buildDims(); draw(); };
+      pick.appendChild(b);
+    });
+  }
+  function draw() {
+    const order = ACT.map((a, i) => i).sort((x, y) => sum(x) - sum(y));
+    let s = '<g class="rough" stroke="#2b2b3a" stroke-width="4"><line x1="50" y1="105" x2="650" y2="105"/><path d="M638 95 L652 105 L638 115" fill="none"/></g>';
+    s += '<text x="50" y="190" font-size="20" fill="#2b2b3a">Game (inside the circle)</text><text x="650" y="190" font-size="20" text-anchor="end" fill="#2b2b3a">Reality (real consequences)</text>';
+    order.forEach((i, k) => {
+      const x = 60 + sum(i) / 16 * 560, up = k % 2 === 0;
+      s += '<g class="rough"><circle cx="' + x + '" cy="105" r="' + (i === sel ? 17 : 11) + '" fill="' + (i === sel ? "#ffc078" : "#fff") + '" stroke="#2b2b3a" stroke-width="4"/></g>';
+      s += '<text x="' + x + '" y="' + (up ? 62 : 158) + '" font-size="' + (i === sel ? 21 : 18) + '" text-anchor="middle" fill="#2b2b3a"' + (i === sel ? ' font-weight="bold"' : "") + '>' + ACT[i].n + '</text>';
+    });
+    svg.innerHTML = s;
+    if (ACT[sel].n === 'Casino' && sum(sel) < 8 && $('c22_mcok')) $('c22_mcok').style.display = '';
+    const changed = cur[sel].some((v, i) => v !== REF[sel][i]);
+    txt.innerHTML = "<b>" + ACT[sel].n + "</b>: leak total " + sum(sel) + " / 16." + (changed ? "(You have adjusted the reference values, and the position above is computed from your judgment.)" : ACT[sel].t);
+  }
+  $("mcReset").onclick = () => { ACT.forEach((a, i) => (cur[i] = REF[i].slice())); buildDims(); draw(); };
+  drawPick(); buildDims(); draw();
+})();
+
+const SQ = [
+  { s: "Intrinsic interest", t: "With all points and rewards removed, the thing itself is still interesting or meaningful to some people.", w: 3, lo: "No interest at all", hi: "Interesting in itself", fix: "First find the real value of the thing (growth, recognition, connection with others) and then design; if you can’t find it, game elements are only “sugar coating,” and when the reward stops, the behavior stops." },
+  { s: "Hard-to-game measure", t: "Progress can be measured clearly and fairly, and is not easy to “game.”", w: 2, lo: "Very easy to game", hi: "Hard to game and fair", fix: "When a metric is easy to game, people optimize the number and not the purpose (Goodhart’s law). Consider several metrics, spot checks, peer confirmation, or not using public rankings." },
+  { s: "Voluntary", t: "Taking part is voluntary, and not taking part brings no penalty.", w: 2, lo: "Forced", hi: "Fully voluntary", fix: "A forced “game” will be taken as a performance review. Make participation optional, or ensure not taking part doesn’t affect evaluation; at least let people set their own difficulty." },
+  { s: "Low cost of failure", t: "Falling behind or failing is not embarrassing, doesn’t cost money and doesn’t affect evaluation.", w: 1, lo: "Very high cost", hi: "Almost none", fix: "Turn competition into comparison with “your past self” or teamwork, cut down on publicly showing the last place, and keep the magic circle’s virtue of “you can start over.”" },
+  { s: "Rewards support", t: "Rewards support the existing motivation (giving feedback, recognizing progress) and do not replace it (buying behavior).", w: 2, lo: "Buying behavior", hi: "Giving feedback", fix: "Change the reward from “you did it so you get this” to information that “you improved, you did well”; use less cash-like, predictable external rewards and more feedback that reflects ability." },
+  { s: "Accept the measure", t: "Participants understand and accept the measure, and don’t feel watched or controlled.", w: 2, lo: "Feel monitored", hi: "Understand and accept", fix: "Make the rules public, let participants help set them, and explain how data is used. A measure perceived as control weakens the sense of autonomy (self-determination theory)." },
+];
+const SC = [
+  { n: "Vocabulary", v: [6, 5, 9, 8, 5, 7], note: "A common practice is “streaks” and rankings. Take care to tell “opened the app” from “actually remembered it”; the closer the measure is to the latter, the better." },
+  { n: "Weekly-report check-ins at work", v: [2, 2, 1, 3, 2, 2], note: "One of the scenarios most likely to go wrong: check-in metrics are very easy to game, and employees usually don’t take part voluntarily, so rewards are easily perceived as surveillance." },
+  { n: "Waste sorting", v: [4, 5, 7, 7, 4, 5], note: "Community points redeemed for small gifts are common. The key is whether sorting can be verified as correct (to avoid formalism), and whether residents feel respected rather than supervised." },
+  { n: "Rehabilitation exercise", v: [5, 6, 8, 2, 7, 7], note: "Gamification is very valuable here (training is dull and feedback matters for persistence), but the cost of failure or pain is high, and safety and medical advice must come before “scoring.”" },
+  { n: "Class attendance", v: [3, 7, 1, 4, 3, 4], note: "Attendance is mandatory, and a points ranking may make students who fall behind even less willing to come. Consider team goals instead of individual rankings." },
+  { n: "Charity donations", v: [7, 6, 9, 6, 3, 5], note: "Donations are often spurred by a “leaderboard,” which sometimes raises amounts but can also turn kindness into rivalry; the relation between reward and motive needs special care." },
+  { n: "Daily steps", v: [6, 2, 9, 8, 4, 5], note: "Steps are easy to game (shaking the phone), and “enough steps” does not necessarily mean “healthier.” Pair them with other information to make the feedback richer." },
+  { n: "Customer-service ticket leaderboard", v: [4, 3, 2, 2, 2, 2], note: "A typical Goodhart risk: the number handled rises, but quality may fall (tickets closed in a rush). Add a quality metric and avoid publicly shaming the last place." },
+];
+(function () {
+  const pick = $("scPick"), body = $("scBody"), out = $("scOut");
+  let sc = 0; const val = SC[0].v.slice();
+  const bars = [];
+  SQ.forEach((q, i) => {
+    const d = document.createElement("div"); d.className = "c22q";
+    d.innerHTML = '<div class="qt"><span><b>' + (i + 1) + '. ' + q.s + '</b> ' + q.t + '</span><output>5</output></div>' +
+      '<input type="range" min="0" max="10" step="1" value="5" aria-label="' + q.s + '"><div class="ends"><span>' + q.lo + '</span><span>' + q.hi + '</span></div><div class="bar"><i></i></div>';
+    const r = d.querySelector("input"), o = d.querySelector("output");
+    r.oninput = () => { val[i] = +r.value; o.textContent = r.value; draw(); };
+    bars.push({ r, o, bar: d.querySelector(".bar i") });
+    body.appendChild(d);
+  });
+  function setScene(i) {
+    sc = i; SC[i].v.forEach((v, k) => { val[k] = v; bars[k].r.value = v; bars[k].o.textContent = v; });
+    pick.querySelectorAll(".btn").forEach((x, j) => x.classList.toggle("sel", j === i)); draw();
+  }
+  SC.forEach((s, i) => {
+    const b = document.createElement("button"); b.className = "btn"; b.textContent = s.n; b.onclick = () => setScene(i); pick.appendChild(b);
+  });
+  function draw() {
+    let got = 0, total = 0;
+    SQ.forEach((q, i) => { got += q.w * val[i]; total += q.w * 10; bars[i].bar.style.width = val[i] * 10 + "%"; bars[i].bar.style.background = val[i] >= 7 ? "#6fcf7f" : val[i] >= 4 ? "#ffc078" : "#ff8fab"; });
+    const pct = got / total * 100;
+    let lvl = pct >= 68 ? 2 : pct >= 45 ? 1 : 0; const notes = [];
+    if (val[2] < 3 && lvl === 2) { lvl = 1; notes.push("Your score isn’t low, but “not voluntary” is a fatal flaw, so the best it can be rated is “Careful.”"); }
+    if (val[0] < 3 && val[4] < 3) { lvl = 0; notes.push("“No intrinsic interest” plus “rewards buying behavior” is the combination most prone to backfire, and is rated directly “Not advised.”"); }
+    const V = [["❌ Not advised", "bad"], ["⚠️ Careful", "mid"], ["✅ Suitable", "good"]][lvl];
+    const col = ["#ffb3c6", "#ffc078", "#b6e8a8"][lvl];
+    const fixes = SQ.map((q, i) => ({ q, i, gap: q.w * (6 - val[i]) })).filter(o => val[o.i] < 5).sort((a, b) => b.gap - a.gap);
+    if (SC[sc].n === 'Customer-service ticket leaderboard' && lvl >= 1 && $('c22_scok')) $('c22_scok').style.display = '';
+    out.innerHTML = '<div class="verdict ' + V[1] + '">' + V[0] + ' (' + Math.round(pct) + ' / 100)</div>' +
+      '<div class="meter"><i style="background:' + col + ';width:' + pct + '%"></i></div>' +
+      notes.map(n => "<p>" + n + "</p>").join("") +
+      "<p><b>Scenario note (" + SC[sc].n + "):</b>" + SC[sc].note + "</p>" +
+      (fixes.length ? "<p><b>Weakest links to fix first (by weight × gap):</b></p>" + fixes.slice(0, 3).map(o => '<div class="fix"><b>' + o.q.s + ' (weight ' + o.q.w + ', now ' + val[o.i] + '):</b>' + o.q.fix + "</div>").join("") : "<p>No obvious weak links. Still, start with a small trial and watch whether anyone is “gaming” it.</p>") +
+      '<p class="small">This is a simplified rule-based evaluator; the weights and thresholds are ones I set (illustrative); change the scenario and drag sliders to see how the conclusion changes.</p>';
+  }
+  setScene(0);
+})();
+
+GD.mountQuiz($("quiz"), [
+  { q: "What is the most accurate description of the “magic circle” kind of place Huizinga spoke of?", opts: ["The magic system in a game", "A temporary, rule-bound world that a game marks out within reality", "The player’s game account", "A game company’s business model"], a: 1, why: "The magic circle is the temporary space a game marks out in reality: everyone agrees to act by the game’s rules and not everyday rules." },
+  { q: "By Carse’s classification, which of these is more like an “infinite game”?", opts: ["A game of chess", "A World Cup final", "Children playing house", "An exam"], a: 2, why: "Playing house has no winner and no end, and the rules can change to keep the game going. The others all have a clear end and a winner." },
+  { q: "[Why] Why can promising a child who already loves drawing “a prize for drawing” sometimes make them draw less afterward?", opts: ["The child was scared by the reward", "The reward is perceived as control, turning “I like it” into “I do it for the prize,” and weakening intrinsic motivation", "The child was tired", "A reward always raises motivation, so this is impossible"], a: 1, why: "This is the overjustification effect (central to self-determination theory): when a reward is perceived as control, it weakens the sense of autonomy and intrinsic motivation. Note that the size of the effect varies by situation." },
+  { q: "Which of these most likely shows “the magic circle has leaked”?", opts: ["Friends play chess, and the loser treats to candy", "Game gear can be sold for real money outside the game", "A child builds a castle in a sandbox", "A player plays the villain in a game"], a: 1, why: "When items in a game get a real price, monetary consequences pass through the wall of the circle. In the other examples the consequences remain inside." },
+  { q: "[Why it was invented] What difficulty was Wittgenstein’s “family resemblance” proposed to answer?", opts: ["How to design better rewards", "Why “games” like chess, cards, ball games and the Olympics have no single shared essence", "Whether games should charge money", "Whether games make people addicted"], a: 1, why: "Scholars wanted to give “game” a definition everyone accepts, but were always overturned by counterexamples; his answer was that such concepts work through overlapping similarities, not a single essence." },
+  { q: "[Why it was invented] What was the main motive when Deterding et al. defined “gamification” in 2011?", opts: ["To prove gamification surely works", "Points and badges were being added to products everywhere, and it had to be distinguished from concepts such as “making a whole game”", "To ban gamification", "To invent a new points system"], a: 1, why: "They wanted to clarify the terms: gamification is the use of game design elements in non-game contexts, different from neighboring concepts such as serious games and playful design." },
+  { q: "[Why] Why does a leaderboard often motivate only those near the top, making the middle and lower ranks want to quit?", opts: ["Because the leaderboard is too flashy", "Social comparison tends toward those similar to oneself, and the top, far away, offers no reference for the middle and lower ranks", "Because people in the middle and lower ranks don’t like games", "Because the ranking is random"], a: 1, why: "Festinger’s social comparison theory: people prefer to compare with those similar to them. Segmented boards and friend boards make “the next place” visible, which is usually more motivating." },
+  { q: "What is the relation between the four pillars of goals, rules, feedback and voluntariness, and “family resemblance”?", opts: ["The four pillars are the final definition of a game", "The four pillars are practical tools, and the concept of a game itself may have no strict definition", "Wittgenstein proved games don’t exist", "There is no relation at all"], a: 1, why: "Family resemblance reminds us that a concept like “game” has no single shared essence, so the four pillars are tools to help design, and edge cases call for flexibility." },
+]);
+</script>
+</body>
+</html>

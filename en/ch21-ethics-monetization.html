@@ -1,0 +1,633 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Chapter 21: Ethics &amp; Monetization</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+  .judge{min-height:5.5em}
+  .jbtns{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+  .jbtns .btn{flex:1;min-width:110px;margin:0}
+  .jres{display:none;margin-top:8px;padding:8px 12px;border:2px dashed var(--ink);border-radius:10px;background:var(--blue);font-size:.98rem}
+  .jres.show{display:block}
+  .jres.good{background:var(--green)}
+  .jres.bad{background:#ffc9c9}
+  .c21strip{font-family:monospace;font-size:.95rem;letter-spacing:1px;word-break:break-all;min-height:1.6em;background:#fff;border:2px solid var(--ink);border-radius:8px;padding:2px 8px;margin:6px 0}
+  .c21strip .h{color:#1d7a38;font-weight:700}.c21strip .m{color:#6b6b78}
+  .c21fc{background:#fff;border:3px solid var(--ink);border-radius:14px;padding:10px 14px;margin:12px 0}
+  .c21fc .copy{font-size:1.05rem;margin:.3em 0;padding:6px 10px;background:#fffef7;border-left:5px solid var(--orange)}
+  .c21fc label{display:inline-block;margin-right:14px;font-size:.95rem}
+  .c21fc .vd{display:none;margin-top:8px;padding:8px 12px;border:2px dashed var(--ink);border-radius:10px;font-size:.95rem;background:var(--blue)}
+  .c21fc .vd.show{display:block}.c21fc .vd.good{background:var(--green)}.c21fc .vd.bad{background:#ffc9c9}
+  .c21chk{margin:6px 0}.c21chk label{display:block;padding:4px 8px;border-radius:8px;cursor:pointer}
+  .c21chk label:hover{background:#fff7cf}
+  .c21chk h4{margin:.8em 0 .1em;font-family:var(--hand);font-size:1.25rem;font-weight:400}
+  .c21bar{height:22px;border:2.5px solid var(--ink);border-radius:10px;background:#fff;overflow:hidden;margin:6px 0}
+  .c21bar span{display:block;height:100%;background:var(--green);transition:width .2s}
+  .c21opts{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
+  .c21try{transition:background .3s}
+  .c21form{background:#fff;border:3px solid var(--ink);border-radius:14px;padding:10px 14px;margin:10px 0}
+</style>
+</head>
+<body data-ch="21">
+<main class="wrap">
+  <div class="hero">
+    <div class="txt">
+      <span class="badge">Chapter 21</span>
+      <h1>Ethics &amp; Monetization</h1>
+      <p class="sub">A game has to make money, but not off its players’ weaknesses.</p>
+    </div>
+    <svg viewBox="0 0 190 150" class="rough" aria-hidden="true">
+      <circle cx="95" cy="75" r="48" fill="#ffe58a" stroke="#2b2b3a" stroke-width="5"/>
+      <path d="M95 50 V100 M80 62 q15 -12 30 0 q-30 18 0 36 q-15 6 -30 -6" fill="none" stroke="#2b2b3a" stroke-width="5" stroke-linecap="round"/>
+    </svg>
+  </div>
+
+  <div class="goals">
+    <h3>Learning goals</h3>
+    <ul>
+      <li>Tell the four business models apart, say how each in turn shapes game design, and read what a retention curve says.</li>
+      <li>Explain why free-to-play with in-app purchases appeared, and why variable rewards, supernormal stimuli, loss aversion and default options make people want to buy more and find it harder to stop.</li>
+      <li>Check a paid design against the list “transparent, optional, easy to leave, protects vulnerable users,” and tell legitimate marketing from manipulation.</li>
+    </ul>
+    <span class="time">about 45 min</span>
+  </div>
+
+  <div class="sec"><span class="n">1</span><h2><span class="tag what">What it is</span>Who pays? Four business models</h2></div>
+  <p>Has this happened to you: you hardly feel like playing anymore, yet because of that “12 days in a row” on the screen you drag yourself up at midnight to tap once? That small reluctance isn’t weak willpower; someone put something into the design. To understand what, first know where the money comes from, because <b>how money is collected shapes the game itself in return</b>.</p>
+  <div class="grid2">
+    <div class="card y"><h3>💳 Buy-to-play</h3><p>The player pays once. The design must make the player believe <b>before buying</b> and feel satisfied <b>after buying</b>. The experience can be wrapped up completely, with no need to stretch it out on purpose.</p></div>
+    <div class="card b"><h3>📅 Subscription</h3><p>Paying monthly or yearly, the player must keep feeling it is “worth it.” The design leans toward <b>steady content updates</b>, so people don’t want to cancel.</p></div>
+    <div class="card g"><h3>🆓 Free + in-app purchases</h3><p>Download for free first, then have some players spend money (cosmetics, convenience, content packs). The user base is large, but the design must <b>serve both paying and non-paying players</b> at once.</p></div>
+    <div class="card p"><h3>📺 Ads</h3><p>Money comes from showing ads, and the more people watch and the longer, the better. Ads <b>interrupt the experience</b>, so a common approach is to let players <b>watch voluntarily</b> in exchange for a reward.</p></div>
+  </div>
+  <p>In reality they are often mixed, for example “buy-to-play + paid expansion packs” or “free + in-app purchases + optional ads.” The five examples below show which way each model pushes the design.</p>
+  <div class="eg" data-ic="💳"><span data-illus="c21_buyout"></span><div class="egt"><b>A buy-to-play indie game</b>: the player watches videos and reads reviews on the store page to decide whether to buy. The designer’s pressure is on “making people believe before buying,” and the game can end beautifully at the credits, with no need to pad it to stretch the playtime.</div></div>
+  <div class="eg" data-ic="📅"><span data-illus="c21_m_sub"></span><div class="egt"><b>A monthly-subscription online world</b>: every month the player decides again “is it still worth it,” so the designer must keep updating content and tending the community. The reason to pay is “this world keeps being open.”</div></div>
+  <div class="eg" data-ic="🆓"><span data-illus="c21_f2p"></span><div class="egt"><b>Free + in-app purchases</b>: everyone can come in, and a few paying players keep everyone’s servers running. The designer must look after both paying and non-paying players, and non-paying players are part of the atmosphere too.</div></div>
+  <div class="eg" data-ic="📺"><span data-illus="c21_ads"></span><div class="egt"><b>Watching ads voluntarily for a reward</b>: when the player dies, they can choose to watch a 15-second ad to revive. The ad becomes one of the player’s options, not an interruption forced in.</div></div>
+  <div class="eg bad" data-ic="⚔️"><span data-illus="c21_p2w"></span><div class="egt"><b>Counterexample: pay to decide who wins</b>: free + in-app purchases itself is fine; the bad part is that bought stats directly crush those who don’t pay, making them “sparring partners.” Free players become props for paying players’ experience, and what is missing is the pillar of “fair competition.”</div></div>
+
+  <div class="sec"><span class="n">2</span><h2><span class="tag what">What it is</span>Retention: do players come back?</h2></div>
+  <p>Whichever model is used, the team has to answer one question: after a player’s first visit, will they come back? The answer is called <b><span class="term" tabindex="0" data-def="Retention: of the players who first enter the game, the share who return after N days.">retention</span></b>, and is usually read at three points:</p>
+  <div class="grid3">
+    <div class="card y mini"><div class="ico">1️⃣</div><h3>Day-1 retention</h3><p>Of those who came on day 1, the share who came back on day 2. It reflects <b>the first impression and the onboarding</b>.</p></div>
+    <div class="card p mini"><div class="ico">7️⃣</div><h3>Day-7 retention</h3><p>It reflects <b>whether a habit has formed</b>: are there enough goals and variety?</p></div>
+    <div class="card b mini"><div class="ico">3️⃣0️⃣</div><h3>Day-30 retention</h3><p>It reflects <b>long-term value</b>: depth of content, social ties, the growth system.</p></div>
+  </div>
+  <div class="card">
+    <svg viewBox="0 0 700 270" width="100%" role="img" aria-label="A typical retention curve: it drops sharply over the first few days and then levels off">
+      <g class="rough" stroke="#2b2b3a" stroke-width="4" fill="none" stroke-linecap="round">
+        <path d="M70 20 V220 H660"/>
+        <path d="M70 30 C90 130 120 150 170 168 C260 190 400 200 650 206" stroke="#e5484d" stroke-width="5"/>
+      </g>
+      <g font-size="18" fill="#2b2b3a">
+        <text x="62" y="30" text-anchor="end">100%</text><text x="62" y="224" text-anchor="end">0</text>
+        <text x="110" y="244" text-anchor="middle">Day 1</text><text x="200" y="244" text-anchor="middle">Day 7</text><text x="560" y="244" text-anchor="middle">Day 30</text>
+        <text x="330" y="110">Big early drop → fix first impression</text>
+        <text x="330" y="150">Then flat → true fans remain</text>
+      </g>
+      <g fill="#ffe58a" stroke="#2b2b3a" stroke-width="3"><circle cx="110" cy="130" r="9"/><circle cx="200" cy="175" r="9"/><circle cx="560" cy="203" r="9"/></g>
+    </svg>
+    <p class="small">This is a <b>schematic</b>: the curve of most games has the shape “steep fall, then flat,” and the exact numbers vary with the genre and channel.</p>
+  </div>
+  <div class="eg" data-ic="1️⃣"><span data-illus="c21_onboard"></span><div class="egt"><b>Onboarding decides day 1</b>: someone who gets through the tutorial smoothly on the first day and gets a first small achievement is more willing to come back tomorrow. Day-1 retention is mostly decided at this step.</div></div>
+  <div class="eg" data-ic="🏋️"><span data-illus="c21_gym"></span><div class="egt"><b>Retention in daily life: a gym annual pass</b>: the moment you sign up feels like “conversion done,” and real retention is how many times you came in the next thirty days. Having signed up is not going often, and having downloaded a game is not playing it often.</div></div>
+  <div class="eg bad" data-ic="🔥"><span data-illus="c21_streak"></span><div class="egt"><b>Counterexample: retention propped up by streak-breaking penalties</b>: to keep a 12-day login streak from resetting, you crawl out of bed at midnight to tap. The retention number looks better, but you are not “wanting to play,” you are “afraid to lose.” This kind of retention doesn’t last, and below you will see how it hurts trust.</div></div>
+
+  <div class="sec"><span class="n">3</span><h2><span class="tag what">What it is</span>The tension between monetization and experience</h2></div>
+  <p>People who make free games often face a reality: to make money, players must be willing to pay. But if the reason to spend comes from “discomfort,” trust with players is lost in the long run. A spectrum helps judge where you stand:</p>
+  <div class="card">
+    <svg viewBox="0 0 700 220" width="100%" role="img" aria-label="A spectrum from selling choice to selling pain">
+      <g class="rough" stroke="#2b2b3a" stroke-width="4">
+        <rect x="30" y="80" width="200" height="50" fill="#b6e8a8"/><rect x="230" y="80" width="240" height="50" fill="#ffe58a"/><rect x="470" y="80" width="200" height="50" fill="#ffb3c6"/>
+      </g>
+      <g font-size="19" fill="#2b2b3a" text-anchor="middle">
+        <text x="130" y="112">Selling choice / fun</text><text x="350" y="112">Gray area</text><text x="570" y="112">Selling pain / anxiety</text>
+        <text x="130" y="55">Cosmetics, DLC</text><text x="350" y="55">Speed-ups, random</text><text x="570" y="55">Sell the cure</text>
+        <text x="130" y="165">Optional, clear price</text><text x="350" y="165">Check the details</text><text x="570" y="165">Exploits fear, impulse</text>
+        <text x="350" y="205">← Healthier         Less appropriate →</text>
+      </g>
+    </svg>
+  </div>
+  <div class="sticky">A simple self-check: <b>if the player saw clearly what I am doing, would they still find it fair?</b> If the answer is “no,” redesign it.</div>
+
+  <div class="sec"><span class="n">4</span><h2><span class="tag what">What it is</span>Dark patterns: pushing players toward “what they didn’t want to do”</h2></div>
+  <p>The term <b><span class="term" tabindex="0" data-def="Dark patterns: designs that use the interface or mechanics to induce users to do what they didn’t want to do.">dark patterns</span></b> was coined in 2010 by the British user-experience designer Harry Brignull to describe designs that use the interface or mechanics to induce people to do what they didn’t want to (spend more money, spend more time, get trapped in a subscription). The point of knowing them is to avoid using them yourself, and to recognize them when you are a player.</p>
+  <div class="grid2">
+    <div class="card o"><h3>⏰ FOMO (fear of missing out)</h3><p><span class="term" tabindex="0" data-def="Fear of missing out: the anxiety of missing a limited-time chance, which makes people rush to act.">FOMO</span>: limited time, limited quantity, “once it’s gone, it’s gone.” Real scarcity is legitimate information; a <b>fake countdown</b> is deception.</p></div>
+    <div class="card p"><h3>😨 Loss framing</h3><p>“Miss a day and it resets,” “your streak is about to end”: describing “not doing it” as “losing,” exploiting that people are more sensitive to loss.</p></div>
+    <div class="card y"><h3>⚓ Sunk cost</h3><p>“You’ve already put in so much…” This is the <span class="term" tabindex="0" data-def="Investment already paid and unrecoverable; a rational decision should look only at future gains and losses, but people are often led by it.">sunk-cost</span> effect: you keep paying so as not to waste what you paid before, even when you are no longer happy.</p></div>
+    <div class="card b"><h3>♾️ No stopping point</h3><p>With no natural end, the player must <b>actively decide</b> in order to stop, instead of the design saying “this stretch is over.”</p></div>
+  </div>
+  <p>These tricks share one flaw: once they are treated as “ways to raise the numbers,” they reinforce themselves. The picture below is a very typical loop.</p>
+  <div class="card">
+    <svg viewBox="0 0 700 300" width="100%" role="img" aria-label="The pressure-metric loop: add streak penalties and time pressure, and the short-term retention number improves; players are forced to come, so satisfaction and trust fall, fewer people stay naturally, and so the number depends even more on pressure, back to adding pressure">
+      <defs><marker id="c21ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10z" fill="#2b2b3a"/></marker></defs>
+      <g class="rough" stroke="#2b2b3a" stroke-width="3.5" fill="none" stroke-linecap="round">
+        <rect x="20" y="24" width="250" height="80" rx="12" fill="#ffe58a"/><rect x="430" y="24" width="250" height="80" rx="12" fill="#b6e8a8"/>
+        <rect x="430" y="170" width="250" height="80" rx="12" fill="#ffc9c9"/><rect x="20" y="170" width="250" height="80" rx="12" fill="#ffb3c6"/>
+      </g>
+      <g stroke="#2b2b3a" stroke-width="3.5" fill="none" marker-end="url(#c21ah)">
+        <path d="M274 64 H426"/><path d="M555 108 V166"/><path d="M426 210 H274"/><path d="M145 166 V108"/>
+      </g>
+      <g font-size="20" text-anchor="middle" fill="#2b2b3a">
+        <text x="145" y="60">Add streak penalties,</text><text x="145" y="86">time pressure</text>
+        <text x="555" y="60">Short-term retention number</text><text x="555" y="86">improves</text>
+        <text x="555" y="206">Players are forced to come</text><text x="555" y="232">Satisfaction, trust fall</text>
+        <text x="145" y="206">Fewer stay naturally</text><text x="145" y="232">More pressure needed</text>
+        <text x="350" y="148" font-size="19" font-weight="700">Looks good short-term, hurts trust long-term</text>
+        <text x="350" y="284" font-size="18">A positive feedback loop that turns by itself</text>
+      </g>
+    </svg>
+  </div>
+  <div class="eg" data-ic="⏳"><span data-illus="c21_fakeclock"></span><div class="egt"><b>FOMO: the resetting countdown</b>: the gift-pack page shows “23:59:59,” but it resets at midnight every day and the same pack comes back tomorrow. The urgency is faked, and the player is tricked into deciding quickly.</div></div>
+  <div class="eg" data-ic="🌀"><span data-illus="c21_maze"></span><div class="egt"><b>Easy to subscribe, hard to cancel</b>: subscribing takes one step, but canceling goes through several gates of “Sure?” “Really?” “Think again.” The door in and the door out are different widths, which wears down the player’s patience rather than earning their consent.</div></div>
+  <div class="eg" data-ic="⚓"><span data-illus="c21_sunk"></span><div class="egt"><b>Sunk cost: “I’ve played 30 hours already”</b>: those 30 hours are gone, and whether to continue should look only at whether the next 30 hours are worth it. But “not playing would be a waste” makes people continue even when they are not happy.</div></div>
+  <div class="eg bad" data-ic="🛍️"><span data-illus="c21_honest"></span><div class="egt"><b>Counterexample: clearly priced cosmetics</b>: three cosmetics each with a price, and the game plays fully without buying. The player sees clearly, can decline, and is not pushed to decide. It is still “selling things,” but it lacks exactly the deception and coercion of dark patterns.</div></div>
+
+  <div class="sec"><span class="n">5</span><h2><span class="tag what">What it is</span>The floor of design ethics, and what has already happened in reality</h2></div>
+  <div class="grid3">
+    <div class="card g mini"><div class="ico">🧒</div><h3>Protecting minors</h3><p>Spending limits, parental controls, double confirmation of payment, play-time reminders.</p></div>
+    <div class="card y mini"><div class="ico">🔍</div><h3>Transparent odds</h3><p>Random paid rewards must <b>publish the odds</b> and the pity rules.</p></div>
+    <div class="card p mini"><div class="ico">🧘</div><h3>No manufactured anxiety</h3><p>No fake countdowns, shaming copy or punishing check-ins to push players. Let players leave without worry.</p></div>
+  </div>
+  <p>Besides: canceling a subscription should be as easy as subscribing; prices and content should be spelled out; paying should not turn non-paying players into “sparring partners.” This is not just a gentleman’s agreement, and regulators in many places are moving this way, with fast change. Here are a few things that have already happened (laws differ by place; follow current local rules):</p>
+  <ul>
+    <li><b>China</b>: from May 1, 2017, online game operators must publish the probabilities of random-draw items; in August 2021 the National Press and Publication Administration set that online game services for minors are limited to 20:00–21:00 on Fridays, Saturdays, Sundays and legal holidays, one hour in all.</li>
+    <li><b>Belgium</b>: in April 2018 the Gaming Commission ruled that the loot boxes in <i>FIFA 18</i>, <i>Counter-Strike: Global Offensive</i> and <i>Overwatch</i> violated gambling law; <i>Star Wars Battlefront II</i>, after adjustment by EA, was not so ruled.</li>
+    <li><b>United States</b>: in December 2022 the Federal Trade Commission reached a settlement with Epic Games, of which 245 million dollars goes to refunds. The charges included using dark patterns to induce players (including children) to buy by mistake, such as a button layout that charged on a single accidental tap (order finalized March 2023). In January 2025 the commission proposed a 20 million dollar settlement with Cognosphere, the developer of <i>Genshin Impact</i>: charging that it misled players about gacha odds and made the virtual-currency purchase flow confusing, and requiring that loot boxes not be sold to people under 16 without parental consent. The company said it disagreed with some of the allegations but agreed to settle.</li>
+  </ul>
+  <div class="src">Sources: Harry Brignull registered darkpatterns.org and coined the term in July 2010 (see the author introduction at deceptive.design); China: the Ministry of Culture’s rules on publishing the odds of random-draw items (in force from May 1, 2017), and the National Press and Publication Administration’s notice of August 30, 2021 on further strict management to effectively prevent minors from becoming addicted to online games (reported by Xinhua the same day); the Belgian Gaming Commission’s April 2018 findings (media reports); FTC press releases of December 2022 (Epic Games) and January 17, 2025 (Cognosphere).</div>
+
+  <div class="sec"><span class="n">6</span><h2><span class="tag origin">How it was invented</span>How did games learn to charge “for free”?</h2></div>
+  <div class="story">
+    <h3>Each way of charging was invented to solve the trouble the last one left</h3>
+    <p>Looking back at this history, one line is very clear: every new way of charging appeared because the old one had an unbearable flaw. At the arcade, one coin one play, the reason to pay could not be plainer; but moved into the home, players had to buy a whole boxed game at once and could not try it before buying, and those who bought a dud could only accept their bad luck.</p>
+    <p>So came the first remedy: let players play first. Later worlds grew bigger and servers cost money every month, a one-off purchase could not keep up with the continuing costs, and it changed to monthly subscription. Later still came the phone, where having to pay before downloading a game was too high a barrier, and “free to download, sell inside” became the new way. Each step solved an old problem and brought a new one.</p>
+  </div>
+  <div class="card">
+    <h3>🤔 Guess first, then reveal</h3>
+    <p>You are selling a new game nobody has heard of, and players can’t try it before buying. How would you charge?</p>
+    <div class="c21opts" id="c21_guess"></div>
+    <div class="msg" id="c21_gmsg"></div>
+  </div>
+  <div class="timeline">
+    <div class="ev hasimg"><span data-illus="c21_arcade"></span><div><b class="yr">The arcade era</b> One coin, one play, with payment directly tied to fun, clear to all. But it charged per play, which wouldn’t work once moved into the living room: a home game had to be bought whole, and one could not tell before buying whether it was any good.</div></div>
+    <div class="ev hasimg"><span data-illus="c21_shareware"></span><div><b class="yr">1993</b> In December, id Software released the first episode of <i>Doom</i> (nine levels) as free shareware, to be copied freely, with the other two episodes by mail order. The key insight: <b>let players play first, then decide whether to pay</b>. It spread extremely fast, reportedly jamming university servers as soon as it was uploaded.</div></div>
+    <div class="ev hasimg"><span data-illus="c21_server"></span><div><b class="yr">2004</b> <i>World of Warcraft</i> launched in November with a monthly subscription (the monthly card then about 14.99 dollars, the boxed game’s suggested retail price 49.99 dollars including one month). An online world has to be open all the time and its costs are continuing, so the charge also became continuing. This brought a new problem: each month the player decides again whether it is worth it, and designers had to keep holding people with content.</div></div>
+    <div class="ev hasimg"><span data-illus="c21_iap"></span><div><b class="yr">2009</b> In October Apple allowed free apps to use in-app purchases too. Before that only paid apps could sell in-app purchases, and developers had to make a separate free “Lite version.” From then on “free to download, sell inside” became the mainstream approach for mobile games, and brought new pressure: only some people pay, so a team has to find ways to get more people to part with money.</div></div>
+    <div class="ev hasimg"><span data-illus="c21_kompu"></span><div><b class="yr">2012</b> A kind of draw that required “collecting a whole set to redeem a grand prize” (known as kompu gacha) became popular in Japanese social games: random card draws, with the last card slow to arrive. Complaints rose noticeably, the Consumer Affairs Agency said the practice might be illegal, and six big companies then announced they would drop it. Random paid mechanics were watched by regulators for the first time.</div></div>
+    <div class="ev hasimg"><span data-illus="c21_odds"></span><div><b class="yr">2017—2018</b> From May 1, 2017, China required the odds of random items to be published; in April 2018 Belgium ruled the loot boxes of some games to violate gambling law. From “is it fun” to “is it fair,” the rules began to be written into law.</div></div>
+  </div>
+  <div class="src">Sources: <i>Doom</i> shareware release and upload on December 10, 1993: Doom’s history (DoomWiki, Wikipedia “Doom (1993 video game)”); <i>World of Warcraft</i> price and launch date: Blizzard’s November 4, 2004 press release and reports of the time; Apple’s email to developers on October 15, 2009 (reported by TechCrunch and Macworld); the Japanese kompu gacha affair: industry and media reports of May 2012 (The Next Web and others). For national regulatory details see the sources in the previous section.</div>
+
+  <div class="sec"><span class="n">7</span><h2><span class="tag why">Why it works</span>Why does “you can’t tell when it will hit” make it harder to stop? Reinforcement schedules</h2></div>
+  <div class="withimg">
+    <span data-illus="c21_skinner"></span>
+    <div>
+      <p>Start with an awkward question: why do some games make you want to close them and yet “try one more time”? Psychologists observed something like this long ago in experiment boxes.</p>
+      <p>B. F. Skinner and his collaborators had animals press a lever for food and then changed the rule for “when to give the reward”: a reward after every N presses is a <b>fixed ratio</b>; a reward on average every N presses, with which one unpredictable, is a <b>variable ratio</b>. Both rules keep the animals pressing, but the latter is usually steadier, and fades more slowly when the rewards are stopped.</p>
+      <p>You can probably guess that random drops and gacha in games look a lot like this.</p>
+    </div>
+  </div>
+  <div class="why-box">
+    <h3>Reinforcement schedules: whoever knows the principle holds the power</h3>
+    <p>Remember dopamine? Schultz, Dayan and Montague summarized in their 1997 paper that the dopamine neurons of primates seem to encode “prediction error”: the response is strongest to outcomes better than expected. A variable reward makes every pull “uncertain,” and every pull carries some prediction error, a common explanation of why it is hard to stop. The direct evidence comes mainly from animals and controlled experiments, and no conclusion can be drawn directly about any particular player.</p>
+    <p>What matters is responsibility. Knowing “how to make behavior last longer” means having the power to <b>shape players’ behavior</b>. The power itself is neither right nor wrong, but at least three things must be kept apart: ① <b>can ≠ should</b>: using it to make fights more surprising and using it to make people spend and unable to stop are two different things. ② <b>Take double care when tied to real money</b>: random rewards plus payment already have the shape of gambling, and need published odds and spending caps. ③ <b>Mind who it is for</b>: the same mechanism affects adults and minors, and impulsive people, differently.</p>
+    <div class="src">Sources: Skinner, <i>The Behavior of Organisms</i> (1938); Ferster &amp; Skinner, <i>Schedules of Reinforcement</i> (1957); Schultz, Dayan &amp; Montague, “A Neural Substrate of Prediction and Reward”, Science 275 (1997); for research on slot-machine design see Natasha Dow Schüll, <i>Addiction by Design</i> (2012). Conclusions from animal experiments cannot be equated directly with effects on people; their ideas are borrowed here to discuss design responsibility.</div>
+  </div>
+  <div class="board">
+    <p><b>Experiment: two “slot machines” with the same average payout frequency.</b> Machine A <b>pays out on every 5th pull</b>; machine B <b>pays out with 20% probability on each pull</b> (also one in 5 on average). Pull each for a while, watch the number of “consecutive empty pulls,” and convert the spending into real money.</p>
+    <label class="ctl">Cost per pull (yuan)<output id="c21po">6</output></label>
+    <input type="range" id="c21p" min="1" max="30" step="1" value="6">
+    <div class="grid2">
+      <div class="card y">
+        <h3>Machine A: fixed ratio</h3>
+        <div class="c21strip" id="c21sa"></div>
+        <span class="stat">Pulls <b id="c21na">0</b></span><span class="stat">Payouts <b id="c21ha">0</b></span><span class="stat">Longest dry run <b id="c21la">0</b></span>
+        <div><button class="btn" id="c21ba">🎰 Pull once</button></div>
+      </div>
+      <div class="card p">
+        <h3>Machine B: variable ratio</h3>
+        <div class="c21strip" id="c21sb"></div>
+        <span class="stat">Pulls <b id="c21nb">0</b></span><span class="stat">Payouts <b id="c21hb">0</b></span><span class="stat">Longest dry run <b id="c21lb">0</b></span>
+        <div><button class="btn pink" id="c21bb">🎰 Pull once</button></div>
+      </div>
+    </div>
+    <button class="btn alt" id="c21auto">⏩ Auto-pull 100 each</button>
+    <button class="btn green" id="c21rst">Reset</button>
+    <div class="msg" id="c21msg" style="font-size:1.05rem;font-family:var(--body)">Pull a few times and see.</div>
+  </div>
+  <div class="sticky c21try" id="c21_tm">Try it: click “Auto-pull 100 each,” compare the two machines’ longest dry runs, then drag “Cost per pull” to 30 and see how much money that dry stretch is worth.</div>
+
+  <div class="sec"><span class="n">8</span><h2><span class="tag why">Why it works</span>More tempting than nature: the supernormal stimulus</h2></div>
+  <div class="withimg rev">
+    <span data-illus="c21_gullegg"></span>
+    <div>
+      <p>Junk food is sweeter and greasier than fruit and “hits harder,” yet does the body no more good. Our desires evolved in the natural environment, and meeting an exaggerated artificial stimulus, they are pulled further than “what is really good for us.”</p>
+      <p>The ethologist Niko Tinbergen and colleagues saw this in seabirds. Herring gull chicks peck at a red spot on the parent’s bill to beg for food, and a red stick with white thin rings drew even more pecking than a realistic model of a bird’s head. Offered dummy eggs, birds often prefer to sit on one larger and more brightly colored than their own.</p>
+      <p>He called this <b>the supernormal stimulus</b>: an artificial stimulus stronger than the natural range may be more attractive than the real thing.</p>
+    </div>
+  </div>
+  <div class="why-box">
+    <h3>The supernormal stimulus</h3>
+    <p><b>Link to games:</b> some people use this analogy to discuss games, short videos and processed food: do ever-bigger visuals, sound effects, reward pop-ups and number inflation let “wanting” run ahead of “satisfaction”? Note this is only an analogy, not a verdict: it does not equal “games = addiction,” and most people play games with no problem. It only reminds designers: <b>turning up the intensity is easy, but “more stimulating” does not equal “more satisfying”</b>.</p>
+    <div class="src">Sources: Tinbergen, <i>The Study of Instinct</i> (1951), <i>The Herring Gull’s World</i> (1953); for popular accounts extending the concept to human behavior see Deirdre Barrett, <i>Supernormal Stimuli</i> (2010), an analogical application that the field has not fully accepted. The “innate releasing mechanism” that Tinbergen and Lorenz used to explain these phenomena is no longer widely accepted today, but the observed phenomena themselves still stand. A related but different theory is Berridge and Robinson’s distinction between “wanting” and “liking” (from the 1990s).</div>
+  </div>
+  <div class="board">
+    <label class="ctl">Stimulus intensity (0 = none, 100 = the strongest artificial stimulus)<output id="c21xo">30</output></label>
+    <input type="range" id="c21x" min="0" max="100" step="1" value="30">
+    <label class="ctl">Upper limit of the natural range (where the strongest stimulus met in reality lies)<output id="c21to">40</output></label>
+    <input type="range" id="c21t" min="30" max="80" step="1" value="40">
+    <svg viewBox="0 0 560 240" width="100%" role="img" aria-label="Concept diagram of stimulus intensity against satisfaction and attraction">
+      <rect x="50" y="10" width="490" height="180" fill="#fffef7" stroke="#2b2b3a" stroke-width="3"/>
+      <rect id="c21nat" x="50" y="10" width="100" height="180" fill="#b6e8a8" fill-opacity=".35"/>
+      <polyline id="c21sat" fill="none" stroke="#3aa655" stroke-width="5" stroke-linejoin="round"/>
+      <polyline id="c21att" fill="none" stroke="#e5484d" stroke-width="5" stroke-linejoin="round"/>
+      <line id="c21cur" x1="0" y1="10" x2="0" y2="190" stroke="#2b2b3a" stroke-width="3" stroke-dasharray="5 4"/>
+      <text id="c21ymax" x="38" y="24" text-anchor="end" font-size="16">100</text><text x="38" y="194" text-anchor="end" font-size="16">0</text>
+      <text x="295" y="228" text-anchor="middle" font-size="16">Intensity → (green: satisfied, red: attraction)</text>
+    </svg>
+    <div>
+      <span class="stat">Satisfaction <b id="c21sv">-</b></span><span class="stat">Attraction <b id="c21av">-</b></span><span class="stat">Gap (attraction − satisfaction) <b id="c21gv">-</b></span><span class="stat">10 more intensity: extra satisfaction <b id="c21ds">-</b></span>
+    </div>
+    <div class="msg" id="c21sm" style="font-size:1.05rem;font-family:var(--body)"></div>
+  </div>
+  <p class="small"><b>A conceptual sketch, not measured data:</b> satisfaction = 100 × (1 − e^(−3x/T)), with <b>diminishing returns</b> as intensity grows (T is the natural limit); attraction = 100 × x/T, which <b>keeps rising</b> with intensity (taking 100 at the natural limit as reference). The vertical values are only for comparing shapes.</p>
+  <div class="sticky c21try" id="c21_ts">Try it: put the natural-range limit at 40, drag the intensity out of the natural range, and find a spot where “10 more intensity brings extra satisfaction” of under 1 while the attraction is still rising.</div>
+
+  <div class="sec"><span class="n">9</span><h2><span class="tag why">Why it works</span>Fearing loss is stronger than wanting gain: loss aversion, scarcity and default options</h2></div>
+  <div class="withimg">
+    <span data-illus="c21_lossframe"></span>
+    <div>
+      <p>Finding 100 yuan is happy, losing 100 yuan is painful, and the pain lasts longer. What promotional copy likes most is to put the same product another way: not “what you’ll get” but “what you’ll lose,” or “only the last few left.”</p>
+      <p>Behind this is a famous finding. Kahneman and Tversky’s prospect theory (1979) points out that people feel gains and losses relative to a reference point, and that a loss of a given size often matters more than a gain of the same size, which is called <b><span class="term" tabindex="0" data-def="A loss of a given size usually brings more pain than a gain of the same size brings pleasure.">loss aversion</span></b>.</p>
+      <p>Another common principle of persuasion is <span class="term" tabindex="0" data-def="The scarcity principle: the rarer, harder to get or more time-limited a thing is, the more valuable people tend to find it and the more eagerly they want it.">scarcity</span>: the harder to get, the more valuable it looks.</p>
+    </div>
+  </div>
+  <div class="card">
+    <svg viewBox="0 0 700 300" width="100%" role="img" aria-label="Schematic of the prospect-theory value function: gains and losses on the horizontal axis, subjective feeling on the vertical; the curve on the loss side is steeper than on the gain side">
+      <g class="rough" stroke="#2b2b3a" stroke-width="3.5" fill="none" stroke-linecap="round">
+        <path d="M60 150 H650"/><path d="M350 16 V290"/>
+        <polyline id="c21_pv" stroke="#e5484d" stroke-width="5" stroke-linejoin="round"/>
+      </g>
+      <g font-size="17" fill="#2b2b3a">
+        <text x="640" y="176" text-anchor="end">Gains →</text><text x="64" y="176">← Losses</text>
+        <text x="358" y="30">Subjective feeling</text>
+        <text x="64" y="46">Losses are steeper:</text><text x="64" y="68">losing 100 hurts more than finding 100</text>
+      </g>
+    </svg>
+    <p class="small">An illustrative curve: its shape borrows the parameters estimated by Tversky and Kahneman (1992) (exponent about 0.88, loss weight about 2.25; reportedly the estimate came from the choices of 25 graduate students). This multiple varies a lot across studies.</p>
+  </div>
+  <div class="why-box">
+    <h3>Loss aversion, scarcity and “where is the line”</h3>
+    <p>These principles are <b>not evil in themselves</b>: a real limited-time event and a real rare item are legitimate information. What crosses the line is often the following: <b>is the information true</b> (fake countdowns, fake stock), <b>can players give up without penalty</b> (does “don’t buy and it resets” count as coercion), and <b>does it exploit player weakness</b> (low moods, minors).</p>
+    <p>There is also something inconspicuous but very powerful: the <b>default option</b>. In their 2003 <i>Science</i> paper, Johnson and Goldstein compared organ-donation systems across European countries: in countries where the default is “not a donor” and you must opt in (such as Germany, about 12%), the share registered as consenting is far lower than in countries where the default is “donor” and you must opt out (such as Austria, about 99.98%). Note that this is the share of registered consent, not the actual donation rate. Most people won’t change the default, so <b>whoever sets the default is deciding for everyone</b>. In <i>Nudge</i> (2008) Thaler and Sunstein call using defaults to steer people toward what is good for them a “nudge”; the same technique, used to tick “auto-renew” by default, becomes a dark pattern.</p>
+    <div class="src">Sources: Kahneman &amp; Tversky, “Prospect Theory” (Econometrica, 1979); Tversky &amp; Kahneman (1992, cumulative prospect theory); Cialdini, <i>Influence</i> (1984); Johnson &amp; Goldstein, “Do Defaults Save Lives?”, Science 302 (2003); Thaler &amp; Sunstein, <i>Nudge</i> (2008). Researchers have also recently questioned how universal loss aversion is: for example Gal and Rucker (2018) argue that existing evidence does not support “losses generally loom larger than gains,” so “a loss is about twice a gain” should not be taken as a law.</div>
+  </div>
+  <div class="board">
+    <p>One product, three promotional texts. First click “Acceptable” or “Manipulative” to give your judgment, then toggle the two conditions below and see how the rule reaches its verdict.</p>
+    <div id="c21fcs"></div>
+    <p class="small"><b>The judgment rule used in this course (one position, disputed in reality):</b> the information must be true; and the player must suffer no penalty if they don’t buy or miss out (not losing progress they have already put in). Only if both hold is it “acceptable”; otherwise it is manipulating through framing.</p>
+  </div>
+  <div class="board c21form">
+    <b>A small default experiment:</b>You are at checkout, buying a 6-yuan gift pack.
+    <div style="margin:8px 0"><label class="chk" style="display:inline-flex;gap:6px"><input type="checkbox" id="c21dchk"> Also sign up for the “monthly card auto-renewal” (30 yuan a month, cancel any time)</label></div>
+    <div class="small">Toggle the two page designs below and see “who is deciding for you.”</div>
+    <button class="chip on" id="c21dA">Ticked by default</button><button class="chip" id="c21dB">Unticked by default</button>
+    <div class="msg" id="c21dmsg"></div>
+  </div>
+
+  <div class="sec"><span class="n">10</span><h2><span class="tag how">How to use it</span>Two test benches: the retention knobs and “is it a dark pattern”</h2></div>
+  <p>That was the principle; now hands on. The first test bench: adjust the four knobs below and see how the 30-day retention curve and “player satisfaction” change. Watch the last knob: it makes the numbers look better but makes players feel worse.</p>
+  <div class="board">
+    <label class="ctl">First-day experience (is onboarding smooth and fun)<output id="o1">50</output></label><input type="range" id="q" min="0" max="100" value="50">
+    <label class="ctl">Daily reward / daily goals<output id="o2">50</output></label><input type="range" id="r" min="0" max="100" value="50">
+    <label class="ctl">Social (friends, guild, co-op)<output id="o3">30</output></label><input type="range" id="s" min="0" max="100" value="30">
+    <label class="ctl">Streak-break penalty (reset to zero or lose something if you don’t log in)<output id="o4">0</output></label><input type="range" id="p" min="0" max="100" value="0">
+    <svg viewBox="0 0 560 260" width="100%" style="margin-top:8px" role="img" aria-label="30-day retention curve">
+      <rect x="50" y="10" width="490" height="200" fill="#fffef7" stroke="#2b2b3a" stroke-width="3"/>
+      
+      <polyline id="rline" fill="none" stroke="#e5484d" stroke-width="5" stroke-linejoin="round"/>
+      <g id="rdots" fill="#ffe58a" stroke="#2b2b3a" stroke-width="3"></g>
+      <g id="rtexts" font-size="17" fill="#2b2b3a"></g>
+      <text x="40" y="26" text-anchor="end" font-size="16">100%</text><text x="40" y="214" text-anchor="end" font-size="16">0</text>
+      <text x="295" y="250" text-anchor="middle" font-size="18">Day →</text>
+    </svg>
+    <div>
+      <span class="stat">Day 1 <b id="d1">-</b></span><span class="stat">Day 7 <b id="d7">-</b></span><span class="stat">Day 30 <b id="d30">-</b></span><span class="stat">Player satisfaction <b id="sat">-</b></span>
+    </div>
+    <div class="msg" id="rmsgs"></div>
+  </div>
+  <p class="small"><b>Note:</b> this is a <b>schematic formula</b> made up for this course, only for getting a feel for “which factor affects which point,” and it does not represent any real game or industry data. The gist: first-day experience mostly decides the height of day 1; daily rewards and social ties mostly hold up the long-term “floor” and slow the losses; streak penalties make the curve look a bit better, but drag satisfaction down.</p>
+  <div class="sticky c21try" id="c21_tr">Try it: without streak penalties (keep at 0), pull day-30 retention above 15% while keeping player satisfaction no lower than 60.</div>
+
+  <p>The second test bench: here are 8 designs. Judge whether each is <b>healthy</b>, <b>suspicious</b> (depends on the details) or <b>inappropriate</b>, and the reason is revealed after you click. These judgments express this course’s position, which is also disputed in reality; the point is to understand the reasons.</p>
+  <div class="board">
+    <div class="small" id="jprog"></div>
+    <div class="judge" id="jtext"></div>
+    <div class="jbtns" id="jbtns">
+      <button class="btn green" data-v="0">✅ Healthy</button>
+      <button class="btn" data-v="1">🤔 Suspicious</button>
+      <button class="btn pink" data-v="2">🚫 Inappropriate</button>
+    </div>
+    <div class="jres" id="jres"></div>
+    <button class="btn alt" id="jnext" style="display:none">Next →</button>
+  </div>
+  <div class="sticky c21try" id="c21_tj">Try it: judge all 8, with at least 6 matching this course’s judgment. For those that differ, read the reasons and think which detail changed the conclusion.</div>
+
+  <div class="sec"><span class="n">11</span><h2><span class="tag how">How to use it</span>A designer’s self-check list</h2></div>
+  <p>Turn the principles above into actions: tick item by item against the game you have in mind (or are making). Each item is the version of “<b>could I comfortably let players see this</b>.” The ticks are saved in your browser.</p>
+  <div class="board">
+    <label class="ctl" for="c21name">What is your game called?</label>
+    <input type="text" id="c21name" data-save="ch21-name" placeholder="E.g. Planet Corner Shop">
+    <div class="c21chk" id="c21chk"></div>
+    <div class="c21bar"><span id="c21fill" style="width:0"></span></div>
+    <div class="msg" id="c21cr" style="font-size:1.05rem;font-family:var(--body)"></div>
+  </div>
+  <p class="small">This list is a practical self-check put together for this course, not legal text, and does not guarantee compliance; regions have different laws on odds disclosure, minors’ spending, subscription cancellation and so on, so check local rules.</p>
+
+  <div class="key">
+    <h3>Key points</h3>
+    <ul>
+      <li>Four common business models: <b>buy-to-play, subscription, free + in-app purchases, ads</b>; how you make money <b>shapes the design in return</b>.</li>
+      <li><b>Retention</b> is read at day 1, day 7 and day 30: day 1 shows <b>first impression</b>, day 7 <b>habit</b>, day 30 <b>long-term value</b>; retention propped up by streak penalties is fragile.</li>
+      <li>Ways of charging evolved step by step, each fixing the last one’s flaw: try-first (shareware), monthly subscription, free plus in-app purchases, until random paid mechanics drew regulators.</li>
+      <li><b>Dark patterns</b>: fake countdowns, cancellation mazes, sunk cost, loss framing, no stopping point. Know them in order to avoid abusing them.</li>
+      <li>Why they work: <b>variable rewards</b> last longer, <b>supernormal stimuli</b> let “wanting” run ahead of “satisfaction,” <b>loss aversion and scarcity</b> make people fear loss, and <b>default options</b> quietly decide for people. <b>Effective does not mean it should be used</b>: look at whether it is true, whether one can give it up, and whether it targets the vulnerable.</li>
+      <li>The ethical floor: <b>protect minors, transparent odds, no manufactured anxiety</b>; self-check: if the player were fully informed, would they still find it fair?</li>
+    </ul>
+  </div>
+  <div class="tldr">Psychology tells us how to “make people want more”; ethics requires doing so only when it is true, optional, and players can leave without worry.</div>
+
+  <div class="misc">
+    <h3>Common misconceptions</h3>
+    <ul>
+      <li><b>“Supernormal stimulus = games will make people addicted.”</b> This is only an analogy: most players have no problem playing games; what it reminds us of is that “stronger stimulus is not more satisfying.”</li>
+      <li><b>“Once the odds are published, there is no problem.”</b> Transparency is only one floor; you also have to look at spending caps, protection of minors, and whether anything beyond the pity tempts overspending.</li>
+      <li><b>“As long as players are willing to pay, it is voluntary.”</b> If the willingness is manufactured by fake countdowns, punishing resets or pushes sent at emotional lows, “voluntary” is discounted.</li>
+      <li><b>“Limited-time and scarcity are bad in themselves.”</b> Real limited-time events and rare items are legitimate; what crosses the line is faking and coercion.</li>
+    </ul>
+  </div>
+
+  <div class="reflect">
+    <h3>Reflection and debate</h3>
+    <p>① Animal reinforcement experiments and research on supernormal stimuli are only analogies when extended to human players. In 2019 the World Health Organization listed “gaming disorder” in the 11th revision of the International Classification of Diseases (in effect from January 1, 2022), but game industry groups objected, and critics think the evidence is not yet enough. Attitudes differ across countries. ② The “line” itself is disputed: some (commonly some industry people) hold that players are adults who should be responsible for themselves; others stress that businesses hold more information and psychological tools and bear more responsibility. These are two different positions; this course leans to the latter, but it is not settled. ③ Business reality is real too: a team has to survive, and free games need income; ethical design is not “not making money” but “not making money off players’ weaknesses.” ④ Researchers have recently questioned how strong loss aversion is. What do you think: when a mechanism is “effective” but players regret it afterward, does it count as a success?</p>
+  </div>
+
+  <div class="sec"><span class="n">12</span><h2><span class="tag think">Reflection</span>Practice</h2></div>
+  <div id="quiz"></div>
+
+  <div class="sec"><span class="n">13</span><h2><span class="tag how">How to use it</span>Your design</h2></div>
+  <div class="card o">
+    <p>Pick a business model for your game and write down: (1) <b>why players are willing to pay</b>; (2) three things you <b>explicitly won’t do</b> (for example “no fake countdowns”).</p>
+    <textarea rows="5" data-save="ch21" placeholder="E.g. buy-to-play, because…; I won’t do: ①… ②… ③…"></textarea>
+  </div>
+</main>
+<script src="../js/illus.js"></script>
+<script src="../js/illus-ch21.js"></script>
+<script src="../js/en/illus.js"></script>
+<script src="../js/en/illus-lib.js"></script>
+<script src="../js/en/illus-ch21.js"></script>
+<script src="../js/common.js"></script>
+<script>
+const $ = id => document.getElementById(id);
+function tryDone(id, text) {
+  const el = $(id); if (!el || el.dataset.done) return;
+  el.dataset.done = "1"; el.style.background = "#eaf9e4";
+  el.innerHTML = "✅ <b>Task complete!</b>" + text;
+}
+
+(function () {
+  const OPT = [
+    ["Charge first, and players must buy before they can play", "This was the default of the boxed home-game era. All the risk lies on the player: someone who buys a dud can only accept their bad luck, and once word of mouth turns bad, nobody dares buy a new game."],
+    ["Give part away free, and charge for the rest if players like it", "This is what <i>Doom</i> did in 1993: the first episode could be copied freely, and later episodes were sold by mail order. The player tastes the benefit before paying, and the spreading is done by players for you. It solved “can’t try before buying,” though it requires the game to be sold in pieces."],
+    ["Make the whole game free, and sell things inside", "This is the mainstream approach of mobile games since 2009. It drops the barrier to zero, but creates a new problem: only some people pay, so every payment point has to “persuade,” and design is pulled by two goals at once, fun and conversion."],
+  ];
+  const box = $("c21_guess");
+  OPT.forEach(([t, why]) => {
+    const b = document.createElement("button"); b.className = "chip"; b.textContent = t;
+    b.onclick = () => {
+      [...box.children].forEach(x => x.classList.remove("on")); b.classList.add("on");
+      $("c21_gmsg").innerHTML = "<b>All three approaches have appeared in history.</b> The one you chose:" + why + "<br><span class='small'>Click the other two to see what each solved and what new trouble it left.</span>";
+    };
+    box.appendChild(b);
+  });
+})();
+
+(function () {
+  const a = 0.88, lam = 2.25, pts = [];
+  for (let x = -100; x <= 100; x += 4) {
+    const v = x >= 0 ? Math.pow(x, a) : -lam * Math.pow(-x, a);
+    pts.push((350 + x * 2.7) + "," + (150 - v * 1.05));
+  }
+  $("c21_pv").setAttribute("points", pts.join(" "));
+})();
+
+function retention(q, r, s, p) {
+  const R1 = 0.2 + 0.3 * q;
+  const L = 0.02 + 0.05 * r + 0.10 * s;
+  const a = Math.max(0.15, 0.8 - 0.3 * r - 0.2 * s - 0.15 * p);
+  const arr = [1];
+  for (let d = 1; d <= 30; d++) arr.push(L + (R1 - L) * Math.pow(d, -a));
+  const sat = Math.max(0, Math.min(100, 30 + 45 * q + 10 * s + 5 * r - 50 * p));
+  return { arr, sat };
+}
+function updR() {
+  const v = id => +$(id).value / 100;
+  ["q", "r", "s", "p"].forEach((id, i) => ($("o" + (i + 1)).textContent = $(id).value));
+  const { arr, sat } = retention(v("q"), v("r"), v("s"), v("p"));
+  const X = d => 50 + d / 30 * 490, Y = val => 210 - val * 200;
+  $("rline").setAttribute("points", arr.map((val, d) => X(d) + "," + Y(val)).join(" "));
+  const marks = [1, 7, 30];
+  $("rdots").innerHTML = marks.map(d => `<circle cx="${X(d)}" cy="${Y(arr[d])}" r="7"/>`).join("");
+  $("rtexts").innerHTML = marks.map(d => `<text x="${X(d) - (d === 30 ? 10 : -12)}" y="${Y(arr[d]) - 22}" text-anchor="${d === 30 ? "end" : "start"}">${d === 30 ? "Day 30" : d === 7 ? "Day 7" : "Day 1"} ${(arr[d] * 100).toFixed(0)}%</text>`).join("") +
+    [0, 10, 20, 30].map(d => `<text x="${X(d)}" y="230" text-anchor="middle" font-size="16">${d}</text>`).join("");
+  $("d1").textContent = (arr[1] * 100).toFixed(0) + "%";
+  $("d7").textContent = (arr[7] * 100).toFixed(0) + "%";
+  $("d30").textContent = (arr[30] * 100).toFixed(0) + "%";
+  $("sat").textContent = sat.toFixed(0);
+  const p = v("p");
+  $("rmsgs").textContent = p > 0.5 && sat < 40 ? "⚠️ The curve looks a bit better, but players are “forced to come” and satisfaction is very low: this retention is fragile and hurts trust." :
+    v("q") < 0.3 ? "😬 Day-1 retention is very low: most people leave on the first day. Fix the new-player experience and first impression first." :
+    arr[30] < 0.08 ? "🌱 Players leak away slowly; try adding social features and meaningful daily goals." : "✅ Experience, goals and social ties keep players, and satisfaction and retention rise together.";
+  if (p === 0 && arr[30] >= 0.15 && sat >= 60) tryDone("c21_tr", "Day-30 retention " + (arr[30] * 100).toFixed(0) + "%, satisfaction " + sat.toFixed(0) + ", without any pressure tactics: it relies on first-day experience, daily goals and social ties. (Schematic formula, not real data)");
+}
+["q", "r", "s", "p"].forEach(id => ($(id).oninput = updR));
+updR();
+
+const CARDS = [
+  { t: "A buy-to-play game releases a paid expansion pack with “new story chapters,” the store page states the content and the price, and not buying doesn’t affect the base game.", a: 0, why: "The player is informed and willing, and buys real new content." },
+  { t: "A limited-time gift-pack page shows a “23:59:59 countdown,” but it resets every day and the same pack appears again.", a: 2, why: "Fake urgency (faked FOMO): it uses a lie to rush players into deciding, and is inappropriate." },
+  { t: "The gacha screen clearly lists the odds of each rarity and the pity rules, and offers a spending-limit setting.", a: 0, why: "Published odds and controllable spending are the basic floor for random paid mechanics. Still watch the protection of minors." },
+  { t: "A login-streak reward: miss one day and the progress restarts from day 1, with rare items in the rewards of the last few days.", a: 1, why: "It exploits loss aversion to create the pressure of “lose out if you don’t log in.” If it is only a light small perk and can be made up, it is not a big problem; the heavier the penalty, the closer to a dark pattern." },
+  { t: "After a player loses several rounds, a pop-up says “buy an item to clear it easily,” while quietly making the next level harder.", a: 2, why: "Deliberately creating frustration and then selling the cure manipulates the player’s emotions, and is an inappropriate design." },
+  { t: "Payment can buy only character cosmetics, with no effect on stats or winning, and every cosmetic is clearly priced in the shop.", a: 0, why: "It sells expression and taste, doesn’t break fairness, and doesn’t create anxiety." },
+  { t: "After clearing, the next round starts automatically, the interface hides play time, and there is no “take a break” stopping point.", a: 1, why: "No stopping point makes it hard for players to stop naturally. Whether it is suspicious depends on whether there are break reminders and whether one can easily quit." },
+  { t: "Subscribing takes one step, but canceling means climbing through several menu layers and first answering a pile of retention questions.", a: 2, why: "“Easy to get in, hard to get out” harms the player’s autonomy. Canceling a subscription should be as simple as subscribing." },
+];
+const JN = ["✅ Healthy", "🤔 Suspicious", "🚫 Inappropriate"];
+let ji = 0, jscore = 0;
+function showCard() {
+  $("jres").className = "jres"; $("jnext").style.display = "none";
+  $("jbtns").querySelectorAll("button").forEach(b => (b.disabled = false));
+  if (ji >= CARDS.length) {
+    $("jprog").textContent = "Done";
+    $("jtext").innerHTML = `<b>All viewed!</b> You agree with this course on ${jscore} of ${CARDS.length}. Remember: the point is not right or wrong but the reasons.`;
+    $("jbtns").style.display = "none";
+    $("jnext").style.display = "inline-block"; $("jnext").textContent = "Play again";
+    if (jscore >= 6) tryDone("c21_tj", "You agree with this course on " + jscore + "  of 8.");
+    return;
+  }
+  $("jbtns").style.display = "flex";
+  $("jprog").textContent = "Design " + (ji + 1) + " / " + CARDS.length + " : your call";
+  $("jtext").textContent = CARDS[ji].t;
+}
+$("jbtns").querySelectorAll("button").forEach(b => (b.onclick = () => {
+  const v = +b.dataset.v, c = CARDS[ji], ok = v === c.a;
+  if (ok) jscore++;
+  $("jres").className = "jres show " + (ok ? "good" : "bad");
+  $("jres").innerHTML = (ok ? "👍 Agrees with this course:" : "This course’s judgment is <b>" + JN[c.a] + "</b>.") + (ok ? JN[c.a] + "." : "") + "<br>" + c.why;
+  $("jbtns").querySelectorAll("button").forEach(x => (x.disabled = true));
+  $("jnext").style.display = "inline-block"; $("jnext").textContent = ji === CARDS.length - 1 ? "See results" : "Next →";
+}));
+$("jnext").onclick = () => {
+  if (ji >= CARDS.length) { ji = 0; jscore = 0; } else ji++;
+  showCard();
+};
+showCard();
+
+(function () {
+  
+  const M = { a: { n: 0, h: 0, cur: 0, mx: 0, strip: [] }, b: { n: 0, h: 0, cur: 0, mx: 0, strip: [] } };
+  function pull(k) {
+    const m = M[k]; m.n++;
+    const hit = k === "a" ? m.n % 5 === 0 : Math.random() < 0.2;
+    if (hit) { m.h++; m.cur = 0; } else { m.cur++; m.mx = Math.max(m.mx, m.cur); }
+    m.strip.push(hit); if (m.strip.length > 60) m.strip.shift();
+  }
+  function drawM() {
+    ["a", "b"].forEach(k => {
+      const m = M[k];
+      $("c21n" + k).textContent = m.n; $("c21h" + k).textContent = m.h; $("c21l" + k).textContent = m.mx;
+      $("c21s" + k).innerHTML = m.strip.map(x => x ? "<span class='h'>●</span>" : "<span class='m'>○</span>").join("") || "<span class='small'>Not pulled yet</span>";
+    });
+    const price = +$("c21p").value; $("c21po").textContent = price;
+    if (M.a.n < 20 || M.b.n < 20) { $("c21msg").textContent = "Pull each at least 20 times, then compare the “longest dry run.” (Or click “Auto-pull 100 each.”)"; return; }
+    $("c21msg").innerHTML = "Machine A longest dry run <b>" + M.a.mx + "</b> pulls (≈ ¥" + M.a.mx * price + "); machine B longest dry run <b>" + M.b.mx + "</b> pulls (≈ ¥" + M.b.mx * price + "). The two have similar average payout rates, but B’s dry stretches are longer and its hits harder to predict." + (M.b.mx > M.a.mx ? "If every pull costs money, a player in the expectation “maybe the next one will hit” may spend quite a lot during a dry stretch: this is why published odds, pity and spending caps are needed." : "B got lucky this time and its dry stretch wasn’t longer than A’s; reset a few more times and you will usually see B occasionally have a very long dry stretch.");
+    if (M.a.n >= 100 && M.b.n >= 100) tryDone("c21_tm", "A longest dry run " + M.a.mx + "  pulls, B longest dry run " + M.b.mx + "  pulls; at ¥" + price + "  per pull, B’s longest dry stretch costs ¥" + M.b.mx * price + ", and A only ¥" + M.a.mx * price + ". (A’s dry run can never exceed 4 pulls.)");
+  }
+  $("c21ba").onclick = () => { pull("a"); drawM(); };
+  $("c21bb").onclick = () => { pull("b"); drawM(); };
+  $("c21auto").onclick = () => { for (let i = 0; i < 100; i++) { pull("a"); pull("b"); } drawM(); };
+  $("c21rst").onclick = () => { ["a", "b"].forEach(k => (M[k] = { n: 0, h: 0, cur: 0, mx: 0, strip: [] })); drawM(); };
+  $("c21p").oninput = drawM; drawM();
+
+  
+  function drawS() {
+    const x = +$("c21x").value, T = +$("c21t").value;
+    $("c21xo").textContent = x; $("c21to").textContent = T;
+    const S = v => 100 * (1 - Math.exp(-3 * v / T)), A = v => 100 * v / T;
+    const ymax = Math.max(110, A(100));
+    const X = v => 50 + v / 100 * 490, Y = r => 190 - r / ymax * 180;
+    const sp = [], ap = [];
+    for (let v = 0; v <= 100; v += 2) { sp.push(X(v) + "," + Y(S(v))); ap.push(X(v) + "," + Y(A(v))); }
+    $("c21sat").setAttribute("points", sp.join(" ")); $("c21att").setAttribute("points", ap.join(" "));
+    $("c21nat").setAttribute("width", X(T) - 50);
+    $("c21cur").setAttribute("x1", X(x)); $("c21cur").setAttribute("x2", X(x));
+    $("c21ymax").textContent = Math.round(ymax);
+    const s = S(x), a = A(x), ds = S(Math.min(100, x + 10)) - s;
+    $("c21sv").textContent = s.toFixed(0); $("c21av").textContent = a.toFixed(0); $("c21gv").textContent = (a - s).toFixed(0); $("c21ds").textContent = "+" + ds.toFixed(1);
+    $("c21sm").textContent = x <= T ? "Within the natural range: satisfaction and attraction roughly keep pace, and “wanting” and “getting” match." :
+      a - s > 50 ? "⚠️ Far beyond the natural range: adding more stimulus barely raises satisfaction (each +10 intensity adds only " + ds.toFixed(1) + "), yet the attraction keeps climbing. “Wanting” has run ahead of “getting.” (conceptual sketch)" :
+      "Just past the natural range: satisfaction is nearly saturated, and attraction is still rising.";
+    if (x > T && ds < 1 && x < 100) tryDone("c21_ts", "Intensity " + x + ", natural limit " + T + ": 10 more intensity adds only " + ds.toFixed(2) + "  satisfaction, while the attraction has already reached " + a.toFixed(0) + ". (conceptual sketch)");
+  }
+  $("c21x").oninput = drawS; $("c21t").oninput = drawS; drawS();
+
+  
+  (function () {
+    let mode = "A";
+    function d() {
+      $("c21dA").classList.toggle("on", mode === "A"); $("c21dB").classList.toggle("on", mode === "B");
+      $("c21dchk").checked = mode === "A";
+      $("c21dmsg").innerHTML = mode === "A"
+        ? "Ticked by default: doing nothing means agreeing. Someone who only wanted the 6-yuan pack, if they don’t notice, will be charged another 30 yuan every month. Whoever set the default here decided for you, and in their own favor."
+        : "Unticked by default: whoever wants auto-renewal has to tick it themselves. The same option, and the decision is back in the player’s hands. You can comfortably ask: does this default favor the player or the merchant?";
+    }
+    $("c21dA").onclick = () => { mode = "A"; d(); }; $("c21dB").onclick = () => { mode = "B"; d(); };
+    $("c21dchk").onchange = () => { $("c21dmsg").textContent = "You changed the tick by hand. Defaults are powerful because most people never change them."; };
+    d();
+  })();
+
+  
+  const FC = [
+    { name: "Gain framing", copy: "Buy the monthly card: log in daily for 30 days and get 60 gems a day, 1800 gems in all, about 40% cheaper than buying separately.", truth: true, free: true },
+    { name: "Loss framing", copy: "Your 12-day login streak is about to reset! Spend 6 yuan now on a “make-up check-in” to keep all progress and rare rewards.", truth: true, free: false },
+    { name: "Scarcity framing", copy: "The limited skin is permanently removed at 24:00 this Sunday and will not return.", truth: true, free: true },
+  ];
+  function verdict(c) {
+    const reasons = [];
+    if (!c.truth) reasons.push("The information is not true (such as a countdown that resets every day or a “last chance” that keeps appearing) = deception, and any framing crosses the line.");
+    if (!c.free) reasons.push("If the player must be punished for not buying (losing progress already put in), they are pushed by “fear of losing,” not choosing freely.");
+    return { ok: reasons.length === 0, why: reasons.length ? reasons.join("<br>") : "The information is true and the player suffers no penalty for missing out: it only states real value or a real deadline, which is acceptable." };
+  }
+  function drawF() {
+    const box = $("c21fcs");
+    box.innerHTML = FC.map((c, i) => {
+      const v = verdict(c), lab = c.label;
+      let vd = "";
+      if (lab !== undefined) {
+        const same = (lab === 0) === v.ok;
+        vd = "<div class='vd show " + (same ? "good" : "bad") + "'>" + (same ? "👍 Agrees with the rule:" : "Disagrees with the rule:") + "under the current conditions it should be judged <b>" + (v.ok ? "acceptable" : "manipulative") + "</b>.<br>" + v.why + "</div>";
+      }
+      return "<div class='c21fc'><b>" + "ABC"[i] + " · " + c.name + "</b><div class='copy'>" + c.copy + "</div>" +
+        "<label><input type='checkbox' data-i='" + i + "' data-f='truth'" + (c.truth ? " checked" : "") + "> The information is true</label>" +
+        "<label><input type='checkbox' data-i='" + i + "' data-f='free'" + (c.free ? " checked" : "") + "> The player can give up or miss out without penalty</label><br>" +
+        "<button class='chip " + (lab === 0 ? "on" : "") + "' data-i='" + i + "' data-l='0'>✅ Acceptable</button><button class='chip " + (lab === 1 ? "on" : "") + "' data-i='" + i + "' data-l='1'>🚫 Manipulative</button>" + vd + "</div>";
+    }).join("");
+    box.querySelectorAll("input[type=checkbox]").forEach(cb => (cb.onchange = () => { FC[+cb.dataset.i][cb.dataset.f] = cb.checked; drawF(); }));
+    box.querySelectorAll("button[data-l]").forEach(b => (b.onclick = () => { FC[+b.dataset.i].label = +b.dataset.l; drawF(); }));
+  }
+  drawF();
+
+  
+  const GROUPS = [
+    ["🔍 Transparent", ["Price, odds and pity rules are clearly shown before purchase", "Countdowns, stock and deadlines in promotions are all real"]],
+    ["🎚 Optional", ["Without paying you can still enjoy the core fun in full; paying is not for buying a “cure”", "No “reset or penalty if you don’t log in” mechanism, or it is easy to recover from"]],
+    ["🚪 Easy to leave", ["There are natural stopping points or break reminders; canceling a subscription is as easy as subscribing", "Players can see and set their own spending and time"]],
+    ["🛡 Minors and vulnerable users", ["There are spending limits, parental controls and double confirmation, with defaults more conservative for minors", "No payment pushes at players’ emotional lows (just lost, just frustrated), and no targeting of impulsive people"]],
+  ];
+  const ITEMS = []; GROUPS.forEach(g => g[1].forEach(t => ITEMS.push(t)));
+  let ck = ITEMS.map(() => false);
+  try { const sv = JSON.parse(GD.store.get("gdc-ch21-check") || "null"); if (Array.isArray(sv) && sv.length === ITEMS.length) ck = sv.map(Boolean); } catch (e) {}
+  function drawC() {
+    let idx = 0;
+    $("c21chk").innerHTML = GROUPS.map(g => "<h4>" + g[0] + "</h4>" + g[1].map(t => { const i = idx++; return "<label><input type='checkbox' data-i='" + i + "'" + (ck[i] ? " checked" : "") + "> " + t + "</label>"; }).join("")).join("");
+    $("c21chk").querySelectorAll("input").forEach(cb => (cb.onchange = () => { ck[+cb.dataset.i] = cb.checked; GD.store.set("gdc-ch21-check", JSON.stringify(ck)); scoreC(); }));
+    scoreC();
+  }
+  function scoreC() {
+    const n = ck.filter(Boolean).length, nm = ($("c21name").value || "Your game").trim() || "Your game";
+    $("c21fill").style.width = (n / ITEMS.length * 100) + "%";
+    $("c21fill").style.background = n >= 7 ? "#b6e8a8" : n >= 4 ? "#ffe58a" : "#ffb3c6";
+    const todo = ITEMS.filter((_, i) => !ck[i]);
+    $("c21cr").innerHTML = nm + ": <b>" + n + " / " + ITEMS.length + "</b>." + (n === ITEMS.length ? "All done, which is a very good starting point, but please keep checking as player feedback comes in." : n >= 4 ? "A base is there; these next few are worth adding:<br>• " + todo.join("<br>• ") : "There are still quite a few risk points; I suggest adding these first:<br>• " + todo.join("<br>• "));
+  }
+  $("c21name").addEventListener("input", scoreC);
+  drawC();
+})();
+
+GD.mountQuiz($("quiz"), [
+  { q: "What does “day-1 retention 40%” mean?", opts: ["40% of players played a whole day", "Of the players who came on day 1, 40% came back on day 2", "40% of the game’s content is free", "40% of players paid"], a: 1, why: "Retention measures whether players will come back after some days, and day-1 retention mostly reflects first impression and the new-player experience." },
+  { q: "[Why] Why does a design like “miss one day and all the streak rewards reset” make people anxious, even crawling out of bed at midnight to log in?", opts: ["Because the reward itself is extremely valuable", "Because people are often more sensitive to losing than to gaining: for the same thing, the pain of losing it is greater than the joy of getting it", "Because people naturally love logging in every day", "Because the game gets harder after the reset"], a: 1, why: "This is loss aversion (prospect theory). “Your streak is about to end” describes not doing as losing, so it pushes harder than “log in to get a reward.” Its strength varies by person and situation, and researchers have recently questioned how universal it is." },
+  { q: "[Why] Two slot machines have the same average payout frequency; why is the machine that “pays 20% on each pull” usually harder to stop than the one that “pays on every 5th pull”?", opts: ["Because it pays out more", "Because when the hit comes can’t be predicted, every pull feels like “maybe the next one will hit,” making behavior last longer and fade more slowly once rewards stop", "Because its visuals look better", "Because fixed-ratio rewards are smaller"], a: 1, why: "Skinner and others found variable-ratio reinforcement steadier and more resistant to extinction than fixed-ratio. Tied to real money it takes the shape of gambling, which is why published odds and spending caps are needed." },
+  { q: "[Why it was invented] Why did <i>Doom</i> give away its first episode free in 1993, instead of charging first like an ordinary boxed game?", opts: ["Because a free game needn’t be made well", "Because players couldn’t try before buying; letting them play first and pay only if they liked it lowered the risk and had players help spread it", "Because nobody was willing to pay at the time", "Because the law required it to be free"], a: 1, why: "Shareware was invented against the flaw of “can’t try before buying”: the player tastes the benefit first and then buys the remaining episodes. Later subscriptions and free plus in-app purchases were also meant to fix the trouble the previous way left." },
+  { q: "Why can the “supernormal stimulus” help designers reflect, yet not directly lead to “games make people addicted”?", opts: ["Because Tinbergen studied human players", "Because it comes from research on birds and other animals, applying it to humans is only an analogy, and what it shows is that “stronger stimulus is not more satisfying,” not a diagnosis of any individual", "Because supernormal stimuli don’t exist in games", "Because every game’s stimulus intensity is the same"], a: 1, why: "An analogy can inspire design but cannot replace direct evidence on humans; most players do not get addicted because of this." },
+  { q: "When does a “limited-time offer” change from legitimate marketing into manipulation?", opts: ["Any countdown makes it manipulation", "When the information isn’t true (such as a countdown that resets every day), or when the player is punished or forced if they miss it", "Any discount makes it manipulation", "Any cosmetic item makes it manipulation"], a: 1, why: "Scarcity and loss framing are not problems in themselves; faking and coercion are. The judgment depends on whether the information is true and whether the player can give up without penalty." },
+]);
+</script>
+</body>
+</html>

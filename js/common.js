@@ -48,12 +48,14 @@
     home: "📖 Contents", toc: "Contents", next: "Next: ", back: "🎉 Back to contents",
     badge: "🎉 Chapter cleared! You've got the core ideas.",
     score: (a, n, f) => "Correct " + a + " / " + n + "   First try: " + f,
+    qzSlot: "Drag your answer here", qzPicked: "Card selected. Press Enter on the answer slot to place it.", qzRight: "Correct.", qzWrong: "Not that one. Try another.",
     sw: "中文", mapT: "Concept map", related: "Related chapters", relPre: "Builds on / explained by", relNext: "Leads to / applied in", relSee: "Compare & connect", chapterWord: n => "Ch. " + n,
     navTitle: "In this chapter", expandAll: "Expand all", collapseAll: "Collapse all", top: "Back to top", fold: "Fold / unfold",
   } : {
     home: "📖 目录", toc: "目录", next: "下一章：", back: "🎉 回到目录",
     badge: "🎉 本章通关！你已经掌握了核心概念",
     score: (a, n, f) => "已答对 " + a + " / " + n + (f === null ? "" : "　一次答对 " + f),
+    qzSlot: "把答案拖到这里", qzPicked: "已选中卡片，在答题位上按回车放入。", qzRight: "答对了。", qzWrong: "不是这个，再试试别的。",
     sw: "EN", mapT: "概念关系图", related: "相关章节", relPre: "先修与原理", relNext: "延伸与应用", relSee: "对照与关联", chapterWord: n => "第" + n + "章",
     navTitle: "本章目录", expandAll: "全部展开", collapseAll: "全部收起", top: "回到顶部", fold: "收起 / 展开",
   };
@@ -118,6 +120,7 @@
   // 测验组件
   function mountQuiz(el, items) {
     let right = 0, answered = 0, firstTry = 0;
+    const reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
     const score = document.createElement("div");
     score.className = "score";
     const badge = document.createElement("div");
@@ -127,29 +130,96 @@
       const q = document.createElement("div");
       q.className = "q";
       q.innerHTML = '<div class="qt">' + (qi + 1) + ". " + it.q + "</div>";
-      let tried = false;
+      let tried = false, solved = false, picked = null;
+      const live = document.createElement("div");
+      live.className = "qz-live"; live.setAttribute("role", "status"); live.setAttribute("aria-live", "polite");
+      const slot = document.createElement("div");
+      slot.className = "qz-slot"; slot.tabIndex = 0; slot.setAttribute("role", "button");
+      slot.setAttribute("aria-label", L.qzSlot);
+      slot.innerHTML = '<span class="qz-ph">' + L.qzSlot + "</span>";
+      const tray = document.createElement("div");
+      tray.className = "qz-tray";
       const why = document.createElement("div");
       why.className = "why";
       why.innerHTML = it.why || "";
+      const cards = [];
+      const setPicked = c => {
+        if (picked) { picked.classList.remove("sel"); picked.setAttribute("aria-pressed", "false"); }
+        picked = c;
+        slot.classList.toggle("armed", !!c);
+        if (c) { c.classList.add("sel"); c.setAttribute("aria-pressed", "true"); live.textContent = L.qzPicked; }
+      };
+      const inSlot = e => {
+        const r = slot.getBoundingClientRect(), m = 8;
+        return e.clientX > r.left - m && e.clientX < r.right + m && e.clientY > r.top - m && e.clientY < r.bottom + m;
+      };
+      const attempt = (c, oi) => {
+        if (solved || c.disabled) return;
+        setPicked(null);
+        if (oi === it.a) {
+          solved = true;
+          slot.querySelector(".qz-ph").style.display = "none";
+          c.style.transform = ""; c.classList.remove("drag"); c.classList.add("ok");
+          slot.appendChild(c); slot.classList.add("ok");
+          cards.forEach(x => { x.disabled = true; });
+          why.classList.add("show");
+          live.textContent = L.qzRight;
+          answered++; right++;
+          if (!tried) firstTry++;
+          score.textContent = L.score(answered, items.length, firstTry);
+          if (answered === items.length) { badge.classList.add("show"); Progress.done(cur); }
+        } else {
+          tried = true; c.classList.add("no"); c.disabled = true;
+          live.textContent = L.qzWrong;
+          if (!reduce) { c.classList.add("shake"); setTimeout(() => c.classList.remove("shake"), 450); }
+        }
+      };
       it.opts.forEach((o, oi) => {
-        const b = document.createElement("button");
-        b.className = "opt"; b.innerHTML = o;
-        b.onclick = () => {
-          if (oi === it.a) {
-            b.classList.add("ok");
-            q.querySelectorAll(".opt").forEach(x => (x.disabled = true));
-            why.classList.add("show");
-            answered++; right++;
-            if (!tried) firstTry++;
-            score.textContent = L.score(answered, items.length, firstTry);
-            if (answered === items.length) { badge.classList.add("show"); Progress.done(cur); }
-          } else {
-            tried = true; b.classList.add("no"); b.disabled = true;
+        const c = document.createElement("button");
+        c.type = "button"; c.className = "qz-card opt"; c.innerHTML = o;
+        c.setAttribute("aria-pressed", "false");
+        let sx = 0, sy = 0, dragging = false, down = false;
+        c.addEventListener("pointerdown", e => {
+          if (c.disabled || solved || (e.pointerType === "mouse" && e.button !== 0)) return;
+          down = true; dragging = false; sx = e.clientX; sy = e.clientY;
+          try { c.setPointerCapture(e.pointerId); } catch (_) {}
+        });
+        c.addEventListener("pointermove", e => {
+          if (!down) return;
+          const dx = e.clientX - sx, dy = e.clientY - sy;
+          if (!dragging && Math.hypot(dx, dy) > 6) { dragging = true; c.classList.add("drag"); setPicked(null); }
+          if (dragging) {
+            e.preventDefault();
+            c.style.transform = "translate(" + dx + "px," + dy + "px)";
+            slot.classList.toggle("over", inSlot(e));
           }
+        });
+        const end = e => {
+          if (!down) return;
+          down = false;
+          try { c.releasePointerCapture(e.pointerId); } catch (_) {}
+          if (!dragging) return;
+          const hit = e.type === "pointerup" && inSlot(e);
+          slot.classList.remove("over");
+          c.classList.remove("drag");
+          c.style.transform = "";
+          dragging = false;
+          c._moved = true; setTimeout(() => { c._moved = false; }, 0);
+          if (hit) attempt(c, oi);
         };
-        q.appendChild(b);
+        c.addEventListener("pointerup", end);
+        c.addEventListener("pointercancel", end);
+        c.addEventListener("click", () => {
+          if (c._moved || c.disabled || solved) return;
+          setPicked(picked === c ? null : c);
+          if (picked) slot.focus({ preventScroll: true });
+        });
+        cards.push(c); tray.appendChild(c);
       });
-      q.appendChild(why);
+      const place = () => { if (picked && !solved) attempt(picked, cards.indexOf(picked)); };
+      slot.addEventListener("click", place);
+      slot.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); place(); } });
+      q.appendChild(slot); q.appendChild(tray); q.appendChild(live); q.appendChild(why);
       el.appendChild(q);
     });
     score.textContent = L.score(0, items.length, null);
@@ -186,7 +256,13 @@
     });
     function label(item) {
       if (item.dataset.t) return item.dataset.t;
-      const b = item.querySelector("b"); return b ? b.textContent.replace(/[：:，,。\s]+$/, "").slice(0, 14) : "例子";
+      const b = item.querySelector("b");
+      if (!b) return EN ? "Example" : "例子";
+      if (!EN) return b.textContent.replace(/[：:，,。\s]+$/, "").slice(0, 14);
+      const t = b.textContent.replace(/[：:，,。.\s]+$/, "");
+      if (t.length <= 24) return t;
+      const cut = t.slice(0, 24), sp = cut.lastIndexOf(" ");
+      return (sp > 10 ? cut.slice(0, sp) : cut) + "…";
     }
     function build(run) {
       const car = document.createElement("div"); car.className = "egcar"; car.tabIndex = 0;

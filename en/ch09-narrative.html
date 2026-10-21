@@ -1,0 +1,653 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Chapter 9: Narrative Design</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+  #c9_path{width:100%;display:block;background:#fffdf3;border:3px solid var(--ink);border-radius:10px}
+  .c9_twocol{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  @media(max-width:700px){.c9_twocol{grid-template-columns:1fr}}
+  .c9_storybox{background:#fff;border:3px solid var(--ink);border-radius:12px;padding:12px 16px;min-height:150px}
+  .c9_fb{margin:8px 0;padding:8px 12px;border-radius:10px;border:2px dashed var(--ink);font-size:.95rem;background:#f4f4f4}
+  .c9_fb.real{background:#ffe3d3}.c9_fb.fake{background:#dff1fb}
+  .c9_ftag{display:inline-block;border:2px solid var(--ink);border-radius:12px;padding:0 10px;font-family:var(--hand);background:#fff;margin-right:6px}
+  .c9_lg{display:inline-block;width:34px;height:0;border-top:6px solid #ff7a59;vertical-align:middle;margin:0 4px}
+  .c9_lg.f{border-top:6px dashed #4a9ac4}
+  .c9_grid2 .mini svg{width:100%;height:auto}
+  .c9_bar{height:14px;border:2.5px solid var(--ink);border-radius:8px;background:#fff;overflow:hidden;margin:4px 0}
+  .c9_bar i{display:block;height:100%;background:var(--orange);width:0;transition:width .25s}
+  .c9_row{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:6px 0}
+  .c9_out{margin-top:8px;padding:8px 12px;border:2px dashed var(--ink);border-radius:10px;background:var(--blue);font-size:.98rem}
+  .c9_layer{border:2.5px solid var(--ink);border-radius:12px;background:#fff;padding:6px 10px;margin:6px 0}
+  .c9_layer .chip.on{background:var(--green)}
+  .c9_trail span{display:inline-block;border:2px solid var(--ink);border-radius:12px;padding:0 8px;margin:2px;font-size:.88rem;background:#fff}
+  .c9_trail span.r{background:#ffe3d3}.c9_trail span.f{background:#dff1fb}
+  .c9_end{display:inline-block;border:2.5px solid var(--ink);border-radius:12px;padding:0 10px;margin:3px;font-size:.9rem;background:#eee;color:var(--soft)}
+  .c9_end.got{background:#ffb3c6;color:var(--ink)}
+  .c9_cn{font-size:.95rem;margin:2px 0 2px 1em}
+  .c9_cn.ok{color:#1f6b33}.c9_cn.no{color:#a8242c}
+  .c9_pe{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:8px 0}
+  @media(max-width:700px){.c9_pe{grid-template-columns:1fr}}
+  .c9_pe .col{border:2.5px solid var(--ink);border-radius:12px;background:#fff;padding:8px 12px}
+  .c9_pe .cells{display:flex;gap:4px;align-items:flex-end;height:70px;margin:6px 0}
+  .c9_pe .cells i{flex:1;border:2px solid var(--ink);border-radius:4px 4px 0 0;background:#ffb3c6}
+  @keyframes c9fade{from{opacity:0}to{opacity:1}}
+  @keyframes c9pls{0%,100%{stroke-width:3.5}50%{stroke-width:9}}
+  .c9_new{animation:c9fade .7s}
+  .c9_pulse{animation:c9pls 1.1s infinite}
+  details.c9_guess{background:#fff;border:2.5px solid var(--ink);border-radius:12px;padding:6px 12px;margin:10px 0}
+  details.c9_guess summary{cursor:pointer;font-family:var(--hand);font-size:1.2rem}
+  @media(prefers-reduced-motion:reduce){.c9_new,.c9_pulse{animation:none}}
+</style>
+</head>
+<body data-ch="9">
+<main class="wrap">
+  <div class="hero">
+    <div class="txt">
+      <span class="badge">Chapter 9</span>
+      <h1>Narrative Design</h1>
+      <p class="sub">A game is not a “movie with controls”: the best stories are told with the player’s own hands.</p>
+    </div>
+    <svg viewBox="0 0 190 150" class="rough" aria-hidden="true">
+      <rect x="20" y="30" width="70" height="95" fill="#ffe58a" stroke="#2b2b3a" stroke-width="4"/>
+      <path d="M90 30 Q130 20 170 30 V125 Q130 115 90 125" fill="#fff" stroke="#2b2b3a" stroke-width="4"/>
+      <path d="M105 55 H155 M105 75 H155 M105 95 H140" stroke="#2b2b3a" stroke-width="4" fill="none"/>
+      <circle cx="55" cy="75" r="14" fill="#ffb3c6" stroke="#2b2b3a" stroke-width="4"/>
+    </svg>
+  </div>
+
+  <div class="goals">
+    <h3>Learning goals</h3>
+    <span class="time">about 50 min</span>
+    <ul>
+      <li>Rank storytelling methods by “how much the player takes part,” and say why anything that can be told through play shouldn’t be told through a cutscene.</li>
+      <li>Explain what problems branching, merging and false choices appeared to solve, and build a structure with 4 endings within a fixed content budget.</li>
+      <li>Use causal chains, information gaps and the peak–end rule to check a piece of story: why it flows, why it makes people want the next chapter, and why the ending matters more than the middle.</li>
+    </ul>
+  </div>
+
+  
+  <div class="sec"><span class="n">1</span><h2><span class="tag what">What it is</span>The same “this world is poor,” told two ways</h2></div>
+  <div class="withimg">
+    <span data-illus="c09_narrator"></span>
+    <div>
+      <p>Suppose two games both want you to believe “this world is short on supplies.” The first opens with a two-minute narration, a hoarse voice telling how war ruined the granaries. The second says nothing at all and just gives you a 6-slot backpack.</p>
+      <p>Three hours later, you have probably forgotten the narrator’s lines, but you still remember that evening: you agonized between two weapons and three days of rations, and finally left the axe by the roadside. The second game let you <b>feel</b> scarcity, while the first only <b>told</b> you.</p>
+      <p>That is what is special about storytelling in games. <span class="term" tabindex="0" data-def="Narrative: the way a game conveys “what happened and why it matters” to the player, including dialogue and scenes, and also including the gameplay itself.">Narrative</span> is not only the lines written in a script: players use their hands, and every action of the hands can be a sentence. So the means of storytelling can be lined up from low to high by how much the player takes part.</p>
+    </div>
+  </div>
+  <div class="card">
+    <svg viewBox="0 0 700 320" width="100%" role="img" aria-label="Narrative means ranked by player involvement from low to high: cutscene, embedded, environmental, gameplay">
+      <g class="rough" stroke="#2b2b3a" stroke-width="3.5">
+        <rect x="20" y="170" width="165" height="70" fill="#a8dcf0"/><rect x="185" y="130" width="165" height="110" fill="#ffe58a"/>
+        <rect x="350" y="90" width="165" height="150" fill="#b6e8a8"/><rect x="515" y="50" width="165" height="190" fill="#ffb3c6"/>
+        <path d="M40 285 H640" fill="none"/><path d="M640 285 l-14 -9 v18z" fill="#2b2b3a"/>
+      </g>
+      <g font-size="19" fill="#2b2b3a" text-anchor="middle">
+        <text x="102" y="212">Cutscene</text><text x="267" y="192">Embedded</text><text x="432" y="172">Environmental</text><text x="597" y="152">Gameplay</text>
+        <text x="102" y="262" font-size="16">Watch (like a film)</text><text x="267" y="262" font-size="16">Read / listen</text><text x="432" y="262" font-size="16">Observe, infer</text><text x="597" y="262" font-size="16">Do (live it)</text>
+        <text x="340" y="308">Player involvement →</text>
+      </g>
+    </svg>
+  </div>
+  <div class="grid2">
+    <div class="card b mini"><div class="ico">🎬</div><h3><span class="term" tabindex="0" data-def="Cutscene: a stretch that takes control away from the player and plays like a film.">Cutscene narrative</span></h3><p>Control is taken away for a while, like watching a film. Good at emotion and big events; too long and it breaks the pacing.</p></div>
+    <div class="card y mini"><div class="ico">🗣️</div><h3>Embedded narrative</h3><p>The story is “put into” the game: dialogue, logs, recordings, quest text. Players can read at their own pace.</p></div>
+    <div class="card g mini"><div class="ico">🏚️</div><h3><span class="term" tabindex="0" data-def="Environmental storytelling: using the arrangement of scenes and objects, not dialogue, so that players infer for themselves what happened.">Environmental narrative</span></h3><p>Scenes hint at what happened: an overturned chair, an unfinished meal, scratches on the wall. It can be told without a single word.</p></div>
+    <div class="card p mini"><div class="ico">🎮</div><h3>Gameplay narrative</h3><p>The gameplay is itself the story: your actions, your choices and changes in the rules let players experience rather than be told.</p></div>
+  </div>
+  <div class="eg" data-ic="🎒"><span data-illus="c09_bag"></span><div class="egt"><b>Gameplay narrative: the 6-slot backpack.</b> Nobody tells you “supplies are scarce,” but every time you pick something up you have to drop something else. You weren’t told; you are living it.</div></div>
+  <div class="eg" data-ic="🏚️"><span data-illus="c09_chair"></span><div class="egt"><b>Environmental narrative: a room.</b> An overturned chair, a smashed cup, claw marks on the door. Without a single line, you have worked out for yourself that there was a fight here and something wanted to get in.</div></div>
+  <div class="eg" data-ic="☕"><span data-illus="c09_desk"></span><div class="egt"><b>Environmental narrative in daily life: a stranger’s room.</b> Three empty coffee cups on the desk, sticky notes all over the wall. Without him saying a word, you read that he was up late last night rushing a deadline.</div></div>
+  <div class="eg bad" data-ic="🎬"><span data-illus="c09_cut"></span><div class="egt"><b>Counterexample: a ten-minute cutscene every ten steps.</b> The story may be good, but the player has control taken away again and again, the controller lies on the floor, and the pacing is chopped to pieces. The cutscene itself isn’t wrong; the fault is using it too often.</div></div>
+  <div class="sticky">Core principle: <b>whatever can be told through gameplay, don’t tell through a cutscene; whatever the player can “do,” don’t make them “watch.”</b> There is also a kind of story that nobody wrote at all: the rules sit there, and the players play out a legend themselves, like emergence. Simulation and sandbox games often have this “emergent narrative.”</div>
+
+  
+  <div class="sec"><span class="n">2</span><h2><span class="tag what">What it is</span>Agency: why doing it yourself weighs more than watching</h2></div>
+  <p>A film viewer sits in the audience, and a game player stands on the stage. The scholar Janet Murray calls this feeling <span class="term" tabindex="0" data-def="Agency: the satisfaction of taking meaningful action and seeing the results of your decisions and choices (Janet Murray’s term).">agency</span>: the satisfying power of taking meaningful action and seeing that your decisions and choices have brought results. Note it has two halves: you <b>did something</b>, and the world <b>responded</b>. Without the second half, you are just pressing buttons.</p>
+  <div class="card">
+    <svg viewBox="0 0 700 270" width="100%" role="img" aria-label="Agency loop: player acts, rules respond, consequence is visible, a sense of ownership; without a visible consequence it turns into a false choice">
+      <g class="rough" stroke="#2b2b3a" stroke-width="3.5" fill="none" stroke-linecap="round">
+        <rect x="20" y="40" width="140" height="70" fill="#ffe58a"/><rect x="200" y="40" width="140" height="70" fill="#a8dcf0"/>
+        <rect x="380" y="40" width="140" height="70" fill="#b6e8a8"/><rect x="560" y="40" width="120" height="70" fill="#ffb3c6"/>
+        <path d="M162 75 h36 M342 75 h36 M522 75 h36"/><path d="M620 112 V150 H90 V112"/>
+        <rect x="240" y="176" width="230" height="50" fill="#ffe9ef" stroke-dasharray="8 6"/>
+      </g>
+      <g font-size="18" fill="#2b2b3a" text-anchor="middle">
+        <text x="90" y="82">Player acts</text><text x="270" y="82">Rules respond</text><text x="450" y="82"><tspan font-size="16">Consequence visible</tspan></text><text x="620" y="82">“I did that”</text>
+        <text x="355" y="26" font-size="19">Agency loop</text>
+        <text x="355" y="207">Broken here = false choice</text>
+        <text x="355" y="252" font-size="16">Only with all four links will players feel the story is their own writing</text>
+      </g>
+    </svg>
+  </div>
+  <p>Agency has an awkward flip side. When story and gameplay say different things, players trust their hands more. The designer Clint Hocking, analyzing <i>BioShock</i> on his blog in October 2007, named this phenomenon <span class="term" tabindex="0" data-def="Ludonarrative dissonance: the values the game’s plot conveys contradict the behavior the gameplay actually encourages.">ludonarrative dissonance</span>. The story celebrates selflessness, while the gameplay rewards you for sacrificing the “Little Sisters” for upgrade materials, and what players remember is the gameplay. The term was later overused, so we treat it only as a checking tool: <b>does the action players repeat most in this game match the theme the story wants?</b></p>
+  <div class="grid2">
+    <div class="card p"><h3>❌ Dissonant</h3><p>Plot: the hero cherishes life and keeps saying “I don’t want to hurt anyone.”<br>Gameplay: the whole game runs on killing enemies, and the more you kill the more you’re rewarded.<br><b>What the player remembers is the gameplay, not the lines.</b></p></div>
+    <div class="card g"><h3>✔ Consonant</h3><p>Plot: the hero is a lonely wanderer who trusts no one.<br>Gameplay: supplies suffice for one person only, and bringing a teammate stretches resources thinner.<br><b>The gameplay itself “acts out” this personality.</b></p></div>
+  </div>
+  <div class="eg bad" data-ic="⚔️"><span data-illus="c09_dissonance"></span><div class="egt"><b>Dissonance: says no killing, kills nonstop.</b> The hero has a halo and keeps saying “I don’t want to hurt anyone,” yet every enemy defeated pops up +100. However moving the lines, what the rewards point at is what players will do.</div></div>
+  <div class="eg" data-ic="🏃"><span data-illus="c09_nogun"></span><div class="egt"><b>Consonance: a horror game with no weapon.</b> The hero is unarmed, and the player really can only run and hide. The fear is built not by lines but by the rule “no weapons.”</div></div>
+  <div class="eg bad" data-ic="🏢"><span data-illus="c09_slogan"></span><div class="egt"><b>Dissonance in daily life: “People first” on the wall.</b> But the performance board honors whoever worked latest. Employees remember the board, not the slogan, the same structure as “says kindness, rewards killing.”</div></div>
+  <div class="eg" data-ic="🥷"><span data-illus="c09_stealth"></span><div class="egt"><b>A near-miss: having combat is not dissonance.</b> The plot says “cherish every life,” and in the gameplay sneaking past a guard (+200) pays more than a kill (+50), so the gameplay also encourages not killing, and there is no dissonance here. What counts is where the reward points, not whether there is combat.</div></div>
+  <div class="src small">Sources: Janet Murray, <i>Hamlet on the Holodeck</i> (1997) on agency; Clint Hocking, “Ludonarrative Dissonance in Bioshock,” Click Nothing blog, October 7, 2007; Henry Jenkins, “Game Design as Narrative Architecture” (2004), on how games tell stories through space and action.</div>
+
+  
+  <div class="sec"><span class="n">3</span><h2><span class="tag what">What it is</span>Branching narrative: four structures, four costs</h2></div>
+  <p>Once players are allowed to choose, the story is no longer a line. But there is a practical problem: <b>every extra branch multiplies the content to write and build</b>. So designers gradually found several structures that keep costs in check (names vary a little between sources):</p>
+  <div class="grid2 c9_grid2" id="c9_branchGrid">
+    <div class="card mini"><svg id="c9_bs1" viewBox="0 0 340 150" role="img" aria-label="Linear structure: one straight line"></svg><h3>Linear</h3><p>One road to the end. Easiest to control and the most powerful narratively, but players lack the feeling of “I changed the story.”</p></div>
+    <div class="card mini"><svg id="c9_bs2" viewBox="0 0 340 150" role="img" aria-label="String-of-pearls structure: a main line threaded with side branches"></svg><h3>String of pearls</h3><p>The main line is like a thread strung with a few optional side-quest “beads,” all returning to the main line. Costs stay manageable.</p></div>
+    <div class="card mini"><svg id="c9_bs3" viewBox="0 0 340 150" role="img" aria-label="Branching-tree structure: forking again and again"></svg><h3>Branching tree</h3><p>Every choice forks, and the endings explode in number. The most freedom and the highest cost; few ever build one in full.</p></div>
+    <div class="card mini"><svg id="c9_bs4" viewBox="0 0 340 150" role="img" aria-label="Bottleneck structure: fork, merge, fork again"></svg><h3>Bottleneck (fork and merge)</h3><p>Fork first, merge at a “bottleneck,” then fork again. The player feels they are choosing, while the designer writes only a limited amount of content.</p></div>
+  </div>
+  <div class="card">
+    <svg viewBox="0 0 700 320" width="100%" role="img" aria-label="As the number of choices grows, the number of scenes in a branching tree doubles each time, while the bottleneck structure grows roughly linearly">
+      <g class="rough" stroke="#2b2b3a" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M60 270 H660 M60 270 V20"/>
+        <polyline points="80,246.8 180,240.4 280,227.6 380,202 480,150.8 580,48.4" stroke="#e5484d" stroke-width="5"/>
+        <polyline points="80,245.2 180,240.4 280,235.6 380,230.8 480,226 580,221.2" stroke="#3aa655" stroke-width="5"/>
+      </g>
+      <g stroke="#2b2b3a" stroke-width="2.5"><circle cx="580" cy="48.4" r="7" fill="#e5484d"/><circle cx="580" cy="221.2" r="7" fill="#3aa655"/></g>
+      <g font-size="17" fill="#2b2b3a">
+        <text x="360" y="304" text-anchor="middle">Consecutive choices 1 → 6</text><text x="24" y="150" transform="rotate(-90 24 150)" text-anchor="middle">Total scenes to write</text>
+        <text x="150" y="40" fill="#b3303a">Branching tree: 2+4+8+16+32+64 = 126</text><text x="330" y="260" fill="#2b7a3a">Bottleneck: about 18</text>
+        <text x="90" y="64" font-size="16">(sketch: a two-way choice each time,</text><text x="90" y="84" font-size="16">3 scenes per layer in the bottleneck)</text>
+      </g>
+    </svg>
+  </div>
+  <div class="sticky">Merging is not deceiving. What matters is <b>whether the choice leaves a consequence</b>: even if the plot merges, as long as the earlier choice changed relationships, resources or later lines, the player still feels “this is my story.”</div>
+  <div class="eg" data-ic="📿"><span data-illus="c09_beads"></span><div class="egt"><b>String of pearls: a main line threaded with side quests.</b> The main quest goes straight ahead, with a few optional side quests along the way, and finishing them leads back to the main line. Side quests enrich the world without throwing the main line into disorder.</div></div>
+  <div class="eg" data-ic="⏳"><span data-illus="c09_bottle"></span><div class="egt"><b>Bottleneck: two routes, one big scene.</b> Two routes each have a few unique scenes, then merge in the same big battle, and afterward split into different endings according to your earlier choices. The merged scene needs to be written only once.</div></div>
+  <div class="eg" data-ic="🛒"><span data-illus="c09_market"></span><div class="egt"><b>A bottleneck in daily life: shopping at the supermarket.</b> You may wander any of three shelf aisles, but all of them end up at the same checkout. The route is yours; the destination is the store’s.</div></div>
+  <div class="eg bad" data-ic="💥"><span data-illus="c09_explode"></span><div class="egt"><b>Counterexample: every option leads to all-new plot.</b> A novice team wanted every dialogue option to lead to a completely different story, and at the fourth layer found the content had multiplied several times over, so they had to cut a great deal. The final experience was more fragmented than a carefully designed bottleneck.</div></div>
+
+  
+  <div class="sec"><span class="n">4</span><h2><span class="tag origin">How it was invented</span>What forced branching and the three-act structure into being?</h2></div>
+  <div class="story">
+    <h3>Story A: a page is a line, but the reader wants to decide for the hero</h3>
+    <p>A printed book is linear by nature: after page 1 there is always page 2. But readers always want to interject: “What if he went left?” Literature had this thought early; Borges’s 1941 short story “The Garden of Forking Paths” imagined a world where time keeps forking. Still, it was only a story, and the reader couldn’t act.</p>
+    <p>The person who really made forking into a book you can flip through was Edward Packard. He worked out a way of writing that let the reader decide how the hero goes, and in 1969–1970 several big publishers rejected the manuscript. In 1976, Vermont Crossroads Press published his <i>Sugarcane Island</i>. In 1979, Bantam launched the “Choose Your Own Adventure” series, with the first volume his <i>The Cave of Time</i>.</p>
+    <p>Here the problem arrived: every extra choice the author offered meant writing twice as many pages. The pages of a book are fixed, and so is the budget. In the same period, text adventures on computers took another road, where players could type commands to steer the hero, but the ledger behind it was the same: every extra possibility meant writing another passage.</p>
+    <div class="timeline">
+      <div class="ev hasimg"><span data-illus="c09_tl_book"></span><div><b class="yr">1976</b> Packard’s <i>Sugarcane Island</i> is published by Vermont Crossroads Press; at a fork the reader has to turn to a specified page number.</div></div>
+      <div class="ev hasimg"><span data-illus="c09_tl_term"></span><div><b class="yr">Mid to late 1970s</b> Will Crowther writes <i>Colossal Cave Adventure</i>, which Don Woods expands and which spreads widely on mainframes, one of the starting points of text adventures. Then MIT students make <i>Zork</i>, which understands whole sentences, and in 1978 Scott Adams makes <i>Adventureland</i> on a home computer.</div></div>
+      <div class="ev hasimg"><span data-illus="c09_tl_shelf"></span><div><b class="yr">1979</b> Bantam makes this kind of book into a series, with every volume having to fit several routes and several endings into a fixed page count.</div></div>
+      <div class="ev hasimg"><span data-illus="c09_tl_dice"></span><div><b class="yr">1982</b> Steve Jackson and Ian Livingstone’s <i>The Warlock of Firetop Mountain</i> is published by Puffin, starting the Fighting Fantasy solo gamebook series, with dice and combat added to the books.</div></div>
+    </div>
+    <p>So the key insight is plain: with a limited content budget, branching has to be <b>controlled</b>. Let branches <b>merge</b> later, or fork for real at only a few nodes, or use “false choices” that add no content to create a feeling of participation. (This is a summary of how these structures came about, not any book’s official design manual.) You might first do the arithmetic by hand.</p>
+  </div>
+  <div class="board">
+    <b>Try it first: with a budget of 18 scenes, make at least 4 endings</b>
+    <p class="small">You are writing a story with 4 choices, each a two-way choice. Give each choice a type: <b>fork</b> (each option leads to new content), <b>merge</b> (the options each get a reaction, then rejoin the same scene), or <b>false choice</b> (only the wording changes, adding almost no content). The budget is 18 scenes.</p>
+    <div id="c9b_layers"></div>
+    <svg id="c9b_svg" viewBox="0 0 560 230" width="100%" style="background:#fffdf3;border:3px solid var(--ink);border-radius:10px" role="img" aria-label="Sketch of the story structure after four choices"></svg>
+    <div class="c9_row"><span class="stat">Scenes <b id="c9b_sc">0</b>/18</span><span class="stat">Endings <b id="c9b_en">0</b></span><span class="stat">Real choices <b id="c9b_rl">0</b></span></div>
+    <div class="c9_bar"><i id="c9b_bar"></i></div>
+    <div class="c9_out" id="c9b_msg"></div>
+    <div class="c9_row"><button class="btn green" id="c9b_hint">Give me a reference solution</button><button class="btn pink" id="c9b_reset">Start over (all forks)</button></div>
+  </div>
+  <div class="sticky">Try it: first let the budget bar turn red (all forks), then change just two buttons to bring the scene count within 18 while keeping at least 4 endings. When you succeed, a ✅ appears below.</div>
+
+  <div class="story">
+    <h3>Story B: was the three-act structure invented by Aristotle?</h3>
+    <details class="c9_guess"><summary>Guess first, then open</summary>
+      <p><b>Answer: no.</b> In the <i>Poetics</i>, Aristotle says only that a complete action has a beginning, a middle and an end; he did not lay down “three acts.” The popularity of the modern three-act structure owes more to Syd Field’s 1979 screenwriting textbook <i>Screenplay</i>.</p></details>
+    <p>Imagine you have to write a two-hour script of about 120 pages. By page 50 you start to panic: has the pace collapsed? Where should the turning point go? Nothing tells you “roughly what should be happening now.” A long story needs a <b>locator</b>.</p>
+    <p>The ancient Greeks were the first to notice that a complete story has a head and a tail (Aristotle’s <i>Poetics</i>), but he spoke only of the whole and said nothing about page counts. In 1863 the German writer Gustav Freytag drew a five-part scheme in <i>Technique of the Drama</i>: exposition, rising action, climax, falling action, catastrophe, the later “Freytag’s pyramid,” but it was drawn for stage plays. In 1949 Joseph Campbell, in <i>The Hero with a Thousand Faces</i>, drew from myths around the world the “hero’s journey”: leaving the ordinary, accepting the call, going through trials, the deepest crisis, and returning with a change.</p>
+    <p>Finally Field broke the film script into “setup, confrontation, resolution,” roughly 30 / 60 / 30 pages, with a plot point at the end of the first act and at the end of the second. This approach was easy to teach and easy to use, so it became the standard fare of screenwriting classes, and game people borrowed it in turn to pace levels and progression.</p>
+    <div class="timeline">
+      <div class="ev hasimg"><span data-illus="c09_tl_arist"></span><div><b class="yr">4th century BCE</b> Aristotle’s <i>Poetics</i>: a complete plot has a beginning, a middle and an end.</div></div>
+      <div class="ev hasimg"><span data-illus="c09_tl_freytag"></span><div><b class="yr">1863</b> Freytag’s <i>Technique of the Drama</i>: a five-part scheme of exposition, rising action, climax, falling action, catastrophe.</div></div>
+      <div class="ev hasimg"><span data-illus="c09_tl_hero"></span><div><b class="yr">1949</b> Campbell’s <i>The Hero with a Thousand Faces</i>: the “hero’s journey” drawn from myths, later simplified by screenwriters into five or six steps.</div></div>
+      <div class="ev hasimg"><span data-illus="c09_tl_field"></span><div><b class="yr">1979</b> Syd Field’s <i>Screenplay</i>: boils scripts down to three acts and popularizes the idea.</div></div>
+    </div>
+    <div class="card">
+      <svg viewBox="0 0 700 310" width="100%" role="img" aria-label="Tension curve of the three-act structure: inciting incident, midpoint turn, lowest point, climax, resolution">
+        <g class="rough" stroke="#2b2b3a" stroke-width="4" fill="none" stroke-linecap="round">
+          <path d="M55 20 V250 H680"/>
+          <path d="M190 20 V250 M470 20 V250" stroke-dasharray="2 9" stroke-width="3"/>
+          <path d="M60 225 C120 225 150 205 190 185 C250 155 290 135 340 125 C390 115 420 150 460 165 C500 180 520 50 560 45 C600 40 620 140 650 150" stroke="#ff7a59" stroke-width="5"/>
+        </g>
+        <g fill="#ffe58a" stroke="#2b2b3a" stroke-width="3">
+          <circle cx="190" cy="185" r="8"/><circle cx="340" cy="125" r="8"/><circle cx="460" cy="165" r="8"/><circle cx="560" cy="45" r="8"/><circle cx="650" cy="150" r="8"/>
+        </g>
+        <g font-size="18" fill="#2b2b3a" text-anchor="middle">
+          <text x="250" y="214">Inciting incident</text>
+          <text x="340" y="104">Midpoint turn</text>
+          <text x="418" y="200">Lowest point</text>
+          <text x="560" y="28">Climax</text>
+          <text x="645" y="182">Resolution</text>
+          <text x="125" y="280" font-size="20">Act I: setup</text><text x="330" y="280" font-size="20">Act II: confrontation</text><text x="575" y="280" font-size="20">Act III: resolution</text>
+          <text x="30" y="140" transform="rotate(-90 30 140)">Tension / emotional intensity</text>
+        </g>
+      </svg>
+    </div>
+    <p>Don’t treat three acts as a formula; it is only a checklist later people drew up: does the story have ups and downs, and are the turns placed where readers are about to tire?</p>
+  </div>
+  <div class="eg" data-ic="👹"><div class="egt"><b>In a game: the three phases of a boss fight.</b> Probing, escalation and a desperate counterattack are three acts in miniature.</div></div>
+  <div class="eg" data-ic="⚽"><div class="egt"><b>In daily life: a football match.</b> The cautious feeling-out at the start, the stalemate and the turn in midfield, a winning goal in the last ten minutes. The audience’s tension rises and falls just like that.</div></div>
+  <div class="eg bad" data-ic="💣"><div class="egt"><b>Counterexample: the biggest climax at the very start.</b> The giant boss and the full-screen explosions are used up right away, nothing is left to upgrade afterward, and the player’s tension can only slide downhill.</div></div>
+
+  
+  <div class="sec"><span class="n">5</span><h2><span class="tag why">Why it works</span>Why do people naturally read stories “along cause and effect”?</h2></div>
+  <div class="withimg rev">
+    <span data-illus="c09_chain"></span>
+    <div>
+      <p>Look at these four sentences first: she left without her keys, so she went back to the café, and the door was already locked, but the clerk held up a key to her through the glass. You understood it with no effort. Now shuffle the order of the sentences and you feel at once that it is awkward. The same information, just because <b>the causes are broken</b>, turns from a story back into scattered news.</p>
+      <p>Psychologists find that people seem to do this by nature: string events into causal chains, then fill in the characters’ intentions. In 1944, Fritz Heider and Marianne Simmel showed a short animation with only two triangles and a small circle moving in a box, and nearly all the participants told stories of chasing, fighting and hiding. The shapes have no intentions; your brain adds them.</p>
+    </div>
+  </div>
+  <div class="why-box">
+    <h3>Causal chains, narrative and memory</h3>
+    <p><b>① Causal understanding:</b> Trabasso and van den Broek’s 1985 study found that the more <span class="term" tabindex="0" data-def="Causal chain: the “because… so…” links between events. The more causal links an event has, the easier it is to remember and the more it is treated as the backbone of the story.">causal links</span> an event has to those before and after, the easier readers remember it and the more they treat it as the backbone of the story.<br>
+    <b>② Stories help memory:</b> In 1969 Gordon Bower and Michael Clark had one group weave 10 unrelated words into a story while another group just memorized them. On the later test, those who made up a story remembered far more words (the often-cited figures are medians of 93% versus 13%). Later replications don’t always get a gap this wide, but the direction, “remembered better when linked by cause,” hasn’t changed.<br>
+    <b>③ Narrative transportation:</b> Green and Brock proposed in 2000 that when a reader is “carried into” a story and temporarily forgets their surroundings, they are more likely to accept the views in the story.</p>
+    <div class="src">Sources: Heider &amp; Simmel (1944), “An experimental study of apparent behavior,” <i>American Journal of Psychology</i> 57; Trabasso &amp; van den Broek (1985), <i>Journal of Memory and Language</i> 24; Bower &amp; Clark (1969), “Narrative stories as mediators for serial learning,” <i>Psychonomic Science</i> 14: 181–182; Green &amp; Brock (2000), <i>Journal of Personality and Social Psychology</i> 79. These conclusions mostly come from text and film; carrying them straight over to games that you both read and operate calls for caution.</div>
+  </div>
+  <div class="board">
+    <b>Verify by hand: the same 6 sentences, read by cause and read at random</b>
+    <p class="small">Press “Causal order” to see the link between each pair of sentences; then press “Shuffle” and see why the same sentences suddenly can’t be read on.</p>
+    <button class="btn green" id="c9_ord">Read in causal order</button><button class="btn pink" id="c9_shuf">Shuffle and read again</button>
+    <div class="c9_out" id="c9_cout">Press a button above to begin.</div>
+  </div>
+  <p>A widely repeated saying among writers: two adjacent scenes in a good story should be connectable by “<b>therefore</b>” or “<b>but</b>,” not “and then… and then…” (this is a craft rule of thumb, often credited to the creators of <i>South Park</i>). The same holds in games. What the player did and how the world changed because of it must be <b>visible</b>; quest logs, plot recaps and changes in the scene all maintain this causal chain on the player’s behalf.</p>
+  <div class="eg" data-ic="📜"><span data-illus="c09_log"></span><div class="egt"><b>In a game: a quest log that states cause and effect.</b> “Because the village was burned, you must find the blacksmith.” You don’t have to guess what to do next.</div></div>
+  <div class="eg" data-ic="🌧️"><span data-illus="c09_news"></span><div class="egt"><b>In daily life: a news report.</b> “Because of the rainstorm, flights were canceled, so travelers were stranded” is easier to remember than three isolated items.</div></div>
+  <div class="eg" data-ic="🔺"><span data-illus="c09_shapes"></span><div class="egt"><b>In daily life: a short film with only shapes.</b> There is no one on screen, yet you still tell a story of “bullying” and “running away.” People automatically fill in cause and intention.</div></div>
+  <div class="eg bad" data-ic="🔁"><span data-illus="c09_then"></span><div class="egt"><b>Counterexample: a string of “and then.”</b> Take a quest, kill monsters, return to town, take another quest: with no “therefore” or “but” between the events, players can’t remember them and don’t care.</div></div>
+
+  
+  <div class="sec"><span class="n">6</span><h2><span class="tag why">Why it works</span>Why does “to be continued” make it so hard to stop?</h2></div>
+  <div class="withimg">
+    <span data-illus="c09_gap"></span>
+    <div>
+      <p>You have surely had such a night: you were sleepy, the series stopped at the tensest moment, and you still pressed “next episode.” Because there were a few unanswered questions hanging in your head.</p>
+      <p>In 1994 the behavioral economist George Loewenstein proposed the <span class="term" tabindex="0" data-def="Information-gap theory: when people realize there is a gap between what they know and what they want to know, they become curious and want to fill the gap.">information-gap theory</span>: curiosity comes from “you know a little, and know that you don’t know.” If you know nothing, you have nothing to be curious about; if you almost understand it all, you are no longer curious either. A gap of the right size is the most tempting.</p>
+      <p>The human wish for definite answers and for an end to the state of suspense is called the need for <span class="term" tabindex="0" data-def="Need for cognitive closure: the need for a definite answer and an end to ambiguity, varying a lot between individuals.">cognitive closure</span>. Popular accounts often put it together with the <span class="term" tabindex="0" data-def="Zeigarnik effect: originally, the claim that people remember unfinished tasks better than finished ones. Later research has not replicated this claim consistently.">Zeigarnik effect</span>, but the original version of that effect, “unfinished tasks are remembered better,” has not replicated consistently. What stands up better is that unfinished goals keep occupying thoughts, and that making a plan for finishing eases that nagging. So crediting all the magic of suspense to Zeigarnik is an oversimplification.</p>
+    </div>
+  </div>
+  <div class="eg" data-ic="🚪"><span data-illus="c09_door"></span><div class="egt"><b>In a game: the door that won’t open.</b> At the end of a level a locked great door appears, with light seeping through the crack. Carrying the question “what’s inside?”, the player is willing to play another level.</div></div>
+  <div class="eg" data-ic="📺"><span data-illus="c09_trailer"></span><div class="egt"><b>In daily life: the next-episode trailer.</b> The trailer of a mystery series cuts out the most crucial second, giving only the question and no answer, and so at half past midnight you press the next episode again.</div></div>
+  <div class="eg" data-ic="🗣️"><span data-illus="c09_halftalk"></span><div class="egt"><b>In daily life: a friend who says half a sentence.</b> “I’ll tell you something… never mind, another time.” That half sentence can keep you hanging for a whole day.</div></div>
+  <div class="eg bad" data-ic="📦"><span data-illus="c09_nopay"></span><div class="egt"><b>Counterexample: a “shocking secret” that never pays off.</b> The plot hints again and again at a great secret, hangs it out for a dozen chapters, and at the end gives only “it’s a mystery.” The reader’s curiosity turns into anger at being played.</div></div>
+  <div class="board">
+    <b>Verify by hand: a suspense designer (a sketch)</b>
+    <p class="small">Below is an 8-sentence short story and the 5 questions it raises and answers. Drag the slider to decide after which sentence to cut off (a chapter-end hook), and see how many open questions the reader has in mind at that point.</p>
+    <label class="ctl">Cut off after sentence <input type="range" id="sp_k" min="1" max="8" value="3"><output id="sp_ko">3</output></label>
+    <div id="sp_story" class="c9_storybox" style="min-height:0"></div>
+    <div class="small" style="margin-top:8px">Information gap (number of open questions):</div>
+    <div class="c9_bar"><i id="sp_bar"></i></div>
+    <div id="sp_qs"></div>
+    <div class="msg" id="sp_t"></div>
+  </div>
+  <div class="sticky">Try it: find a cut-off point that leaves exactly 3 open questions, then try cutting at the last sentence and see what happens to the gap. Too many questions pile up past the reader’s working memory, so keep them few and sharp, and above all <b>pay them off</b>: hanging them without giving answers makes readers angry rather than curious.</div>
+
+  <h3 style="margin-top:22px">Why the ending matters more than the middle: the peak–end rule</h3>
+  <p>Remember the peak–end rule from the flow chapter? Applied to narrative, it gives a conclusion designers find rather uncomfortable: when readers recall an experience, they remember almost only <b>the most intense moment</b> and <b>the last moment</b>, and how long it lasted tends to be ignored.</p>
+  <div class="why-box">
+    <h3>The peak–end rule in narrative</h3>
+    <p>In 1993, Kahneman and colleagues had participants hold a hand in 14 °C cold water for 60 seconds; in another trial they held it for 60 seconds and then 30 seconds more, during which the water was quietly warmed a little (to about 15 °C). Afterward, asked which one they would repeat, most chose the longer one, because it didn’t end so unpleasantly. In 1996, Redelmeier and Kahneman saw a similar pattern in colonoscopy patients: later ratings followed mainly the most painful moment and the last moment.</p>
+    <p>It is about evaluation in memory, not a claim that the process is unimportant: if the process is too awful, players quit on the spot. The research is also mostly about pain and short films, so applied to games of dozens of hours it can only be an analogy. But it is enough to remind you: put the hook where the reader is about to leave, and take care with the ending.</p>
+    <div class="src">Sources: Kahneman, Fredrickson, Schreiber &amp; Redelmeier (1993), “When more pain is preferred to less,” <i>Psychological Science</i> 4(6): 401–405; Redelmeier &amp; Kahneman (1996), <i>Pain</i> 66(1): 3–8.</div>
+  </div>
+  <div class="board">
+    <b>Micro-experiment: two waits, which would you rather repeat? (sketch numbers)</b>
+    <p class="small">The bars are how unpleasant each minute is (1–10). Choose by instinct first, then look at the numbers.</p>
+    <div class="c9_pe">
+      <div class="col"><b>A: 3 minutes</b><div class="cells" id="c9_pa"></div><div class="small" id="c9_ta"></div></div>
+      <div class="col"><b>B: 5 minutes (the first 3 minutes are the same as A)</b><div class="cells" id="c9_pb"></div><div class="small" id="c9_tb"></div></div>
+    </div>
+    <button class="btn alt" id="c9_pickA">I’d repeat A</button><button class="btn pink" id="c9_pickB">I’d repeat B</button>
+    <div class="c9_out" id="c9_pet">Choose one first.</div>
+  </div>
+
+  
+  <div class="sec"><span class="n">7</span><h2><span class="tag how">Try it</span>Play it: walk through once and see your path</h2></div>
+  <p>Read the little story below and make choices. On the right your path is drawn live: <span class="c9_lg"></span>solid lines are <b>real choices</b> (leading to different content), and <span class="c9_lg f"></span>dashed lines are <b>false choices</b> (only changing the tone, or quickly converging). Play several times and find all 4 endings; “Back” steps back so you can try another option.</p>
+  <div class="c9_twocol">
+    <div>
+      <div class="c9_storybox" id="c9_story"></div>
+      <div id="c9_fb"></div>
+      <div id="c9_choices"></div>
+      <div class="c9_trail" id="c9_trail"></div>
+    </div>
+    <div>
+      <svg id="c9_path" viewBox="0 0 720 340" role="img" aria-label="The story path you have walked, with solid lines for real choices and dashed lines for false choices"></svg>
+      <label class="small"><input type="checkbox" id="c9_all"> Show the complete story map (god’s-eye view)</label>
+      <div><span class="stat">Real choices <b id="c9_nr">0</b></span><span class="stat">False choices <b id="c9_nf">0</b></span><span class="stat">Endings seen <b id="c9_ne">0</b>/4</span></div>
+      <div id="c9_ends"></div>
+      <button class="btn alt" id="c9_undo">← Back</button><button class="btn pink" id="c9_restart">Restart</button>
+    </div>
+  </div>
+  <div class="sticky">Try it: find all 4 endings. Each time one is unlocked, a lock on the right turns into a flag; once you have found them all, count how many false choices you walked, and think about whether they made you feel cheated or respected.</div>
+  <p class="small">Are false choices useless? Not necessarily. They let players “act out” a character’s personality and can also make them feel respected. The real problem is <b>packaging a false choice as a fate-changing event</b>; once seen through, players feel cheated, which is the agency loop breaking at “consequence visible.”</p>
+
+  <div class="misc">
+    <h3>Common misconceptions</h3>
+    <ul>
+      <li><b>“The longer the story, the deeper.”</b> Length is not depth. What matters is clear causes, rising and falling tension, and gameplay matching the theme.</li>
+      <li><b>“More branches mean more agency.”</b> Agency comes from <b>visible consequences</b>, not the number of forks.</li>
+      <li><b>“Suspense means hanging without answering.”</b> Suspense that isn’t paid off turns into frustration. The gap has to be filled, ideally better than imagined.</li>
+      <li><b>“The three-act structure is a rule laid down by Aristotle.”</b> It is a summary by later people, especially twentieth-century screenwriting textbooks, and only a checklist.</li>
+    </ul>
+  </div>
+  <div class="reflect">
+    <h3>Reflection and debate</h3>
+    <ul>
+      <li><b>Is a game a narrative at all?</b> Scholars long argued: the narratologists see games as a new medium for storytelling, while the ludologists (who stress rules and play) hold that looking at games through a narrative frame misses their essence. There is still no conclusion, and both sides have a point.</li>
+      <li><b>“People naturally love stories.”</b> The understanding of cause and intention is backed by a great deal of research, but “story is an adaptation human beings evolved” is only one view.</li>
+      <li><b>The experimental material is mostly text and film:</b> findings on narrative transportation, causal understanding and the peak–end rule won’t necessarily carry over unchanged to players who both read and operate.</li>
+      <li><b>The limits of the hook:</b> using suspense to lengthen playtime may be good design, or may turn into a way of “not letting people sleep”; every designer has to draw that line themselves.</li>
+    </ul>
+  </div>
+
+  <div class="key">
+    <h3>Key points</h3>
+    <ul>
+      <li>Narrative means ranked by involvement: <b>cutscene &lt; embedded &lt; environmental &lt; gameplay narrative</b>. Prefer letting players “do” over “watch.”</li>
+      <li><b>Agency</b> is “action + visible consequence”; when what the plot says and what the gameplay encourages disagree, that is <b>ludonarrative dissonance</b>.</li>
+      <li><b>Content cost</b> gave rise to the string of pearls, the bottleneck and false choices in branching narrative; consequences matter more than the number of forks.</li>
+      <li>Three acts are a “locator” for long stories, a tool later people summed up, not a rule from the ancients.</li>
+      <li>People understand stories through <b>causal chains</b>; suspense comes from <b>information gaps</b> and has to be paid off; what readers remember deepest are <b>the strongest moment and the last moment</b>.</li>
+    </ul>
+  </div>
+  <div class="tldr">Good game narrative: clear cause and effect, a moderate measure of suspense, the player making the story with their own hands, and the ending kept for the most unforgettable moment.</div>
+
+  <div class="sec"><span class="n">8</span><h2><span class="tag think">Practice</span>Quick quiz</h2></div>
+  <div id="quiz"></div>
+
+  <div class="sec"><span class="n">9</span><h2><span class="tag how">Your design</span>Write a theme for your game</h2></div>
+  <div class="card o">
+    <p>Write a one-sentence theme for your game (such as “trust is hard”), then write: <b>which core gameplay action</b> embodies this theme? Then design a <b>real choice</b> and write what consequence it leaves behind.</p>
+    <textarea rows="5" data-save="ch9" placeholder="Theme:&#10;How the core gameplay embodies it:&#10;A real choice and its consequence: …"></textarea>
+    <p class="small">✍️ Saved automatically in your browser.</p>
+  </div>
+</main>
+<script src="../js/illus.js"></script>
+<script src="../js/illus-ch09.js"></script>
+<script src="../js/en/illus.js"></script>
+<script src="../js/en/illus-lib.js"></script>
+<script src="../js/en/illus-ch09.js"></script>
+<script src="../js/common.js"></script>
+<script>
+const $ = id => document.getElementById(id);
+
+function drawStruct(id, nodes, edges) {
+  const svg = $(id);
+  let h = '<g class="rough" stroke="#2b2b3a" stroke-width="4" fill="none" stroke-linecap="round">';
+  edges.forEach(e => { const a = nodes[e[0]], b = nodes[e[1]]; h += '<path d="M' + a[0] + ' ' + a[1] + ' L' + b[0] + ' ' + b[1] + '"/>'; });
+  nodes.forEach(n => { h += '<circle cx="' + n[0] + '" cy="' + n[1] + '" r="' + (n[3] || 14) + '" fill="' + (n[2] || "#ffe58a") + '"/>'; });
+  svg.innerHTML = h + "</g>";
+}
+drawStruct("c9_bs1", [[30,75],[100,75],[170,75],[240,75],[310,75,"#ffb3c6"]], [[0,1],[1,2],[2,3],[3,4]]);
+drawStruct("c9_bs2", [[30,75],[130,75],[230,75],[320,75,"#ffb3c6"],[80,28,"#b6e8a8",10],[180,122,"#b6e8a8",10]],
+  [[0,1],[1,2],[2,3],[0,4],[4,1],[1,5],[5,2]]);
+(function () {
+  const nodes = [[30,75]], edges = [];
+  const l1 = [[110,40],[110,110]], l2 = [[200,22],[200,58],[200,92],[200,128]];
+  l1.forEach(n => { nodes.push(n); edges.push([0, nodes.length - 1]); });
+  l2.forEach((n, i) => { nodes.push(n); edges.push([1 + (i >> 1), nodes.length - 1]); });
+  for (let i = 0; i < 8; i++) { nodes.push([290, 12 + i * 18, "#ffb3c6", 7]); edges.push([3 + (i >> 1), nodes.length - 1]); }
+  drawStruct("c9_bs3", nodes, edges);
+})();
+drawStruct("c9_bs4", [[30,75],[110,35,"#b6e8a8"],[110,115,"#b6e8a8"],[190,75,"#ffb3c6"],[260,35,"#b6e8a8"],[260,115,"#b6e8a8"],[320,75,"#ffb3c6"]],
+  [[0,1],[0,2],[1,3],[2,3],[3,4],[3,5],[4,6],[5,6]]);
+
+const N = {
+  n0: { x: 60, y: 160, lb: "Go", t: "On a stormy night, you are the lighthouse keeper. The generator is about to die: once the light goes out, no ship can see the reef tonight. Just then a distress call comes over the radio: someone is out at sea.",
+    ch: [
+      { t: "Go fix the generator first", to: "n1", real: true, note: "You save the light but can’t go to the rescue right away. It leads down a completely different line." },
+      { t: "Row out to save them", to: "n2", real: true, note: "You leave the lighthouse. What happens to the light depends on your later choices." } ] },
+  n1: { x: 200, y: 60, lb: "Lamp", t: "The light is back on. The voice on the radio is still calling, and sounds panicked. You pick up the handset—",
+    ch: [
+      { t: "Answer calmly", to: "n3", real: false, note: "It only changes your tone of voice; the plot afterward is exactly the same." },
+      { t: "Answer anxiously", to: "n3", real: false, note: "Same as above: different tone, same result. It lets you “act” the character but doesn’t change the story." } ] },
+  n2: { x: 200, y: 250, lb: "Sea", t: "The little boat pitches violently in the waves. Far off, someone clings to a piece of driftwood, and back at the lighthouse the light starts to flicker.",
+    ch: [
+      { t: "Row straight in with all you’ve got", to: "n4", real: false, note: "Both ways of rowing reach the same place: different means, same result." },
+      { t: "Skirt the reef and row slowly", to: "n4", real: false, note: "Same as above, only the description of the process differs." },
+      { t: "Too dangerous, turn back", to: "E3", real: true, note: "You give up the rescue and head for a completely different ending.", bend: 70 } ] },
+  n4: { x: 340, y: 250, lb: "Reef", t: "You drag the man into the boat. Gasping, he says: “Don’t go back to the lighthouse… what’s in the box can’t see the light.”",
+    ch: [
+      { t: "Ignore him, row back to the lighthouse", to: "n3", real: false, note: "The routes merge at the “bottleneck”: however you go, the stranger ends up at the lighthouse door." },
+      { t: "Listen to him, and wait it out on the rocks until dawn", to: "E4", real: true, note: "You chose to trust him and entered another ending." } ] },
+  n3: { x: 490, y: 105, lb: "Shore", t: "A soaked stranger pushes open the lighthouse door, clutching a locked box tightly to his chest.",
+    ch: [
+      { t: "Hand over hot soup, don’t ask about the box", to: "E1", real: true, note: "Trust or suspicion decides the ending." },
+      { t: "Pry the box open while he sleeps", to: "E2", real: true, note: "Trust or suspicion decides the ending." } ] },
+  E1: { x: 650, y: 40, lb: "End 1", end: true, t: "You asked nothing. At dawn the stranger leaves an old ship ticket and a “thank you.” You will never know what was in the box, but the lighthouse has gained a friend.  [Ending 1: A Silent Trust]", ch: [] },
+  E2: { x: 650, y: 120, lb: "End 2", end: true, t: "Inside the box is a stopped clock, its hands frozen at tonight. You have just closed the lid when the stranger opens his eyes.  [Ending 2: The Box That Should Stay Shut]", ch: [] },
+  E4: { x: 650, y: 205, lb: "End 4", end: true, t: "You wait out the night together on the rocks. The lighthouse stayed dark all night, and luckily no ship came to harm. The stranger never mentions the box, and you don’t ask.  [Ending 4: A Night on the Rocks]", ch: [] },
+  E3: { x: 650, y: 290, lb: "End 3", end: true, t: "You return to shore and the light has stayed on. The cries for help at sea faded away before dawn.  [Ending 3: The Silent Sea]", ch: [] }
+};
+const ENDS = [["E1", "End 1 A Silent Trust"], ["E2", "End 2 The Box That Should Stay Shut"], ["E3", "End 3 The Silent Sea"], ["E4", "End 4 A Night on the Rocks"]];
+let cur, visited, taken, nReal, nFake, trail, last, hist = [], endings = new Set();
+function reset() { cur = "n0"; visited = new Set(["n0"]); taken = {}; nReal = 0; nFake = 0; trail = []; last = null; hist = []; $("c9_fb").innerHTML = ""; render(); }
+function pick(from, idx) {
+  const c = N[from].ch[idx];
+  hist.push({ cur, visited: [...visited], taken: Object.assign({}, taken), nReal, nFake, trail: trail.slice(), last });
+  taken[from + "|" + idx] = c.real ? "r" : "f";
+  if (c.real) nReal++; else nFake++;
+  trail.push({ t: c.t, real: c.real }); last = from + "|" + idx;
+  $("c9_fb").innerHTML = '<div class="c9_fb ' + (c.real ? "real" : "fake") + '"><span class="c9_ftag">' + (c.real ? "Real choice" : "False choice") + "</span>You chose “" + c.t + "”." + c.note + "</div>";
+  cur = c.to; visited.add(cur);
+  if (N[cur].end) endings.add(cur);
+  render();
+}
+function undo() {
+  if (!hist.length) return;
+  const s = hist.pop();
+  cur = s.cur; visited = new Set(s.visited); taken = s.taken; nReal = s.nReal; nFake = s.nFake; trail = s.trail; last = s.last;
+  $("c9_fb").innerHTML = '<div class="c9_fb">Stepped back; you can try another option.</div>'; render();
+}
+function render() {
+  const n = N[cur];
+  $("c9_story").innerHTML = "<p>" + n.t + "</p>";
+  const box = $("c9_choices"); box.innerHTML = "";
+  n.ch.forEach((c, i) => {
+    const b = document.createElement("button");
+    b.className = "btn"; b.textContent = c.t; b.onclick = () => pick(cur, i);
+    box.appendChild(b);
+  });
+  if (n.end) {
+    const d = document.createElement("div");
+    d.className = "msg";
+    const tot = nReal + nFake;
+    d.textContent = "This run:" + nReal + " real choices," + nFake + " false choices (false choices were " + (tot ? Math.round(nFake / tot * 100) : 0) + "%). Press “Restart” to try another path, or “Back” to step back." + (endings.size === 4 ? " 🎉 All 4 endings found!" : "");
+    box.appendChild(d);
+  }
+  $("c9_trail").innerHTML = trail.length ? "<span class='small'>Your trail:</span>" + trail.map(x => "<span class='" + (x.real ? "r" : "f") + "'>" + (x.real ? "real" : "fake") + "·" + x.t + "</span>").join("") : "";
+  $("c9_ends").innerHTML = ENDS.map(e => "<span class='c9_end" + (endings.has(e[0]) ? " got" : "") + "'>" + (endings.has(e[0]) ? "🏁 " : "🔒 ") + (endings.has(e[0]) ? e[1] : "locked") + "</span>").join("");
+  $("c9_nr").textContent = nReal; $("c9_nf").textContent = nFake; $("c9_ne").textContent = endings.size;
+  drawPath();
+}
+function drawPath() {
+  const all = $("c9_all").checked;
+  let h = '<g class="rough" fill="none" stroke-linecap="round">', labels = "";
+  const groups = {};
+  Object.keys(N).forEach(k => N[k].ch.forEach((c, i) => { const g = k + ">" + c.to; (groups[g] = groups[g] || []).push([k, i]); }));
+  Object.keys(N).forEach(k => N[k].ch.forEach((c, i) => {
+    const key = k + "|" + i, t = taken[key];
+    if (!t && !all) return;
+    const a = N[k], b = N[c.to], g = groups[k + ">" + c.to];
+    const dx = b.x - a.x, dy = b.y - a.y, len = Math.hypot(dx, dy);
+    let off = c.bend !== undefined ? c.bend : (g.length > 1 ? (g.findIndex(z => z[1] === i) - (g.length - 1) / 2) * 30 : 0);
+    const cx = (a.x + b.x) / 2 + (-dy / len) * off, cy = (a.y + b.y) / 2 + (dx / len) * off;
+    const st = t === "r" ? 'stroke="#ff7a59" stroke-width="7"' : t === "f" ? 'stroke="#4a9ac4" stroke-width="7" stroke-dasharray="12 8"' :
+      (c.real ? 'stroke="#f0b49e" stroke-width="4"' : 'stroke="#a9d3e8" stroke-width="4" stroke-dasharray="8 6"');
+    h += '<path class="' + (key === last ? "c9_new" : "") + '" d="M' + a.x + " " + a.y + " Q" + cx.toFixed(1) + " " + cy.toFixed(1) + " " + b.x + " " + b.y + '" ' + st + "/>";
+    const mx = .25 * a.x + .5 * cx + .25 * b.x, my = .25 * a.y + .5 * cy + .25 * b.y;
+    labels += '<g><rect x="' + (mx - 14) + '" y="' + (my - 12) + '" width="28" height="24" rx="8" fill="' + (c.real ? "#ffe3d3" : "#dff1fb") + '" stroke="#2b2b3a" stroke-width="2"/><text x="' + mx + '" y="' + (my + 6) + '" font-size="16" text-anchor="middle" fill="#2b2b3a" stroke="none">' + (c.real ? "real" : "fake") + "</text></g>";
+  }));
+  h += '</g><g stroke="#2b2b3a" stroke-width="3.5" font-size="17" text-anchor="middle" fill="#2b2b3a">' + labels;
+  Object.keys(N).forEach(k => {
+    const n = N[k], v = visited.has(k);
+    if (!v && !all) return;
+    const fill = k === cur ? "#ffe58a" : v ? (n.end ? "#ffb3c6" : "#b6e8a8") : "#fff";
+    h += '<circle ' + (k === cur ? 'class="c9_pulse" ' : "") + 'cx="' + n.x + '" cy="' + n.y + '" r="26" fill="' + fill + '"/><text x="' + n.x + '" y="' + (n.y + 6) + '" stroke="none">' + n.lb + "</text>";
+  });
+  $("c9_path").innerHTML = h + "</g>";
+}
+$("c9_all").onchange = drawPath;
+$("c9_restart").onclick = reset;
+$("c9_undo").onclick = undo;
+reset();
+
+GD.mountQuiz($("quiz"), [
+  { q: "To show that “this world is extremely short of resources,” which approach is closest to “gameplay narrative”?", opts: ["Have the narrator say “supplies are scarce” in the opening cutscene", "Give the player a tiny backpack where every supply forces a trade-off", "Write a paragraph of background in the menu", "Add a piece of sad background music"], a: 1, why: "Gameplay narrative lets players feel it for themselves. Creating scarcity with rules is far more effective than being told." },
+  { q: "Which of these is most like a “false choice”?", opts: ["Save A or save B, and the plot differs completely afterward", "Answer “gently” or “coldly,” and the plot is identical afterward", "Choose whether to trust a stranger, which affects the ending", "Choose which city to go to first, each with different quests"], a: 1, why: "A choice that changes only the wording and leaves no consequence is a false choice. It isn’t necessarily bad, but don’t package it as a big deal." },
+  { q: "The plot stresses “the hero hates violence,” yet the gameplay rewards killing lots of enemies. This is:", opts: ["Three-act structure", "String-of-pearls narrative", "Ludonarrative dissonance", "Environmental narrative"], a: 2, why: "What the story says contradicts what the gameplay encourages, and players trust their hands more, which breaks the immersion." },
+  { q: "[Why] Why is a chapter-end hook most effective when “the reader already knows a little, but still lacks the key answer”?", opts: ["Because readers like being deceived", "Curiosity comes from the information gap of “knowing a little and knowing that you don’t know”; knowing nothing, or understanding almost everything, makes curiosity weak", "Because the Zeigarnik effect has been proven again and again", "Because the more questions, the better"], a: 1, why: "Loewenstein’s information-gap theory: a gap of moderate size is the most tempting. The original claim of the Zeigarnik effect has not replicated consistently and can’t be the only explanation. Too many questions also exceed working memory, and in the end they have to be paid off." },
+  { q: "[Why it was invented] Printed branching gamebooks and early text adventures quickly developed “merge / bottleneck” and “false choices.” What problem were they mainly solving?", opts: ["To make the story shorter", "The content of a full branching tree grows exponentially with the number of choices, so a sense of choice had to be kept within limited pages and development budgets", "To make it easier for players to find the endings", "To keep players from rereading"], a: 1, why: "The tree’s 2+4+8+… growth quickly outruns the budget, and merges and false choices can create a sense of participation with less content." },
+  { q: "[Why it was invented] Which statement about the origin of the “three-act structure” is more accurate?", opts: ["Aristotle laid down three acts in the <i>Poetics</i>", "Aristotle spoke only of a beginning, middle and end; the popularity of the modern three-act model largely comes from twentieth-century screenwriting textbooks (such as Syd Field’s of 1979)", "The three-act structure was invented by the games industry", "The three-act structure is a law of nature"], a: 1, why: "Three acts are a creative tool later people summed up, giving a long story a “locator”; it is neither a rule from the ancients nor an iron law." },
+]);
+
+(function () {
+  const MODES = [["fork", "Fork"], ["merge", "Merge"], ["fake", "False choice"]];
+  let modes = ["fork", "fork", "fork", "fork"];
+  const BUDGET = 18;
+  function calc() {
+    let live = 1, scenes = 0, real = 0; const cols = [{ live: 1, mode: null }];
+    modes.forEach(m => {
+      if (m === "fork") { scenes += 2 * live; live *= 2; real++; }
+      else if (m === "merge") { scenes += 2 * live + 1; live = 1; real++; }
+      cols.push({ live, mode: m });
+    });
+    return { scenes, endings: live, real, cols };
+  }
+  function drawB() {
+    const box = $("c9b_layers"); box.innerHTML = "";
+    modes.forEach((m, i) => {
+      const d = document.createElement("div"); d.className = "c9_layer";
+      d.innerHTML = "<b>Choice " + (i + 1) + " of 4:</b>";
+      MODES.forEach(x => {
+        const b = document.createElement("button"); b.className = "chip" + (m === x[0] ? " on" : ""); b.textContent = x[1];
+        b.onclick = () => { modes[i] = x[0]; drawB(); };
+        d.appendChild(b);
+      });
+      box.appendChild(d);
+    });
+    const r = calc();
+    const colW = 100, x0 = 50;
+    let s = '<g class="rough" stroke="#2b2b3a" stroke-width="2.5" fill="none">';
+    const pos = (c, k, shown) => ({ x: x0 + c * colW, y: 115 + (k - (shown - 1) / 2) * Math.min(26, 190 / shown) });
+    for (let c = 1; c < r.cols.length; c++) {
+      const prev = Math.min(r.cols[c - 1].live, 8), now = Math.min(r.cols[c].live, 8), m = r.cols[c].mode;
+      for (let i = 0; i < prev; i++) {
+        const a = pos(c - 1, i, prev);
+        if (m === "fork") { [2 * i, 2 * i + 1].forEach(j => { if (j < now) { const b = pos(c, j, now); s += '<path d="M' + a.x + " " + a.y + "L" + b.x + " " + b.y + '"/>'; } }); }
+        else if (m === "merge") { const b = pos(c, 0, 1); s += '<path d="M' + a.x + " " + a.y + "L" + b.x + " " + b.y + '"/>'; }
+        else { const b = pos(c, i, now); s += '<path d="M' + a.x + " " + a.y + "L" + b.x + " " + b.y + '" stroke-dasharray="6 5" stroke="#4a9ac4"/>'; }
+      }
+    }
+    s += '</g><g stroke="#2b2b3a" stroke-width="2.5" font-size="16" fill="#2b2b3a">';
+    r.cols.forEach((col, c) => {
+      const shown = Math.min(col.live, 8);
+      for (let k = 0; k < shown; k++) { const p = pos(c, k, shown); s += '<circle cx="' + p.x + '" cy="' + p.y + '" r="9" fill="' + (c === 0 ? "#ffe58a" : col.mode === "fork" ? "#b6e8a8" : col.mode === "merge" ? "#ffc078" : "#a8dcf0") + '"/>'; }
+      if (col.live > 8) s += '<text x="' + (x0 + c * colW - 14) + '" y="222" stroke="none">×' + col.live + '</text>';
+      if (c > 0) s += '<text x="' + (x0 + c * colW) + '" y="20" text-anchor="middle" stroke="none">' + MODES.find(x => x[0] === col.mode)[1] + '</text>';
+    });
+    $("c9b_svg").innerHTML = s + "</g>";
+    $("c9b_sc").textContent = r.scenes; $("c9b_en").textContent = r.endings; $("c9b_rl").textContent = r.real;
+    const bar = $("c9b_bar"); bar.style.width = Math.min(100, r.scenes / BUDGET * 100) + "%"; bar.style.background = r.scenes > BUDGET ? "#e5484d" : "";
+    const fakes = modes.filter(x => x === "fake").length;
+    let msg;
+    if (r.scenes > BUDGET) msg = "Over budget by " + (r.scenes - BUDGET) + " scenes: you can’t write them all. A full branching tree doubles its content with every extra choice. Try turning one or two into “merge” or “false choice.”";
+    else if (r.endings >= 4) msg = "✅ Within budget you reached " + r.endings + " endings!" + (fakes >= 2 ? "But you used " + fakes + " false choices to pad it out: the player can really change the story in only " + r.real + " places, so don’t pass off false choices as big events." : "A good trade-off: the real choices number " + r.real + " in total.");
+    else msg = "Budget is fine, but there are only " + r.endings + " endings. “Merge” pulls all routes back to one point, so the number of endings falls back to 1; to get 4 endings, two of the choices have to stay truly forked.";
+    $("c9b_msg").textContent = msg;
+  }
+  $("c9b_reset").onclick = () => { modes = ["fork", "fork", "fork", "fork"]; drawB(); };
+  $("c9b_hint").onclick = () => {
+    modes = ["fork", "fork", "fake", "fake"]; drawB();
+    $("c9b_msg").innerHTML += "<br><b>One reference solution:</b> fork for real on the first two choices to get 4 routes (6 scenes in all), then use “false choices” on the last two, changing only the wording and adding no content. Another idea is “fork, fork, merge, fork again,” with fewer endings but independent content on every line. There is no single right answer; different teams strike different balances between content volume, freedom and player feeling.";
+  };
+  drawB();
+})();
+
+(function () {
+  const EV = [
+    "As Lin headed out, she found she had no keys in her pocket.",
+    "She remembered leaving her coat at the café last night.",
+    "She ran to the café, but the door was already locked.",
+    "Through the glass, the clerk held up a key and waved to her.",
+    "The clerk opened the door and handed her the key.",
+    "She made the last subway train just in time."
+  ];
+  const CN = ["Therefore", "So", "But", "Then", "So"];
+  function linked(arr) { let c = 0; for (let i = 0; i + 1 < arr.length; i++) if (arr[i + 1] === arr[i] + 1) c++; return c; }
+  function shuffle(a) { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+  function readOut(arr) {
+    let h = "";
+    arr.forEach((id, i) => {
+      h += "<div>" + EV[id] + "</div>";
+      if (i + 1 < arr.length) h += arr[i + 1] === id + 1
+        ? '<div class="c9_cn ok">↳ ' + CN[id] + "… (the link holds)</div>"
+        : '<div class="c9_cn no">↳ ?? (nothing connects these two events)</div>';
+    });
+    return h;
+  }
+  $("c9_ord").onclick = () => { $("c9_cout").innerHTML = readOut([0, 1, 2, 3, 4, 5]) + "<div class='msg'>All 5 links hold: it is a story.</div>"; };
+  $("c9_shuf").onclick = () => {
+    let a; do { a = shuffle([0, 1, 2, 3, 4, 5]); } while (linked(a) >= 3);
+    $("c9_cout").innerHTML = readOut(a) + "<div class='msg'>Only " + linked(a) + " of the 5 links hold: the same 6 sentences, merely in a different order, go from “one story” to “six unrelated messages.”</div>";
+  };
+})();
+
+(function () {
+  const A = [6, 6, 6], B = [6, 6, 6, 5, 4];
+  const sum = a => a.reduce((s, v) => s + v, 0);
+  function draw(id, arr) { $(id).innerHTML = arr.map(v => '<i style="height:' + v * 10 + '%" title="' + v + '"></i>').join(""); }
+  draw("c9_pa", A); draw("c9_pb", B);
+  $("c9_ta").textContent = "Total " + sum(A) + ", average " + (sum(A) / A.length).toFixed(1) + ", peak 6, end 6";
+  $("c9_tb").textContent = "Total " + sum(B) + ", average " + (sum(B) / B.length).toFixed(1) + ", peak 6, end 4";
+  function pick(x) {
+    $("c9_pet").innerHTML = (x === "B" ? "You chose B: it is more unpleasant in total (" + sum(B) + " vs " + sum(A) + "), but its ending is gentler." : "You chose A: by the total it has less suffering, which is the most “rational” way to count.") +
+      "<br>In the real experiment (the water-temperature version), most people chose the longer one with the gentler ending, because the evaluation in memory depends more on the strongest moment and the last moment. The numbers here are only a sketch.";
+  }
+  $("c9_pickA").onclick = () => pick("A"); $("c9_pickB").onclick = () => pick("B");
+})();
+
+(function () {
+  const BEATS = [
+    "Late at night, the courier Yuan walks into an old building, with only a stranger in the elevator.",
+    "The elevator panel has no button for floor 7, yet floor 7 is exactly where he has a delivery.",
+    "The stranger says softly: “Don’t press that button.”",
+    "Yuan glances at the parcel: on the recipient line is his own name.",
+    "The elevator suddenly stops, the door slowly opens, and the corridor lights come on one after another by themselves.",
+    "The stranger says he was the building’s caretaker ten years ago, and that floor 7 was sealed off that year.",
+    "Inside the parcel are an old key and a photo of Yuan as a child.",
+    "The caretaker sighs: “Now you understand why you shouldn’t have pressed that button.”"
+  ];
+  const SQ = [
+    { q: "Who is this stranger?", r: 1, a: 6 },
+    { q: "Why is there no button for floor 7?", r: 2, a: 6 },
+    { q: "Why shouldn’t he press that button?", r: 3, a: 8 },
+    { q: "Why is Yuan himself the recipient?", r: 4, a: 7 },
+    { q: "Why do the corridor lights come on by themselves?", r: 5, a: 7 }
+  ];
+  function sp() {
+    const k = +$("sp_k").value;
+    $("sp_ko").textContent = k;
+    let h = "";
+    for (let i = 0; i < k; i++) h += "<p style='margin:.3em 0'>" + (i + 1) + ". " + BEATS[i] + "</p>";
+    h += k < 8 ? "<p style='margin:.3em 0'><b>… (to be continued)</b></p>" : "<p class='small'>(The story ends, with no hook)</p>";
+    $("sp_story").innerHTML = h;
+    const open = SQ.filter(x => x.r <= k && x.a > k);
+    $("sp_bar").style.width = (open.length / SQ.length * 100) + "%";
+    $("sp_qs").innerHTML = open.length ? open.map(x => "<span class='chip'>❓ " + x.q + "</span>").join("") : "<span class='small'>(No open questions)</span>";
+    const n = open.length;
+    $("sp_t").textContent = "At this moment the reader has " + n + " open questions in mind." +
+      (n === 0 ? "All wrapped up: satisfying, but with no reason to press “next chapter” right away." :
+       n === 3 ? "✅ 3: the reader has enough background to understand the questions, yet not so many that they can’t remember them." :
+       n <= 3 ? "The gap is still small, and the reader’s curiosity isn’t fully drawn." :
+       "A few too many questions are piled up: the reader may start losing track or feel confused, so it may be best to answer one or two first.");
+  }
+  $("sp_k").oninput = sp; sp();
+})();
+</script>
+</body>
+</html>

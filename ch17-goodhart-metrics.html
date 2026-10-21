@@ -45,7 +45,7 @@
     <div class="txt">
       <span class="badge">第 17 章</span>
       <h1>古德哈特与指标</h1>
-      <p class="sub">你量什么，人们就会变成什么——有时候，变成你不想要的东西。</p>
+      <p class="sub">量什么，人们就会变成什么，有时会变成设计者不想要的东西。</p>
     </div>
     <svg viewBox="0 0 190 150" class="rough" aria-hidden="true">
       <circle cx="95" cy="70" r="52" fill="#fff" stroke="#2b2b3a" stroke-width="5"/>
@@ -60,9 +60,9 @@
   <div class="goals">
     <h3>学习目标</h3>
     <ul>
-      <li>读完你能用自己的话解释：为什么指标只是真实目标的影子，影子一旦被奖励就会失真，并说出这个想法最早是从货币政策里撞出来的。</li>
-      <li>读完你能讲清“相关性在优化压力下崩塌”的机制，并分辨游戏、教育和 AI（规格博弈）里哪些是古德哈特现象，哪些只是别的问题。</li>
-      <li>读完你能解释奖励为什么有时会磨掉兴趣，并为一个游戏目标设计一组更难被刷的指标。</li>
+      <li>读完能用自己的话解释：为什么指标只是真实目标的影子，影子一旦被奖励就会失真，并说出这个想法最早是从货币政策里撞出来的。</li>
+      <li>读完能讲清“相关性在优化压力下崩塌”的机制，并分辨游戏、教育和 AI（规格博弈）里哪些是古德哈特现象，哪些只是别的问题。</li>
+      <li>读完能解释奖励为什么有时会磨掉兴趣，并为一个游戏目标设计一组更难被刷的指标。</li>
     </ul>
     <span class="time">约 40 分钟</span>
   </div>
@@ -73,9 +73,9 @@
   <div class="withimg">
     <span data-illus="c17_shadow"></span>
     <div>
-      <p>假设你做了一款开放世界游戏，最想让玩家做的事是真的去探索这个世界。可是“探索”发生在玩家的脑子里，你的后台看不见。后台只看得见数字，比如玩家一共捡了多少收集物。</p>
-      <p>于是你做了个很自然的决定：捡满 100 个，发一个成就。这里有两样东西。你真正在乎的是玩家的探索体验，它叫<span class="term" tabindex="0" data-def="真实目标：你真正在乎、却往往没法直接测量的东西，比如玩家的探索体验、乐趣、长期满意度。">真实目标</span>。你手里那个数字叫<span class="term" tabindex="0" data-def="指标（metric）：一个可以被测量的数字，用来代表某个难以直接测量的真实目标。也叫代理指标。">指标</span>，它是真实目标投在地上的影子。</p>
-      <p>影子有用，是因为平时它和本体一起动：爱逛的玩家顺路捡得多，所以收集物数量和探索体验大致同涨同落。麻烦出在你开始奖励这个数字的那一刻。有人会发现，想让影子变长，不用挪动本体，直接去涂影子更省事。</p>
+      <p>假设做了一款开放世界游戏，最想让玩家做的事是真的去探索这个世界。可是“探索”发生在玩家的脑子里，后台看不见。后台只看得见数字，比如玩家一共捡了多少收集物。</p>
+      <p>于是做了个很自然的决定：捡满 100 个，发一个成就。这里有两样东西。真正在乎的是玩家的探索体验，它叫<span class="term" tabindex="0" data-def="真实目标：你真正在乎、却往往没法直接测量的东西，比如玩家的探索体验、乐趣、长期满意度。">真实目标</span>。手里那个数字叫<span class="term" tabindex="0" data-def="指标（metric）：一个可以被测量的数字，用来代表某个难以直接测量的真实目标。也叫代理指标。">指标</span>，它是真实目标投在地上的影子。</p>
+      <p>影子有用，是因为平时它和本体一起动：爱逛的玩家顺路捡得多，所以收集物数量和探索体验大致同涨同落。麻烦出在开始奖励这个数字的那一刻。有人会发现，想让影子变长，不用挪动本体，直接去涂影子更省事。</p>
     </div>
   </div>
 
@@ -105,12 +105,12 @@
   <div class="eg" data-ic="🛌"><span data-illus="c17_achieve"></span><div class="egt"><b>成就刷分（游戏）</b>“累计击杀 10000 个”本想鼓励玩家深入玩，结果有人挂机刷怪，有人用漏洞反复触发击杀。成就点数涨了，游玩的乐趣没涨。</div></div>
   <div class="eg" data-ic="📝"><span data-illus="c17_exam"></span><div class="egt"><b>应试教育（日常）</b>按考试通过率考核老师，老师就把课堂时间都花在考点上。通过率是“学会了”的影子，影子被奖励之后，押题比讲懂划算。这是坎贝尔和后来许多教育研究者反复讨论的经典例子。</div></div>
   <div class="eg" data-ic="🎁"><span data-illus="c17_login"></span><div class="egt"><b>日活跃用户（游戏）</b>把“日活”当核心 KPI，策划最顺手的办法是“登录就送奖励”。很多人领完就退出，日活涨了，玩的人没有变多，满意度调查甚至下降。</div></div>
-  <div class="eg bad" data-ic="🍦"><span data-illus="c17_icecream"></span><div class="egt"><b>反例：冰淇淋与溺水</b>统计发现冰淇淋卖得越多的月份，溺水事故也越多。这是“相关不等于因果”，两者都由天热推高，没有人把其中一项当成目标去优化，所以不是古德哈特。</div></div>
-  <div class="eg bad" data-ic="🌡️"><span data-illus="c17_thermo"></span><div class="egt"><b>反例：体温</b>医生用体温判断你有没有发烧。体温也是“健康”的影子，但没有人为了奖励去改体温，这个指标稳定可靠。古德哈特警告的是“被奖励之后”，不是所有指标。</div></div>
+  <div class="eg bad" data-ic="🍦"><span data-illus="c17_icecream"></span><div class="egt"><b>反例：冰淇淋与溺水</b>统计发现冰淇淋卖得越多的月份，溺水事故也越多。这是“相关不等于因果”：两者都由天热推高，没有人把其中一项当成目标去优化，所以不是古德哈特。</div></div>
+  <div class="eg bad" data-ic="🌡️"><span data-illus="c17_thermo"></span><div class="egt"><b>反例：体温</b>医生用体温判断有没有发烧。体温也是“健康”的影子，但没有人为了奖励去改体温，这个指标稳定可靠。古德哈特警告的是“被奖励之后”，不是所有指标。</div></div>
 
   <!-- ============ 2 是什么：分辨 ============ -->
   <div class="sec"><span class="n">2</span><h2><span class="tag what">是什么</span>这是古德哈特吗？先学会分辨</h2></div>
-  <p>不是所有“数字出了问题”都叫古德哈特。判断只需要问一句：<b>有没有人把一个代理指标当成了目标去优化，结果它和真实目标脱了钩？</b>下面四个场景，你来判断。</p>
+  <p>不是所有“数字出了问题”都叫古德哈特。判断只需要问一句：<b>有没有人把一个代理指标当成了目标去优化，结果它和真实目标脱了钩？</b>下面四个场景，请判断一下。</p>
   <div class="card c17judge" id="c17judge">
     <div class="row" data-ans="1"><div class="q"><b>①</b> 团队把次日留存当 KPI，策划加了“不上线就断签、清空奖励”的设计。留存涨了，玩家却说自己“被绑架”。</div><button class="chip" data-v="1">是</button><button class="chip" data-v="0">不是</button><div class="fb">是。留存是“玩家喜欢这个游戏”的影子，被奖励之后，团队找到了推高留存的捷径：让人不敢不上线。数字好看，目标落空。</div></div>
     <div class="row" data-ans="0"><div class="q"><b>②</b> 服务器偶尔卡顿，玩家评分跟着下降。</div><button class="chip" data-v="1">是</button><button class="chip" data-v="0">不是</button><div class="fb">不是。评分下降是真实问题的真实反映，没有人在“优化评分”。指标没有失真，反而在忠实报警。</div></div>
@@ -124,11 +124,11 @@
 
   <div class="story">
     <h3>从货币政策开始</h3>
-    <p><b>问题。</b>20 世纪 70 年代，英国的决策者想压住通货膨胀。他们手里有一条看起来很稳的统计规律：过去的数据里，某个货币总量和物价、收入的关系非常紧密。顺理成章的想法是：既然两者这么相关，我把货币量管住，物价就稳了。</p>
-    <p><b>先猜一下。</b>决策者真的去管货币量了。你觉得，那条原本很稳的规律会怎样？</p>
+    <p><b>问题。</b>20 世纪 70 年代，英国的决策者想压住通货膨胀。他们手里有一条看起来很稳的统计规律：过去的数据里，某个货币总量和物价、收入的关系非常紧密。顺理成章的想法是：既然两者这么相关，把货币量管住，物价就稳了。</p>
+    <p><b>先猜一下。</b>决策者真的去管货币量了。那条原本很稳的规律会怎样？</p>
     <div class="c17guess" id="c17g1" data-ok="2">
       <button class="chip" data-fb="没有。如果这样，这一章就不会存在了。">规律照旧，物价稳住了</button>
-      <button class="chip" data-fb="也没有。规律并不是慢慢变弱，而是被人们的反应改变了。">规律会慢慢变弱，但仍可预测</button>
+      <button class="chip" data-fb="也没有。规律不是慢慢变弱，而是被人们的反应改变了。">规律会慢慢变弱，但仍可预测</button>
       <button class="chip" data-fb="对。">规律松了，货币量和物价不再是原来那种关系了</button>
       <div class="c17fb"></div>
     </div>
@@ -136,17 +136,17 @@
     <div class="timeline">
       <div class="ev hasimg"><span data-illus="c17_money"></span><div><b class="yr">1975</b>　英国经济学家查尔斯·古德哈特（Charles Goodhart）为澳大利亚储备银行的一次会议写了《货币管理的问题：英国的经验》（<i>Problems of Monetary Management: The U.K. Experience</i>），写下上面那句话。他谈的是货币政策里的统计规律，没有谈游戏，也没有谈一般意义上的“指标”。</div></div>
       <div class="ev hasimg"><span data-illus="c17_crime"></span><div><b class="yr">1976 / 1979</b>　美国心理学家唐纳德·坎贝尔（Donald T. Campbell）在《评估有计划的社会变革的影响》里，从另一个方向撞上同一件事：一项量化的社会指标越被用于决策，就越容易受到腐蚀压力，也越容易扭曲它原本要监测的过程。他举的例子包括犯罪统计里的少记和降级。</div></div>
-      <div class="ev hasimg"><span data-illus="c17_audit"></span><div><b class="yr">1997</b>　人类学家玛丽莲·斯特拉森（Marilyn Strathern）在讨论英国大学评估的论文里，写下了后来流传最广的那句短话：<b>“When a measure becomes a target, it ceases to be a good measure.”</b>（当一项度量变成目标，它就不再是好的度量。）所以这句通俗版不是古德哈特的原话，是后人的概括。</div></div>
+      <div class="ev hasimg"><span data-illus="c17_audit"></span><div><b class="yr">1997</b>　人类学家玛丽莲·斯特拉森（Marilyn Strathern）在讨论英国大学评估的论文里，写下了后来流传最广的那句短话：<b>“When a measure becomes a target, it ceases to be a good measure.”</b>（当一项度量变成目标，它就不再是好的度量。）这句通俗版不是古德哈特的原话，是后人的概括。</div></div>
       <div class="ev hasimg"><span data-illus="c17_boat"></span><div><b class="yr">2016</b>　OpenAI 的博文《野外的错误奖励函数》（Jack Clark 与 Dario Amodei）展示了赛艇游戏 CoastRunners 里 AI 的怪异行为：游戏按撞到沿途目标给分，AI 就在一处水湾里绕圈撞目标，得分比人类玩家平均高 20%，却从不冲线。</div></div>
-      <div class="ev hasimg"><span data-illus="c17_genie"></span><div><b class="yr">2020</b>　DeepMind 的博客（Krakovna 等，4 月 21 日）用“<span class="term" tabindex="0" data-def="规格博弈（specification gaming）：智能体按字面满足了你写的奖励或指标，却没有做到你真正想要的事。"><b>规格博弈</b></span>”这个名字整理了大量 AI 案例：智能体按字面满足了你写的目标，却没做到你真正想要的事。这时离古德哈特 1975 年那篇论文已经过去四十多年，而撞上的是同一堵墙。</div></div>
+      <div class="ev hasimg"><span data-illus="c17_genie"></span><div><b class="yr">2020</b>　DeepMind 的博客（Krakovna 等，4 月 21 日）用“<span class="term" tabindex="0" data-def="规格博弈（specification gaming）：智能体按字面满足了你写的奖励或指标，却没有做到你真正想要的事。"><b>规格博弈</b></span>”这个名字整理了大量 AI 案例：智能体按字面满足了目标，却没做到真正想要的事。这时离古德哈特 1975 年那篇论文已经过去四十多年，撞上的是同一堵墙。</div></div>
     </div>
-    <p><b>关键洞察。</b>货币政策、社会评估、人工智能三个领域，互相不知道对方，却独立撞上了同一件事：<b>代理指标只在没人专门优化它的时候才代表目标；奖励它，就是在邀请优化者去找最便宜的捷径。</b>游戏设计师天天都在发奖励，所以天天都在发出这样的邀请。</p>
-    <div class="src">出处：Goodhart, “Problems of Monetary Management: The U.K. Experience”, <i>Papers in Monetary Economics</i> Vol.1, Reserve Bank of Australia（1975），1981 年重印于 Courakis (ed.)；Campbell, “Assessing the Impact of Planned Social Change”, <i>Evaluation and Program Planning</i> 2(1): 67–90（1979；1976 年 Dartmouth 学院 Occasional Paper #8）；Strathern, “‘Improving ratings’: audit in the British University system”, <i>European Review</i> 5(3): 305–321（1997）；Clark &amp; Amodei, “Faulty Reward Functions in the Wild”, OpenAI（2016），其中的“20%”来自该文；Krakovna 等, “Specification gaming: the flip side of AI ingenuity”, DeepMind（2020）。斯特拉森把这句话归功于 Keith Hoskin，这一点依据 Wikipedia “Goodhart’s law” 条目的转述，我们没有直接查阅原文。</div>
+    <p><b>关键洞察。</b>货币政策、社会评估、人工智能三个领域，互相不知道对方，却独立撞上了同一件事：<b>代理指标只在没人专门优化它的时候才代表目标。奖励它，就是在邀请优化者去找最便宜的捷径。</b>游戏设计师天天都在发奖励，所以天天都在发出这样的邀请。</p>
+    <div class="src">出处：Goodhart, “Problems of Monetary Management: The U.K. Experience”, <i>Papers in Monetary Economics</i> Vol.1, Reserve Bank of Australia（1975），1981 年重印于 Courakis (ed.)；Campbell, “Assessing the Impact of Planned Social Change”, <i>Evaluation and Program Planning</i> 2(1): 67–90（1979；1976 年 Dartmouth 学院 Occasional Paper #8）；Strathern, “‘Improving ratings’: audit in the British University system”, <i>European Review</i> 5(3): 305–321（1997）；Clark &amp; Amodei, “Faulty Reward Functions in the Wild”, OpenAI（2016），其中的“20%”来自该文；Krakovna 等, “Specification gaming: the flip side of AI ingenuity”, DeepMind（2020）。斯特拉森把这句话归功于 Keith Hoskin，这一点依据 Wikipedia “Goodhart’s law” 条目的转述，没有直接查阅原文。</div>
   </div>
 
   <!-- ============ 4 发明故事：赛艇 ============ -->
-  <div class="sec"><span class="n">4</span><h2><span class="tag origin">发明故事</span>你来当赛艇 AI</h2></div>
-  <p>AI 为什么会干出那种蠢事？你自己当一回就明白了。规则（示意）：你有 <b>12 个回合</b>，目标是拿高分。每回合你有两种动作：</p>
+  <div class="sec"><span class="n">4</span><h2><span class="tag origin">发明故事</span>当一回赛艇 AI</h2></div>
+  <p>AI 为什么会干出那种蠢事？自己当一回就明白了。规则（示意）：有 <b>12 个回合</b>，目标是拿高分。每回合有两种动作：</p>
   <ul>
     <li><b>驶向下一个路标</b>（耗 2 回合）：路过路标得 10 分，抵达第 5 个路标（终点）得 20 分，并完成比赛；</li>
     <li><b>在水湾里撞闪光目标</b>（耗 1 回合）：得 10 分，而且目标会立刻再刷新。</li>
@@ -177,7 +177,7 @@
     <div class="msg" id="c17msg">先试试：你会怎么拿最高分？</div>
   </div>
   <div class="sticky c17task" id="c17task1">试试看：①先用默认奖励，拿到 100 分以上；②再勾上“换一种奖励”，完成比赛。两件事都做到，就会看见任务打勾。</div>
-  <p class="small">数字是我们设定的教学示意，目的是展示“捷径更划算”的形状。真实的 CoastRunners 里，智能体学到的做法是在一小片水域里绕圈，反复碰沿途目标并捡能量道具，得分高过人类玩家，却从不完成比赛（OpenAI 2016、DeepMind 2020 的描述）。</p>
+  <p class="small">数字是教学示意，目的是展示“捷径更划算”的形状。真实的 CoastRunners 里，智能体学到的做法是在一小片水域里绕圈，反复碰沿途目标并捡能量道具，得分高过人类玩家，却从不完成比赛（OpenAI 2016、DeepMind 2020 的描述）。</p>
 
   <!-- ============ 5 为什么：相关性崩塌 ============ -->
   <div class="sec"><span class="n">5</span><h2><span class="tag why">为什么成立</span>相关性为什么会在压力下崩塌？</h2></div>
@@ -185,8 +185,8 @@
   <div class="withimg rev">
     <span data-illus="c17_shortcut"></span>
     <div>
-      <p>你可能觉得是玩家“变坏了”。其实不是，把关键想清楚就明白：指标之所以能代表目标，是因为没人专门盯着它时，两者被<b>同一件事</b>推动。爱探索的玩家，既探索得多，也顺手捡得多，背后是同一个原因：好奇心。你测到的是结果，不是原因。</p>
-      <p>当你对收集物数量发奖励，一个新的原因出现了：<b>为了奖励而捡</b>。它可以单独推高数字，却不推高探索体验。两者的联系只在没人优化的区间里成立，一旦有人把力气投向捷径，联系就断了。</p>
+      <p>可能会觉得是玩家“变坏了”。其实不是。指标之所以能代表目标，是因为没人专门盯着它时，两者被<b>同一件事</b>推动。爱探索的玩家，既探索得多，也顺手捡得多，背后是同一个原因：好奇心。测到的是结果，不是原因。</p>
+      <p>对收集物数量发奖励，一个新的原因出现了：<b>为了奖励而捡</b>。它可以单独推高数字，却不推高探索体验。两者的联系只在没人优化的区间里成立，一旦有人把力气投向捷径，联系就断了。</p>
       <p>而且优化者比的是成本。同样刷到 100 分，真去探索要花一个下午，走捷径只要五分钟，谁会选前者？</p>
     </div>
   </div>
@@ -237,17 +237,17 @@
     </svg>
   </div>
 
-  <p>古德哈特的失效其实不止一种形态。2018 年，David Manheim 和 Scott Garrabrant 把它整理成至少四种机制。点一点，看看每一种长什么样：</p>
+  <p>古德哈特的失效不止一种形态。2018 年，David Manheim 和 Scott Garrabrant 把它整理成至少四种机制。点一点，看看每一种长什么样：</p>
   <div class="eg" data-ic="🗺️"><span data-illus="c17_route"></span><div class="egt"><b>对抗型：攻略路线（游戏）</b>有人主动找让指标好看的办法，而且找到的是成本最低的那条。对着攻略路线跑一圈就能拿满收集物，路上不用看风景。</div></div>
   <div class="eg" data-ic="🏆"><span data-illus="c17_leader"></span><div class="egt"><b>回归型：排行榜（游戏）</b>指标里含有噪声。从排行榜前 10% 里挑“最强玩家”当测试员，榜上混进了许多靠手气冲上来的人，他们在真本事上并没有领先多少。</div></div>
   <div class="eg" data-ic="📈"><span data-illus="c17_extreme"></span><div class="egt"><b>极端型：推到头（游戏）</b>在普通范围里成立的关系，推到极端就不成立了。“多捡一点更好玩”不等于“捡一万个更好玩”。</div></div>
-  <div class="eg" data-ic="🧊"><span data-illus="c17_thermoice"></span><div class="egt"><b>因果型：温度计泡冰水（日常）</b>你干预的只是指标，而不是目标的原因。温度计泡进冰水，读数下来了，天气并没有变冷。</div></div>
+  <div class="eg" data-ic="🧊"><span data-illus="c17_thermoice"></span><div class="egt"><b>因果型：温度计泡冰水（日常）</b>干预的只是指标，不是目标的原因。温度计泡进冰水，读数下来了，天气并没有变冷。</div></div>
   <div class="eg bad" data-ic="📏"><span data-illus="c17_offset"></span><div class="egt"><b>反例：偏高两度的温度计</b>所有读数都偏高 2 度，这是测量误差。它让指标不准，但没有人在对读数施加优化压力，成因不同，不算古德哈特。</div></div>
 
   <div class="why-box">
     <h3>理论出处与分类</h3>
-    <p><b>Goodhart（1975）</b>：统计规律一旦被用作控制手段就会崩溃。<b>Campbell（1976/1979）</b>：指标越被用于决策，越受腐蚀压力。<b>Manheim &amp; Garrabrant（2018）</b>在论文《Categorizing Variants of Goodhart’s Law》里，把“优化让指标与目标脱钩”区分成至少四类。上面的四种说法是我们对它们的通俗概括，不是原文定义。</p>
-    <p>这条“定律”更像经验法则，而不是物理定律：它不保证每个指标都会被刷坏，只是告诉你，当奖励大、捷径便宜、没人监督时，被刷坏的可能性会很大。</p>
+    <p><b>Goodhart（1975）</b>：统计规律一旦被用作控制手段就会崩溃。<b>Campbell（1976/1979）</b>：指标越被用于决策，越受腐蚀压力。<b>Manheim &amp; Garrabrant（2018）</b>在论文《Categorizing Variants of Goodhart’s Law》里，把“优化让指标与目标脱钩”区分成至少四类。上面的四种说法是对它们的通俗概括，不是原文定义。</p>
+    <p>这条“定律”更像经验法则，不像物理定律：它不保证每个指标都会被刷坏，只是说明当奖励大、捷径便宜、没人监督时，被刷坏的可能性会很大。</p>
     <p class="src">预印本：arXiv:1803.04585。学界还有其他分法，细节以原文为准。</p>
   </div>
 
@@ -267,8 +267,8 @@
     <div class="msg" id="smsg"></div>
     <p class="small">这是<b>示意性模拟</b>，不是实测数据。模型：每人把比例 e（强度 × 个人倾向）的精力投向捷径，真实得分 = (1−e) × 自然水平，指标 = (1−e) × 自然水平 + e × 捷径收益 + 噪声；捷径收益与自然水平无关。r 是按图中这 70 个点实时算出的<span class="term" tabindex="0" data-def="皮尔逊相关系数：衡量两组数字有多接近一条直线的指标，1 表示完全同涨同落，0 表示看不出规律。">皮尔逊相关系数</span>。</p>
   </div>
-  <div class="sticky c17task" id="c17task2">试试看：把强度一路拉到 100%，直到“指标前 10% 的真实均值”比“平均真实”还低。意思是：按排行榜选出来的“最强”玩家，在你真正在乎的事情上，不如随便抽一个普通人。</div>
-  <p>读法：起点 r 接近 1，按指标挑人几乎等于按真实目标挑人。强度升高后，<b>平均指标上升而平均真实下降</b>：数字好看了，东西变差了。最后一格最说明问题：你按排行榜选出的“最强”玩家，可能在你在乎的东西上反而不如普通人。</p>
+  <div class="sticky c17task" id="c17task2">试试看：把强度一路拉到 100%，直到“指标前 10% 的真实均值”比“平均真实”还低。意思是：按排行榜选出来的“最强”玩家，在真正在乎的事情上，不如随便抽一个普通人。</div>
+  <p>读法：起点 r 接近 1，按指标挑人几乎等于按真实目标挑人。强度升高后，<b>平均指标上升而平均真实下降</b>：数字好看了，东西变差了。最后一格最说明问题：按排行榜选出的“最强”玩家，可能在真正在乎的东西上反而不如普通人。</p>
   <p class="small">皮尔逊相关系数 r = Σ(x−x̄)(y−ȳ) ÷ √[Σ(x−x̄)² · Σ(y−ȳ)²]，在 −1 到 1 之间；越接近 0，知道指标高低后，越难推断真实目标的高低。</p>
 
   <div class="c17fig">
@@ -290,11 +290,11 @@
   <div class="withimg">
     <span data-illus="c17_kids"></span>
     <div>
-      <p>到这里，我们担心的都是指标失真。奖励还有另一个麻烦：它可能改变人做这件事的<b>理由</b>。还记得讲玩家动机时的那个想法吗：人本来出于兴趣去做的事，被加上外部奖励之后，兴趣可能被换成“为了奖励”。心理学把它叫<span class="term" tabindex="0" data-def="过度理由效应（overjustification effect）：对本来出于兴趣的活动加上外部奖励，之后在没有奖励时，人们做这件事的兴趣可能下降。">过度理由效应</span>。</p>
+      <p>到这里，担心的都是指标失真。奖励还有另一个麻烦：它可能改变人做这件事的<b>理由</b>。还记得讲玩家动机时的那个想法吗：人本来出于兴趣去做的事，被加上外部奖励之后，兴趣可能被换成“为了奖励”。心理学把它叫<span class="term" tabindex="0" data-def="过度理由效应（overjustification effect）：对本来出于兴趣的活动加上外部奖励，之后在没有奖励时，人们做这件事的兴趣可能下降。">过度理由效应</span>。</p>
       <p>两种失真叠在一起就麻烦了：奖励一个数字，既邀请了捷径，又悄悄把“我想玩”换成“我要拿分”。</p>
     </div>
   </div>
-  <p><b>先猜一下。</b>1973 年，斯坦福大学幼儿园里，研究者找来原本就爱用彩色水笔画画的孩子，一部分被事先告知“画画能得到奖状”，一部分没被告知。过了一两周，大家回到自由活动时间，没有奖状了。你猜，哪组孩子主动拿起水笔的时间更少？</p>
+  <p><b>先猜一下。</b>1973 年，斯坦福大学幼儿园里，研究者找来原本就爱用彩色水笔画画的孩子，一部分被事先告知“画画能得到奖状”，一部分没被告知。过了一两周，大家回到自由活动时间，没有奖状了。哪组孩子主动拿起水笔的时间更少？</p>
   <div class="c17guess" id="c17g2" data-ok="0">
     <button class="chip" data-fb="对。">事先被告知有奖状的</button>
     <button class="chip" data-fb="不对。没被告知的孩子画画时间没怎么变。">没被告知的</button>
@@ -304,7 +304,7 @@
   <div class="why-box">
     <h3>过度理由效应</h3>
     <p>这是 Lepper、Greene 与 Nisbett 1973 年的经典实验。当时的解释是：孩子看到自己画画换来了奖状，就容易把“我为什么画画”理解成“为了奖状”，原来的兴趣被这个新理由盖住了。研究里还有一个对照组：事先不知道、事后意外得到奖状的孩子，兴趣没有明显受损。伤害来自“我是为了奖励才做”的预期。</p>
-    <p>争议是有的。1999 年 Deci、Koestner 与 Ryan 汇总了 128 项实验，认为外在奖励（尤其是有形的、事先说好的）总体上会削弱内在动机；Cameron 与 Pierce 等人用另一套方法分析，得出的结论温和得多，双方至今在方法上各执一词。可以这样理解：奖励不是毒药，但对本来就出于兴趣的活动，发奖励要格外小心。</p>
+    <p>争议是有的。1999 年 Deci、Koestner 与 Ryan 汇总了 128 项实验，认为外在奖励（尤其是有形的、事先说好的）总体上会削弱内在动机。Cameron 与 Pierce 等人用另一套方法分析，得出的结论温和得多，双方至今在方法上各执一词。可以这样理解：奖励不是毒药，但对本来就出于兴趣的活动，发奖励要格外小心。</p>
     <p>这和古德哈特是两种相互补充的视角：古德哈特说的是“数字会被刷”，过度理由说的是“人会变”。</p>
     <div class="src">出处：Lepper, Greene &amp; Nisbett, “Undermining children’s intrinsic interest with extrinsic reward: A test of the ‘overjustification’ hypothesis”, <i>Journal of Personality and Social Psychology</i> 28(1): 129–137（1973）；Deci, Koestner &amp; Ryan, <i>Psychological Bulletin</i> 125(6): 627–668（1999）。</div>
   </div>
@@ -314,15 +314,15 @@
   <div class="withimg rev">
     <span data-illus="c17_dash"></span>
     <div>
-      <p>先承认一件事：<b>你无法消灭指标，也不该消灭。</b>团队需要数字来沟通，没有指标就只剩拍脑袋。所以目标不是找到一个“完美指标”，而是让指标难以被单独刷高，并且在它失真时尽早发现。</p>
+      <p>先承认一件事：<b>指标无法消灭，也不该消灭。</b>团队需要数字来沟通，没有指标就只剩拍脑袋。所以目标不是找到一个“完美指标”，而是让指标难以被单独刷高，并且在它失真时尽早发现。</p>
       <p>常用的办法有四招。</p>
     </div>
   </div>
   <div class="grid2">
     <div class="card y"><h3>1. 多指标制衡</h3><p>同时看几个<b>互相牵制、性质不同</b>的指标，比如留存 + 玩家满意度问卷 + 流失原因访谈，让单独刷其中一个必然伤害另一个。</p></div>
-    <div class="card b"><h3>2. 保留定性观察</h3><p>定期看真人试玩、录像、社区原话。数字告诉你发生了什么，人才能告诉你为什么，以及是不是你想要的。</p></div>
-    <div class="card g"><h3>3. 奖励绑定行为本身</h3><p>奖励“做了有意义的事”（发现了一个隐藏区域的秘密），而不是“数字够大了”。能让人只为数字而重复的设计，最容易被刷。</p></div>
-    <div class="card p"><h3>4. 定期更换与审计</h3><p>指标用久了，人们摸清了套路。定期抽查异常（某指标暴涨却没有相应的玩家反馈）、轮换、复核指标定义。</p></div>
+    <div class="card b"><h3>2. 保留定性观察</h3><p>定期看真人试玩、录像、社区原话。数字说明发生了什么，人才能说明为什么，以及是不是想要的。</p></div>
+    <div class="card g"><h3>3. 奖励绑定行为本身</h3><p>奖励“做了有意义的事”（发现了一个隐藏区域的秘密），不奖励“数字够大了”。能让人只为数字而重复的设计，最容易被刷。</p></div>
+    <div class="card p"><h3>4. 定期更换与审计</h3><p>指标用久了，人们摸清了套路。要定期抽查异常（某指标暴涨却没有相应的玩家反馈）、轮换、复核指标定义。</p></div>
   </div>
   <p>还要提防前面那个叠加效应：给本来出于兴趣的活动贴上积分和奖励，很容易同时踩中古德哈特和过度理由两个坑。</p>
 
@@ -337,7 +337,7 @@
     <div class="c17chips" id="mchips"></div>
     <div id="mdesc" class="small"></div>
     <div id="mout"></div>
-    <p class="small">数值都是教学用的<b>示意假设</b>（0 到 100 的相对分），目的是展示漏洞的形状，不是真实游戏的测量结果；叠加多个指标时，取各指标得分的平均。真实项目里，这些数字要靠数据加试玩去验证。</p>
+    <p class="small">数值都是教学用的<b>示意假设</b>（0 到 100 的相对分），目的是展示漏洞的形状，不是真实游戏的测量结果。叠加多个指标时，取各指标得分的平均。真实项目里，这些数字要靠数据加试玩去验证。</p>
   </div>
   <div class="sticky c17task" id="c17task3">试试看：找到一种组合，让“按指标排名”和“按真实探索排名”完全一致，并且平均偏差低于 10。提示：只堆同类指标没用，要加入性质不同的那一项。</div>
 
@@ -345,7 +345,7 @@
     <h3>常见误区</h3>
     <ul>
       <li><b>“把指标换一个就好了。”</b>只要有奖励，新指标迟早也会被优化。更好的办法是多指标、定性核查与定期轮换，而不是寻找一个“完美指标”。</li>
-      <li><b>“玩家刷分是玩家的错。”</b>玩家只是在合理地响应你设的激励。发现被刷，先问“我的奖励在鼓励什么”。</li>
+      <li><b>“玩家刷分是玩家的错。”</b>玩家只是在合理地响应设计者设的激励。发现被刷，先问“奖励在鼓励什么”。</li>
       <li><b>“所以别用数据，凭感觉做游戏。”</b>古德哈特警告的是“把单个数字当唯一目标”，不是“别量”。没有数据的拍脑袋同样会走偏。</li>
       <li><b>“那句话就是古德哈特的原话。”</b>通俗版是后人（常引的是斯特拉森 1997）的概括，古德哈特 1975 年的原意是关于统计规律与货币控制。</li>
     </ul>
@@ -354,9 +354,9 @@
   <div class="reflect">
     <h3>反思与争议</h3>
     <p><b>它算“定律”吗？</b>严格说，它更像一条经验法则。“指标一定会被刷坏”并不总成立：有些指标在很长时间内仍然有用，取决于刷它的成本、监督的强度和人们的动机。</p>
-    <p><b>谁先提出的？</b>古德哈特（1975）与坎贝尔（1976/1979）几乎同时，各自独立，侧重点不同；有人（Jeff Rodamar）认为坎贝尔的某些表述可以追溯到 1969 年。把它们统一叫成“古德哈特定律”是一种通俗的做法，把它推广到游戏设计更是一种类比，而不是该领域公认的严格结论。</p>
-    <p><b>另一种观点：玩家刷出来的玩法也可能是好游戏。</b>有人认为 <span class="term" tabindex="0" data-def="min-max：把资源尽量堆在最有效的方向上，追求理论上的最大收益。">min-max</span>、速通、找漏洞本身就是游戏文化的一部分，设计者不该一味把它们当成“被优化掉的乐趣”。是否算问题，取决于你的真实目标是什么。</p>
-    <p><b>它可能怎样改变你的看法：</b>下次看到“日活”“通关率”“好评率”时，先问一句：它在代表什么？有没有人专门在推它？推它的最便宜办法是什么？</p>
+    <p><b>谁先提出的？</b>古德哈特（1975）与坎贝尔（1976/1979）几乎同时，各自独立，侧重点不同。有人（Jeff Rodamar）认为坎贝尔的某些表述可以追溯到 1969 年。把它们统一叫成“古德哈特定律”是一种通俗的做法，把它推广到游戏设计更是一种类比，不是该领域公认的严格结论。</p>
+    <p><b>另一种观点：玩家刷出来的玩法也可能是好游戏。</b>有人认为 <span class="term" tabindex="0" data-def="min-max：把资源尽量堆在最有效的方向上，追求理论上的最大收益。">min-max</span>、速通、找漏洞本身就是游戏文化的一部分，设计者不该一味把它们当成“被优化掉的乐趣”。是否算问题，取决于真实目标是什么。</p>
+    <p><b>它可能怎样改变看法：</b>下次看到“日活”“通关率”“好评率”时，先问一句：它在代表什么？有没有人专门在推它？推它的最便宜办法是什么？</p>
   </div>
 
   <div class="key">
@@ -369,7 +369,7 @@
       <li>应对：<b>多指标制衡（要异质）、保留定性观察、奖励绑定行为本身、定期审计与更换</b>，而不是找“完美指标”。</li>
     </ul>
   </div>
-  <div class="tldr">数字只是目标的影子；一旦影子被奖励，就会有人去涂影子，而不是走向本体。</div>
+  <div class="tldr">数字只是目标的影子。影子一旦被奖励，就会有人去涂影子，不去走向本体。</div>
 
   <!-- ============ 练习 ============ -->
   <div class="sec"><span class="n">9</span><h2><span class="tag think">练习</span>小测验</h2></div>
@@ -377,7 +377,7 @@
 
   <div class="sec"><span class="n">10</span><h2><span class="tag how">你的设计</span>找出一个会被“白嫖”的数字</h2></div>
   <div class="card o">
-    <p>选一款你玩过的游戏（或你正在设计的游戏），写下：<b>(1) 它奖励的某个数字是什么？(2) 它想代表的真实目标是什么？(3) 一个想“白嫖”这个数字的人会怎么做？(4) 你会怎么改奖励，让捷径更不划算？</b></p>
+    <p>选一款玩过的游戏（或正在设计的游戏），写下：<b>(1) 它奖励的某个数字是什么？(2) 它想代表的真实目标是什么？(3) 一个想“白嫖”这个数字的人会怎么做？(4) 怎么改奖励，让捷径更不划算？</b></p>
     <textarea rows="6" data-save="ch17" placeholder="例：某手游“每日登录奖励”&#10;代表的目标：玩家喜欢这个游戏&#10;白嫖办法：只登录领奖就下线&#10;改进：……"></textarea>
     <p class="small">✍️ 自动保存在你的浏览器里。</p>
   </div>
@@ -423,7 +423,7 @@ document.querySelectorAll(".c17guess").forEach(g => {
       const n = got.filter(x => x !== null).length;
       if (n === rows.length) {
         const k = got.filter(Boolean).length;
-        $("c17jmsg").textContent = k === 4 ? "🎉 四题全对：你已经能分辨“被优化的影子”和“别的数字问题”了。" : "答对 " + k + " / 4。关键提问：有没有人在为奖励去推高这个数字？";
+        $("c17jmsg").textContent = k === 4 ? "🎉 四题全对：已经能分辨“被优化的影子”和“别的数字问题”了。" : "答对 " + k + " / 4。关键提问：有没有人在为奖励去推高这个数字？";
       }
     });
   });
@@ -531,7 +531,7 @@ const METRICS = [
     fix: "只统计“到过的新网格/新地点”的面积，而不是路程总长，重复路线不再增分。" },
   { id: "time", name: "停留时长", desc: "累计在线并处于地图中的时间，达到时长发成就。",
     p: { nat: [45, 70], grind: [85, 10], bot: [100, 0] },
-    hole: "挂机就能涨。更糟的是，高效玩家因为“太快找到了东西”，得分反而比磨蹭的人低——指标在惩罚你想鼓励的人。",
+    hole: "挂机就能涨。更糟的是，高效玩家因为“太快找到了东西”，得分反而比磨蹭的人低，指标在惩罚设计者想鼓励的人。",
     fix: "时长只算“有有效操作且位置在变化”的时间；或干脆不用时长作奖励。" },
   { id: "area", name: "新区域发现数", desc: "第一次进入地图上的一个区域，记 1 次发现；发现越多得分越高。",
     p: { nat: [70, 70], grind: [100, 45], bot: [25, 3] },
@@ -608,7 +608,7 @@ function renderMetrics() {
   function check() {
     if (!rule2() && score >= 100) loopHigh = true;
     if (rule2() && fin) finRule2 = true;
-    if (loopHigh && finRule2) c17done("c17task1", "你亲手走完了“捷径更划算 → 改奖励 → 老实完赛”。");
+    if (loopHigh && finRule2) c17done("c17task1", "亲手走完了“捷径更划算 → 改奖励 → 老实完赛”。");
   }
   function upd() {
     $("c17t").textContent = turns; $("c17s").textContent = score; $("c17f").textContent = fin ? "是" : "否";

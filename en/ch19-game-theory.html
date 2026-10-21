@@ -1,0 +1,976 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Chapter 19: Game Theory &amp; Cooperation</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+  .scroll{overflow-x:auto}
+  table.mx{border-collapse:collapse;margin:8px auto;font-size:1rem}
+  table.mx th{font-family:var(--hand);font-weight:400;font-size:1.15rem;padding:4px 8px;background:var(--yellow);border:2.5px solid var(--ink)}
+  table.mx td{border:2.5px solid var(--ink);padding:8px 10px;text-align:center;background:#fff;min-width:112px;position:relative}
+  table.mx td.ne{background:#b6e8a8}
+  table.mx td.ne::after{content:"★ Eq.";position:absolute;right:4px;top:0;font-size:.8rem;font-family:var(--hand)}
+  table.mx input{width:3.6em;font:inherit;font-size:1.1rem;text-align:center;border:2.5px solid #5b9bd5;background:#e8f6fc;border-radius:8px;padding:2px 0;margin:0 3px}
+  table.mx input.nc{border-color:#e0668a;background:#ffe9ef}
+  table.mx input.br{border-width:4.5px;font-weight:700;box-shadow:0 0 0 2px #ffc078}
+  .legend2{font-size:.95rem;color:var(--soft);text-align:center}
+  .outbox{background:#fff;border:2.5px dashed var(--ink);border-radius:12px;padding:8px 14px;margin:8px 0;font-size:1rem;line-height:1.7}
+  .outbox .ty{font-family:var(--hand);font-size:1.5rem}
+  .sbar{display:flex;align-items:center;gap:8px;margin:3px 0;font-size:1rem}
+  .sbar .nm{width:8.6em;flex:none}
+  .sbar .bar{height:20px;border:2.5px solid var(--ink);border-radius:6px;min-width:3px}
+  .sbar .v{font-family:var(--hand);font-size:1.15rem;white-space:nowrap}
+  .sbar.me .nm{font-weight:700;background:linear-gradient(transparent 60%,#ffb3c6 60%)}
+  .lg{display:inline-flex;align-items:center;gap:4px;margin:2px 10px 2px 0;font-size:.95rem}
+  .lg i{display:inline-block;width:16px;height:16px;border:2px solid var(--ink);border-radius:4px}
+  .row2{display:flex;flex-wrap:wrap;gap:14px;align-items:center}
+  .row2>div{flex:1;min-width:200px}
+  .pond{position:relative;height:46px;border:3px solid var(--ink);border-radius:10px;background:#fffef7;overflow:hidden;margin:8px 0}
+  .pond i{position:absolute;left:0;top:0;bottom:0;background:linear-gradient(#a8dcf0,#7ec8e3);transition:width .5s}
+  .pond span{position:absolute;left:10px;top:7px;font-family:var(--hand);font-size:1.2rem}
+  .bars{display:flex;align-items:flex-end;gap:3px;height:110px;border-bottom:3px solid var(--ink);margin:8px 0}
+  .bars div{flex:1;background:var(--blue);border:2px solid var(--ink);border-bottom:none;border-radius:4px 4px 0 0;min-height:1px}
+  .bars div.low{background:#ffc9c9}
+  table.lv{width:100%;border-collapse:collapse;font-size:1rem}
+  table.lv th,table.lv td{border:2.5px solid var(--ink);padding:6px 8px;text-align:left;vertical-align:top}
+  table.lv th{background:var(--yellow);font-family:var(--hand);font-weight:400;font-size:1.15rem}
+  details summary{cursor:pointer;font-family:var(--hand);font-size:1.15rem;margin:6px 0}
+  .rk{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
+  .rk .chip{font-size:1.05rem;padding:4px 14px}
+  .rk .chip .no{display:inline-block;min-width:1.4em;margin-right:4px;font-family:var(--hand);font-weight:700}
+  .mapwrap{display:grid;grid-template-columns:minmax(260px,420px) 1fr;gap:16px;align-items:start}
+  @media(max-width:760px){.mapwrap{grid-template-columns:1fr}}
+  #c19_map{touch-action:none;cursor:grab;background:#fffef7;border:3px solid var(--ink);border-radius:10px}
+  #c19_map:active{cursor:grabbing}
+  .halo{paint-order:stroke;stroke:#fff;stroke-width:4px;stroke-linejoin:round}
+  .sticky .stat{margin-left:8px}
+</style>
+</head>
+<body data-ch="19">
+<main class="wrap">
+
+  <div class="hero">
+    <div class="txt">
+      <span class="badge">Chapter 19</span>
+      <h1>Game Theory &amp; Cooperation</h1>
+      <p class="sub">Everyone makes the best choice for themselves, so why does everyone end up worse off?</p>
+    </div>
+    <svg viewBox="0 0 190 150" class="rough" aria-hidden="true">
+      <g stroke="#2b2b3a" stroke-width="4" fill="#fff">
+        <rect x="25" y="25" width="65" height="45" fill="#b6e8a8"/><rect x="95" y="25" width="65" height="45" fill="#fff"/>
+        <rect x="25" y="75" width="65" height="45" fill="#fff"/><rect x="95" y="75" width="65" height="45" fill="#ffb3c6"/>
+      </g>
+      <text x="40" y="55" font-size="20">3,3</text><text x="110" y="55" font-size="20">0,5</text>
+      <text x="40" y="105" font-size="20">5,0</text><text x="110" y="105" font-size="20">1,1</text>
+    </svg>
+  </div>
+
+  <div class="goals">
+    <h3>Learning goals</h3>
+    <ul>
+      <li>Write a game as “players, strategies, payoffs” and find its Nash equilibrium.</li>
+      <li>Explain why everyone being rational can still give a terrible result (the prisoner’s dilemma, the tragedy of the commons), and how the “shadow of the future” lets cooperation stand.</li>
+      <li>Say what question each of these concepts was invented to answer, and act as a “mechanism designer”: change the payoff structure so players want to cooperate, or deliberately leave a dilemma in place.</li>
+    </ul>
+    <span class="time">about 45 min</span>
+  </div>
+
+  
+  <div class="sec"><span class="n">1</span><h2><span class="tag what">What it is</span>A game: what you get depends on what others choose</h2></div>
+
+  <div class="withimg">
+    <span data-illus="c19_loot"></span>
+    <div>
+      <p>Four players who don’t know each other form a party for a dungeon, and the chest drops just one piece of gear that all of them want. The system pops up two buttons: “Roll by the rules” and “Just take it.” Which do you press?</p>
+      <p>Don’t answer yet. Which one you press actually depends on which the other three press. If everyone rolls, each has a one-in-four chance, and all are content. If only you take it, the gear is yours and the others can only stare. But if all four think “the others will take it anyway,” four hands reach for the chest at once, the scene turns into chaos, the dungeon counts as failed, and nobody takes anything home.</p>
+      <p>Situations like “my result depends on your choice, and your result depends on mine” are what <span class="term" tabindex="0" data-def="The mathematical theory of how each decision maker should choose when several decision makers affect one another, and what results come out.">game theory</span> studies. A game is itself a man-made arena of strategy, so a designer who understands game theory gets a toolbox for seeing through player behavior.</p>
+    </div>
+  </div>
+
+  <h3>A game has three ingredients</h3>
+  <div class="grid3">
+    <div class="card y mini"><div class="ico">🧑‍🤝‍🧑</div><h3>Players</h3><p>Who is making the decision? Two players, five fishermen, four teammates.</p></div>
+    <div class="card p mini"><div class="ico">🎛️</div><h3>Strategies</h3><p>What options does each have? Cooperate or defect, roll or just take.</p></div>
+    <div class="card b mini"><div class="ico">🏆</div><h3>Payoffs</h3><p>Under each combination of choices, how much does each person get? Numbers stand for “how much they want it.”</p></div>
+  </div>
+  <p>A game with only two players and two options each can be drawn as a 2×2 <span class="term" tabindex="0" data-def="A table listing each player’s payoff under every combination of strategies; each cell is written “(row player’s payoff, column player’s payoff).”">payoff matrix</span>. The one below is the most famous, called the <b>prisoner’s dilemma</b>. In each cell the two numbers are A’s in blue and B’s in pink.</p>
+
+  <div class="card">
+    <svg viewBox="0 0 700 340" width="100%" role="img" aria-label="Payoff matrix of the prisoner’s dilemma; the arrows show both sides prefer to defect, and the defect-defect cell is the Nash equilibrium">
+      <defs>
+        <marker id="arB" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 z" fill="#3d7fb8"/></marker>
+        <marker id="arP" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 z" fill="#d6436f"/></marker>
+      </defs>
+      <g class="rough" stroke="#2b2b3a" stroke-width="4">
+        <rect x="150" y="60" width="260" height="110" fill="#fff"/><rect x="410" y="60" width="260" height="110" fill="#fff"/>
+        <rect x="150" y="170" width="260" height="110" fill="#fff"/><rect x="410" y="170" width="260" height="110" fill="#b6e8a8"/>
+      </g>
+      <g font-size="22" fill="#2b2b3a">
+        <text x="280" y="45" text-anchor="middle">B cooperates</text><text x="540" y="45" text-anchor="middle">B defects</text>
+        <text x="136" y="125" text-anchor="end">A cooperates</text><text x="136" y="235" text-anchor="end">A defects</text>
+      </g>
+      <g font-size="26">
+        <text x="255" y="140" fill="#3d7fb8">3</text><text x="285" y="140" fill="#2b2b3a">,</text><text x="300" y="140" fill="#d6436f">3</text>
+        <text x="515" y="140" fill="#3d7fb8">0</text><text x="545" y="140" fill="#2b2b3a">,</text><text x="560" y="140" fill="#d6436f">5</text>
+        <text x="255" y="250" fill="#3d7fb8">5</text><text x="285" y="250" fill="#2b2b3a">,</text><text x="300" y="250" fill="#d6436f">0</text>
+        <text x="515" y="250" fill="#3d7fb8">1</text><text x="545" y="250" fill="#2b2b3a">,</text><text x="560" y="250" fill="#d6436f">1</text>
+      </g>
+      <g stroke-width="4" fill="none" stroke-linecap="round" class="rough">
+        <path d="M190 100 L190 205" stroke="#3d7fb8" marker-end="url(#arB)"/>
+        <path d="M450 100 L450 205" stroke="#3d7fb8" marker-end="url(#arB)"/>
+      </g>
+      <g stroke-width="4" fill="none" stroke-linecap="round" class="rough">
+        <path d="M300 74 L440 74" stroke="#d6436f" marker-end="url(#arP)"/>
+        <path d="M300 184 L440 184" stroke="#d6436f" marker-end="url(#arP)"/>
+      </g>
+      <text x="350" y="318" font-size="18" text-anchor="middle" fill="#2b2b3a">Arrow = “if the other doesn’t change, I do better by switching.” All the arrows point to the lower right.</text>
+    </svg>
+  </div>
+
+  <p>To read this picture, stand in A’s place. Suppose B cooperates: A defecting gets 5, more than the 3 for cooperating. Suppose B defects: A defecting gets 1, more than the 0 for cooperating. <b>Whatever B chooses, defecting pays A more</b>, and B, standing in their own place, thinks the same. So both defect and get 1 each, when cooperating could clearly have given them 3 each.</p>
+
+  <div class="eg" data-ic="💥"><span data-illus="c19_raidcrash"></span><div class="egt"><b>Fighting over gear in a dungeon</b>: with “whoever grabs it keeps it,” looking only at themselves each person should grab. With all four grabbing, nobody fights the boss, the dungeon collapses, and everyone leaves empty-handed.</div></div>
+  <div class="eg" data-ic="🧋"><span data-illus="c19_milktea"></span><div class="egt"><b>Bubble tea shops cutting prices on each other</b>: if the other doesn’t cut, I cut and take their customers; the other thinks the same. In the end both drop to 8 yuan and both profits get thin, and only the customers benefit.</div></div>
+  <div class="eg" data-ic="📚"><span data-illus="c19_groupwork"></span><div class="egt"><b>Group project</b>: if each puts in a bit more, everyone shares the result but you bear the tiredness; if each puts in a bit less, the result is discounted. Everyone thinks “someone else will do it,” and the whole group gets a low grade.</div></div>
+  <div class="eg bad" data-ic="🚪"><span data-illus="c19_leverdoor"></span><div class="egt"><b>A near miss: the lever door</b>: a two-player puzzle with two levers beside a door, and as long as one person holds a lever, the door stays open for both. Here “not pulling” earns no more than “cooperating” (the payoff for defecting, T, does not exceed the payoff for cooperating, R), so it is <b>not</b> a prisoner’s dilemma. A dilemma needs “the temptation to defect” to be real.</div></div>
+
+  
+  <div class="sec"><span class="n">2</span><h2><span class="tag what">What it is</span>Nash equilibrium and four common kinds of game</h2></div>
+
+  <p>The lower-right cell of the prisoner’s dilemma has a name. If, in some combination of strategies, each person is already making the best response to what the others are currently choosing, and nobody can earn more by changing alone, that combination is called a <span class="term" tabindex="0" data-def="A combination of strategies in which, with the others’ strategies unchanged, no participant can get a higher payoff by changing their own strategy alone.">Nash equilibrium</span>.</p>
+  <p>There is a small trick for finding it: in each column, circle the larger of the row player’s payoffs; in each row, circle the larger of the column player’s payoffs. <b>A cell that gets both circles is a (pure-strategy) Nash equilibrium</b>. The payoff-matrix lab below marks them for you.</p>
+  <div class="eg" data-ic="🚶"><span data-illus="c19_narrow"></span><div class="egt"><b>Meeting head-on on a narrow path</b>: you keep right and I keep right, or you keep left and I keep left, are both equilibria, and neither wants to switch sides alone, or you collide. There can be more than one equilibrium, and sometimes custom has to choose among them.</div></div>
+  <div class="eg" data-ic="✊"><span data-illus="c19_rps"></span><div class="egt"><b>Rock-paper-scissors</b>: if I always play rock, the opponent switches to paper. A fixed play has no equilibrium, and the only stable point is for both to randomize with 1/3 each, which is called a mixed strategy.</div></div>
+  <div class="eg bad" data-ic="🕳️"><span data-illus="c19_eqnotbest"></span><div class="egt"><b>A common misunderstanding: equilibrium means best</b>: the only equilibrium of the prisoner’s dilemma, (1,1), is worse for both than (3,3). An equilibrium says only “nobody wants to move alone,” not that the result is good. <span class="term" tabindex="0" data-def="If some cell exists where nobody is worse off and at least one is better off, then the current cell is not Pareto optimal.">Pareto optimality</span> asks whether there is still room to make everyone better off.</div></div>
+
+  <h3>Four typical kinds of game</h3>
+  <p>The prisoner’s dilemma is only one of them. Change which payoffs are larger than which, and the same 2×2 grows four situations with completely different characters.</p>
+  <div class="scroll"><table class="lv">
+    <tr><th>Type</th><th>In one line</th><th>Typical example</th><th>Pure-strategy equilibria</th></tr>
+    <tr><td><b>Prisoner’s dilemma</b></td><td>Individual best is not collective best, and defecting is the dominant strategy</td><td>Anonymous teammates grabbing gear, arms races</td><td>1 (both defect)</td></tr>
+    <tr><td><b>Stag hunt</b> (assurance game)</td><td>Cooperating is best, but only if you can trust the other; if not, settle for second best</td><td>Whether everyone in a team dungeon commits fully to damage</td><td>2 (both hunt stag, both catch hare)</td></tr>
+    <tr><td><b>Chicken / Hawk-Dove</b></td><td>Whoever yields first loses out; if neither yields, both are hurt</td><td>Fighting over the same resource point, the contest before a head-on crash</td><td>2 (one yields, one doesn’t)</td></tr>
+    <tr><td><b>Zero-sum</b></td><td>What you win I lose, pure confrontation</td><td>Chess, one hand of poker, rock-paper-scissors</td><td>Often none (it takes random mixing)</td></tr>
+  </table></div>
+  <div class="card">
+    <svg id="c19_four" viewBox="0 0 780 250" width="100%" role="img" aria-label="Payoff matrices of four kinds of game, with the green cells as Nash equilibria"></svg>
+    <p class="small">Green cells are pure-strategy Nash equilibria. In each cell the left number is A’s and the right is B’s; the first row and first column are each game’s first strategy (cooperate, hunt stag, swerve, heads). Though all are 2×2, the number and position of equilibria are completely different.</p>
+  </div>
+
+  <h3>Hands on: the payoff-matrix lab</h3>
+  <p>Below is a 2×2 matrix you can edit freely: <b>the blue boxes are A’s (row player’s) payoffs and the pink boxes are B’s (column player’s)</b>. The program bolds every best response, marks the pure-strategy Nash equilibria in green, and judges the type of game. Click each of the four presets first, then change the numbers yourself.</p>
+  <div class="board">
+    <div>
+      <button class="btn" data-pre="pd">Prisoner’s dilemma</button> <button class="btn alt" data-pre="sh">Stag hunt</button> <button class="btn pink" data-pre="ch">Chicken</button> <button class="btn green" data-pre="zs">Zero-sum (coin guess)</button>
+    </div>
+    <div class="scroll">
+    <table class="mx" id="c19_mx">
+      <tr><th></th><th id="c19_cn0"></th><th id="c19_cn1"></th></tr>
+      <tr><th id="c19_rn0"></th>
+        <td id="c19_t00"><input class="nr" id="c19_r00" type="number" step="any"><input class="nc" id="c19_c00" type="number" step="any"></td>
+        <td id="c19_t01"><input class="nr" id="c19_r01" type="number" step="any"><input class="nc" id="c19_c01" type="number" step="any"></td></tr>
+      <tr><th id="c19_rn1"></th>
+        <td id="c19_t10"><input class="nr" id="c19_r10" type="number" step="any"><input class="nc" id="c19_c10" type="number" step="any"></td>
+        <td id="c19_t11"><input class="nr" id="c19_r11" type="number" step="any"><input class="nc" id="c19_c11" type="number" step="any"></td></tr>
+    </table>
+    </div>
+    <p class="legend2">A number in bold with an orange outline means that, with the other’s choice unchanged, it is your own best response. When both numbers in a cell are bold, it is a Nash equilibrium.</p>
+    <div class="outbox" id="c19_labout"></div>
+  </div>
+  <div class="sticky">Try it: first click “Prisoner’s dilemma,” then change just the two “0”s (A’s number in the cell where A cooperates and B defects, and B’s number in the cell where A defects and B cooperates) to 2. What does the type change from the prisoner’s dilemma into? Where did the equilibrium go? <span id="c19_labok" class="stat" style="display:none">✓ Done: it became Chicken, and in an instant there are two equilibria.</span></div>
+  <p class="small">Rule for judging the type (using T, R, P, S: a lone defector gets T, mutual cooperation gives each R, mutual defection gives each P, a lone cooperator gets S): T&gt;R&gt;P&gt;S is the prisoner’s dilemma; R&gt;T≥P&gt;S is the stag hunt; T&gt;R&gt;S&gt;P is chicken; a constant sum of the two payoffs in every cell is zero-sum (constant-sum). For an asymmetric custom matrix, the program only describes the structure.</p>
+
+  
+  <div class="sec"><span class="n">3</span><h2><span class="tag origin">How it was invented</span>What questions were these concepts invented to answer?</h2></div>
+  <p>The prisoner’s dilemma, Nash equilibrium, “tit for tat” sound like terms that fell from the sky. In fact each was forced into being by someone who ran into a problem they couldn’t solve. First a look at the whole relay:</p>
+  <div class="card">
+    <svg viewBox="0 0 780 340" width="100%" role="img" aria-label="The evolution of game-theory concepts: a chain of six steps in which problems, solutions and new problems alternate">
+      <defs><marker id="c19ar" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2b2b3a"/></marker></defs>
+      <g class="rough" stroke="#2b2b3a" stroke-width="3.5">
+        <rect x="14" y="14" width="232" height="112" rx="10" fill="#fff7cf"/>
+        <rect x="274" y="14" width="232" height="112" rx="10" fill="#e8f6fc"/>
+        <rect x="534" y="14" width="232" height="112" rx="10" fill="#ffe9ef"/>
+        <rect x="14" y="214" width="232" height="112" rx="10" fill="#eaf9e4"/>
+        <rect x="274" y="214" width="232" height="112" rx="10" fill="#fff0dc"/>
+        <rect x="534" y="214" width="232" height="112" rx="10" fill="#f1eaff"/>
+        <path d="M248 70 H272" fill="none" marker-end="url(#c19ar)"/>
+        <path d="M508 70 H532" fill="none" marker-end="url(#c19ar)"/>
+        <path d="M650 128 V170 H130 V212" fill="none" marker-end="url(#c19ar)"/>
+        <path d="M248 270 H272" fill="none" marker-end="url(#c19ar)"/>
+        <path d="M508 270 H532" fill="none" marker-end="url(#c19ar)"/>
+      </g>
+      <g font-size="17" fill="#2b2b3a">
+        <text x="30" y="44">① Problem</text><text x="30" y="70">Pure confrontation (zero-sum)</text><text x="30" y="94">Solved (1944)</text><text x="30" y="116">Reality is mostly non-zero-sum</text>
+        <text x="290" y="44">② Solution</text><text x="290" y="70">Nash equilibrium (1950)</text><text x="290" y="94">Every game has a stable point</text><text x="290" y="116">Do people really get there?</text>
+        <text x="550" y="44">③ Experiment</text><text x="550" y="70">RAND: 100 plays in a row</text><text x="550" y="94">Tucker tells a prisoner story</text><text x="550" y="116">Finds “the equilibrium is poor”</text>
+        <text x="30" y="244">④ New problem</text><text x="30" y="270">A one-shot game means defect,</text><text x="30" y="294">yet reality often cooperates?</text><text x="30" y="316">→ Look at “repetition”</text>
+        <text x="290" y="244">⑤ Tournament (1980)</text><text x="290" y="270">Axelrod asks for programs</text><text x="290" y="294">The simplest tit for tat</text><text x="290" y="316">wins</text>
+        <text x="550" y="244">⑥ New problem</text><text x="550" y="270">A slip (noise) makes it</text><text x="550" y="294">retaliate to the end</text><text x="550" y="316">→ More forgiving strategies</text>
+      </g>
+    </svg>
+    <p class="small">Each solution leaves behind a new problem, and the next concept is born for it.</p>
+  </div>
+
+  <div class="story">
+    <h3>Story one: how the prisoner’s dilemma popped up</h3>
+    <p><b>The dilemma at the time.</b> In 1944 von Neumann and Morgenstern published <i>Theory of Games and Economic Behavior</i>, turning “what you get depends on my choice” into mathematics. What they could solve completely was zero-sum two-player confrontation: what you win I lose, and the best answer is “minimize the worst case.” But conflicts in the real world, such as arms races, trade and cooperation, are almost never zero-sum: everyone may get better together, or worse together.</p>
+    <p><b>The first attempt.</b> In 1950 John Nash gave the Nash equilibrium: even if a game is not zero-sum, as long as everyone picks “the best response to others’ current choices,” a stable point must exist. But this brought a new trouble: would living people actually arrive at this stable point?</p>
+    <p><b>The key step.</b> According to the Stanford Encyclopedia of Philosophy, in early 1950 Merrill Flood and Melvin Dresher at the RAND Corporation devised a non-zero-sum 2×2 game and had two colleagues play it 100 times in a row, to see whether people would dutifully settle on the equilibrium. The results were later written into Flood’s RAND report (1952), and Nash even wrote comments on the draft. Then Albert Tucker, who had to explain this structure to psychologists at Stanford, made up a story of “two prisoners interrogated separately,” which is the form we know today. As for the name “Prisoner’s Dilemma,” the earliest printed use found so far is in Luce and Raiffa’s 1957 book, and it can’t be confirmed that Tucker himself coined it.</p>
+    <p class="small">The 5/3/1/0 commonly used in textbooks today is a later standardization and not the original numbers of the experiment; the exact number of cooperations by those two subjects is reported differently in different retellings, so it is not quoted here.</p>
+    <details>
+      <summary>🧩 Think first, then open: what is the smallest change that makes “both cooperate” an equilibrium too?</summary>
+      <p>Go back to the lab above and, with the fewest changes, turn the prisoner’s dilemma into one where “both cooperating is also a Nash equilibrium.” Expand once you have thought of it.</p>
+      <p><b>A reference answer:</b> just make “the temptation to defect” no larger than “the reward for cooperating,” that is <b>T ≤ R</b>. For example, change the two “5”s to 3: when the other cooperates, my cooperating (3) is no worse than defecting (3), so (cooperate, cooperate) becomes an equilibrium, the dilemma disappears, and the game turns into something like a stag hunt. What Flood and Dresher wanted to find out was exactly this kind of regularity: “change the structure and people’s behavior changes with it.”</p>
+    </details>
+  </div>
+
+  <div class="story">
+    <h3>Story two: Axelrod’s computer tournament</h3>
+    <p><b>The dilemma at the time.</b> Theory says a one-shot prisoner’s dilemma must land on (defect, defect). But in reality neighbors, colleagues and regular teammates often cooperate quite well. Where is the difference? One intuition: because we will meet again. But when we do meet again, what behavior strategy is best? Even mathematicians couldn’t solve it directly, because the opponent’s possible strategies are too numerous to count.</p>
+    <p><b>His approach.</b> The political scientist Robert Axelrod thought of a way around the difficulty: don’t derive, hold a contest. He invited scholars to submit programs and had them play each other in the repeated prisoner’s dilemma, each pair playing 200 rounds. The first tournament had 14 programs (plus one purely random player), and the winner was the simplest one, submitted by Anatol Rapoport: <b>tit for tat</b>, which cooperates in the first round and then repeats the opponent’s previous move.</p>
+    <p><b>He tried again.</b> Axelrod published the first round’s results and invited more people to “beat it.” The second round had 62 programs, many far more complicated, and tit for tat won again (two Axelrod papers in 1980; the 1984 <i>The Evolution of Cooperation</i> is the popular summary).</p>
+    <p><b>Predict first, then reveal.</b> Below are 6 classic strategies. By intuition, rank them from high to low by “total score in a 200-round round robin” (click in order; click again to undo), then click “Reveal,” and the program computes the exact true ranking.</p>
+    <div class="board">
+      <div class="small">Strategies at a glance (payoffs T=5, R=3, P=1, S=0): <b>Always cooperate</b>; <b>Always defect</b>; <b>Tit for tat</b> (cooperate in round one, then copy the other’s last move); <b>Forgiving tit for tat</b> (when the other defects, still cooperates with 10% probability); <b>Random</b> (50% each); <b>Win-stay, lose-shift</b> (cooperate if both made the same move last round, defect if they differed).</div>
+      <div class="rk" id="c19_rkchips"></div>
+      <div><button class="btn green" id="c19_rkgo" disabled>🔍 Reveal the true ranking</button><button class="btn pink" id="c19_rkreset">Start over</button></div>
+      <div id="c19_rkout"></div>
+    </div>
+  </div>
+
+  <div class="story">
+    <h3>Story three: the tragedy of the commons, and why “everybody’s property” needed a name</h3>
+    <p><b>The problem at the time.</b> A pasture anyone can use, a sea anyone can fish, seems always to get used up. Why? Hardin traces it back to William Forster Lloyd’s 19th-century discussion of the “common pasture.” In 1968 the ecologist Garrett Hardin published “The Tragedy of the Commons” in <i>Science</i> and put this intuition into a clear structure: <b>add one more sheep, the benefit goes to me and the cost is shared by all</b>. This is the multiplayer version of the prisoner’s dilemma.</p>
+    <p><b>A new problem.</b> Are there only the two roads of state regulation or privatization? The political economist Elinor Ostrom, in <i>Governing the Commons</i> (1990), studied many real communities: pastures, fisheries, irrigation systems. She found that many communities kept their common resources well managed for decades or centuries with rules they made, monitored and enforced themselves. She received the 2009 Nobel Prize in Economics for it (shared with Oliver Williamson).</p>
+  </div>
+
+  <p>Put the three stories back on one timeline and you see each step filling the gap the last one left:</p>
+  <div class="timeline">
+    <div class="ev hasimg"><span data-illus="c19_vnm"></span><div><b class="yr">1944</b> Von Neumann and Morgenstern publish <i>Theory of Games and Economic Behavior</i>, and zero-sum confrontation is “solved.” But what they couldn’t solve was exactly the most common kind of conflict in reality: everyone may get better together, or worse together.</div></div>
+    <div class="ev hasimg"><span data-illus="c19_nash"></span><div><b class="yr">1950</b> Nash publishes <i>Equilibrium points in n-person games</i> in the <i>Proceedings of the National Academy of Sciences</i>, proving that non-zero-sum games also have stable points. A stable point is like a ball at the bottom of a bowl: push it and it rolls back, and nobody wants to move alone.</div></div>
+    <div class="ev hasimg"><span data-illus="c19_rand"></span><div><b class="yr">Early 1950</b> Flood and Dresher at RAND have two colleagues play a non-zero-sum game 100 times in a row, to test whether people really arrive at equilibrium.</div></div>
+    <div class="ev hasimg"><span data-illus="c19_tucker"></span><div><b class="yr">Afterward</b> To explain the structure to psychologists at Stanford, Tucker makes up the story of “two prisoners interrogated separately.” The name is easy to remember and the structure is clear at a glance, and it spread from then on.</div></div>
+    <div class="ev hasimg"><span data-illus="c19_hardin"></span><div><b class="yr">1968</b> Hardin publishes <i>The Tragedy of the Commons</i> (<i>Science</i>), turning “add one more sheep, the benefit is mine and the cost is shared” into a multiplayer prisoner’s dilemma everyone can understand.</div></div>
+    <div class="ev hasimg"><span data-illus="c19_axelrod"></span><div><b class="yr">1980</b> Axelrod’s two rounds of computer tournaments: the first with 14 programs plus 1 random player, each pair playing 200 rounds, the second with 62 programs, and tit for tat wins both (<i>J. Conflict Resolution</i> vol. 24).</div></div>
+    <div class="ev hasimg"><span data-illus="c19_ostrom"></span><div><b class="yr">1990</b> Ostrom publishes <i>Governing the Commons</i>, using many real community cases to refute “only regulation or privatization”; she wins the Nobel Prize in Economics in 2009.</div></div>
+    <div class="ev hasimg"><span data-illus="c19_noise"></span><div><b class="yr">1993</b> Nowak and Sigmund find in <i>Nature</i> that once someone slips, two tit-for-tats fall into endless mutual retaliation, while “win-stay, lose-shift” corrects itself and did better in their evolutionary simulations. In 2015 Rapoport, Seale and Colman wrote in <i>PLoS ONE</i> to warn against reading the tournament results as “tit for tat is right everywhere.”</div></div>
+  </div>
+
+  
+  <div class="sec"><span class="n">4</span><h2><span class="tag why">Why it works</span>Why do rational individuals head for bad outcomes?</h2></div>
+
+  <div class="withimg rev">
+    <span data-illus="c19_dominant"></span>
+    <div>
+      <p>Back to that (1,1). Why do two people who are clearly both smart land in a cell worse than cooperating?</p>
+      <p>The key is something called a <span class="term" tabindex="0" data-def="A strategy that pays more than any other strategy whatever the opponent chooses. A rational player won’t give it up.">dominant strategy</span>: if an option is no worse than the others whatever the other chooses, it is dominant. In the prisoner’s dilemma, “defect” is dominant. Standing in A’s place, if the other cooperates, defecting gets me 5, more than cooperating’s 3; if the other defects, defecting gets me 1, more than cooperating’s 0. Both sides calculate this way, and both fall into the lower right.</p>
+      <p>So the bad result does not come from bad or stupid people but from the payoff structure: the benefit of defecting goes entirely to oneself, while the cost of defecting is borne by the other.</p>
+    </div>
+  </div>
+  <div class="why-box">
+    <h3>Two underlying principles: the trap of dominant strategies, and that an equilibrium always exists</h3>
+    <p><b>Standard reasoning (a basic conclusion of game theory):</b> a rational player won’t give up a dominant strategy, and when two players’ dominant strategies meet, the result is determined by them, even if it is worse for both than cooperating.</p>
+    <p><b>Nash’s proof:</b> in 1950 Nash proved that as long as the players and strategies are finite in number (allowing mixed strategies, that is, choosing at random by probability), every game has at least one equilibrium. This theorem explains “why stable points are found everywhere,” but it only guarantees stability, not goodness. The stable point of the prisoner’s dilemma is exactly a bad result.</p>
+    <p class="src">Sources: Nash (1950) <i>Equilibrium points in n-person games</i>, PNAS 36(1): 48–49; Flood &amp; Dresher (1950, RAND), Flood (1952) RAND report; Luce &amp; Raiffa (1957) <i>Games and Decisions</i>; for an overview see the Stanford Encyclopedia of Philosophy entry “Prisoner’s Dilemma.”</p>
+  </div>
+  <p>This conclusion is very practical for designers: to change player behavior, don’t preach, change the payoffs.</p>
+
+  <div class="why-box">
+    <h3>The tragedy of the commons: a multiplayer prisoner’s dilemma</h3>
+    <p><b>Hardin’s view:</b> with no constraints, individuals using a shared resource head for overuse; his conclusion at the time leaned toward the need for outside coercion (state regulation or privatization). This is only Hardin’s view. Ostrom’s research shows that many communities have kept shared resources well managed over the long run with their own rules.</p>
+    <p class="src">Sources: Hardin (1968) <i>The Tragedy of the Commons</i>, Science 162; Ostrom (1990) <i>Governing the Commons</i>; Ostrom won the 2009 Nobel Prize in Economics.</p>
+  </div>
+
+  <h3>Verification experiment: a pond of five fishermen</h3>
+  <p>You and four computer fishermen share a fish pond (capacity 100 fish). Each round everyone decides how many to catch, and the remaining fish recover by the rule “<b>the closer what is left is to half, the faster it breeds</b>” (the remaining stock R grows by 0.4×R×(1−R/100) each round). The goal is to have your own total catch as large as possible after 15 rounds. At the bottom is a “<b>rule knob</b>”: you are the one who makes the rules.</p>
+  <p><b>Guess first:</b> the whole pond can “sustainably” produce at most about 10 fish a round. Split five ways, how many should each catch per round for the pond to hold up?</p>
+  <div class="rk" id="c19_pondguess">
+    <button class="chip" data-g="1">1 fish</button><button class="chip" data-g="2">2 fish</button><button class="chip" data-g="4">4 fish</button><button class="chip" data-g="8">8 fish</button>
+  </div>
+  <div class="msg" id="c19_pondfb" style="font-size:1.05rem;font-family:var(--body)">Pick one and see if it’s right.</div>
+  <div class="board">
+    <div class="row2">
+      <div>
+        <label class="ctl">Computer fishermen’s behavior
+          <select id="c19_fmode" style="font:inherit;border:2.5px solid var(--ink);border-radius:8px;background:#fffef7;padding:2px 6px">
+            <option value="calm">Restrained (2 each)</option>
+            <option value="greedy">Greedy (5 each)</option>
+            <option value="mirror">Follower (copies you, 2 first)</option>
+          </select>
+        </label>
+        <label class="ctl">🛠 Rule knob: the most each person may catch per round <output id="c19_fcv">10 (no cap)</output></label>
+        <input type="range" id="c19_fcap" min="1" max="10" step="1" value="10">
+      </div>
+      <div>
+        <label class="ctl">You want to catch this round <output id="c19_fv">2</output> fish</label>
+        <input type="range" id="c19_fcatch" min="0" max="10" step="1" value="2">
+      </div>
+    </div>
+    <div>
+      <span class="stat">Round <b id="c19_fr">0</b>/15</span><span class="stat">Your total <b id="c19_fme">0</b></span><span class="stat">Computers’ average total <b id="c19_fnpc">0</b></span>
+    </div>
+    <div class="pond" aria-label="Fish stock in the pond"><i id="c19_pond" style="width:100%"></i><span id="c19_pondt">🐟 Pond 100 / 100</span></div>
+    <div class="bars" id="c19_fbars" aria-label="Pond stock after each round"></div>
+    <div>
+      <button class="btn green" id="c19_fgo">Next round</button><button class="btn alt" id="c19_fauto">Play it all out</button><button class="btn pink" id="c19_freset">Start over</button>
+    </div>
+    <div class="msg" id="c19_fmsg"></div>
+  </div>
+  <div class="sticky">Try it: first set the computers to “Greedy,” leave the rule knob at 10, catch 2 yourself, play it all out, and see how much you lose. Then, changing nothing else, turn the rule knob to 2 and play again: does the pond still run dry? <span id="c19_pondok" class="stat" style="display:none">✓ Change the rule and the dilemma loosens.</span></div>
+  <p>You will see: if the others are restrained and you catch a few more, you gain in the short run but drag the pond into a range from which it “can never recover”; if the others are greedy and you alone hold back, you merely let the others take your share. This is exactly the multiplayer prisoner’s dilemma: everyone’s best response is “catch more,” so no one is willing to be the first to hold back.</p>
+  <div class="eg" data-ic="🌳"><span data-illus="c19_farmpoint"></span><div class="egt"><b>Respawn points in games</b>: a scarce material node shared by the whole server, farmed out by everyone. Turn “the cap per person per round” to 2 and the node can supply for a long time. Change the rule, and the payoff structure changes.</div></div>
+  <div class="eg" data-ic="☕"><span data-illus="c19_coffee"></span><div class="egt"><b>The office coffee beans</b>: with nobody in charge they run out fast; a notice saying “one portion per person per day” is the plainest quota.</div></div>
+  <div class="eg bad" data-ic="📢"><span data-illus="c19_slogan"></span><div class="egt"><b>A near miss: only slogans</b>: a banner says “let’s all hold back” but there is no rule at all. Leave the knob at 10, switch to “Greedy” neighbors and try again: the one who holds back is only saving fish for the others.</div></div>
+
+  
+  <div class="sec"><span class="n">5</span><h2><span class="tag why">Why it works</span>Meeting again and again: how cooperation stands up</h2></div>
+  <p>In real life we almost never meet an opponent only once. If the same people meet again and again, today’s betrayal must bear tomorrow’s retaliation. Then a one-shot prisoner’s dilemma becomes a <span class="term" tabindex="0" data-def="The same participants play the same game again and again. Today’s behavior affects the other’s choices tomorrow, so defecting pays a price in the future.">repeated game</span>.</p>
+
+  <div class="withimg rev">
+    <span data-illus="c19_traits"></span>
+    <div>
+      <p>Axelrod’s tournament gave a list of “what a good strategy looks like.” The programs that did well mostly had four traits: <b>nice</b>, never defecting first; <b>retaliatory</b>, hitting back at once when betrayed, not a pushover; <b>forgiving</b>, resuming cooperation as soon as the other turns back, without digging up old grudges; and <b>clear</b>, with simple, understandable behavior, so the opponent sees right away that “cooperation pays.” He also stressed not to envy the opponent’s score.</p>
+      <p>A counterintuitive detail: in any single one-on-one match, tit for tat never scored higher than its opponent, at most tying or losing slightly. It won on total score, because it kept up cooperation with many opponents.</p>
+    </div>
+  </div>
+  <div class="why-box">
+    <h3>Worldview principle: in repeated games, cooperation can “evolve”</h3>
+    <p>This is Axelrod’s research conclusion. In 1981 he and the evolutionary biologist William Hamilton applied the same logic to the living world in <i>Science</i>: as long as individuals will meet again, reciprocity can hold its ground among a group of selfish individuals, with no one needing to give orders. In his 1984 <i>The Evolution of Cooperation</i> he also used a historical case: in the trench warfare of the First World War, British and German soldiers facing each other often reached a tacit understanding to fire less and not to shoot at each other’s supply times, forming “live and let live.” Axelrod, drawing on the historian Tony Ashworth’s research, took this as a real example of long-term interaction giving rise to cooperation.</p>
+    <p>Some disagree with this reading, though: political scientists such as Joanne Gowa argue that fitting the tacit understandings in the trenches into the prisoner’s dilemma is not rigorous. It can be taken as a very suggestive analogy, rather than a settled conclusion.</p>
+    <p class="src">Sources: Axelrod &amp; Hamilton (1981) <i>The evolution of cooperation</i>, Science 211: 1390–1396; Axelrod (1980) <i>More Effective Choice in the Prisoner’s Dilemma</i>, J. Conflict Resolution 24(3): 379–403; Axelrod (1984) <i>The Evolution of Cooperation</i> (including the chapter on trench warfare, based on Ashworth’s research).</p>
+  </div>
+
+  <div class="withimg">
+    <span data-illus="c19_shadowimg"></span>
+    <div>
+      <p>For cooperation to stand, there is one more condition: there must be a next meeting, and it must matter enough. Axelrod called this <span class="term" tabindex="0" data-def="Axelrod’s term: how much the next interaction matters relative to this one. w (from 0 to 1) stands for the probability or discount of “meeting once more”; the larger w is, the more the future matters.">the shadow of the future</span>, written w: after each round there is a probability w of continuing to the next, so on average 1/(1−w) rounds are played.</p>
+      <p>If the opponent plays tit for tat, you can work it out: cooperating all along gives R per round, R/(1−w) in total; defecting forever gives T the first round and then only P per round, T + wP/(1−w) in total; alternating one defection and one cooperation gives (T + wS)/(1−w²). For cooperation to pay, you need <b>w ≥ max[(T−R)/(T−P), (T−R)/(R−S)]</b>. Putting in T=5, R=3, P=1, S=0 gives w ≥ max(1/2, 2/3) = <b>2/3</b>, that is, an average of at least 3 more meetings.</p>
+    </div>
+  </div>
+  <p class="src">Source: Axelrod (1984) <i>The Evolution of Cooperation</i>; the standard values are used here.</p>
+  <div class="card">
+    <svg id="c19_shadow" viewBox="0 0 700 340" width="100%" role="img" aria-label="Three curves: the expected total payoff of cooperating throughout, defecting forever and alternating, as the probability w of meeting again varies; at w=2/3 cooperation catches up with defecting"></svg>
+    <p class="small">The three curves are drawn directly from the formulas above (T=5, R=3, P=1, S=0, the opponent playing tit for tat). When w is small, defecting wins; past the crossing at w = 2/3, cooperating throughout becomes best. In the strategy map later, you can feel the same thing with the “rounds per match” slider.</p>
+  </div>
+  <div class="eg" data-ic="🎭"><span data-illus="c19_oneshot"></span><div class="egt"><b>Anonymous ranked play</b>: one meeting per game (w≈0), and blaming others, going AFK and stealing kills all become “rational.” Teammates have no tomorrow, and betrayal costs nothing.</div></div>
+  <div class="eg" data-ic="🏪"><span data-illus="c19_oldstreet"></span><div class="egt"><b>A small shop on an old street</b>: a one-off business at a scenic-spot gate easily overcharges, while a small shop on the old street dares not, because the customer will be back tomorrow and the neighbors will gossip. Fixed squads and friend lists stretch w, and the same people start looking after each other.</div></div>
+  <div class="eg" data-ic="⭐"><span data-illus="c19_reputation"></span><div class="egt"><b>Reputation systems</b>: honor levels, ratings, blacklists let “the next stranger” also see what you did this time, which is lending the shadow to strangers.</div></div>
+  <div class="eg bad" data-ic="🏁"><span data-illus="c19_endgame"></span><div class="egt"><b>Counterexample: the endgame effect</b>: on the last day of a season, everyone knows there will be no meeting tomorrow, w plunges, and as settlement nears AFKing, score-stealing and ditching teammates suddenly rise. Defect in the last round, and the round before gets dragged down too.</div></div>
+
+  
+  <div class="sec"><span class="n">6</span><h2><span class="tag how">How to use it</span>A designer is a “mechanism designer”</h2></div>
+  <div class="withimg">
+    <span data-illus="c19_designer"></span>
+    <div>
+      <p>You have seen that behavior is forced out by the payoff structure. So think the other way round: if I want players to do this, how should the rules change? This branch of game theory is called <span class="term" tabindex="0" data-def="Asking in reverse: to get a certain collective outcome, what rules and payoffs should be designed so that each rational individual willingly makes that choice.">mechanism design</span>, and game designers do it every day.</p>
+      <p>There are only two directions: to make players cooperate, change the payoffs so defecting is no longer dominant; to get tension, do the reverse and keep the temptation well preserved.</p>
+    </div>
+  </div>
+  <div class="grid2">
+    <div class="card g">
+      <h3>To make players cooperate</h3>
+      <div class="chain"><span class="st">Change the payoff structure</span><span class="ar">→</span><span class="st">Defecting is no longer dominant</span><span class="ar">→</span><span class="st">Cooperation becomes an equilibrium</span></div>
+      <ul>
+        <li><b>Shared rewards</b>: pay out only if the whole team clears, or tie part of individual payoff to the team’s result.</li>
+        <li><b>Repeat meetings</b>: fixed squads, guilds, friend lists, to lengthen “the shadow of the future.”</li>
+        <li><b>Reputation</b>: honor levels, ratings, blacklists, so that others’ “next time” can also see what you did this time.</li>
+        <li><b>Channels to punish betrayal</b>: reporting, vote-kicks, point deductions, so that betrayal has a cost.</li>
+      </ul>
+    </div>
+    <div class="card p">
+      <h3>To create tension</h3>
+      <div class="chain"><span class="st">Keep the temptation</span><span class="ar">→</span><span class="st">Both cooperation and betrayal make sense</span><span class="ar">→</span><span class="st">Mutual suspicion</span></div>
+      <ul>
+        <li>Give betrayal <b>a real temptation</b> (T clearly larger than R).</li>
+        <li>Make it so people <b>can’t see clearly</b> what others chose (games like Werewolf and <i>Among Us</i> deliberately create uncertainty).</li>
+        <li>Make “cooperation” risky too (stag-hunt style: trusting the wrong person costs a lot).</li>
+        <li>Limit communication, or make promises <b>unenforceable</b>.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="eg" data-ic="📦"><span data-illus="c19_split"></span><div class="egt"><b>Splitting loot in a dungeon</b>: “whoever grabs it keeps it” is a textbook prisoner’s dilemma. Common fixes are personal loot (each has their own share and the competition disappears) or a points system (today’s patience becomes tomorrow’s priority, stretching the shadow).</div></div>
+  <div class="eg" data-ic="🚀"><span data-illus="c19_amongus"></span><div class="egt"><b>Social-deduction games like <i>Among Us</i></b>: deliberately keep the temptation (the impostor’s payoff is far above the crew’s) and cover up information, turning the dilemma into a source of fun.</div></div>
+  <div class="eg" data-ic="🧹"><span data-illus="c19_rota"></span><div class="egt"><b>A chore chart in a shared flat</b>: replacing a vague “everyone pitches in” with a clear rotation and a charge is changing the payoff structure.</div></div>
+  <div class="eg bad" data-ic="🛌"><span data-illus="c19_freeride"></span><div class="egt"><b>A near miss: a shared reward with invisible contributions</b>: the whole team shares the reward, but nobody can see anyone’s contribution, so “free riding” appears: the one who is AFK gets the same reward as you. Sharing solves only half of it, and you still need contributions to be visible and betrayal to have a cost. A reporting system is the same: if nobody handles reports, the cost of betrayal is still 0.</div></div>
+  <p class="small">Want to verify for yourself that “changing the rules changes behavior”? Go back to the pond and turn the rule knob to 2; or go back to the lab and lower T from 5 to 3.</p>
+
+  
+  <div class="sec"><span class="n">7</span><h2><span class="tag how">How to use it</span>Signature interactive: enter the tournament and climb the “score mountain”</h2></div>
+  <div class="withimg rev">
+    <span data-illus="c19_peak"></span>
+    <div>
+      <p>Now it’s your turn. Your strategy is set by two knobs: <b>the probability a that I cooperate when the opponent cooperated last round</b>; <b>the probability b that I cooperate when the opponent defected last round</b>. A few familiar strategies are exactly points on the map: always cooperate (1,1), always defect (0,0), tit for tat (1,0), forgiving tit for tat (1,0.1), random (0.5,0.5).</p>
+      <p>Drag the pink “You” in the chart below. The background color is “the total score of your strategy against 6 opponents (always cooperate, always defect, tit for tat, forgiving tit for tat, random, win-stay lose-shift) and against itself”; the darker, the higher, and ★ is the highest point under the current settings. While you drag, the leaderboard on the right changes live; then pull the <b>rounds per match</b> and <b>slip rate</b> and see how the “mountain” moves.</p>
+    </div>
+  </div>
+  <div class="board">
+    <div class="mapwrap">
+      <div>
+        <svg id="c19_map" viewBox="0 0 420 420" width="100%" role="img" aria-label="Strategy map: the horizontal axis is the probability I cooperate when the opponent cooperated, the vertical is the probability I cooperate when the opponent defected, and “You” can be dragged"></svg>
+      </div>
+      <div>
+        <label class="ctl">Rounds per match <output id="c19_nv">200</output>(try pulling it to 1; Axelrod’s tournament used 200)</label>
+        <input type="range" id="c19_nround" min="1" max="200" step="1" value="200">
+        <label class="ctl">Slip rate (probability that a move is misread or mis-pressed)<output id="c19_ev">0%</output></label>
+        <input type="range" id="c19_eps" min="0" max="10" step="1" value="0">
+        <label class="ctl">First round:
+          <select id="c19_first" style="font:inherit;border:2.5px solid var(--ink);border-radius:8px;background:#fffef7;padding:2px 6px">
+            <option value="1">Cooperate first</option><option value="0">Defect first</option>
+          </select>
+        </label>
+        <div class="small">Your strategy: a = <b id="c19_av">1.00</b>, b = <b id="c19_bv">0.00</b> <span id="c19_kind"></span></div>
+        <div id="c19_tout"></div>
+        <div class="msg" id="c19_tmsg" style="font-size:1.05rem;font-family:var(--body)"></div>
+      </div>
+    </div>
+    <p class="small">Win-stay, lose-shift (Pavlov) also has to look at “what I did last time,” so it is not on this two-dimensional map, but it is on the entrant list.</p>
+    <div class="sticky">Try it: first pull the rounds per match to 1 and the ★ jumps to the lower left (always defect); then slowly increase the rounds until the ★ slides to the lower right (around tit for tat). <span id="c19_mapok" class="stat" style="display:none">✓ You saw “the lengthening shadow” move the peak.</span></div>
+    <hr style="border:none;border-top:2px dashed var(--ink);margin:12px 0">
+    <p><b>Stage two: population evolution.</b> If in each generation the high-scoring strategies “reproduce” more and the low-scoring ones decline (the initial shares use the rounds and slip rate you set above), who is left after 60 generations? Your strategy is in there too.</p>
+    <label class="ctl">Initial population for the evolution
+      <select id="c19_init" style="font:inherit;border:2.5px solid var(--ink);border-radius:8px;background:#fffef7;padding:2px 6px">
+        <option value="uni">Evenly spread (all the same)</option>
+        <option value="naive">Many pushovers (50% always cooperate)</option>
+        <option value="dhi">Many defectors (50% always defect)</option>
+      </select>
+    </label>
+    <div><button class="btn green" id="c19_runE">🧬 Evolve 60 generations</button><button class="btn pink" id="c19_best">🎯 Put “You” at the highest-scoring spot</button></div>
+    <div id="c19_elegend"></div>
+    <canvas id="c19_ecv" width="760" height="300" style="width:100%;height:auto;background:#fffef7;border:3px solid var(--ink);border-radius:10px;display:none"></canvas>
+    <div class="msg" id="c19_emsg" style="font-size:1.05rem;font-family:var(--body)"></div>
+  </div>
+  <p><b>Suggested experiments:</b> ① Pull the rounds per match to 1: they meet only once, the peak jumps to the lower left (always defect), and this is the ordinary prisoner’s dilemma. ② Increase the rounds step by step: after a few rounds the peak slides to the lower right (tit for tat), and the “nice but retaliatory” region rises. ③ Set the slip rate to 5%: looking along the rightmost column (a=1), b=0 (pure tit for tat) is already worse than b≈0.2 (a bit forgiving); the highest point of the whole map may also jump to odd places, because the list includes exploitable opponents like “always cooperate,” and the shape of the mountain depends on the opponent list. ④ For the evolution, try each of the three initial populations: the result may depend on the initial proportions, so look at the chart honestly and don’t just trust the text.</p>
+  <p class="small">Method: all strategies are probabilistic strategies that “look only at the last round,” and a match between two of them can be computed exactly as a Markov chain for the expected score per round, so there is no random jitter in the results; a slip means each move has that probability of being carried out as its opposite, and the other side sees the move as carried out.</p>
+
+  
+  <div class="misc">
+    <h3>Common misconceptions</h3>
+    <ul>
+      <li><b>“The prisoner’s dilemma shows human nature is evil.”</b> No. The dilemma comes from the payoff structure, not from people’s character. Equally kind people placed in different payoff structures behave completely differently.</li>
+      <li><b>“A Nash equilibrium is the best outcome.”</b> No. It is only the stable point where “nobody wants to change alone,” and the equilibrium of the prisoner’s dilemma is exactly bad for both.</li>
+      <li><b>“Tit for tat is always the strongest strategy.”</b> No. Its strength is relative to that set of opponents; in one-on-one play it never beats its opponent either; and once slips are frequent you will see it suffer with your own eyes.</li>
+    </ul>
+  </div>
+
+  <div class="reflect">
+    <h3>Reflection and debate</h3>
+    <ul>
+      <li><b>The limits of the model.</b> In reality payoffs are not just scores: fairness, face and the urge to retaliate all change the “payoff.” Many experiments found that in social dilemmas like the prisoner’s dilemma people often choose to cooperate, and cooperation clearly increases once communication is allowed (see Balliet 2010, a meta-analysis of communication and cooperation, <i>J. Conflict Resolution</i> 54(1): 39–57). This doesn’t match the prediction that “rationality must defect,” and reminds us that the “rationality” in the model is too narrow.</li>
+      <li><b>Noise breaks tit for tat.</b> You have already verified it in the strategy map: once slips appear, two tit-for-tats fall into a cycle of “mutual retaliation.” Nowak and Sigmund later proposed more forgiving strategies or “win-stay, lose-shift,” which did better in their simulations. But in a version where the two take turns, the result is different again, so the tournament’s conclusion is not final.</li>
+      <li><b>Results depend on the population and the list.</b> Evolution results change with the initial proportions; the tournament winner depends on the entrant list. Rapoport, Seale and Colman (2015) also wrote to warn against treating Axelrod’s conclusions as universal theorems.</li>
+      <li><b>Hardin and Ostrom.</b> “The tragedy of the commons needs outside coercion” is Hardin’s view; Ostrom’s research shows communities can govern themselves successfully too. Both views have empirical support, each applying under different conditions.</li>
+      <li><b>Should mechanisms be used to steer players?</b> “Designers should use mechanisms to guide players toward cooperation, not preach” is a common view among mechanism designers. The objection is that treating players as variables to be tuned may turn the game into manipulation of behavior.</li>
+    </ul>
+  </div>
+
+  <div class="key">
+    <h3>Key points</h3>
+    <ul>
+      <li>A game consists of <b>players, strategies and payoffs</b>; a <b>Nash equilibrium</b> is a combination in which nobody wants to change alone, and every finite game has at least one.</li>
+      <li>Four typical games: the <b>prisoner’s dilemma</b> (defecting dominates), <b>stag hunt</b> (trust needed), <b>chicken</b> (who yields first), <b>zero-sum</b> (pure confrontation).</li>
+      <li><b>Why they were invented:</b> zero-sum theory could not handle conflicts where “everyone may get better or worse together,” so the Nash equilibrium came; RAND’s experiment and the prisoner story tested it; Axelrod used a tournament to answer “what strategy is good when repeated”; Hardin and Ostrom carried it to shared resources.</li>
+      <li>When rational individuals lead to bad outcomes, the root is the <b>payoff structure</b>: individual benefit and collective benefit have been split apart (the prisoner’s dilemma, the tragedy of the commons).</li>
+      <li>Repeated meetings change the game: strategies that are <b>nice, retaliatory, forgiving and clear</b> do well; cooperation needs <b>a long enough shadow of the future</b> (w ≥ 2/3 under the standard values); when slips are common, be more forgiving.</li>
+      <li>The designer is a <b>mechanism designer</b>: change the payoff structure (sharing, repetition, reputation, punishment channels, quotas) to bring about cooperation, or keep the temptation to create tension.</li>
+    </ul>
+  </div>
+  <div class="tldr">Players haven’t turned bad; the payoff structure makes defecting pay. To get cooperation, change the rules and let everyone “meet again.”</div>
+
+  <div class="sec"><span class="n">8</span><h2><span class="tag think">Practice</span>Check yourself</h2></div>
+  <div id="quiz"></div>
+
+  <div class="sec"><span class="n">9</span><h2><span class="tag how">Your design</span>Your design / your thoughts</h2></div>
+  <div class="card o">
+    <p>Pick a scene in a multiplayer game you know well where “personal interest and team interest conflict” (grabbing resources, grabbing kills, whether to save a teammate…). ① Write down the players, strategies and rough payoffs; ② judge whether it is more like a prisoner’s dilemma, a stag hunt or chicken; ③ propose one rule change and explain how it changes the payoffs so the behavior you want becomes an equilibrium; ④ think: did your change lengthen the “shadow of the future”?</p>
+    <textarea rows="7" data-save="ch19" placeholder="Scene: whether to save a dying teammate in ranked&#10;Type: more like a stag hunt: if the whole team saves, all are better off; if nobody saves, each plays alone…&#10;Change: …"></textarea>
+  </div>
+</main>
+
+<script src="../js/illus.js"></script>
+<script src="../js/illus-ch19.js"></script>
+<script src="../js/en/illus.js"></script>
+<script src="../js/en/illus-lib.js"></script>
+<script src="../js/en/illus-ch19.js"></script>
+<script src="../js/common.js"></script>
+<script>
+const $ = id => document.getElementById("c19_" + id);
+const EPS = 1e-9;
+const gt = (a, b) => a > b + EPS, ge = (a, b) => a >= b - EPS, eq = (a, b) => Math.abs(a - b) <= EPS;
+const fmt = v => (Math.round(v * 100) / 100).toString();
+
+function analyze(r, c, nm) {
+  const res = { rowBR: [[0, 0], [0, 0]], colBR: [[0, 0], [0, 0]], ne: [], type: "", html: "" };
+  for (let i = 0; i < 2; i++) for (let j = 0; j < 2; j++) {
+    res.rowBR[i][j] = ge(r[i][j], r[1 - i][j]);
+    res.colBR[i][j] = ge(c[i][j], c[i][1 - j]);
+    if (res.rowBR[i][j] && res.colBR[i][j]) res.ne.push([i, j]);
+  }
+  const s0 = r[0][0] + c[0][0];
+  let cs = true;
+  for (let i = 0; i < 2; i++) for (let j = 0; j < 2; j++) if (!eq(r[i][j] + c[i][j], s0)) cs = false;
+  let sym = true;
+  for (let i = 0; i < 2; i++) for (let j = 0; j < 2; j++) if (!eq(c[i][j], r[j][i])) sym = false;
+  let type = "", typeNote = "";
+  if (cs) {
+    type = eq(s0, 0) ? "Zero-sum game" : "Constant-sum game (essentially zero-sum)";
+    typeNote = "In every cell the two payoffs add up to " + fmt(s0) + ": if one gets more, the other must get less, and there is no room for “win-win.”";
+  } else if (sym) {
+    for (const [a, b] of [[0, 1], [1, 0]]) {
+      const R = r[a][a], S = r[a][b], T = r[b][a], P = r[b][b];
+      if (gt(T, R) && gt(R, P) && gt(P, S)) {
+        type = "Prisoner’s dilemma";
+        typeNote = "Treat “" + nm[a] + "” as cooperating and “" + nm[b] + "” as defecting: T=" + fmt(T) + " > R=" + fmt(R) + " > P=" + fmt(P) + " > S=" + fmt(S) + ". Defecting is the dominant strategy, and the equilibrium is worse for both than mutual cooperation." + (2 * R <= T + S ? " (And 2R ≤ T+S, so in a repeated game taking turns defecting may pay more than steady cooperation, a variant beyond the strict version of the dilemma.)" : "");
+        break;
+      }
+      if (gt(R, T) && ge(T, P) && gt(P, S)) {
+        type = "Stag hunt (assurance game)";
+        typeNote = "Treat “" + nm[a] + "” as cooperating: R=" + fmt(R) + " > T=" + fmt(T) + " ≥ P=" + fmt(P) + " > S=" + fmt(S) + ". Both cooperating is best, but if you suspect the other won’t cooperate, choosing “" + nm[b] + "” is safer. The core issue is trust, not temptation.";
+        break;
+      }
+      if (gt(T, R) && gt(R, S) && gt(S, P)) {
+        type = "Chicken / Hawk-Dove";
+        typeNote = "Treat “" + nm[a] + "” as yielding: T=" + fmt(T) + " > R=" + fmt(R) + " > S=" + fmt(S) + " > P=" + fmt(P) + ". The worst is neither yielding; the best is the other yields and I don’t.";
+        break;
+      }
+    }
+  }
+  const domRow = [0, 1].filter(s => gt(r[s][0], r[1 - s][0]) && gt(r[s][1], r[1 - s][1]));
+  const domCol = [0, 1].filter(s => gt(c[0][s], c[0][1 - s]) && gt(c[1][s], c[1][1 - s]));
+  const dominatedBy = (i, j) => {
+    for (let m = 0; m < 2; m++) for (let n = 0; n < 2; n++) {
+      if (m === i && n === j) continue;
+      if (ge(r[m][n], r[i][j]) && ge(c[m][n], c[i][j]) && (gt(r[m][n], r[i][j]) || gt(c[m][n], c[i][j]))) return [m, n];
+    }
+    return null;
+  };
+  if (!type) {
+    if (res.ne.length === 1 && domRow.length && domCol.length && !dominatedBy(res.ne[0][0], res.ne[0][1])) {
+      type = "No-conflict type (cooperation is best)";
+      typeNote = "Both have a dominant strategy, and the result they give can’t be replaced by any cell that is “better for everyone”: individual rationality and collective interest agree.";
+    } else {
+      type = "Other / custom type";
+      typeNote = "It is none of the four classic games above (or the matrix is asymmetric); please read it together with the structure description below.";
+    }
+  }
+  res.type = type;
+  const L = [];
+  L.push('<span class="ty">Type:' + type + "</span>");
+  L.push(typeNote);
+  if (res.ne.length === 0) L.push("<b>No pure-strategy Nash equilibrium</b>: in every cell someone wants to change alone, and a stable point needs a mixed strategy (randomizing).");
+  else {
+    L.push("<b>Pure-strategy Nash equilibria (" + res.ne.length + "):</b> " + res.ne.map(([i, j]) =>
+      "(A: " + nm[i] + ", B: " + nm[j] + ") payoff (" + fmt(r[i][j]) + ", " + fmt(c[i][j]) + ")").join("; "));
+    res.ne.forEach(([i, j]) => {
+      const d = dominatedBy(i, j);
+      if (d) L.push("Equilibrium (A: " + nm[i] + ", B: " + nm[j] + ") is <b>not Pareto optimal</b>: in the cell (A: " + nm[d[0]] + ", B: " + nm[d[1]] + ") neither is worse off and at least one is better off.");
+    });
+  }
+  if (domRow.length) L.push("A has a dominant strategy: " + nm[domRow[0]] + ".");
+  if (domCol.length) L.push("B has a dominant strategy: " + nm[domCol[0]] + ".");
+  const den1 = (c[0][0] - c[1][0]) - (c[0][1] - c[1][1]);
+  const den2 = (r[0][0] - r[0][1]) - (r[1][0] - r[1][1]);
+  if (Math.abs(den1) > EPS && Math.abs(den2) > EPS) {
+    const p = (c[1][1] - c[1][0]) / den1, q = (r[1][1] - r[0][1]) / den2;
+    if (p > EPS && p < 1 - EPS && q > EPS && q < 1 - EPS) {
+      L.push("Mixed equilibrium (for reference): A at " + Math.round(p * 100) + "% likelihood of “" + nm[0] + "”, B at " + Math.round(q * 100) + "% likelihood of “" + nm[0] + "”: neither can gain by changing the probabilities.");
+    }
+  }
+  res.html = L.map(x => "<div>" + x + "</div>").join("");
+  return res;
+}
+
+const PRE = {
+  pd: { nm: ["Cooperate", "Defect"], r: [[3, 0], [5, 1]], c: [[3, 5], [0, 1]], t: "Prisoner’s dilemma" },
+  sh: { nm: ["Stag", "Hare"], r: [[4, 0], [3, 3]], c: [[4, 3], [0, 3]], t: "Stag" },
+  ch: { nm: ["Swerve", "Straight"], r: [[3, 1], [5, 0]], c: [[3, 5], [1, 0]], t: "Chicken" },
+  zs: { nm: ["Heads", "Tails"], r: [[1, -1], [-1, 1]], c: [[-1, 1], [1, -1]], t: "Zero-sum (coin guess)" },
+};
+
+(function () {
+  let s = "";
+  Object.keys(PRE).forEach((k, idx) => {
+    const p = PRE[k], a = analyze(p.r, p.c, p.nm), ox = 12 + idx * 192;
+    for (let i = 0; i < 2; i++) for (let j = 0; j < 2; j++) {
+      const isNE = a.ne.some(e => e[0] === i && e[1] === j);
+      s += '<g class="rough"><rect x="' + (ox + j * 85) + '" y="' + (16 + i * 62) + '" width="85" height="62" fill="' + (isNE ? "#b6e8a8" : "#fff") + '" stroke="#2b2b3a" stroke-width="3.5"/></g>' +
+        '<text x="' + (ox + j * 85 + 42) + '" y="' + (16 + i * 62 + 38) + '" font-size="21" text-anchor="middle" fill="#2b2b3a">' + p.r[i][j] + "," + p.c[i][j] + "</text>";
+    }
+    s += '<text x="' + (ox + 85) + '" y="170" font-size="20" text-anchor="middle" fill="#2b2b3a">' + p.t + "</text>" +
+      '<text x="' + (ox + 85) + '" y="198" font-size="17" text-anchor="middle" fill="#2b2b3a">' + (a.ne.length ? "Equilibria: " + a.ne.length + "  (pure)" : "No pure equilibrium") + "</text>" +
+      '<text x="' + (ox + 85) + '" y="224" font-size="17" text-anchor="middle" fill="#4b4b5e">' + (a.ne.map(e => "(" + p.nm[e[0]] + "," + p.nm[e[1]] + ")").join(" ") || "needs mixing") + "</text>";
+  });
+  document.getElementById("c19_four").innerHTML = s;
+})();
+
+let labNames = PRE.pd.nm, labPre = 'pd';
+function readLab() {
+  const r = [[0, 0], [0, 0]], c = [[0, 0], [0, 0]];
+  for (let i = 0; i < 2; i++) for (let j = 0; j < 2; j++) {
+    r[i][j] = parseFloat($("r" + i + j).value);
+    c[i][j] = parseFloat($("c" + i + j).value);
+  }
+  return { r, c };
+}
+function updLab() {
+  const nm = labNames;
+  $("cn0").textContent = "B: " + nm[0]; $("cn1").textContent = "B: " + nm[1];
+  $("rn0").textContent = "A: " + nm[0]; $("rn1").textContent = "A: " + nm[1];
+  const { r, c } = readLab();
+  const bad = [].concat(...r, ...c).some(v => !isFinite(v));
+  for (let i = 0; i < 2; i++) for (let j = 0; j < 2; j++) {
+    $("t" + i + j).classList.remove("ne"); $("r" + i + j).classList.remove("br"); $("c" + i + j).classList.remove("br");
+  }
+  if (bad) { $("labout").textContent = "Please fill in a number in every cell."; return; }
+  const a = analyze(r, c, nm);
+  for (let i = 0; i < 2; i++) for (let j = 0; j < 2; j++) {
+    if (a.rowBR[i][j]) $("r" + i + j).classList.add("br");
+    if (a.colBR[i][j]) $("c" + i + j).classList.add("br");
+  }
+  a.ne.forEach(([i, j]) => $("t" + i + j).classList.add("ne"));
+  $("labout").innerHTML = a.html;
+  $("labok").style.display = (labPre === 'pd' && a.type.indexOf('Chicken') === 0) ? '' : 'none';
+}
+function setPre(k) {
+  const p = PRE[k]; labNames = p.nm; labPre = k;
+  for (let i = 0; i < 2; i++) for (let j = 0; j < 2; j++) { $("r" + i + j).value = p.r[i][j]; $("c" + i + j).value = p.c[i][j]; }
+  updLab();
+}
+document.querySelectorAll("[data-pre]").forEach(b => (b.onclick = () => setPre(b.dataset.pre)));
+["r00", "r01", "r10", "r11", "c00", "c01", "c10", "c11"].forEach(id => $(id).addEventListener("input", updLab));
+setPre("pd");
+
+const FN = 15, CAP = 100, GROW = 0.4;
+let F = null;
+function fReset() {
+  F = { stock: CAP, round: 0, me: 0, npc: 0, hist: [], lastMe: 2 };
+  fRender();
+  $("fmsg").textContent = "Try first: if you and everyone else hold back, each gets 30 fish after 15 rounds. Then try: you alone catch more, or everyone is greedy, and then turn the rule knob to 2.";
+}
+function fRender() {
+  $("fr").textContent = F.round;
+  $("fme").textContent = F.me.toFixed(1); $("fnpc").textContent = (F.npc / 4).toFixed(1);
+  $("pond").style.width = F.stock + "%";
+  $("pondt").textContent = "🐟 Pond " + F.stock.toFixed(0) + " / 100";
+  $("fbars").innerHTML = F.hist.map(s => '<div class="' + (s < 20 ? "low" : "") + '" style="height:' + Math.max(1, s) + '%" title="' + s.toFixed(1) + '"></div>').join("");
+}
+function fStep() {
+  if (F.round >= FN) return false;
+  const mode = $("fmode").value, cap = +$("fcap").value;
+  const mine = +$("fcatch").value;
+  let want = [mine];
+  const npcWant = mode === "calm" ? 2 : mode === "greedy" ? 5 : F.lastMe;
+  for (let k = 0; k < 4; k++) want.push(npcWant);
+  want = want.map(w => Math.min(w, cap));
+  const total = want.reduce((a, b) => a + b, 0);
+  const scale = total > F.stock ? (total > 0 ? F.stock / total : 0) : 1;
+  const got = want.map(w => w * scale);
+  const caught = got.reduce((a, b) => a + b, 0);
+  F.me += got[0]; F.npc += got.slice(1).reduce((a, b) => a + b, 0);
+  let rest = F.stock - caught;
+  rest = Math.min(CAP, rest + GROW * rest * (1 - rest / CAP));
+  if (rest < 0.05) rest = 0;
+  F.stock = rest; F.round++; F.lastMe = Math.min(mine, cap); F.hist.push(rest);
+  fRender();
+  if (F.round >= FN && cap <= 2 && F.stock >= 30) $("pondok").style.display = "";
+  let m = "Round " + F.round + ": you caught " + got[0].toFixed(1) + "  fish, the whole pond lost " + caught.toFixed(1) + "  fish, and the remainder recovered to " + rest.toFixed(1) + ".";
+  if (cap < mine) m += "  The rule caps you at " + cap + ".";
+  if (scale < 1) m += "  You wanted to catch more than there were fish, so everyone shares in proportion.";
+  if (rest === 0) m += "  💀 The pond is dry and won’t recover.";
+  else if (rest < 20) m += "  ⚠️ The stock is very low and recovers slowly.";
+  if (F.round >= FN) m += "  — Over: you caught " + F.me.toFixed(1) + "  fish in all, the computers " + (F.npc / 4).toFixed(1) + "  on average. If everyone held back throughout, it is 30 each.";
+  $("fmsg").textContent = m;
+  return true;
+}
+document.querySelectorAll("#c19_pondguess .chip").forEach(b => (b.onclick = () => {
+  const g = +b.dataset.g;
+  $("pondfb").innerHTML = g === 2 ? "✔ Right. Sustainable output is about 10, and five people catching 2 each is just enough. Try it below and see what happens when even one person catches more."
+    : g === 1 ? "Too cautious: the pond will fill up more and more, though you could have eaten a bit more; 2 each is just right."
+    : "Too many: the pond recovers at most about 10 fish a round, so " + g + "  each means " + g * 5 + "  fish, and the stock is drained more and more. The experiment below will let you see it for yourself.";
+}));
+$("fcatch").oninput = () => ($("fv").textContent = $("fcatch").value);
+$("fcap").oninput = () => { const v = +$("fcap").value; $("fcv").textContent = v >= 10 ? "10 (no cap)" : v; };
+$("fgo").onclick = fStep;
+$("fauto").onclick = () => { while (fStep()); };
+$("freset").onclick = fReset;
+fReset();
+
+const TT = 5, RR = 3, PP = 1, SS = 0;
+const PRESETS = [
+  { n: "Always cooperate", col: "#5bb5dd", f: 1, p: [1, 1, 1, 1] },
+  { n: "Always defect", col: "#e5484d", f: 0, p: [0, 0, 0, 0] },
+  { n: "Tit for tat", col: "#3aa655", f: 1, p: [1, 0, 1, 0] },
+  { n: "Forgiving tit for tat", col: "#ff9f43", f: 1, p: [1, 0.1, 1, 0.1] },
+  { n: "Random", col: "#9a9aa8", f: 0.5, p: [0.5, 0.5, 0.5, 0.5] },
+  { n: "Win-stay, lose-shift", col: "#9b7fe0", f: 1, p: [1, 0, 0, 1] },
+];
+function match(A, B, N, e) {
+  const ne = x => x * (1 - e) + (1 - x) * e;
+  const fa = ne(A.f), fb = ne(B.f);
+  let d = [fa * fb, fa * (1 - fb), (1 - fa) * fb, (1 - fa) * (1 - fb)]; 
+  let sa = 0, sb = 0;
+  for (let t = 0; t < N; t++) {
+    sa += d[0] * RR + d[1] * SS + d[2] * TT + d[3] * PP;
+    sb += d[0] * RR + d[1] * TT + d[2] * SS + d[3] * PP;
+    if (t === N - 1) break;
+    const nd = [0, 0, 0, 0];
+    for (let s = 0; s < 4; s++) {
+      if (!d[s]) continue;
+      const ib = s === 1 ? 2 : s === 2 ? 1 : s;
+      const pa = ne(A.p[s]), pb = ne(B.p[ib]);
+      nd[0] += d[s] * pa * pb; nd[1] += d[s] * pa * (1 - pb); nd[2] += d[s] * (1 - pa) * pb; nd[3] += d[s] * (1 - pa) * (1 - pb);
+    }
+    d = nd;
+  }
+  return [sa / N, sb / N];
+}
+function fieldMatrix(list, N, e) { 
+  const n = list.length, M = [];
+  for (let i = 0; i < n; i++) M.push(new Array(n).fill(0));
+  for (let i = 0; i < n; i++) for (let j = i; j < n; j++) {
+    const r = match(list[i], list[j], N, e);
+    if (i === j) M[i][i] = (r[0] + r[1]) / 2; else { M[i][j] = r[0]; M[j][i] = r[1]; }
+  }
+  return M;
+}
+
+(function () {
+  const order = [];
+  function chips() {
+    $("rkchips").innerHTML = PRESETS.map((s, i) => {
+      const k = order.indexOf(i);
+      return '<button class="chip ' + (k >= 0 ? "on" : "") + '" data-i="' + i + '"><span class="no">' + (k >= 0 ? k + 1 + "." : "○") + "</span>" + s.n + "</button>";
+    }).join("");
+    $("rkchips").querySelectorAll("button").forEach(b => (b.onclick = () => {
+      const i = +b.dataset.i, k = order.indexOf(i);
+      if (k >= 0) order.splice(k, 1); else order.push(i);
+      $("rkout").innerHTML = ""; chips();
+    }));
+    $("rkgo").disabled = order.length !== PRESETS.length;
+  }
+  $("rkgo").onclick = () => {
+    const M = fieldMatrix(PRESETS, 200, 0);
+    const tot = PRESETS.map((s, i) => ({ i, v: M[i].reduce((a, b) => a + b, 0) * 200 }));
+    const sorted = tot.slice().sort((a, b) => b.v - a.v);
+    const rankOf = {}; sorted.forEach((x, k) => (rankOf[x.i] = k));
+    let hit = 0, dev = 0;
+    order.forEach((i, k) => { if (rankOf[i] === k) hit++; dev += Math.abs(rankOf[i] - k); });
+    const mx = sorted[0].v;
+    $("rkout").innerHTML = "<b>True ranking (each strategy plays all 6 strategies for 200 rounds, including itself):</b>" +
+      sorted.map((x, k) => '<div class="sbar"><span class="nm">' + (k + 1) + ". " + PRESETS[x.i].n + '</span><span class="bar" style="width:' + Math.max(2, x.v / mx * 50) + '%;background:' + PRESETS[x.i].col + '"></span><span class="v">' + x.v.toFixed(0) + " (you guessed # " + (order.indexOf(x.i) + 1) + ")</span></div>").join("") +
+      '<div class="msg" style="font-size:1.05rem;font-family:var(--body)">You got ' + hit + "  / 6 places right, with an average error of " + (dev / 6).toFixed(1) + "  places." +
+      (sorted[0].i === 2 ? "Tit for tat leads, but its gap to the “forgiving” version and to win-stay, lose-shift is not large: the scores depend on the list." : "This time the champion is not tit for tat, which shows how sensitive the result is to the list.") +
+      "  Want to know how the ranking changes with only 1 round or with slips? Go drag around the strategy map below.</div>";
+  };
+  $("rkreset").onclick = () => { order.length = 0; $("rkout").innerHTML = ""; chips(); };
+  chips();
+})();
+
+(function () {
+  const X0 = 70, X1 = 670, Y0 = 20, Y1 = 270, WM = 0.95;
+  const Vc = w => RR / (1 - w), Vd = w => TT + w * PP / (1 - w), Va = w => (TT + w * SS) / (1 - w * w);
+  const YM = 40;
+  const X = w => X0 + (X1 - X0) * w / WM, Y = v => Y1 - (Y1 - Y0) * Math.min(v, YM) / YM;
+  const line = (f, col) => { let pts = []; for (let w = 0; w <= WM + 1e-9; w += 0.01) pts.push(X(w) + "," + Y(f(w))); return '<polyline points="' + pts.join(" ") + '" fill="none" stroke="' + col + '" stroke-width="5" stroke-linejoin="round"/>'; };
+  let s = '<rect x="' + X0 + '" y="' + Y0 + '" width="' + (X1 - X0) + '" height="' + (Y1 - Y0) + '" fill="#fffef7" stroke="#2b2b3a" stroke-width="3"/>';
+  [0, 0.2, 0.4, 0.6, 0.8].forEach(w => (s += '<text x="' + X(w) + '" y="298" font-size="17" text-anchor="middle">' + w + "</text>"));
+  [0, 10, 20, 30, 40].forEach(v => (s += '<text x="' + (X0 - 8) + '" y="' + (Y(v) + 6) + '" font-size="17" text-anchor="end">' + v + "</text>"));
+  s += line(Vd, "#e5484d") + line(Va, "#ff9f43") + line(Vc, "#3aa655");
+  s += '<line x1="' + X(2 / 3) + '" y1="' + Y0 + '" x2="' + X(2 / 3) + '" y2="' + Y1 + '" stroke="#2b2b3a" stroke-width="3" stroke-dasharray="6 5"/>';
+  s += '<text x="' + (X(2 / 3) - 10) + '" y="' + (Y0 + 24) + '" font-size="18" text-anchor="end" class="halo">w = 2/3: cooperation catches up</text>';
+  [["Defect forever", "#c0392b"], ["Cooperate throughout", "#1d7a38"], ["Alternate defect/cooperate", "#c06a00"]].forEach((t, k) => {
+    s += '<line x1="' + (X0 + 14) + '" y1="' + (Y0 + 62 + k * 28) + '" x2="' + (X0 + 44) + '" y2="' + (Y0 + 62 + k * 28) + '" stroke="' + t[1] + '" stroke-width="5"/><text x="' + (X0 + 54) + '" y="' + (Y0 + 68 + k * 28) + '" font-size="17" fill="' + t[1] + '">' + t[0] + "</text>";
+  });
+  s += '<text x="' + ((X0 + X1) / 2) + '" y="320" font-size="18" text-anchor="middle">Chance of meeting again, w → (vertical: expected total, cut at 40)</text>';
+  document.getElementById("c19_shadow").innerHTML = s;
+})();
+
+(function () {
+  const G = 21, CELL = 16, OX = 64, OY = 18; 
+  const SZ = CELL * G; // 336
+  let ya = 1, yb = 0; 
+  const settings = () => ({ N: +$("nround").value, e: +$("eps").value / 100, f: +$("first").value });
+  const me = (a, b, f) => ({ n: "You", col: "#ff6fa5", f, p: [a, b, a, b] });
+  const FIELD_N = PRESETS.length;
+  let heat = null, best = null;
+  function total(a, b, st) {
+    const Y = me(a, b, st.f);
+    let t = match(Y, Y, st.N, st.e)[0] * st.N;
+    for (const o of PRESETS) t += match(Y, o, st.N, st.e)[0] * st.N;
+    return t;
+  }
+  function computeHeat() {
+    const st = settings(); heat = []; let mn = 1e9, mx = -1e9; best = [0, 0];
+    for (let i = 0; i < G; i++) { heat.push([]); for (let j = 0; j < G; j++) {
+      const v = total(j / (G - 1), i / (G - 1), st); heat[i].push(v);
+      if (v < mn) mn = v; if (v > mx) { mx = v; best = [j / (G - 1), i / (G - 1)]; }
+    } }
+    heat.mn = mn; heat.mx = mx;
+  }
+  const col = t => { 
+    const c0 = [255, 247, 207], c1 = [58, 150, 85];
+    return "rgb(" + c0.map((v, k) => Math.round(v + (c1[k] - v) * t)).join(",") + ")";
+  };
+  const px = a => OX + a * SZ, py = b => OY + SZ - b * SZ;
+  const cl = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
+  const qx = a => cl(px(a), OX + 22, OX + SZ - 22), qy = b => cl(py(b), OY + 22, OY + SZ - 22);
+  function drawMap() {
+    let s = "";
+    for (let i = 0; i < G; i++) for (let j = 0; j < G; j++) {
+      const t = heat.mx > heat.mn ? (heat[i][j] - heat.mn) / (heat.mx - heat.mn) : 0.5;
+      s += '<rect x="' + (OX + j * CELL) + '" y="' + (OY + SZ - (i + 1) * CELL) + '" width="' + CELL + '" height="' + CELL + '" fill="' + col(t) + '"/>';
+    }
+    s += '<rect x="' + OX + '" y="' + OY + '" width="' + SZ + '" height="' + SZ + '" fill="none" stroke="#2b2b3a" stroke-width="3"/>';
+    
+    const pts = [["Always cooperate", 1, 1, "end", 22], ["Always defect", 0, 0, "start", -10], ["Tit for tat", 1, 0, "end", 22], ["Forgiving", 1, 0.1, "end", -8], ["Random", 0.5, 0.5, "middle", 24]];
+    pts.forEach(p => {
+      const x = px(p[1]), y = py(p[2]);
+      s += '<circle cx="' + x + '" cy="' + y + '" r="5" fill="#2b2b3a"/><text x="' + (p[3] === "end" ? x - 8 : p[3] === "start" ? x + 8 : x) + '" y="' + (y + (p[4] > 0 ? 22 : -8)) + '" font-size="16" text-anchor="' + p[3] + '" class="halo" fill="#2b2b3a">' + p[0] + "</text>";
+    });
+    
+    s += '<text x="' + qx(best[0]) + '" y="' + (qy(best[1]) + 7) + '" font-size="22" text-anchor="middle" fill="#c0392b" class="halo">★</text>';
+    
+    s += '<g class="rough"><circle cx="' + qx(ya) + '" cy="' + qy(yb) + '" r="18" fill="#ff8fab" stroke="#2b2b3a" stroke-width="3.5"/></g><text x="' + qx(ya) + '" y="' + (qy(yb) + 6) + '" font-size="16" text-anchor="middle" fill="#2b2b3a" style="pointer-events:none">You</text>';
+    
+    s += '<text x="' + (OX + SZ / 2) + '" y="' + (OY + SZ + 40) + '" font-size="16" text-anchor="middle">a: chance I cooperate if they cooperated →</text>';
+    s += '<text transform="translate(18 ' + (OY + SZ / 2) + ') rotate(-90)" font-size="16" text-anchor="middle">b: chance I cooperate if they defected →</text>';
+    [0, 0.5, 1].forEach(v => { s += '<text x="' + px(v) + '" y="' + (OY + SZ + 20) + '" font-size="16" text-anchor="middle">' + v + "</text>"; s += '<text x="' + (OX - 8) + '" y="' + (py(v) + (v === 1 ? 14 : v === 0 ? -2 : 5)) + '" font-size="16" text-anchor="end">' + v + "</text>"; });
+    $("map").innerHTML = s;
+  }
+  function describe(a, b) {
+    if (a > 0.9 && b < 0.05) return "≈ tit for tat";
+    if (a > 0.9 && b >= 0.05 && b <= 0.2) return "≈ forgiving tit for tat";
+    if (a > 0.9 && b > 0.9) return "≈ always cooperate";
+    if (a < 0.1 && b < 0.1) return "≈ always defect";
+    if (Math.abs(a - 0.5) < 0.1 && Math.abs(b - 0.5) < 0.1) return "≈ random";
+    if (a >= 0.5 && b < 0.5) return "Nice / retaliating type";
+    if (a < 0.5 && b >= 0.5) return "Odd: when the other is nice I defect";
+    return "";
+  }
+  function board() {
+    const st = settings(), list = PRESETS.concat([me(ya, yb, st.f)]);
+    const M = fieldMatrix(list, st.N, st.e);
+    const rows = list.map((s, i) => ({ s, tot: M[i].reduce((x, y) => x + y, 0) * st.N, me: i === list.length - 1 }));
+    rows.sort((x, y) => y.tot - x.tot);
+    const mx = rows[0].tot;
+    $("tout").innerHTML = "<b>Round-robin leaderboard</b> (7 players playing each other, " + st.N + "  rounds per match)" +
+      rows.map((r, k) => '<div class="sbar' + (r.me ? " me" : "") + '"><span class="nm">' + (k + 1) + ". " + (r.me ? "⭐ You" : r.s.n) + '</span><span class="bar" style="width:' + Math.max(2, r.tot / mx * 45) + '%;background:' + r.s.col + '"></span><span class="v">' + r.tot.toFixed(0) + "</span></div>").join("");
+    const rank = rows.findIndex(r => r.me) + 1;
+    const myT = rows.find(r => r.me).tot;
+    const gap = heat.mx - myT;
+    let msg = "You rank # " + rank + " .";
+    if (st.N === 1) msg += "  With only 1 round of meeting: this is the ordinary prisoner’s dilemma, and going to the lower left (defecting) scores highest.";
+    else if (gap < 0.5) msg += "  You are already near the “summit.”";
+    else msg += "  The summit ★ is at (a=" + best[0].toFixed(2) + ", b=" + best[1].toFixed(2) + "), " + gap.toFixed(0) + "  points higher than you.";
+    if (st.e >= 0.03 && ya > 0.9 && yb < 0.05) msg += "  Slips make pure tit for tat fall into mutual retaliation, and being a bit more forgiving (b upward) scores higher.";
+    $("tmsg").textContent = msg;
+    $("av").textContent = ya.toFixed(2); $("bv").textContent = yb.toFixed(2); $("kind").textContent = describe(ya, yb);
+  }
+  let seenOne = false, seenRight = false;
+  function refresh(recomp) {
+    if (recomp) {
+      computeHeat();
+      const st = settings();
+      if (st.N === 1 && best[0] < 0.1 && best[1] < 0.1) seenOne = true;
+      if (seenOne && st.N >= 5 && best[0] > 0.9 && best[1] < 0.35) seenRight = true;
+      if (seenOne && seenRight) $("mapok").style.display = "";
+    }
+    drawMap(); board();
+  }
+  function setFromEvent(ev) {
+    const svg = $("map"), r = svg.getBoundingClientRect(), k = 420 / r.width;
+    const x = (ev.clientX - r.left) * k, y = (ev.clientY - r.top) * k;
+    ya = Math.max(0, Math.min(1, Math.round((x - OX) / SZ * 20) / 20));
+    yb = Math.max(0, Math.min(1, Math.round((OY + SZ - y) / SZ * 20) / 20));
+    refresh(false);
+  }
+  let drag = false;
+  $("map").addEventListener("pointerdown", ev => { drag = true; $("map").setPointerCapture(ev.pointerId); setFromEvent(ev); });
+  $("map").addEventListener("pointermove", ev => { if (drag) setFromEvent(ev); });
+  const up = () => (drag = false);
+  $("map").addEventListener("pointerup", up); $("map").addEventListener("pointercancel", up);
+  $("nround").oninput = () => { $("nv").textContent = $("nround").value; refresh(true); };
+  $("eps").oninput = () => { $("ev").textContent = $("eps").value + "%"; refresh(true); };
+  $("first").onchange = () => refresh(true);
+  $("best").onclick = () => { ya = best[0]; yb = best[1]; refresh(false); };
+
+  
+  function initPop(kind, n) {
+    if (kind === "naive") return new Array(n).fill(0).map((_, i) => (i === 0 ? 0.5 : 0.5 / (n - 1)));
+    if (kind === "dhi") return new Array(n).fill(0).map((_, i) => (i === 1 ? 0.5 : 0.5 / (n - 1)));
+    return new Array(n).fill(1 / n);
+  }
+  function evolve(M, x0, Gn) {
+    let x = x0.slice(); const h = [x.slice()];
+    for (let g = 0; g < Gn; g++) {
+      const f = M.map(row => row.reduce((s, v, j) => s + v * x[j], 0));
+      const avg = f.reduce((s, v, i) => s + v * x[i], 0);
+      x = x.map((v, i) => v * f[i] / avg);
+      h.push(x.slice());
+    }
+    return h;
+  }
+  function drawEvo(h, list) {
+    const cv = $("ecv"); cv.style.display = "block";
+    const dpr = window.devicePixelRatio || 1, W = 760, H = 300;
+    cv.width = W * dpr; cv.height = H * dpr;
+    const g = cv.getContext("2d"); g.setTransform(dpr, 0, 0, dpr, 0, 0);
+    g.clearRect(0, 0, W, H);
+    const L = 48, Rr = 12, Tp = 10, B = 38, pw = W - L - Rr, ph = H - Tp - B, Gn = h.length - 1;
+    const X = k => L + pw * k / Gn, Y = v => Tp + ph * (1 - v);
+    let base = new Array(Gn + 1).fill(0);
+    list.forEach((s, i) => {
+      const top = h.map((row, k) => base[k] + row[i]);
+      g.beginPath();
+      for (let k = 0; k <= Gn; k++) g.lineTo(X(k), Y(top[k]));
+      for (let k = Gn; k >= 0; k--) g.lineTo(X(k), Y(base[k]));
+      g.closePath(); g.fillStyle = s.col; g.fill();
+      g.strokeStyle = "#2b2b3a"; g.lineWidth = 1.5; g.stroke();
+      base = top;
+    });
+    g.strokeStyle = "#2b2b3a"; g.lineWidth = 3; g.strokeRect(L, Tp, pw, ph);
+    g.fillStyle = "#2b2b3a"; g.font = "16px 'LXGW WenKai','KaiTi',sans-serif"; g.textAlign = "center";
+    [0, 20, 40, 60].forEach(k => { if (k <= Gn) g.fillText(k, X(k), H - 16); });
+    g.fillText("Generation →", L + pw / 2 + 60, H - 16);
+    g.textAlign = "right";
+    [0, 0.5, 1].forEach(v => g.fillText(Math.round(v * 100) + "%", L - 6, Y(v) + 5));
+  }
+  $("runE").onclick = () => {
+    const st = settings(), list = PRESETS.concat([me(ya, yb, st.f)]);
+    const M = fieldMatrix(list, st.N, st.e);
+    const h = evolve(M, initPop($("init").value, list.length), 60);
+    drawEvo(h, list);
+    const fin = h[h.length - 1];
+    $("elegend").innerHTML = "<b>Share of each strategy at generation 60:</b><br>" + list.map((s, i) => '<span class="lg"><i style="background:' + s.col + '"></i>' + (i === list.length - 1 ? "⭐ You" : s.n) + " " + (fin[i] * 100).toFixed(1) + "%</span>").join("");
+    const d = h.map(r => r[1]);
+    let pk = 0; d.forEach((v, k) => { if (v > d[pk]) pk = k; });
+    let msg;
+    if (pk > 0 && pk < 60 && d[pk] > d[0] * 1.15 && fin[1] < d[pk] * 0.5) msg = "“Always defect” first rises then falls: peaking at generation " + pk + "  at " + (d[pk] * 100).toFixed(1) + "%, finally " + (fin[1] * 100).toFixed(1) + "%: it first exploits the pushovers and is later pushed down by retaliating strategies.";
+    else if (fin[1] > d[0]) msg = "“Always defect” goes from " + (d[0] * 100).toFixed(1) + "% up to " + (fin[1] * 100).toFixed(1) + "%: under this setting defectors have the advantage (too few rounds, too many slips, or too many defectors at the start).";
+    else msg = "“Always defect”: " + (d[0] * 100).toFixed(1) + "% → " + (fin[1] * 100).toFixed(1) + "%.";
+    msg += "  Your strategy ends with " + (fin[list.length - 1] * 100).toFixed(1) + "%. Try another initial population or number of rounds and the result will change.";
+    $("emsg").textContent = msg;
+  };
+  refresh(true);
+})();
+
+GD.mountQuiz(document.getElementById("quiz"), [
+  { q: "What does “Nash equilibrium” mean?", opts: ["The cell with the highest total payoff for all participants", "A combination of strategies in which nobody can get a higher payoff by changing strategy alone", "A cell where payoffs are equal", "A cell with a dominant strategy"], a: 1,
+    why: "A Nash equilibrium only describes “stability”: nobody wants to move alone, and it doesn’t guarantee a good result. The equilibrium of the prisoner’s dilemma is bad for both." },
+  { q: "In a one-shot prisoner’s dilemma, why do two rational people end up both defecting?", opts: ["Because they are bad by nature", "Because whatever the other chooses, defecting pays more (a dominant strategy), so each chooses to defect and lands in a cell worse than mutual cooperation", "Because they can’t communicate so they can only choose at random", "Because cooperating pays more than defecting and they just didn’t notice"], a: 1,
+    why: "When the other cooperates, defecting gets 5 > 3; when the other defects, defecting gets 1 > 0. Defecting dominates, so both choose it, and the result (1,1) is worse than (3,3). The root is the payoff structure, not human nature." },
+  { q: "(Why it was invented) After the Nash equilibrium was proposed, why did Flood and Dresher still have real people play a non-zero-sum game 100 times in a row?", opts: ["To practice writing a payoff matrix", "Because theory said only that “an equilibrium is a stable point” and not whether living people really get there, which had to be tested by experiment", "Because they wanted to prove zero-sum games have no equilibrium", "Because it was already known that humans would surely cooperate"], a: 1,
+    why: "The equilibrium concept answers “if everyone best-responds, where does it settle,” but whether real people get there is another question. RAND’s experiment was testing exactly this; Tucker’s “prisoner story” was added later in order to explain it." },
+  { q: "What is the key difference between the stag hunt and the prisoner’s dilemma?", opts: ["The stag hunt has no equilibrium", "In the stag hunt, both cooperating is itself an equilibrium, and the difficulty is trust; in the prisoner’s dilemma, cooperating is not an equilibrium", "The stag hunt is zero-sum", "There is no difference"], a: 1,
+    why: "The stag hunt has two equilibria: both hunt stag (best) and both catch hare (safe). The trouble is fearing the other will catch a hare and leave you with nothing; in the prisoner’s dilemma, even if the other cooperates, you earn more by defecting." },
+  { q: "(Why it was invented) Why did Axelrod hold a computer tournament instead of deriving the “optimal strategy of the repeated prisoner’s dilemma”?", opts: ["Because computers are smarter than mathematicians", "Because the opponent’s possible strategies are too many to derive in one go a strategy that is “best against everyone”; having experts submit programs and play for real shows what does well in a real population of strategies", "Because mathematicians refuse to study the prisoner’s dilemma", "Because the tournament’s prize money was high"], a: 1,
+    why: "The best strategy depends on who the opponents are. Collecting a variety of strategies and letting them compete amounts to answering a hard-to-solve question by experiment. This is also why the result depends on “the list.”" },
+  { q: "Tit for tat never scored higher than its opponent in any one-on-one match, yet won the tournament. The most reasonable explanation is:", opts: ["The scoring rules were wrong", "It kept up cooperation with many opponents, and its total came from steady mutual benefit, not from overpowering any one opponent", "The opponents threw the games on purpose", "It won by randomness"], a: 1,
+    why: "A tournament compares total score, not the outcome of any single match. Tit for tat is nice, retaliatory, forgiving and clear, so it gets a steady R with cooperative opponents without being exploited long by defectors." },
+  { q: "You design a ranked mode where teammates are anonymous and you meet only once per game, and players often blame others or go AFK. Which change corresponds most directly to “cooperation needs a long enough shadow of the future”?", opts: ["Double the reward values", "Add friend lists/fixed squads and honor and rating systems, making players more likely to meet again and be remembered", "Remove the chat feature", "Halve the length of each game"], a: 1,
+    why: "Anonymous one-off meetings leave betrayal without consequences. Friends, fixed squads and reputation all increase the chance of “meeting again” and “being seen by others,” so betrayal pays a future cost." },
+]);
+</script>
+</body>
+</html>

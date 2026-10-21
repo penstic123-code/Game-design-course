@@ -1,0 +1,651 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Chapter 13: Accessibility</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+  main p,main li,main .src{overflow-wrap:anywhere}
+  .row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:6px 0}
+  #c13_scene{width:100%;display:block;border:3px solid var(--ink);border-radius:10px;background:#222}
+  .c13_chips{display:flex;flex-wrap:wrap;gap:4px;margin:6px 0}
+  .c13_chips .chip{margin:2px}
+  .c13_opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:2px 12px;margin:6px 0}
+  .c13_opts label{font-size:1rem;cursor:pointer}
+  .c13_diag{list-style:none;padding:0;margin:8px 0}
+  .c13_diag li{border:2.5px solid var(--ink);border-radius:10px;padding:6px 10px;margin:6px 0;background:#fff;font-size:.98rem}
+  .c13_diag li.ok{background:#eaf9e4}.c13_diag li.warn{background:#fff7cf}.c13_diag li.lost{background:#ffe9ef}
+  @keyframes c13p{0%,100%{opacity:1}50%{opacity:.15}}
+  .c13_pulse{animation:c13p 1s infinite}
+  .c13_kbd{margin:8px 0}
+  .c13_krow{display:flex;gap:3px;margin:3px 0}
+  .c13_key{flex:1 1 0;min-width:0;height:44px;border:2.5px solid var(--ink);border-radius:8px;background:#fff;font:inherit;font-size:.85rem;padding:0;cursor:pointer;position:relative;line-height:1.1}
+  .c13_key.space{flex:6}.c13_key.wide{flex:1.6}
+  .c13_key small{display:block;font-size:.72rem;color:#b3261e;font-weight:700;min-height:1em}
+  .c13_key.L{background:#e8f6fc}.c13_key.R{background:#fff7cf}.c13_key.B{background:#eaf9e4}
+  .c13_key.dim{opacity:.35}
+  .c13_key.conf{outline:3px solid #e5484d}
+  .c13_acts{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:6px;margin:8px 0}
+  .c13_act{font:inherit;font-size:.95rem;border:2.5px solid var(--ink);border-radius:10px;background:#fff;padding:4px 8px;cursor:pointer;text-align:left}
+  .c13_act.sel{background:var(--yellow)}
+  .c13_act.bad{border-color:#e5484d;background:#ffe9ef}
+  .c13_cswatch{border:3px solid var(--ink);border-radius:10px;padding:14px;margin:8px 0}
+  .c13_guess label{display:block;border:2.5px solid var(--ink);border-radius:10px;padding:6px 10px;margin:6px 0;background:#fff;cursor:pointer}
+  .c13_guess label.hit{background:#eaf9e4}.c13_guess label.miss{background:#fff7cf}.c13_guess label.no{background:#f4f4f4}
+  .c13_guess label small{display:block;color:#555}
+  .c13_cin{display:flex;flex-wrap:wrap;gap:14px;align-items:center;margin:6px 0}
+  .c13_cin input[type=color]{width:56px;height:40px;border:3px solid var(--ink);border-radius:8px;padding:0;background:#fff}
+</style>
+</head>
+<body data-ch="13">
+<main class="wrap">
+  <div class="hero">
+    <div class="txt">
+      <span class="badge">Chapter 13</span>
+      <h1>Accessibility</h1>
+      <p class="sub">Not “adding an option for a few people,” but letting more people into your game.</p>
+    </div>
+    <svg viewBox="0 0 190 150" class="rough" aria-hidden="true">
+      <g stroke="#2b2b3a" stroke-width="5" stroke-linejoin="round" stroke-linecap="round">
+        <path d="M20 115 H80 L120 85 H170" fill="none"/>
+        <circle cx="55" cy="55" r="22" fill="#ffe58a"/>
+        <path d="M45 55 h20 M55 45 v20" fill="none"/>
+        <rect x="110" y="35" width="50" height="34" rx="6" fill="#8fd3f4"/>
+        <path d="M118 50 h34 M118 58 h22" fill="none"/>
+      </g>
+    </svg>
+  </div>
+
+  <div class="goals">
+    <h3>Learning goals</h3>
+    <ul>
+      <li>Tell <b>permanent, temporary and situational</b> barriers apart, and explain why “accessibility” isn’t only about a few people.</li>
+      <li>Explain the <b>curb-cut effect</b> and <b>multi-channel redundancy</b>, and check an interface with WCAG’s contrast and flash thresholds.</li>
+      <li>Hunt down by hand the information in a game interface that is conveyed “by color, sound or long presses alone,” and give a fix.</li>
+    </ul>
+    <span class="time">about 40 min</span>
+  </div>
+
+  <div class="sec"><span class="n">1</span><h2><span class="tag what">What it is</span>A barrier is not “a kind of person” but “a kind of mismatch”</h2></div>
+  <div class="withimg">
+    <span data-illus="c13_stairs"></span>
+    <div>
+  <p>First a little experiment: play a game that needs two hands with just one, say with a coffee in your left and the right hand on the controls. In a few minutes you’ll find that many games assume you have “two hands, fully nimble fingers, good eyesight, good hearing and quick reactions.”</p>
+  <p><span class="term" tabindex="0" data-def="Making a product, interface or environment usable by as many people as possible, whatever their body, senses, cognition or situation. In games, it means letting more players get in, understand and keep playing.">Accessibility</span> (often abbreviated a11y) asks: <b>who has your design shut the door on?</b> A “barrier” here is not a label on a person but <b>a mismatch between the person and the design</b>. The same person at different moments meets different mismatches.</p>
+  <p>This view has a name, the <b>social model</b> of disability: the British disabled people’s organization UPIAS argued it in its 1976 pamphlet <i>Fundamental Principles of Disability</i>, and Mike Oliver’s 1983 book <i>Social Work with Disabled People</i> brought it to more professionals. It moves the question from “what’s wrong with this person” to “who has this design shut out.”</p>
+    </div>
+  </div>
+  <p>The usual split is into three kinds, and this “permanent, temporary, situational” framework is often attributed to Microsoft’s Inclusive Design toolkit (led by Kat Holmes):</p>
+  <div class="grid3">
+    <div class="card y mini"><div class="ico">♾️</div><h3>Permanent</h3><p>Long-term: blindness or low vision, deafness or hearing loss, having only one hand or arm, dyslexia.</p></div>
+    <div class="card b mini"><div class="ico">⏳</div><h3>Temporary</h3><p>It will get better: an arm in a cast, dilated pupils after an eye exam, an ear infection, scattered attention after a sleepless night.</p></div>
+    <div class="card g mini"><div class="ico">📍</div><h3>Situational</h3><p>Caused by the environment: can’t see the screen in sunlight, can’t play sound on the subway, holding a child so only one hand is free, being interrupted all the time.</p></div>
+  </div>
+  <p>Combined with “which ability is limited,” barriers are often sorted into four groups: <b>vision, hearing, motor (including fine control and endurance), and cognition</b> (including reading, memory, attention and processing speed). The figure below puts the two dimensions together:</p>
+  <div class="card">
+    <svg viewBox="0 0 700 300" width="100%" role="img" aria-label="Matrix: rows are permanent, temporary and situational barriers, columns are vision, hearing, motor and cognitive abilities, with examples in the cells. The same “one hand” may be permanent, temporary or situational.">
+      <g class="rough" stroke="#2b2b3a" stroke-width="3.5" fill="none" stroke-linejoin="round" stroke-linecap="round">
+        <rect x="90" y="10" width="150" height="44" fill="#ffe58a"/><rect x="240" y="10" width="150" height="44" fill="#ffe58a"/>
+        <rect x="390" y="10" width="150" height="44" fill="#ffe58a"/><rect x="540" y="10" width="150" height="44" fill="#ffe58a"/>
+        <rect x="10" y="54" width="80" height="76" fill="#fff7cf"/><rect x="10" y="130" width="80" height="76" fill="#e8f6fc"/><rect x="10" y="206" width="80" height="76" fill="#eaf9e4"/>
+        <rect x="90" y="54" width="150" height="76" fill="#fff"/><rect x="240" y="54" width="150" height="76" fill="#fff"/><rect x="390" y="54" width="150" height="76" fill="#fff"/><rect x="540" y="54" width="150" height="76" fill="#fff"/>
+        <rect x="90" y="130" width="150" height="76" fill="#fff"/><rect x="240" y="130" width="150" height="76" fill="#fff"/><rect x="390" y="130" width="150" height="76" fill="#fff"/><rect x="540" y="130" width="150" height="76" fill="#fff"/>
+        <rect x="90" y="206" width="150" height="76" fill="#fff"/><rect x="240" y="206" width="150" height="76" fill="#fff"/><rect x="390" y="206" width="150" height="76" fill="#fff"/><rect x="540" y="206" width="150" height="76" fill="#fff"/>
+      </g>
+      <g font-size="16" text-anchor="middle" fill="#2b2b3a">
+        <text x="165" y="38" font-weight="700">Vision</text><text x="315" y="38" font-weight="700">Hearing</text><text x="465" y="38" font-weight="700">Motor</text><text x="615" y="38" font-weight="700">Cognition</text>
+        <text x="50" y="98" font-weight="700">Permanent</text><text x="50" y="174" font-weight="700">Temporary</text><text x="50" y="250" font-weight="700">Situational</text>
+        <text x="165" y="96">low vision / blind</text><text x="315" y="96">deaf / hard of hearing</text><text x="465" y="96">one hand / amputee</text><text x="615" y="96">dyslexia</text>
+        <text x="165" y="172">after eye surgery</text><text x="315" y="172">ear infection / earplugs</text><text x="465" y="172">broken arm</text><text x="615" y="172">concussion recovery</text>
+        <text x="165" y="248">screen in glare</text><text x="315" y="248">noisy subway</text><text x="465" y="248">holding a child</text><text x="615" y="248">constant interruptions</text>
+      </g>
+    </svg>
+  </div>
+  <p class="small">Read down a column: <b>the fixes needed are often the same</b>. Captions help deaf players and also players muted on the subway; a button layout that works one-handed helps someone with one hand, someone with a broken arm, and someone holding a child.</p>
+
+  <div class="eg" data-ic="♾️"><span data-illus="c13_onehand"></span><div class="egt"><b>Permanent:</b> a player was born with only one hand. For him, “hold the direction key, jump, dash and attack at once” is not difficulty but a physical wall: however much he wants to play, the number of fingers is simply there.</div></div>
+  <div class="eg" data-ic="⏳"><span data-illus="c13_cast"></span><div class="egt"><b>Temporary:</b> your right hand is in a cast for three weeks. You still want to play, only to find that the game allows nothing but WASD plus a mouse. Three weeks later you’re better, but that wall has been there for others all along.</div></div>
+  <div class="eg" data-ic="📍"><span data-illus="c13_night"></span><div class="egt"><b>Situational:</b> you’re playing in a bedroom late at night, the child has just fallen asleep, and you don’t dare turn the sound on. If the key cues depend entirely on sound, you have become “temporarily deaf.” You have no impairment at all; the environment made one for you.</div></div>
+  <div class="eg bad" data-ic="🎨"><span data-illus="c13_cbmode"></span><div class="egt"><b>Counterexample (a near-miss):</b> “We have a colorblind mode,” but all the mode does is swap red and green for more vivid red and green. It looks done, yet it hasn’t solved the root problem of “telling things apart by color alone,” as you can test yourself in the barrier simulator below.</div></div>
+
+  <div class="sec"><span class="n">2</span><h2><span class="tag what">What it is</span>Common practice in games, and “multi-channel redundancy”</h2></div>
+  <p>Games are tougher than ordinary software: they demand <b>perception, judgment, operation and time pressure</b> all at once. So the game world commonly uses a set of options to “loosen” each of these steps. Sorted into the four groups:</p>
+  <div class="grid2">
+    <div class="card y"><h3>👁 Vision</h3><ul>
+      <li>Colorblind mode, or better: <b>shapes, patterns and text</b> that also tell things apart</li>
+      <li>Text scaling, bold, adjustable caption size and background</li>
+      <li>High-contrast mode, adjustable HUD opacity and size</li>
+      <li>Screen reading / voice navigation, audio cues (for blind and low-vision players)</li></ul></div>
+    <div class="card b"><h3>👂 Hearing</h3><ul>
+      <li>Captions, with <b>speaker labels</b> and descriptions of key sounds (such as “[footsteps · back left]”)</li>
+      <li>Separate volume for each channel (dialogue / music / effects)</li>
+      <li>Visual cues for sound (direction indicators, hit edges)</li>
+      <li>Controller vibration as a haptic substitute</li></ul></div>
+    <div class="card g"><h3>✋ Motor</h3><ul>
+      <li><b>Remappable buttons</b>, with support for one-handed layouts</li>
+      <li>Hold changed to toggle, button mashing changed to hold</li>
+      <li>Auto-aim, aim assist, simplified quick-time events</li>
+      <li>Pause and save anytime, with timing relaxed or turned off</li></ul></div>
+    <div class="card p"><h3>🧠 Cognitive</h3><ul>
+      <li>Difficulty and assist options adjustable <b>at any time</b> (without penalizing the choice)</li>
+      <li>Quest / goal hints, tutorials you can revisit</li>
+      <li>Reduced motion, flashing and screen shake; camera sway that can be switched off</li>
+      <li>Clear, consistent icons and terms</li></ul></div>
+  </div>
+  <p>Behind these options is a shared principle: <span class="term" tabindex="0" data-def="One important piece of information is conveyed at the same time through two or more senses or forms of expression (for example color + shape + text, sound + picture + vibration), so that if any one is missing the information still gets through.">multi-channel redundancy</span>: important information shouldn’t travel by only one road.</p>
+  <div class="card">
+    <svg viewBox="0 0 700 270" width="100%" role="img" aria-label="Flowchart: the event “an enemy approaches from behind-left” goes out through three channels at once, an edge arrow on screen, stereo footsteps and vibration on the controller’s left side, so different players can receive at least one of them.">
+      <g class="rough" stroke="#2b2b3a" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="10" y="95" width="150" height="70" rx="12" fill="#ffe9ef"/>
+        <rect x="260" y="15" width="200" height="60" rx="12" fill="#e8f6fc"/>
+        <rect x="260" y="105" width="200" height="60" rx="12" fill="#e8f6fc"/>
+        <rect x="260" y="195" width="200" height="60" rx="12" fill="#e8f6fc"/>
+        <rect x="560" y="95" width="130" height="70" rx="12" fill="#eaf9e4"/>
+        <path d="M160 120 L258 50"/><path d="M160 130 H258"/><path d="M160 142 L258 222"/>
+        <path d="M250 42 L260 49 L248 58"/><path d="M248 122 L260 130 L248 138"/><path d="M248 214 L260 222 L247 230"/>
+        <path d="M460 45 L558 115"/><path d="M460 135 H558"/><path d="M460 225 L558 150"/>
+        <path d="M548 106 L558 115 L545 120"/><path d="M548 126 L558 135 L548 144"/><path d="M546 142 L558 149 L550 160"/>
+      </g>
+      <g font-size="17" text-anchor="middle" fill="#2b2b3a">
+        <text x="85" y="125">Event:</text><text x="85" y="148">enemy behind-left</text>
+        <text x="360" y="42">Picture: arrow at left edge</text><text x="360" y="62" font-size="16">(for those who can’t hear)</text>
+        <text x="360" y="132">Sound: left-channel footsteps</text><text x="360" y="152" font-size="16">(for those who can’t see well)</text>
+        <text x="360" y="222">Touch: left-side vibration</text><text x="360" y="242" font-size="16">(works for all)</text>
+        <text x="625" y="125">Every player</text><text x="625" y="148">gets at least one</text>
+      </g>
+    </svg>
+  </div>
+  <p class="small">Note that “redundancy” is not “repeating yourself.” Its cost is usually small (drawing one more arrow), but in return, when any one channel fails because of a barrier, the environment or the device, the game can still be played.</p>
+  <div class="eg" data-ic="🎮"><span data-illus="c13_redundant"></span><div class="egt"><b>In games:</b> an enemy approaches from behind-left; an arrow appears at the left edge of the screen, left-channel footsteps play in the headphones, and the left side of the controller vibrates lightly. Those who can’t hear look at the arrow, those who can’t see well listen, and those for whom neither is convenient still have the vibration.</div></div>
+  <div class="eg" data-ic="🚦"><span data-illus="c13_signal"></span><div class="egt"><b>In daily life:</b> a pedestrian crossing signal makes a beeping sound as the green walking figure lights up. People who can’t see cross by sound, people who can’t hear look at the light, and someone wearing headphones doesn’t miss it either.</div></div>
+  <div class="eg bad" data-ic="🩸"><span data-illus="c13_hponly"></span><div class="egt"><b>Counterexample:</b> low health is flagged only by “red flashing at the screen edge.” Players with different color vision may not tell it apart, and those who turned on “reduce motion” never see the flashing; once this single channel breaks, the warning disappears entirely.</div></div>
+
+  <div class="sec"><span class="n">3</span><h2><span class="tag origin">How it was invented</span>How these things came to be “invented”</h2></div>
+  <div class="story">
+    <h3>Story one: a curb that blocked a whole group of people</h3>
+    <p>Imagine you use a wheelchair and want to go from home to the corner shop. The road is flat until the intersection, where between sidewalk and road there is a <b>curb</b> a dozen centimeters high. For people on foot it barely exists; for a wheelchair user it is a wall. You can only go a long way around, or ask someone to lift you.</p>
+    <p>Don’t read on yet. If you were the city’s designer and could use only the cheapest fix, what would you do? Here is a “guess first, reveal after”: <b>after a gentle slope (a curb ramp) is built, who do you think benefits?</b></p>
+    <div class="c13_guess" id="c13_guess">
+      <label><input type="checkbox" value="wc"> Wheelchair users</label>
+      <label><input type="checkbox" value="st"> Parents pushing strollers</label>
+      <label><input type="checkbox" value="lg"> Travelers dragging suitcases</label>
+      <label><input type="checkbox" value="cart"> People pushing hand trucks on deliveries</label>
+      <label><input type="checkbox" value="skate"> People cycling or skateboarding</label>
+      <label><input type="checkbox" value="old"> Older people with mobility trouble, using crutches</label>
+      <label><input type="checkbox" value="blind"> Visually impaired people using white canes</label>
+      <label><input type="checkbox" value="idle"> Passersby standing at the roadside waiting</label>
+    </div>
+    <div class="row"><button class="btn" id="c13_reveal">Reveal</button><button class="btn alt" id="c13_greset">Guess again</button></div>
+    <div class="msg" id="c13_gmsg">Tick your predictions first, then press “Reveal.”</div>
+    <div class="sticky">Try it: tick who you think benefits, then press “Reveal,” count how many kinds you missed, and think about why you missed them.</div>
+
+    <h4>What happened in history</h4>
+    <div class="timeline">
+      <div class="ev hasimg"><span data-illus="c13_tl_kala"></span><div><b class="yr">After WWII</b> In Kalamazoo, Michigan, a veteran persuaded the city government to cut ramps into the sidewalks at four downtown corners. This is an early attempt often mentioned, but it did not spread into a nationwide practice.</div></div>
+      <div class="ev hasimg"><span data-illus="c13_tl_ed"></span><div><b class="yr">1960s</b> Ed Roberts, a polio survivor who lived by means of an iron lung. In 1962 the University of California, Berkeley at first refused him, and later he enrolled and lived in a room in the campus hospital. With other disabled students he formed the “Rolling Quads” and began to fight for disabled people’s civil rights.</div></div>
+      <div class="ev hasimg"><span data-illus="c13_tl_berk"></span><div><b class="yr">1971</b> On September 28, the Berkeley City Council unanimously passes a policy to build curb ramps at once at 15 designated corners. This is seen as one of the earlier curb-ramp projects at scale.</div></div>
+      <div class="ev hasimg"><span data-illus="c13_tl_ada"></span><div><b class="yr">1977–1990</b> Disabled people protest and occupy federal buildings, demanding enforcement of protections; in 1990 the Americans with Disabilities Act (ADA) is signed, requiring accessibility in public places, transportation and employment.</div></div>
+      <div class="ev hasimg"><span data-illus="c13_tl_blackwell"></span><div><b class="yr">2017</b> Angela Glover Blackwell publishes “The Curb-Cut Effect” in the <i>Stanford Social Innovation Review</i>, spreading the observation that “design done for those at the margins ends up benefiting everyone.”</div></div>
+    </div>
+    <p>The key insight: <b>the barrier is in the environment, not in the person; changing the environment is much cheaper than making everyone “overcome” it themselves, and it benefits more people.</b> This is also the core of “universal design.”</p>
+    <p class="src">Sources: the 99% Invisible episode “Curb Cuts” (99percentinvisible.org/episode/curb-cuts/, the Kalamazoo and Berkeley timelines); Blackwell (2017), <i>Stanford Social Innovation Review</i>. Sources differ on “where the earliest curb ramp was,” and a conservative wording is used above.</p>
+  </div>
+
+  <div class="story">
+    <h3>Story two: why captions have to be “switchable”</h3>
+    <p>Deaf and hard-of-hearing viewers watching television have only the picture, without what is heard. The most direct fix was to <b>burn</b> captions into the picture, called open captions. But then every viewer sees them, and commercial broadcasters worried that people who didn’t need them would be annoyed and drive viewers away. So the question became: <b>can they be shown only to those who need them?</b></p>
+    <div class="timeline">
+      <div class="ev hasimg"><span data-illus="c13_tl_french"></span><div><b class="yr">1972</b> The US public broadcaster PBS begins regularly airing <i>The French Chef</i> with open captions.</div></div>
+      <div class="ev hasimg"><span data-illus="c13_tl_nci"></span><div><b class="yr">1979</b> The National Captioning Institute is founded in the US, one of its goals being to win the cooperation of the commercial networks.</div></div>
+      <div class="ev hasimg"><span data-illus="c13_tl_cc"></span><div><b class="yr">1980-03-16</b> The first regularly scheduled programs with <b>closed captions</b> air in the US: the caption signal is hidden inside the TV signal and shown only with a decoder: those who want it turn it on, those who don’t turn it off.</div></div>
+      <div class="ev hasimg"><span data-illus="c13_tl_decoder"></span><div><b class="yr">The 1990 Television Decoder Circuitry Act</b> requires analog television sets of 13 inches and larger to have built-in decoding, effective July 1, 1993. The decoder changed from “a device you buy separately” to “in every television.”</div></div>
+    </div>
+    <p>Later captions came to be used heavily by people who <b>aren’t hard of hearing</b>: in noisy bars, quiet libraries, when learning a foreign language, late at night when you don’t want to wake the family. Captions in games are the same story: <b>“switchable”</b> lets those who need them use them without disturbing everyone else.</p>
+    <p class="src">Sources: Wikipedia’s entry “Closed captioning,” which organizes the dates above; the entry words the date of passage of the act and the year in its name slightly differently, so only its requirements (13 inches and larger, July 1, 1993) are taken here.</p>
+  </div>
+
+  <div class="story">
+    <h3>Story three: how the games world began to take it seriously</h3>
+    <div class="timeline">
+      <div class="ev hasimg"><span data-illus="c13_tl_able"></span><div><b class="yr">2004</b> Mark Barlet founds AbleGamers, because a good friend of his, owing to multiple sclerosis, gradually couldn’t operate a mouse but still wanted to play games. The nonprofit later committed itself to assessing player needs and providing equipment and consulting.</div></div>
+      <div class="ev hasimg"><span data-illus="c13_tl_gag"></span><div><b class="yr">2012</b> The <i>Game Accessibility Guidelines</i> are published (reported by Game Informer in September 2012). Written jointly by a group of studios, experts and scholars, they sort recommendations into basic, intermediate and advanced tiers by <b>reach, impact and cost to implement</b>, so developers know where to start.</div></div>
+      <div class="ev hasimg"><span data-illus="c13_tl_xac"></span><div><b class="yr">2018</b> Microsoft announces the Xbox Adaptive Controller in May, and it goes on sale on September 4. The idea: rather than choosing the way of controlling for the player, provide large buttons and many ports, so players can plug in their own peripherals and build a “controller” that suits them.</div></div>
+      <div class="ev hasimg"><span data-illus="c13_tl_tlou"></span><div><b class="yr">2020</b> <i>The Last of Us Part II</i> ships with over 60 accessibility settings, including features for blind and low-vision players; the development team brought in the blind consultant Brandon Cole very early. It became an often-cited example in the industry’s discussion of “how deep even a big title can go.”</div></div>
+    </div>
+    <p>These threads all point to one thing: <b>accessibility is not an after-the-fact patch; the earlier you ask “who has this design shut out,” the lower the cost.</b> Microsoft also offers its own Xbox Accessibility Guidelines (learn.microsoft.com/gaming/accessibility), organizing similar checks into a checklist to compare against.</p>
+    <p class="src">Sources: AbleGamers’ “Mark Barlet” page (ablegamers.org/mark-barlet/); Game Informer, 2012-09-04, “Game Accessibility Guidelines Published,” and the site notes at gameaccessibilityguidelines.com; Microsoft Xbox News, 2018-09-04; the article on TLOU2 accessibility features from Naughty Dog / PlayStation Blog, 2020-06. No judgment is made here about “who is best”; these are only recorded as milestones.</p>
+  </div>
+
+  <div class="sec"><span class="n">4</span><h2><span class="tag why">Why it works</span>Universal design, contrast, flashing and color vision</h2></div>
+  <h3>① Design made for a few often benefits everyone</h3>
+  <p>This is the <span class="term" tabindex="0" data-def="A curb ramp is built for wheelchair users, but benefits people pushing strollers, dragging suitcases and cycling just as much. By extension: design for those most limited often makes everything more convenient for all.">curb-cut effect</span>. The engineering thinking behind it is called <span class="term" tabindex="0" data-def="Making a product usable by as many people as possible from the start, instead of patching it for special groups afterward.">universal design</span>:</p>
+  <div class="card">
+    <svg viewBox="0 0 700 230" width="100%" role="img" aria-label="Sketch: a curb ramp in the middle, with arrows around it pointing to a wheelchair, a stroller, a suitcase and a hand truck, showing that a design made for one group also serves others.">
+      <g class="rough" stroke="#2b2b3a" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M20 150 H250 L330 190 H500 L680 190"/>
+        <path d="M250 150 L330 190" stroke-width="6"/>
+        <rect x="260" y="20" width="180" height="56" rx="12" fill="#eaf9e4"/>
+        <rect x="20" y="20" width="150" height="48" rx="12" fill="#fff7cf"/><rect x="530" y="20" width="150" height="48" rx="12" fill="#e8f6fc"/>
+        <rect x="20" y="95" width="150" height="48" rx="12" fill="#ffe9ef"/><rect x="530" y="95" width="150" height="48" rx="12" fill="#f1eaff"/>
+        <path d="M170 45 L258 50"/><path d="M530 45 L442 50"/>      </g>
+      <g font-size="17" text-anchor="middle" fill="#2b2b3a">
+        <text x="350" y="44" font-weight="700">One design: a gentle ramp</text><text x="350" y="64" font-size="16">(made for wheelchairs)</text>
+        <text x="95" y="50">Wheelchair users</text><text x="605" y="50">Parents with strollers</text>
+        <text x="95" y="125">Travelers with suitcases</text><text x="605" y="125">People with hand trucks</text>
+        <text x="350" y="218">Originally designed for “a few,” it actually serves “many”</text>
+      </g>
+    </svg>
+  </div>
+  <p>The counterparts in games: <b>captions</b> (for muted settings), <b>remappable buttons</b> (for left-handers, different keyboard layouts, one-handed play), <b>text scaling</b> (small phone screens, handhelds, big TVs from a distance), <b>pause and autosave</b> (for anyone interrupted).</p>
+  <div class="eg" data-ic="🛤️"><span data-illus="c13_curb"></span><div class="egt"><b>Curb ramps:</b> a gentle slope made for wheelchairs is just as smooth for people pushing strollers and dragging suitcases, and even delivery hand trucks benefit.</div></div>
+  <div class="eg" data-ic="💬"><span data-illus="c13_caption"></span><div class="egt"><b>Captions:</b> captions made for the hearing impaired became a feature used every day in noisy bars, quiet libraries and by people learning languages.</div></div>
+  <div class="eg bad" data-ic="🦯"><span data-illus="c13_tactile"></span><div class="egt"><b>A near-miss:</b> the ramp smoothed away the curb’s “edge,” and a person with a white cane lost a cue for judging where the roadside is. Later, tactile paving with little dots was added at the ramp mouth to make up for it. Design has to be tested with the affected people, and not assumed.</div></div>
+
+  <h3>② Contrast: turning “can you see it clearly” into a number</h3>
+  <p>The W3C’s <i>Web Content Accessibility Guidelines</i> (<span class="term" tabindex="0" data-def="Web Content Accessibility Guidelines, the accessibility standard published by the World Wide Web Consortium (W3C) and cited by many laws and industry guides; although made for the web, its contrast and flash thresholds are often borrowed for game interfaces.">WCAG</span>) say that for <b>normal text</b>, level AA requires a <span class="term" tabindex="0" data-def="The ratio of the relative luminance of two colors, (lighter + 0.05) / (darker + 0.05), ranging from 1:1 (no difference) to 21:1 (black and white).">contrast ratio</span> with its background of at least <b>4.5:1</b>; for <b>large text</b> (at least 18 pt, or 14 pt bold, about 24 px / 18.5 px), at least <b>3:1</b>. The threshold is a floor: a computed 4.499 doesn’t pass.</p>
+  <div class="card">
+    <svg viewBox="0 0 700 190" width="100%" role="img" aria-label="Contrast scale: from 1:1 to 21:1, marking 3:1 (large text), 4.5:1 (body text AA) and 7:1 (AAA).">
+      <defs><linearGradient id="c13_gr" x1="0" x2="1"><stop offset="0" stop-color="#f6f6f0"/><stop offset="1" stop-color="#111"/></linearGradient></defs>
+      <rect class="rough" x="40" y="70" width="620" height="40" fill="url(#c13_gr)" stroke="#2b2b3a" stroke-width="3.5"/>
+      <g stroke="#2b2b3a" stroke-width="3.5" stroke-linecap="round">
+        <path d="M40 112 V128"/><path d="M256 112 V128"/><path d="M336 112 V150"/><path d="M423 112 V128"/><path d="M660 112 V128"/>
+      </g>
+      <g font-size="16" fill="#2b2b3a" text-anchor="middle">
+        <text x="48" y="150">1:1 no difference</text>
+        <text x="256" y="150">3:1 large text / icons</text>
+        <text x="336" y="176" font-weight="700">4.5:1 body (AA)</text>
+        <text x="445" y="150">7:1 AAA</text>
+        <text x="640" y="150">21:1 black on white</text>
+        <text x="350" y="40">Fails ←  → Passes (scale drawn logarithmically)</text>
+      </g>
+    </svg>
+  </div>
+  <p>Try it: pick two colors and see the ratio and whether it passes. Try the “gray text on a dark background” and “yellow text on white” that are common in games.</p>
+  <div class="board">
+    <div class="c13_cin">
+      <label>Text color <input type="color" id="c13_fg" value="#8d8d7f"></label>
+      <label>Background color <input type="color" id="c13_bg" value="#a8a794"></label>
+      <button class="btn alt" data-cpre="#8d8d7f,#a8a794">Gray hint in games</button>
+      <button class="btn alt" data-cpre="#ffd400,#ffffff">Yellow on white</button>
+      <button class="btn alt" data-cpre="#ffffff,#1f2a3a">White on dark blue</button>
+    </div>
+    <div class="c13_cswatch" id="c13_sw"><span style="font-size:1rem">Normal text: Press E to open the chest</span><br><span style="font-size:1.5rem;font-weight:700">Large bold: Press E to open the chest</span></div>
+    <div id="c13_cstat"></div>
+    <div class="row"><button class="btn green" id="c13_fix">Adjust the text color to just pass (4.5:1)</button></div>
+    <div class="msg" id="c13_cmsg"></div>
+  </div>
+  <div class="sticky" id="c13_ctask">Try it: press “Gray hint in games,” and it is almost unreadable. Adjust the colors yourself, or press “Adjust to just pass,” to rescue it to 4.5:1, and a ✔ appears here when you succeed.</div>
+  <div class="why-box">
+    <h3>Whose view, and what view</h3>
+    <p>The <b>contrast formula</b> comes from W3C’s WCAG (the 2.1 rules are used here): first turn each sRGB channel into a linear value, then compute relative luminance as 0.2126R + 0.7152G + 0.0722B, and contrast = (lighter + 0.05) ÷ (darker + 0.05). This figure is a <b>starting point</b> and can’t replace testing with real people: font weight, anti-aliasing, screen brightness and the user’s eyesight all affect actual legibility.</p>
+    <p class="src">Source: W3C, “Understanding SC 1.4.3: Contrast (Minimum),” www.w3.org/WAI/WCAG21/Understanding/contrast-minimum.html. For non-text elements in game interfaces (such as health-bar borders), the 3:1 practice is often followed.</p>
+  </div>
+
+  <h3>③ Flashing: don’t let the picture hurt anyone</h3>
+  <p>A small number of people are sensitive to flickering pictures, which can trigger <span class="term" tabindex="0" data-def="A seizure triggered by sensitivity to particular flicker or patterns. People with a history of this are especially sensitive to high-brightness, rapidly alternating, large-area flashing.">photosensitive epilepsy</span>. The floor set by WCAG 2.3.1 (level A) is: <b>no more than 3 general flashes, and no more than 3 red flashes, in any one second</b>; or the flashing area is small enough (the standard defines this by an area such as “0.006 steradians within a 10-degree field of view”). A “general flash” here means a pair of opposing changes in relative luminance, with an amplitude of at least 10% of the maximum luminance, where the darker side is below 0.80.</p>
+  <p>What this means for game designers: <b>explosion white-outs, strobe effects and rapid light-dark switching</b> need care, and a “reduce flashing / motion” option should be provided.</p>
+  <p class="src">Source: W3C, “Understanding SC 2.3.1: Three Flashes or Below Threshold,” www.w3.org/WAI/WCAG21/Understanding/three-flashes-or-below-threshold.html. This standard is for the web, so for games it is a reference, not a legal requirement; game platforms and the industry may have their own testing procedures.</p>
+
+  <h3>④ Color vision differences: not a minority of a minority</h3>
+  <p>Red–green color vision deficiency varies in rate between populations. According to Wikipedia’s summary of the literature, among people of northern European descent, <b>about 8% of men and about 0.5% of women</b> have red–green deficiency; the most common is deuteranomaly (about 5% of men); blue–yellow (tritan) and total color blindness (achromatopsia) are both very rare (blue–yellow below 0.01%).</p>
+  <p>In other words: <b>out of every 12 male players, on average about 1 has “trouble telling red from green.”</b> So designs like red and blue teams or red and green health are not a corner case.</p>
+  <p class="src">Source: Wikipedia, “Color blindness” (the epidemiology section, citing multiple population studies); the proportions vary with population and measurement method, so this is only an order-of-magnitude guide.</p>
+
+  <h3>⑤ Cognitive load: accessibility and “good design” are the same thing</h3>
+  <div class="withimg rev">
+    <span data-illus="c13_load"></span>
+    <div>
+      <p>Remember why a tutorial should teach just one thing at a time? Because human working memory is like a very small table, with no room for more than a few things at once. George Miller (1956) summed it up as “7±2,” and Nelson Cowan (2001) later reworked it, arguing that the pure capacity is more like about 4 “chunks,” though the exact figure is still disputed.</p>
+      <p>John Sweller (1988) applied the idea to learning and proposed cognitive load theory: when the task is too messy and information too scattered, the table fills up and anything more falls straight off. Games add time pressure on top: map, health bar, enemies, hints all have to be watched, and buttons pressed at the same time.</p>
+      <p>For people with dyslexia, with attention that is hard to hold, or just off a night shift, the table is even smaller. Ways to lower the load, such as clear icons, teaching one thing at a time, hints you can revisit and not forcing quick reactions, help players with cognitive barriers, and also tired, distracted and first-time players. <b>This is the cognitive version of the curb-cut effect.</b></p>
+    </div>
+  </div>
+  <p class="src">Sources: Miller (1956), “The magical number seven, plus or minus two,” <i>Psychological Review</i> 63; Cowan (2001), “The magical number 4 in short-term memory,” <i>Behavioral and Brain Sciences</i> 24; Sweller (1988), “Cognitive load during problem solving,” <i>Cognitive Science</i> 12.</p>
+
+  <h3>⑥ Fairness: designing from behind the “veil of ignorance”</h3>
+  <div class="withimg">
+    <span data-illus="c13_veil"></span>
+    <div>
+      <p>A thought experiment: you have to design a game, but must decide <b>without knowing which player you will turn out to be</b>. You might be a nimble-handed veteran, or have only one hand, or see color differently from others. In such a position, you would probably quite naturally make the options generous.</p>
+      <p>The philosopher John Rawls used exactly this “veil of ignorance” in <i>A Theory of Justice</i> (1971): fair rules are those set when you don’t know your own position. He was discussing social institutions, so moving it to design is only an analogy, but it answers “why design for a few”: because those who design can’t guarantee they will never be among that few.</p>
+      <p>The corresponding term in the design world is universal design, which the architect Ron Mace is said to have put forward around 1985, arguing for making things usable by as many people as possible from the start rather than patching afterward.</p>
+    </div>
+  </div>
+  <p class="src">Sources: John Rawls, <i>A Theory of Justice</i> (1971); for Ron Mace and the origins of universal design see the introduction from NC State’s Center for Universal Design (sources differ slightly on the year, and a conservative wording is used here).</p>
+
+  <div class="sec"><span class="n">5</span><h2><span class="tag how">Try it</span>Signature interaction: the barrier simulator</h2></div>
+  <p>Below is a simplified game screen: health bar at upper left, minimap at upper right, a red enemy and a green ally, a line of hint text at the bottom, and one threat that “comes by sound alone.” Predict first: <b>if you choose “green-blind,” which information will be lost?</b> Then switch it and the page diagnoses item by item. Finally turn on “design hardening” and see how multi-channel redundancy fills the gaps.</p>
+  <div class="board">
+    <div><b>Vision type (approximate simulation):</b></div>
+    <div class="c13_chips" id="c13_modes"></div>
+    <div class="c13_opts">
+      <label><input type="checkbox" id="c13_big"> Larger text</label>
+      <label><input type="checkbox" id="c13_hc"> High contrast</label>
+      <label><input type="checkbox" id="c13_mute"> Sound off (can’t hear)</label>
+      <label><input type="checkbox" id="c13_cap"> Captions / sound cues</label>
+      <label><input type="checkbox" id="c13_rm"> Reduce motion and flashing</label>
+      <label><input type="checkbox" id="c13_fixon"><b> Design hardening (multi-channel redundancy)</b></label>
+    </div>
+    <svg id="c13_scene" viewBox="0 0 640 340" role="img" aria-label="A simplified game screen that changes with the options"></svg>
+    <ul class="c13_diag" id="c13_diag"></ul>
+    <div class="msg" id="c13_smsg"></div>
+  </div>
+  <div class="sticky" id="c13_stask">Try it: choose “green-blind (approx.),” count how many items are lost; then tick “design hardening” and see whether the losses can drop to zero. A ✔ appears here when you succeed.</div>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+    <filter id="c13_f_protan" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="0.152286 1.052583 -0.204868 0 0  0.114503 0.786281 0.099216 0 0  -0.003882 -0.048116 1.051998 0 0  0 0 0 1 0"/></filter>
+    <filter id="c13_f_deutan" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="0.367322 0.860646 -0.227968 0 0  0.280085 0.672501 0.047413 0 0  -0.011820 0.042940 0.968881 0 0  0 0 0 1 0"/></filter>
+    <filter id="c13_f_tritan" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="1.255528 -0.076749 -0.178779 0 0  -0.078411 0.930809 0.147602 0 0  0.004733 0.691367 0.303900 0 0  0 0 0 1 0"/></filter>
+    <filter id="c13_f_mono" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="0.2126 0.7152 0.0722 0 0  0.2126 0.7152 0.0722 0 0  0.2126 0.7152 0.0722 0 0  0 0 0 1 0"/></filter>
+    <filter id="c13_f_blur"><feGaussianBlur stdDeviation="2.6"/></filter>
+    <pattern id="c13_hatch" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="8" height="8" fill="#e0b020"/><rect width="3" height="8" fill="#222"/></pattern>
+  </defs></svg>
+  <p class="small">Simplification note: these filters are <b>approximations</b> of color vision deficiency (the color-blindness types use the commonly used color-matrix approximation, such as a family of methods proposed by Machado et al. in 2009; I did not check the values one by one, and they are for teaching illustration only), real experience varies from person to person with mild and severe degrees; “low vision” is just a Gaussian blur. They can only help you <b>discover design problems</b> and can’t replace testing with real users who have these barriers.</p>
+
+  <div class="sec"><span class="n">6</span><h2><span class="tag how">Try it</span>Supporting interaction: the key remapper (with a one-handed check)</h2></div>
+  <p>Pick an action first (the buttons below), then press a key on the keyboard to bind it. With “one-handed mode” chosen, keys out of reach turn dim, and conflicts (one key bound to two actions) turn red. Try it: <b>using only the left hand, can you bind all the actions with no conflicts?</b></p>
+  <div class="board">
+    <div class="row">
+      <span>Hand mode:</span>
+      <button class="chip on" data-hand="both">Both hands</button><button class="chip" data-hand="L">Left hand only</button><button class="chip" data-hand="R">Right hand only</button>
+    </div>
+    <div class="c13_acts" id="c13_acts"></div>
+    <div class="c13_kbd" id="c13_kbd"></div>
+    <label class="ctl"><input type="checkbox" id="c13_tog"> Make dash a “tap to toggle” (no need to keep holding)</label>
+    <div class="row">
+      <button class="btn alt" id="c13_pdef">Default (both hands)</button>
+      <button class="btn alt" id="c13_pL">Left-hand layout</button>
+      <button class="btn alt" id="c13_pR">Right-hand layout</button>
+      <button class="btn pink" id="c13_pclr">Clear</button>
+    </div>
+    <div id="c13_rstat"></div>
+    <div class="msg" id="c13_rmsg"></div>
+  </div>
+  <div class="sticky" id="c13_rtask">Try it: press “Left hand only,” then “Clear,” and bind all 10 actions yourself to keys the left hand can reach, with no conflicts. A ✔ appears here when you succeed.</div>
+
+  <div class="sec"><span class="n">7</span><h2><span class="tag how">Try it</span>Putting accessibility into the workflow</h2></div>
+  <p>The biggest cost of accessibility comes from <b>thinking of it too late</b>. A plain workflow:</p>
+  <div class="chain"><span class="st">Concept: write down “what must the player perceive / operate at once”</span><span class="ar">→</span><span class="st">Prototype: at least two channels for every key hint</span><span class="ar">→</span><span class="st">Production: remappable keys, captions and scaling in the architecture</span><span class="ar">→</span><span class="st">Testing: have players with the relevant barriers really play</span></div>
+  <div class="grid3">
+    <div class="card y mini"><div class="ico">❓</div><h3>Three questions</h3><p>Does this information travel by only one channel? How many keys must this action hold at once? Can this rhythm be paused or slowed?</p></div>
+    <div class="card b mini"><div class="ico">🧰</div><h3>A starter checklist</h3><p>Start from the “basic” tier of the <i>Game Accessibility Guidelines</i>: broad in reach and cheap to implement, such as adjustable captions, not relying on color alone, and key remapping.</p></div>
+    <div class="card g mini"><div class="ico">🤝</div><h3>Do it with users</h3><p>Users with barriers are experts, not “objects to be served.” Inviting them early is much cheaper than changing things after launch.</p></div>
+  </div>
+  <div class="eg" data-ic="🛗"><span data-illus="c13_braille"></span><div class="egt"><b>An example from daily life:</b> the braille keys in an elevator are necessary for blind people, and also a clue for someone fumbling in the dark; a voice assistant is an entry point for people with motor barriers, and also lets someone driving look at the screen one time less.</div></div>
+  <div class="eg bad" data-ic="🔒"><span data-illus="c13_locked"></span><div class="egt"><b>Counterexample:</b> a game puts all its accessibility options in settings “unlocked only after hard mode,” or <b>locks achievements</b> once you turn on an assist mode. An option that exists but punishes you for using it is as good as none.</div></div>
+
+  <div class="misc">
+    <h3>Common misconceptions</h3>
+    <ul>
+      <li><b>“Accessibility = easy mode.”</b> Difficulty is just one of many options; what many people need is <b>another way to perceive / operate</b>, with the challenge unchanged (such as remappable buttons and captions).</li>
+      <li><b>“Only a very few players need it.”</b> Besides permanent barriers there are temporary and situational ones; red–green color vision deficiency isn’t rare among men either.</li>
+      <li><b>“Adding a colorblind mode is enough.”</b> If it only swaps one set of colors, it still relies on color; steadier is to add shapes, patterns and text beyond color.</li>
+      <li><b>“Having the options means it’s done.”</b> Options have to be <b>findable</b> (settable on first launch), <b>previewable</b>, and <b>free of penalty for users</b>.</li>
+      <li><b>“Accessibility ruins the design.”</b> Good practice often makes the design clearer; where there is a real conflict, it needs a specific trade-off rather than a blanket rule.</li>
+    </ul>
+  </div>
+
+  <div class="reflect">
+    <h3>Reflection and debate</h3>
+    <p><b>Limits.</b> The simulator and the contrast calculation here are both simplified: people’s degrees of barrier, assistive technology and habits vary enormously, and “meets the standard” doesn’t mean “works well.” WCAG was also made for web design, and carrying it into games takes judgment.</p>
+    <p><b>Debate: should difficulty also be an accessibility option?</b> One view holds that lowering difficulty, skipping combat and so on are themselves important accessible means and shouldn’t be stigmatized; another holds that the core challenge of some games is exactly what they want to express, and casually bypassing it changes the work’s intent. There is no standard answer here; a common compromise is: <b>offer fine-grained assists</b> (slowed time, aim assist, skippable sections) and put the choice in the player’s hands, instead of a “one-size-fits-all easy mode.”</p>
+    <p><b>Debate: cost and priority.</b> A small team has limited resources, so what should come first? The <i>Game Accessibility Guidelines</i>’ ranking by “reach, impact and cost” offers one line of thought, though it varies with the type of game.</p>
+    <p><b>Something that may change your view.</b> If you used to think “accessibility is looking after a few people,” this chapter would like to swap in another view: it is more like <b>raising a design’s tolerance for error</b>, so that the game still holds up in more environments, more bodies and more moods.</p>
+  </div>
+
+  <div class="key">
+    <h3>Key points</h3>
+    <ul>
+      <li>A barrier is a <b>mismatch between a person and a design</b>, of three kinds, permanent, temporary and situational; abilities fall into four groups, vision, hearing, motor and cognitive.</li>
+      <li><b>Multi-channel redundancy</b>: important information shouldn’t travel by color alone, sound alone or long presses alone.</li>
+      <li><b>The curb-cut effect</b>: design made for those at the margins often benefits everyone; the barrier is in the environment, not in the person.</li>
+      <li>Quantifiable floors: normal text contrast <b>≥ 4.5:1</b>, large text <b>≥ 3:1</b>; flashes <b>no more than 3</b> in any one second (WCAG).</li>
+      <li>Do accessibility <b>early</b>, do it <b>with</b> users, and verify it with real-person testing.</li>
+    </ul>
+  </div>
+  <div class="tldr">A barrier is a mismatch between a person and a design, not a defect in the person: open a few more roads for important information, and the door stays open to more people.</div>
+
+  <div class="sec"><span class="n">8</span><h2>Practice</h2></div>
+  <div id="quiz"></div>
+
+  <div class="sec"><span class="n">9</span><h2>Your design / your reflection</h2></div>
+  <div class="card o">
+    <p>Pick a game you know (or a prototype you are making): list <b>three important pieces of information conveyed through only one channel</b> (color alone? sound alone? fast reaction alone?), then add a second channel to each. Finally write: who is it most useful for, and who with “no barrier” will it also be useful for?</p>
+    <textarea rows="6" data-save="ch13" placeholder="Example: low health is flagged only by a red screen flash → add a heartbeat sound and a number on the health bar…"></textarea>
+  </div>
+</main>
+<script src="../js/illus.js"></script>
+<script src="../js/illus-ch13.js"></script>
+<script src="../js/en/illus.js"></script>
+<script src="../js/en/illus-lib.js"></script>
+<script src="../js/en/illus-ch13.js"></script>
+<script src="../js/common.js"></script>
+<script>
+const $ = id => document.getElementById(id);
+
+function c13hex(h) { return [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16)); }
+function c13lin(c) { c /= 255; return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4); }
+function c13lum(rgb) { return 0.2126 * c13lin(rgb[0]) + 0.7152 * c13lin(rgb[1]) + 0.0722 * c13lin(rgb[2]); }
+function c13ratio(a, b) { const la = c13lum(c13hex(a)), lb = c13lum(c13hex(b)); return (Math.max(la, lb) + 0.05) / (Math.min(la, lb) + 0.05); }
+function c13toHex(rgb) { return "#" + rgb.map(v => Math.max(0, Math.min(255, Math.round(v))).toString(16).padStart(2, "0")).join(""); }
+
+(function () {
+  const info = {
+    wc: ["yes", "The design intent, and also the most direct beneficiary."],
+    st: ["yes", "No need to lift the stroller off the curb."],
+    lg: ["yes", "Smoother crossing the street with a suitcase."],
+    cart: ["yes", "Easier on delivery and moving work."],
+    skate: ["yes", "One of the beneficiaries often mentioned."],
+    old: ["yes", "One fewer step is real help for people on crutches or with bad knees."],
+    blind: ["mixed", "Be careful: the ramp smooths away the curb’s “edge,” and the cane loses a cue line. Later people added tactile warning paving (tiles with little dots) to make up for it. Design has to be tested with the affected people."],
+    idle: ["no", "Basically unrelated. Not everyone benefits, and the curb-cut effect does not mean “everyone benefits.”"]
+  };
+  const box = $("c13_guess");
+  function reset() {
+    box.querySelectorAll("label").forEach(l => { l.className = ""; const s = l.querySelector("small"); if (s) s.remove(); l.querySelector("input").checked = false; l.querySelector("input").disabled = false; });
+    $("c13_gmsg").textContent = "Tick your predictions first, then press “Reveal.”";
+  }
+  $("c13_reveal").onclick = () => {
+    let hit = 0, miss = 0, wrong = 0;
+    box.querySelectorAll("label").forEach(l => {
+      const inp = l.querySelector("input"), k = inp.value, t = info[k][0];
+      inp.disabled = true;
+      const old = l.querySelector("small"); if (old) old.remove();
+      const s = document.createElement("small"); s.textContent = info[k][1]; l.appendChild(s);
+      if (t === "yes") { if (inp.checked) { l.className = "hit"; hit++; } else { l.className = "miss"; miss++; } }
+      else if (t === "mixed") { l.className = "miss"; }
+      else { l.className = "no"; if (inp.checked) wrong++; }
+    });
+    $("c13_gmsg").textContent = `You got ${hit} kinds of beneficiaries right and missed ${miss}${wrong ? ", and ticked " + wrong + " that are unrelated" : ""}. Green is a certain beneficiary, yellow is a missed guess or needs caution, gray is basically unrelated.`;
+  };
+  $("c13_greset").onclick = reset;
+})();
+
+(function () {
+  let failed = false;
+  function show() {
+    const f = $("c13_fg").value, b = $("c13_bg").value, r = c13ratio(f, b);
+    const rd = (Math.floor(r * 100) / 100).toFixed(2);
+    $("c13_sw").style.background = b; $("c13_sw").style.color = f;
+    const chip = (ok, t) => `<span class="stat">${t} <b>${ok ? "✔" : "✘"}</b></span>`;
+    $("c13_cstat").innerHTML = `<span class="stat">Contrast <b>${rd}:1</b></span>` + chip(r >= 4.5, "Normal text AA (4.5)") + chip(r >= 3, "Large text / icons AA (3)") + chip(r >= 7, "Normal text AAA (7)");
+    if (r < 4.5) failed = true;
+    if (r >= 4.5 && failed) { const t = $("c13_ctask"); t.textContent = "✔ Done: contrast " + rd + ":1, normal text passes. Did you judge by eye just now, or by the number?"; t.style.background = "#eaf9e4"; }
+    $("c13_cmsg").textContent = r >= 4.5 ? "Normal text passes too." : r >= 3 ? "Only large text (or bold ≥14 pt) passes: please don’t use this combination for small hint text." : "Too low: many people won’t be able to read it, even if you yourself feel you “can see it clearly.”";
+  }
+  $("c13_fg").oninput = show; $("c13_bg").oninput = show;
+  document.querySelectorAll("[data-cpre]").forEach(b => b.onclick = () => { const [f, g] = b.dataset.cpre.split(","); $("c13_fg").value = f; $("c13_bg").value = g; show(); });
+  $("c13_fix").onclick = () => {
+    const f = c13hex($("c13_fg").value), bg = $("c13_bg").value;
+    const toB = c13ratio("#000000", bg), toW = c13ratio("#ffffff", bg);
+    const tgt = toB >= toW ? [0, 0, 0] : [255, 255, 255];
+    if (Math.max(toB, toW) < 4.5) { $("c13_cmsg").textContent = "On this background neither black nor white reaches 4.5:1; change the background color first."; return; }
+    let out = f;
+    for (let t = 0; t <= 100; t++) {
+      const m = f.map((v, i) => v + (tgt[i] - v) * t / 100), h = c13toHex(m);
+      out = m;
+      if (c13ratio(h, bg) >= 4.5) { $("c13_fg").value = h; show(); $("c13_cmsg").textContent = `Text color set to ${h} (just passing, moving in the black / white direction).`; return; }
+    }
+    $("c13_fg").value = c13toHex(out); show();
+  };
+  show();
+})();
+
+(function () {
+  const MODES = [
+    ["normal", "Normal color vision"], ["protan", "Red-blind (approx.)"], ["deutan", "Green-blind (approx.)"],
+    ["tritan", "Blue–yellow-blind (approx.)"], ["mono", "Totally color-blind (approx.)"], ["low", "Low vision (blurred)"]
+  ];
+  const S = { mode: "normal", big: false, hc: false, mute: false, cap: false, rm: false, fix: false };
+  const mbox = $("c13_modes");
+  MODES.forEach(([k, t]) => {
+    const b = document.createElement("button"); b.className = "chip" + (k === "normal" ? " on" : ""); b.textContent = t; b.dataset.m = k;
+    b.onclick = () => { S.mode = k; mbox.querySelectorAll(".chip").forEach(x => x.classList.toggle("on", x === b)); render(); };
+    mbox.appendChild(b);
+  });
+  ["big", "hc", "mute", "cap", "rm"].forEach(k => $("c13_" + k).addEventListener("change", e => { S[k] = e.target.checked; render(); }));
+  $("c13_fixon").addEventListener("change", e => { S.fix = e.target.checked; render(); });
+  try { if (window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches) { S.rm = true; $("c13_rm").checked = true; } } catch (e) {}
+
+  const FIL = { normal: "", protan: "url(#c13_f_protan)", deutan: "url(#c13_f_deutan)", tritan: "url(#c13_f_tritan)", mono: "url(#c13_f_mono)", low: "url(#c13_f_blur)" };
+  const hintBase = { fg: "#8d8d7f", bg: "#a8a794" };
+
+  function scene() {
+    const f = S.fix, sc = S.big ? 1.45 : 1;
+    let s = `<rect width="640" height="340" fill="#2f3640"/>`;
+    s += `<defs><pattern id="c13_grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="#3a424e" stroke-width="1"/></pattern></defs><rect width="640" height="340" fill="url(#c13_grid)"/>`;
+    
+    const foe = (x, y) => f ? `<polygon points="${x},${y - 20} ${x + 19},${y + 14} ${x - 19},${y + 14}" fill="#d04a2a" stroke="#fff" stroke-width="3"/><text x="${x}" y="${y + 36}" font-size="16" text-anchor="middle" fill="#fff" font-weight="700">Foe</text>` : `<circle cx="${x}" cy="${y}" r="17" fill="#d04a2a"/>`;
+    const ally = (x, y) => f ? `<circle cx="${x}" cy="${y}" r="17" fill="#6aa84f" stroke="#fff" stroke-width="3"/><circle cx="${x}" cy="${y}" r="6" fill="#fff"/><text x="${x}" y="${y + 36}" font-size="16" text-anchor="middle" fill="#fff" font-weight="700">Ally</text>` : `<circle cx="${x}" cy="${y}" r="17" fill="#6aa84f"/>`;
+    s += foe(410, 140) + foe(480, 235) + ally(230, 210) + ally(330, 110);
+    s += `<rect x="296" y="168" width="28" height="28" fill="#dfe9f5" stroke="#4aa3ff" stroke-width="4" transform="rotate(45 310 182)"/>`;
+    
+    s += `<rect x="14" y="14" width="186" height="22" fill="#111" stroke="#fff" stroke-width="2"/><rect x="16" y="16" width="${182 * 0.28}" height="18" fill="#e03a2f"${(!S.rm && !f) ? ' class="c13_pulse"' : ""}/>`;
+    s += `<text x="14" y="58" font-size="16" fill="#fff">HP${f ? "  28 / 100  ♥ LOW" : ""}</text>`;
+    
+    if (!S.rm || f) s += `<rect x="3" y="3" width="634" height="334" fill="none" stroke="#e03a2f" stroke-width="${f ? 4 : 8}" opacity="${f ? 0.7 : 1}"${(!S.rm && !f) ? ' class="c13_pulse"' : ""}/>`;
+    
+    s += `<rect x="500" y="12" width="60" height="100" fill="#3b7dd8"/><rect x="560" y="12" width="60" height="100" fill="${f ? "url(#c13_hatch)" : "#e0b020"}"/><rect x="500" y="12" width="120" height="100" fill="none" stroke="#fff" stroke-width="2"/>`;
+    s += `<circle cx="530" cy="70" r="5" fill="#fff"/>`;
+    if (f) s += `<text x="530" y="40" font-size="16" fill="#fff" text-anchor="middle">Safe</text><text x="590" y="40" font-size="16" fill="#fff" text-anchor="middle" font-weight="700">Risk</text>`;
+    s += `<text x="560" y="132" font-size="16" fill="#fff" text-anchor="middle">Minimap</text>`;
+    
+    if (!S.mute) s += `<g stroke="#ffd400" stroke-width="3" fill="none"${S.rm ? "" : ' class="c13_pulse"'}><path d="M10 270 q-10 20 0 40"/><path d="M22 262 q-16 28 0 56"/></g>`;
+    else if (!S.cap && !f) s += `<text x="12" y="296" font-size="16" fill="#aaa">(muted)</text>`;
+    if (f) s += `<g><polygon points="14,200 40,184 40,216" fill="#fff"/><text x="48" y="206" font-size="16" fill="#fff">Enemy behind-left</text></g>`;
+    
+    let y = 312;
+    if (S.cap) {
+      const t = f ? "[footsteps · closing in behind-left]" : "[footsteps]";
+      const fs = 16 * sc, w = t.length * fs * 0.95 + 24;
+      s += `<rect x="${320 - w / 2}" y="${y - 52 - fs}" width="${w}" height="${fs + 14}" fill="#000" opacity=".8"/><text x="320" y="${y - 52}" font-size="${fs}" text-anchor="middle" fill="#fff">${t}</text>`;
+    }
+    
+    const hi = S.hc || f;
+    const tx = "Press E: pick up", fs2 = (hi ? 18 : 12) * sc, w2 = tx.length * fs2 + 24;
+    const fg = hi ? "#fff" : hintBase.fg, bg = hi ? "#000" : hintBase.bg;
+    s += `<rect x="${320 - w2 / 2}" y="${y - 6 - fs2}" width="${w2}" height="${fs2 + 16}" rx="4" fill="${bg}"/><text x="320" y="${y + 1}" font-size="${fs2}" text-anchor="middle" fill="${fg}"${hi ? ' font-weight="700"' : ""}>${tx}</text>`;
+    return s;
+  }
+
+  function diag() {
+    const f = S.fix, m = S.mode, out = [];
+    const hi = S.hc || f;
+    const ratio = hi ? 21 : c13ratio(hintBase.fg, hintBase.bg);
+    
+    if (!f && (m === "protan" || m === "deutan" || m === "mono")) out.push(["lost", "Friend-or-foe (red = foe, green = ally)", "The two colors are almost indistinguishable in this kind of color vision, and there is no shape or text to supplement them."]);
+    else out.push(["ok", "Friend-or-foe", f ? "Besides color there are shapes (triangle / circle) and the text “Foe / Ally.”" : "Your color vision can tell the colors apart, but this relies on color alone: switch types and it will be lost."]);
+    if (!f && m === "normal") out[out.length - 1][0] = "warn";
+    
+    if (!f && (m === "tritan" || m === "mono")) out.push(["lost", "Minimap safe / danger zones (blue / yellow)", "Blue and yellow are easily confused in this kind of color vision, and only color is used."]);
+    else out.push([!f && m === "normal" ? "warn" : "ok", "Minimap safe / danger zones", f ? "The danger zone has hatching and text added." : "Color alone: it will be lost for people with blue–yellow color vision."]);
+    
+    if (!f && S.rm) out.push(["lost", "Low-health warning", "The warning rests on “flashing red” alone; with motion turned off it simply vanishes."]);
+    else if (!f) out.push(["warn", "Low-health warning", "Only the “flashing red” channel: players with different color vision, low vision or photosensitivity may miss it, and it shouldn’t be the only cue."]);
+    else out.push(["ok", "Low-health warning", "It has a number, an icon and text, and the red border is made static: it doesn’t rely on color or flashing."]);
+    
+    if (m === "low" && !(S.big || f)) out.push(["lost", "Hint text (small)", `Unreadable once blurred; the current text contrast is about ${(Math.floor(ratio * 100) / 100).toFixed(2)}:1.`]);
+    else if (ratio < 4.5) out.push(["warn", "Hint text", `Contrast about ${(Math.floor(ratio * 100) / 100).toFixed(2)}:1, below 4.5:1. Try turning on “High contrast” or “Design hardening.”`]);
+    else out.push(["ok", "Hint text", `Contrast about ${(Math.floor(ratio * 100) / 100).toFixed(1)}:1, which passes.`]);
+    
+    if (S.mute && !S.cap && !f) out.push(["lost", "Footsteps behind you", "The threat comes through sound alone, and with the sound off you know nothing."]);
+    else if (S.mute) out.push(["ok", "Footsteps behind you", f ? "There are captions and a direction arrow." : "Captions give a clue but no direction information, which could be better."]);
+    else out.push(["ok", "Footsteps behind you", "You can hear it; but it is only one channel, and in a different situation (muted) it would be lost."]);
+    if (!S.mute && !f) out[out.length - 1][0] = "warn";
+    return out;
+  }
+
+  function render() {
+    $("c13_scene").innerHTML = `<g${FIL[S.mode] ? ` filter="${FIL[S.mode]}"` : ""}>${scene()}</g>`;
+    const d = diag(), lost = d.filter(x => x[0] === "lost").length, warn = d.filter(x => x[0] === "warn").length;
+    const ic = { ok: "✔", warn: "⚠", lost: "✖" };
+    $("c13_diag").innerHTML = d.map(x => `<li class="${x[0]}"><b>${ic[x[0]]} ${x[1]}: </b>${x[2]}</li>`).join("");
+    if (lost) window.c13_lostSeen = true;
+    if (!lost && S.fix && window.c13_lostSeen) { const t = $("c13_stask"); t.textContent = "✔ Done: after design hardening, every piece of information has at least two channels, and with the current settings not one is lost."; t.style.background = "#eaf9e4"; }
+    $("c13_smsg").textContent = lost ? `Lost ${lost} key pieces of information${warn ? ", with " + warn + " more fragile" : ""}. Try turning on “Design hardening.”` : warn ? `Nothing is lost, but ${warn} rely on a single channel and would be lost in a different situation.` : "Every piece of information has at least two channels, and with the current settings none is lost.";
+  }
+  render();
+})();
+
+(function () {
+  const ACTS = [["up", "↑", "Forward ↑"], ["down", "↓", "Back ↓"], ["left", "←", "Left ←"], ["right", "→", "Right →"], ["jump", "J", "Jump"], ["atk", "A", "Attack"], ["sprint", "D", "Dash (hold)"], ["use", "I", "Interact"], ["swap", "W", "Swap weapon"], ["pause", "P", "Pause"]];
+  const ROWS = [["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0"], ["Tab", "Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"], ["A", "S", "D", "F", "G", "H", "J", "K", "L", ";"], ["Shift", "Z", "X", "C", "V", "B", "N", "M", ",", ".", "/"], ["Ctrl", "Space"]];
+  const LK = new Set(["Esc", "1", "2", "3", "4", "5", "Tab", "Q", "W", "E", "R", "T", "A", "S", "D", "F", "G", "Shift", "Z", "X", "C", "V", "B", "Ctrl"]);
+  const RK = new Set(["6", "7", "8", "9", "0", "Y", "U", "I", "O", "P", "H", "J", "K", "L", ";", "N", "M", ",", ".", "/"]);
+  const handOf = k => k === "Space" ? "B" : LK.has(k) ? "L" : "R";
+  const PRESET = {
+    def: { up: "W", down: "S", left: "A", right: "D", jump: "Space", atk: "J", sprint: "Shift", use: "E", swap: "Q", pause: "Esc" },
+    L: { up: "W", down: "S", left: "A", right: "D", jump: "Space", atk: "F", sprint: "Shift", use: "E", swap: "Q", pause: "Tab" },
+    R: { up: "I", down: "K", left: "J", right: "L", jump: "Space", atk: "U", sprint: "N", use: "O", swap: "P", pause: "9" }
+  };
+  let bind = Object.assign({}, PRESET.def), sel = "up", hand = "both";
+  const kbd = $("c13_kbd"), acts = $("c13_acts");
+
+  function reach(k) { return hand === "both" || handOf(k) === "B" || handOf(k) === hand; }
+  function render() {
+    const cnt = {}; Object.values(bind).forEach(k => { if (k) cnt[k] = (cnt[k] || 0) + 1; });
+    const keyAct = {}; ACTS.forEach(([id, ab]) => { const k = bind[id]; if (k) (keyAct[k] = keyAct[k] || []).push(ab); });
+    kbd.innerHTML = ROWS.map(r => `<div class="c13_krow">` + r.map(k => `<button class="c13_key ${k === "Space" ? "space" : k.length > 1 ? "wide" : ""} ${handOf(k)} ${reach(k) ? "" : "dim"} ${cnt[k] > 1 ? "conf" : ""}" data-k="${k}">${k === "Space" ? "Space" : k}<small>${(keyAct[k] || []).join("")}</small></button>`).join("") + `</div>`).join("");
+    kbd.querySelectorAll(".c13_key").forEach(b => b.onclick = () => { bind[sel] = b.dataset.k; const i = ACTS.findIndex(a => a[0] === sel); if (i < ACTS.length - 1 && !(cnt[b.dataset.k] > 0 && false)) sel = ACTS[i + 1][0]; render(); });
+    acts.innerHTML = ACTS.map(([id, ab, nm]) => {
+      const k = bind[id]; const bad = k && (cnt[k] > 1 || !reach(k));
+      return `<button class="c13_act ${id === sel ? "sel" : ""} ${bad ? "bad" : ""}" data-a="${id}">${nm}: <b>${k ? (k === "Space" ? "Space" : k) : "unbound"}</b></button>`;
+    }).join("");
+    acts.querySelectorAll(".c13_act").forEach(b => b.onclick = () => { sel = b.dataset.a; render(); });
+    document.querySelectorAll("[data-hand]").forEach(b => b.classList.toggle("on", b.dataset.hand === hand));
+
+    const conflicts = Object.keys(cnt).filter(k => cnt[k] > 1);
+    const unb = ACTS.filter(a => !bind[a[0]]).map(a => a[2]);
+    const far = ACTS.filter(a => bind[a[0]] && !reach(bind[a[0]])).map(a => a[2]);
+    const tog = $("c13_tog").checked;
+    const hold = 2 + (tog ? 0 : 1) + 1; 
+    $("c13_rstat").innerHTML = `<span class="stat">Conflicts <b>${conflicts.length}</b></span><span class="stat">Out of reach <b>${far.length}</b></span><span class="stat">Unbound <b>${unb.length}</b></span><span class="stat">Most keys held at once <b>${hold}</b></span>`;
+    let m = [];
+    if (conflicts.length) m.push("Conflict:" + conflicts.map(k => (k === "Space" ? "Space" : k)).join(",") + " bound to more than one action.");
+    if (far.length) m.push("Out of one-handed reach:" + far.join(",") + ".");
+    if (unb.length) m.push("Actions still unbound:" + unb.join(",") + ".");
+    if (hand !== "both" && !m.length) m.push(`Fully playable one-handed. At the tensest moment you must hold ${hold} keys at once${tog ? "" : " (tick “Make dash a toggle” to need one fewer)"}. The number of fingers is limited, which is why “change hold to toggle” is an important assist option.`);
+    if (hand === "both" && !m.length) m.push("Both-hands mode has no problem. Switch to “Left hand only” or “Right hand only,” see how many keys are dimmed, and then try reassigning them.");
+    $("c13_rmsg").textContent = m.join(" ");
+    if (hand === "L" && !conflicts.length && !far.length && !unb.length) { const t = $("c13_rtask"); t.textContent = "✔ Done: with the left hand only, all 10 actions are bound with no conflicts. At the tensest moment you must press " + hold + " keys at once."; t.style.background = "#eaf9e4"; }
+  }
+  document.querySelectorAll("[data-hand]").forEach(b => b.onclick = () => { hand = b.dataset.hand; render(); });
+  $("c13_tog").onchange = render;
+  $("c13_pdef").onclick = () => { bind = Object.assign({}, PRESET.def); sel = "up"; render(); };
+  $("c13_pL").onclick = () => { bind = Object.assign({}, PRESET.L); hand = "L"; sel = "up"; render(); };
+  $("c13_pR").onclick = () => { bind = Object.assign({}, PRESET.R); hand = "R"; sel = "up"; render(); };
+  $("c13_pclr").onclick = () => { bind = {}; sel = "up"; render(); };
+  render();
+})();
+
+GD.mountQuiz($("quiz"), [
+  { q: "(Why) Why is it said that “design made for a few often benefits everyone”?", opts: ["Because the needs of a few are always more important than those of the many", "Because barriers come from a mismatch between environment and design, and many people meet the same mismatch temporarily or situationally", "Because the more complicated the design, the better", "Because it means less testing"], a: 1, why: "Curb ramps were made for wheelchairs, yet help people pushing strollers and dragging suitcases just as much. Captions were made for the hearing impaired, and also help people in noisy places. The “fixes” for permanent, temporary and situational barriers are often the same one." },
+  { q: "(Why it was invented) Why did television captions develop a “closed (switchable)” form, instead of always being displayed openly?", opts: ["Because open captions were technically impossible", "Because they wanted viewers who need them to be able to use them without bothering those who don’t, and it was also easier to win the broadcasters’ cooperation", "Because captions can only go with foreign-language programs", "Because closed captions are much cheaper"], a: 1, why: "Open captions would be seen by every viewer, which commercial broadcasters didn’t want; closed captions hide the signal inside the TV signal and a decoder shows them on demand. Later the law required larger televisions to have built-in decoders, making it standard." },
+  { q: "An 18-point large heading has a contrast of 3.5:1. By WCAG AA, what is the verdict?", opts: ["Fails, it must be 4.5:1", "Passes: the AA threshold for large text is 3:1", "Passes, because 3.5 is greater than 1", "Can’t tell"], a: 1, why: "AA level: normal text ≥ 4.5:1, large text (≥18 pt, or ≥14 pt bold) ≥ 3:1. So a big heading at 3.5:1 passes, while small text with the same colors does not." },
+  { q: "A game tells the sides apart with “red = enemy, green = teammate” and has no other marker. What is the best fix?", opts: ["Switch to a more vivid red and green", "Just add a “colorblind mode” switch that still uses red and green inside", "Add a second channel such as shape, pattern or text beyond color", "Do nothing, since color-blind players are few"], a: 2, why: "Multi-channel redundancy: make the information not rest on color alone. Red–green color vision deficiency is not rare in some populations (on the order of 8% of men, from compiled figures for people of northern European descent), and switching to more vivid red and green still doesn’t solve the problem." },
+  { q: "An effect flashes the whole screen white 5 times in one second. By the flash threshold in WCAG 2.3.1, what should be done?", opts: ["No problem, effects should be flashy", "It exceeds the floor of “at most 3 flashes in any one second”; lower the frequency / area, or offer an option to reduce flashing", "It’s fine as long as it isn’t red", "Making it 10 flashes would be safer"], a: 1, why: "WCAG 2.3.1: no more than 3 general flashes in any one second (the same for red flashes), or a flash area small enough. Going over raises the risk of photosensitive seizures, so lower the frequency, shrink the area, and offer a “reduce motion / flashing” option." },
+  { q: "(Why) What does Rawls’s “veil of ignorance” thought experiment suggest for design?", opts: ["Designers should design blindfolded", "If you don’t know which player you will be, you are more willing to make options usable by more people, since nobody can guarantee they will never be among the “few”", "The needs of a few should take priority over the many", "Fairness is only about law and has nothing to do with design"], a: 1, why: "Rawls (1971) used it to discuss the fairness of institutions; carried into design it is an analogy: anyone may at some moment become a player with a temporary or situational barrier, so opening the door to more people is leaving a way back for your future self." }
+]);
+</script>
+</body>
+</html>

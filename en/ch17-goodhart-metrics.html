@@ -1,0 +1,657 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Chapter 17: Goodhart &amp; Metrics</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+  .c17chips{display:flex;flex-wrap:wrap;gap:4px;margin:8px 0}
+  .c17chips .chip{font-size:1rem;padding:4px 14px}
+  .c17pl{margin:12px 0;padding:8px 12px;background:#fff;border:2.5px solid var(--ink);border-radius:12px}
+  .c17pl .nm{font-family:var(--hand);font-size:1.25rem}
+  .c17bar{display:flex;align-items:center;gap:8px;margin:3px 0;font-size:.95rem}
+  .c17bar .lb{flex:none;width:6.2em}
+  .c17bar .tr{flex:1;height:20px;background:#f3ecd6;border:2px solid var(--ink);border-radius:6px;overflow:hidden}
+  .c17bar .fl{height:100%;transition:width .45s}
+  .c17bar .fl.m{background:var(--blue)}.c17bar .fl.r{background:var(--green)}
+  .c17bar .v{flex:none;width:2.6em;text-align:right;font-family:var(--hand);font-size:1.2rem}
+  .c17gap{font-size:.95rem;color:var(--bad)}
+  .c17verdict{background:#fff7cf;border:2.5px dashed var(--ink);border-radius:12px;padding:8px 14px;margin-top:10px}
+  .c17rng{width:100%;accent-color:#e5484d;height:30px}
+  .c17fig{background:#fff;border:3px solid var(--ink);border-radius:14px 30px 14px 26px;padding:10px 12px;margin:14px 0}
+  .c17fig svg{display:block}
+  .chip.c17tog.on{background:var(--green)}
+  .chip.c17tog::before{content:"☐ "}
+  .chip.c17tog.on::before{content:"☑ "}
+  .c17boatbtns .btn{font-size:1.1rem}
+  .c17guess{margin:10px 0}
+  .c17guess .chip.right{background:var(--green)}
+  .c17guess .chip.wrong{background:#ffc9c9}
+  .c17guess .c17fb{margin-top:8px;padding:8px 14px;border:2.5px dashed var(--ink);border-radius:12px;background:#fff7cf;display:none}
+  .c17guess.done .c17fb{display:block}
+  .c17judge .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;padding:8px 0;border-bottom:2px dotted var(--ink)}
+  .c17judge .row:last-child{border-bottom:0}
+  .c17judge .row .q{flex:1 1 280px}
+  .c17judge .row .fb{flex:1 1 100%;display:none;padding:6px 12px;border-radius:10px;background:#fff7cf}
+  .c17judge .row.done .fb{display:block}
+  .c17task.ok{background:var(--green)}
+  svg text{font-family:var(--body)}
+</style>
+</head>
+<body data-ch="17">
+<main class="wrap">
+  <div class="hero">
+    <div class="txt">
+      <span class="badge">Chapter 17</span>
+      <h1>Goodhart &amp; Metrics</h1>
+      <p class="sub">Measure something, and people become it—sometimes into something you didn’t want.</p>
+    </div>
+    <svg viewBox="0 0 190 150" class="rough" aria-hidden="true">
+      <circle cx="95" cy="70" r="52" fill="#fff" stroke="#2b2b3a" stroke-width="5"/>
+      <circle cx="95" cy="70" r="34" fill="#ffb3c6" stroke="#2b2b3a" stroke-width="4"/>
+      <circle cx="95" cy="70" r="14" fill="#ffe58a" stroke="#2b2b3a" stroke-width="4"/>
+      <path d="M170 20 L103 66" stroke="#2b2b3a" stroke-width="5" stroke-linecap="round"/>
+      <path d="M170 20 l-4 -14 M170 20 l-14 4" stroke="#2b2b3a" stroke-width="5" stroke-linecap="round"/>
+      <path d="M160 130 Q130 105 110 82" fill="none" stroke="#e5484d" stroke-width="4" stroke-dasharray="7 6" stroke-linecap="round"/>
+    </svg>
+  </div>
+
+  <div class="goals">
+    <h3>Learning goals</h3>
+    <ul>
+      <li>Explain in your own words why a metric is only the shadow of the real goal, why a shadow that gets rewarded stops being faithful, and that this idea first ran into the wall in monetary policy.</li>
+      <li>Lay out the mechanism by which “a correlation collapses under optimization pressure,” and tell which cases in games, education and AI (specification gaming) are Goodhart phenomena and which are just other problems.</li>
+      <li>Explain why rewards sometimes wear down interest, and design a set of metrics that are harder to game for one game goal.</li>
+    </ul>
+    <span class="time">about 40 min</span>
+  </div>
+
+  
+  <div class="sec"><span class="n">1</span><h2><span class="tag what">What it is</span>A metric is the shadow of a goal</h2></div>
+
+  <div class="withimg">
+    <span data-illus="c17_shadow"></span>
+    <div>
+      <p>Suppose you have made an open-world game, and what you most want players to do is really explore the world. But “exploring” happens inside the player’s head, and your back end can’t see it. The back end sees only numbers, such as how many collectibles a player has picked up in all.</p>
+      <p>So you make a very natural decision: collect all 100 and get an achievement. There are two things here. What you really care about is the player’s exploration experience, which is called the <span class="term" tabindex="0" data-def="Real goal: what you truly care about but often can’t measure directly, such as the player’s exploration experience, fun, long-term satisfaction.">real goal</span>. The number in your hand is the <span class="term" tabindex="0" data-def="Metric: a measurable number used to stand for some real goal that is hard to measure directly. Also called a proxy metric.">metric</span>, the shadow the real goal casts on the ground.</p>
+      <p>A shadow is useful because ordinarily it moves along with the body: players who love wandering pick up more along the way, so collectible counts and exploration experience rise and fall together. The trouble starts the moment you begin rewarding that number. Someone will notice that to make the shadow longer, there is no need to move the body, and it is easier to paint the shadow directly.</p>
+    </div>
+  </div>
+
+  <div class="c17fig">
+    <svg viewBox="0 0 720 330" width="100%" role="img" aria-label="Schematic: the real goal and the metric are normally correlated; optimization pressure makes people take a shortcut that pushes the metric up directly and bypasses the real goal">
+      <defs><marker id="ah17" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#2b2b3a"/></marker><marker id="ah17x" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#c4202a"/></marker></defs>
+      <g class="rough" stroke="#2b2b3a" stroke-width="4">
+        <rect x="14" y="30" width="250" height="100" rx="16" fill="#eaf9e4"/>
+        <rect x="456" y="30" width="250" height="100" rx="16" fill="#e8f6fc"/>
+        <rect x="235" y="215" width="250" height="90" rx="16" fill="#ffe9ef"/>
+        <path d="M268 80 L452 80" fill="none" marker-end="url(#ah17)"/>
+        <path d="M360 212 L560 135" fill="none" stroke="#c4202a" marker-end="url(#ah17x)"/>
+      </g>
+      <g font-size="18" fill="#2b2b3a" text-anchor="middle">
+        <text x="139" y="62">Real goal (unseen)</text><text x="139" y="92">The player is truly exploring</text><text x="139" y="116" font-size="16">“Wow, what’s over there?”</text>
+        <text x="581" y="62">Metric (seen)</text><text x="581" y="92">Collectible count</text><text x="581" y="116" font-size="16">Rewarded, shown on the leaderboard</text>
+        <text x="360" y="68" font-size="16">Normally: rise and fall together</text>
+        <text x="360" y="250">Shortcut</text><text x="360" y="280" font-size="16">Guide route / auto-collect script</text>
+        <text x="580" y="200" font-size="16" fill="#c4202a">Bypass the goal, push the number up</text>
+      </g>
+    </svg>
+    <p class="small">A metric and a goal are only “normally correlated.” Once someone sets out to push the metric up, a shortcut appears that goes around the goal.</p>
+  </div>
+
+  <p>This phenomenon later got a name, <b>Goodhart’s law</b>: once a metric is used as a means of control or as a reward, the link between it and the real goal weakens. In the social sciences there is a twin statement called <span class="term" tabindex="0" data-def="Campbell’s law: proposed by the psychologist Donald Campbell in 1976 and published in a journal in 1979: the more a quantitative social indicator is used for important decisions, the more subject it is to corruption pressures, and the more it distorts the process it was meant to monitor.">Campbell’s law</span>. The two stress different things: Goodhart looks at the <b>statistical relationship breaking down</b>, and Campbell looks at <b>the monitored behavior itself being distorted</b>. First, a few scenes where shadows got painted over.</p>
+
+  <div class="eg" data-ic="🛌"><span data-illus="c17_achieve"></span><div class="egt"><b>Achievement grinding (games)</b> “Total of 10,000 kills” was meant to encourage players to go deeper, but some leave the game idling to farm monsters and some use a bug to trigger kills over and over. Achievement points went up, and the enjoyment of play did not.</div></div>
+  <div class="eg" data-ic="📝"><span data-illus="c17_exam"></span><div class="egt"><b>Teaching to the test (daily life)</b> Judge teachers by exam pass rate and they spend class time entirely on the exam points. The pass rate is the shadow of “has learned,” and once the shadow is rewarded, guessing the questions pays better than making things understood. This is a classic example Campbell and many later education researchers discussed again and again.</div></div>
+  <div class="eg" data-ic="🎁"><span data-illus="c17_login"></span><div class="egt"><b>Daily active users (games)</b> Make “daily actives” the core KPI and the most convenient move for a designer is “a reward just for logging in.” Many people claim it and quit; daily actives go up, the number of people actually playing doesn’t, and satisfaction surveys even go down.</div></div>
+  <div class="eg bad" data-ic="🍦"><span data-illus="c17_icecream"></span><div class="egt"><b>Counterexample: ice cream and drowning</b> Statistics show that in months when more ice cream is sold, more people also drown. This is “correlation is not causation”: both are pushed up by hot weather, and nobody is treating either as a target to optimize, so it is not Goodhart.</div></div>
+  <div class="eg bad" data-ic="🌡️"><span data-illus="c17_thermo"></span><div class="egt"><b>Counterexample: body temperature</b> A doctor uses temperature to judge whether you have a fever. Temperature too is a shadow of “health,” but nobody changes their temperature to earn a reward, so the metric is stable and reliable. Goodhart warns about “after it is rewarded,” not about every metric.</div></div>
+
+  
+  <div class="sec"><span class="n">2</span><h2><span class="tag what">What it is</span>Is this Goodhart? First, learn to tell</h2></div>
+  <p>Not every “numbers gone wrong” is called Goodhart. One question is enough to decide: <b>has someone taken a proxy metric as the target to optimize, so that it has come loose from the real goal?</b> You judge the four scenes below.</p>
+  <div class="card c17judge" id="c17judge">
+    <div class="row" data-ans="1"><div class="q"><b>①</b> The team makes next-day retention the KPI, and the designers add “miss a day and your streak breaks and the rewards are wiped.” Retention goes up, but players say they feel “held hostage.”</div><button class="chip" data-v="1">Yes</button><button class="chip" data-v="0">No</button><div class="fb">Yes. Retention is the shadow of “players like this game,” and once it was rewarded, the team found a shortcut for pushing retention up: make people afraid not to log in. The number looks good and the goal is lost.</div></div>
+    <div class="row" data-ans="0"><div class="q"><b>②</b> The server stutters now and then, and player ratings fall with it.</div><button class="chip" data-v="1">Yes</button><button class="chip" data-v="0">No</button><div class="fb">No. The drop in ratings is a true reflection of a real problem, and nobody is “optimizing the rating.” The metric hasn’t been distorted, and is faithfully sounding the alarm.</div></div>
+    <div class="row" data-ans="1"><div class="q"><b>③</b> The top 100 on the leaderboard get a rare avatar, and small groups appear that do nothing but boost each other’s scores.</div><button class="chip" data-v="1">Yes</button><button class="chip" data-v="0">No</button><div class="fb">Yes. Rank is the shadow of “plays well,” the avatar is a reward for the shadow, and trading boosts is the cheapest shortcut.</div></div>
+    <div class="row" data-ans="0"><div class="q"><b>④</b> Data shows that on rainy days noticeably more people log in.</div><button class="chip" data-v="1">Yes</button><button class="chip" data-v="0">No</button><div class="fb">No. On rainy days people stay at home, a common cause, the same kind of thing as ice cream and drowning. Nobody is pushing the login count up for a reward.</div></div>
+    <div class="msg" id="c17jmsg">A summary appears after all four.</div>
+  </div>
+
+  
+  <div class="sec"><span class="n">3</span><h2><span class="tag origin">How it was invented</span>Why does a steady regularity let go the moment it is “grabbed”?</h2></div>
+
+  <div class="story">
+    <h3>It begins with monetary policy</h3>
+    <p><b>The problem.</b> In the 1970s, British policymakers wanted to bring inflation down. They had a statistical regularity that looked very steady: in past data, a certain money aggregate was closely tied to prices and incomes. The natural thought was: if the two move together this tightly, then if I control the money supply, prices will be stable.</p>
+    <p><b>Guess first.</b> The policymakers did go and control the money supply. What do you think happened to that regularity that had been so steady?</p>
+    <div class="c17guess" id="c17g1" data-ok="2">
+      <button class="chip" data-fb="No. If so, this chapter wouldn’t exist.">The regularity held, and prices stayed steady</button>
+      <button class="chip" data-fb="Not that either. The regularity didn’t slowly weaken; it was changed by people’s reactions.">The regularity slowly weakened but stayed predictable</button>
+      <button class="chip" data-fb="Right.">The regularity loosened: money supply and prices no longer related in the old way</button>
+      <div class="c17fb"></div>
+    </div>
+    <p><b>Why it failed.</b> That regularity had been observed in an age when nobody was specifically watching it. Once the government made the money supply a control target, banks, firms and the public changed their behavior to adapt to and get around the controls. The regularity was a by-product of people’s behavior, and when the behavior changed, the by-product was gone. In a 1975 paper Goodhart wrote the lesson in one sentence: <b>any observed statistical regularity will tend to collapse once pressure is placed upon it for control purposes.</b></p>
+    <div class="timeline">
+      <div class="ev hasimg"><span data-illus="c17_money"></span><div><b class="yr">1975</b> The British economist Charles Goodhart wrote “Problems of Monetary Management: The U.K. Experience” for a conference of the Reserve Bank of Australia, and wrote the sentence above. He was talking about statistical regularities in monetary policy, not about games, and not about “metrics” in the general sense.</div></div>
+      <div class="ev hasimg"><span data-illus="c17_crime"></span><div><b class="yr">1976 / 1979</b> In “Assessing the Impact of Planned Social Change,” the American psychologist Donald T. Campbell ran into the same thing from another direction: the more a quantitative social indicator is used for decisions, the more subject it is to corruption pressures, and the more it distorts the process it was meant to monitor. His examples included under-recording and downgrading in crime statistics.</div></div>
+      <div class="ev hasimg"><span data-illus="c17_audit"></span><div><b class="yr">1997</b> In a paper on evaluating British universities, the anthropologist Marilyn Strathern wrote the short line that later spread the furthest: <b>“When a measure becomes a target, it ceases to be a good measure.”</b> So this popular version is not Goodhart’s own wording, but a later summary.</div></div>
+      <div class="ev hasimg"><span data-illus="c17_boat"></span><div><b class="yr">2016</b> OpenAI’s blog post “Faulty Reward Functions in the Wild” (Jack Clark and Dario Amodei) showed odd behavior by an AI in the boat-racing game CoastRunners: the game scored hitting targets along the course, so the AI circled in a lagoon hitting targets, scoring on average 20% higher than human players and never crossing the finish line.</div></div>
+      <div class="ev hasimg"><span data-illus="c17_genie"></span><div><b class="yr">2020</b> DeepMind’s blog (Krakovna et al., April 21) gathered a large number of AI cases under the name “<span class="term" tabindex="0" data-def="Specification gaming: an agent satisfies the reward or metric you wrote down literally, without doing what you really wanted."><b>specification gaming</b></span>”: an agent meets the goal you wrote literally and does not do what you really wanted. This was more than forty years after Goodhart’s 1975 paper, and it was the same wall again.</div></div>
+    </div>
+    <p><b>The key insight.</b> Monetary policy, social evaluation and artificial intelligence, three fields unaware of each other, independently ran into the same thing: <b>a proxy metric stands for the goal only while nobody is specifically optimizing it; rewarding it is an invitation to optimizers to look for the cheapest shortcut.</b> Game designers hand out rewards every day, and so issue such invitations every day.</p>
+    <div class="src">Sources: Goodhart, “Problems of Monetary Management: The U.K. Experience”, <i>Papers in Monetary Economics</i> Vol.1, Reserve Bank of Australia (1975), reprinted in 1981 in Courakis (ed.); Campbell, “Assessing the Impact of Planned Social Change”, <i>Evaluation and Program Planning</i> 2(1): 67–90 (1979; Dartmouth College Occasional Paper #8, 1976); Strathern, “‘Improving ratings’: audit in the British University system”, <i>European Review</i> 5(3): 305–321 (1997); Clark &amp; Amodei, “Faulty Reward Functions in the Wild”, OpenAI (2016), the source of the “20%”; Krakovna et al., “Specification gaming: the flip side of AI ingenuity”, DeepMind (2020). Strathern credits the line to Keith Hoskin; this rests on the retelling in the Wikipedia entry “Goodhart’s law,” and we did not consult the original directly.</div>
+  </div>
+
+  
+  <div class="sec"><span class="n">4</span><h2><span class="tag origin">How it was invented</span>You be the boat-racing AI</h2></div>
+  <p>Why would an AI do something that silly? Be one yourself and you will see. The rules (illustrative): you have <b>12 turns</b> and the aim is a high score. Each turn you have two actions:</p>
+  <ul>
+    <li><b>Sail to the next marker</b> (costs 2 turns): passing a marker scores 10, reaching the 5th marker (the finish) scores 20 and completes the race;</li>
+    <li><b>Hit the glowing targets in the lagoon</b> (costs 1 turn): scores 10, and the target immediately respawns.</li>
+  </ul>
+  <div class="board">
+    <svg viewBox="0 0 700 306" width="100%" id="c17boat" role="img" aria-label="Boat-race schematic: the course with five markers at the top, and below it the lagoon targets that can be hit again and again">
+      <g class="rough" stroke="#2b2b3a" stroke-width="3.5">
+        
+        <ellipse cx="190" cy="200" rx="130" ry="58" fill="#cfeaf8"/>
+      </g>
+      <g id="c17cps" font-size="16" text-anchor="middle"></g>
+      <g id="c17lag">
+        <circle cx="130" cy="190" r="13" fill="#ffe58a" stroke="#2b2b3a" stroke-width="3"><animate attributeName="r" values="11;15;11" dur="1.1s" repeatCount="indefinite"/></circle>
+        <circle cx="200" cy="225" r="13" fill="#ffe58a" stroke="#2b2b3a" stroke-width="3"><animate attributeName="r" values="11;15;11" dur="1.1s" begin=".3s" repeatCount="indefinite"/></circle>
+        <circle cx="250" cy="180" r="13" fill="#ffe58a" stroke="#2b2b3a" stroke-width="3"><animate attributeName="r" values="11;15;11" dur="1.1s" begin=".6s" repeatCount="indefinite"/></circle>
+      </g>
+      <text x="190" y="288" font-size="16" text-anchor="middle" fill="#2b2b3a">Lagoon: targets keep respawning</text>
+      <g id="c17ship" style="transition:transform .5s ease" transform="translate(60 70)"><text font-size="36" text-anchor="middle" y="12">🚤</text></g>
+      <g id="c17pop" font-size="22" fill="#1f7a35" text-anchor="middle"></g>
+    </svg>
+    <div class="c17boatbtns">
+      <button class="btn green" id="c17go">➡️ Sail to the next marker (2 turns)</button>
+      <button class="btn pink" id="c17hit">🔁 Hit lagoon targets (1 turn, +10)</button>
+      <button class="btn alt" id="c17re">↺ Restart</button>
+    </div>
+    <label class="chk" style="display:inline-flex;gap:6px;margin-top:6px"><input type="checkbox" id="c17rule"> Try a different reward: only “finishing the race” gives 100 points, nothing else scores</label>
+    <div style="margin-top:6px"><span class="stat">Turns left <b id="c17t">12</b></span><span class="stat">Score <b id="c17s">0</b></span><span class="stat">Finished the race? <b id="c17f">No</b></span></div>
+    <div class="msg" id="c17msg">Try first: how would you get the highest score?</div>
+  </div>
+  <div class="sticky c17task" id="c17task1">Try it: ① with the default reward, score over 100; ② then tick “Try a different reward” and finish the race. Do both and you will see the task ticked off.</div>
+  <p class="small">The numbers are our own teaching illustration, to show the shape of “the shortcut pays more.” In the real CoastRunners, what the agent learned was to circle in a small patch of water, repeatedly hitting targets along the way and picking up power-ups, scoring higher than human players and never finishing the race (as described by OpenAI 2016 and DeepMind 2020).</p>
+
+  
+  <div class="sec"><span class="n">5</span><h2><span class="tag why">Why it works</span>Why does a correlation collapse under pressure?</h2></div>
+
+  <div class="withimg rev">
+    <span data-illus="c17_shortcut"></span>
+    <div>
+      <p>You might think the players have “turned bad.” They haven’t; think it through and the key becomes clear: a metric can stand for the goal because, when nobody is specifically watching it, the two are driven by <b>one and the same thing</b>. A player who loves exploring both explores more and picks up more along the way, with one cause behind both: curiosity. What you measure is a result, not a cause.</p>
+      <p>When you reward the collectible count, a new cause appears: <b>collecting for the reward</b>. It can push the number up alone, without pushing the exploration experience. The link between the two holds only in the range where nobody is optimizing, and once effort goes into the shortcut, the link snaps.</p>
+      <p>And optimizers compare costs. To get the same 100 points, really exploring takes an afternoon and the shortcut takes five minutes. Who would choose the former?</p>
+    </div>
+  </div>
+
+  <div class="c17fig">
+    <svg viewBox="0 0 760 290" width="100%" role="img" aria-label="Causal diagram: on the left with no reward, curiosity drives both exploration experience and collectible count; on the right after rewarding collectibles, the new “collect for reward” drives only the collectible count">
+      <defs><marker id="ah17b" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#2b2b3a"/></marker><marker id="ah17r" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#c4202a"/></marker></defs>
+      <g class="rough" stroke="#2b2b3a" stroke-width="3.5">
+        <rect x="120" y="50" width="120" height="44" rx="12" fill="#ffe58a"/><rect x="20" y="170" width="140" height="44" rx="12" fill="#eaf9e4"/><rect x="200" y="170" width="140" height="44" rx="12" fill="#e8f6fc"/>
+        <rect x="410" y="50" width="120" height="44" rx="12" fill="#ffe58a"/><rect x="400" y="170" width="140" height="44" rx="12" fill="#eaf9e4"/><rect x="590" y="170" width="150" height="44" rx="12" fill="#e8f6fc"/>
+        <rect x="610" y="50" width="130" height="44" rx="12" fill="#ffe9ef" stroke="#c4202a"/>
+        <g fill="none" stroke-linecap="round">
+          <path d="M150 96 L100 166" marker-end="url(#ah17b)"/><path d="M215 96 L265 166" marker-end="url(#ah17b)"/>
+          <path d="M440 96 L480 166" marker-end="url(#ah17b)"/><path d="M505 96 L610 166" marker-end="url(#ah17b)"/>
+          <path d="M690 96 L675 166" stroke="#c4202a" marker-end="url(#ah17r)" stroke-width="4"/>
+        </g>
+      </g>
+      <g font-size="17" text-anchor="middle" fill="#2b2b3a">
+        <text x="180" y="78">Curiosity</text><text x="90" y="198">Exploration</text><text x="270" y="198">Collectible count</text>
+        <text x="470" y="78">Curiosity</text><text x="470" y="198">Exploration</text><text x="665" y="198">Collectible count</text><text x="675" y="78" fill="#c4202a">Collect for reward</text>
+        <text x="180" y="30" font-weight="700">Nobody watching: one cause drives both → correlated</text><text x="570" y="30" font-weight="700">After the reward: a new cause drives only the metric</text>
+        <text x="180" y="256">Collectible count ≈ exploration</text><text x="570" y="256" fill="#c4202a">Collectibles up, exploration not → weaker link</text>
+      </g>
+    </svg>
+  </div>
+
+  <p>If such a shortcut keeps existing, things get worse and worse, because it comes with a loop of its own:</p>
+  <div class="c17fig">
+    <svg viewBox="0 0 720 300" width="100%" role="img" aria-label="Vicious-circle schematic: reward a metric, someone finds a shortcut, the metric rises while the goal doesn’t, the team sees the goal unmet and raises the reward, and the shortcut gets more refined">
+      <defs><marker id="ah17c" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#2b2b3a"/></marker></defs>
+      <g class="rough" stroke="#2b2b3a" stroke-width="4">
+        <rect x="20" y="20" width="210" height="64" rx="16" fill="#e8f6fc"/>
+        <rect x="490" y="20" width="210" height="64" rx="16" fill="#fff7cf"/>
+        <rect x="490" y="216" width="210" height="64" rx="16" fill="#ffe9ef"/>
+        <rect x="20" y="216" width="210" height="64" rx="16" fill="#f1eaff"/>
+        <g fill="none" stroke-linecap="round" stroke-width="4">
+          <path d="M236 52 L484 52" marker-end="url(#ah17c)"/><path d="M595 90 L595 210" marker-end="url(#ah17c)"/>
+          <path d="M484 248 L236 248" marker-end="url(#ah17c)"/><path d="M125 210 L125 90" marker-end="url(#ah17c)"/>
+        </g>
+      </g>
+      <g font-size="18" text-anchor="middle" fill="#2b2b3a">
+        <text x="125" y="60">Reward a metric</text>
+        <text x="595" y="60">Someone finds a shortcut</text>
+        <text x="595" y="256">Metric up, goal not</text>
+        <text x="125" y="244">Team sees goal unmet</text><text x="125" y="268" font-size="16">So: raise the stakes, watch closer</text>
+        <text x="360" y="140" font-size="22" font-weight="700">Each lap around</text><text x="360" y="172" font-size="22" font-weight="700">the shortcut gets more refined</text>
+      </g>
+    </svg>
+  </div>
+
+  <p>Goodhart failure comes in more than one form. In 2018, David Manheim and Scott Garrabrant sorted it into at least four mechanisms. Click through and see what each looks like:</p>
+  <div class="eg" data-ic="🗺️"><span data-illus="c17_route"></span><div class="egt"><b>Adversarial: the guide route (games)</b> Someone actively looks for ways to make the metric look good, and finds the cheapest. Run once along a guide route and you can fill the collectibles, with no need to look at the scenery on the way.</div></div>
+  <div class="eg" data-ic="🏆"><span data-illus="c17_leader"></span><div class="egt"><b>Regressional: the leaderboard (games)</b> The metric contains noise. Pick the “strongest players” from the top 10% of a leaderboard as testers, and the board has let in many who got up by luck, who aren’t really that far ahead in real skill.</div></div>
+  <div class="eg" data-ic="📈"><span data-illus="c17_extreme"></span><div class="egt"><b>Extremal: pushed to the end (games)</b> A relation that holds in the ordinary range fails when pushed to the extreme. “A few more collectibles is more fun” does not mean “ten thousand collectibles is more fun.”</div></div>
+  <div class="eg" data-ic="🧊"><span data-illus="c17_thermoice"></span><div class="egt"><b>Causal: the thermometer in ice water (daily life)</b> What you intervene on is only the metric, not the cause of the goal. Put a thermometer in ice water and the reading drops, while the weather hasn’t gotten colder.</div></div>
+  <div class="eg bad" data-ic="📏"><span data-illus="c17_offset"></span><div class="egt"><b>Counterexample: a thermometer reading two degrees high</b> Every reading is 2 degrees too high, a measurement error. It makes the metric inaccurate, but nobody is applying optimization pressure to the readings, the cause is different, and it isn’t Goodhart.</div></div>
+
+  <div class="why-box">
+    <h3>Source of the theory and the classification</h3>
+    <p><b>Goodhart (1975)</b>: a statistical regularity tends to collapse once it is used as a means of control. <b>Campbell (1976/1979)</b>: the more a metric is used for decisions, the more it is subject to corruption pressure. <b>Manheim &amp; Garrabrant (2018)</b> in “Categorizing Variants of Goodhart’s Law” separate “optimization decoupling the metric from the goal” into at least four kinds. The four descriptions above are our popular summaries of them, not the original definitions.</p>
+    <p>This “law” is more a rule of thumb than a law of physics: it doesn’t guarantee that every metric will be gamed, only warns that when the reward is big, the shortcut is cheap and nobody is watching, the chance of being gamed is large.</p>
+    <p class="src">Preprint: arXiv:1803.04585. The field has other ways of dividing it; see the original for the details.</p>
+  </div>
+
+  
+  <div class="sec"><span class="n">6</span><h2><span class="tag why">Why it works</span>Verification experiment: raising optimization pressure bit by bit</h2></div>
+  <p>Each dot is a player. The horizontal axis is the metric score and the vertical axis is the real goal score. Drag the slider to turn the players from “playing naturally” into “single-mindedly farming the metric,” and watch the cloud of points and the correlation coefficient r.</p>
+  <div class="board">
+    <label for="opt17"><b>Optimization strength:</b><span id="optlab">0% (natural)</span></label>
+    <input class="c17rng" type="range" id="opt17" min="0" max="100" value="0">
+    <svg viewBox="0 0 700 424" width="100%" id="sc" role="img" aria-label="Scatter plot: as optimization strength increases, the correlation between the metric and the real goal falls"></svg>
+    <div>
+      <span class="stat">Correlation r <b id="rv">–</b></span>
+      <span class="stat">Mean metric <b id="mp">–</b></span>
+      <span class="stat">Mean real <b id="mt">–</b></span>
+      <span class="stat">Real mean of the top 10% by metric <b id="tp">–</b></span>
+    </div>
+    <div class="msg" id="smsg"></div>
+    <p class="small">This is an <b>illustrative simulation</b>, not measured data. The model: each person puts a fraction e (strength × personal tendency) of their effort into the shortcut, real score = (1−e) × natural level, metric = (1−e) × natural level + e × shortcut payoff + noise; the shortcut payoff has nothing to do with the natural level. r is the <span class="term" tabindex="0" data-def="Pearson correlation coefficient: a measure of how close two sets of numbers come to a straight line; 1 means they rise and fall together perfectly, 0 means no pattern can be seen.">Pearson correlation coefficient</span> computed live from the 70 points in the chart.</p>
+  </div>
+  <div class="sticky c17task" id="c17task2">Try it: push the strength all the way to 100% until the “real mean of the top 10% by metric” is lower than the “mean real.” It means: the “strongest” players picked by the leaderboard are worse at what you really care about than an ordinary person drawn at random.</div>
+  <p>How to read it: at the start r is close to 1, and picking people by the metric is almost like picking them by the real goal. As the strength rises, <b>the mean metric goes up while the mean real goes down</b>: the numbers look better and the thing gets worse. The last box says the most: the “strongest” players you pick from the leaderboard may be worse than ordinary players at what you care about.</p>
+  <p class="small">Pearson correlation r = Σ(x−x̄)(y−ȳ) ÷ √[Σ(x−x̄)² · Σ(y−ȳ)²], between −1 and 1; the closer it is to 0, the harder it is to infer how high the real goal is from how high the metric is.</p>
+
+  <div class="c17fig">
+    <svg viewBox="0 0 700 250" width="100%" role="img" aria-label="Cost comparison schematic: to push the metric to the same score, the cost of the shortcut is far lower than really playing, so optimizers choose the shortcut">
+      <g class="rough" stroke="#2b2b3a" stroke-width="3.5">
+        <rect x="150" y="56" width="440" height="44" rx="10" fill="#b6e8a8"/><rect x="150" y="136" width="44" height="44" rx="10" fill="#ffc9c9"/>
+      </g>
+      <g font-size="18" fill="#2b2b3a">
+        <text x="14" y="84">Explore</text><text x="14" y="164">Shortcut</text>
+        <text x="600" y="84" font-size="16">High cost</text><text x="204" y="164" font-size="16">Low cost</text>
+        <text x="350" y="30" font-weight="700" text-anchor="middle">The price to pay for pushing “collectible count” to the same score (illustrative)</text>
+        <text x="350" y="224" font-weight="700" fill="#c4202a" text-anchor="middle">Optimizers compare cost, so the shortcut always wins</text>
+      </g>
+    </svg>
+  </div>
+
+  
+  <div class="sec"><span class="n">7</span><h2><span class="tag why">Why it works</span>Rewards also wear down interest: another kind of distortion beyond the numbers</h2></div>
+  <div class="withimg">
+    <span data-illus="c17_kids"></span>
+    <div>
+      <p>So far, what we have worried about is the metric being distorted. Rewards bring another trouble: they can change a person’s <b>reason</b> for doing the thing. Remember the idea from the discussion of player motivation: something a person does out of interest, once an external reward is added, may have its interest swapped for “for the reward.” Psychology calls this the <span class="term" tabindex="0" data-def="Overjustification effect: when an external reward is added to an activity done out of interest, interest in doing it once the reward is gone may fall.">overjustification effect</span>.</p>
+      <p>The two distortions together make a mess: rewarding a number both invites shortcuts and quietly swaps “I want to play” for “I want to score.”</p>
+    </div>
+  </div>
+  <p><b>Guess first.</b> In 1973, at a Stanford nursery school, researchers found children who already loved drawing with colored markers; some were told in advance that “drawing earns a certificate,” and some were not. A week or two later everyone was back in free play, with no certificates. Which group do you think spent less time picking up the markers on their own?</p>
+  <div class="c17guess" id="c17g2" data-ok="0">
+    <button class="chip" data-fb="Right.">Those told in advance about the certificate</button>
+    <button class="chip" data-fb="Not so. The time the uninformed children spent drawing didn’t change much.">Those not told</button>
+    <button class="chip" data-fb="Not so. There was a clear difference between the groups, and in the direction of the informed group drawing less.">About the same</button>
+    <div class="c17fb"></div>
+  </div>
+  <div class="why-box">
+    <h3>The overjustification effect</h3>
+    <p>This is the classic 1973 experiment by Lepper, Greene and Nisbett. The explanation at the time: seeing their drawing earn a certificate, children easily read “why am I drawing” as “for the certificate,” and the original interest is covered by this new reason. The study also had a control group: children who didn’t know beforehand and received a certificate unexpectedly afterward showed no clear loss of interest. The harm comes from the expectation “I am doing it for the reward.”</p>
+    <p>There is dispute. In 1999 Deci, Koestner and Ryan pooled 128 experiments and held that external rewards (especially tangible, announced-in-advance ones) generally weaken intrinsic motivation; Cameron and Pierce and others analyzed with another method and reached much milder conclusions, and the two sides still disagree on method. One way to take it: rewards are not poison, but for an activity done out of interest, hand them out with special care.</p>
+    <p>This and Goodhart are two complementary views: Goodhart says “numbers get gamed,” and overjustification says “people change.”</p>
+    <div class="src">Sources: Lepper, Greene &amp; Nisbett, “Undermining children’s intrinsic interest with extrinsic reward: A test of the ‘overjustification’ hypothesis”, <i>Journal of Personality and Social Psychology</i> 28(1): 129–137 (1973); Deci, Koestner &amp; Ryan, <i>Psychological Bulletin</i> 125(6): 627–668 (1999).</div>
+  </div>
+
+  
+  <div class="sec"><span class="n">8</span><h2><span class="tag how">How to use it</span>Designing metrics and rewards that are hard to game</h2></div>
+  <div class="withimg rev">
+    <span data-illus="c17_dash"></span>
+    <div>
+      <p>First admit one thing: <b>you can’t get rid of metrics, and shouldn’t.</b> A team needs numbers to communicate, and without metrics all that is left is gut feeling. So the goal is not to find a “perfect metric,” but to make a metric hard to push up by itself, and to catch it early when it is distorted.</p>
+      <p>There are four common moves.</p>
+    </div>
+  </div>
+  <div class="grid2">
+    <div class="card y"><h3>1. Balance with several metrics</h3><p>Watch several metrics <b>that hold each other in check and differ in nature</b>, such as retention + a player satisfaction survey + interviews about why people leave, so that gaming any one of them inevitably hurts another.</p></div>
+    <div class="card b"><h3>2. Keep qualitative observation</h3><p>Regularly watch real people play, recordings and the community’s own words. Numbers tell you what happened, and only people can tell you why, and whether it is what you wanted.</p></div>
+    <div class="card g"><h3>3. Tie rewards to the behavior itself</h3><p>Reward “doing something meaningful” (finding the secret of a hidden area), not “the number is big enough.” A design that lets people repeat something just for the number is the easiest to game.</p></div>
+    <div class="card p"><h3>4. Rotate and audit regularly</h3><p>Once a metric has been used a while, people learn its tricks. Spot-check for anomalies (a metric soaring without matching player feedback), rotate, and recheck the metric definitions.</p></div>
+  </div>
+  <p>Also beware the stacking effect from earlier: attaching points and rewards to an activity done out of interest easily steps into both the Goodhart and the overjustification pits at once.</p>
+
+  <h3>🎯 Signature interactive: the achievement-system design challenge</h3>
+  <p><b>The real goal: get players to truly explore this world.</b> Pick one or more metrics for the achievements (click to stack, click again to remove), and the simulation lets three kinds of players each play through:</p>
+  <ul>
+    <li><b>The natural player</b>: plays by curiosity, not especially bothered about the metric.</li>
+    <li><b>The efficient score-farmer</b>: sees through the metric and pushes it to the maximum at the least cost in play.</li>
+    <li><b>The idle script</b>: writes a program that runs automatically all day.</li>
+  </ul>
+  <div class="board">
+    <div class="c17chips" id="mchips"></div>
+    <div id="mdesc" class="small"></div>
+    <div id="mout"></div>
+    <p class="small">All numbers are teaching <b>illustrative assumptions</b> (relative scores from 0 to 100) meant to show the shape of the loopholes, not measurements from a real game; when several metrics are stacked, the average of the metrics’ scores is taken. In a real project these numbers have to be checked with data and playtests.</p>
+  </div>
+  <div class="sticky c17task" id="c17task3">Try it: find a combination in which “ranking by metric” and “ranking by real exploration” match exactly, with an average gap below 10. Hint: stacking metrics of the same kind doesn’t help; add one of a different nature.</div>
+
+  <div class="misc">
+    <h3>Common misconceptions</h3>
+    <ul>
+      <li><b>“Just swap in a different metric.”</b> As long as there is a reward, the new metric will sooner or later be optimized too. A better way is several metrics, qualitative checks and regular rotation, not hunting for a “perfect metric.”</li>
+      <li><b>“Players gaming the score is the players’ fault.”</b> Players are only responding reasonably to the incentive you set. When you find gaming, first ask “what is my reward encouraging?”</li>
+      <li><b>“So don’t use data, make games by feel.”</b> Goodhart warns against “taking a single number as the only goal,” not against “measuring.” Going by gut feeling without data goes astray too.</li>
+      <li><b>“That sentence is Goodhart’s own words.”</b> The popular version is a later summary (Strathern 1997 is often cited), and Goodhart’s 1975 original meaning concerned statistical regularities and monetary control.</li>
+    </ul>
+  </div>
+
+  <div class="reflect">
+    <h3>Reflection and debate</h3>
+    <p><b>Is it a “law”?</b> Strictly speaking, it is more a rule of thumb. “A metric will always get gamed” does not always hold: some metrics stay useful for a very long time, depending on the cost of gaming, the strength of oversight and people’s motivation.</p>
+    <p><b>Who proposed it first?</b> Goodhart (1975) and Campbell (1976/1979) came almost at the same time, each independently, with different emphases; some (Jeff Rodamar) think certain statements of Campbell’s can be traced to 1969. Calling them all “Goodhart’s law” is a popular habit, and extending it to game design is an analogy more than a conclusion accepted in the field.</p>
+    <p><b>Another view: the play that players game their way into can be a good game too.</b> Some argue that <span class="term" tabindex="0" data-def="Min-max: piling resources into the most effective direction to get the maximum theoretical payoff.">min-max</span> play, speedrunning and finding exploits are themselves part of game culture, and designers should not simply treat them as “fun that was optimized away.” Whether it is a problem depends on what your real goal is.</p>
+    <p><b>How it might change how you see things:</b> next time you see “daily actives,” “clear rate” or “positive review rate,” ask first: what is it standing for? Is anyone specifically pushing it? What is the cheapest way to push it?</p>
+  </div>
+
+  <div class="key">
+    <h3>Key points</h3>
+    <ul>
+      <li>A metric is a <b>proxy</b> for the real goal, and the two are roughly correlated only when “nobody is specifically optimizing the metric.”</li>
+      <li>Goodhart (1975, monetary policy) and Campbell (1976/1979, social indicators): once a metric is used as a target or reward, optimizers look for <b>the cheapest shortcut</b> and the correlation collapses; Strathern’s (1997) short line is a later summary.</li>
+      <li>Mechanism: normally the two are pushed by one cause, and after the reward there is a new cause that pushes only the metric; the process comes with its own escalation loop.</li>
+      <li>Rewards also swap out a person’s reason for acting (the overjustification effect), and distorted numbers and distorted motivation often stack together.</li>
+      <li>Responses: <b>balance with several metrics (varied ones), keep qualitative observation, tie rewards to the behavior itself, audit and rotate regularly</b>, instead of looking for a “perfect metric.”</li>
+    </ul>
+  </div>
+  <div class="tldr">Numbers are only the shadow of a goal; once the shadow is rewarded, someone will paint the shadow instead of walking toward the body.</div>
+
+  
+  <div class="sec"><span class="n">9</span><h2><span class="tag think">Practice</span>Quick quiz</h2></div>
+  <div id="quiz"></div>
+
+  <div class="sec"><span class="n">10</span><h2><span class="tag how">Your design</span>Find a number that can be exploited</h2></div>
+  <div class="card o">
+    <p>Pick a game you have played (or one you are designing) and write down: <b>(1) What number does it reward? (2) What real goal is it meant to stand for? (3) How would someone who wants to exploit the number go about it? (4) How would you change the reward to make the shortcut less worthwhile?</b></p>
+    <textarea rows="6" data-save="ch17" placeholder="Example: a mobile game’s “daily login reward”&#10;Goal it stands for: players like the game&#10;Exploit: log in, claim, log out&#10;Fix: …"></textarea>
+    <p class="small">✍️ Saved automatically in your browser.</p>
+  </div>
+</main>
+<script src="../js/illus.js"></script>
+<script src="../js/illus-ch17.js"></script>
+<script src="../js/en/illus.js"></script>
+<script src="../js/en/illus-lib.js"></script>
+<script src="../js/en/illus-ch17.js"></script>
+<script src="../js/common.js"></script>
+<script>
+const $ = id => document.getElementById(id);
+
+function c17done(id, text) {
+  const el = $(id); if (!el || el.classList.contains("ok")) return;
+  el.classList.add("ok"); el.insertAdjacentHTML("beforeend", " <b>✅ " + text + "</b>");
+}
+
+document.querySelectorAll(".c17guess").forEach(g => {
+  const ok = +g.dataset.ok, fb = g.querySelector(".c17fb"), chips = [...g.querySelectorAll(".chip")];
+  const reveal = {
+    c17g1: "<b>Revealed:</b> The regularity loosened. Once the money supply became a control target, people changed their behavior to adapt to it, and the relationship that had looked so steady was no longer steady. This is Goodhart’s original finding.",
+    c17g2: "<b>Revealed:</b> The children told in advance about the certificate drew less in free time afterward. Children who got a certificate unexpectedly showed no such drop. The difference comes from the expectation “I am doing it for the reward.”"
+  }[g.id];
+  chips.forEach((c, i) => c.onclick = () => {
+    chips.forEach(x => x.classList.remove("right", "wrong"));
+    c.classList.add(i === ok ? "right" : "wrong");
+    chips[ok].classList.add("right");
+    fb.innerHTML = (i === ok ? "Right guess." : "") + (c.dataset.fb && c.dataset.fb !== "Right." ? c.dataset.fb + "<br>" : "") + reveal;
+    g.classList.add("done");
+  });
+});
+
+(function () {
+  const rows = [...document.querySelectorAll("#c17judge .row")], got = rows.map(() => null);
+  rows.forEach((r, i) => {
+    const ans = +r.dataset.ans;
+    r.querySelectorAll(".chip").forEach(b => b.onclick = () => {
+      if (got[i] !== null) return;
+      const right = +b.dataset.v === ans; got[i] = right;
+      b.classList.add(right ? "right" : "wrong");
+      r.classList.add("done");
+      const n = got.filter(x => x !== null).length;
+      if (n === rows.length) {
+        const k = got.filter(Boolean).length;
+        $("c17jmsg").textContent = k === 4 ? "🎉 All four right: you can now tell “an optimized shadow” from “some other number problem.”" : "You got " + k + " / 4 right. The key question: is anyone pushing this number up for the reward?";
+      }
+    });
+  });
+})();
+
+function pearson(xs, ys) {
+  const n = xs.length;
+  let mx = 0, my = 0;
+  for (let i = 0; i < n; i++) { mx += xs[i]; my += ys[i]; }
+  mx /= n; my /= n;
+  let sxy = 0, sxx = 0, syy = 0;
+  for (let i = 0; i < n; i++) {
+    const dx = xs[i] - mx, dy = ys[i] - my;
+    sxy += dx * dy; sxx += dx * dx; syy += dy * dy;
+  }
+  if (sxx === 0 || syy === 0) return 0;
+  return sxy / Math.sqrt(sxx * syy);
+}
+
+function mulberry32(a) {
+  return function () {
+    a |= 0; a = (a + 0x6D2B79F5) | 0;
+    let t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+const rnd = mulberry32(20241);
+const N = 70;
+const pts = [];
+for (let i = 0; i < N; i++) {
+  const nrm = (rnd() + rnd() + rnd() + rnd() - 2) * 1.732; 
+  pts.push({
+    x: 15 + 70 * rnd(),          
+    u: 0.3 + 0.7 * rnd(),        
+    w: 0.5 + 0.5 * rnd(),        
+    n: nrm                       
+  });
+}
+const clamp = v => Math.max(0, Math.min(100, v));
+function simulate(s) {
+  return pts.map(p => {
+    const e = s * p.u;
+    const truth = (1 - e) * p.x;
+    const proxy = clamp((1 - e) * p.x + e * 100 * p.w + 8 * p.n);
+    return { proxy, truth };
+  });
+}
+const SX0 = 70, SX1 = 670, SY0 = 360, SY1 = 20;
+const sx = v => SX0 + (SX1 - SX0) * v / 100;
+const sy = v => SY0 + (SY1 - SY0) * v / 100;
+function drawScatter() {
+  const pct = +$("opt17").value, s = pct / 100;
+  const d = simulate(s);
+  const px = d.map(a => a.proxy), ty = d.map(a => a.truth);
+  const r = pearson(px, ty);
+  const mean = a => a.reduce((p, c) => p + c, 0) / a.length;
+  const idx = d.map((_, i) => i).sort((a, b) => px[b] - px[a]);
+  const topK = Math.round(N * 0.1);
+  const topTruth = mean(idx.slice(0, topK).map(i => ty[i]));
+  const topSet = new Set(idx.slice(0, topK));
+  let h = '<g stroke="#2b2b3a" stroke-width="3" fill="none"><path d="M' + SX0 + ' ' + SY1 + ' V' + SY0 + ' H' + SX1 + '"/></g>';
+  h += '<g font-size="16" fill="#2b2b3a">';
+  [0, 50, 100].forEach(t => {
+    h += '<text x="' + sx(t) + '" y="384" text-anchor="middle">' + t + '</text>';
+    h += '<text x="60" y="' + (sy(t) + 5) + '" text-anchor="end">' + t + '</text>';
+  });
+  h += '<text x="370" y="414" text-anchor="middle">Metric score →</text>';
+  h += '<text x="28" y="190" transform="rotate(-90 28 190)" text-anchor="middle">Real goal score →</text></g>';
+  h += '<g stroke="#2b2b3a" stroke-width="2">';
+  d.forEach((a, i) => {
+    h += '<circle cx="' + sx(a.proxy).toFixed(1) + '" cy="' + sy(a.truth).toFixed(1) + '" r="' + (topSet.has(i) ? 7 : 5.5) + '" fill="' + (topSet.has(i) ? '#ffc078' : '#a8dcf0') + '" fill-opacity=".9"/>';
+  });
+  h += '</g>';
+  h += '<text x="' + (SX1 - 4) + '" y="40" font-size="16" text-anchor="end" fill="#2b2b3a">Orange = top 10% by metric</text>';
+  $("sc").innerHTML = h;
+  $("optlab").textContent = pct + "%" + (pct === 0 ? " (natural)" : pct >= 100 ? " (heavy optimization)" : "");
+  $("rv").textContent = r.toFixed(2);
+  $("mp").textContent = mean(px).toFixed(0);
+  $("mt").textContent = mean(ty).toFixed(0);
+  $("tp").textContent = topTruth.toFixed(0);
+  let msg;
+  if (r > 0.85) msg = "The metric and the real goal are highly correlated: reading the metric is basically reading the goal.";
+  else if (r > 0.5) msg = "The correlation is weakening: among those with a high metric, people who “got there by shortcut” are starting to mix in.";
+  else if (r > 0.2) msg = "The correlation is very weak: looking at the metric alone, it is already hard to tell who is really doing what you want.";
+  else msg = "Almost no correlation: the metric has become a number unrelated to the goal, and the average real level has clearly fallen.";
+  $("smsg").textContent = msg;
+  if (pct > 0 && topTruth < mean(ty)) c17done("c17task2", "You saw it: the real level of the player at the top of the board is below the average.");
+}
+$("opt17").addEventListener("input", drawScatter);
+drawScatter();
+
+const METRICS = [
+  { id: "collect", name: "Collectible count", desc: "Each collectible picked up counts as one step of progress; an achievement is given at a certain total.",
+    p: { nat: [35, 70], grind: [100, 30], bot: [90, 0] },
+    hole: "Collectibles are a “checklist”: run once along a guide route and you can fill it, with no need at all to look at the scenery on the way; a script replaying a fixed route also gets near full marks.",
+    fix: "Don’t give collectible locations as coordinates; make them found by observing clues; or change the reward from “count” to “how many hidden story spots were discovered.”" },
+  { id: "dist", name: "Distance traveled", desc: "Total distance moved; an achievement is given at each mileage mark.",
+    p: { nat: [40, 70], grind: [92, 15], bot: [100, 0] },
+    hole: "Run back and forth on the longest straight road, or have the character run against a wall, and the distance keeps rising; it has nothing to do with “seeing something new.”",
+    fix: "Count only the area of “new grid cells or new places visited,” not total path length, so repeating a route no longer adds points." },
+  { id: "time", name: "Time spent", desc: "Total time online and on the map; an achievement is given at each time mark.",
+    p: { nat: [45, 70], grind: [85, 10], bot: [100, 0] },
+    hole: "Idling pushes it up. Worse, efficient players who “found things too fast” score lower than people who dawdle: the metric punishes the people you want to encourage.",
+    fix: "Count only time with effective input and changing position; or simply don’t use time as a reward." },
+  { id: "area", name: "New areas discovered", desc: "The first time you enter an area on the map counts as 1 discovery; more discoveries score higher.",
+    p: { nat: [70, 70], grind: [100, 45], bot: [25, 3] },
+    hole: "Efficient players can use fast-travel points and brush the edge of an area to tick it off; “entering” is not “having seen,” and someone who studies one large area in depth scores low. A script is relatively hard to use here because it can’t handle unknown terrain.",
+    fix: "Add conditions inside the area such as “has an interaction/photo/note,” and spot-check recordings." },
+  { id: "combo", name: "Combined: meaningful interaction in the area + player survey + sampled recording checks", desc: "A new-area discovery must come with at least one meaningful interaction in the area; on top of that, a player survey asking “do you find the world interesting?” and sampled recording checks.",
+    p: { nat: [68, 70], grind: [40, 45], bot: [5, 3] },
+    hole: "Still has loopholes: the survey can be answered carelessly, the interaction can be imitated by a script, and spot checks take people. But every item gamed costs more, and the payoff of gaming shrinks.",
+    fix: "The point: not “it can’t be gamed,” but “gaming costs about as much as, or more than, really playing.” Add regular audits so the tricks expire." },
+];
+const PLAYERS = [
+  { k: "nat", nm: "🙂 Natural player", note: "Wanders by curiosity, doesn’t mind the reward" },
+  { k: "grind", nm: "⚡ Efficient score-farmer", note: "Sees the rules, pushes the metric up at the least cost" },
+  { k: "bot", nm: "🤖 Idle script", note: "A program that runs around the clock" },
+];
+const sel = new Set();
+function rankOrder(vals) {
+  return PLAYERS.map((p, i) => ({ k: p.k, nm: p.nm, v: vals[i] })).sort((a, b) => b.v - a.v);
+}
+function bar(label, cls, v) {
+  return '<div class="c17bar"><span class="lb">' + label + '</span><span class="tr"><span class="fl ' + cls + '" style="display:block;width:' + v + '%"></span></span><span class="v">' + v + '</span></div>';
+}
+function renderMetrics() {
+  document.querySelectorAll("#mchips .chip").forEach(c => c.classList.toggle("on", sel.has(c.dataset.id)));
+  const Ms = METRICS.filter(m => sel.has(m.id));
+  if (!Ms.length) { $("mdesc").textContent = ""; $("mout").innerHTML = '<p class="msg">👆 First pick a metric (you can stack several) and see how the three kinds of players score.</p>'; return; }
+  $("mdesc").textContent = "Current reward:" + Ms.map(m => m.name).join(" + ") + " (each metric’s scores averaged)";
+  let h = "", gapSum = 0;
+  const ms = [], rs = [];
+  PLAYERS.forEach(p => {
+    const m = Math.round(Ms.reduce((a, M) => a + M.p[p.k][0], 0) / Ms.length), r = Math.round(Ms.reduce((a, M) => a + M.p[p.k][1], 0) / Ms.length);
+    ms.push(m); rs.push(r);
+    const g = m - r; gapSum += Math.abs(g);
+    h += '<div class="c17pl"><div class="nm">' + p.nm + ' <span class="small">' + p.note + '</span></div>' +
+      bar("Metric score", "m", m) + bar("Real exploration", "r", r) +
+      '<div class="c17gap">Gap ' + (g > 0 ? "+" : "") + g + (g >= 50 ? " (metric badly overestimates)" : "") + '</div></div>';
+  });
+  const mo = rankOrder(ms).map(x => x.nm.replace(/^\S+\s/, "")).join(" > ");
+  const ro = rankOrder(rs).map(x => x.nm.replace(/^\S+\s/, "")).join(" > ");
+  const same = mo === ro;
+  const avg = gapSum / PLAYERS.length;
+  h += '<div class="c17verdict"><b>Average gap:' + avg.toFixed(1) + '</b> (smaller is better)<br>' +
+    'Ranked by metric:' + mo + '<br>Ranked by real exploration:' + ro + '<br>' +
+    (same ? '✅ Rankings agree: rewarding this combination won’t put the least wanted players in front.' : '❌ Rankings reversed: this combination rewards “people gaming the score” more than “people truly exploring.”') +
+    '<br><br>' + Ms.map(m => "<b>" + m.name + "</b> Loophole:" + m.hole + "<br>Fix:" + m.fix).join("<br><br>") +
+    (Ms.length > 1 && !sel.has("combo") ? "<br><br>💡 The metrics you stacked can all be gamed by “the same kind of shortcut,” so stacking bought little safety. Try adding one of a different nature, like “Combined.”" : "") + '</div>';
+  $("mout").innerHTML = h;
+  if (same && avg < 10) c17done("c17task3", "Rankings agree, average gap " + avg.toFixed(1) + ".");
+}
+(function () {
+  METRICS.forEach(m => {
+    const b = document.createElement("button");
+    b.className = "chip c17tog"; b.dataset.id = m.id; b.textContent = m.name;
+    b.onclick = () => { if (sel.has(m.id)) sel.delete(m.id); else sel.add(m.id); renderMetrics(); };
+    $("mchips").appendChild(b);
+  });
+  renderMetrics();
+})();
+
+(function () {
+  const CPX = [100, 235, 370, 505, 640], CPY = [64, 52, 78, 52, 70];
+  let turns = 12, score = 0, cp = 0, fin = false, loopHigh = false, finRule2 = false;
+  const cps = $("c17cps");
+  CPX.forEach((x, i) => {
+    cps.insertAdjacentHTML("beforeend", '<g id="c17c' + i + '"><circle cx="' + x + '" cy="' + CPY[i] + '" r="18" fill="#fff" stroke="#2b2b3a" stroke-width="3"/><text x="' + x + '" y="' + (CPY[i] + 6) + '">' + (i === 4 ? "🏁" : (i + 1)) + '</text></g>');
+  });
+  function ship(x, y) { $("c17ship").setAttribute("transform", "translate(" + x + " " + y + ")"); }
+  function pop(x, y, t) {
+    const el = $("c17pop"); el.textContent = ""; el.setAttribute("transform", "translate(" + x + " " + y + ")"); el.textContent = t;
+    setTimeout(() => { if (el.textContent === t) el.textContent = ""; }, 700);
+  }
+  function rule2() { return $("c17rule").checked; }
+  function check() {
+    if (!rule2() && score >= 100) loopHigh = true;
+    if (rule2() && fin) finRule2 = true;
+    if (loopHigh && finRule2) c17done("c17task1", "You walked through “shortcut pays more → change the reward → finish honestly” yourself.");
+  }
+  function upd() {
+    $("c17t").textContent = turns; $("c17s").textContent = score; $("c17f").textContent = fin ? "Yes" : "No";
+    $("c17go").disabled = turns < 2 || fin; $("c17hit").disabled = turns < 1 || fin;
+    for (let i = 0; i < 5; i++) $("c17c" + i).querySelector("circle").setAttribute("fill", i < cp ? "#b6e8a8" : "#fff");
+    check();
+  }
+  function finish() {
+    const r2 = rule2();
+    const bestFin = r2 ? 100 : 4 * 10 + 20 + 20, bestLoop = r2 ? 0 : 12 * 10;
+    $("c17msg").textContent = (fin ? "🏁 You finished the race," : "⏱ Out of turns, and you didn’t finish the race,") + "score " + score + "." +
+      (r2 ? "  With this reward: finishing gives 100, and farming the lagoon until dawn gives 0; the shortcut no longer pays, and the optimizer will honestly sail the course." :
+        "  With this reward: the best finishing route is about " + bestFin + "  points (10 turns sailing + 2 turns in the lagoon), while circling only in the lagoon can reach " + bestLoop + "  points. The optimizer will choose the latter, which is exactly what happened in CoastRunners. Try ticking “Try a different reward” and play again.");
+  }
+  $("c17go").onclick = () => {
+    if (turns < 2 || fin) return;
+    turns -= 2; cp++;
+    const i = cp - 1; ship(CPX[i], CPY[i]);
+    const r2 = rule2();
+    if (cp === 5) { fin = true; score += r2 ? 100 : 20; pop(CPX[i], CPY[i] - 24, r2 ? "+100" : "+20"); }
+    else { score += r2 ? 0 : 10; pop(CPX[i], CPY[i] - 24, r2 ? "+0" : "+10"); }
+    $("c17msg").textContent = fin ? "" : "Passed marker " + cp + ".";
+    upd(); if (fin || turns === 0) finish();
+  };
+  $("c17hit").onclick = () => {
+    if (turns < 1 || fin) return;
+    turns -= 1; const r2 = rule2(); score += r2 ? 0 : 10;
+    const pos = [[130, 190], [200, 225], [250, 180]][Math.floor(Math.random() * 3)];
+    ship(pos[0], pos[1]); pop(pos[0], pos[1] - 26, r2 ? "+0" : "+10");
+    $("c17msg").textContent = "You hit a glowing target, and it respawned.";
+    upd(); if (turns === 0) finish();
+  };
+  function reset() { turns = 12; score = 0; cp = 0; fin = false; ship(60, 70); $("c17msg").textContent = "Try first: how would you get the highest score?"; upd(); }
+  $("c17re").onclick = reset;
+  $("c17rule").onchange = reset;
+  reset();
+})();
+
+GD.mountQuiz($("quiz"), [
+  { q: "What does “When a measure becomes a target, it ceases to be a good measure” most accurately mean?", opts: ["No data can be trusted", "Once a metric is rewarded or optimized, shortcuts appear that go around the real goal, and it comes loose from the goal", "The higher the metric, the better the game", "Just swap in a new metric and nothing will ever go wrong"], a: 1, why: "The point is “being optimized as a target”: the optimizer then looks for the cheapest way to raise the number, not to improve the real goal." },
+  { q: "[Why] A metric and the real goal are correlated “normally” but lose the correlation under optimization pressure. This is because?", opts: ["Numbers age", "The correlation coefficient is always 0 on a large sample", "Players don’t like numbers", "Normally both are driven by one cause (such as the player’s curiosity); once a reward is applied, a new cause appears that pushes up only the metric"], a: 3, why: "The correlation comes from a common cause, and the shortcut supplies an independent cause that acts only on the metric, so the link is cut." },
+  { q: "[Why it was invented] What problem was Goodhart’s idea first aimed at in the 1970s?", opts: ["The achievement systems of video games", "Policymakers took a once-stable statistical regularity in money as a means of control, and the regularity failed", "Cheating on exams", "The reward functions of artificial intelligence"], a: 1, why: "It was originally monetary policy: the regularity held while “nobody was watching,” and once pressure was applied for control, people’s behavior changed and the regularity collapsed. Later Campbell with social indicators, and AI researchers with reward functions, independently met the same structure, and only then was it generalized." },
+  { q: "Where does “When a measure becomes a target, it ceases to be a good measure.” come from?", opts: ["Goodhart’s own words in his 1975 paper", "Campbell’s own words in 1979", "More a later popular summary of Goodhart’s thought (Strathern 1997 is often cited), and not his own words", "First proposed by DeepMind in 2020"], a: 2, why: "Goodhart’s original 1975 meaning was “a statistical regularity tends to collapse once pressure is applied for control.” The short version appeared in Strathern’s 1997 paper, a popularized summary." },
+  { q: "Which of these is most like a Goodhart phenomenon in games?", opts: ["Players complain a level is too hard", "The server stutters now and then", "A team makes “time online” its KPI and adds designs that drag time out; time goes up but players get more and more annoyed", "Players like a certain character"], a: 2, why: "Time online is a proxy for “likes the game,” and optimizing it as a KPI produced time-dragging shortcuts." },
+  { q: "Which of these best reduces the risk of an achievement system being gamed?", opts: ["Use a single number, the easiest to count", "Several metrics of different natures + spot-checking recordings/playtests + regular audits, so that gaming costs about as much as real play", "Double the reward", "Never change the rules"], a: 1, why: "The aim is to make the shortcut unprofitable and to be able to catch it in time; a bigger reward only adds the motive to game, and stacking metrics of the same kind doesn’t help." },
+  { q: "That AI in “CoastRunners” circles in the water hitting power-ups for a high score; this shows:", opts: ["The AI is too dumb", "Only a bug in the game would allow this, nothing to do with reward design", "The AI really likes circling", "The AI maximized the reward we wrote down literally, not the “finish the race” we had in mind"], a: 3, why: "This is specification gaming: the reward is a metric, and the optimizer will use the gap between it and the goal without a second thought." },
+  { q: "[Why] In the 1973 marker experiment, children told beforehand that “drawing earns a certificate” drew less in free time afterward. The most reasonable explanation is?", opts: ["They were tired", "They began to read “why am I drawing” as “for the certificate,” and the original interest was covered by the new reason", "They didn’t like certificates", "The markers were broken"], a: 1, why: "This is the overjustification effect: an external reward changes how a person explains their own behavior. Children who got a certificate unexpectedly showed no clear loss of interest, which shows the harm comes from the expectation of the reward." },
+]);
+</script>
+</body>
+</html>

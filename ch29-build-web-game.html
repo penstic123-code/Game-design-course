@@ -43,10 +43,10 @@
     </svg>
   </div>
 
-  <div class="goals"><span class="time">⏱ 约 60 分钟（含动手）</span><h3>学习目标</h3><ul><li>读完你能说出 HTML、CSS、JavaScript 各管什么，以及“输入 → 更新 → 绘制”的游戏循环怎样让画面动起来</li><li>读完你能讲清游戏循环为什么长成现在这样，网页游戏又为什么从 Flash 走到了 Canvas</li><li>读完你能拖动参数面板，亲眼看到“数值 → 玩法 → 感受”的关系，并知道这种调参的边界</li></ul></div>
+  <div class="goals"><span class="time">⏱ 约 60 分钟（含动手）</span><h3>学习目标</h3><ul><li>读完能说出 HTML、CSS、JavaScript 各管什么，以及“输入 → 更新 → 绘制”的游戏循环怎样让画面动起来。</li><li>读完能讲清游戏循环为什么长成现在这样，网页游戏又为什么从 Flash 走到了 Canvas。</li><li>读完能拖动参数面板，亲眼看到“数值 → 玩法 → 感受”的关系，并知道这种调参的边界。</li></ul></div>
 
   <div class="sec"><span class="n">1</span><h2><span class="tag what">是什么</span>三个角色：谁管骨架，谁管外观，谁管规则</h2></div>
-  <p>很多人想做游戏，一看到满屏代码就关了页面。其实一个能玩的小游戏，只有大约 100 行代码。你不需要先学完编程，只需要先分清三个角色各管什么。用做菜来比：</p>
+  <p>很多人想做游戏，一看到满屏代码就关了页面。其实一个能玩的小游戏，只有大约 100 行代码。不需要先学完编程，只需要先分清三个角色各管什么。用做菜来比：</p>
   <div class="card">
     <svg viewBox="0 0 760 290" width="100%" role="img" aria-label="HTML 是骨架，CSS 是外观，JavaScript 是规则与行为，三者合在一起成为网页游戏">
       <g class="rough" stroke="#2b2b3a" stroke-width="4">
@@ -89,11 +89,11 @@
     </svg>
     <p class="small">步骤顺序参考 MDN 的“关键渲染路径”页面（DOM、CSSOM、渲染树、布局、绘制）。Canvas 那条虚线是示意：它把画好的位图交给页面显示。</p>
   </div>
-  <p>为什么游戏爱用画布？普通网页是“排版”思路：元素一多，每次改动都要重新算位置。画布是“作画”思路：想画几个球、画在哪，每一帧你自己说了算，适合每秒要重画几十次的游戏。</p>
+  <p>为什么游戏爱用画布？普通网页是“排版”思路：元素一多，每次改动都要重新算位置。画布是“作画”思路：想画几个球、画在哪，每一帧由程序自己说了算，适合每秒要重画几十次的游戏。</p>
   <p class="src">来源：MDN，<a href="https://developer.mozilla.org/en-US/docs/Web/Performance/Guides/Critical_rendering_path" target="_blank" rel="noopener">Critical rendering path</a>。</p>
 
   <div class="sec"><span class="n">3</span><h2><span class="tag what">是什么</span>游戏循环：输入 → 更新 → 绘制</h2></div>
-  <p>网页通常<b>等你点了才变</b>；游戏却<b>一圈一圈地转</b>，哪怕你什么也不按，苹果也在往下掉。两者的区别摆在一起看：</p>
+  <p>网页通常<b>等玩家点了才变</b>；游戏却<b>一圈一圈地转</b>，哪怕什么也不按，苹果也在往下掉。两者的区别摆在一起看：</p>
   <div class="card">
     <svg viewBox="0 0 760 320" width="100%" role="img" aria-label="对比：左边是等待输入型程序，只有玩家操作才处理一次；右边是游戏循环，每一圈都读输入、更新、绘制，不管有没有操作">
       <g class="rough" stroke="#2b2b3a" stroke-width="4" fill="none" stroke-linecap="round">
@@ -125,12 +125,12 @@
       </g>
     </svg>
   </div>
-  <div class="eg" data-ic="🍎"><span data-illus="c29_idle"></span><div class="egt"><b>游戏内：接苹果</b>。哪怕你不碰键盘，苹果也在每一圈往下掉一点，漏掉就扣命。这就是“持续更新”。</div></div>
+  <div class="eg" data-ic="🍎"><span data-illus="c29_idle"></span><div class="egt"><b>游戏内：接苹果</b>。哪怕不碰键盘，苹果也在每一圈往下掉一点，漏掉就扣命。这就是“持续更新”。</div></div>
   <div class="eg" data-ic="📖"><span data-illus="c29_flipbook"></span><div class="egt"><b>日常：翻页动画书</b>。每秒翻几十页，每页只比前一页多动一点点，眼睛就看到了“动”。游戏循环做的是同一件事：每一圈画一页。</div></div>
-  <div class="eg bad" data-ic="🧊"><span data-illus="c29_freeze"></span><div class="egt"><b>反例：自己写死循环</b>。在函数里写 <code>while (true) {…}</code>，自己无限地更新和画图，浏览器的主线程被占满，页面卡死、按钮点不动。要让浏览器“每一帧叫你一次”（用 requestAnimationFrame），而不是自己霸占循环。</div></div>
+  <div class="eg bad" data-ic="🧊"><span data-illus="c29_freeze"></span><div class="egt"><b>反例：自己写死循环</b>。在函数里写 <code>while (true) {…}</code>，自己无限地更新和画图，浏览器的主线程被占满，页面卡死、按钮点不动。要让浏览器“每一帧叫程序一次”（用 requestAnimationFrame），不要自己霸占循环。</div></div>
 
   <div class="sec"><span class="n">4</span><h2><span class="tag origin">发明故事</span>游戏循环是怎么成为标准结构的？</h2></div>
-  <p>先自己试一试。<b>你写了一个小球游戏：球每秒走 20 格，走满 100 格到终点。</b>你在自己的电脑（60 帧/秒）上调好了速度。现在把它放到另外两台电脑上：一台很快，一台很慢。拖动滑块，比较两种写法。</p>
+  <p>先自己试一试。<b>写了一个小球游戏：球每秒走 20 格，走满 100 格到终点。</b>在自己的电脑（60 帧/秒）上调好了速度。现在把它放到另外两台电脑上：一台很快，一台很慢。拖动滑块，比较两种写法。</p>
   <div class="card b no-print">
     <label class="ctl">快电脑的帧率 <output id="c29fo">120</output> 帧/秒<input type="range" id="c29f" min="30" max="144" step="6" value="120"></label>
     <label class="ctl"><input type="checkbox" id="c29dt"> 用 dt 计时：每一圈移动“速度 × 距上一圈的时间”（勾选后再比赛一次）</label>
@@ -143,11 +143,11 @@
   <div class="sticky no-print" id="c29t0">试试看：先不勾 dt 比一次，再勾上 dt 比一次，对比两次“快慢差了几倍”。<b id="c29t0ok"></b></div>
   <div class="story">
     <h3>为什么游戏循环长成这个样子？</h3>
-    <p><b>问题：</b>早期的程序是“批处理”：运行一次，吐出结果，结束。后来出现了交互式程序，最早的一批是游戏，比如文字冒险《Colossal Cave Adventure》，它<b>等你输入一条命令，回应，再等</b>。可动作类游戏不能等：玩家什么都没按，子弹也要飞，敌人也要动。（据 Robert Nystrom《Game Programming Patterns》的游戏循环一章。）</p>
-    <p><b>早期尝试：</b>1962 年，MIT 的 Steve Russell 等人在 PDP-1 小型机上做出《Spacewar!》，影响了后来许多街机游戏。这类游戏要实时地读操作、更新飞船、刷新屏幕，循环的雏形就在其中。（“第一款电脑游戏”的称号取决于定义，这里不下定论。）可是当时的游戏常常<b>绑死在某一台机器的速度上</b>：每一圈走多少，是按那台机器调出来的。Nystrom 提到，换到更快的电脑上，这类游戏会变得太快，这也是当年个人电脑上有“Turbo 按钮”的原因之一。</p>
-    <p><b>关键洞察：</b>把“游戏时间”和“处理器速度、玩家输入”<b>拆开</b>。Nystrom 总结游戏循环的要点：它处理玩家输入，但不等待输入；并且让游戏在不同硬件上以一致的速度运行。常见做法有两种：①<span class="term" tabindex="0" data-def="可变时间步长：每一圈按真实过去的时间 dt 推进世界，简单，但在不同机器上结果可能略有差异。">可变时间步长</span>，每一圈按“距上一圈过去的真实时间 dt”推进（本页用这种，简单，适合小游戏）；②固定时间步长，每次更新走固定的一小段时间，用累加器追赶真实时间，更稳定，物理复杂的游戏更常用。Nystrom 提到可变步长在不同机器上可能不稳定、结果不可复现。</p>
-    <p><b>网页游戏的演化：</b>网页一开始是静态文档，要做带动画的小游戏，长期靠插件。Flash 的前身 FutureSplash Animator 在 1996 年发布，随后被 Macromedia 收购并改名 Flash（来源对具体月份说法不一）；2005 年 Adobe 收购 Macromedia。Flash 让很多创作者不用深入编程就能做出带动画的小游戏，并在浏览器里分发。另一边，2004 年苹果为自家 WebKit 加入了 <code>&lt;canvas&gt;</code>（用于 Dashboard 小组件）；Gecko 在 2005 年、Opera 在 2006 年跟进，后来由 WHATWG 纳入 HTML5。2010 年 4 月，Steve Jobs 发表公开信《Thoughts on Flash》，说明 iPhone 为何不支持 Flash，理由包括：Flash 是封闭系统、应当使用开放的 HTML5/CSS/JavaScript、以及电池与触控等问题；Adobe 方面则认为这主要出于商业考虑。2017 年 7 月，Adobe 宣布到 2020 年 12 月 31 日终止支持 Flash，并自 2021 年 1 月 12 日起阻止 Flash 内容运行。现在，原生支持的 <code>&lt;canvas&gt;</code> + JavaScript 成了网页游戏的基础。</p>
-    <p><b>配套的一环：</b><span class="term" tabindex="0" data-def="浏览器提供的函数：请它在下一次重绘之前调用你的函数，一般和显示器刷新率同步。"><code>requestAnimationFrame</code></span> 让浏览器在“下一次重绘之前”调用你的函数，通常与显示器刷新率一致（60、75、120、144Hz 等）。回调会收到一个时间戳，MDN 特别提醒要用它计算进度，否则动画在高刷新率屏幕上会跑得更快，这正是上面比赛里的坑。</p>
+    <p><b>问题：</b>早期的程序是“批处理”：运行一次，吐出结果，结束。后来出现了交互式程序，最早的一批是游戏，比如文字冒险《Colossal Cave Adventure》，它<b>等玩家输入一条命令，回应，再等</b>。动作类游戏不能等：玩家什么都没按，子弹也要飞，敌人也要动。（据 Robert Nystrom《Game Programming Patterns》的游戏循环一章。）</p>
+    <p><b>早期尝试：</b>1962 年，MIT 的 Steve Russell 等人在 PDP-1 小型机上做出《Spacewar!》，影响了后来许多街机游戏，循环的雏形就在其中。可当时的游戏常常<b>绑死在某一台机器的速度上</b>：每一圈走多少，是按那台机器调出来的。Nystrom 提到，换到更快的电脑上，这类游戏会变得太快，当年个人电脑上的“Turbo 按钮”就与此有关。</p>
+    <p><b>关键洞察：</b>把“游戏时间”和“处理器速度、玩家输入”<b>拆开</b>。游戏循环处理玩家输入，但不等待输入，并且让游戏在不同硬件上以一致的速度运行（Nystrom）。常见做法有两种。①<span class="term" tabindex="0" data-def="可变时间步长：每一圈按真实过去的时间 dt 推进世界，简单，但在不同机器上结果可能略有差异。">可变时间步长</span>：每一圈按“距上一圈过去的真实时间 dt”推进，简单，适合小游戏，本页用这种。②固定时间步长：每次更新走固定的一小段时间，更稳定，物理复杂的游戏更常用。</p>
+    <p><b>网页游戏的演化：</b>网页一开始是静态文档，要做带动画的小游戏，长期靠插件。Flash 的前身在 1996 年发布，后来由 Macromedia、Adobe 先后接手。Flash 让很多创作者不用深入编程就能做出带动画的小游戏，并在浏览器里分发。另一边，2004 年苹果为自家 WebKit 加入了 <code>&lt;canvas&gt;</code>，Gecko 和 Opera 随后跟进，后来由 WHATWG 纳入 HTML5。2010 年 4 月，Steve Jobs 发表公开信《Thoughts on Flash》，说明 iPhone 为何不支持 Flash，理由包括 Flash 是封闭系统，以及电池与触控等问题。Adobe 方面则认为这主要出于商业考虑。2017 年 7 月，Adobe 宣布到 2020 年 12 月 31 日终止支持 Flash。现在，原生支持的 <code>&lt;canvas&gt;</code> + JavaScript 成了网页游戏的基础。</p>
+    <p><b>配套的一环：</b><span class="term" tabindex="0" data-def="浏览器提供的函数：请它在下一次重绘之前调用你的函数，一般和显示器刷新率同步。"><code>requestAnimationFrame</code></span> 让浏览器在“下一次重绘之前”调用程序的函数，通常与显示器刷新率一致（60、75、120、144Hz 等）。回调会收到一个时间戳，要用它计算进度，否则动画在高刷新率屏幕上会跑得更快，这正是上面比赛里的坑。</p>
     <div class="timeline">
       <div class="ev hasimg"><span data-illus="c29_spacewar"></span><div><b class="yr">1962</b>　《Spacewar!》在 MIT 的 PDP-1 上做出，实时交互游戏的早期代表。</div></div>
       <div class="ev hasimg"><span data-illus="c29_turbo"></span><div><b class="yr">后来</b>　游戏绑定在特定硬件速度上；个人电脑加速后，出现“Turbo 按钮”的问题（Nystrom）。</div></div>
@@ -156,7 +156,7 @@
       <div class="ev hasimg"><span data-illus="c29_iphone"></span><div><b class="yr">2010 年 4 月</b>　Jobs 发表《Thoughts on Flash》，iPhone 不支持 Flash。</div></div>
       <div class="ev hasimg"><span data-illus="c29_sunset"></span><div><b class="yr">2017–2021</b>　Adobe 2017 年 7 月宣布终止 Flash，2020 年 12 月 31 日支持结束，2021 年 1 月 12 日起阻止运行。</div></div>
     </div>
-    <p class="src">来源：Nystrom，<a href="https://gameprogrammingpatterns.com/game-loop.html" target="_blank" rel="noopener">Game Programming Patterns · Game Loop</a>；MDN <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/requestAnimationFrame" target="_blank" rel="noopener">requestAnimationFrame</a>；<a href="https://en.wikipedia.org/wiki/Spacewar!" target="_blank" rel="noopener">Spacewar!</a> 与 <a href="https://computerhistory.org/profile/steve-russell/" target="_blank" rel="noopener">CHM 的 Steve Russell 简介</a>；<a href="https://en.wikipedia.org/wiki/Canvas_element" target="_blank" rel="noopener">Canvas element</a>（2004 年起源、Gecko/Opera 跟进）；Flash 的历史各来源在收购时间上略有出入（<a href="https://www.theregister.com/2021/01/12/flash_is_dead/" target="_blank" rel="noopener">The Register</a>、<a href="https://www.infoq.com/news/2021/01/farewell-flash" target="_blank" rel="noopener">InfoQ</a>）；Jobs 公开信的内容据媒体报道（<a href="https://www.pcworld.com/article/512460/steve_jobs_shares_his_thoughts_on_flash.html" target="_blank" rel="noopener">PCWorld</a>），未能直接读取 Apple 原页面。</p>
+    <p class="src">来源：Nystrom，<a href="https://gameprogrammingpatterns.com/game-loop.html" target="_blank" rel="noopener">Game Programming Patterns · Game Loop</a>；MDN <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/requestAnimationFrame" target="_blank" rel="noopener">requestAnimationFrame</a>；<a href="https://en.wikipedia.org/wiki/Spacewar!" target="_blank" rel="noopener">Spacewar!</a>；<a href="https://en.wikipedia.org/wiki/Canvas_element" target="_blank" rel="noopener">Canvas element</a>；Flash 的历史各来源在收购时间上略有出入（<a href="https://www.theregister.com/2021/01/12/flash_is_dead/" target="_blank" rel="noopener">The Register</a>）；Jobs 公开信的内容据媒体报道（<a href="https://www.pcworld.com/article/512460/steve_jobs_shares_his_thoughts_on_flash.html" target="_blank" rel="noopener">PCWorld</a>），未能直接读取 Apple 原页面。</p>
   </div>
 
   <div class="sec"><span class="n">5</span><h2><span class="tag why">为什么成立</span>为什么要乘 dt？为什么调参数是捷径？</h2></div>
@@ -165,19 +165,19 @@
     <div>
       <h3>① 为什么更新要乘上 dt</h3>
       <p>帧率高的设备每秒圈数多，但每圈只该走一小步。<code>位置 += 速度 × <span class="term" tabindex="0" data-def="dt（delta time）：距上一圈过去了多少秒。用它乘速度，物体每秒走的距离就与帧率无关。">dt</span></code> 让“每秒走多远”不随帧率变化，游戏时间就和处理器速度分开了。</p>
-      <p>就像走路：我们说“每秒 1.4 米”，而不说“每步 70 厘米”，步频不同的人，速度仍然可以比较。苹果下落写成 <code>it.y += P.speed * dt</code>，在 60Hz 和 144Hz 的屏幕上，每秒下落的距离一样。</p>
+      <p>就像走路：说“每秒 1.4 米”，不说“每步 70 厘米”，步频不同的人，速度仍然可以比较。苹果下落写成 <code>it.y += P.speed * dt</code>，在 60Hz 和 144Hz 的屏幕上，每秒下落的距离一样。</p>
       <p>反过来，每圈固定加 3 像素：60Hz 屏上每秒 180 像素，144Hz 屏上就变成每秒 432 像素。这就是上面比赛里“快电脑先到”的原因。</p>
     </div>
   </div>
-  <div class="why-box"><p>边界：本页为了易读用“可变步长”，并把 dt 限制在 0.05 秒内（切换标签页回来不会“瞬移”）。物理更复杂、需要结果可复现的游戏，业界更常用固定步长。</p>
+  <div class="why-box"><p>边界：本页为了易读用“可变步长”，并把 dt 限制在 0.05 秒内（切换标签页回来不会“瞬移”）。物理更复杂的游戏，业界更常用固定步长。</p>
     <p class="src">原理出处：Nystrom，《Game Programming Patterns》“Game Loop”一章；MDN requestAnimationFrame 文档。</p></div>
 
   <div class="withimg rev">
     <span data-illus="c29_knob"></span>
     <div>
       <h3>② 拧旋钮，就是亲手走一遍“机制 → 动态 → 美学”</h3>
-      <p><span class="term" tabindex="0" data-def="机制（Mechanics）→ 动态（Dynamics）→ 美学（Aesthetics）：规则产生玩法，玩法产生感受。">MDA</span> 框架说：设计者摆的是机制，玩家体验到的是动态和美学。参数面板把这条链摆在你面前：<b>你拧的是机制</b>（下落速度、篮子宽度、炸弹概率），<b>你看到的是动态</b>（接得到还是接不到，要不要冒险），<b>你感到的是美学</b>（轻松、紧张、手忙脚乱）。</p>
-      <p>这些数值就是<span class="term" tabindex="0" data-def="游戏里可以调整的数值参数，如速度、数量、概率。">旋钮</span>。把炸弹概率从 15% 拉到 40%，“该不该伸手去接”的犹豫立刻变多，感觉从轻松变成紧张。一次只拧一个，才知道是哪个起了作用；就像调咖啡的研磨粗细，一次只改一个变量，尝一口，立刻知道哪里变了。</p>
+      <p><span class="term" tabindex="0" data-def="机制（Mechanics）→ 动态（Dynamics）→ 美学（Aesthetics）：规则产生玩法，玩法产生感受。">MDA</span> 框架说：设计者摆的是机制，玩家体验到的是动态和美学。参数面板把这条链摆在眼前：<b>拧的是机制</b>（下落速度、篮子宽度、炸弹概率），<b>看到的是动态</b>（接得到还是接不到，要不要冒险），<b>感到的是美学</b>（轻松、紧张、手忙脚乱）。</p>
+      <p>这些数值就是<span class="term" tabindex="0" data-def="游戏里可以调整的数值参数，如速度、数量、概率。">旋钮</span>。把炸弹概率从 15% 拉到 40%，“该不该伸手去接”的犹豫立刻变多，感觉从轻松变成紧张。一次只拧一个，才知道是哪个起了作用，就像调咖啡的研磨粗细，一次只改一个变量。</p>
       <p>同时把速度、篮子、炸弹、生命全改了，只会得到一句“更难了”，却不知道是哪个旋钮的功劳，下一步也不知道往哪调。</p>
     </div>
   </div>
@@ -188,17 +188,17 @@
     <span data-illus="c29_phi"></span>
     <div>
       <h3>③ 世界观：每一帧都是静止的，“动”是大脑补出来的</h3>
-      <p>游戏循环每圈画一张静止的画。为什么眼睛会觉得球在动？1912 年，Max Wertheimer 做了一组实验：两个静止的光点前后短暂地亮起，只要间隔合适，人看到的是一个点在移动，他把这叫作<span class="term" tabindex="0" data-def="似动现象（phi 现象）：两个静止的刺激先后短暂出现，人会感到有东西在移动。">似动现象</span>（phi 现象）。这篇论文常被视为格式塔心理学的起点。</p>
-      <p>还记得翻页动画书吗？你的大脑在两张静止的图之间自己补出了运动。游戏的“流畅”，其实是一场和视觉系统合作的幻觉：你需要给出足够密的静止画面，大脑负责把它们连起来。</p>
-      <p>说明：phi 与另一种“beta 运动”常被混用，实际的视觉机制比这里讲的复杂；这里只取“静止画面连续呈现会产生运动知觉”这一点。</p>
+      <p>游戏循环每圈画一张静止的画。眼睛为什么会觉得球在动？1912 年，Max Wertheimer 做了一组实验：两个静止的光点前后短暂地亮起，只要间隔合适，人看到的是一个点在移动，他把这叫作<span class="term" tabindex="0" data-def="似动现象（phi 现象）：两个静止的刺激先后短暂出现，人会感到有东西在移动。">似动现象</span>（phi 现象）。这篇论文常被视为格式塔心理学的起点。</p>
+      <p>还记得翻页动画书吗？大脑在两张静止的图之间自己补出了运动。游戏的“流畅”靠的是足够密的静止画面，大脑负责把它们连起来。</p>
+      <p>说明：phi 与另一种“beta 运动”常被混用，实际的视觉机制比这里讲的复杂。</p>
     </div>
   </div>
   <div class="why-box"><h3>④ 世界观：所有模型都是错的，但有的有用</h3>
-    <p>页面里的“难度指数”是我用一个粗糙公式拼出来的，真正的难度取决于玩家的手速、习惯和心情，公式算不出来。统计学家 George Box 有一句常被引用的话：“所有模型都是错的，但有些是有用的。”游戏本身也是个模型，它把“接苹果”压缩成几个数字。有用的做法是：拿模型的预测去试玩，被现实纠正，再改模型。</p>
+    <p>页面里的“难度指数”是用一个粗糙公式拼出来的，真正的难度取决于玩家的手速、习惯和心情，公式算不出来。统计学家 George Box 说过：“所有模型都是错的，但有些是有用的。”有用的做法是：拿模型的预测去试玩，被现实纠正，再改模型。</p>
     <p class="src">出处：Box, G. E. P. (1976), “Science and Statistics”, <i>Journal of the American Statistical Association</i> 71(356)：“all models are wrong”；完整的“but some are useful”措辞见 Box &amp; Draper (1987), <i>Empirical Model-Building and Response Surfaces</i>。Wertheimer, M. (1912), “Experimentelle Studien über das Sehen von Bewegung”, <i>Zeitschrift für Psychologie</i>, 61, 161–265。</p></div>
 
   <div class="sec"><span class="n">6</span><h2><span class="tag how">怎么用</span>招牌互动：接苹果实验台</h2></div>
-  <p>下面的游戏<b>就是</b>“读代码”里展示的那段代码：页面直接把它读出来运行，不是截图。用键盘 ← → 或手指/鼠标在画面上拖动来接苹果，避开炸弹。游戏在上方，参数在下方：拖动滑块，游戏<b>实时</b>变化（生命数在下次重新开始时生效）。</p>
+  <p>下面的游戏<b>就是</b>“读代码”里展示的那段代码：页面直接把它读出来运行，不是截图。用键盘 ← → 或手指/鼠标在画面上拖动来接苹果，避开炸弹。拖动下方的滑块，游戏<b>实时</b>变化（生命数在下次重新开始时生效）。</p>
   <div class="card gamebox" id="c29lab">
     <div class="c29stick">
       <canvas id="game" width="480" height="360" tabindex="0" aria-label="接苹果小游戏"></canvas>
@@ -227,7 +227,7 @@
     <pre class="out" id="expOut"></pre>
     <p class="small">复制后粘贴到你自己 HTML 文件的 <code>&lt;script&gt;</code> 里（用法见下面的“读代码”）。</p>
   </div>
-  <p class="small">“简单 / 刚好 / 很难”的提示是用一个粗略公式估的（速度、生成频率、炸弹、篮子大小、生命数的综合），<b>只是经验参考</b>。真正的答案靠试玩：自己玩一遍，再让朋友玩。表格里记下每一局的参数与成绩，也是一种试玩数据。</p>
+  <p class="small">“简单 / 刚好 / 很难”的提示是用一个粗略公式估的，<b>只是经验参考</b>。真正的答案靠试玩：自己玩一遍，再让朋友玩。</p>
 
   <div class="sec"><span class="n">7</span><h2><span class="tag how">读代码</span>约 100 行：变量 → 输入 → update → draw → loop</h2></div>
   <p>不必逐行看懂，抓住结构：<b><span class="term" tabindex="0" data-def="游戏在某一刻所有变量的总和，比如分数、篮子位置、生命数。">状态</span> → 输入 → 更新 → 绘制 → 循环</b>。<code>P</code> 就是上面的参数面板，改它就改了手感。点下面的按钮，让对应的那一段亮起来：</p>
@@ -263,7 +263,7 @@ const P = { /* 粘贴导出的参数 */ };
   <div class="grid2">
     <div class="card g"><h3>1. JavaScript 基础</h3><p>变量、条件、循环、函数、数组与对象、事件。读懂上面的代码后，系统学一遍会顺很多。MDN Web Docs 有免费的中文教程。</p></div>
     <div class="card o"><h3>2. 选一个引擎</h3><p><b>Phaser</b>：专做网页 2D 游戏的 JS 框架，延续这条路线。<b>Godot</b>：免费开源，脚本 GDScript 接近 Python，适合入门。<b>Unity</b>：使用 C#，资料与岗位多。先选一个，别同时学三个。</p></div>
-    <div class="card v"><h3>3. 参加 Game Jam</h3><p>在 48 小时或几天内围绕一个主题做出小游戏，如 Global Game Jam、Ludum Dare，或 itch.io 上的各类 jam。时间短，逼着你把范围砍到最小。</p></div>
+    <div class="card v"><h3>3. 参加 Game Jam</h3><p>在 48 小时或几天内围绕一个主题做出小游戏，如 Global Game Jam、Ludum Dare。时间短，会逼着把范围砍到最小。</p></div>
     <div class="card p"><h3>4. 小而完整地做</h3><p>每个项目都做到“能玩完一局”并发给别人试玩。完成 5 个小游戏，比半途而废 1 个大游戏学到的多得多。</p></div>
   </div>
 
@@ -281,9 +281,9 @@ const P = { /* 粘贴导出的参数 */ };
 
   <div class="reflect">
     <h3>想一想</h3>
-    <p><b>你最满意的那组参数，让玩家“感受到”什么（紧张？轻松？）是哪一个旋钮的功劳最大？</b>如果只允许你改一个旋钮，你会改哪个，为什么？</p>
+    <p><b>最满意的那组参数，让玩家“感受到”什么（紧张？轻松？）是哪一个旋钮的功劳最大？</b>如果只允许改一个旋钮，会改哪个，为什么？</p>
     <textarea rows="3" data-save="ch25reflect" placeholder="例：炸弹概率最关键——它决定了玩家敢不敢伸手去接……"></textarea>
-    <p class="small">一个有争议的问题：Flash 的消亡是技术进步，还是封闭生态的代价？Flash 时代留下了大量创意小游戏，有些在 Flash 停用后因无法运行而面临失传（社区里有人在做保存工作）。开放标准与创作者保存，常常要同时考虑。</p>
+    <p class="small">一个有争议的问题：Flash 的消亡是技术进步，还是封闭生态的代价？Flash 时代留下了大量创意小游戏，有些在 Flash 停用后因无法运行而面临失传。开放标准与创作者保存，常常要同时考虑。</p>
   </div>
 
   <div class="key">
@@ -293,10 +293,10 @@ const P = { /* 粘贴导出的参数 */ };
       <li>游戏循环：<b>输入 → 更新 → 绘制</b>，每秒约 60 圈，不等输入；更新时乘 dt，让游戏时间与机器速度分开。</li>
       <li>网页游戏从插件时代（Flash）走向原生的 Canvas + JavaScript。</li>
       <li>每一帧都是静止画面，“动”靠大脑补；难度指数这类公式是粗糙的模型，要靠试玩校正。</li>
-      <li>把可调的数值集中放进一个参数对象，才方便试玩后迭代；先做能玩的小东西，再逐步变好。</li>
+      <li>把可调的数值集中放进一个参数对象，才方便试玩后迭代。先做能玩的小东西，再逐步变好。</li>
     </ul>
   </div>
-  <div class="tldr">把规则变成数字，再亲手拧旋钮、看后果，是理解“机制 → 动态 → 美学”最快的办法；但它打磨的是一个已成立的循环，不能代替好点子。</div>
+  <div class="tldr">把规则变成数字，再亲手拧旋钮、看后果，是理解“机制 → 动态 → 美学”最快的办法。但它打磨的是一个已成立的循环，不能代替好点子。</div>
 
   <div class="sec"><span class="n">9</span><h2><span class="tag think">练习</span>练习</h2></div>
   <div id="quiz"></div>
@@ -311,7 +311,7 @@ const P = { /* 粘贴导出的参数 */ };
     <div class="field"><label style="font-family:var(--hand);font-size:1.3rem">📝 我觉得这组参数好玩，因为……</label><textarea rows="2" data-save="ch21why" placeholder="例：炸弹少一点、速度慢一点，新手也能玩，又不无聊"></textarea></div>
   </div>
 
-  <div class="sticky">把导出的参数粘进自己的 HTML 文件，再改一个地方。<b>能运行的小游戏，就是你的第一个作品。</b></div>
+  <div class="sticky">把导出的参数粘进自己的 HTML 文件，再改一个地方。<b>能运行的小游戏，就是第一个作品。</b></div>
 </main>
 <script src="js/illus.js"></script>
 <script src="js/illus-ch29.js"></script>

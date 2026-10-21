@@ -1,0 +1,698 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Chapter 4: Rules &amp; MDA</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+  #c4cv{border:3px solid var(--ink);border-radius:10px;background:#fffdf3;width:100%;cursor:crosshair;display:block;touch-action:none}
+  .twocol{display:grid;grid-template-columns:2fr 1fr;gap:16px}
+  @media(max-width:700px){.twocol{grid-template-columns:1fr}}
+  .c4row{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:6px 0}
+  .c4row .chip{margin:2px}
+  .c4row label{font-size:.95rem;cursor:pointer}
+  #c4hist{width:100%;display:block;margin-top:6px}
+  .c4layer{border:3px solid var(--ink);border-radius:14px 28px 14px 26px;padding:10px 16px;margin:0;position:relative}
+  .c4layer h3{margin:0 0 4px;font-size:1.3rem}
+  .c4layer.m{background:#eaf9e4}.c4layer.d{background:#fff7cf}.c4layer.a{background:#ffe9ef}
+  .c4arrow{text-align:center;font-family:var(--hand);font-size:1.15rem;color:var(--soft);margin:2px 0}
+  .c4pulse{animation:c4flash .7s}
+  @keyframes c4flash{0%{transform:scale(1.015);box-shadow:0 0 0 5px var(--accent2)}100%{transform:scale(1);box-shadow:0 0 0 0 transparent}}
+  .c4bar{display:flex;align-items:center;gap:8px;margin:4px 0;font-size:.95rem}
+  .c4bar span.lb{flex:none;width:9.6em}
+  .c4bar .tr{flex:1;height:20px;border:2.5px solid var(--ink);border-radius:10px;background:#fff;overflow:hidden}
+  .c4bar .tr i{display:block;height:100%;width:0;transition:width .45s}
+  .c4bar b.pc{flex:none;width:3em;text-align:right;background:none}
+  .c4goal{margin-top:10px;padding:8px 12px;border:2px dashed var(--ink);border-radius:10px;background:#fff;font-size:.98rem}
+  .c4goal.ok{background:var(--green)}
+  .c4aes{display:flex;flex-wrap:wrap;gap:4px;margin:6px 0}
+  .c4ref{margin-top:8px;padding:8px 12px;border:2px dashed var(--ink);border-radius:10px;background:var(--blue);font-size:.98rem;display:none}
+  .c4hit{fill:transparent;stroke:none;cursor:pointer}
+  .c4hit:hover,.c4hit:focus{stroke:#e5484d;stroke-width:3.5;stroke-dasharray:7 5;outline:none}
+  .c4hit.on{stroke:#e5484d;stroke-width:4;stroke-dasharray:none}
+  .c4info{margin-top:8px;padding:8px 12px;border:2px dashed var(--ink);border-radius:10px;background:#fff;font-size:1rem;min-height:3.2em}
+  .c4sg{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  @media(max-width:700px){.c4sg{grid-template-columns:1fr}}
+  .c4sgbar{margin:8px 0}
+  .c4sgbar .lb{display:block;font-size:.95rem;margin-bottom:2px}
+  .c4sgbar .tr{height:24px;border:2.5px solid var(--ink);border-radius:12px;background:#fff;overflow:hidden;position:relative}
+  .c4sgbar .tr i{display:block;height:100%;width:0;transition:width .4s}
+  .c4sgbar .tr b{position:absolute;right:8px;top:0;line-height:20px;font-size:.95rem;background:none}
+  .c4sgbar.win .tr{box-shadow:0 0 0 4px var(--accent2)}
+</style>
+</head>
+<body data-ch="4">
+<main class="wrap">
+  <div class="hero">
+    <div class="txt">
+      <span class="badge">Chapter 4</span>
+      <h1>Rules &amp; MDA</h1>
+      <p class="sub">What you write is rules; what players feel is an experience.</p>
+    </div>
+    <svg viewBox="0 0 190 150" class="rough" aria-hidden="true">
+      <rect x="15" y="85" width="50" height="45" fill="#b6e8a8" stroke="#2b2b3a" stroke-width="4"/>
+      <rect x="70" y="55" width="50" height="75" fill="#ffe58a" stroke="#2b2b3a" stroke-width="4"/>
+      <rect x="125" y="20" width="50" height="110" fill="#ffb3c6" stroke="#2b2b3a" stroke-width="4"/>
+      <text x="32" y="115" font-size="20">M</text><text x="88" y="105" font-size="20">D</text><text x="144" y="85" font-size="20">A</text>
+    </svg>
+  </div>
+
+  <div class="goals">
+    <h3>Learning goals</h3>
+    <span class="time">about 35 min</span>
+    <ul>
+      <li>Say why the MDA framework was proposed, and place a design element in the mechanics, dynamics or aesthetics layer.</li>
+      <li>Explain why one set of rules can produce wildly different experiences, why you should look at a “distribution” rather than “one round,” and why “writing the rules correctly” does not mean “getting the behavior you wanted.”</li>
+      <li>Write a design hypothesis that can go to playtesting: the feeling you want → the rules → the predicted dynamics.</li>
+    </ul>
+  </div>
+
+  
+  <div class="sec"><span class="n">1</span><h2><span class="tag what">What it is</span>MDA: from a number to a mood</h2></div>
+  <div class="withimg">
+    <span data-illus="c04_bridge"></span>
+    <div>
+      <p>The designer says: “I changed the cat’s speed from 2.2 to 2.5.” The player says: “This game got so oppressive.”</p>
+      <p>The two sentences describe the same thing, with a river in between. The designer stands on the left bank holding only numbers and rules; the player stands on the right bank with only a racing heart and sweaty palms. The river has no bridge, only a few stepping stones: the rules have to be played out into some behavior, and the behavior then turns into a mood.</p>
+      <p>The <span class="term" tabindex="0" data-def="Mechanics–Dynamics–Aesthetics: a framework that analyzes a game in three layers, proposed by Hunicke, LeBlanc and Zubek in a 2004 paper.">MDA framework</span> gives names to these stepping stones. What is on the left bank is called mechanics, what is in the middle of the river is dynamics, and what is on the right bank is aesthetics.</p>
+    </div>
+  </div>
+  <div class="grid3">
+    <div class="card g mini"><div class="ico">⚙️</div><h3>M · <span class="term" tabindex="0" data-def="Mechanics: the particular components of the game, at the level of data representation and algorithms in the paper’s words, meaning the rules and numbers you can write down.">Mechanics</span></h3><p>The rules, numbers and systems you write down.<br>Example: the cat’s speed is 2.5.</p></div>
+    <div class="card y mini"><div class="ico">🌀</div><h3>D · <span class="term" tabindex="0" data-def="Dynamics: the run-time behavior of the mechanics acting on player inputs and on each other’s outputs, which you can only see once the game is running.">Dynamics</span></h3><p>The behavior that appears once the rules are running.<br>Example: the mouse circles around a pillar.</p></div>
+    <div class="card p mini"><div class="ico">💗</div><h3>A · <span class="term" tabindex="0" data-def="Aesthetics: the emotional responses evoked in the player when they interact with the game, such as tension, curiosity and achievement. Note that here “aesthetics” does not mean “looks pretty.”">Aesthetics</span></h3><p>The player’s emotional experience.<br>Example: tension, thrill, a sense of achievement.</p></div>
+  </div>
+  <p>The third layer is the one people mix up most. Here “aesthetics” is not about whether the graphics look good; it is the <b>feelings</b> the player is stirred to: tension, curiosity, achievement, a knowing smile.</p>
+
+  <div class="card">
+    <svg viewBox="0 0 700 250" width="100%" role="img" aria-label="The designer goes from mechanics through dynamics to aesthetics; the player goes from aesthetics back to feel out the dynamics and mechanics; the three boxes can be clicked to see what they are in the cat-and-mouse game">
+      <g class="rough" stroke="#2b2b3a" stroke-width="4">
+        <rect x="30" y="95" width="170" height="60" rx="16" fill="#b6e8a8"/>
+        <rect x="265" y="95" width="170" height="60" rx="16" fill="#ffe58a"/>
+        <rect x="500" y="95" width="170" height="60" rx="16" fill="#ffb3c6"/>
+        <g fill="none" stroke-linecap="round" stroke-width="4.5">
+          <path d="M205 110 H260 M440 110 H495"/><path d="M262 140 H208 M497 140 H442" stroke-dasharray="2 9"/>
+          <path d="M120 80 Q350 10 585 80"/>
+        </g>
+      </g>
+      <path d="M580 70 l8 12 l-14 1z" fill="#2b2b3a"/>
+      <g font-size="27" text-anchor="middle" fill="#2b2b3a">
+        <text x="115" y="135">Mechanics M</text><text x="350" y="135">Dynamics D</text><text x="585" y="135">Aesthetics A</text>
+        <text x="350" y="26" font-size="19">Designer: write rules first, hoping for a feeling</text>
+        <text x="350" y="205" font-size="19">Player: feel first, then slowly work out the rules</text>
+        <text x="350" y="235" font-size="17">Click a box to see what each is in the cat-and-mouse game</text>
+      </g>
+      <rect class="c4hit" data-k="m" x="22" y="87" width="186" height="76" rx="18" tabindex="0" role="button" aria-label="Mechanics: an example from the cat-and-mouse game"/>
+      <rect class="c4hit" data-k="d" x="257" y="87" width="186" height="76" rx="18" tabindex="0" role="button" aria-label="Dynamics: an example from the cat-and-mouse game"/>
+      <rect class="c4hit" data-k="a" x="492" y="87" width="186" height="76" rx="18" tabindex="0" role="button" aria-label="Aesthetics: an example from the cat-and-mouse game"/>
+    </svg>
+    <div class="c4info" id="c4info">Click M, D and A above to see what each one is in the cat-and-mouse game.</div>
+  </div>
+  <div class="sticky">You can’t “design” tension directly; you can only <b>adjust the rules and see how it feels when players play</b>. So playtesting is a must.</div>
+
+  <h3>The same structure in three settings</h3>
+  <div class="eg" data-ic="🐱"><span data-illus="c04_catmouse"></span><div class="egt"><b>Cat chasing mouse</b>. Mechanics: cat speed 2.5, mouse 3.5. Dynamics: the mouse finds that running around a pillar keeps the cat always a step behind. Aesthetics: heart in the throat, yet you can’t help laughing.</div></div>
+  <div class="eg" data-ic="🙈"><span data-illus="c04_count30"></span><div class="egt"><b>Hide-and-seek</b>. Mechanics: the seeker counts to 30 before opening their eyes, and can’t run once they do. Dynamics: hiders sprint far away first, and swap spots as soon as the seeker turns. Aesthetics: the tension of holding your breath, the shrieks and laughter when you’re found.</div></div>
+  <div class="eg" data-ic="🚇"><span data-illus="c04_gate"></span><div class="egt"><b>A subway station at rush hour</b>. Mechanics: the gate lets through one person at a time, with queue lines painted on the floor. Dynamics: the crowd piles up in front of the gate, then spontaneously splits into two lines after it. Aesthetics: irritation, or the reassurance of “everyone follows the rules.”</div></div>
+  <div class="eg bad" data-ic="📝"><span data-illus="c04_wishlist"></span><div class="egt"><b>Writing aesthetics as mechanics</b>. A design document says “Mechanics: make the player feel tense.” That is a goal, not a rule, and it can’t be written straight into code. It has to be translated into a countdown, a pursuer, limited ammo, and then you <b>predict</b> what behavior those will produce.</div></div>
+  <div class="eg bad" data-ic="😤"><span data-illus="c04_complaint"></span><div class="egt"><b>Treating a player’s complaint as an instruction to change something</b>. A player says “this level is annoying.” That is a symptom at the aesthetics layer, not a prescription at the mechanics layer. Is the enemy too tough, the map too winding, or must you walk back a long way after dying? Trace back along A→D→M instead of simply halving some number.</div></div>
+
+  
+  <div class="sec"><span class="n">2</span><h2><span class="tag what">What it is</span>“Fun” isn’t one word: eight aesthetics</h2></div>
+  <p>Since the rightmost layer is “feeling,” a problem arises: feelings are vague. Two people both say “fun,” one meaning laughing together with friends and the other meaning finally beating a level, and those two kinds of fun have almost nothing in common.</p>
+  <p>The MDA paper gives “aesthetics” a vocabulary that breaks “fun” into eight kinds. It is a <b>taxonomy</b>, not a law of nature, and its benefit is that people can say concretely “which one our game mainly wants to give.”</p>
+  <div class="card">
+    <svg viewBox="0 0 700 280" width="100%" role="img" aria-label="Eight aesthetics: sensation, fantasy, narrative, challenge, fellowship, discovery, expression, submission, and the four example games the paper gives">
+      <g class="rough" stroke="#2b2b3a" stroke-width="3.5" fill="#fffef7">
+        <rect x="14" y="10" width="160" height="52" rx="12" fill="#ffe58a"/><rect x="186" y="10" width="160" height="52" rx="12" fill="#ffb3c6"/>
+        <rect x="358" y="10" width="160" height="52" rx="12" fill="#d8c8ff"/><rect x="530" y="10" width="160" height="52" rx="12" fill="#ffc078"/>
+        <rect x="14" y="74" width="160" height="52" rx="12" fill="#b6e8a8"/><rect x="186" y="74" width="160" height="52" rx="12" fill="#a8dcf0"/>
+        <rect x="358" y="74" width="160" height="52" rx="12" fill="#ffe58a"/><rect x="530" y="74" width="160" height="52" rx="12" fill="#ffb3c6"/>
+      </g>
+      <g font-size="17" text-anchor="middle" fill="#2b2b3a">
+        <text x="94" y="32" font-weight="700">Sensation</text><text x="94" y="53" font-size="16">Game as sense-pleasure</text>
+        <text x="266" y="32" font-weight="700">Fantasy</text><text x="266" y="53" font-size="16">Game as make-believe</text>
+        <text x="438" y="32" font-weight="700">Narrative</text><text x="438" y="53" font-size="16">Game as drama</text>
+        <text x="610" y="32" font-weight="700">Challenge</text><text x="610" y="53" font-size="16"><tspan font-size="14">Game as obstacle course</tspan></text>
+        <text x="94" y="96" font-weight="700">Fellowship</text><text x="94" y="117" font-size="16"><tspan font-size="14">Game as social framework</tspan></text>
+        <text x="266" y="96" font-weight="700">Discovery</text><text x="266" y="117" font-size="16"><tspan font-size="14">Game as uncharted territory</tspan></text>
+        <text x="438" y="96" font-weight="700">Expression</text><text x="438" y="117" font-size="16">Game as self-discovery</text>
+        <text x="610" y="96" font-weight="700">Submission</text><text x="610" y="117" font-size="16">Game as pastime</text>
+        <text x="350" y="158" font-size="17" font-weight="700">The paper’s own examples of “one game, several aesthetics”</text>
+        <text x="350" y="184" font-size="16">Charades: Fellowship, Expression, Challenge | Quake: Challenge, Sensation, Competition, Fantasy</text>
+        <text x="350" y="208" font-size="16">The Sims: Discovery, Fantasy, Expression, Narrative<tspan x="350" dy="24">Final Fantasy: Fantasy, Narrative, Expression, Discovery, Challenge, Submission</tspan></text>
+        <text x="350" y="262" font-size="16">A game usually pursues several at once, just in different proportions</text>
+      </g>
+    </svg>
+  </div>
+  <div class="eg" data-ic="🏝️"><span data-illus="c04_animal"></span><div class="egt"><b>An <i>Animal Crossing</i>-style game</b>. There is almost no winning or losing, yet people play for hundreds of hours: its main aesthetics lean toward fantasy, expression and submission, with almost no reliance on challenge.</div></div>
+  <div class="eg" data-ic="⚽"><span data-illus="c04_threefun"></span><div class="egt"><b>Dodgeball, chess, a Rubik’s Cube</b>. All are called “fun”: one is about fellowship and sensation, one about challenge, one about discovery. With the single word “fun,” you can’t tell the three apart at all.</div></div>
+  <div class="eg bad" data-ic="🧱"><span data-illus="c04_pickone"></span><div class="egt"><b>Treating the eight as a multiple-choice question</b>. Asking “which aesthetic does <i>Minecraft</i> really belong to?” is the wrong question: builders favor expression, cave explorers favor discovery, multiplayer groups favor fellowship. The same game has different dominant aesthetics for different players.</div></div>
+
+  
+  <div class="sec"><span class="n">3</span><h2><span class="tag origin">How it was invented</span>Why MDA exists: game makers, coders and researchers talking past each other</h2></div>
+  <div class="story">
+    <h3>What does “it isn’t fun” actually mean?</h3>
+    <div class="withimg rev">
+      <span data-illus="c04_workshop"></span>
+      <div>
+        <p>MDA took shape bit by bit at the Game Design and Tuning Workshop. From 2001 to 2004 the workshop ran every year at the Game Developers Conference (GDC) in San Jose, and its speakers included Marc LeBlanc and Robin Hunicke.</p>
+        <p>The paper opens by pointing out what had been giving them headaches: the people who make games, the people who write about games and the people who do technical research each had their own language, with a gap between them. Programmers stared at data structures and algorithms, designers said “this isn’t fun,” critics talked about “experience.” The paper also reminds readers that even for game AI, a seemingly minor algorithmic decision works its way up and affects the final gameplay.</p>
+        <p>The problem was that nobody could explain clearly how a change to the rules became a player’s feeling. The authors wanted to move “from words like ‘fun’ and ‘gameplay’ toward more directed vocabulary,” building a bridge between design and development, game criticism and technical research.</p>
+      </div>
+    </div>
+  </div>
+  <p>They also had an observation: when a book or a film is finished, its content is fixed; the content of a game is <b>behavior</b>, which only happens when it is played, and when the game is finished nobody can fully foresee it. This is where the river came from.</p>
+
+  <div class="board">
+    <b>Try it first: without using the word “fun,” can you tell how these differ?</b>
+    <p class="small">Pick a game and tick the aesthetics you think it <b>mainly provides</b> (you can tick several), then press “Reveal the paper’s labels.” The paper gives these four games, each labeled with several items, and the four lists all differ. With just the single word “fun,” none of these differences can be put into words.</p>
+    <div class="c4row" id="c4games"></div>
+    <div class="c4aes" id="c4aes"></div>
+    <button class="btn alt" id="c4cmp">Reveal the paper’s labels</button>
+    <div class="c4ref" id="c4cmpmsg"></div>
+  </div>
+
+  <p>Their approach was to fill in the missing piece between “rules” and “feelings”:</p>
+  <ul>
+    <li><b>Early attempt:</b> only “fun / not fun.” When the team argued, nobody could tell whether people were disputing numbers, player behavior or feelings.</li>
+    <li><b>Key insight:</b> between rules and feelings a word was missing, and it is the <b>behavior</b> that appears once the rules run, which is to say the dynamics. With it, rules can connect to feelings.</li>
+    <li><b>MDA’s three lenses:</b> the designer sees things in the order M→D→A, and the player sees exactly the reverse, feeling A first and slowly working out D and M.</li>
+  </ul>
+  <div class="card">
+    <svg viewBox="0 0 700 220" width="100%" role="img" aria-label="Evolution diagram: with only the word “fun,” the team can’t settle arguments, so MDA is proposed, and extensions and criticisms follow">
+      <g class="rough" stroke="#2b2b3a" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="10" y="30" width="190" height="90" rx="14" fill="#ffe9ef"/>
+        <rect x="255" y="30" width="190" height="90" rx="14" fill="#fff7cf"/>
+        <rect x="500" y="30" width="190" height="90" rx="14" fill="#eaf9e4"/>
+        <path d="M202 75 H252"/><path d="M242 67 L254 75 L242 83"/>
+        <path d="M447 75 H497"/><path d="M487 67 L499 75 L487 83"/>
+      </g>
+      <g font-size="17" text-anchor="middle" fill="#2b2b3a">
+        <text x="105" y="62" font-weight="700">Only “fun”</text><text x="105" y="84">design, code, criticism</text><text x="105" y="106">talking past each other</text>
+        <text x="350" y="62" font-weight="700">MDA (2004)</text><text x="350" y="84">three lenses</text><text x="350" y="106">+ eight aesthetics</text>
+        <text x="595" y="62" font-weight="700">New problems</text><text x="595" y="84">too simple? players</text><text x="595" y="106">change the rules</text>
+        <text x="227" y="150" font-size="16">no shared language</text><text x="472" y="150" font-size="16">found out by using it</text>
+        <text x="350" y="196" font-size="17">Many extensions and alternative frameworks followed</text>
+      </g>
+    </svg>
+  </div>
+
+  <div class="timeline">
+    <div class="ev hasimg"><span data-illus="c04_workshop2"></span><div><b class="yr">2001–2004</b> The GDC “Game Design and Tuning Workshop” runs every year, and MDA takes shape step by step in teaching and discussion.</div></div>
+    <div class="ev hasimg"><span data-illus="c04_lecture"></span><div><b class="yr">April 2004</b> LeBlanc gives a talk at Northwestern University, “Mechanics, Dynamics, Aesthetics” (listed in the paper’s references).</div></div>
+    <div class="ev hasimg"><span data-illus="c04_paper"></span><div><b class="yr">July 2004</b> The paper is presented at the AAAI-04 workshop on Challenges in Game AI (San Jose, USA) and collected in AAAI Technical Report WS-04-04.</div></div>
+    <div class="ev hasimg"><span data-illus="c04_critics"></span><div><b class="yr">Since then</b> It has become one of the most cited frameworks in teaching and industry conversation, and has also been criticized again and again as “too simple,” prompting many extended versions.</div></div>
+  </div>
+  <p class="small">Source: Robin Hunicke, Marc LeBlanc and Robert Zubek, “MDA: A Formal Approach to Game Design and Game Research,” 2004 (abstract, introduction and references); the dates and workshop details are from the AAAI-04 workshop listing.</p>
+
+  
+  <div class="sec"><span class="n">4</span><h2><span class="tag why">Why it works</span>Why does one set of rules give a thousand different faces?</h2></div>
+  <div class="withimg">
+    <span data-illus="c04_twoways"></span>
+    <div>
+      <p>Designers of course want to get it right in one go: work out a number that makes every player tense. But in the very same “cat chases mouse,” one person learns to circle a pillar and another, greedy for cheese, is cornered against a wall. Not one word of the rules changed, yet the behavior differs, and the mood differs even more.</p>
+      <p>Why can’t rules control behavior? Because the step from mechanics to dynamics hides two layers of uncertainty.</p>
+    </div>
+  </div>
+  <div class="why-box">
+    <h3>First uncertainty: rules “fight” each other, and a small change can cause a qualitative shift</h3>
+    <p>Rules affect one another, and the effect of changing one number is very hard to work out in your head. This is called <span class="term" tabindex="0" data-def="A system whose output is not proportional to its input: a small change may have no effect, or may cause a qualitative shift.">nonlinearity</span>. In the linked diagram later you will see it yourself: raise the cat’s speed from 1.7 to 3.0 and the experience doesn’t go from “a little tense” to “a bit more tense” but skips “tense” altogether and drops straight into “frustration.”</p>
+    <p>There is also a hidden amplifier that is extremely common. In <i>Monopoly</i>, whoever owns more property collects more rent, and the rent buys more property. This causal circle where “the result feeds back to strengthen the cause” is called a <span class="term" tabindex="0" data-def="Feedback loop: a system’s output flows back to affect its input, forming a causal circle. One that amplifies change is called positive feedback; one that damps change is called negative feedback.">feedback loop</span>, and this kind widens gaps, so it is called positive feedback. A slight lead at the start becomes an overwhelming advantage after dozens of turns, though no rule says “let the leader win.” A phenomenon that exists “in the whole but in no single rule” is called <b>emergence</b>.</p>
+    <p class="src">Sources: Donella Meadows, <i>Thinking in Systems</i> (2008), on feedback loops and system behavior; <i>Monopoly</i> descends from The Landlord’s Game, patented by Elizabeth Magie in 1904, who meant it to show how “rent makes landlords richer and richer” (according to accounts of the game’s history such as those in <i>Public Domain Review</i>; credit for inventing <i>Monopoly</i> has been disputed historically). The MDA paper also takes <i>Monopoly</i> as one of its objects of analysis.</p>
+  </div>
+  <div class="card">
+    <svg viewBox="0 0 700 240" width="100%" role="img" aria-label="Positive feedback loop in Monopoly: more property, more rent, more money, buy more property, and back to more property; on the right is a comparison where the gap between leader and trailer widens over the turns">
+      <g class="rough" stroke="#2b2b3a" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="140" y="20" width="130" height="50" rx="12" fill="#fff7cf"/>
+        <rect x="270" y="150" width="130" height="50" rx="12" fill="#fff7cf"/>
+        <rect x="10" y="150" width="130" height="50" rx="12" fill="#fff7cf"/>
+        <path d="M262 52 Q330 70 350 142"/><path d="M340 130 L350 146 L360 132"/>
+        <path d="M268 178 H146"/><path d="M158 170 L144 178 L158 186"/>
+        <path d="M60 144 Q60 80 134 50"/><path d="M122 46 L136 50 L128 62"/>
+        <path d="M470 200 H680 M470 200 V30"/>
+        <path d="M470 150 Q560 140 680 120" stroke="#3b82f6"/>
+        <path d="M470 138 Q540 120 620 70 T680 30" stroke="#e5484d" stroke-width="5"/>
+      </g>
+      <g font-size="17" text-anchor="middle" fill="#2b2b3a">
+        <text x="205" y="50">more property</text><text x="335" y="180">more rent</text><text x="75" y="180">more money</text>
+        <text x="205" y="226" font-weight="700">Positive feedback: it grows as it turns</text>
+        <text x="575" y="224">turns →</text>
+        <text x="650" y="108" fill="#2b5ec9">Trailing</text><text x="625" y="26" fill="#c0272d">Leading</text>
+        <text x="545" y="44" font-size="16">gap keeps widening</text>
+      </g>
+    </svg>
+  </div>
+  <div class="why-box">
+    <h3>Second uncertainty: players differ, and so does their luck</h3>
+    <p>Skill, preferences and opening luck all differ, so one set of rules always yields a pile of outcomes, not a single one. A designer’s habit is to look at the <b>distribution</b> of outcomes: run lots of rounds and see where most people land. Engineering often uses a <span class="term" tabindex="0" data-def="Monte Carlo simulation: a method that runs a large number of random repeated trials and tallies the distribution of results.">Monte Carlo</span>-style approach, letting automatic players run hundreds of rounds and then tallying. With real people, it is done by <span class="term" tabindex="0" data-def="Playtest: having real players play a prototype, observing their behavior and collecting feedback.">playtesting</span>.</p>
+    <p><b>Verification experiment:</b> the linked diagram lets you check this by hand. Turn one knob and the mechanics, dynamics and aesthetics layers all change together, and the dynamics layer is a distribution over 30 rounds, not one round.</p>
+    <p class="src">Sources: nonlinearity and randomness are general concepts in systems science and statistics; running many simulations to look at the distribution of outcomes is common practice in game balancing, not any one person’s invention. “The content of a game is behavior” is from the MDA paper (2004).</p>
+  </div>
+  <div class="eg" data-ic="🎲"><span data-illus="c04_rich"></span><div class="egt"><b><i>Monopoly</i> drags on</b>. The leader gets richer and richer, the trailer has almost no way back, and in the second half everyone knows who will win and the tension is gone. The problem is in the dynamics (the gap is amplified), and what needs changing is the mechanics.</div></div>
+  <div class="eg" data-ic="📊"><span data-illus="c04_exam"></span><div class="egt"><b>The same exam</b>. On the same paper, some find it “just challenging enough,” some find it “all giveaways,” and some find it “can’t do any of it.” The person setting the paper should look at the distribution of the whole class’s scores, not at one student.</div></div>
+  <div class="eg bad" data-ic="⭐"><span data-illus="c04_average"></span><div class="egt"><b>Looking only at the average</b>. “Average user rating of 3 stars” sounds like “okay,” but it could be half the people giving 5 stars and half giving 1 star, with nobody at the average. The average hides the distribution, and hides that “half the people are leaving.”</div></div>
+
+  
+  <div class="sec"><span class="n">5</span><h2><span class="tag why">Why it works</span>The rules are written correctly, so why is the behavior still wrong?</h2></div>
+  <div class="withimg rev">
+    <span data-illus="c04_spec"></span>
+    <div>
+      <p>There is an even more awkward situation: your rules are exactly right, yet you get behavior you didn’t want at all. You tell a robot to “clean the room,” and the test is “no stuff visible on the floor,” so it shoves everything under the sofa. It has not broken a single rule.</p>
+      <p>This is another pit between mechanics and dynamics: the rules are what you <b>wrote down</b>, the intent is what you <b>had in mind</b>, and there is always some loss in translation between them. A player, or a program, that seriously “maximizes” will find that gap without mercy.</p>
+    </div>
+  </div>
+  <div class="why-box">
+    <h3>Specification gaming: exploiting the words you wrote, not what you meant</h3>
+    <p>AI research calls this <span class="term" tabindex="0" data-def="Specification gaming: a system satisfies the literal specification of a goal without achieving what the designer actually wanted; also called reward hacking.">specification gaming</span>. In late 2016, OpenAI researchers used reinforcement learning to train a program to play the boat-racing game <i>CoastRunners</i>, intending it to win the race. The game scored points for hitting targets along the course, and the program found a small lagoon where targets kept respawning, where circling and hitting targets earned more than finishing the whole course. By their account its average score was about 20% higher than human players’, yet it never went to the finish line.</p>
+    <p>DeepMind’s Victoria Krakovna and colleagues collected dozens of such examples in 2020 and made one point: the loophole-hunting is because the reward function was not written right, not because the program is “bad.” For a designer this means: whenever you treat the rules as the player’s goal, be careful, because they may really optimize the letter of them.</p>
+    <p class="src">Sources: OpenAI, “Faulty Reward Functions in the Wild” (December 2016); Victoria Krakovna et al., “Specification gaming: the flip side of AI ingenuity,” DeepMind blog (April 2020). The “about 20% higher” figure comes from that OpenAI post and is relayed here from secondary accounts, since the original page could not be opened directly this time.</p>
+  </div>
+  <div class="card">
+    <svg viewBox="0 0 700 210" width="100%" role="img" aria-label="Flowchart: intent is translated into a specification, the specification is optimized to produce behavior, and a gap may appear between behavior and intent">
+      <g class="rough" stroke="#2b2b3a" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="10" y="40" width="180" height="70" rx="14" fill="#fff7cf"/>
+        <rect x="260" y="40" width="180" height="70" rx="14" fill="#e8f6fc"/>
+        <rect x="510" y="40" width="180" height="70" rx="14" fill="#ffe9ef"/>
+        <path d="M192 75 H256"/><path d="M246 67 L258 75 L246 83"/>
+        <path d="M442 75 H506"/><path d="M496 67 L508 75 L496 83"/>
+        <path d="M600 112 Q600 170 350 170 Q100 170 100 116" stroke-dasharray="4 8" stroke="#e5484d"/>
+        <path d="M92 126 L100 112 L110 126" stroke="#e5484d"/>
+      </g>
+      <g font-size="17" text-anchor="middle" fill="#2b2b3a">
+        <text x="100" y="68" font-weight="700">What you want</text><text x="100" y="92">intent: finish the race</text>
+        <text x="350" y="68" font-weight="700">What you wrote</text><text x="350" y="92">spec: hit targets for points</text>
+        <text x="600" y="68" font-weight="700">Behavior you see</text><text x="600" y="92">circling in the lagoon</text>
+        <text x="224" y="30" font-size="16">translate</text><text x="474" y="30" font-size="16">optimize</text>
+        <text x="350" y="198" fill="#c0272d">Gap: the behavior meets the spec but betrays the intent</text>
+      </g>
+    </svg>
+  </div>
+  <div class="eg" data-ic="🚤"><span data-illus="c04_boat"></span><div class="egt"><b>Boat circling</b>. The spec is “hit targets for points,” the intent is “win the race.” Targets reappear in the lagoon, circling pays better than finishing the course, so the program circles without a qualm.</div></div>
+  <div class="eg" data-ic="📞"><span data-illus="c04_callcenter"></span><div class="egt"><b>Imagine a call center</b>: evaluation looks only at “the shorter the average call, the better.” Agents quickly find that hanging up is the best deal. The numbers look great and no problem is solved. (This is an illustrative scenario, not a real event.)</div></div>
+  <div class="eg bad" data-ic="🤖"><span data-illus="c04_blame"></span><div class="egt"><b>Pushing the blame onto “cheaters”</b>. When players or programs exploit a loophole and you shout “it’s cheating,” you are usually looking in the wrong place. The player is only playing seriously by the rules you gave, and it is the specification that needs fixing.</div></div>
+
+  <div class="board">
+    <b>🚤 You set the rewards: make the AI choose to finish the course</b>
+    <p class="small">A program that only pursues “highest total score” faces two routes: finish the 45-second course, or circle in the lagoon (hitting 3 targets every 6 seconds). The race is limited to 60 seconds. There are also 3 targets along the course. The numbers are illustrative, not real game data.</p>
+    <div class="c4sg">
+      <div>
+        <label class="ctl">Points per target <output id="c4sgpv">5</output></label>
+        <input type="range" id="c4sgp" min="1" max="10" step="1" value="5">
+        <label class="ctl">Reward for reaching the finish <output id="c4sgfv">50</output></label>
+        <input type="range" id="c4sgf" min="0" max="400" step="10" value="50">
+        <label class="ctl" style="display:flex;gap:8px;align-items:center"><input type="checkbox" id="c4sgr" checked> Lagoon targets respawn</label>
+      </div>
+      <div>
+        <div class="c4sgbar" id="c4sga"><span class="lb">🏁 Route A: finish the course</span><div class="tr"><i style="background:#b6e8a8"></i><b></b></div></div>
+        <div class="c4sgbar" id="c4sgb"><span class="lb">🔁 Route B: circle in the lagoon</span><div class="tr"><i style="background:#ffb3c6"></i><b></b></div></div>
+      </div>
+    </div>
+    <div class="msg" id="c4sgmsg" style="font-size:1.1rem"></div>
+    <button class="btn alt" id="c4sgreset">Restore defaults</button>
+  </div>
+  <div class="sticky">Try it: make the program choose “finish the course.” You have two ways: raise the finish reward, or let each target be hit only once. Which change is more like “fixing the rules,” and which is just “pressing down on a number”?</div>
+
+  
+  <div class="sec"><span class="n">6</span><h2><span class="tag how">Try it</span>The rules–dynamics–aesthetics diagram: turn one knob and all three layers change</h2></div>
+  <p>You are the <b>🐭 mouse</b>, moving around the board with the mouse (or your finger) and trying not to get caught by the <b>🐱 cat</b>. Play one round first, then turn the “rule knobs”: the three layers below will change <b>at the same time</b>.</p>
+  <div class="board">
+    <div class="twocol">
+      <div>
+        <canvas id="c4cv" width="560" height="340"></canvas>
+        <div class="msg" id="c4gmsg">Press “Start” and play one round yourself (your result will appear as a point in the distribution below).</div>
+      </div>
+      <div>
+        <h3 style="margin-top:0">⚙️ Rule knobs</h3>
+        <label class="ctl">Cat speed <output id="c4ov1">2.2</output></label>
+        <input type="range" id="c4cat" min="0.8" max="4.5" step="0.1" value="2.2">
+        <label class="ctl">Mouse top speed <output id="c4ov2">3.5</output></label>
+        <input type="range" id="c4mouse" min="1.5" max="6" step="0.1" value="3.5">
+        <label class="ctl">🧀 Number of cheese (bonus points) <output id="c4ov3">3</output></label>
+        <input type="range" id="c4cheese" min="0" max="6" step="1" value="3">
+        <div class="c4row">
+          <button class="btn" id="c4start">Start</button>
+          <span class="stat">⏱ <b id="c4tm">0.0</b>s</span><span class="stat">🧀 <b id="c4sc">0</b></span>
+        </div>
+        <div class="c4row">
+          <button class="chip" data-pre="3.6,3.5,3">A “hopeless” preset</button>
+          <button class="chip" data-pre="3.0,3.5,3">A “frustrating” preset</button>
+          <button class="chip" data-pre="1.7,3.5,3">A “tense” preset</button>
+          <button class="chip" data-pre="1.0,3.5,3">A “boring” preset</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="c4arrow">▼ The same knobs drive the three layers below at once ▼</div>
+    <div class="c4layer m" id="c4lm">
+      <h3>⚙️ Mechanics layer: rules and numbers</h3>
+      <div class="c4bar"><span class="lb">🐱 Cat speed</span><span class="tr"><i id="c4bcat" style="background:#ffb3c6"></i></span><b class="pc" id="c4pcat"></b></div>
+      <div class="c4bar"><span class="lb">🐭 Mouse speed</span><span class="tr"><i id="c4bmouse" style="background:#a8dcf0"></i></span><b class="pc" id="c4pmouse"></b></div>
+      <div id="c4mtxt" class="small"></div>
+    </div>
+    <div class="c4arrow">▼ Once the rules run: let “machine players” play 30 rounds in a row ▼</div>
+    <div class="c4layer d" id="c4ld">
+      <h3>🌀 Dynamics layer: the distribution of behavior</h3>
+      <svg id="c4hist" viewBox="0 0 560 252" role="img" aria-label="Histogram of the survival-time distribution over 30 rounds"></svg>
+      <div id="c4dtxt" class="small"></div>
+      <div class="c4row">
+        <label><input type="checkbox" id="c4vary" checked> Player differences (skill varies per round)</label>
+        <button class="btn alt" id="c4reseed">Reshuffle the luck</button>
+      </div>
+    </div>
+    <div class="c4arrow">▼ Roughly sort survival time into “feelings” (a sketch mapping, not a measurement of real emotion) ▼</div>
+    <div class="c4layer a" id="c4la">
+      <h3>💗 Aesthetics layer: what players will roughly feel</h3>
+      <div class="c4bar"><span class="lb">😵 Hopeless</span><span class="tr"><i id="c4b0" style="background:#d8c8ff"></i></span><b class="pc" id="c4p0"></b></div>
+      <div class="c4bar"><span class="lb">😖 Frustrated (&lt;4s)</span><span class="tr"><i id="c4b1" style="background:#ffb3c6"></i></span><b class="pc" id="c4p1"></b></div>
+      <div class="c4bar"><span class="lb">😬 Tense (4–15s)</span><span class="tr"><i id="c4b2" style="background:#b6e8a8"></i></span><b class="pc" id="c4p2"></b></div>
+      <div class="c4bar"><span class="lb">😴 Relaxed (&gt;15s)</span><span class="tr"><i id="c4b3" style="background:#a8dcf0"></i></span><b class="pc" id="c4p3"></b></div>
+      <div id="c4atxt"></div>
+    </div>
+    <div class="c4goal" id="c4goal"></div>
+  </div>
+  <div class="sticky">Try it: using only the knobs, get at least 60% of rounds into “tense and thrilling.” When you succeed the dashed box below turns green. Then press “Reshuffle the luck” and see how the distribution wobbles.</div>
+  <p class="small">Note: the “machine player” dodges the cat, sometimes goes for the cheese, but now and then zones out (moves at random); with “Player differences” ticked, the chance of zoning out differs per round. <b>This is just a simplified automatic player, not the same as a real person.</b> Rounds in which the mouse isn’t caught count as 60 seconds. The “luck” is held fixed so that you can compare fairly as you turn the knobs; press “Reshuffle the luck” and you will see that with the rules completely unchanged, a fresh batch of rounds still makes the distribution fluctuate.</p>
+
+  <h3>Turn it into a workflow: three steps to a design hypothesis</h3>
+  <ol>
+    <li><b>Write the aesthetics (A) first:</b> “I want most players to feel tense, but not desperate.”</li>
+    <li><b>Then write the rules (M) and predict the dynamics (D):</b> “The cat is a bit slower than the mouse, and adding cheese makes players willing to take risks; expect some players to circle and some to be cornered.”</li>
+    <li><b>Take it to playtesting and look at the distribution:</b> the goal is “most people land in the zone you want,” not “everyone is tense.” If it’s wrong, go back to step 2 and adjust the rules.</li>
+  </ol>
+
+  <div class="misc">
+    <h3>Common misconceptions</h3>
+    <ul>
+      <li><b>“Dynamics” = on-screen motion effects.</b> No: dynamics are the patterns of behavior that appear when the rules run (circling, camping a spot), not animation.</li>
+      <li><b>“One playtest is enough.”</b> One round is just one point in a distribution; you have to look at many people and many rounds.</li>
+      <li><b>“MDA can calculate the experience.”</b> It helps you <i>discuss</i> experience; it can’t <i>predict</i> it for you.</li>
+      <li><b>“Aesthetics = looks nice.”</b> Here aesthetics means the player’s <b>emotional response</b>, not art style.</li>
+      <li><b>“It’s fine as long as the rules are right.”</b> The rules are the letter, the intent is in your head, and serious players will find the behavior hiding in the gaps.</li>
+    </ul>
+  </div>
+
+  <div class="reflect">
+    <h3>Reflection and debate</h3>
+    <p>MDA is widely circulated and often criticized: it treats players as passive “receivers” and ignores context such as culture, community and story; the eight-way split is not an accepted complete classification either, and even in the paper’s own labeling of Quake the word “competition,” outside the eight, appears. Some also point out that quite a few things called “mechanics” carry aesthetic color themselves. Various extended or alternative frameworks have appeared since, such as DPE (Design, Play, Experience) for serious games, MDAO, and the DDE (Design, Dynamics, Experience) that some have proposed, which shows that the field has not treated MDA as the final word.</p>
+    <p>“A designer can’t design experience directly, only influence it indirectly” is the view of MDA’s authors; some designers stress that in story-driven games the designer’s control over experience is much stronger. One more thing to remember: the “machine player” in the linked diagram is crude, and real people’s behavior is far more complicated, so a simulation can only help you find “places worth playtesting.”</p>
+    <p>Think about it: if two people feel completely opposite things about the same round, is it a problem with the rules, or with the players?</p>
+  </div>
+
+  <div class="key">
+    <h3>Key points</h3>
+    <ul>
+      <li><b>Mechanics</b> are what you can write down; <b>dynamics</b> appear only when it runs; <b>aesthetics</b> are what the player feels.</li>
+      <li>MDA was proposed because designers, programmers and researchers lacked a shared language for “how rules become feelings”; what it adds is the “dynamics” layer, and it breaks “fun” into eight aesthetics.</li>
+      <li>Designers think from M to A, and players feel their way from A back to M.</li>
+      <li>Rules affect one another nonlinearly and feedback loops amplify gaps, so changing one number can transform the experience, which only playtesting can confirm.</li>
+      <li>One set of rules produces a <b>distribution</b> of experiences, not a single point; and the spec you write down is not your intent, so serious players will exploit the gaps.</li>
+    </ul>
+  </div>
+  <div class="tldr">You write the rules, and the experience is “run” by the players; one set of rules runs out a whole spread, so use playtests to look at the distribution and calibrate the feeling you want.</div>
+
+  <div class="sec"><span class="n">7</span><h2><span class="tag think">Practice</span>Quick quiz</h2></div>
+  <div id="quiz"></div>
+
+  <div class="sec"><span class="n">8</span><h2><span class="tag how">Your design</span>Write a playtestable design hypothesis</h2></div>
+  <div class="card o">
+    <p>First write the <b>feeling (A)</b> you want, like “panicky and funny.” Then write 2–3 <b>rules (M)</b>, and finally predict what <b>dynamics (D)</b> might appear. Think: how would the dynamics differ for players of different levels? Is there a rule in yours that people could exploit?</p>
+    <textarea rows="5" data-save="ch4" placeholder="Aesthetics: panicky, want to laugh&#10;Mechanics: nobody can see the map, and everyone’s position is revealed every 10 seconds…&#10;Dynamics: people will run around on purpose to confuse others…"></textarea>
+    <p class="small">✍️ Saved automatically in your browser.</p>
+  </div>
+</main>
+<script src="../js/illus.js"></script>
+<script src="../js/illus-ch04.js"></script>
+<script src="../js/en/illus.js"></script>
+<script src="../js/en/illus-lib.js"></script>
+<script src="../js/en/illus-ch04.js"></script>
+<script src="../js/common.js"></script>
+<script>
+(function () {
+  const $ = id => document.getElementById(id);
+  const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+  const SW = 560, SH = 340, CAP = 3600, MG = 15, NRUN = 30;
+
+  
+  const cv = $("c4cv"), ctx = cv.getContext("2d");
+  let run = false, t0 = 0, mouse = { x: 100, y: 170 }, cat = { x: 480, y: 170 }, tgt = { x: 100, y: 170 }, cheeses = [], sc = 0, last = 0;
+  let humanT = null;
+  cv.addEventListener("pointermove", e => {
+    const r = cv.getBoundingClientRect();
+    tgt = { x: (e.clientX - r.left) * SW / r.width, y: (e.clientY - r.top) * SH / r.height };
+  });
+  cv.addEventListener("pointerdown", e => {
+    const r = cv.getBoundingClientRect();
+    tgt = { x: (e.clientX - r.left) * SW / r.width, y: (e.clientY - r.top) * SH / r.height };
+  });
+  function spawn() {
+    cheeses = [];
+    for (let i = 0; i < +$("c4cheese").value; i++) cheeses.push({ x: 40 + Math.random() * (SW - 80), y: 40 + Math.random() * (SH - 80) });
+  }
+  $("c4start").onclick = () => {
+    run = true; t0 = performance.now(); sc = 0; mouse = { x: 100, y: 170 }; cat = { x: 480, y: 170 }; tgt = { ...mouse };
+    spawn(); $("c4gmsg").textContent = "Run!"; $("c4sc").textContent = 0; last = t0;
+    requestAnimationFrame(loop);
+  };
+  function step(a, b, v) {
+    const dx = b.x - a.x, dy = b.y - a.y, d = Math.hypot(dx, dy);
+    if (d <= v) { a.x = b.x; a.y = b.y; } else { a.x += dx / d * v; a.y += dy / d * v; }
+  }
+  function loop(now) {
+    if (!run) return;
+    const dt = Math.min((now - last) / 16.7, 3); last = now;
+    step(mouse, tgt, +$("c4mouse").value * dt);
+    step(cat, mouse, +$("c4cat").value * dt);
+    cheeses = cheeses.filter(c => {
+      if (Math.hypot(c.x - mouse.x, c.y - mouse.y) < 24) { sc++; $("c4sc").textContent = sc; return false; }
+      return true;
+    });
+    if (!cheeses.length && +$("c4cheese").value) spawn();
+    const sec = (now - t0) / 1000; $("c4tm").textContent = sec.toFixed(1);
+    draw();
+    if (Math.hypot(cat.x - mouse.x, cat.y - mouse.y) < 26) { end(sec); return; }
+    requestAnimationFrame(loop);
+  }
+  function feelOf(sec, cs, ms) {
+    if (cs >= ms) return "The cat is as fast as you or faster: there is almost no escape, and it feels like [despair].";
+    if (sec < 4) return "Caught quickly: it feels like [frustration], and the rules may be too harsh.";
+    if (sec < 15) return "A close call and some dodging: it feels like [tense and thrilling], and the difficulty is good!";
+    return "Held out a long time: it feels like [relaxed or even boring], so let the cat go faster.";
+  }
+  function end(sec) {
+    run = false; humanT = Math.min(sec, 60);
+    const cs = +$("c4cat").value, ms = +$("c4mouse").value;
+    $("c4gmsg").innerHTML = "Caught! You lasted <b>" + sec.toFixed(1) + "</b> seconds and ate " + sc + " pieces of cheese.<br><span style='font-size:1rem;font-family:var(--body)'>" + feelOf(sec, cs, ms) + " You are just <b>one point</b> in the distribution; see the ▼ marker in the dynamics layer below.</span>";
+    renderAll(false);
+  }
+  function draw() {
+    ctx.clearRect(0, 0, SW, SH);
+    ctx.font = "34px serif"; ctx.textAlign = "center"; ctx.textBaseline = "middle";
+    cheeses.forEach(c => ctx.fillText("🧀", c.x, c.y));
+    ctx.fillText("🐭", mouse.x, mouse.y); ctx.fillText("🐱", cat.x, cat.y);
+  }
+  draw();
+
+  
+  function mulberry(a) { return function () { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+  function simRun(cs, ms, nc, perr, R) {
+    let mx = 100, my = 170, cx = 480, cy = 170, dir = 0, hold = 0, ch = [], eaten = 0;
+    const sp = () => { ch = []; for (let i = 0; i < nc; i++) ch.push([40 + R() * (SW - 80), 40 + R() * (SH - 80)]); };
+    sp();
+    for (let t = 0; t < CAP; t++) {
+      if (hold <= 0) {
+        hold = 12;
+        if (R() < perr * 0.25) dir = R() * Math.PI * 2;
+        else {
+          let bs = -1e9;
+          for (let k = 0; k < 16; k++) {
+            const a = k * Math.PI / 8;
+            const nx = clamp(mx + Math.cos(a) * ms * 18, MG, SW - MG), ny = clamp(my + Math.sin(a) * ms * 18, MG, SH - MG);
+            let s = Math.hypot(nx - cx, ny - cy);
+            const w = Math.min(nx - MG, SW - MG - nx, ny - MG, SH - MG - ny);
+            if (w < 50) s -= (50 - w) * 2;
+            if (nc && Math.hypot(mx - cx, my - cy) > 160 && Math.hypot(nx - cx, ny - cy) > 150) {
+              let md = 1e9;
+              for (const c of ch) if (Math.hypot(c[0] - cx, c[1] - cy) > 160) md = Math.min(md, Math.hypot(c[0] - nx, c[1] - ny));
+              if (md < 1e9) s -= md * 0.8;
+            }
+            if (s > bs) { bs = s; dir = a; }
+          }
+          dir += (R() - 0.5) * 2 * perr * 1.2;
+        }
+      }
+      hold--;
+      mx = clamp(mx + Math.cos(dir) * ms, MG, SW - MG); my = clamp(my + Math.sin(dir) * ms, MG, SH - MG);
+      const dx = mx - cx, dy = my - cy, d = Math.hypot(dx, dy);
+      if (d <= cs) { cx = mx; cy = my; } else { cx += dx / d * cs; cy += dy / d * cs; }
+      const n0 = ch.length; ch = ch.filter(c => Math.hypot(c[0] - mx, c[1] - my) >= 24); eaten += n0 - ch.length;
+      if (!ch.length && nc) sp();
+      if (Math.hypot(cx - mx, cy - my) < 26) return { t: (t + 1) / 60, e: eaten };
+    }
+    return { t: CAP / 60, e: eaten };
+  }
+  let seed = 7;
+  function batch() {
+    const cs = +$("c4cat").value, ms = +$("c4mouse").value, nc = +$("c4cheese").value, vary = $("c4vary").checked;
+    const R = mulberry(seed), out = [];
+    for (let i = 0; i < NRUN; i++) out.push(simRun(cs, ms, nc, vary ? 0.05 + R() * 0.75 : 0.4, R));
+    return out;
+  }
+
+  
+  const EDGES = [0, 5, 10, 15, 20, 30, 45, 60];
+  const LABELS = ["0-5", "5-10", "10-15", "15-20", "20-30", "30-45", "45-60", "≥60"];
+  function binOf(t) { if (t >= 60) return 7; for (let i = 6; i >= 0; i--) if (t >= EDGES[i]) return i; return 0; }
+  function pulse(id) { const e = $(id); e.classList.remove("c4pulse"); void e.offsetWidth; e.classList.add("c4pulse"); }
+  function renderAll(doPulse) {
+    const cs = +$("c4cat").value, ms = +$("c4mouse").value, nc = +$("c4cheese").value;
+    $("c4ov1").textContent = cs.toFixed(1); $("c4ov2").textContent = ms.toFixed(1); $("c4ov3").textContent = nc;
+    // M
+    $("c4bcat").style.width = (cs / 6 * 100) + "%"; $("c4bmouse").style.width = (ms / 6 * 100) + "%";
+    $("c4pcat").textContent = cs.toFixed(1); $("c4pmouse").textContent = ms.toFixed(1);
+    const ratio = cs / ms;
+    $("c4mtxt").innerHTML = "Cat ÷ mouse = <b>" + ratio.toFixed(2) + "</b>; cheese: <b>" + nc + "</b>." + (ratio >= 1 ? "The cat is no slower than the mouse, so in theory there is no escape." : "The mouse has " + ((1 - ratio) * 100).toFixed(0) + "% of speed to spare.");
+    // D
+    const res = batch(), times = res.map(r => r.t), N = times.length, cnt = new Array(8).fill(0);
+    times.forEach(t => cnt[binOf(t)]++);
+    const mxc = Math.max(5, ...cnt), x0 = 30, bw = 66, base = 190, hh = 150;
+    let s = '<line x1="26" y1="190" x2="556" y2="190" stroke="#2b2b3a" stroke-width="3"/>';
+    cnt.forEach((c, i) => {
+      const h = c / mxc * hh, x = x0 + i * bw;
+      const col = i === 0 ? "#ffb3c6" : i <= 2 ? "#b6e8a8" : i === 7 ? "#d8c8ff" : "#a8dcf0";
+      if (c) s += '<rect x="' + (x + 6) + '" y="' + (base - h) + '" width="' + (bw - 12) + '" height="' + h + '" fill="' + col + '" stroke="#2b2b3a" stroke-width="3"/>' +
+        '<text x="' + (x + bw / 2) + '" y="' + (base - h - 6) + '" text-anchor="middle" font-size="18">' + c + '</text>';
+      s += '<text x="' + (x + bw / 2) + '" y="212" text-anchor="middle" font-size="15">' + LABELS[i] + '</text>';
+    });
+    if (humanT !== null) {
+      const hx = x0 + binOf(humanT) * bw + bw / 2;
+      s += '<path d="M' + (hx - 9) + ' 168 L' + (hx + 9) + ' 168 L' + hx + ' 186 Z" fill="#e5484d" stroke="#2b2b3a" stroke-width="2.5"/><text x="' + hx + '" y="162" text-anchor="middle" font-size="16" fill="#e5484d">you</text>';
+    }
+    s += '<text x="290" y="234" text-anchor="middle" font-size="16">Survival time (seconds); number on bar = rounds (of ' + N + ' rounds)</text>';
+    $("c4hist").innerHTML = s;
+    const sorted = times.slice().sort((a, b) => a - b);
+    const mean = times.reduce((a, b) => a + b, 0) / N;
+    const med = (sorted[N / 2 - 1] + sorted[N / 2]) / 2;
+    const sd = Math.sqrt(times.reduce((a, b) => a + (b - mean) * (b - mean), 0) / N);
+    const eat = res.reduce((a, r) => a + r.e, 0) / N;
+    let note;
+    if (cs >= ms) note = "The cat is no slower than the mouse: almost every round, the mouse is caught quickly.";
+    else if (sd > 0.5 * mean) note = "Large spread: <b>under the same rules, rounds differ enormously</b>, so looking at a single round would mislead you.";
+    else note = "Results are fairly concentrated: behavior is fairly stable under these rules.";
+    $("c4dtxt").innerHTML = "Mean <b>" + mean.toFixed(1) + "</b> seconds, median <b>" + med.toFixed(1) + "</b>, shortest " + sorted[0].toFixed(1) + ", longest " + sorted[N - 1].toFixed(1) + "; on average each round eats <b>" + eat.toFixed(1) + "</b> cheese (dynamics: are they willing to take risks for it?).<br>" + note;
+    // A
+    const c = [0, 0, 0, 0];
+    times.forEach(t => { if (cs >= ms) c[0]++; else if (t < 4) c[1]++; else if (t < 15) c[2]++; else c[3]++; });
+    c.forEach((v, i) => { const p = Math.round(v / N * 100); $("c4b" + i).style.width = p + "%"; $("c4p" + i).textContent = p + "%"; });
+    const names = ["despair", "frustration", "tense and thrilling", "relaxed or bored"], top = c.indexOf(Math.max(...c));
+    $("c4atxt").innerHTML = "<span class='small'>The most common feeling under these rules: <b>" + names[top] + "</b> (" + Math.round(c[top] / N * 100) + "% of rounds). Note that not everyone is the same.</span>";
+    
+    const tp = Math.round(c[2] / N * 100), g = $("c4goal");
+    g.classList.toggle("ok", tp >= 60);
+    g.innerHTML = "🎯 <b>Design challenge</b>: work backward from the aesthetics to the rules, so that at least <b>60%</b> of rounds land in “tense and thrilling.” Right now it is <b>" + tp + "%</b>." + (tp >= 60 ? " ✔ Done! Look at the mechanics layer’s numbers now: the cat is slower than the mouse by “just enough,” and slower is not always better." : " Still " + (60 - tp) + " percentage points short; keep turning the knobs.");
+    if (doPulse) { pulse("c4lm"); pulse("c4ld"); pulse("c4la"); }
+  }
+  let tmr = null;
+  function schedule() { clearTimeout(tmr); tmr = setTimeout(() => renderAll(true), 90); }
+  ["c4cat", "c4mouse", "c4cheese", "c4vary"].forEach(id => $(id).addEventListener("input", schedule));
+  $("c4reseed").onclick = () => { seed = Math.floor(Math.random() * 1e6); renderAll(true); };
+  document.querySelectorAll("[data-pre]").forEach(b => b.onclick = () => {
+    const p = b.dataset.pre.split(",");
+    $("c4cat").value = p[0]; $("c4mouse").value = p[1]; $("c4cheese").value = p[2]; renderAll(true);
+  });
+  renderAll(false);
+
+  
+  const AE = ["Sensation", "Fantasy", "Narrative", "Challenge", "Fellowship", "Discovery", "Expression", "Submission"];
+  const REF = {
+    "Charades": ["Fellowship", "Expression", "Challenge"],
+    "Quake (first-person shooter)": ["Challenge", "Sensation", "Competition*", "Fantasy"],
+    "The Sims": ["Discovery", "Fantasy", "Expression", "Narrative"],
+    "Final Fantasy": ["Fantasy", "Narrative", "Expression", "Discovery", "Challenge", "Submission"]
+  };
+  let curGame = "Charades";
+  const picks = new Set();
+  const gbox = $("c4games"), abox = $("c4aes");
+  Object.keys(REF).forEach(n => {
+    const b = document.createElement("button");
+    b.className = "btn alt"; b.textContent = n;
+    b.onclick = () => {
+      curGame = n; picks.clear(); $("c4cmpmsg").style.display = "none";
+      gbox.querySelectorAll(".btn").forEach(x => x.classList.toggle("pink", x === b));
+      abox.querySelectorAll(".chip").forEach(x => x.classList.remove("on"));
+    };
+    if (n === curGame) b.classList.add("pink");
+    gbox.appendChild(b);
+  });
+  AE.forEach(a => {
+    const c = document.createElement("button");
+    c.className = "chip"; c.textContent = a;
+    c.onclick = () => { if (picks.has(a)) picks.delete(a); else picks.add(a); c.classList.toggle("on", picks.has(a)); };
+    abox.appendChild(c);
+  });
+  $("c4cmp").onclick = () => {
+    const out = $("c4cmpmsg"); out.style.display = "block";
+    if (!picks.size) { out.textContent = "First tick at least one aesthetic, then see how the paper labels it."; return; }
+    const ref = REF[curGame], clean = ref.map(x => x.replace("*", ""));
+    const both = clean.filter(a => picks.has(a));
+    const onlyMe = [...picks].filter(a => !clean.includes(a));
+    const onlyRef = clean.filter(a => !picks.has(a));
+    out.innerHTML = "The paper’s labels for “" + curGame + "”: <b>" + ref.join(",") + "</b>. You overlap with it on " + both.length + " items" +
+      (onlyMe.length ? "; you added:" + onlyMe.join(",") : "") + (onlyRef.length ? "; you did not tick:" + onlyRef.join(",") : "") + "." +
+      (ref.some(x => x.includes("*")) ? "(The “competition” marked * is not in the eight-term vocabulary; the paper’s own labeling doesn’t fit the eight exactly either.)" : "") +
+      "<br>Disagreement doesn’t mean you are wrong: the dominant aesthetic differs for different players and ways of playing, which is exactly the limit of “classification isn’t unique.” The point is that with this vocabulary you can at least <b>argue concretely</b>, instead of just shouting “fun.”";
+  };
+
+  
+  const INFO = {
+    m: "<b>Mechanics M</b>: what can be written into a table or code. Cat speed 2.5, mouse speed 3.5, 3 pieces of cheese. A designer can only work at this layer.",
+    d: "<b>Dynamics D</b>: the behavior that appears once the rules run. The mouse finds that circling a pillar is safest, yet can’t resist risking a grab at the cheese. Nobody wrote “circling” into the rules; it is played out.",
+    a: "<b>Aesthetics A</b>: what the player feels. The tension when the cat nearly gets you, the smugness of escaping. The player starts from this layer and works back, bit by bit, to guess the rules."
+  };
+  const hits = [...document.querySelectorAll(".c4hit")];
+  const pick = h => {
+    hits.forEach(x => x.classList.toggle("on", x === h));
+    $("c4info").innerHTML = INFO[h.dataset.k];
+  };
+  hits.forEach(h => {
+    h.addEventListener("click", () => pick(h));
+    h.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); pick(h); } });
+  });
+
+  
+  function sg() {
+    const p = +$("c4sgp").value, F = +$("c4sgf").value, resp = $("c4sgr").checked;
+    $("c4sgpv").textContent = p; $("c4sgfv").textContent = F;
+    const A = F + 3 * p, B = resp ? 30 * p : 3 * p, mx = Math.max(A, B, 1);
+    const set = (id, v) => { const e = $(id); e.querySelector("i").style.width = (v / mx * 100) + "%"; e.querySelector("b").textContent = v + " pts"; };
+    set("c4sga", A); set("c4sgb", B);
+    $("c4sga").classList.toggle("win", A > B); $("c4sgb").classList.toggle("win", B >= A);
+    let m;
+    if (A > B) {
+      m = "✔ The program chose to <b>finish the course</b> (" + A + " pts &gt; " + B + " pts)." + (!resp
+        ? "You let each target be hit only once, so the circling payoff is capped: this changes the structure of the rules."
+        : "You overpowered the circling payoff by raising the finish reward: this is pressing down on a number, and if you raise the target points a little more, it goes back to circling.");
+    } else {
+      m = "The program chose to <b>circle in the lagoon</b> (" + B + " pts" + (A === B ? " = " : " ≥ ") + A + " pts). It did not break any rule; it simply maximized the “score” you wrote down, seriously.";
+    }
+    $("c4sgmsg").innerHTML = m;
+  }
+  ["c4sgp", "c4sgf", "c4sgr"].forEach(id => $(id).addEventListener("input", sg));
+  $("c4sgreset").onclick = () => { $("c4sgp").value = 5; $("c4sgf").value = 50; $("c4sgr").checked = true; sg(); };
+  sg();
+
+  
+  GD.mountQuiz($("quiz"), [
+    { q: "A player says “that round was so tense my palms sweated.” Which layer of MDA is this describing?", opts: ["Mechanics", "Dynamics", "Aesthetics", "Level"], a: 2, why: "Emotional experience belongs to aesthetics. “Cat speed 2.2” is mechanics, and “circling a pillar” is dynamics." },
+    { q: "A designer wants players to feel “the pressure of being chased.” The most reasonable approach is:", opts: ["Write “the player feels pressure” directly in the document", "Design a chase mechanic, playtest it, and adjust rules such as speed according to the experience", "Add a pressure sound effect and that’s it", "No design needed; players will feel it naturally"], a: 1, why: "Aesthetics can only be reached indirectly through mechanics, and need playtesting to calibrate." },
+    { q: "[Why] The same rules run for 30 rounds, with survival times ranging from a few seconds to a minute. How should the designer see this?", opts: ["The program has a bug", "Focus on the distribution of results and tune the rules for the target group of players", "Look only at the best round", "Removing randomness would make everyone’s experience the same"], a: 1, why: "Players differ in skill and luck, and rules affect each other nonlinearly, so the same mechanics give a distribution of experiences. Even with randomness removed, differences in skill and preference remain." },
+    { q: "[Why] In the boat game, the program circles hitting targets and doesn’t go to the finish. What is the most accurate description?", opts: ["The program is broken and cheating", "There is a gap between the reward (score) and what the designer really wanted (winning the race), and the program maximized the score literally", "There were too few targets", "The player didn’t try hard enough"], a: 1, why: "This is specification gaming: it meets the literal specification of the goal but betrays the intent. What needs fixing is how the rules are written, not blaming the executor." },
+    { q: "[Why it was invented] Before MDA, what was the biggest difficulty when designers, programmers and researchers discussed games?", opts: ["There was no good enough game engine", "They lacked a shared vocabulary and couldn’t say how a “change to the rules” becomes a “player’s feeling,” only “fun / not fun”", "There were too few games to study", "Players were unwilling to take part in playtests"], a: 1, why: "The paper’s starting point was to move from vague words like “fun” and “gameplay” toward more directed vocabulary, building a bridge between design and development, game criticism and technical research." },
+    { q: "[Why it was invented] MDA deliberately singles out “dynamics” as its own layer, mainly because:", opts: ["Animation is important", "Between rules and feelings lies “the behavior once the rules run,” which designers can’t fully foresee and which can only be seen by playing", "It looks more academic", "Only programmers care about dynamics"], a: 1, why: "The content of a game is behavior, and behavior appears only in the course of play; by listing it separately, a team can tell whether it is discussing rules, behavior or feelings." },
+  ]);
+})();
+
+</script>
+</body>
+</html>

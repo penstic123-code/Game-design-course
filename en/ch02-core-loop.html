@@ -1,0 +1,751 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Chapter 2: The Core Loop</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+  .c2leg span{display:inline-block;margin-right:12px;font-size:.9rem}
+  .c2leg i{display:inline-block;width:14px;height:14px;border:2px solid var(--ink);border-radius:50%;vertical-align:middle;margin-right:4px}
+  .c2cmp .rw{display:flex;align-items:center;gap:8px;margin:4px 0}
+  .c2cmp .nm{width:120px;flex:none;font-size:.95rem}
+  .c2cmp .bars{flex:1}
+  .c2cmp .bar{height:15px;border:2px solid var(--ink);border-radius:10px 6px 10px 6px;background:#fff;overflow:hidden;margin:2px 0}
+  .c2cmp .bar i{display:block;height:100%;width:0;transition:width .6s}
+  .c2cmp .lg{font-size:.85rem;color:var(--soft)}
+  .c2node{cursor:pointer}
+  .c2node:focus-visible{outline:3px solid var(--blue)}
+  .c2m{display:flex;align-items:center;gap:8px;margin:5px 0}
+  .c2m .nm{width:150px;flex:none;font-size:.95rem}
+  .c2m .bar{flex:1;height:24px;border:2.5px solid var(--ink);border-radius:14px 8px 14px 8px;background:#fff;overflow:hidden}
+  .c2m .bar i{display:block;height:100%;width:0;transition:width .5s,background .5s}
+  .c2m .v{width:46px;flex:none;text-align:right;font-family:var(--hand);font-size:1.2rem}
+  .c2pr .rw{display:flex;align-items:center;gap:8px;margin:5px 0}
+  .c2pr .nm{width:130px;flex:none;font-size:.95rem}
+  .c2pr .tr{flex:1;position:relative;height:24px;border:2.5px solid var(--ink);border-radius:14px 8px 14px 8px;background:#fff;overflow:hidden}
+  .c2pr .tr::after{content:"";position:absolute;left:50%;top:0;bottom:0;border-left:2px dashed var(--ink)}
+  .c2pr .tr i{position:absolute;top:0;bottom:0;transition:all .4s}
+  .c2pr .v{width:56px;flex:none;text-align:right;font-family:var(--hand);font-size:1.2rem}
+  .c2task.c2done{background:#d9f5cf}
+  .c2task.c2done::before{content:"✅ "}
+  .c2task b.ok{color:#1d6b32}
+  @media(max-width:700px){.c2cmp .nm,.c2m .nm,.c2pr .nm{width:96px}}
+</style>
+</head>
+<body data-ch="2">
+<main class="wrap">
+  <div class="hero">
+    <div class="txt">
+      <span class="badge">Chapter 2</span>
+      <h1>The Core Loop</h1>
+      <p class="sub">The engine behind “one more round,” and why it keeps turning.</p>
+    </div>
+    <svg viewBox="0 0 190 150" class="rough" aria-hidden="true">
+      <circle cx="95" cy="75" r="50" fill="none" stroke="#2b2b3a" stroke-width="5" stroke-dasharray="14 8"/>
+      <path d="M140 45 l10 -18 l4 22z" fill="#ff8fab" stroke="#2b2b3a" stroke-width="3"/>
+      <circle cx="95" cy="75" r="22" fill="#ffe58a" stroke="#2b2b3a" stroke-width="4"/>
+      <text x="82" y="83" font-size="22">Play</text>
+    </svg>
+  </div>
+
+  <div class="goals">
+    <h3>Learning goals</h3>
+    <span class="time">about 50 min</span>
+    <ul>
+      <li>Write a game’s core loop as a verb chain, and use the “break the loop” experiment to say what happens when each link is missing.</li>
+      <li>Tell the four reinforcement schedules apart, and explain why Skinner set out to study “how rewards are handed out.”</li>
+      <li>Use reward prediction error (Schultz’s monkey experiments) and the goal gradient to explain why fixed rewards stop feeling like anything, and why progress bars pull.</li>
+    </ul>
+  </div>
+
+  
+  <div class="sec"><span class="n">1</span><h2><span class="tag what">What it is</span>The core loop: the circle that makes you play one more round</h2></div>
+  <div class="withimg">
+    <span data-illus="c02_onemore"></span>
+    <div>
+      <p>It is one in the morning and you tell yourself: last round, then bed. The round ends, and the button you press says “Play again.”</p>
+      <p>That is not entirely a question of willpower. The end of the last round quietly handed you a reason for the next one: you nearly won, a newly unlocked character is waiting to be tried, and the tension of a health bar down to its last notch has not worn off yet.</p>
+      <p>Draw this “ending feeds the beginning” structure and you get a circle. The chain of things a player <b>repeats most</b> is called the <span class="term" tabindex="0" data-def="Core loop: the chain of actions players repeat in a game, including action, feedback, reward and growth, then back to the start">core loop</span>. In Pac-Man it goes: eat dots → dodge ghosts → grab a power pellet → eat the ghosts → clear the board, then the next level.</p>
+    </div>
+  </div>
+  <p>Designers like to pin it down with a string of verbs, called a <span class="term" tabindex="0" data-def="Verb chain: a way of summarizing the core loop as a string of verbs, such as collect → plant → defend → upgrade">verb chain</span>. Remember the “feedback” pillar from Chapter 1? A loop is feedback joined into a circle: you do something, the game responds, the response brings a reward, the reward makes you a little stronger, and being stronger opens up a new goal, so you are back at the start.</p>
+
+  <div class="card">
+    <svg viewBox="0 0 700 300" width="100%" role="img" aria-label="Core loop diagram: five boxes (action, feedback, reward, growth, new goal) joined by arrows end to end, returning to action">
+      <defs><marker id="c2_ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M1 1 L9 5 L1 9" fill="none" stroke="#2b2b3a" stroke-width="2"/></marker></defs>
+      <g class="rough" stroke="#2b2b3a" stroke-width="4" stroke-linejoin="round">
+        <rect x="20" y="105" width="150" height="70" rx="22" fill="#ffe58a"/>
+        <rect x="205" y="20" width="150" height="70" rx="22" fill="#a8dcf0"/>
+        <rect x="420" y="20" width="150" height="70" rx="22" fill="#ffb3c6"/>
+        <rect x="530" y="105" width="150" height="70" rx="22" fill="#b6e8a8"/>
+        <rect x="275" y="215" width="150" height="70" rx="22" fill="#d8c8ff"/>
+        <g fill="none" stroke-width="4.5" stroke-linecap="round">
+          <path d="M165 104 Q185 78 200 64" marker-end="url(#c2_ah)"/><path d="M358 55 L390 55" marker-end="url(#c2_ah)"/><path d="M548 64 Q570 76 578 100" marker-end="url(#c2_ah)"/>
+          <path d="M600 180 Q570 245 430 250" marker-end="url(#c2_ah)"/><path d="M270 250 Q110 262 95 180" marker-end="url(#c2_ah)"/>
+        </g>
+      </g>
+      <g font-size="24" text-anchor="middle" fill="#2b2b3a">
+        <text x="95" y="138">① Action</text><text x="280" y="53">② Feedback</text><text x="470" y="53">③ Reward</text>
+        <text x="605" y="138">④ Growth</text><text x="350" y="248">⑤ New goal</text>
+      </g>
+      <g font-size="16" text-anchor="middle" fill="#3f3f50">
+        <text x="95" y="162">tap, jump, choose</text><text x="280" y="77">Ding! Health drops</text><text x="470" y="77">coins, XP</text>
+        <text x="605" y="162">stronger, unlocks</text><text x="350" y="272">new levels, challenges</text>
+      </g>
+    </svg>
+    <p class="small">The arrows form a circle: a reward makes the next action stronger, or opens new choices, so the player wants another go.</p>
+  </div>
+
+  <p>But a game has more than one circle. Every second you jump, hit and dodge; every few minutes you finish a match; every few days you save up enough for a new piece of gear. <b>Three circles nest one inside another</b>, and the further in you go, the faster they turn:</p>
+  <div class="card">
+    <svg viewBox="0 0 700 320" width="100%" role="img" aria-label="Three nested loops: the innermost is the second-by-second micro loop, the middle is the minute-by-minute level loop, and the outermost is the day-or-week growth loop; callouts on the right label each layer">
+      <g class="rough" stroke="#2b2b3a" stroke-width="4">
+        <ellipse id="c2_L0" cx="210" cy="160" rx="190" ry="140" fill="#f1eaff"/>
+        <ellipse id="c2_L1" cx="210" cy="160" rx="130" ry="95" fill="#e8f6fc"/>
+        <ellipse id="c2_L2" cx="210" cy="160" rx="70" ry="48" fill="#ffe58a"/>
+      </g>
+      <g fill="#2b2b3a" stroke="#2b2b3a" stroke-width="2">
+        <circle cx="210" cy="42" r="5"/><circle cx="210" cy="88" r="5"/><circle cx="210" cy="160" r="5"/>
+      </g>
+      <g fill="none" stroke="#2b2b3a" stroke-width="2.5" stroke-linecap="round">
+        <path d="M215 42 H405"/><path d="M215 88 H300 L405 150"/><path d="M215 160 H280 L405 262"/>
+      </g>
+      <g fill="#2b2b3a">
+        <text x="420" y="48" font-size="21">Days / weeks: growth loop</text><text x="420" y="72" font-size="16" fill="#3f3f50">character building, seasons, story progress</text>
+        <text x="420" y="156" font-size="21">Minutes: level loop</text><text x="420" y="180" font-size="16" fill="#3f3f50">finish a match, clear a level, collect a reward</text>
+        <text x="420" y="268" font-size="21">Seconds: micro loop</text><text x="420" y="292" font-size="16" fill="#3f3f50">a jump, a punch, a response every second</text>
+      </g>
+    </svg>
+    <div>
+      <span class="small">Tap a layer to look:</span>
+      <button class="chip" data-ly="2">⏱️ Seconds</button>
+      <button class="chip" data-ly="1">🎯 Minutes</button>
+      <button class="chip" data-ly="0">🌱 Days / weeks</button>
+    </div>
+    <div class="msg" id="c2_lymsg" style="font-size:1.1rem">The outer rewards are fed by the actions of the inner layers. Tap a layer to see what it is doing.</div>
+  </div>
+  <p>This leads to a firm rule of design: if the innermost micro loop isn’t fun, no number of outer layers will make it turn. Nobody puts up with a dull jump just for “this week’s season reward.”</p>
+
+  <div class="eg" data-ic="🌻"><span data-illus="c02_pvz"></span><div class="egt"><b><i>Plants vs. Zombies</i></b>: collect sunlight → plant → hold off the zombies → get new plants → build stronger formations. Five verbs joined end to end, and every level won enriches the hand of cards you hold.</div></div>
+  <div class="eg" data-ic="⛏️"><span data-illus="c02_mc"></span><div class="egt"><b><i>Minecraft</i> (survival mode)</b>: gather → craft → build → explore farther → gather new materials. The urge to travel comes from “needing new materials,” so the loop is closed by need.</div></div>
+  <div class="eg" data-ic="📱"><span data-illus="c02_feed"></span><div class="egt"><b>Scrolling short videos</b>: swipe → watch one → (now and then) hit one that suits you perfectly → swipe again. Notice that “now and then”: the reward does not come every time, and that detail is about to matter a lot.</div></div>
+  <div class="eg" data-ic="📖"><span data-illus="c02_vocab"></span><div class="egt"><b>Vocabulary app check-ins</b>: learn 20 words → mini quiz → streak +1 → want to protect the streak → learn again tomorrow. The app turns “growth” into an ever-lengthening number.</div></div>
+  <div class="eg bad" data-ic="🎬"><span data-illus="c02_cutscene"></span><div class="egt"><b>A cutscene that never loops back</b>: a story you see once and that is over, with no reason to “do it again.” The arrows go straight to an end with no line curling back to the start, so it is not a loop.</div></div>
+  <div class="eg bad" data-ic="🖱️"><span data-illus="c02_clicker"></span><div class="egt"><b>A loop whose action is dull</b>: click → get 1 coin → buy click power → click again. The circle is closed, but “click” is no fun at all, and the reward is just bribing the player. How fragile such a loop is will show up in the “break the loop” experiment later.</div></div>
+
+  
+  <div class="sec"><span class="n">2</span><h2><span class="tag what">What it is</span>How rewards are handed out: four reinforcement schedules</h2></div>
+  <p>Why is a slot machine harder to walk away from than a vending machine? Put in a coin and the vending machine always delivers, while the slot machine might pay out on the very next pull. The two machines give about the same thing; what differs is the <b>way</b> the reward comes.</p>
+  <p>Psychologists call the rule for when a reward is given a <span class="term" tabindex="0" data-def="Schedule of reinforcement: the rule that decides under what conditions a reward is given, such as once every few responses or once every so often">reinforcement schedule</span>. Two questions sort them into four kinds: does the reward depend on “how many times you did it” or “how much time has passed”? And is that number fixed, or does it change each time?</p>
+  <div class="card">
+    <svg viewBox="0 0 700 320" width="100%" role="img" aria-label="Four reinforcement schedules: each row is a string of actions, and a red star marks the one that earned a reward">
+      <text x="12" y="22" font-size="16" fill="#3f3f50">each dot = one action (a click, a kill…); red star = this one got a reward</text>
+      <g font-size="19" fill="#2b2b3a">
+        <text x="12" y="74">Fixed ratio FR5</text><text x="12" y="144">Variable ratio VR5</text><text x="12" y="214">Fixed interval FI</text><text x="12" y="284">Variable interval VI</text>
+      </g>
+      <g font-size="16" fill="#3f3f50">
+        <text x="12" y="96">every 5th, guaranteed</text><text x="12" y="166">5 on average, unpredictable</text><text x="12" y="236">every fixed stretch of time</text><text x="12" y="306">random time gaps</text>
+      </g>
+      <g stroke="#4b4b5e" stroke-width="3" stroke-linecap="round" class="rough">
+        <path d="M200 82h480M200 152h480M200 222h480M200 292h480"/>
+      </g>
+      <g id="c2_ticks" fill="#2b2b3a"></g>
+    </svg>
+    <div>
+      <span class="small">Tap one to look:</span>
+      <button class="chip" data-sc="0">FR fixed ratio</button><button class="chip" data-sc="1">VR variable ratio</button><button class="chip" data-sc="2">FI fixed interval</button><button class="chip" data-sc="3">VI variable interval</button>
+    </div>
+    <div class="msg" id="c2_scmsg" style="font-size:1.1rem">Every row is the same 22 actions; the only difference is where the red stars land.</div>
+  </div>
+  <ul>
+    <li><b>Fixed ratio (FR)</b>: a reward after every N responses. Every 5 monsters killed drops a chest, and 10 shards exchange for a character.</li>
+    <li><span class="term" tabindex="0" data-def="Variable ratio (VR): the number of responses needed for a reward varies at random, averaging one in N, as with gacha pulls and monster drops">Variable ratio (VR)</span>: a reward once in N responses on average, but never knowing which one. Gacha pulls, monster drops, pull-to-refresh in social apps.</li>
+    <li><b>Fixed interval (FI)</b>: after each fixed stretch of time, the first response earns a reward. Energy refills every 6 hours; a daily login bonus.</li>
+    <li><b>Variable interval (VI)</b>: the time gaps are random. A rare boss that respawns at unpredictable times; a reply to a message that could arrive at any moment.</li>
+  </ul>
+  <div class="eg bad" data-ic="🥤"><span data-illus="c02_vending"></span><div class="egt"><b>Continuous reinforcement (a reward every time)</b>: a vending machine, “click once, always get 1 coin.” A reward every time is actually the easiest thing to stop noticing, and the first thing you notice when it stops.</div></div>
+  <div class="eg" data-ic="💰"><span data-illus="c02_payday"></span><div class="egt"><b>Payday</b> is FI: on a fixed date every month. It doesn’t come early, and when the day arrives it always comes.</div></div>
+  <div class="eg" data-ic="🎣"><span data-illus="c02_fishing"></span><div class="egt"><b>Fishing</b> is close to VI: nobody knows when the fish will bite, so all you can do is keep watch and wait it out.</div></div>
+  <div class="eg" data-ic="⚔️"><span data-illus="c02_loot"></span><div class="egt"><b>Monsters dropping gear</b> is close to VR: every monster has a chance to drop something good, but nobody knows which one will.</div></div>
+
+  
+  <div class="sec"><span class="n">3</span><h2><span class="tag origin">How it was invented</span>The Skinner box: how did anyone discover “how rewards are handed out” mattered?</h2></div>
+  <div class="story">
+    <h3>The problem: how do you measure how rewards shape behavior?</h3>
+    <p>In 1898 the American psychologist Edward Thorndike put hungry cats into “puzzle boxes,” with fish outside and a latch inside. The cat scratched and clawed at random, happened to knock the latch loose, and escaped a little faster the next time. From this he proposed that behavior with good consequences gets kept (later called the <b>law of effect</b>).</p>
+    <p>But a puzzle box had a drawback: the experimenter got one time recorded each time a cat escaped, and had to stand by the whole while, so the data were sparse and coarse. To study how rewards change behavior bit by bit, a box like that was not enough.</p>
+    <p>As a graduate student at Harvard, B. F. Skinner took a different approach: put a lever in the box, so that each press made a machine drop a pellet of food and automatically draw a mark on a paper tape. Nobody had to watch, no press was ever missed, and for the first time behavior could be recorded <b>continuously and quantitatively</b>. Later he mostly switched to pigeons, with a pecking key in place of the lever.</p>
+    <p>Then came a small, unexpected twist. By Skinner’s own 1956 recollection, the food pellets had to be made by hand then, which was tiring and never enough. So he wondered: what if instead of giving one for every press, he gave one every minute? The rats did not give up. They kept pressing, steadily. <b>Even without a reward every time, the behavior held up</b>, and the rhythm of pressing was very different from when every press paid off.</p>
+    <p>That made him and his colleague Charles Ferster want to know whether “when the reward comes” shapes behavior more than “how much comes.” From around 1949 to 1955 they systematically tried all sorts of reward rules on pigeons, and collected the results in <i>Schedules of Reinforcement</i>, published in 1957.</p>
+    <p>Before looking at the results, <b>make a prediction</b>: once the rewards are <b>stopped altogether</b>, how long will animals trained on each of the four rules keep pressing?</p>
+  </div>
+
+  <div class="card">
+    <h3>🔮 Guess first, then reveal: after the rewards stop, who holds out longest?</h3>
+    <p class="small">Drag the sliders to record your predictions (0 = gives up quickly, 10 = holds out a long time). Press “Reveal” to run a <b>toy model</b> and compare it with your guesses.</p>
+    <div id="c2_pg"></div>
+    <button class="btn" id="c2_reveal">Reveal: run 40 simulated animals</button>
+    <button class="btn alt" id="c2_re">Show one individual simulated curve</button>
+    <div class="c2cmp" id="c2_cmp"></div>
+    <canvas id="c2_cv" width="700" height="260" style="width:100%;background:#fffef7;border:3px solid var(--ink);border-radius:12px;margin-top:8px;display:none"></canvas>
+    <div class="c2leg" id="c2_leg" style="display:none"></div>
+    <p class="small" id="c2_note">Note: this is a <b>very simple toy model</b>, not measured data. Rewards are given for the first 250 seconds and then all stop (the vertical dashed line). The giving-up rule: the number of misses in a row exceeds 1.5 times the longest run of misses seen in training (at least 6). FR5 rewards 1 click in every 5, with a 3-second pause after each reward; VR5 gives each click a 1-in-5 chance; FI has a 20-second interval, with clicking growing more frantic as the time nears; VI has a 20-second average interval and a steady click rate.</p>
+  </div>
+  <div class="sticky c2task" id="c2_t1">Try it: first write down your predictions with the four sliders, press “Reveal,” then press “Show one individual simulated curve” twice and compare the FR and VR lines. After the rewards stop, which line flattens out sooner?</div>
+
+  <div class="timeline">
+    <div class="ev hasimg"><span data-illus="c02_thorndike"></span><div><b class="yr">1898</b> Thorndike puts cats into puzzle boxes and records how long they take to escape: behavior is shaped by its consequences. He later sums this up as the law of effect.</div></div>
+    <div class="ev hasimg"><span data-illus="c02_skinnerbox"></span><div><b class="yr">1930s</b> Skinner builds the “operant chamber”: a lever, automatic food delivery, an automatic paper tape. For the first time behavior can be measured continuously and quantitatively.</div></div>
+    <div class="ev hasimg"><span data-illus="c02_pigeons"></span><div><b class="yr">1950s</b> Skinner and Ferster compare reward rules on a large scale with pigeons, and publish <i>Schedules of Reinforcement</i> in 1957.</div></div>
+    <div class="ev hasimg"><span data-illus="c02_designers"></span><div><b class="yr">After that</b> “Intermittent rewards are harder to extinguish than a reward every time” becomes a classic result of learning psychology, and game designers borrow it to design drops, gacha pulls and timed rewards.</div></div>
+  </div>
+
+  
+  <div class="sec"><span class="n">4</span><h2><span class="tag why">Why it works</span>Why are variable rewards so “sticky”?</h2></div>
+  <p>Back to those pigeons. After all rewards stop, a pigeon that had always been rewarded “every 5th peck” soon stops pecking, while a pigeon that never knew which peck would pay keeps pecking. Both had their food cut off, so why such a difference in reaction?</p>
+  <div class="why-box">
+    <h3>Uncertainty makes it hard to tell “not yet” from “never again”</h3>
+    <p>In classic animal experiments, variable schedules produce behavior that is <b>steadier</b> and <b>takes longer to die out</b> once the rewards stop. This slower <span class="term" tabindex="0" data-def="Extinction: the gradual decline and eventual stopping of a behavior after its reward no longer appears">extinction</span> is called the “partial reinforcement extinction effect” in textbooks. Variable ratios also produce high, steady response rates, whereas fixed intervals often show a scalloped curve: slacking right after a reward and pecking frantically as the time nears.</p>
+    <p>One common explanation: if you used to be paid on every 5th response, then “six misses in a row” is an obvious signal that the reward has been withdrawn. But if it was always paid only after a varying, sometimes long, run of tries, “another miss” tells you nothing, and the animal keeps trying. This is just what you saw in the simulation above: FR gives up quickly when the rewards stop, while VR holds out longer.</p>
+    <p><b>Link to the loop:</b> for the “reward” link in a core loop, which schedule you pick changes the whole flavor of the loop. “Click once, get one” is continuous reinforcement; change it to “each click has a chance of dropping a golden mushroom” and it becomes a variable ratio.</p>
+    <div class="src">Sources: C. B. Ferster and B. F. Skinner, <i>Schedules of Reinforcement</i> (Appleton-Century-Crofts, 1957); Skinner’s 1956 article “A case history in scientific method” (<i>American Psychologist</i> 11: 221–233) tells how the discovery came about, in Skinner’s own recollection. These regularities come mostly from pigeons and rats; in people they are also shaped by language, rules and expectations, so they will not be exactly the same.</div>
+  </div>
+  <div class="eg" data-ic="🎰"><span data-illus="c02_gacha"></span><div class="egt"><b>Gacha pulls / loot boxes</b>: whether each pull gives a rare item is unpredictable (VR). What players remember is “I almost got it last time,” not “I’ve already pulled dozens of times.”</div></div>
+  <div class="eg" data-ic="🔄"><span data-illus="c02_pull"></span><div class="egt"><b>Pull-to-refresh in social apps</b>: you don’t know whether this refresh will show what you wanted to see, so you refresh once more.</div></div>
+  <div class="eg bad" data-ic="📅"><span data-illus="c02_dailybad"></span><div class="egt"><b>A fixed daily login gift</b>: fixed interval plus continuous reinforcement, the same every day, so it is quickly absorbed into expectation and gives no reason to stay after collecting it. That is why games often mix a bit of random surprise into fixed rewards.</div></div>
+
+  
+  <div class="sec"><span class="n">5</span><h2><span class="tag origin">How it was invented</span>What is dopamine “computing”? From surprise to prediction error</h2></div>
+  <div class="story">
+    <h3>The problem: if rewards make us happy, why does the same reward every day stop feeling like anything?</h3>
+    <p>In the late 1960s, learning psychologists found something odd. Pair a light with a shock and an animal normally learns “light on = a shock is coming.” But if the shock has already been <b>fully announced</b> by another signal, a new signal added on top is not learned at all. This is called <b>blocking</b> (Leon Kamin, 1969).</p>
+    <p>In other words, learning is not “remember whatever appears together,” but <b>“surprise” drives learning</b>. In 1972 Robert Rescorla and Allan Wagner wrote this idea as a formula, simplified: new expectation = old expectation + a small share of (actual − expected). The bigger the gap, the more is learned; when the gap is zero, there is nothing to learn.</p>
+    <p>But at the time the formula was only a mathematical guess, and nobody had found its shadow in the brain. Then in the 1990s, Wolfram Schultz and colleagues recorded signals matching it from dopamine neurons in <b>monkeys</b>:</p>
+    <p>Before a monkey has learned “light → juice,” an unexpected drop of juice makes these neurons fire strongly. After learning, the response moves to <b>the instant the light comes on</b>, and the juice itself barely triggers a response. If the light comes on but the juice doesn’t, then at the moment the juice should have appeared the firing actually drops <b>below its usual level</b>. In 1997 Schultz, Dayan and Montague published a review in <i>Science</i> that presented this as “dopamine signals a reward prediction error.”</p>
+    <p>Before playing with it, <b>make a prediction</b>: the monkey has practiced many times and knows “light → juice” perfectly. Now the juice arrives exactly as expected. How do the neurons respond?</p>
+  </div>
+
+  <div class="card">
+    <h3>🐒 Guess first, then reveal: where has the surprise gone as training goes on? (toy model)</h3>
+    <p class="small"><b>This is a teaching sketch</b>, drawn with the simplest learning rule (the expectation moves a fraction of the way toward the actual reward each time), not Schultz’s measured curves.</p>
+    <div>Your prediction: when the juice arrives as expected after practice, the neurons’ response is…
+      <button class="chip" data-gs="up">stronger than at the start</button>
+      <button class="chip" data-gs="same">about the same as at the start</button>
+      <button class="chip" data-gs="zero">almost nothing</button></div>
+    <div class="msg" id="c2_gmsg" style="font-size:1.1rem">Pick a prediction, then drag the slider below.</div>
+    <label class="ctl">Trials of training <output id="c2_no">0</output><input type="range" id="c2_n" min="0" max="40" step="1" value="0"></label>
+    <div>Then this happens:
+      <button class="chip on" data-ot="ok">Light on, juice arrives as expected</button>
+      <button class="chip" data-ot="none">Light on, no juice</button>
+      <button class="chip" data-ot="dbl">Light on, double the juice</button></div>
+    <div class="c2pr" id="c2_pr" style="margin-top:8px"></div>
+    <canvas id="c2_rcv" width="700" height="200" style="width:100%;background:#fffef7;border:3px solid var(--ink);border-radius:12px;margin-top:8px"></canvas>
+    <div class="msg" id="c2_rmsg" style="font-size:1.1rem"></div>
+    <p class="small">The two bars above: to the right (green) = firing above usual, to the left (red) = below usual. The curves below: the more training, the stronger the response “at the light” (blue) and the weaker the response “at the juice” (orange). The vertical line marks your current number of trials.</p>
+  </div>
+  <div class="sticky c2task" id="c2_t2">Try it: pick a prediction, drag the training count above 30, then press “arrives as expected,” “no juice” and “double the juice” in turn, and watch how the “juice moment” bar changes.</div>
+
+  <div class="timeline">
+    <div class="ev hasimg"><span data-illus="c02_kamin"></span><div><b class="yr">1969</b> Kamin’s blocking experiment: a stimulus that is already announced can’t teach anything new.</div></div>
+    <div class="ev hasimg"><span data-illus="c02_rw"></span><div><b class="yr">1972</b> The Rescorla–Wagner model: learning is driven by “prediction error.”</div></div>
+    <div class="ev hasimg"><span data-illus="c02_monkey"></span><div><b class="yr">1990s</b> Schultz and colleagues find in monkeys that dopamine neurons fire as if “reporting a prediction error.”</div></div>
+    <div class="ev hasimg"><span data-illus="c02_rl"></span><div><b class="yr">1997</b> Schultz, Dayan and Montague publish a review in <i>Science</i> linking this to reinforcement-learning theory, which later influenced neuroscience and artificial intelligence alike.</div></div>
+  </div>
+
+  
+  <div class="sec"><span class="n">6</span><h2><span class="tag why">Why it works</span>Only surprise registers: reward prediction error</h2></div>
+  <div class="withimg rev">
+    <span data-illus="c02_surprise"></span>
+    <div>
+      <p>The same hundred coins: the first time you get them you are delighted; if they come on schedule every day, a week later you barely feel them; then one day 300 drops out of nowhere and you are on a high again.</p>
+      <p>The money did not change; the expectation in your head did. What the brain cares about is <b>“how much better than I expected.”</b></p>
+    </div>
+  </div>
+  <div class="card">
+    <svg viewBox="0 0 700 270" width="100%" role="img" aria-label="Expected versus actual in three cases: when actual equals expected the error is zero and nothing is felt; when actual is far above expected the error is positive and there is a surprise; when actual is zero the error is negative and it is a disappointment">
+      <rect x="12" y="10" width="14" height="14" fill="#cfd3dc" stroke="#2b2b3a" stroke-width="2"/><text x="32" y="23" font-size="16" fill="#2b2b3a">Expected</text>
+      <rect x="92" y="10" width="14" height="14" fill="#ffb3c6" stroke="#2b2b3a" stroke-width="2"/><text x="112" y="23" font-size="16" fill="#2b2b3a">Actual</text>
+      <g class="rough" stroke="#2b2b3a" stroke-width="3.5">
+        <rect x="70" y="140" width="40" height="50" fill="#cfd3dc"/><rect x="130" y="140" width="40" height="50" fill="#ffb3c6"/>
+        <rect x="300" y="140" width="40" height="50" fill="#cfd3dc"/><rect x="360" y="40" width="40" height="150" fill="#b6e8a8"/>
+        <rect x="530" y="140" width="40" height="50" fill="#cfd3dc"/><rect x="590" y="188" width="40" height="2" fill="#ff9f9f"/>
+        <path d="M30 190 H670" fill="none"/>
+      </g>
+      <g font-size="16" text-anchor="middle" fill="#2b2b3a">
+        <text x="90" y="132">100</text><text x="150" y="132">100</text><text x="320" y="132">100</text><text x="380" y="32">300</text><text x="550" y="132">100</text><text x="610" y="180">0</text>
+      </g>
+      <g font-size="19" text-anchor="middle" fill="#2b2b3a">
+        <text x="120" y="218">Actual = expected</text><text x="350" y="218">Actual &gt; expected</text><text x="580" y="218">Actual &lt; expected</text>
+        <text x="120" y="248">Error 0: nothing felt</text><text x="350" y="248">Error +200: a surprise</text><text x="580" y="248">Error −100: let down</text>
+      </g>
+    </svg>
+    <p class="small">With the same “expected 100,” what the actual amount is decides whether you feel anything.</p>
+  </div>
+  <div class="why-box">
+    <h3>Surprise = actual − expected</h3>
+    <p><span class="term" tabindex="0" data-def="Reward prediction error: the difference between the reward actually received and the reward expected; positive error = better than expected, zero = as expected, negative error = worse than expected">Reward prediction error</span> (actual − expected): better than expected is positive, a “surprise”; exactly as expected is zero, “nothing felt”; worse than expected is negative, a “disappointment.” And since expectation is slowly pulled toward the actual reward by experience, <b>a fixed reward gets “eaten” by expectation</b>, and only change and surprise can produce positive error again and again.</p>
+    <p>The mainstream view in neuroscience is that the activity of midbrain dopamine neurons closely tracks this “prediction error,” and works more like a <b>learning signal</b> (“better than I thought, remember this”). Researchers such as Kent Berridge and Terry Robinson also point out that “<b>wanting</b>” and “<b>liking</b>” can be separated: the dopamine system has more to do with “wanting,” which is not the same as enjoyment itself. So “dopamine = pleasure” is a common oversimplification.</p>
+    <p><b>Link to the loop:</b> this explains why a fixed reward makes a loop “go flat,” and why “growth” has to keep supplying something new, or the reward gets eaten by expectation.</p>
+    <div class="src">Sources: Kamin (1969), the blocking experiment; Rescorla &amp; Wagner (1972), the learning model; Wolfram Schultz, Peter Dayan and P. Read Montague, “A Neural Substrate of Prediction and Reward,” <i>Science</i> 275: 1593–1599 (1997); Kent Berridge and Terry Robinson, “Liking, wanting, and the incentive-sensitization theory of addiction,” <i>American Psychologist</i> 71: 670–679 (2016). The prediction-error hypothesis is the leading explanation today, but it is not without controversy.</div>
+  </div>
+  <div class="eg" data-ic="🪙"><span data-illus="c02_hundred"></span><div class="egt"><b>A fixed 100 coins every day</b>: after a week expectation has caught up with reality, the surprise drops toward zero, and players “feel nothing.”</div></div>
+  <div class="eg" data-ic="🧧"><span data-illus="c02_bonus"></span><div class="egt"><b>Monthly salary versus a year-end bonus</b>: you saw payday coming long ago, but an unexpected bonus makes you much happier.</div></div>
+  <div class="eg" data-ic="💜"><span data-illus="c02_purple"></span><div class="egt"><b>Loot drops</b>: most of the time you get ordinary gear and occasionally a purple one, and that one surprise is the positive error.</div></div>
+  <div class="eg bad" data-ic="⛰️"><span data-illus="c02_thousand"></span><div class="egt"><b>A big reward is not a big surprise</b>: if you hand out 1000 coins every time, expectation soon climbs to 1000, and by the logic of prediction error that feels like even less than “usually 100, sometimes 500.” (This is a deduction, not a measurement.)</div></div>
+
+  
+  <div class="sec"><span class="n">7</span><h2><span class="tag why">Why it works</span>More: why does a progress bar pull? The goal gradient and endowed progress</h2></div>
+  <div class="withimg">
+    <span data-illus="c02_stampcard"></span>
+    <div>
+      <p>With 8 squares already stamped on a loyalty card, you want to fill the last 2 more; when a task is interrupted halfway, it nags at the back of your mind.</p>
+      <p>Retailers everywhere hand out loyalty cards, but nobody knew how to design them for the best effect. In 2006 the marketing scholars Joseph Nunes and Xavier Drèze ran a field experiment at a car wash: 300 cards were handed out at random, half reading “8 empty squares, fill them for a free wash” and half reading “<b>10 empty squares, but 2 already stamped</b>.”</p>
+      <p>Both cards needed <b>eight paid washes</b> to redeem. Over nine months of follow-up, about <b>34%</b> of those given the “2 already stamped” card redeemed it, against about <b>19%</b> with the blank card. They called this the <b>endowed progress effect</b>: making a task feel already “started” makes it more likely to be finished.</p>
+    </div>
+  </div>
+  <div class="card">
+    <svg viewBox="0 0 700 250" width="100%" role="img" aria-label="Two loyalty cards: A has 8 empty squares, B has 10 squares with the first 2 already stamped; both still need 8 purchases">
+      <g font-size="22" fill="#2b2b3a"><text x="20" y="38">A: blank card (8 squares)</text><text x="20" y="148">B: 2 free (10 squares in all)</text></g>
+      <g class="rough" stroke="#2b2b3a" stroke-width="3.5">
+        <g fill="#fff">
+          <rect x="30" y="52" width="58" height="46" rx="8"/><rect x="100" y="52" width="58" height="46" rx="8"/><rect x="170" y="52" width="58" height="46" rx="8"/><rect x="240" y="52" width="58" height="46" rx="8"/>
+          <rect x="310" y="52" width="58" height="46" rx="8"/><rect x="380" y="52" width="58" height="46" rx="8"/><rect x="450" y="52" width="58" height="46" rx="8"/><rect x="520" y="52" width="58" height="46" rx="8"/>
+        </g>
+        <g><rect x="30" y="162" width="54" height="46" rx="8" fill="#ffe58a"/><rect x="94" y="162" width="54" height="46" rx="8" fill="#ffe58a"/><rect x="158" y="162" width="54" height="46" rx="8" fill="#fff"/><rect x="222" y="162" width="54" height="46" rx="8" fill="#fff"/><rect x="286" y="162" width="54" height="46" rx="8" fill="#fff"/><rect x="350" y="162" width="54" height="46" rx="8" fill="#fff"/><rect x="414" y="162" width="54" height="46" rx="8" fill="#fff"/><rect x="478" y="162" width="54" height="46" rx="8" fill="#fff"/><rect x="542" y="162" width="54" height="46" rx="8" fill="#fff"/><rect x="606" y="162" width="54" height="46" rx="8" fill="#fff"/></g>
+      </g>
+      <g font-size="26" text-anchor="middle" fill="#2b2b3a"><text x="57" y="195">★</text><text x="121" y="195">★</text></g>
+      <g font-size="18" fill="#3f3f50"><text x="30" y="124">Progress 0 / 8, 8 purchases to go (about 19% redeemed in the study)</text><text x="30" y="235">Progress 2 / 10, 8 purchases to go (about 34% redeemed in the study)</text></g>
+    </svg>
+    <p class="small">The two cards cost exactly the same money and trips; the only difference is that one “looks like it has already begun.”</p>
+  </div>
+  <div class="why-box">
+    <h3>The closer to the goal, the harder you push; unfinished things are hard to put down</h3>
+    <p><span class="term" tabindex="0" data-def="Goal gradient: the tendency to try harder and be more motivated the closer you get to a goal">Goal gradient</span>: the closer to the finish, the harder people (and animals) push. The psychologist Clark Hull proposed it around the 1930s using rats: the nearer the food, the faster they run. In 2006, Ran Kivetz and colleagues found the same thing in real coffee-shop loyalty-card data: the closer customers got to a free coffee, the more often they bought coffee.</p>
+    <p>The <span class="term" tabindex="0" data-def="Zeigarnik effect: people tend to remember and dwell on unfinished tasks more than finished ones; recent research shows the “remembered better” part is unstable">Zeigarnik effect</span> (1927) is often summed up as “unfinished things are remembered better,” but be careful: a 2025 meta-analysis (Ghibellini &amp; Meier) found that the “remembered better” part is <b>hard to reproduce reliably</b>, whereas the <b>tendency to go back and continue after an interruption</b> (the Ovsiankina effect) is more robust. So the safer way to say it when designing is: being unfinished makes people want to come back, not remember more.</p>
+    <p><b>Link to the loop:</b> progress bars, XP bars and chapter checklists make the “growth” link <b>visible</b>, so every small action brings the finish line closer and joins short loops into long ones. It is a double-edged sword, and when abused it becomes a “hook” that people can’t put down.</p>
+    <div class="src">Sources: Clark Hull, the goal gradient (1930s; accounts differ on the exact year); Ran Kivetz, Oleg Urminsky and Yuhuang Zheng, <i>Journal of Marketing Research</i> 43: 39–58 (2006); Joseph Nunes and Xavier Drèze, <i>Journal of Consumer Research</i> 32: 504–512 (2006), the car-wash experiment; Bluma Zeigarnik (1927); Ghibellini &amp; Meier, <i>Humanities and Social Sciences Communications</i> (2025, meta-analysis). The car-wash figures of 34% and 19% come from secondary accounts and have not been checked against the original.</div>
+  </div>
+  <div class="eg" data-ic="☕"><span data-illus="c02_coffee"></span><div class="egt"><b>Coffee-shop loyalty cards</b>: the closer to a free cup, the more often people come.</div></div>
+  <div class="eg" data-ic="📈"><span data-illus="c02_xpbar"></span><div class="egt"><b>XP bars in games</b>: “one more round and I level up,” round after round.</div></div>
+  <div class="eg" data-ic="📕"><span data-illus="c02_book"></span><div class="egt"><b>A book interrupted</b>: called to dinner at the key scene, you will most likely go straight back to it afterward. Not necessarily remembering it better, but wanting to go on.</div></div>
+  <div class="eg bad" data-ic="❓"><span data-illus="c02_noprogress"></span><div class="egt"><b>Progress you can’t see</b>: a long to-do list with no progress display, or a progress bar that is always “almost there” and then resets, makes players feel cheated rather than pulled along.</div></div>
+
+  
+  <div class="sec"><span class="n">8</span><h2><span class="tag how">Try it</span>Break the loop: what happens when a link is removed?</h2></div>
+  <p>Draw the core loop as a circle and let a spark of light run around it. <b>Tap any link</b> and it cycles through “intact → weakened → removed.” Watch how the light flows, and how the two “will to keep playing” values below change.</p>
+  <div class="card">
+    <svg id="c2_ring" viewBox="0 0 700 400" width="100%" role="img" aria-label="An interactive core-loop ring: tap each link to weaken or remove it">
+      <g class="rough" fill="none" stroke="#2b2b3a" stroke-width="3" stroke-dasharray="2 9" stroke-linecap="round">
+        <path id="c2_ringp" d=""/>
+      </g>
+      <g id="c2_cuts" font-size="30" text-anchor="middle" fill="#e5484d"></g>
+      <g id="c2_dots"></g>
+      <g id="c2_nodes"></g>
+    </svg>
+    <div class="c2m"><div class="nm">⚡ Short-term will to keep playing (hour 1)</div><div class="bar"><i id="c2_bs"></i></div><div class="v" id="c2_vs">100</div></div>
+    <div class="c2m"><div class="nm">🌱 Long-term will to keep playing (hour 10)</div><div class="bar"><i id="c2_bl"></i></div><div class="v" id="c2_vl">100</div></div>
+    <div class="msg" id="c2_ringmsg" style="font-size:1.1rem"></div>
+    <div>
+      <span class="small">Quick tries:</span>
+      <button class="chip" data-rp="boring">Dull action, maxed-out reward</button>
+      <button class="chip" data-rp="nofb">Remove feedback</button>
+      <button class="chip" data-rp="nogrow">Remove growth</button>
+      <button class="chip" data-rp="nogoal">Remove new goal</button>
+    </div>
+    <button class="btn alt" id="c2_rst">Restore everything</button>
+    <p class="small"><b>The “will to keep playing” figures are teaching sketches, not measurements.</b> The weights here are one setting based on design experience: in the short term, action and feedback count most; in the long term, growth and new goals do. In real games each link matters far more, and in more complicated ways. You can disagree with these weights, and that is exactly what is worth discussing.</p>
+  </div>
+  <div class="sticky c2task" id="c2_t3">Try it: weaken “Action” once and look at the two will-bars; then go back to intact and remove “Growth.” Which bar drops more, short-term or long-term?</div>
+  <p>After a few tries you will see that <b>action</b> is the foundation: remove it and nothing is left. Remove <b>growth</b> and there is almost no short-term effect, but over the long run it gets stale, which is exactly the loop where “every round is the same.”</p>
+
+  <div class="misc">
+    <h3>Common misconceptions</h3>
+    <ul>
+      <li>“The bigger the reward, the better”: expectation absorbs rewards, and what really moves players is <b>surprise</b> and <b>visible progress</b>, not the raw amount.</li>
+      <li>“Dopamine is pleasure”: it is closer to a signal of “prediction error, learning and wanting,” and is not the same thing as “liking.”</li>
+      <li>“Variable rewards are always good”: they can make people unable to stop, and that is also the mechanism behind compulsive play and gambling-like design, so use them responsibly.</li>
+      <li>“The Zeigarnik effect: unfinished things are remembered better”: recent meta-analyses have not reproduced this reliably; the steadier finding is “wanting to go back and continue after an interruption.”</li>
+    </ul>
+  </div>
+
+  <div class="reflect">
+    <h3>Reflection and debate</h3>
+    <p>The classic findings on reinforcement schedules come mainly from animal experiments, and human behavior is also shaped by rules, language and social context. These mechanisms can explain “why it is easy to repeat,” but not directly “whether this game is fun”: if the action itself is dull, even the cleverest reward schedule is just “dragging” the player along, and the “dull action, maxed-out reward” preset in the break-the-loop experiment is an example.</p>
+    <p>The prediction-error account of dopamine is the mainstream view in neuroscience but not the only one; some scholars stress that it is also tied to motivation and salience, and results on the Zeigarnik effect are inconsistent too. Treat these as inspiration for design, not as guarantees.</p>
+    <p>Think about it: if your loop holds players with variable rewards, will they still stay once the rewards stop?</p>
+  </div>
+
+  <div class="key">
+    <h3>Key points</h3>
+    <ul>
+      <li>The core loop is <b>what players do again and again</b>, described as a verb chain; a loop should be complete: <b>action → feedback → reward → growth → new goal</b>.</li>
+      <li>Make the second-by-second small loop fun first, then layer longer loops on top; if the action is dull, no amount of reward can save it.</li>
+      <li>The rule for handing out rewards (the reinforcement schedule) sets the rhythm of behavior: variable beats fixed at resisting extinction, and is also easier to abuse.</li>
+      <li>Skinner’s operant chamber made “how rewards are handed out” something that could be studied quantitatively for the first time.</li>
+      <li>The brain is most sensitive to “better than expected” surprise (prediction error, Schultz’s monkey experiments); expectation absorbs fixed rewards.</li>
+      <li>The closer to the goal, the more people want to finish; endowed progress makes people more willing to complete, and visible progress joins short loops into long ones.</li>
+    </ul>
+  </div>
+  <div class="tldr">A good loop is held up by “an interesting action,” with surprise and progress adding points to the reward, rather than an ever-bigger fixed pile of coins.</div>
+
+  <div class="sec"><span class="n">9</span><h2><span class="tag think">Practice</span>Quick quiz</h2></div>
+  <div id="quiz"></div>
+
+  <div class="sec"><span class="n">10</span><h2><span class="tag how">Your design</span>Write down your loop</h2></div>
+  <div class="card o">
+    <p>Write the core loop of your favorite game as a verb chain, then think: <b>did its reward make the next round more interesting? How? If one link were removed, would you still play?</b></p>
+    <textarea rows="5" data-save="ch2" placeholder="Example: <i>Plants vs. Zombies</i>: collect sunlight → plant → hold off the zombies → get new plants → build stronger formations…"></textarea>
+  </div>
+</main>
+<script src="../js/illus.js"></script>
+<script src="../js/illus-ch02.js"></script>
+<script src="../js/en/illus.js"></script>
+<script src="../js/en/illus-lib.js"></script>
+<script src="../js/en/illus-ch02.js"></script>
+<script src="../js/common.js"></script>
+<script>
+const $ = id => document.getElementById(id);
+const NS = "http://www.w3.org/2000/svg";
+
+const C2DONE = {
+  c2_t1: "Done! You saw it yourself: variable ratio holds out longer, while fixed ratio gives up as soon as the rewards stop.",
+  c2_t2: "Done! The better the juice can be predicted, the smaller the “juice moment” response; it is negative when it doesn’t come and positive again when there is extra.",
+  c2_t3: "Done! Remove growth and the short term barely changes while the long term drops clearly: the loop still turns, but it has turned stale.",
+};
+function c2done(id) {
+  const e = $(id);
+  if (!e || e.classList.contains("c2done")) return;
+  e.classList.add("c2done");
+  e.insertAdjacentHTML("beforeend", " <b class='ok'>" + C2DONE[id] + "</b>");
+}
+
+(function () {
+  const TXT = [
+    "<b>Days / weeks: growth loop.</b> Gathering materials, leveling up, playing a season. It decides why you come back tomorrow, and its rewards have to be built up bit by bit from the actions of the two inner layers.",
+    "<b>Minutes: level loop.</b> Finish a match, clear a level, open a chest. Every lap needs a visible ending to create the urge to “play one more round.”",
+    "<b>Seconds: micro loop.</b> A jump, a punch, a card flipped, and every second gets a response. If this layer isn’t fun, the rewards of the two outer layers are only bribing you.",
+  ];
+  const els = [$("c2_L0"), $("c2_L1"), $("c2_L2")];
+  document.querySelectorAll("[data-ly]").forEach(b => b.addEventListener("click", () => {
+    const k = +b.dataset.ly;
+    document.querySelectorAll("[data-ly]").forEach(x => x.classList.toggle("on", x === b));
+    els.forEach((e, i) => { e.setAttribute("stroke-width", i === k ? 9 : 4); e.setAttribute("stroke", i === k ? "#e5484d" : "#2b2b3a"); });
+    $("c2_lymsg").innerHTML = TXT[k];
+  }));
+})();
+
+(function () {
+  const g = $("c2_ticks");
+  const rows = [
+    { y: 82, stars: [5, 10, 15, 20] },
+    { y: 152, stars: [3, 9, 12, 19] },
+    { y: 222, stars: [7, 14, 21] },
+    { y: 292, stars: [4, 11, 13, 20] },
+  ];
+  const groups = rows.map(r => {
+    const gr = document.createElementNS(NS, "g"); g.appendChild(gr);
+    for (let i = 1; i <= 22; i++) {
+      const x = 200 + (i - 0.5) * (480 / 22);
+      const star = r.stars.includes(i);
+      if (star) {
+        const t = document.createElementNS(NS, "text");
+        t.setAttribute("x", x); t.setAttribute("y", r.y - 12); t.setAttribute("font-size", "22"); t.setAttribute("text-anchor", "middle"); t.setAttribute("fill", "#e5484d");
+        t.textContent = "★"; gr.appendChild(t);
+      }
+      const c = document.createElementNS(NS, "circle");
+      c.setAttribute("cx", x); c.setAttribute("cy", r.y); c.setAttribute("r", star ? 6 : 4);
+      c.setAttribute("fill", star ? "#e5484d" : "#2b2b3a"); gr.appendChild(c);
+    }
+    return gr;
+  });
+  const TXT = [
+    "<b>FR:</b> the red stars come in a neat row, one every 5. Once you figure out the pattern, you know “how many more it takes,” and you also know “it has missed several times in a row.”",
+    "<b>VR:</b> the red stars are unpredictable, sometimes coming one after another, sometimes after a long gap. Every click might be “the one,” so you can’t stop.",
+    "<b>FI:</b> clicking is pointless during the long stretch before a reward, which is why you often see “slack right after a reward, frantic clicking as the time nears.”",
+    "<b>VI:</b> you can’t predict when a “reward” will be there, so the best strategy is to check steadily, unhurriedly, now and then.",
+  ];
+  document.querySelectorAll("[data-sc]").forEach(b => b.addEventListener("click", () => {
+    const k = +b.dataset.sc;
+    document.querySelectorAll("[data-sc]").forEach(x => x.classList.toggle("on", x === b));
+    groups.forEach((gr, i) => gr.setAttribute("opacity", i === k ? 1 : 0.25));
+    $("c2_scmsg").innerHTML = TXT[k];
+  }));
+})();
+
+(function () {
+  const TYPES = [
+    ["FR", "Fixed ratio FR5", "#e5484d"], ["VR", "Variable ratio VR5", "#ff9f1c"],
+    ["FI", "Fixed interval FI20", "#3a86ff"], ["VI", "Variable interval VI20", "#3aa655"],
+  ];
+  const T = 400, EXT = 250, DT = 0.1;
+  function sim(type) {
+    let sinceR = 0, cnt = 0, nextI = 20, clicks = 0, streak = 0, maxStreak = 0, thr = -1, quit = false, postClicks = 0;
+    const cum = [], rew = [];
+    const drawI = () => Math.max(2, -20 * Math.log(1 - Math.random()));
+    if (type === "VI") nextI = drawI();
+    const steps = Math.round(T / DT);
+    for (let i = 0; i < steps; i++) {
+      const t = i * DT;
+      if (t >= EXT && thr < 0) thr = Math.max(6, Math.ceil(1.5 * maxStreak));
+      let rate = 0;
+      if (!quit) {
+        if (type === "FR") rate = sinceR < 3 ? 0 : 2;
+        else if (type === "VR") rate = 2;
+        else if (type === "FI") rate = 0.1 + 2 * Math.pow(Math.min(sinceR / 20, 1), 2);
+        else rate = 0.5;
+      }
+      if (Math.random() < rate * DT) {
+        clicks++;
+        let got = false;
+        if (t < EXT) {
+          if (type === "FR") { cnt++; if (cnt >= 5) got = true; }
+          else if (type === "VR") got = Math.random() < 0.2;
+          else if (type === "FI") got = sinceR >= 20;
+          else got = sinceR >= nextI;
+        } else postClicks++;
+        if (got) {
+          rew.push([t, clicks]); maxStreak = Math.max(maxStreak, streak);
+          streak = 0; sinceR = 0; cnt = 0; if (type === "VI") nextI = drawI();
+        } else {
+          streak++;
+          if (thr >= 0 && streak >= thr) quit = true;
+        }
+      }
+      sinceR += DT;
+      if (i % 10 === 9) cum.push(clicks);
+    }
+    return { cum, rew, postClicks };
+  }
+  const guess = [5, 5, 5, 5];
+  const pg = $("c2_pg");
+  TYPES.forEach((t, i) => {
+    const l = document.createElement("label"); l.className = "ctl";
+    l.innerHTML = '<span style="color:' + t[2] + '">●</span> ' + t[1] + ' persistence <output>5</output><input type="range" min="0" max="10" step="1" value="5">';
+    const inp = l.querySelector("input"), out = l.querySelector("output");
+    inp.oninput = () => { guess[i] = +inp.value; out.textContent = inp.value; };
+    pg.appendChild(l);
+  });
+  const cv = $("c2_cv"), g = cv.getContext("2d");
+  function draw(runs) {
+    const W = cv.width, H = cv.height, L = 46, B = 28, Tp = 12, R = 10;
+    g.clearRect(0, 0, W, H);
+    let mx = 10; runs.forEach(r => (mx = Math.max(mx, r.cum[r.cum.length - 1])));
+    mx = Math.ceil(mx / 100) * 100;
+    const X = t => L + (W - L - R) * t / T, Y = c => H - B - (H - B - Tp) * c / mx;
+    g.strokeStyle = "#2b2b3a"; g.lineWidth = 2; g.fillStyle = "#3f3f50"; g.font = "13px sans-serif";
+    g.beginPath(); g.moveTo(L, Tp); g.lineTo(L, H - B); g.lineTo(W - R, H - B); g.stroke();
+    for (let k = 0; k <= 4; k++) { const c = mx * k / 4; g.fillText(Math.round(c), 6, Y(c) + 4); }
+    for (let t = 0; t <= T; t += 100) g.fillText(t + "s", X(t) - 8, H - 8);
+    g.setLineDash([6, 5]); g.beginPath(); g.moveTo(X(EXT), Tp); g.lineTo(X(EXT), H - B); g.stroke(); g.setLineDash([]);
+    g.fillText("Rewards stop", X(EXT) + 4, Tp + 12);
+    runs.forEach((r, i) => {
+      g.strokeStyle = TYPES[i][2]; g.lineWidth = 2.5; g.beginPath();
+      r.cum.forEach((c, k) => { const x = X(k + 1), y = Y(c); if (k) g.lineTo(x, y); else g.moveTo(x, y); });
+      g.stroke();
+      g.fillStyle = TYPES[i][2];
+      r.rew.forEach(([t, c], k) => { if (k % 2 === 0 || r.rew.length < 40) { g.beginPath(); g.arc(X(t), Y(c), 2.5, 0, 6.3); g.fill(); } });
+    });
+  }
+  $("c2_leg").innerHTML = TYPES.map(t => '<span><i style="background:' + t[2] + '"></i>' + t[1] + "</span>").join("");
+  function showCanvas() { cv.style.display = "block"; $("c2_leg").style.display = "block"; }
+  let revealed = false, resims = 0;
+  function chk() { if (revealed && resims >= 2) c2done("c2_t1"); }
+  $("c2_re").onclick = () => { showCanvas(); draw(TYPES.map(t => sim(t[0]))); resims++; chk(); };
+  $("c2_reveal").onclick = () => {
+    const n = 40, avg = TYPES.map(t => { let s = 0; for (let i = 0; i < n; i++) s += sim(t[0]).postClicks; return s / n; });
+    const mx = Math.max(...avg, 1);
+    $("c2_cmp").innerHTML = '<div class="small">Bars: top = your prediction (0–10); bottom = the average number of clicks the simulated players still made after rewards stopped (scaled to 0–10 by the maximum).</div>' +
+      TYPES.map((t, i) => {
+        const sv = avg[i] / mx * 10;
+        return '<div class="rw"><div class="nm">' + t[1] + '</div><div class="bars">' +
+          '<div class="bar"><i style="width:' + guess[i] * 10 + "%;background:" + t[2] + ';opacity:.45"></i></div>' +
+          '<div class="bar"><i style="width:' + sv * 10 + "%;background:" + t[2] + '"></i></div>' +
+          '<div class="lg">You guessed ' + guess[i] + " simulated " + sv.toFixed(1) + "(about " + Math.round(avg[i]) + " clicks)</div></div></div>";
+      }).join("") +
+      '<div class="msg" style="font-size:1.1rem">' + (avg[1] > avg[0] * 1.3 ? "The clearest contrast is FR versus VR: fixed ratio gives up quickly once rewards stop, while variable ratio holds out longer." : "This time the gap between FR and VR is small; try again (it is random).") +
+      " FI and VI do not differ much in this minimal model, and the differences in real experiments are more complicated.</div>";
+    showCanvas(); draw(TYPES.map(t => sim(t[0])));
+    revealed = true; chk();
+  };
+})();
+
+(function () {
+  const A = 0.15, GS = {
+    up: "You guessed “stronger.” The experiment found the opposite: once practiced, juice that arrives as expected barely triggers a response.",
+    same: "You guessed “about the same.” Not so in the experiment: once the prediction has been learned, the response to the juice itself drops sharply.",
+    zero: "Right! This is just what Schultz and colleagues found: the juice is fully predicted, there is no “surprise,” and the neurons hardly change their firing.",
+  };
+  let out = "ok", picked = false; const seen = new Set();
+  const V = n => 1 - Math.pow(1 - A, n);
+  $("c2_pr").innerHTML = '<div class="rw"><div class="nm">The moment the light comes on</div><div class="tr"><i id="c2_b1"></i></div><div class="v" id="c2_v1"></div></div>' +
+    '<div class="rw"><div class="nm">The juice moment</div><div class="tr"><i id="c2_b2"></i></div><div class="v" id="c2_v2"></div></div>';
+  function bar(id, vid, x) {
+    const b = $(id), w = Math.min(50, Math.abs(x) * 50 / 2);
+    b.style.left = x >= 0 ? "50%" : (50 - w) + "%"; b.style.width = w + "%";
+    b.style.background = x > 0.03 ? "#3aa655" : x < -0.03 ? "#e5484d" : "#aaa";
+    $(vid).textContent = (x > 0 ? "+" : "") + x.toFixed(2);
+  }
+  const cv = $("c2_rcv"), g = cv.getContext("2d");
+  function render() {
+    const n = +$("c2_n").value; $("c2_no").textContent = n;
+    const v = V(n), r = out === "ok" ? 1 : out === "none" ? 0 : 2;
+    const cue = v, rew = r - v;
+    bar("c2_b1", "c2_v1", cue); bar("c2_b2", "c2_v2", rew);
+    const W = cv.width, H = cv.height, L = 40, B = 24, Tp = 10, R = 10, N = 40;
+    g.clearRect(0, 0, W, H);
+    const X = k => L + (W - L - R) * k / N, Y = y => (H - B) - (H - B - Tp) * ((y + 0.2) / 1.4);
+    g.strokeStyle = "#2b2b3a"; g.lineWidth = 2; g.fillStyle = "#3f3f50"; g.font = "13px sans-serif";
+    g.beginPath(); g.moveTo(L, Tp); g.lineTo(L, H - B); g.lineTo(W - R, H - B); g.stroke();
+    g.setLineDash([4, 4]); g.beginPath(); g.moveTo(L, Y(0)); g.lineTo(W - R, Y(0)); g.stroke(); g.setLineDash([]);
+    g.fillText("0", 22, Y(0) + 4); g.fillText("Trials →", W - 90, H - 6);
+    [["#3a86ff", k => V(k)], ["#ff9f1c", k => 1 - V(k)]].forEach(([c, f]) => {
+      g.strokeStyle = c; g.lineWidth = 3; g.beginPath();
+      for (let k = 0; k <= N; k++) { const x = X(k), y = Y(f(k)); if (k) g.lineTo(x, y); else g.moveTo(x, y); }
+      g.stroke();
+    });
+    g.fillStyle = "#1f5fc4"; g.fillText("Light response", X(26), Y(V(26)) - 8);
+    g.fillStyle = "#a35a00"; g.fillText("Juice response", X(14), Y(1 - V(14)) - 8);
+    g.strokeStyle = "#2b2b3a"; g.lineWidth = 2; g.beginPath(); g.moveTo(X(n), Tp); g.lineTo(X(n), H - B); g.stroke();
+    let t;
+    if (n === 0) t = out === "ok" ? "Not learned yet: the juice is a complete surprise and the response is largest (+1.00)." : out === "none" ? "Not learned yet, and there is no expectation, so the missing juice causes no disappointment (0)." : "Not learned yet: the juice is a surprise and also more than usual, so the response is large.";
+    else if (out === "ok") t = n >= 25 ? "Fully predictable now: there is a response at the light, and almost none to the juice itself (" + rew.toFixed(2) + "). The surprise has moved from the “juice” to the “light.”" : "In training: the response to the light is growing stronger and the response to the juice is growing weaker.";
+    else if (out === "none") t = "The light came on but there was no juice: the expectation was " + v.toFixed(2) + ", the actual was 0, so the error is negative (" + rew.toFixed(2) + "), and firing falls below usual, as if saying “worse than expected.”";
+    else t = "The juice is more than expected: even after practice, the extra amount is still a positive error (" + rew.toFixed(2) + ").";
+    $("c2_rmsg").textContent = t;
+    if (n >= 25) seen.add(out);
+    if (picked && seen.size >= 3) c2done("c2_t2");
+  }
+  document.querySelectorAll("[data-gs]").forEach(b => b.addEventListener("click", () => {
+    document.querySelectorAll("[data-gs]").forEach(x => x.classList.toggle("on", x === b));
+    $("c2_gmsg").textContent = GS[b.dataset.gs];
+    picked = true;
+    $("c2_n").value = 30; render();
+  }));
+  document.querySelectorAll("[data-ot]").forEach(b => b.addEventListener("click", () => {
+    out = b.dataset.ot; document.querySelectorAll("[data-ot]").forEach(x => x.classList.toggle("on", x === b)); render();
+  }));
+  $("c2_n").oninput = render;
+  render();
+})();
+
+(function () {
+  const N = ["① Action", "② Feedback", "③ Reward", "④ Growth", "⑤ New goal"];
+  const FILL = ["#ffe58a", "#a8dcf0", "#ffb3c6", "#b6e8a8", "#d8c8ff"];
+  const WS = [0.45, 0.25, 0.15, 0.05, 0.10], WL = [0.25, 0.10, 0.15, 0.30, 0.20];
+  const S = [1, 1, 1, 1, 1], STATE = ["Full", "Weak", "Off"];
+  const CX = 350, CY = 200, RX = 250, RY = 140, SEG = 2 * Math.PI / 5, T0 = -Math.PI / 2;
+  const pos = th => [CX + RX * Math.cos(th), CY + RY * Math.sin(th)];
+  (function () {
+    let d = "", pen = false;
+    for (let k = 0; k <= 360; k++) {
+      const th = k / 360 * 2 * Math.PI + T0, x = CX + RX * Math.cos(th), y = CY + RY * Math.sin(th);
+      let hit = false;
+      for (let i = 0; i < 5; i++) { const [nx, ny] = pos(T0 + i * SEG); if (Math.abs(x - nx) < 84 && Math.abs(y - ny) < 42) hit = true; }
+      if (hit) pen = false; else { d += (pen ? "L" : "M") + x.toFixed(1) + " " + y.toFixed(1); pen = true; }
+    }
+    $("c2_ringp").setAttribute("d", d);
+  })();
+  const nodes = $("c2_nodes"), cuts = $("c2_cuts"), dotsG = $("c2_dots");
+  const task = { weak0: false, nogrow: false };
+  const els = N.map((n, i) => {
+    const [x, y] = pos(T0 + i * SEG);
+    const gEl = document.createElementNS(NS, "g"); gEl.setAttribute("class", "c2node"); gEl.setAttribute("tabindex", "0"); gEl.setAttribute("role", "button");
+    gEl.innerHTML = '<g class="rough" stroke="#2b2b3a" stroke-width="4"><rect x="' + (x - 72) + '" y="' + (y - 30) + '" width="144" height="60" rx="20"/></g>' +
+      '<text x="' + x + '" y="' + (y - 2) + '" font-size="24" text-anchor="middle" fill="#2b2b3a" pointer-events="none">' + n + "</text>" +
+      '<text x="' + x + '" y="' + (y + 21) + '" font-size="16" text-anchor="middle" fill="#3f3f50" pointer-events="none" class="st">Full</text>';
+    nodes.appendChild(gEl);
+    const flip = () => { S[i] = S[i] === 1 ? 0.5 : S[i] === 0.5 ? 0 : 1; update(); };
+    gEl.addEventListener("click", flip);
+    gEl.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); flip(); } });
+    return gEl;
+  });
+  const P = [];
+  for (let k = 0; k < 14; k++) {
+    const c = document.createElementNS(NS, "circle"); c.setAttribute("r", 7); c.setAttribute("fill", "#ff7a59"); c.setAttribute("stroke", "#2b2b3a"); c.setAttribute("stroke-width", 2);
+    dotsG.appendChild(c); P.push({ el: c, th: T0 + k * (2 * Math.PI / 14), id: k });
+  }
+  const TXT = [
+    ["Nothing to do, so the loop can’t turn at all: action is the foundation.", "The action is dull or clumsy: no matter how big the reward, it is only a “bribe,” and this is the hardest link to fix elsewhere."],
+    ["No feedback: players can’t tell how they are doing, and the line between action and reward is cut.", "Vague feedback: “did that do anything?” Players find it hard to connect their action with the result."],
+    ["No reward: if the action is fun the short term holds up, but there is no push and no sense of achievement.", "A thin reward: it is playable, but without the feeling of being “worth it.”"],
+    ["No growth: every round is exactly like the last, with no feeling in the short run and boredom in the long run.", "Slow growth: the feeling of getting stronger isn’t obvious, and long-term motivation is discounted."],
+    ["No new goal: after this round there is no reason to go again, and the loop has no “pull.”", "A vague new goal: the player isn’t sure where to go next."],
+  ];
+  function update() {
+    let sh = 0, lo = 0;
+    S.forEach((s, i) => { sh += WS[i] * s; lo += WL[i] * s; });
+    if (S[0] === 0) { sh = 0; lo = 0; }
+    $("c2_bs").style.width = sh * 100 + "%"; $("c2_bl").style.width = lo * 100 + "%";
+    $("c2_bs").style.background = sh > 0.7 ? "#b6e8a8" : sh > 0.4 ? "#ffe58a" : "#ffb3c6";
+    $("c2_bl").style.background = lo > 0.7 ? "#b6e8a8" : lo > 0.4 ? "#ffe58a" : "#ffb3c6";
+    $("c2_vs").textContent = Math.round(sh * 100); $("c2_vl").textContent = Math.round(lo * 100);
+    els.forEach((e, i) => {
+      e.querySelector(".st").textContent = STATE[S[i] === 1 ? 0 : S[i] === 0.5 ? 1 : 2];
+      const r = e.querySelector("rect"); r.setAttribute("fill", S[i] === 0 ? "#e9e9ef" : S[i] === 0.5 ? "#fff0dc" : FILL[i]);
+      r.setAttribute("stroke-dasharray", S[i] === 0 ? "6 6" : S[i] === 0.5 ? "10 4" : "none");
+      e.style.opacity = S[i] === 0 ? 0.6 : 1;
+      e.setAttribute("aria-label", N[i] + ", currently" + STATE[S[i] === 1 ? 0 : S[i] === 0.5 ? 1 : 2] + ", tap to switch");
+    });
+    cuts.innerHTML = "";
+    S.forEach((s, i) => {
+      if (s === 0) {
+        const [x, y] = pos(T0 + i * SEG - SEG * 0.5);
+        const t = document.createElementNS(NS, "text"); t.setAttribute("x", x); t.setAttribute("y", y + 10); t.textContent = "✂"; cuts.appendChild(t);
+      }
+    });
+    const lines = [];
+    S.forEach((s, i) => { if (s < 1) lines.push("<b>" + N[i].slice(2) + "</b>:" + TXT[i][s === 0 ? 0 : 1]); });
+    const broken = S.some(s => s === 0);
+    $("c2_ringmsg").innerHTML = lines.length === 0 ? "A complete loop: actions get feedback, rewards bring growth, growth opens new goals, and the player has a reason for another lap. The light flows smoothly." :
+      (broken ? "✂ The loop is broken, and the light is stuck in front of the gap.<br>" : "The light slows down, since every weakened link is a “bottleneck.”<br>") + lines.join("<br>");
+    if (S[0] < 1) task.weak0 = true;
+    if (S[3] === 0 && S[0] === 1) task.nogrow = true;
+    if (task.weak0 && task.nogrow) c2done("c2_t3");
+  }
+  document.querySelectorAll("[data-rp]").forEach(b => b.addEventListener("click", () => {
+    S.fill(1);
+    const k = b.dataset.rp;
+    if (k === "boring") { S[0] = 0.5; S[2] = 1; }
+    if (k === "nofb") S[1] = 0;
+    if (k === "nogrow") S[3] = 0;
+    if (k === "nogoal") S[4] = 0;
+    update();
+  }));
+  $("c2_rst").onclick = () => { S.fill(1); update(); };
+  let last = performance.now();
+  function tick(now) {
+    const dt = Math.min(0.05, (now - last) / 1000); last = now;
+    P.forEach(p => {
+      const u = ((p.th - T0) % (2 * Math.PI) + 2 * Math.PI) % (2 * Math.PI) / SEG;
+      let nxt = Math.ceil(u); if (nxt - u < 1e-6) nxt += 1;
+      const ni = nxt % 5, s = S[ni], dist = (nxt - u) * SEG;
+      let sp = 1.1 * (0.15 + 0.85 * s);
+      if (s === 0) {
+        const lim = 0.5 + (p.id % 7) * 0.07;
+        if (dist < lim) { p.th = T0 + nxt * SEG - lim; sp = 0; }
+      }
+      p.th += sp * dt;
+      const [x, y] = pos(p.th);
+      p.el.setAttribute("cx", x); p.el.setAttribute("cy", y);
+      p.el.setAttribute("opacity", s === 0 && dist < 1.2 ? 0.9 : 1);
+    });
+    requestAnimationFrame(tick);
+  }
+  update();
+  requestAnimationFrame(tick);
+})();
+
+GD.mountQuiz($("quiz"), [
+  { q: "Which of these is most like a description of a “core loop”?", opts: ["The game has lots of beautiful characters", "Parkour: run → dodge obstacles → collect coins → buy items → run farther", "The story is very moving", "The game updates once a week"], a: 1, why: "A core loop is a chain of actions the player repeats, and it leads back to the start." },
+  { q: "In the break-the-loop experiment, which toy value is most affected first when “Growth” is removed?", opts: ["Short-term will to keep playing", "Long-term will to keep playing", "Neither is affected at all", "Both drop to zero"], a: 1, why: "Without growth, the short-term action and feedback are still there, so the short-term change is small; but every round is exactly the same, and over the long term it gets stale." },
+  { q: "If the “click” action itself is dull, what should you do?", opts: ["Add more rewards", "First improve the smallest loop of action, and make it fun in itself", "Add a story", "Make players watch ads"], a: 1, why: "If the basic action isn’t fun, no number of rewards is more than a “bribe” to the player." },
+  { q: "“Log in daily for a reward” belongs to roughly which layer of loop?", opts: ["The seconds-level micro loop", "The minutes-level level loop", "The day/week-level growth loop", "It isn’t a loop at all"], a: 2, why: "It repeats daily, so it is a long-cycle growth loop." },
+  { q: "[Why] Players get exactly the same 100 coins every day and “feel nothing” after a week. Which is the most reasonable explanation by reward prediction error?", opts: ["The coins lost value", "Expectation has caught up with the actual reward, and the surprise (actual − expected) tends toward 0", "The players got dumber", "The dopamine ran out"], a: 1, why: "Fixed rewards get absorbed by expectation and the error goes to zero, so “nothing is felt”; only random or added rewards can create a positive error again." },
+  { q: "[Why] In classic experiments, once the rewards stop, which one usually dies out later?", opts: ["Fixed ratio (such as a guaranteed reward every 5 responses)", "Variable ratio (a reward once in 5 on average)", "Exactly the same", "The group that gets no rewards"], a: 1, why: "A variable schedule makes it hard to tell “just no luck yet” from “gone for good,” so it dies out later. But this is a regularity found in animal experiments, and for people it is only a reference." },
+  { q: "[Why it was invented] Why did Skinner and his colleagues study “reinforcement schedules” systematically, instead of just giving food every time?", opts: ["Because food was too expensive", "Because they found that behavior could be kept up without a reward every time, and “when to give” shapes completely different patterns of behavior", "Because pigeons don’t like food", "Because they wanted to prove that people are like pigeons"], a: 1, why: "By Skinner’s own recollection, food pellets were in short supply, so he tried giving one only after a stretch of time and found that the behavior did not vanish but showed a stable pattern, so he systematically compared all kinds of reward rules." },
+  { q: "[Why it was invented] Why do Schultz’s monkey experiments make “dopamine = reward prediction error” more convincing than “dopamine = pleasure”?", opts: ["Because monkeys don’t enjoy juice", "Because once the prediction is learned, juice arriving as expected barely triggers a response, and when it doesn’t come the firing actually drops below usual: the neurons are tracking “the gap from expectation”", "Because the more juice, the more firing", "Because dopamine has only to do with hunger"], a: 1, why: "If dopamine equaled pleasure, already-predicted juice would still be enjoyed and there would be no “negative response” when it didn’t come. The experiment shows that the response follows “the expectation error.”" },
+]);
+</script>
+</body>
+</html>

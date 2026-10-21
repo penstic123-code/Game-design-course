@@ -1,0 +1,703 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Chapter 10: UI &amp; Onboarding</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+  .c10_bar{height:14px;border:2.5px solid var(--ink);border-radius:8px;background:#fff;overflow:hidden;margin:4px 0}
+  .c10_bar i{display:block;height:100%;background:var(--orange);width:0;transition:width .25s,background .25s}
+  .c10_sample{border:3px solid var(--ink);border-radius:10px;padding:14px;text-align:center;margin:8px 0}
+  .c10_cbox{display:flex;gap:12px;flex-wrap:wrap}
+  .c10_cbox>div{flex:1;min-width:200px;border:3px solid var(--ink);border-radius:10px;padding:8px;background:#fffdf3;text-align:center}
+  .c10_cbox.gray>div>.mk,.c10_gray{filter:grayscale(1)}
+  .c10_dotr{display:inline-block;width:28px;height:28px;border-radius:50%;vertical-align:middle;margin:4px}
+  .c10_tri{display:inline-block;width:0;height:0;border-left:16px solid transparent;border-right:16px solid transparent;border-bottom:30px solid #e5484d;vertical-align:middle;margin:4px}
+  input[type=color]{width:60px;height:34px;border:3px solid var(--ink);border-radius:8px;padding:0;background:#fff;vertical-align:middle}
+
+  
+  .c10_bars{margin:8px 0}
+  .c10_bars .r{display:flex;align-items:center;gap:8px;margin:3px 0;font-size:.95rem}
+  .c10_bars .r span.l{flex:none;width:9.5em}
+  .c10_bars .r .tk{flex:1;height:16px;border:2.5px solid var(--ink);border-radius:8px;background:#fff;position:relative;overflow:hidden}
+  .c10_bars .r .tk i{position:absolute;left:0;top:0;bottom:0;background:var(--orange);transition:width .4s}
+  .c10_bars .r b.v{flex:none;width:2.6em;text-align:right;background:none}
+
+  
+  .c10_phi{position:relative;height:90px;border:3px solid var(--ink);border-radius:10px;background:#fffdf3;overflow:hidden}
+  .c10_phi i{position:absolute;top:30px;width:30px;height:30px;border-radius:50%;background:#e5484d;border:3px solid var(--ink);animation:c10blink 1s steps(1) infinite}
+  .c10_phi i.a{left:22%}
+  .c10_phi i.b{left:70%;animation-delay:.5s}
+  @keyframes c10blink{0%{opacity:1}50%{opacity:0}100%{opacity:0}}
+  .c10_phi.fast i{animation-duration:.36s}
+  .c10_phi.fast i.b{animation-delay:.18s}
+  @media(prefers-reduced-motion:reduce){.c10_phi i{animation:none}.c10_phi i.b{opacity:.35}}
+
+  
+  .c10_stage{position:relative;width:100%;aspect-ratio:16/9;min-height:230px;border:3px solid var(--ink);border-radius:10px;overflow:hidden;touch-action:none;user-select:none;
+    background:linear-gradient(#9fd3f0 0 45%,#8bc58a 45% 100%)}
+  .c10_stage.explore{background:linear-gradient(#cfe9f7 0 40%,#a5d38f 40% 100%)}
+  .c10_stage .scene{position:absolute;left:0;right:0;top:36%;text-align:center;font-size:clamp(1.6rem,6vw,3rem);opacity:.92;pointer-events:none}
+  .c10_zone{position:absolute;left:30%;top:25%;width:40%;height:50%;border:2.5px dashed rgba(43,43,58,.55);border-radius:8px;pointer-events:none}
+  .c10_zone::after{content:"Central view";position:absolute;left:4px;bottom:2px;font-size:.75rem;color:rgba(43,43,58,.85)}
+  .c10_el{position:absolute;background:rgba(30,30,45,.82);color:#fff;border-radius:8px;padding:2px 8px;line-height:1.35;border:2px solid #fff;border-left-width:7px;
+    cursor:grab;white-space:nowrap;font-size:clamp(10px,1.7vw,15px);transition:opacity .2s;z-index:3}
+  .c10_el:active{cursor:grabbing}
+  .c10_el.s2{opacity:.4}
+  .c10_el.s3{display:none}
+  .c10_el:focus-visible{outline:3px solid var(--yellow)}
+  .c10_el.map{width:17%;height:24%;white-space:normal;display:grid;place-items:center;text-align:center}
+  .c10_el.map.s3{display:none}
+  .c10_stage.glide .c10_el{transition:opacity .2s,left .6s,top .6s}
+  .c10_grp{position:absolute;border:2.5px dashed #ffe58a;border-radius:10px;pointer-events:none;z-index:2;background:rgba(255,229,138,.12)}
+  .c10_grp.bad{border-color:#ff6b6b;background:rgba(255,107,107,.15)}
+  .c10_grp.ok{border-color:#7ee08f;background:rgba(126,224,143,.15)}
+  .c10_row{display:flex;align-items:center;gap:4px;flex-wrap:wrap;border-bottom:1px dashed var(--line);padding:2px 0;font-size:.95rem}
+  .c10_row .nm{flex:1;min-width:100px}
+  .c10_row .chip{margin:1px;padding:0 8px;font-size:.85rem}
+  .c10_cat{display:inline-block;width:12px;height:12px;border-radius:3px;border:2px solid var(--ink);margin-right:5px;vertical-align:middle}
+  .c10_diag div{margin:3px 0;font-size:.95rem}
+  .c10_twocol{display:grid;grid-template-columns:minmax(0,3fr) minmax(0,2fr);gap:16px}.c10_twocol>div{min-width:0}
+  @media(max-width:700px){.c10_twocol{grid-template-columns:minmax(0,1fr)}}
+  .c10_defbar{height:30px;border:2.5px solid var(--ink);border-radius:10px;background:#fff;overflow:hidden;margin:4px 0;position:relative}
+  .c10_defbar i{display:block;height:100%;transition:width .3s}
+  .c10_defbar b{position:absolute;left:10px;top:2px;font-weight:400;font-size:.95rem;background:none}
+</style>
+</head>
+<body data-ch="10">
+<main class="wrap">
+  <div class="hero">
+    <div class="txt">
+      <span class="badge">Chapter 10</span>
+      <h1>UI &amp; Onboarding</h1>
+      <p class="sub">A good interface is “invisible”: it is there when the player needs it and out of the way when they don’t.</p>
+    </div>
+    <svg viewBox="0 0 190 150" class="rough" aria-hidden="true">
+      <rect x="15" y="20" width="160" height="105" fill="#fff" stroke="#2b2b3a" stroke-width="4" rx="8"/>
+      <rect x="25" y="30" width="50" height="14" fill="#ffb3c6" stroke="#2b2b3a" stroke-width="3"/>
+      <rect x="130" y="30" width="35" height="35" fill="#a8dcf0" stroke="#2b2b3a" stroke-width="3"/>
+      <circle cx="95" cy="80" r="10" fill="none" stroke="#2b2b3a" stroke-width="4"/>
+      <path d="M70 108 H120" stroke="#2b2b3a" stroke-width="5"/>
+    </svg>
+  </div>
+
+  <div class="goals">
+    <h3>Learning goals</h3>
+    <span class="time">about 50 min</span>
+    <ul>
+      <li>Explain why the HUD was invented and why it can’t be stuffed full, using “working memory is tiny” and “extraneous load,” and group interface elements with the Gestalt principles of proximity, similarity, closure and continuity.</li>
+      <li>Lay out a HUD by hand: decide for each element in each scene whether it is “always on, dimmed or hidden,” and read the visual-load, center-occlusion and grouping diagnostics.</li>
+      <li>Judge whether a default is a “nudge” or “manipulation,” and pick sensible defaults for onboarding.</li>
+    </ul>
+  </div>
+
+  
+  <div class="sec"><span class="n">1</span><h2><span class="tag what">What it is</span>Four places a UI can “live”: where does the health bar actually live?</h2></div>
+  <div class="withimg">
+    <span data-illus="c10_dead"></span>
+    <div>
+      <p>You have surely met this: the fight is at its hottest, the screen goes black with a “you were knocked down,” and the first question in your head is: how much health did I have left?</p>
+      <p>The health bar was on screen the whole time, and you just didn’t look at it. It’s not that you weren’t paying attention; there were a dozen things on the screen fighting for your eyes. The job of the interface (<span class="term" tabindex="0" data-def="User Interface: the window through which player and game exchange information, including on-screen information, menus and control prompts.">UI</span>) is to find a balance between “letting the player know” and “staying out of the player’s way.”</p>
+      <p>Before doing that, ask a seemingly dull question: where does this piece of information “live”? Designers often sort it with two questions: <b>does it exist in the story world? Does it exist in the game’s 3D space?</b> This gives four kinds.</p>
+    </div>
+  </div>
+  <div class="card">
+    <svg viewBox="0 0 700 320" width="100%" role="img" aria-label="UI quadrants: diegetic, spatial, meta, non-diegetic">
+      <g class="rough" stroke="#2b2b3a" stroke-width="4">
+        <rect x="110" y="45" width="280" height="130" fill="#b6e8a8"/>
+        <rect x="390" y="45" width="280" height="130" fill="#a8dcf0"/>
+        <rect x="110" y="175" width="280" height="130" fill="#ffe58a"/>
+        <rect x="390" y="175" width="280" height="130" fill="#ffb3c6"/>
+      </g>
+      <g font-size="18" fill="#2b2b3a" text-anchor="middle">
+        <text x="250" y="30">In the story world</text><text x="530" y="30">Not in the story world</text>
+        <text x="55" y="115">In scene</text><text x="55" y="245">Off scene</text>
+        <g font-size="24"><text x="250" y="80">Diegetic</text><text x="530" y="80">Spatial</text><text x="250" y="210">Meta</text><text x="530" y="210">Non-diegetic</text></g>
+        <text x="250" y="110">health bar on the character’s back</text><text x="250" y="138">a car’s dashboard</text>
+        <text x="530" y="110">target ring on the ground</text><text x="530" y="138">names and path arrows overhead</text>
+        <text x="250" y="240">screen reddens when hurt</text><text x="250" y="268">raindrops and cracks on the lens</text>
+        <text x="530" y="240">health bars, ammo numbers</text><text x="530" y="268">minimap, menus, skill bar</text>
+      </g>
+    </svg>
+  </div>
+  <div class="grid2">
+    <div class="card g"><h3>Diegetic</h3><p>The characters themselves can see it too. Upside: the strongest immersion. Downside: not always clear or easy to read, and it takes the most work to make.</p></div>
+    <div class="card p"><h3>Non-diegetic (the most common)</h3><p>A HUD that serves purely the player, pasted onto the screen. Upside: clear and easy to change. Downside: it easily breaks immersion, and tends to pile up.</p></div>
+  </div>
+  <p>The <span class="term" tabindex="0" data-def="Head-Up Display: a layer of information always overlaid on the game picture, such as health bars, ammo and the minimap.">HUD</span> is the layer of information always overlaid on the picture. There is no right or wrong choice among them; it depends on whether you need <b>clarity</b> or <b>immersion</b> more.</p>
+  <div class="eg" data-ic="🔦"><span data-illus="c10_spine"></span><div class="egt"><b>Diegetic: the glowing bar on the back.</b> In <i>Dead Space</i> the glowing spine bar on the protagonist’s back is the health: both the character and the player can see it, and no numbers are needed on screen. Horror games often use this trick to keep immersion.</div></div>
+  <div class="eg" data-ic="🔫"><span data-illus="c10_corner"></span><div class="egt"><b>Non-diegetic: numbers in a screen corner.</b> The health and ammo of a competitive shooter are pasted in the screen corners. They don’t belong to the story world, but they read at a glance, and when winning and losing are at stake, clarity matters more than immersion.</div></div>
+  <div class="eg" data-ic="🚗"><span data-illus="c10_dash"></span><div class="egt"><b>In daily life: a dashboard and a battery bar.</b> A car’s dashboard really is installed in the car and is “diegetic” for the driver; the battery bar at the top of a phone is not an object in the phone’s world but a layer the system puts on top, so it is “non-diegetic.”</div></div>
+  <div class="eg bad" data-ic="🕯️"><span data-illus="c10_tiny"></span><div class="egt"><b>A near-miss: diegetic does not mean usable.</b> For immersion, health is made a tiny indicator light on the character’s clothes. In a fight the camera shakes and the player simply can’t see it. Either make it a more eye-catching glow, or add a layer of meta UI like a reddening screen when things get critical.</div></div>
+  <p class="small">This four-way split is often traced to Fagerholt and Lorentzon’s 2009 master’s thesis at Chalmers University of Technology, <i>Beyond the HUD</i>. The word “diegetic” is borrowed from film, and some think it doesn’t always fit games (Jørgensen and others have made a similar criticism about game sound).</p>
+
+  
+  <div class="sec"><span class="n">2</span><h2><span class="tag what">What it is</span>Information hierarchy: not all information is equally important</h2></div>
+  <p>Knowing where information lives is not enough. Screen space and the player’s attention are both scarce, and you have to decide how eye-catching each piece of information is. This “eye-catchingness” is called <span class="term" tabindex="0" data-def="Visual weight: how eye-catching an element is in the picture, determined by size, contrast, position, animation and so on.">visual weight</span>. A simple three-tier method is:</p>
+  <div class="grid3">
+    <div class="card y mini"><div class="ico">1</div><h3>Always prominent</h3><p>Information the current decision needs right now, such as health in combat.</p></div>
+    <div class="card b mini"><div class="ico">2</div><h3>Dimmed</h3><p>Glanced at now and then, like the minimap. Smaller and paler.</p></div>
+    <div class="card v mini"><div class="ico">3</div><h3>Shown only when needed</h3><p>If it isn’t needed, don’t show it. Pop-up menus, displayed only when an event triggers.</p></div>
+  </div>
+  <p>The difficulty is that <b>the same element belongs in different tiers at different moments</b>. The figure below is the “seating chart” of the same HUD at three moments.</p>
+  <div class="card">
+    <svg viewBox="0 0 700 260" width="100%" role="img" aria-label="Tier matrix of the same elements in combat, exploring and the shop">
+      <g class="rough" stroke="#2b2b3a" stroke-width="3.5">
+        <rect x="170" y="62" width="160" height="50" fill="#ffe58a"/><rect x="340" y="62" width="160" height="50" fill="#e8f6fc"/><rect x="510" y="62" width="160" height="50" fill="#f1eaff"/>
+        <rect x="170" y="120" width="160" height="50" fill="#e8f6fc"/><rect x="340" y="120" width="160" height="50" fill="#ffe58a"/><rect x="510" y="120" width="160" height="50" fill="#f1eaff"/>
+        <rect x="170" y="178" width="160" height="50" fill="#f1eaff"/><rect x="340" y="178" width="160" height="50" fill="#e8f6fc"/><rect x="510" y="178" width="160" height="50" fill="#ffe58a"/>
+      </g>
+      <g font-size="20" text-anchor="middle" fill="#2b2b3a">
+        <text x="250" y="42">⚔️ In combat</text><text x="420" y="42">🧭 Exploring</text><text x="590" y="42">🛒 In the shop</text>
+        <text x="250" y="94">Prominent</text><text x="420" y="94">Dimmed</text><text x="590" y="94">Hidden</text>
+        <text x="250" y="152">Dimmed</text><text x="420" y="152">Prominent</text><text x="590" y="152">Hidden</text>
+        <text x="250" y="210">Hidden</text><text x="420" y="210">Dimmed</text><text x="590" y="210">Prominent</text>
+      </g>
+      <g font-size="20" fill="#2b2b3a" text-anchor="end"><text x="160" y="94">❤️ Health</text><text x="160" y="152">🗺 Minimap</text><text x="160" y="210">💰 Gold</text></g>
+    </svg>
+  </div>
+  <div class="eg" data-ic="🛒"><span data-illus="c10_shop"></span><div class="egt"><b>In games: the gold bar changes its face with the scene.</b> In combat the gold bar folds away and only grows in the shop; when exploring, the minimap gets bigger, and as soon as combat begins it shrinks into a pale thumbnail in the corner.</div></div>
+  <div class="eg" data-ic="⛽"><span data-illus="c10_fuel"></span><div class="egt"><b>In daily life: the low-fuel light.</b> A car’s “low fuel” light is normally off and comes on when the fuel is nearly gone, claiming your attention only at the moment you have a decision to make.</div></div>
+  <div class="eg" data-ic="📱"><span data-illus="c10_phone"></span><div class="egt"><b>In daily life: a phone’s status bar.</b> The time is always shown, while the “battery below 20%” alert pops up only when needed.</div></div>
+  <div class="eg bad" data-ic="🌀"><span data-illus="c10_flood"></span><div class="egt"><b>Counterexample: everything always on.</b> In combat, the chat box, achievement popups, friends online and weather and time are all up. Each looks “useful” alone, but piled together the player misses the truly deadly one, the health.</div></div>
+
+  
+  <div class="sec"><span class="n">3</span><h2><span class="tag what">What it is</span>Onboarding: let the player “learn,” not be “taught”</h2></div>
+  <p>The interface has another problem: new players know nothing. <span class="term" tabindex="0" data-def="First-Time User Experience: the experience from a player’s first opening of the game to “I get it, I want to keep going,” often seen as the key to retention.">FTUE</span> (first-time user experience) means those few minutes from first opening the game to “I get it, and I want to continue.” Many people decide in those minutes whether to give up, so they are worth designing with care. There are three core methods:</p>
+  <div class="grid3">
+    <div class="card g mini"><div class="ico">🖐️</div><h3>Do first, tell after</h3><p>Let the player act first, then explain it in a sentence. Use few walls of text.</p></div>
+    <div class="card y mini"><div class="ico">🪜</div><h3><span class="term" tabindex="0" data-def="Progressive disclosure: instead of throwing every feature at the user at once, reveal them step by step as they are needed.">Progressive disclosure</span></h3><p>Teach one new thing at a time, and release the next once it is learned.</p></div>
+    <div class="card b mini"><div class="ico">📍</div><h3>Contextual hints</h3><p>Hint only when the player really needs it, such as showing “Press E to open” only when they reach the door.</p></div>
+  </div>
+  <div class="card">
+    <svg viewBox="0 0 700 300" width="100%" role="img" aria-label="Comparison curves of stuffing the whole tutorial in at once versus progressive teaching">
+      <g class="rough" stroke="#2b2b3a" stroke-width="4" fill="none" stroke-linecap="round">
+        <path d="M60 20 V250 H680"/>
+        <path d="M60 55 H680" stroke="#e5484d" stroke-width="5"/>
+        <path d="M60 230 H170 V195 H260 V160 H350 V125 H440 V90 H530 V55 H680" stroke="#3aa655" stroke-width="5"/>
+      </g>
+      <g font-size="18" fill="#2b2b3a">
+        <text x="100" y="45" fill="#b3303a">All the controls stuffed in at the start (players overflow and forget)</text>
+        <text x="270" y="190" fill="#2b2b3a">Progressive: learn one, add one</text>
+        <text x="600" y="276">time →</text>
+        <text x="25" y="140" text-anchor="middle" transform="rotate(-90 25 140)">new concepts to remember at once</text>
+      </g>
+    </svg>
+  </div>
+  <div class="eg" data-ic="🍄"><span data-illus="c10_goomba"></span><div class="egt"><b>Do first, tell after: an opening without words.</b> Level 1-1 of <i>Super Mario Bros.</i> opens with no text; the first enemy walks slowly toward you, and if you don’t jump you bump into it. It makes you “do” first, and then understand.</div></div>
+  <div class="eg" data-ic="🚪"><span data-illus="c10_rooms"></span><div class="egt"><b>Progressive disclosure: one new thing per room.</b> Designers often praise this approach: the first few rooms introduce only one new mechanic at a time, and the next is layered on only once it is learned (<i>Portal</i> is often cited as an example).</div></div>
+  <div class="eg" data-ic="💬"><span data-illus="c10_bubble"></span><div class="egt"><b>A contextual hint in daily life: an app’s little bubble.</b> When a phone app is first opened, a little bubble pops up only the first time you touch a certain button, instead of handing you a manual right away.</div></div>
+  <div class="eg bad" data-ic="📚"><span data-illus="c10_wall"></span><div class="egt"><b>Counterexample: a twenty-page forced tutorial.</b> A 20-page illustrated tutorial pops up at the start and demands “finish it all before you can begin.” The player taps skip, and when a real problem comes up later, can’t find the way back in. Good practice is to make it <b>skippable and reviewable</b>.</div></div>
+  <div class="sticky">The best teaching often happens when the player <b>doesn’t notice they are being taught</b>: use level design to make a little room that can only be passed once the thing is learned, which beats a pop-up. Remember to let hints be skipped and revisited; veterans and newcomers both deserve respect.</div>
+
+  
+  <div class="sec"><span class="n">4</span><h2><span class="tag origin">How it was invented</span>Why was the HUD invented? And why does it have to be “small”?</h2></div>
+  <div class="story">
+    <h3>Story one: the pilot’s “head-down” problem</h3>
+    <div class="withimg rev">
+      <span data-illus="c10_lookdown"></span>
+      <div>
+        <p>Imagine you are in a fast-flying fighter, having to watch the enemy aircraft ahead and read speed and altitude at the same time. The instruments are below the cockpit, and each time you look down your eyes leave the front. Even if it is only a second or two, the situation can change completely.</p>
+        <p>The early remedy was to arrange the instruments more neatly and make the numerals bigger. But as long as the instruments are “down there,” you have to look down, refocus, and look up again. The problem was not whether the instruments looked good but their <b>position</b>.</p>
+        <p>So someone changed the approach: don’t make the eyes go looking for information, let the information come to the eyes. <b>Project the key figures onto transparent glass directly in front of the pilot</b>, so that with the head up they can see the outside world and the readout together. That is where the name “Head-Up Display” comes from: <b>you see it with your head up</b>. It evolved step by step from the reflector gunsight in fighters, which projects an aiming ring onto glass.</p>
+      </div>
+    </div>
+    <p>But a new problem soon arose: more and more information could be projected onto the glass, while the pilot’s attention and memory did not grow. Designers had to decide: <b>which information deserves this precious “straight ahead”?</b> Games borrowed the same name, and the same problem.</p>
+    <div class="timeline">
+      <div class="ev hasimg"><span data-illus="c10_tl_sight"></span><div><b class="yr">Around WWII</b> Fighters carry reflector gunsights that project an aiming ring onto glass in front.</div></div>
+      <div class="ev hasimg"><span data-illus="c10_tl_radar"></span><div><b class="yr">1942</b> British radar researchers build an experimental device that combines a radar image and the projection of a gyro gunsight onto one windscreen. According to Wikipedia, the device wasn’t installed on an aircraft then, but it already had the core features of the modern HUD.</div></div>
+      <div class="ev hasimg"><span data-illus="c10_tl_miller"></span><div><b class="yr">1956</b> The psychologist George Miller publishes “The Magical Number Seven, Plus or Minus Two”: people can hold only a limited amount of information at once, but they can use <b>chunking</b> to squeeze several small items into one, in effect enlarging what “fits.”</div></div>
+      <div class="ev hasimg"><span data-illus="c10_tl_sweller"></span><div><b class="yr">1988</b> John Sweller proposes cognitive load theory: poor presentation needlessly uses up limited working memory.</div></div>
+      <div class="ev hasimg"><span data-illus="c10_tl_cowan"></span><div><b class="yr">2001</b> Nelson Cowan reviews a large body of experiments and argues that, once rehearsal and chunking are excluded, capacity looks more like about 4 chunks.</div></div>
+    </div>
+  </div>
+  <div class="board" id="c10_wm">
+    <b>Guess first, then try: how many digits can you remember at a time?</b>
+    <p class="small">The digits will flash for 3 seconds. Guess a number by feel first, then test, and see how far you are from the psychologists’ conclusions.</p>
+    <label class="ctl">① Your prediction: I can remember <output id="c10_gv">7</output> digits at a time <input type="range" id="c10_g" min="3" max="12" value="7"></label>
+    <label class="ctl">② Number of digits in this test, N <output id="c10_nv">6</output> <input type="range" id="c10_n" min="3" max="12" value="6"></label>
+    <div>Display:<button class="chip on" data-wm="0">Run together</button><button class="chip" data-wm="1">Groups of 3</button></div>
+    <div class="c10_sample" id="c10_disp" style="font-size:clamp(1.4rem,5vw,2.2rem);min-height:78px;letter-spacing:.06em">When ready, press “Start,” and the digits will appear for 3 seconds</div>
+    <button class="btn" id="c10_go">▶ Start</button>
+    <input type="text" id="c10_in" placeholder="After the digits vanish, type the digits you remember here" disabled>
+    <button class="btn green" id="c10_ok" disabled>Submit</button>
+    <button class="btn pink" id="c10_reset">Clear records</button>
+    <div class="msg" id="c10_t"></div>
+    <div class="c10_bars" id="c10_bars"></div>
+    <div class="small" id="c10_cmp"></div>
+  </div>
+  <div class="sticky">Try it: with the same N (say 9), test once with “Run together” and once with “Groups of 3.” With the same digits, grouping leaves fewer “units” to remember, and you will most likely feel firsthand what a chunk is. A single test fluctuates a lot, so try several rounds; this is not a rigorous experiment.</div>
+
+  <div class="story">
+    <h3>Story two: why do we “see the whole”?</h3>
+    <p>Early psychology wanted to take perception apart into a pile of “basic sensations” (dots, lines, patches of color) and add them up like building blocks. But there was a phenomenon that couldn’t be taken apart: light two still bulbs in turn, and what you see is plainly <b>one light running back and forth</b>, though nothing in the picture is “moving.” See for yourself first:</p>
+    <div class="board">
+      <p>The two red dots below are only <b>lighting up in turn</b>, and neither dot ever moves. What do you see? Press “Slow” and “Fast” and take a look at each.</p>
+      <div class="c10_phi" id="c10_phi"><i class="a"></i><i class="b"></i></div>
+      <button class="btn alt" id="c10_slow">Slow (1 second per switch)</button><button class="btn" id="c10_fast">Fast (about 0.2 seconds per switch)</button>
+      <div class="msg" id="c10_phit">When it is slow, you see two separate lights; when fast, most people see “a single dot jumping left and right.”</div>
+    </div>
+    <p>In the version often told, the psychologist Max Wertheimer was struck by flickering lights on a train around 1910, went back to experiment with a stroboscopic device, and in 1912 published a long paper on “apparent motion” (the phi phenomenon). (“Inspiration on the train” is a circulating anecdote whose details vary; what can be confirmed is that 1912 paper.) His conclusion: perception is not the sum of parts, <b>the brain grasps the overall structure first</b>. This is the starting point of the <span class="term" tabindex="0" data-def="Gestalt psychology: from the German for “whole.” It holds that people perceive the whole structure first, not isolated parts.">Gestalt</span> (German for “whole”) school.</p>
+    <p>For interface designers this means: <b>players don’t read your 12 icons one by one; what they see first is “a few blocks.”</b> You can use placement to divide the blocks for them.</p>
+    <div class="timeline">
+      <div class="ev hasimg"><span data-illus="c10_tl_phi"></span><div><b class="yr">1912</b> Wertheimer publishes “Experimental Studies on the Perception of Motion,” describing the phi phenomenon.</div></div>
+      <div class="ev hasimg"><span data-illus="c10_tl_laws"></span><div><b class="yr">1923</b> Wertheimer publishes a paper on perceptual organization, summing up grouping tendencies such as proximity and similarity.</div></div>
+      <div class="ev hasimg"><span data-illus="c10_tl_ui"></span><div><b class="yr">Today</b> “Put like things close together, same color and same shape” in interface design applies these tendencies. They are empirical descriptions, not exact laws.</div></div>
+    </div>
+  </div>
+
+  
+  <div class="sec"><span class="n">5</span><h2><span class="tag why">Why it works</span>Why can’t a HUD be stuffed too full? Cognitive load and working memory</h2></div>
+  <p>If 12 control instructions pop up at the start, you probably won’t remember a single one; split a phone number into 3-4-4 and it is much easier to remember. Behind both is the same thing: <b>the human brain can handle very little information at once</b>.</p>
+  <div class="why-box">
+    <h3>Cognitive load theory and the limit of working memory</h3>
+    <p><span class="term" tabindex="0" data-def="Working memory: the brain’s “workbench” for temporarily holding and processing information. Its capacity is small, and information soon vanishes without rehearsal.">Working memory</span> is where we temporarily hold and process information, and its capacity is very limited. John Sweller’s 1988 paper started from the “cognitive burden during problem solving” and later developed into <span class="term" tabindex="0" data-def="Cognitive load theory: the load on working memory while learning and operating is of three kinds, intrinsic, extraneous and germane; when the total load exceeds capacity, both learning and performance get worse.">cognitive load theory</span>. Later literature often splits load into three kinds:</p>
+    <ul>
+      <li><b>Intrinsic load</b>: the complexity of the task itself (how many variables must be handled at once).</li>
+      <li><b>Extraneous load</b>: the extra burden brought by <b>poor presentation</b> (a cluttered HUD, walls of text), which a designer most needs to cut.</li>
+      <li><b>Germane load</b>: the useful effort that goes into integrating new knowledge into a “routine” (a schema).</li>
+    </ul>
+    <p>As for how big the capacity actually is: the point of Miller’s 1956 paper was that people can hold about 7±2 <span class="term" tabindex="0" data-def="Chunk: a unit of information that the brain remembers as a whole. Squeezing several small items into one chunk through familiar patterns in effect enlarges capacity.">chunks</span>, not 7 “digits,” and that recoding can enlarge what “fits.” After reviewing many experiments, Cowan proposed in 2001 that with chunking and rehearsal excluded, the real capacity is more conservative, <b>about 4 chunks</b>. The argument between the two numbers has still not been entirely settled, but everyone agrees: <b>it is very small, so spend it sparingly.</b></p>
+    <div class="src">Sources: Sweller (1988), Cognitive load during problem solving: Effects on learning, <i>Cognitive Science</i> 12(2): 257–285; Miller (1956), The magical number seven, plus or minus two, <i>Psychological Review</i> 63(2): 81–97; Cowan (2001), The magical number 4 in short-term memory, <i>Behavioral and Brain Sciences</i> 24(1): 87–114 (<a href="https://pubmed.ncbi.nlm.nih.gov/11515286/">PubMed</a>). The three-way split of load comes from later reviews by Sweller and others (such as Sweller, van Merriënboer &amp; Paas, 1998).</div>
+  </div>
+  <div class="card">
+    <svg viewBox="0 0 700 300" width="100%" role="img" aria-label="Working-memory capacity of about 4 chunks: a clean HUD fits, a cluttered HUD overflows">
+      <g class="rough" stroke="#2b2b3a" stroke-width="3.5">
+        <rect x="60" y="52" width="76" height="46" fill="#a8dcf0"/><rect x="138" y="52" width="76" height="46" fill="#a8dcf0"/><rect x="216" y="52" width="76" height="46" fill="#b6e8a8"/><rect x="294" y="52" width="76" height="46" fill="#fffdf3" stroke-dasharray="6 5"/>
+        <rect x="60" y="178" width="76" height="46" fill="#a8dcf0"/><rect x="138" y="178" width="76" height="46" fill="#a8dcf0"/><rect x="216" y="178" width="76" height="46" fill="#ffb3c6"/><rect x="294" y="178" width="76" height="46" fill="#ffb3c6"/>
+        <rect x="372" y="178" width="76" height="46" fill="#ffb3c6" stroke="#e5484d"/><rect x="450" y="178" width="76" height="46" fill="#ffb3c6" stroke="#e5484d"/>
+      </g>
+      <g font-size="18" fill="#2b2b3a" text-anchor="middle">
+        <text x="98" y="82"><tspan font-size="14">Intrinsic</tspan></text><text x="176" y="82"><tspan font-size="14">Intrinsic</tspan></text><text x="254" y="82"><tspan font-size="14">Germane</tspan></text><text x="332" y="82">Spare</text>
+        <text x="98" y="208"><tspan font-size="14">Intrinsic</tspan></text><text x="176" y="208"><tspan font-size="14">Intrinsic</tspan></text><text x="254" y="208"><tspan font-size="13">Extraneous</tspan></text><text x="332" y="208"><tspan font-size="13">Extraneous</tspan></text><text x="410" y="208"><tspan font-size="13">Extraneous</tspan></text><text x="488" y="208"><tspan font-size="13">Extraneous</tspan></text>
+      </g>
+      <g font-size="20" fill="#2b2b3a"><text x="60" y="34">Clean HUD: it fits, with room left to think about strategy</text><text x="60" y="160">Cluttered HUD: extraneous load fills it, beyond a capacity of about 4 chunks</text></g>
+      <path d="M372 252 V276 H526 V252" stroke="#e5484d" stroke-width="4" fill="none" class="rough"/>
+      <text x="360" y="276" font-size="18" fill="#b3303a" text-anchor="end">Overflow: health missed</text>
+      <path d="M60 106 H370" stroke="#2b2b3a" stroke-width="3" class="rough"/><text x="380" y="112" font-size="16" fill="#3f3f50">≈ 4 chunks (sketch)</text>
+    </svg>
+  </div>
+  <div class="eg" data-ic="🪣"><span data-illus="c10_bucket"></span><div class="egt"><b>In games: extraneous load.</b> A combat interface with 12 elements lit at once, and the player actually misses the health. It isn’t that the player is dumb; the cluttered presentation used up the capacity they could have used to think.</div></div>
+  <div class="eg" data-ic="🎓"><span data-illus="c10_dump"></span><div class="egt"><b>In games: a tutorial told all at once.</b> Movement, attack, dodge, inventory and crafting are all explained in one go at the start, and almost nobody remembers them. Split into one per room over the first five rooms, and players can all learn it.</div></div>
+  <div class="eg" data-ic="📞"><span data-illus="c10_chunk"></span><div class="egt"><b>In daily life: phone numbers.</b> 13912345678 is easy to remember as 139-1234-5678. The same 11 digits, but the “units” to remember drop from 11 to 3.</div></div>
+  <div class="eg bad" data-ic="🧑‍🎓"><span data-illus="c10_pro"></span><div class="egt"><b>A near-miss: “the less information the better.”</b> For <b>veterans</b>, the dozen or so skills they use often have been “packed” by muscle memory into two or three chunks, so the same HUD is far less load for them than for newcomers. So “less” is relative to the player’s skill, and a newcomer’s interface needs even more restraint.</div></div>
+
+  
+  <div class="sec"><span class="n">6</span><h2><span class="tag why">Why it works</span>Why does a player “read” the layout at a glance? The Gestalt principles</h2></div>
+  <p>Since brain capacity is this small, what a designer can do is make a dozen elements <b>become two or three blocks</b> in the player’s eyes. Fortunately the brain itself loves grouping: see a few dots in a row and you won’t take them as “6 separate dots” but directly see “a row.”</p>
+  <div class="why-box">
+    <h3>Gestalt principles of perception</h3>
+    <p>Psychologists such as Wertheimer, Köhler and Koffka (the Gestalt school) summed up some tendencies in how we perceive wholes, and the often-cited ones are:</p>
+    <ul>
+      <li><b>Proximity</b>: things close together are seen as a group.</li>
+      <li><b>Similarity</b>: things of similar color or shape are seen as a group.</li>
+      <li><b>Closure</b>: the brain automatically completes an outline with a gap and sees it as a whole shape.</li>
+      <li><b>Continuity</b>: things arranged along a smooth route are seen as a single line.</li>
+    </ul>
+    <div class="src">Source: Wertheimer, M. (1923). Untersuchungen zur Lehre von der Gestalt II. <i>Psychologische Forschung</i>, 4, 301–350 (an abridged English translation, “Laws of organization in perceptual forms,” is in Ellis (ed.), <i>A Source Book of Gestalt Psychology</i>, 1938; <a href="https://psychclassics.yorku.ca/Wertheimer/Forms/forms.htm">full text online</a>). These “principles” are more like descriptive empirical regularities than exact quantitative laws, and later scholars have rewritten and extended them.</div>
+  </div>
+  <div class="card">
+    <svg viewBox="0 0 700 250" width="100%" role="img" aria-label="The four Gestalt principles sketched: proximity, similarity, closure, continuity">
+      <g class="rough" stroke="#2b2b3a" stroke-width="3.5">
+        <rect x="10" y="40" width="160" height="150" fill="#fffdf3"/><rect x="180" y="40" width="160" height="150" fill="#fffdf3"/><rect x="350" y="40" width="160" height="150" fill="#fffdf3"/><rect x="520" y="40" width="170" height="150" fill="#fffdf3"/>
+      </g>
+      <g fill="#2b2b3a">
+        <circle cx="30" cy="80" r="7"/><circle cx="50" cy="80" r="7"/><circle cx="70" cy="80" r="7"/><circle cx="110" cy="80" r="7"/><circle cx="130" cy="80" r="7"/><circle cx="150" cy="80" r="7"/>
+        <circle cx="30" cy="120" r="7"/><circle cx="50" cy="120" r="7"/><circle cx="70" cy="120" r="7"/><circle cx="110" cy="120" r="7"/><circle cx="130" cy="120" r="7"/><circle cx="150" cy="120" r="7"/>
+        <circle cx="30" cy="160" r="7"/><circle cx="50" cy="160" r="7"/><circle cx="70" cy="160" r="7"/><circle cx="110" cy="160" r="7"/><circle cx="130" cy="160" r="7"/><circle cx="150" cy="160" r="7"/>
+      </g>
+      <g>
+        <circle cx="205" cy="80" r="8" fill="#e5484d"/><circle cx="235" cy="80" r="8" fill="#e5484d"/><circle cx="265" cy="80" r="8" fill="#e5484d"/><circle cx="295" cy="80" r="8" fill="#e5484d"/><circle cx="320" cy="80" r="8" fill="#e5484d"/>
+        <circle cx="205" cy="110" r="8" fill="#3b82f6"/><circle cx="235" cy="110" r="8" fill="#3b82f6"/><circle cx="265" cy="110" r="8" fill="#3b82f6"/><circle cx="295" cy="110" r="8" fill="#3b82f6"/><circle cx="320" cy="110" r="8" fill="#3b82f6"/>
+        <circle cx="205" cy="140" r="8" fill="#e5484d"/><circle cx="235" cy="140" r="8" fill="#e5484d"/><circle cx="265" cy="140" r="8" fill="#e5484d"/><circle cx="295" cy="140" r="8" fill="#e5484d"/><circle cx="320" cy="140" r="8" fill="#e5484d"/>
+        <circle cx="205" cy="170" r="8" fill="#3b82f6"/><circle cx="235" cy="170" r="8" fill="#3b82f6"/><circle cx="265" cy="170" r="8" fill="#3b82f6"/><circle cx="295" cy="170" r="8" fill="#3b82f6"/><circle cx="320" cy="170" r="8" fill="#3b82f6"/>
+      </g>
+      <path d="M470 150 A42 42 0 1 1 485 112" fill="none" stroke="#2b2b3a" stroke-width="9" stroke-linecap="round" class="rough"/>
+      <g fill="#2b2b3a"><circle cx="540" cy="150" r="7"/><circle cx="563" cy="135" r="7"/><circle cx="586" cy="122" r="7"/><circle cx="609" cy="116" r="7"/><circle cx="632" cy="122" r="7"/><circle cx="655" cy="135" r="7"/><circle cx="672" cy="150" r="7"/></g>
+      <g font-size="20" fill="#2b2b3a" text-anchor="middle"><text x="90" y="30">Proximity</text><text x="260" y="30">Similarity</text><text x="430" y="30">Closure</text><text x="605" y="30">Continuity</text></g>
+      <g font-size="17" fill="#3f3f50" text-anchor="middle"><text x="90" y="214">small gap = same group</text><text x="260" y="214">same color = same group</text><text x="430" y="214">gap filled in by the mind</text><text x="605" y="214">along a smooth route</text></g>
+    </svg>
+  </div>
+  <div class="eg" data-ic="📏"><span data-illus="c10_prox"></span><div class="egt"><b>In games (proximity): resources in one group, skills in another.</b> Put the health, mana and stamina bars right next to each other, put the skill icons in a separate row, and leave a gap between the two groups. Even without reading a word, the player knows “these are resources and those are skills.”</div></div>
+  <div class="eg" data-ic="⭕"><span data-illus="c10_ring"></span><div class="egt"><b>In games (closure): the cooldown ring.</b> A skill’s cooldown is shown as a “ring with a small stretch still missing”; the brain fills it in, and you see at a glance “almost ready.” Quest waypoints lined up along one line, and the eye naturally follows them: that is “continuity.”</div></div>
+  <div class="eg" data-ic="🛗"><span data-illus="c10_elev"></span><div class="egt"><b>In daily life: an elevator button panel.</b> Floors, open/close door and alarm are split into three blocks by spacing rather than by text labels. The “folders” on a phone’s home screen likewise ring similar apps into one whole.</div></div>
+  <div class="eg bad" data-ic="🔳"><span data-illus="c10_grid"></span><div class="egt"><b>Counterexample: 12 evenly spaced icons.</b> The spacing is perfectly even, the colors and shapes all differ, and there is no hint of grouping. Players can only read them one by one, each becomes a separate chunk, and that uses up the capacity exactly.</div></div>
+  <p>So when making a HUD, <b>put like things close together and pull unlike things apart</b> (proximity); give like things the same color and shape (similarity); show cooldowns with an unclosed ring (closure); and line up waypoints along one line (continuity). That way the player <b>reads the layout without reading words</b>, and the extraneous load drops. In the “HUD placement bench” later, the grouping diagnostics on the right check exactly this.</p>
+
+  
+  <div class="sec"><span class="n">7</span><h2><span class="tag why">Why it works</span>Why do “defaults” matter so much? The default effect and choice architecture</h2></div>
+  <p>When you bought a new phone, did you ever change the factory ringtone? Most people didn’t, even though changing it takes two taps. <b>People often accept the default option</b>, and this matters a great deal to onboarding: whether a switch in the settings is on or off by default decides the final experience of most players.</p>
+  <div class="why-box">
+    <h3>The default effect and choice architecture</h3>
+    <p><span class="term" tabindex="0" data-def="Default effect: when there is a preset option, people tend to keep it even when they could easily change it. Reasons include inertia, assuming the default is recommended, and the psychological cost of changing.">The default effect</span>: a preset option clearly affects the final choice. In 2003, Johnson and Goldstein compared organ-donation registration across European countries in <i>Science</i>: countries with “presumed consent, opt out” had much higher consent rates than countries with “presumed no consent, opt in,” and the example often cited is nearly 100% in Austria against about 12% in Germany. (This is a cross-country comparison with many confounders, and “registered consent” is not the same as “actual donation.”) In <i>Nudge</i>, Thaler and Sunstein put forward <span class="term" tabindex="0" data-def="Choice architecture: how a designer arranges the presentation of options (defaults, order, wording and so on), which in itself influences people’s choices.">choice architecture</span>: <b>there is no “neutral” design</b>, because there always has to be a default and there always has to be an order.</p>
+    <div class="src">Sources: Johnson, E. J. &amp; Goldstein, D. (2003). Do defaults save lives? <i>Science</i>, 302(5649), 1338–1339; Thaler, R. &amp; Sunstein, C. (2008). <i>Nudge</i>.</div>
+  </div>
+  <div class="board">
+    <b>Micro-experiment: how many people can a default move? (a sketch model)</b>
+    <p class="small">Suppose some players sincerely want to turn a feature on. Suppose also that changing the default takes a little effort, and some of “those who want to change it” can’t be bothered. Drag the sliders and see the final share who end up with it on under the two defaults.</p>
+    <label class="ctl">Players who sincerely want it on <output id="c10_qo">60%</output> <input type="range" id="c10_q" min="10" max="100" value="60"></label>
+    <label class="ctl">Share who want to change but can’t be bothered <output id="c10_lo">40%</output> <input type="range" id="c10_l" min="0" max="90" value="40"></label>
+    <div class="c10_defbar"><i id="c10_don" style="background:#b6e8a8"></i><b id="c10_dont"></b></div>
+    <div class="c10_defbar"><i id="c10_doff" style="background:#ffb3c6"></i><b id="c10_dofft"></b></div>
+    <div class="msg" id="c10_defm"></div>
+    <p class="small">The formula: default on = q + (1−q)·inertia; default off = q·(1−inertia). The numbers are all sketches; real proportions have to come from A/B tests.</p>
+  </div>
+  <div class="sticky">Try it: drag “can’t be bothered” to 0 and the two bars become equally long, showing that all the power of the default comes from inertia. Then drag it to 90% and see how many players one designer’s choice can “decide for.”</div>
+  <div class="eg" data-ic="💡"><span data-illus="c10_tips"></span><div class="egt"><b>In games: the new-player tips switch.</b> “Show beginner tips automatically” is off by default, and as a result almost no newcomers see the tips. If tips help newcomers, they should be on by default, with turning them off made easy.</div></div>
+  <div class="eg" data-ic="🧰"><span data-illus="c10_toolbar"></span><div class="egt"><b>In daily life: an installation wizard.</b> A “bundled toolbar” is ticked by default, and many people click “Next” without unticking it.</div></div>
+  <div class="eg bad" data-ic="🔒"><span data-illus="c10_sub"></span><div class="egt"><b>Counterexample (manipulation): a hidden cancel button.</b> “Auto-renew” is ticked by default, and the way to cancel is hidden three menus deep. The default favors the designer and harms the player, and exiting is deliberately made hard, which slides from a “nudge” into a dark pattern.</div></div>
+  <p>How to tell whether a default is a nudge or manipulation? Ask two questions: does it serve <b>the player’s own interest</b>? Is it <b>transparent and easy to change</b>? If both, it is a nudge; if either is not, be wary.</p>
+
+  
+  <div class="sec"><span class="n">8</span><h2><span class="tag how">Try it</span>Play with it: the HUD placement bench</h2></div>
+  <p>Below is a game screen. <b>Drag</b> an element to change its position, and <b>click</b> an element to cycle it among “always on, dimmed, hidden” (or use the buttons on the right). The diagnostics beside it tell you in real time how heavy the <b>visual load</b> is, how much of the <b>central field of view</b> is blocked, and whether the elements are grouped by <b>Gestalt</b>. Switch between “combat / exploring” and see why the same HUD needs a different layout.</p>
+  <div class="board">
+    <div>Scene:<button class="chip on" id="c10_s0">⚔️ In combat</button><button class="chip" id="c10_s1">🧭 Exploring</button>
+      <span class="small"> Color blocks = categories: <span class="c10_cat" style="background:#e5484d"></span>Resource <span class="c10_cat" style="background:#3b82f6"></span>Navigation <span class="c10_cat" style="background:#2f9e44"></span>Action <span class="c10_cat" style="background:#9a9a9a"></span>Misc</span></div>
+    <div class="c10_twocol">
+      <div>
+        <div class="c10_stage" id="c10_stage"><div class="scene" id="c10_scene">🧟 🧟</div><div class="c10_zone"></div></div>
+        <div class="msg">Visual load: <span id="c10_load">0</span> <span class="small">(capacity reference about 4 chunks, a sketch)</span></div>
+        <div class="c10_bar"><i id="c10_lbar"></i></div>
+        <div class="msg">Central field blocked: <span id="c10_cov">0%</span></div>
+        <div class="c10_bar"><i id="c10_cbar" style="background:var(--pink)"></i></div>
+      </div>
+      <div>
+        <div id="c10_rows"></div>
+        <div class="c10_diag" id="c10_diag"></div>
+      </div>
+    </div>
+    <div>
+      <button class="btn green" id="c10_ref">💡 See a reference layout</button>
+      <button class="btn pink" id="c10_reset2">↺ Restore the messy version</button>
+    </div>
+    <div class="msg" id="c10_sum"></div>
+  </div>
+  <div class="sticky">Try it: in “combat,” bring the “scene match” at the lower right above 12 while keeping the “visual load” below 3.5 and having no ✘ in the grouping diagnostics. When you manage it a 🎉 appears at the bottom. Then switch to “exploring” and see which elements should change tier.</div>
+  <p class="small"><b>How it is computed (a sketch model):</b> visual load = after merging elements that sit close together into a “chunk,” each group counts (the most prominent member’s weight + 0.25 × the weights of the rest), with always-on weight 1 and dimmed weight 0.35; central blocking = the rough share of the dashed middle area covered by elements (dimmed counted as 0.4); the grouping diagnostics score “like things grouped, unlike things apart.” These rules are teaching simplifications, not measured standards. The reference layout is only one common line of thought, and <b>there is no single answer</b>: whatever this second’s decision uses should stand out, and the rest give way.</p>
+
+  
+  <div class="sec"><span class="n">9</span><h2><span class="tag how">Try it</span>Legibility: contrast, and “not color alone”</h2></div>
+  <p>Even the best layout is wasted if the text can’t be read. <span class="term" tabindex="0" data-def="The ratio of the relative luminance of text color to background color, used by WCAG to measure legibility; the larger the number, the clearer.">Contrast</span> is the ratio of text luminance to background luminance. The AA level of the web accessibility standard WCAG 2.x requires at least <b>4.5 : 1</b> for normal text and at least <b>3 : 1</b> for large text and interface graphics. Games often overlay text on complex backgrounds, so take extra care. Pick two colors to try, then press “Grayscale view” to see what it looks like when colors can’t be told apart:</p>
+  <div class="board">
+    Text color <input type="color" id="c10_cf" value="#ffffff"> Background color <input type="color" id="c10_cb" value="#a0a0a0">
+    <button class="chip" data-p="#ffffff,#2b2b3a">White on dark</button>
+    <button class="chip" data-p="#9a9a9a,#a8a8a8">Gray on gray</button>
+    <button class="chip" data-p="#ffd400,#ffffff">Yellow on white</button>
+    <div class="c10_sample" id="c10_smp"><span style="font-size:1.8rem">Health 85 / 100</span><br><span style="font-size:.95rem">Small normal text: press E to talk to the merchant</span></div>
+    <div class="msg"><span id="c10_ratio">—</span> <span id="c10_verdict"></span></div>
+    <button class="btn" id="c10_gray">Toggle grayscale view</button>
+    <div class="c10_cbox" id="c10_cbox">
+      <div><div class="mk"><span class="c10_dotr" style="background:#e5484d"></span><span class="c10_dotr" style="background:#3aa655"></span></div><h3>❌ Color alone</h3><p class="small">Red = enemy, green = friend. Turned gray, the two circles look almost the same and can’t be told apart.</p></div>
+      <div><div class="mk"><span class="c10_tri"></span><span class="c10_dotr" style="background:#3aa655;text-align:center;line-height:28px;color:#fff;font-weight:700">✔</span></div><h3>✔ Color + shape</h3><p class="small">Enemy = triangle, friend = circle + check mark. Even without color they can be told apart.</p></div>
+    </div>
+  </div>
+  <div class="sticky">Try it: press “Gray on gray” to bring the contrast below 3; then adjust the text and background colors to at least 4.5 : 1 and see the note become “✔ Normal text passes too.” Finally press “Grayscale view” and confirm that only one of the two approaches can still be told apart without color.</div>
+  <p>A few common cases: an enemy’s health bar doesn’t use only red but adds a “skull icon overhead”; important audio cues (such as footsteps) get a visual cue; a subway map, besides colors, gives each line a number. Conversely, white text over a bright sky background looks “okay” in a screenshot but vanishes on a phone screen in sunlight. Red–green color vision differences are fairly common (the often-cited figure is about 1 in 12 men, depending on the population). Grayscale is only an approximate simulation, but enough to test “is the information still there once color is removed?”</p>
+
+  <div class="misc">
+    <h3>Common misconceptions</h3>
+    <ul>
+      <li><b>“The more complete the information, the happier the player.”</b> Extra information adds extraneous load and often drowns the important information.</li>
+      <li><b>“Memory capacity is 7±2 digits.”</b> Miller was talking about <b>chunks</b>; later estimates (such as Cowan’s) are more conservative, about 4 chunks.</li>
+      <li><b>“Defaults are neutral.”</b> There is no neutral: the designer must pick one, and that choice affects the outcome.</li>
+      <li><b>“The less HUD, the classier.”</b> The best density differs for newcomers and veterans; a minimalist HUD can also leave newcomers unable to find information.</li>
+    </ul>
+  </div>
+  <div class="reflect">
+    <h3>Reflection and debate</h3>
+    <ul>
+      <li><b>Cognitive load theory is itself contested.</b> The three kinds of load are hard to separate cleanly in experiments, the status of “germane load” has been substantially adjusted in the field, and the theory is still developing.</li>
+      <li><b>The Gestalt principles are empirical.</b> They describe general tendencies, and players of different cultures, ages and eyesight won’t necessarily match exactly.</li>
+      <li><b>The effect of nudges is disputed.</b> A study pooled by Mertens et al. in <i>PNAS</i> in 2022 found nudges have some effect, but Maier et al. then pointed out in the same journal that after correcting for publication bias there is almost no overall effect, though individual nudges may still work. So in your game you should <b>verify with A/B tests yourself</b>, not directly believe some average effect.</li>
+      <li><b>There is no clear line between nudging and manipulation.</b> Some think gentle nudges are acceptable, while others criticize them as “paternalistic” intervention. This involves value judgments, so weigh it against your own project’s player base.</li>
+    </ul>
+  </div>
+
+  <div class="key">
+    <h3>Key points</h3>
+    <ul>
+      <li>UI is divided by “is it in the story, is it in the space” into <b>diegetic, spatial, meta and non-diegetic</b> kinds; there is no right or wrong, only a trade-off between clarity and immersion.</li>
+      <li><b>Why the HUD was invented</b>: pilots shouldn’t look down for information, so it was projected in front of their eyes; games inherited the method and also its problem: more and more can be put up, and brain capacity hasn’t changed.</li>
+      <li>Give information a <b>priority</b>: what the current decision uses stands out, the rest gives way or hides; the same element sits in different tiers in different scenes.</li>
+      <li><b>Cognitive load</b>: working memory is tiny (a conservative estimate is about 4 chunks), so cut extraneous load; <b>Gestalt</b>: proximity, similarity, closure and continuity let a layout group itself, turning many elements into a few chunks.</li>
+      <li>Onboarding: <b>do first and tell after, progressive disclosure, contextual hints</b>; the <b>default effect</b>: defaults change most people’s choices, so use them in the player’s interest; text contrast should normally be at least 4.5:1, and don’t rely on color alone.</li>
+    </ul>
+  </div>
+  <div class="tldr">A good interface saves the player brain power: put in less information, let the layout group itself, and set defaults in the player’s interest.</div>
+
+  <div class="sec"><span class="n">10</span><h2><span class="tag think">Practice</span>Quick quiz</h2></div>
+  <div id="quiz"></div>
+
+  <div class="sec"><span class="n">11</span><h2><span class="tag how">Your design</span>Your HUD and your first three minutes</h2></div>
+  <div class="card o">
+    <p>List <b>the information the player needs to see</b> in your game, mark each 1 (always on) / 2 (dimmed) / 3 (appears when needed), and group them by category. Then write: in the first 3 minutes of your game, <b>what does it teach the player, one thing at a time</b>?</p>
+    <textarea rows="5" data-save="ch10" placeholder="Information priority:&#10;Health 1 / Minimap 2 / Achievements 3…&#10;Grouping: resources (health, stamina) top left, navigation (map, quest) top right&#10;First-three-minutes teaching order: movement first, then jumping, then…"></textarea>
+    <p class="small">✍️ Saved automatically in your browser.</p>
+  </div>
+</main>
+<script src="../js/illus.js"></script>
+<script src="../js/illus-ch10.js"></script>
+<script src="../js/en/illus.js"></script>
+<script src="../js/en/illus-lib.js"></script>
+<script src="../js/en/illus-ch10.js"></script>
+<script src="../js/common.js"></script>
+<script>
+const $ = id => document.getElementById(id);
+const rnd = n => Math.floor(Math.random() * n);
+
+(function () {
+  let seq = "", mode = 0, timer = null;
+  const best = [0, 0], tried = [0, 0];
+  function fmt(s) { return mode === 1 ? s.replace(/(\d{3})(?=\d)/g, "$1 ") : s; }
+  $("c10_g").oninput = () => ($("c10_gv").textContent = $("c10_g").value);
+  $("c10_n").oninput = () => ($("c10_nv").textContent = $("c10_n").value);
+  document.querySelectorAll("[data-wm]").forEach(b => (b.onclick = () => {
+    mode = +b.dataset.wm; document.querySelectorAll("[data-wm]").forEach(x => x.classList.toggle("on", x === b));
+  }));
+  function bars() {
+    const g = +$("c10_g").value;
+    const rows = [["Your guess", g, "#ffc078"], ["Run together: your longest correct", best[0], "#7ec8e3"], ["Grouped: your longest correct", best[1], "#8fd47e"], ["Miller: about 7±2", 7, "#d8c8ff"], ["Cowan: about 4 chunks", 4, "#d8c8ff"]];
+    $("c10_bars").innerHTML = rows.map(r => '<div class="r"><span class="l">' + r[0] + '</span><span class="tk"><i style="width:' + (r[1] / 12 * 100) + '%;background:' + r[2] + '"></i></span><b class="v">' + r[1] + "</b></div>").join("");
+  }
+  $("c10_g").addEventListener("input", bars);
+  $("c10_go").onclick = () => {
+    clearTimeout(timer);
+    const n = +$("c10_n").value; seq = "";
+    while (seq.length < n) seq += 1 + rnd(9);
+    $("c10_disp").textContent = fmt(seq);
+    $("c10_in").disabled = true; $("c10_ok").disabled = true; $("c10_go").disabled = true;
+    $("c10_t").textContent = "Remember! 3 seconds…";
+    timer = setTimeout(() => {
+      $("c10_disp").textContent = "?";
+      $("c10_in").disabled = false; $("c10_ok").disabled = false; $("c10_in").value = ""; $("c10_in").focus();
+      $("c10_t").textContent = "Enter the " + n + " digits you just saw.";
+    }, 3000);
+  };
+  $("c10_ok").onclick = () => {
+    const ans = $("c10_in").value.replace(/\D/g, ""), n = seq.length;
+    let c = 0; for (let i = 0; i < n; i++) if (ans[i] === seq[i]) c++;
+    const full = ans === seq;
+    tried[mode]++;
+    if (full) best[mode] = Math.max(best[mode], n);
+    $("c10_disp").textContent = fmt(seq);
+    $("c10_t").textContent = (full ? "✔ Exactly right!" : "Correct by position: " + c + " / " + n + ".") + " (" + (mode ? "grouped" : "run together") + "," + n + " digits)";
+    $("c10_in").disabled = true; $("c10_ok").disabled = true; $("c10_go").disabled = false;
+    bars();
+    const g = +$("c10_g").value, b = Math.max(best[0], best[1]);
+    $("c10_cmp").textContent = b
+      ? "You predicted " + g + " digits; your longest measured so far is " + b + " digits." + (b > g ? " You do better than you thought." : b < g ? " Fewer than expected: most people overestimate themselves." : " Your prediction was spot on.") + " Miller’s 7±2 refers to “chunks,” not “digits”; single digits can’t be chunked, so the number you can hold is often fewer than 7, and after grouping there are fewer “units” to remember. Every separate element on a HUD is, for the player, one “digit.”"
+      : "No fully correct record yet; try a smaller N.";
+  };
+  $("c10_reset").onclick = () => { best[0] = best[1] = 0; tried[0] = tried[1] = 0; $("c10_t").textContent = "Records cleared."; $("c10_cmp").textContent = ""; $("c10_disp").textContent = "When ready, press “Start,” and the digits will appear for 3 seconds"; bars(); };
+  bars();
+})();
+
+$("c10_slow").onclick = () => { $("c10_phi").classList.remove("fast"); $("c10_phit").textContent = "Slow: you see two lights taking turns, two separate things."; };
+$("c10_fast").onclick = () => { $("c10_phi").classList.add("fast"); $("c10_phit").textContent = "Fast: most people see “a dot jumping left and right.” In fact nothing on screen is moving; the brain has integrated it into a whole (apparent motion / the phi phenomenon)."; };
+
+(function () {
+  const CAT = { res: ["Resource", "#e5484d"], nav: ["Navigation", "#3b82f6"], act: ["Action", "#2f9e44"], misc: ["Misc", "#9a9a9a"] };
+  
+  const EL = [
+    { id: "hp", nm: "Health", t: "❤️ HP 85/100", cat: "res", mess: [38, 14], good: [3, 4], ref: [1, 2], why: "Life and death in combat; can be dimmed when exploring and made prominent again when hurt." },
+    { id: "ammo", nm: "Ammo", t: "🔫 24 / 90", cat: "res", mess: [62, 66], good: [3, 16], ref: [1, 3], why: "Needed at any moment in combat; not needed when exploring." },
+    { id: "map", nm: "Minimap", t: "🗺 Minimap", cat: "nav", mess: [41, 36], good: [79, 4], ref: [2, 1], why: "Glanced at now and then in combat; the main navigation tool when exploring." },
+    { id: "quest", nm: "Quest goal", t: "📜 Find the depot", cat: "nav", mess: [8, 44], good: [73, 32], ref: [3, 1], why: "Not needed right away in combat; a reminder of direction is needed when exploring." },
+    { id: "skill", nm: "Skill bar", t: "⚡ Skills 1 2 3", cat: "act", mess: [70, 10], good: [38, 86], ref: [1, 3], why: "Used in combat and must be at hand; can be folded away when exploring." },
+    { id: "gold", nm: "Gold", t: "💰 1,250", cat: "misc", mess: [20, 78], good: [3, 32], ref: [3, 2], why: "Only needed when buying or picking up; the rest of the time it takes up space for nothing." },
+    { id: "chat", nm: "Chat box", t: "💬 Chat…", cat: "misc", mess: [46, 52], good: [3, 76], ref: [3, 3], why: "Reading chat in combat is distracting; expand it when needed." },
+    { id: "achv", nm: "Achievement popup", t: "🏆 Achievement unlocked!", cat: "misc", mess: [52, 24], good: [40, 4], ref: [3, 3], why: "A popup in combat blocks the view; it should wait for a safe moment." }
+  ];
+  const stage = $("c10_stage"), rowsEl = $("c10_rows");
+  let scene = 0, drag = null;
+  const pos = {}, st = [{}, {}], nodes = {}, chips = {};
+  function reset() {
+    EL.forEach(e => { pos[e.id] = { x: e.mess[0], y: e.mess[1] }; st[0][e.id] = 1; st[1][e.id] = 1; });
+  }
+  reset();
+  EL.forEach(e => {
+    const n = document.createElement("div");
+    n.className = "c10_el" + (e.id === "map" ? " map" : "");
+    n.textContent = e.t; n.tabIndex = 0; n.dataset.id = e.id;
+    n.style.borderLeftColor = CAT[e.cat][1];
+    stage.appendChild(n); nodes[e.id] = n;
+    n.addEventListener("pointerdown", ev => {
+      n.setPointerCapture(ev.pointerId);
+      const r = stage.getBoundingClientRect();
+      drag = { id: e.id, sx: ev.clientX, sy: ev.clientY, ox: pos[e.id].x, oy: pos[e.id].y, W: r.width, H: r.height, moved: false };
+      ev.preventDefault();
+    });
+    n.addEventListener("pointermove", ev => {
+      if (!drag || drag.id !== e.id) return;
+      const dx = ev.clientX - drag.sx, dy = ev.clientY - drag.sy;
+      if (Math.hypot(dx, dy) > 5) drag.moved = true;
+      if (!drag.moved) return;
+      const mx = Math.max(0, 100 - n.offsetWidth / drag.W * 100), my = Math.max(0, 100 - n.offsetHeight / drag.H * 100);
+      pos[e.id].x = Math.min(mx, Math.max(0, drag.ox + dx / drag.W * 100));
+      pos[e.id].y = Math.min(my, Math.max(0, drag.oy + dy / drag.H * 100));
+      update();
+    });
+    const end = ev => {
+      if (drag && drag.id === e.id) {
+        if (!drag.moved) { st[scene][e.id] = st[scene][e.id] % 3 + 1; }
+        drag = null; update();
+      }
+    };
+    n.addEventListener("pointerup", end);
+    n.addEventListener("pointercancel", () => { drag = null; update(); });
+    n.addEventListener("keydown", ev => { if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); st[scene][e.id] = st[scene][e.id] % 3 + 1; update(); } });
+    
+    const r = document.createElement("div");
+    r.className = "c10_row";
+    r.innerHTML = '<span class="nm"><span class="c10_cat" style="background:' + CAT[e.cat][1] + '"></span>' + e.nm + "</span>";
+    chips[e.id] = [];
+    ["Always on", "Dimmed", "Hidden"].forEach((lb, i) => {
+      const c = document.createElement("button");
+      c.className = "chip"; c.textContent = lb;
+      c.onclick = () => { st[scene][e.id] = i + 1; update(); };
+      r.appendChild(c); chips[e.id].push(c);
+    });
+    rowsEl.appendChild(r);
+  });
+
+  function rectOf(id) { const n = nodes[id]; return { x: n.offsetLeft, y: n.offsetTop, w: n.offsetWidth, h: n.offsetHeight }; }
+  function gap(a, b) {
+    const dx = Math.max(0, Math.max(a.x - (b.x + b.w), b.x - (a.x + a.w)));
+    const dy = Math.max(0, Math.max(a.y - (b.y + b.h), b.y - (a.y + a.h)));
+    return Math.hypot(dx, dy);
+  }
+  function overlap(a, b) {
+    const w = Math.min(a.x + a.w, b.x + b.w) - Math.max(a.x, b.x), h = Math.min(a.y + a.h, b.y + b.h) - Math.max(a.y, b.y);
+    return w > 0 && h > 0 ? w * h : 0;
+  }
+  function update() {
+    const W = stage.clientWidth, H = stage.clientHeight, S = st[scene];
+    stage.classList.toggle("explore", scene === 1);
+    EL.forEach(e => {
+      const n = nodes[e.id];
+      n.className = "c10_el" + (e.id === "map" ? " map" : "") + (S[e.id] === 2 ? " s2" : S[e.id] === 3 ? " s3" : "");
+      n.style.left = pos[e.id].x + "%"; n.style.top = pos[e.id].y + "%";
+      chips[e.id].forEach((c, i) => c.classList.toggle("on", S[e.id] === i + 1));
+    });
+    stage.querySelectorAll(".c10_grp").forEach(g => g.remove());
+    const vis = EL.filter(e => S[e.id] !== 3), w = e => (S[e.id] === 1 ? 1 : 0.35);
+    
+    const par = {}; vis.forEach(e => (par[e.id] = e.id));
+    const find = x => (par[x] === x ? x : (par[x] = find(par[x])));
+    const R = {}; vis.forEach(e => (R[e.id] = rectOf(e.id)));
+    const thr = W * 0.045;
+    for (let i = 0; i < vis.length; i++) for (let j = i + 1; j < vis.length; j++)
+      if (gap(R[vis[i].id], R[vis[j].id]) < thr) par[find(vis[i].id)] = find(vis[j].id);
+    const groups = {}; vis.forEach(e => (groups[find(e.id)] = groups[find(e.id)] || []).push(e));
+    const G = Object.values(groups);
+    
+    let load = 0;
+    G.forEach(g => { const ws = g.map(w).sort((a, b) => b - a); load += ws[0] + 0.25 * ws.slice(1).reduce((s, v) => s + v, 0); });
+    $("c10_load").textContent = load.toFixed(1) + " chunks";
+    const lb = $("c10_lbar"); lb.style.width = Math.min(100, load / 6 * 100) + "%";
+    lb.style.background = load > 4 ? "#e5484d" : load > 3 ? "var(--orange)" : "var(--green)";
+    
+    const cz = { x: W * 0.3, y: H * 0.25, w: W * 0.4, h: H * 0.5 };
+    let cov = 0; vis.forEach(e => (cov += overlap(R[e.id], cz) * (S[e.id] === 1 ? 1 : 0.4)));
+    cov = Math.min(1, cov / (cz.w * cz.h));
+    $("c10_cov").textContent = Math.round(cov * 100) + "%";
+    const cb = $("c10_cbar"); cb.style.width = cov * 100 + "%";
+    cb.style.background = cov > 0.15 ? "#e5484d" : cov > 0.06 ? "var(--orange)" : "var(--green)";
+    
+    const names = g => g.map(e => e.nm).join(" +");
+    let lines = [], bad = 0, good = 0;
+    G.forEach(g => {
+      const cats = [...new Set(g.map(e => e.cat))];
+      let cls = "";
+      if (g.length >= 2) {
+        const ok = cats.length === 1;
+        ok ? good++ : bad++;
+        lines.push((ok ? "✔ " : "✘ ") + "<b>" + names(g) + "</b>:" + (ok ? "same type (" + CAT[cats[0]][0] + ") sit together and read as one group." : "different types (" + cats.map(c => CAT[c][0]).join("/") + ") are crowded together and will be misread as one group."));
+        const bb = g.map(e => R[e.id]), x0 = Math.min(...bb.map(b => b.x)) - 5, y0 = Math.min(...bb.map(b => b.y)) - 5;
+        const x1 = Math.max(...bb.map(b => b.x + b.w)) + 5, y1 = Math.max(...bb.map(b => b.y + b.h)) + 5;
+        const d = document.createElement("div");
+        d.className = "c10_grp " + (ok ? "ok" : "bad");
+        d.style.cssText = "left:" + x0 + "px;top:" + y0 + "px;width:" + (x1 - x0) + "px;height:" + (y1 - y0) + "px";
+        stage.appendChild(d);
+      }
+    });
+    
+    Object.keys(CAT).forEach(c => {
+      const same = vis.filter(e => e.cat === c);
+      if (same.length >= 2 && new Set(same.map(e => find(e.id))).size > 1) { bad++; lines.push("✘ <b>" + CAT[c][0] + " items</b> (" + names(same) + ") are scattered in different places, so the player has to hunt around."); }
+    });
+    
+    let ov = 0;
+    for (let i = 0; i < vis.length; i++) for (let j = i + 1; j < vis.length; j++) if (overlap(R[vis[i].id], R[vis[j].id]) > 0) ov++;
+    if (ov) { bad++; lines.push("✘ There are " + ov + " pairs of elements overlapping."); }
+    if (!lines.length) lines.push(vis.length ? "(No grouping has formed yet: try moving like elements closer together)" : "(HUD entirely hidden)");
+    $("c10_diag").innerHTML = "<b>Grouping diagnostics</b>" + lines.map(l => "<div>" + l + "</div>").join("");
+    
+    let diff = 0, hint = [];
+    EL.forEach(e => { const d = Math.abs(e.ref[scene] - S[e.id]); diff += d; if (d === 2) hint.push(e.nm + " (" + e.why + ")"); });
+    const match = 16 - diff;
+    $("c10_sum").innerHTML = "Scene match <b>" + match + " / 16</b> (what should stand out stands out, what should give way gives way);" + (hint.length ? "Furthest off:" + hint.slice(0, 2).join(";") : "No obvious mismatch.") +
+      (load <= 3.5 && cov < 0.1 && bad === 0 && match >= 12 ? " 🎉 This layout is clean and readable in this scene!" : "");
+  }
+  function setScene(i) {
+    scene = i; $("c10_s0").classList.toggle("on", i === 0); $("c10_s1").classList.toggle("on", i === 1);
+    $("c10_scene").textContent = i === 0 ? "🧟 🧟" : "🌲 🏞 🌲";
+    update();
+  }
+  $("c10_s0").onclick = () => setScene(0);
+  $("c10_s1").onclick = () => setScene(1);
+  $("c10_reset2").onclick = () => { reset(); update(); };
+  $("c10_ref").onclick = () => {
+    stage.classList.add("glide");
+    EL.forEach(e => { pos[e.id] = { x: e.good[0], y: e.good[1] }; st[0][e.id] = e.ref[0]; st[1][e.id] = e.ref[1]; });
+    update();
+    setTimeout(() => { stage.classList.remove("glide"); update(); }, 700);
+  };
+  window.addEventListener("resize", update);
+  update();
+})();
+
+function lum(hex) {
+  const c = [1, 3, 5].map(i => parseInt(hex.substr(i, 2), 16) / 255).map(v => (v <= 0.04045 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4)));
+  return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2];
+}
+function contrast() {
+  const f = $("c10_cf").value, b = $("c10_cb").value;
+  const l1 = lum(f), l2 = lum(b), r = (Math.max(l1, l2) + 0.05) / (Math.min(l1, l2) + 0.05);
+  $("c10_smp").style.color = f; $("c10_smp").style.background = b;
+  $("c10_ratio").textContent = "Contrast " + r.toFixed(2) + " : 1";
+  $("c10_verdict").textContent = r >= 7 ? "✔ Excellent, nearly everyone can read it" : r >= 4.5 ? "✔ Normal text passes too" : r >= 3 ? "⚠ Only for large type or icons; small text isn’t enough" : "✘ Hard to read, must be changed";
+}
+$("c10_cf").oninput = contrast; $("c10_cb").oninput = contrast;
+document.querySelectorAll("[data-p]").forEach(b => {
+  b.onclick = () => { const p = b.dataset.p.split(","); $("c10_cf").value = p[0]; $("c10_cb").value = p[1]; contrast(); };
+});
+contrast();
+$("c10_gray").onclick = () => { $("c10_cbox").classList.toggle("gray"); $("c10_smp").classList.toggle("c10_gray"); };
+
+(function () {
+  function upd() {
+    const q = +$("c10_q").value / 100, l = +$("c10_l").value / 100;
+    const on = q + (1 - q) * l, off = q * (1 - l);
+    $("c10_qo").textContent = Math.round(q * 100) + "%"; $("c10_lo").textContent = Math.round(l * 100) + "%";
+    $("c10_don").style.width = on * 100 + "%"; $("c10_doff").style.width = off * 100 + "%";
+    $("c10_dont").textContent = "Default on: about " + Math.round(on * 100) + "% end up with it on";
+    $("c10_dofft").textContent = "Default off: about " + Math.round(off * 100) + "% end up with it on";
+    $("c10_defm").textContent = "With the same players, just because of the default, the share who turn it on differs by " + Math.round((on - off) * 100) + " percentage points." + (l === 0 ? "Inertia is 0, so the default no longer matters." : "");
+  }
+  $("c10_q").oninput = upd; $("c10_l").oninput = upd; upd();
+})();
+
+GD.mountQuiz($("quiz"), [
+  { q: "When hurt, the screen edges redden and blood splashes on the lens. It belongs to:", opts: ["Diegetic", "Spatial UI", "Meta UI", "Numbers on a non-diegetic HUD"], a: 2, why: "It shows an event in the story, but is drawn on the screen rather than in the scene, so it is meta UI." },
+  { q: "In combat, the player’s view is suddenly blocked by a big “Achievement unlocked” popup. The best fix is:", opts: ["Make the popup bigger and flashier", "Delay it until a safe moment after the fight", "Never show achievements", "Add a sound to the popup"], a: 1, why: "Information priority must serve the current decision, and non-urgent information should appear when it won’t disturb." },
+  { q: "[Why] A combat interface stacks 12 always-on elements, and the player is actually more likely to miss the health. Explained by cognitive load theory, the main reason is:", opts: ["The health bar is the wrong color", "Cluttered presentation adds extraneous load, crowding out the player’s limited working memory and attention", "Players dislike numbers", "The screen resolution isn’t enough"], a: 1, why: "Extraneous load comes from poor presentation; when total load exceeds working-memory capacity (conservatively about 4 chunks), key information gets missed." },
+  { q: "[Why] Health, mana and stamina bars sit right together, with skill icons in a separate row, and without reading words the player knows which are resources and which are skills. This mainly uses:", opts: ["The default effect", "Gestalt proximity: things close together are seen as a group, turning many elements into few chunks", "Contrast standards", "Progressive disclosure"], a: 1, why: "Grouping lets the player read fewer “units,” which amounts to lowering extraneous load." },
+  { q: "[Why it was invented] What problem was the head-up display (HUD) originally invented to solve?", opts: ["To make instruments look nicer", "When a pilot looks down at instruments, their gaze leaves the front; projecting key information onto glass in their line of sight lets them look at both with head up", "To reduce aircraft weight", "To replace radar"], a: 1, why: "The key insight was “let the information come to the eyes.” Games borrowed this method and inherited the problem too: more and more information can be overlaid, while the player’s working memory hasn’t grown." },
+  { q: "The setting “show beginner tips automatically” is off by default, and after launch very few new players see the tips. What is the most reasonable explanation and fix?", opts: ["Players don’t need tips; leave it as is", "The default effect: most players won’t go and change a default; if the tips help new players, they should be on by default and easy to turn off", "Players never look at the settings menu, so delete the settings", "Hide the default-off switch deeper"], a: 1, why: "Defaults affect most people’s final choices. Defaults should serve the players’ own interest and stay transparent and easy to change, which is the dividing line between a “nudge” and “manipulation.”" }
+]);
+</script>
+</body>
+</html>

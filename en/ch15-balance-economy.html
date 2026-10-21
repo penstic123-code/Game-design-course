@@ -1,0 +1,771 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Chapter 15: Balance &amp; Economy</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+  .hb{display:flex;align-items:center;gap:8px;margin:4px 0}
+  .hb .nm{width:90px;flex:none}
+  .hb .bar{flex:1;height:26px;border:2.5px solid var(--ink);border-radius:14px 8px 14px 8px;background:#fff;overflow:hidden;position:relative}
+  .hb .bar i{display:block;height:100%;transition:width .3s}
+  .hb .bar::after{content:"";position:absolute;left:33.3%;top:0;bottom:0;border-left:3px dashed var(--ink)}
+  .hb .pc{width:60px;text-align:right;font-family:var(--hand);font-size:1.3rem}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media(max-width:700px){.two{grid-template-columns:1fr}}
+  .row2{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+  .chk{display:inline-flex;align-items:center;gap:6px;margin:6px 12px 6px 0;cursor:pointer}
+  .lamp{display:inline-block;width:20px;height:20px;border-radius:50%;border:3px solid var(--ink);vertical-align:middle;margin-right:6px;background:#ccc}
+  .lamp.ok{background:#3aa655}.lamp.hot{background:#e5484d}.lamp.dry{background:#f0b429}
+  .valve{cursor:grab;touch-action:none}
+  .valve:active{cursor:grabbing}
+  .c15fig{background:#fff;border:3px solid var(--ink);border-radius:14px 30px 14px 26px;padding:10px 12px;margin:14px 0}
+  .c15fig svg{display:block}
+  .guessrow{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+  .src a{color:inherit}
+  .c15done{background:#eaf9e4 !important}
+  .c15lab{display:flex;gap:10px;align-items:flex-end;height:90px;margin:8px 0}
+  .c15lab div{flex:1;border:2.5px solid var(--ink);border-radius:8px 8px 0 0;display:flex;align-items:flex-start;justify-content:center;padding-top:4px;font-family:var(--hand);font-size:1.1rem;transition:height .25s}
+</style>
+</head>
+<body data-ch="15">
+<main class="wrap">
+  <div class="hero">
+    <div class="txt">
+      <span class="badge">Chapter 15</span>
+      <h1>Balance &amp; Economy</h1>
+      <p class="sub">Balancing is turning knobs without end, and behind every knob there is a pipe.</p>
+    </div>
+    <svg viewBox="0 0 190 150" class="rough" aria-hidden="true">
+      <path d="M95 30 V125 M40 125 H150" stroke="#2b2b3a" stroke-width="6" stroke-linecap="round"/>
+      <path d="M30 55 L160 45" stroke="#2b2b3a" stroke-width="5" stroke-linecap="round"/>
+      <path d="M30 55 l-14 38 h28z M160 45 l-14 38 h28z" fill="#ffe58a" stroke="#2b2b3a" stroke-width="4"/>
+    </svg>
+  </div>
+
+  <div class="goals">
+    <h3>Learning goals</h3>
+    <ul>
+      <li>Tell two approaches to balance apart (counters, and the faucet–bucket–sink pipes), and say why every game economy has to be designed with a “sink.”</li>
+      <li>Explain three odd phenomena: why the same reward feels like less each time, why numbers should grow by percentages, and why an average can lie.</li>
+      <li>Use the economy pipe diagram and the unit-balancing table to tune numbers yourself, and say what broke and why.</li>
+    </ul>
+    <span class="time">about 50 min</span>
+  </div>
+
+  
+  <div class="sec"><span class="n">1</span><h2><span class="tag what">What it is</span>Balance does not mean “equally strong”</h2></div>
+  <div class="withimg">
+    <span data-illus="c15_scale"></span>
+    <div>
+      <p>Suppose you have made a versus game with three characters whose stats differ. In the first week after launch the forum erupts: “A is too strong, nerf it!” So you set all three characters to exactly the same numbers. The arguing does stop, but a few days later almost nobody picks a character with any care.</p>
+      <p>The reason is easy to see: if every pick is the same, picking means nothing. Balance does not mean “equally strong.” It means <b>every choice has its own use and none is always the best</b>.</p>
+      <p>There are two common ways to get there. One makes the options counter each other, and the other keeps control of what flows in and out of a resource. The first comes first.</p>
+    </div>
+  </div>
+  <p>It tackles a stubborn trouble: as soon as one option’s numbers are slightly higher, clever players all go for it. You trim it a little, the next “strongest” pops up, and you never catch up. Counters change the idea: <b>don’t compare who is bigger, compare who faces whom</b>. A <span class="term" tabindex="0" data-def="A beats B, B beats C, C beats A, so no option is absolutely the strongest; the relation can’t be “passed along,” hence non-transitive">non-transitive</span> relation means the position of “strongest” does not exist at all, and players can only watch what the opponent plays and then decide what to play themselves.</p>
+  <div class="eg" data-ic="✊" data-t="Rock-paper-scissors"><span data-illus="c15_rps"></span><div class="egt"><b>Rock-paper-scissors</b> (daily life): nobody is the strongest, so every round is about guessing and bluffing the other side. Drawn out, it is a circle that closes on itself, with no “highest point” anywhere in it.</div></div>
+  <div class="eg" data-ic="🐴" data-t="Unit triangle"><span data-illus="c15_triangle"></span><div class="egt"><b>The unit triangle</b> (games): cavalry beat archers, archers beat spearmen, spearmen beat cavalry. Whatever the opponent fields, you switch to the counter, and that is why scouting before a battle means something.</div></div>
+  <div class="eg" data-ic="🔥" data-t="Elemental counters"><span data-illus="c15_elements"></span><div class="egt"><b>Fire, water and grass counters</b> (games): water beats fire, grass beats water, fire beats grass. Putting a team together becomes a puzzle, not a matter of piling up the highest numbers.</div></div>
+  <div class="eg bad" data-ic="⚠️" data-t="Failed balance"><span data-illus="c15_clones"></span><div class="egt"><b>Two failed kinds of “balance”</b>: on the left every character has the same stats, which looks fair, yet the choice means nothing; on the right one character is better at everything and everyone queues up to pick it. In the picture neither side is balanced: one lacks difference and the other lacks counters.</div></div>
+
+  
+  <div class="sec"><span class="n">2</span><h2><span class="tag what">What it is</span>Faucet, bucket, sink: where money comes from and where it goes</h2></div>
+  <p>The second kind of balance is about “what comes in and what goes out.” Think of your own wallet: pay comes in, rent and meals go out, and what is left sits in the account. Gold, stamina and materials in a game work the same way. Some people draw it as plumbing: what flows in is the <span class="term" tabindex="0" data-def="A source that lets currency or resources into the game in an economy system, such as quest rewards and drops">faucet</span>, what flows out is the <span class="term" tabindex="0" data-def="A destination that lets currency or resources leave the game in an economy system, such as purchases, repairs and taxes">sink</span>, and what is stored in between is the <span class="term" tabindex="0" data-def="The total amount of currency or resources in the players’ hands, the stock left after the faucet’s inflow and the sink’s outflow">bucket</span>.</p>
+  <div class="card">
+    <svg viewBox="0 0 700 240" width="100%" role="img" aria-label="A faucet runs into a bucket and then out through a sink; more in than out raises the water level, and more out than in lowers it">
+      <g class="rough" stroke="#2b2b3a" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M30 86 H268" stroke-width="14"/>
+        <path d="M432 156 H670" stroke-width="14"/>
+        <path d="M268 60 V190 H432 V60"/>
+      </g>
+      <rect x="272" y="124" width="156" height="62" fill="#7cc4f0"/>
+      <g font-size="17" fill="#2b2b3a" text-anchor="middle">
+        <text x="150" y="60">Faucet: quest rewards, drops</text>
+        <text x="350" y="162" font-size="18" font-weight="700">Bucket: stock</text>
+        <text x="552" y="130">Sink: repairs, fees, consumables</text>
+        <text x="350" y="222">In more than out, the level rises; out more than in, it falls</text>
+      </g>
+    </svg>
+  </div>
+  <p>The water level in the bucket is simply inflow minus outflow, accumulated bit by bit. If the faucet is wider than the sink, the level climbs all the way; if the sink is wider than the faucet, the bucket runs dry. To keep the level at a comfortable height, the two ends have to roughly match.</p>
+  <div class="eg" data-ic="💼" data-t="Pay and rent"><span data-illus="c15_salary"></span><div class="egt"><b>Pay and rent</b> (daily life): pay is the faucet, rent and meals are the sinks, and savings are the bucket. If pay rises while prices don’t, savings grow and grow; the other way round, the account is empty every month.</div></div>
+  <div class="eg" data-ic="💰" data-t="Gold in an RPG"><span data-illus="c15_gold"></span><div class="egt"><b>Gold in a role-playing game</b> (games): killing monsters and doing quests are the faucet, while repairing gear, buying potions and paying tax are the sinks. With good sinks, gold stays useful for the whole game.</div></div>
+  <div class="eg" data-ic="⚡" data-t="Stamina bar"><span data-illus="c15_stamina"></span><div class="egt"><b>The stamina bar</b> (games): natural recovery is the faucet, and sprinting and attacking are the sinks. If recovery is too fast, fights lose their tension; too slow, and the player is always at “empty bar.”</div></div>
+  <div class="eg bad" data-ic="🌊" data-t="Faucet only"><span data-illus="c15_flood"></span><div class="egt"><b>Only a faucet, no sink</b>: rewards are handed out generously, but nobody thought about where the money would be spent. Players pile up more and more, potions are priced at five digits and nobody cares, and every price loses its meaning.</div></div>
+
+  
+  <div class="sec"><span class="n">3</span><h2><span class="tag origin">How it was invented</span>Why is a sink a must?</h2></div>
+  <div class="story">
+    <h3>Let players earn, and then what?</h3>
+    <p><b>The problem.</b> The first thing early online-game makers thought of was “let players earn something”: monsters drop gold, quests give gold, which sounds generous. But once gold can buy and sell things, it is no longer just a score. It is currency, and it follows the rules of currency.</p>
+  </div>
+  <div class="timeline">
+    <div class="ev hasimg"><span data-illus="c15_d2"></span><div><b class="yr">2000</b> <i>Diablo II</i> is released. The story circulating in the player community is that gold soon became worthless and everyone switched to rare items (such as a ring called the Stone of Jordan) as currency for trading; later, duplication exploits flooded this “currency” too, prices collapsed, and patches added gameplay that consumed these items, which amounted to opening a new sink.</div></div>
+    <div class="ev hasimg"><span data-illus="c15_castronova"></span><div><b class="yr">2001</b> The economist Edward Castronova published a working paper that treated Norrath, the world of <i>EverQuest</i>, as a real economy and estimated it: he put its per-capita output between that of Russia and Bulgaria. The estimation method is disputed, but it made people take seriously that “a virtual economy is a real economy.”</div></div>
+    <div class="ev hasimg"><span data-illus="c15_sinks"></span><div><b class="yr">Since then</b> Online games have gained fixed sinks: repair fees, auction-house fees, the cost of upgrading and rerolling gear, and limited-time consumables. Designers no longer look only at “how much to give,” but at three things together: faucets, sinks and stock.</div></div>
+  </div>
+  <p><b>Predict first, then see.</b> Imagine the simplest rule: money makes money, so the stock grows by 2% each day, while a fixed 50 is spent each day. Work it out: when the stock is exactly 2500, the 50 it gains equals the 50 spent, and the water level doesn’t budge at all. That is the critical point. Now take two players, one starting at 2400 and one at 2600, only 8% apart. What happens after 200 days?</p>
+  <div class="board">
+    <div id="c15bchips"></div>
+    <div id="c15bres" style="display:none">
+      <svg viewBox="0 0 700 250" width="100%" id="c15bsvg" role="img" aria-label="Two players start only a little apart, and in the end one runs dry and the other explodes upward"></svg>
+      <div class="msg" id="c15bmsg"></div>
+    </div>
+  </div>
+  <div class="story">
+    <h3>The key insight: the sink must follow the water level</h3>
+    <p>As soon as the faucet is tied to the stock, a knife-edge critical line appears in the economy: just above it the stock snowballs, and just below it the stock keeps shrinking. A fixed-size sink can’t stop this growth, because the sink doesn’t get bigger when the water level gets higher. For the economy to be stable, the sink must be <b>tied to the stock</b>: the richer you are, the more is taken back. Auction-house cuts, taxes charged as a share of assets, and repair costs that rise with gear level all follow this idea.</p>
+  </div>
+  <div class="src">Sources: Castronova, “Virtual Worlds: A First-Hand Account of Market and Society on the Cyberian Frontier” (2001 working paper, SSRN); the account of <i>Diablo II</i> comes from the player community and game wikis, not from an official economy report.</div>
+
+  
+  <div class="sec"><span class="n">4</span><h2><span class="tag why">Why it works</span>Why does a small difference snowball into a big one?</h2></div>
+  <div class="withimg rev">
+    <span data-illus="c15_loops"></span>
+    <div>
+      <p>The story of the two players rests on the most basic pair of ideas in systems thinking. A snowball rolling down a hillside picks up more snow the bigger it gets, which makes it bigger still. This is a <b>reinforcing loop</b>: the result pushes back on the cause. “The more money, the more output” is a reinforcing loop.</p>
+      <p>A thermostat in a room works the other way round: once the temperature is high, the air conditioner starts cooling, and once it is low, it stops. This is a <b>balancing loop</b>: the result holds the cause back. “The richer you are, the more tax is collected” is a balancing loop, and it pulls the water level back.</p>
+      <p>So stability in the pipes comes down to putting a balancing loop strong enough next to the reinforcing loop.</p>
+    </div>
+  </div>
+  <div class="why-box">
+    <h3>Stocks, flows and feedback loops</h3>
+    <p>Breaking a system into “what is stored (stocks)” and “the speed of coming and going (flows),” and then asking which flows are fed back on by the stocks, is the basic skill of system dynamics. A reinforcing loop magnifies tiny differences exponentially, and a balancing loop pulls the system toward some target value. The critical point above is where the two forces exactly cancel: stock = fixed spending ÷ growth rate.</p>
+    <div class="src">Sources: Jay Forrester, <i>Industrial Dynamics</i> (MIT Press, 1961); Donella Meadows, <i>Thinking in Systems</i> (Chelsea Green, 2008). The pipes in a game are a teaching application of them.</div>
+  </div>
+
+  <div class="withimg">
+    <span data-illus="c15_taxed"></span>
+    <div>
+      <p>Once the sink is well designed, there is another problem: players hate it. Losing the same 100 gold feels much worse as a “repair fee” taken directly by the system than as “this quest gave 100 less.” Have you noticed that even when you have more gold than you can spend, being forced to pay still makes you frown?</p>
+      <p>Psychologists gave this phenomenon a name: <span class="term" tabindex="0" data-def="A loss of a given size brings more pain than a gain of the same size brings pleasure">loss aversion</span>.</p>
+    </div>
+  </div>
+  <div class="why-box">
+    <h3>Loss aversion</h3>
+    <p>In prospect theory in 1979, Daniel Kahneman and Amos Tversky proposed that people are more sensitive to losses than to gains. In 1992 they used the choice data of 25 graduate students to estimate that the median weight of a loss is about 2.25 times that of an equal gain. The design lesson: the same sink feels far better packaged as “you spent money to buy something” than as “it was taken away,” which is why shops, upgrades and fees work better than “fines.”</p>
+    <p>It is not without dispute. In 2018, David Gal and Derek Rucker argued that the existing evidence does not support the idea that losses generally loom larger than gains, and that many phenomena attributed to loss aversion can also be explained by other mechanisms such as inertia. A safer way to put it: in situations like “getting something and then having it taken away,” the pain is clearly real; the number 2.25 should not be treated as a constant.</p>
+    <div class="src">Sources: Kahneman &amp; Tversky, “Prospect Theory: An Analysis of Decision under Risk”, <i>Econometrica</i> 47(2), 1979; Tversky &amp; Kahneman, “Advances in Prospect Theory”, <i>Journal of Risk and Uncertainty</i> 5(4), 1992; Gal &amp; Rucker, “The Loss of Loss Aversion”, <i>Journal of Consumer Psychology</i> 28(3), 2018.</div>
+  </div>
+  <div class="board">
+    <p><b>Test yourself first.</b> Flip a fair coin: on tails you lose 100 gold. On heads, how much must you win at the least to be willing to play?</p>
+    <label class="ctl">On heads I need to win at least <output id="c15la-v">100</output> gold</label>
+    <input type="range" id="c15la" min="50" max="400" step="10" value="100">
+    <div class="c15lab"><div id="c15la-w" style="background:#b6e8a8;height:30px">Win</div><div id="c15la-l" style="background:#ffb3c6;height:30px">Lose 100</div></div>
+    <div class="msg" id="c15la-msg"></div>
+  </div>
+  <p class="small">Illustrative: this is only a self-test, not an experimental conclusion.</p>
+
+  
+  <div class="sec"><span class="n">5</span><h2><span class="tag why">Why it works</span>Why does the same reward feel like less each time?</h2></div>
+  <div class="withimg">
+    <span data-illus="c15_treadmill"></span>
+    <div>
+      <p>The first time you clear a level and get 100 gold, you cheer; the 30th time you get the same 100, you barely react. Not one digit of the reward changed. What changed is your expectation.</p>
+      <p>This leads to a very practical trouble: the easiest way for a designer to please players is to make the reward bigger. But the players’ “baseline” rises with it, the next reward isn’t thrilling enough, so it is raised again, until the numbers run out of control.</p>
+    </div>
+  </div>
+  <div class="why-box">
+    <h3>Hedonic adaptation</h3>
+    <p>People adapt to a stimulus that keeps coming back and treat it as the new “baseline,” and from then on only <b>the part above the baseline</b> is felt as pleasure. This is called <b><span class="term" tabindex="0" data-def="After the same stimulus is received again and again, the intensity of feeling gradually falls, and it is treated as the new normal">hedonic adaptation</span></b>, often also the “hedonic treadmill”: however fast you run, your happiness stays in the same place.</p>
+    <p>The chart below is a <b>schematic model</b>: the expectation baseline A moves 30% of the way toward the reward R each time, the experience = R − A (not below 0), and the first experience is set at 100%. Each kind of reward has its own baseline, and after a stretch of not touching it, the baseline falls back by 10% per time unit.</p>
+    <div class="c15fig"><svg viewBox="0 0 700 270" width="100%" id="c15hsvg" role="img" aria-label="Four curves: with no design the experience decays quickly; widening the gap or adding variety slows the decay; automatic raising keeps the experience but the reward has to grow by multiples"></svg></div>
+    <p class="small"><b style="color:#555">━ Gray: no design</b> <b style="color:#1d5fc9">━ Blue: gap widened to 5</b> <b style="color:#1c7a34">━ Green: 3 rewards in rotation</b> <b style="color:#c4262c">┅ Red dashed: raised each time</b></p><p class="small" id="c15hcap"></p>
+    <div class="src">Sources: Brickman &amp; Campbell (1971) proposed the “hedonic treadmill”; Brickman, Coates and Janoff-Bulman (1978) compared lottery winners, accident victims left disabled, and a control group, and is often cited, but the sample was small, there was no baseline measured beforehand, and the authors themselves called it a preliminary study; later research found that the degree of adaptation varies by event and is not always complete (for example Lucas, 2007, tracking long-term disability). The model in the chart is a teaching simplification.</div>
+  </div>
+  <p>All three ways out in the chart are cheaper than “raising the reward”: space the rewards out so the baseline has time to fall; stagger the kinds of reward so each baseline gets a rest; and give the reward a new meaning, such as a one-of-a-kind title.</p>
+  <div class="eg" data-ic="🍜" data-t="A favorite dish"><span data-illus="c15_meal"></span><div class="egt"><b>A favorite dish</b> (daily life): on the first day it is amazing, after a week of it you are sick of it; after a month’s gap it tastes good again. The gap lets the baseline fall.</div></div>
+  <div class="eg" data-ic="📅" data-t="Daily login"><span data-illus="c15_daily"></span><div class="egt"><b>Daily login rewards</b> (games): the same 100 gold is a surprise on day 1 and a “click-through chore” by day 30.</div></div>
+  <div class="eg" data-ic="🟣" data-t="Purple gear"><span data-illus="c15_purple"></span><div class="egt"><b>Chests and new gear</b> (games): a newcomer cheers at the first piece of purple gear; late in the game, gear of the same quality is just salvage material.</div></div>
+  <div class="eg bad" data-ic="📈" data-t="Just raising it"><span data-illus="c15_more"></span><div class="egt"><b>“Not exciting enough, so make the number bigger”</b>: the reward doubles each time, the gold columns grow taller, and the player’s face doesn’t change. The baseline rises every time, and that is how inflation comes about.</div></div>
+
+  
+  <div class="sec"><span class="n">6</span><h2><span class="tag why">Why it works</span>Extension: why should numbers grow by percentages, and why do they blow up?</h2></div>
+  <div class="withimg rev">
+    <span data-illus="c15_candle"></span>
+    <div>
+      <p>Swap a 100-damage sword for a 101-damage one and you hardly notice; swap a 10-damage sword for an 11 and it feels “clearly stronger.” The same +1 feels very different. Light a candle in a dark room and it is suddenly bright; light ten in broad daylight and you can’t tell the difference.</p>
+      <p>What people notice in “how much changed” is the ratio, not the difference. That is why many games write level-ups as “+10% per level” instead of “+5 points per level.”</p>
+    </div>
+  </div>
+  <div class="why-box">
+    <h3>The Weber–Fechner law</h3>
+    <p>The smallest difference people can detect is roughly proportional to the original stimulus (Weber); so the felt sensation is roughly proportional to the logarithm of the stimulus (Fechner): sensation ≈ k·ln(stimulus). When players feel “how much stronger,” they look at the relative change.</p>
+    <div class="c15fig"><svg viewBox="0 0 700 270" width="100%" id="c15wsvg" role="img" aria-label="Linear versus exponential leveling: the relative gain of each level in percent"></svg></div>
+    <p class="small">Chart: start at 10, 30 levels, and both routes end at the same point (155). Blue: a fixed +5 per level. Red: a fixed +r% per level. The vertical axis is “how many % each level improves on the previous one.” The relative gain of linear leveling keeps getting smaller, so players feel it flatten out.</p>
+    <p class="small">This is an influential but not undisputed empirical law: Stevens (1957) argued that a power function fits many experiments better, and the “Weber fraction” also differs by sense and situation.</p>
+    <div class="src">Sources: Ernst Weber’s studies of weight discrimination in the 1830s–40s; Gustav Fechner, <i>Elemente der Psychophysik</i> (1860); S. S. Stevens (1957).</div>
+  </div>
+  <div class="withimg">
+    <span data-illus="c15_lily"></span>
+    <div>
+      <p>But growing by a percentage amounts to exponential growth. Everyone has heard the old riddle: the water lilies in a pond double their area every day and cover the whole pond on day 30, so when do they cover half of it? The answer is day 29. For the first 28 days you can barely see any change in the pond, and the last two days turn everything upside down.</p>
+      <p>“Experience bonuses that stack by percentages” and “gold output proportional to the number of buildings you own” in games have exactly this structure. Once the faucet is tied to the stock, the critical line from the last section appears.</p>
+    </div>
+  </div>
+  <div class="why-box">
+    <h3>Exponential growth and compounding</h3>
+    <p>Linear growth adds a fixed amount each step; <b><span class="term" tabindex="0" data-def="Each step grows by a fixed proportion of the current value, so the larger the quantity, the faster it grows">exponential growth</span></b> multiplies by a fixed factor each step, which is “<b><span class="term" tabindex="0" data-def="Interest earning interest: the growth itself takes part in the next round of growth, so it accumulates proportionally">compound interest</span></b>.” At growth rate r, the steps needed to double are about ln2 / ln(1+r), and the rule of thumb is the “rule of 72”: about 72 / (r%) steps. A deposit at 7% a year doubles in about 10 years.</p>
+    <div class="c15fig"><svg viewBox="0 0 700 270" width="100%" id="c15esvg" role="img" aria-label="Linear and exponential growth curves; the exponential one far overtakes the linear one later on"></svg></div>
+    <p class="small" id="c15ecap"></p>
+    <p class="small">Exponential growth is not the enemy: a growth system is naturally exponential in shape. What to do is give it a cap, a decay, or a sink tied to the stock.</p>
+    <div class="src">Sources: exponential growth and compound interest are basic mathematics; the contrast between “population grows geometrically while food grows arithmetically” is widely known through Malthus’s <i>An Essay on the Principle of Population</i> (1798).</div>
+  </div>
+
+  
+  <div class="sec"><span class="n">7</span><h2><span class="tag why">Why it works</span>Extension: why can an average lie?</h2></div>
+  <div class="withimg">
+    <span data-illus="c15_bar"></span>
+    <div>
+      <p>In a bar are 99 ordinary people and 1 billionaire. Work out the “average wealth” and the number is startlingly high, yet not one ordinary person in the bar is anywhere near that average.</p>
+      <p>Spending in games is often like this too: a few players bring in most of the revenue, and most spend nothing at all. Judging most players’ experience by “average spend per player” is like judging an ordinary person by the bar’s average wealth. This “a few huge, most tiny” kind of distribution is called a <b><span class="term" tabindex="0" data-def="Large values are rare but far more common than in a bell-shaped distribution: a few extreme values take up the bulk of the total">power law</span></b>.</p>
+    </div>
+  </div>
+  <div class="story">
+    <h3>How did people find out that “a few take the lion’s share”?</h3>
+    <p><b>The problem.</b> Economists at the end of the 19th century wanted to know how a country’s wealth was spread over its people. The usual picture then was a <b>bell curve</b>: most people in the middle, the very rich and the very poor few, like height. If that were true, “average wealth” could stand for most people.</p>
+    <p><b>Guess first.</b> Line up a society’s wealth from high to low. What share of total wealth do you think the richest 20% own? (If it were a bell-shaped distribution, about 35%–40%.)</p>
+    <div class="board">
+      <div class="guessrow">
+        <label class="ctl" style="flex:1;min-width:220px">My guess: the richest 20% hold <output id="c15g-v">50</output>%</label>
+      </div>
+      <input type="range" id="c15g" min="20" max="99" step="1" value="50">
+      <button class="btn" id="c15g-go">🔓 Lock my guess, reveal</button>
+      <button class="btn alt" id="c15g-undo" style="display:none">↩ Guess again</button>
+      <div id="c15g-res" style="display:none">
+        <div class="row2" style="margin-top:8px">
+          <b>Now drag the tail exponent α and watch how the distribution changes:</b>
+        </div>
+        <label class="ctl">Tail exponent α (the smaller, the more concentrated in a few) <output id="c15pa-v">1.16</output></label><input type="range" id="c15pa" min="1.1" max="3" step="0.02" value="1.16">
+        <div id="c15pchips"></div>
+        <button class="btn" id="c15pgen">🎲 Draw 1000 random players (luck involved)</button>
+        <svg viewBox="0 0 700 250" width="100%" id="c15psvg" role="img" aria-label="Power-law distribution of 1000 players sorted from largest to smallest value"></svg>
+        <div id="c15pstat"></div>
+        <div class="msg" id="c15pmsg"></div>
+      </div>
+    </div>
+    <div class="sticky" id="c15_task3">Try it: first drag α to about 1.16 and see how much the richest 20% hold; then click “Draw 1000 random players” once and compare how many times larger the mean is than the median.</div>
+    <p class="small">Note: this is “spending or play time of 1000 virtual players” generated from a <b>Pareto distribution</b>, and it is illustrative, not real data from any game. The default is the “ideal distribution” (taking quantiles, no randomness); clicking “Draw random” shows the fluctuations of a real sample, and the smaller α is, the bigger they are. Theory: the top fraction q of people hold q<sup>(α−1)/α</sup> of the total; at α≈1.16 the top 20% hold about 80%.</p>
+    <p><b>Key insight and how it developed.</b> Below is the safer timeline. The figure “80/20” is quoted differently across secondary sources, so it is only a rule of thumb: in practice it may be 70/30 or 90/10, and the two numbers need not add up to 100.</p>
+  </div>
+  <div class="timeline">
+    <div class="ev hasimg"><span data-illus="c15_pareto"></span><div><b class="yr">1896–1897</b> In his <i>Cours d’économie politique</i>, Vilfredo Pareto gathered income and property statistics from many countries and periods, and found that “the higher the income, the fewer the people” roughly follows a <b>power function</b>, not a bell curve. The usual retelling is “about 80% of the land in Italy was held by about 20% of the people,” but sources do not agree on where that specific figure comes from.</div></div>
+    <div class="ev hasimg"><span data-illus="c15_juran"></span><div><b class="yr">Around 1940</b> The quality-management scholar Joseph Juran, inspired by Pareto, proposed “the vital few and the useful many” for tracking down quality problems: a few kinds of defects cause most of the loss, so fix those first. Sources give two years, 1937 and 1941, for when he read Pareto. The names “Pareto principle” and “80/20 rule” became popular later.</div></div>
+    <div class="ev hasimg"><span data-illus="c15_tail"></span><div><b class="yr">2004–2006</b> In a 2004 article and a 2006 book, Chris Anderson used “<b>the long tail</b>” to describe the distribution in online retail where “hits are few and niche items are enormously many,” and the niche items together are also a big slice of business.</div></div>
+  </div>
+  <div class="why-box">
+    <h3>Power laws and the long tail</h3>
+    <p>Most individuals are small and very few are huge; the “80/20 rule” is its rule of thumb, and “<b><span class="term" tabindex="0" data-def="The long “tail” on the right of a distribution: either a few extremely large individuals, or many niche items that are each small">long tail</span></b>” is another way of saying it. In a Pareto distribution (minimum 1), the mean = α/(α−1) and the median = 2<sup>1/α</sup>; as α approaches 1, the sample mean becomes extremely unstable. The warning for design: when looking at data, look at the <b>mean, the median and the quantiles</b> together.</p>
+    <p class="small">This is a common empirical phenomenon, and the exact proportions vary with the game and its payment model; some studies also point out that much data that “looks like a power law” is actually closer to a log-normal distribution. Height is not a power law: it is bell-shaped, and the mean stands for a typical person.</p>
+    <div class="src">Sources: Pareto (1896–97); Anderson, “The Long Tail”, <i>Wired</i> (2004) and the book of the same name (2006); Clauset, Shalizi &amp; Newman, “Power-law distributions in empirical data”, <i>SIAM Review</i> (2009).</div>
+  </div>
+
+  
+  <div class="sec"><span class="n">8</span><h2><span class="tag why">Why it works</span>Extension: why does a price “look like a good deal”?</h2></div>
+  <div class="withimg rev">
+    <span data-illus="c15_buffet"></span>
+    <div>
+      <p>At a buffet, the first plate tastes best, the second is fine, and by the fourth you are only “not wanting to waste it.” For the same thing, the first portion is the most useful and each one after that is less so, and economics calls this <b><span class="term" tabindex="0" data-def="Each additional unit brings less extra satisfaction than the one before">diminishing marginal utility</span></b>.</p>
+      <p>It explains why carrying three potions feels safe while carrying twenty won’t be used any more, and why a cap on the backpack is actually reasonable.</p>
+    </div>
+  </div>
+  <div class="why-box">
+    <h3>Diminishing marginal utility</h3>
+    <div class="c15fig"><svg viewBox="0 0 700 250" width="100%" id="c15msvg" role="img" aria-label="The marginal value of each potion falls, and only those below the price line get bought"></svg></div>
+    <p class="small" id="c15mcap"></p>
+    <p class="small">There are counterexamples: when collecting a set, the last piece is the most valuable, since only a complete set earns the reward. Designers make use of this.</p>
+    <div class="src">Sources: Daniel Bernoulli (1738) used logarithmic utility to explain the St. Petersburg paradox; in the 1870s the “marginal revolution” of Jevons, Menger and Walras made it a foundational concept of economics.</div>
+  </div>
+  <p>Once you know why a player stops at a certain quantity, the next question is how to lay out prices. The same ¥68 gift pack looks cheap next to a ¥648 pack and looks expensive next to a ¥6 pack.</p>
+  <div class="why-box">
+    <h3>Anchoring</h3>
+    <p>When judging a number, people are pulled by <b>the number they saw first</b>, even when it has nothing to do with the question. This is called the <b><span class="term" tabindex="0" data-def="When judging a value, being pulled toward a reference number that appeared earlier, even though that number is not relevant">anchoring effect</span></b>. A mall’s “original price crossed out, now ¥899” and an opening offer in a negotiation both use it.</p>
+    <div class="c15fig"><svg viewBox="0 0 700 250" width="100%" role="img" aria-label="The same ¥68 pack looks cheap next to a ¥648 pack and expensive next to a ¥6 pack">
+      <g class="rough" stroke="#2b2b3a" stroke-width="3.5">
+        <rect x="20" y="40" width="320" height="150" rx="14" fill="#fff7cf"/><rect x="360" y="40" width="320" height="150" rx="14" fill="#e8f6fc"/>
+        <rect x="40" y="70" width="130" height="90" rx="10" fill="#ffc9c9"/><rect x="190" y="70" width="130" height="90" rx="10" fill="#b6e8a8"/>
+        <rect x="380" y="70" width="130" height="90" rx="10" fill="#ffe9a8"/><rect x="530" y="70" width="130" height="90" rx="10" fill="#b6e8a8"/>
+      </g>
+      <g font-size="18" text-anchor="middle" fill="#2b2b3a">
+        <text x="105" y="110">Supreme pack</text><text x="105" y="138" font-size="22">¥648</text><text x="255" y="110">Adventurer pack</text><text x="255" y="138" font-size="22">¥68</text>
+        <text x="445" y="110">Starter pack</text><text x="445" y="138" font-size="22">¥6</text><text x="595" y="110">Adventurer pack</text><text x="595" y="138" font-size="22">¥68</text>
+        <text x="180" y="28" font-weight="700">High anchor first: 68 looks cheap</text><text x="520" y="28" font-weight="700">Low anchor first: 68 looks dear</text>
+        <text x="180" y="222">The same item, different references</text><text x="520" y="222">The same item, different references</text>
+      </g>
+    </svg></div>
+    <p class="small">Inventing an astronomical price almost nobody buys, just to raise the sense of a “good deal,” has gone beyond a pricing technique and become misleading.</p>
+    <div class="src">Source: Tversky and Kahneman, “Judgment under Uncertainty: Heuristics and Biases”, <i>Science</i> (1974, including the “wheel of fortune” experiment). Later studies mostly support the existence of anchoring, though the size of the effect varies with situation and person.</div>
+  </div>
+
+  
+  <div class="sec"><span class="n">9</span><h2><span class="tag how">How to use it</span>Signature interactive: the economy pipe diagram</h2></div>
+  <p><b>Drag the three valves</b> (or use the sliders) and watch the “total player gold” in the bucket rise and fall; then try switching on <b>“money makes money (inflation)”</b> and <b>“auto-recycle.”</b> The goal: keep the water level inside the <b>green healthy band</b>.</p>
+  <div class="board">
+    <svg viewBox="0 0 720 410" width="100%" id="c15pipe" role="img" aria-label="Economy pipe diagram: the faucet flows into the bucket, and the sink and the recycling valve flow out">
+      <g id="c15pipes">
+        <g stroke="#2b2b3a" stroke-width="30" fill="none" stroke-linecap="round" stroke-linejoin="round" class="rough">
+          <path d="M40 70 H380 V112"/><path d="M458 262 H640 V350"/><path d="M380 296 V355 H110"/>
+        </g>
+        <g stroke="#e8f6fc" stroke-width="22" fill="none" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M40 70 H380 V112"/><path d="M458 262 H640 V350"/><path d="M380 296 V355 H110"/>
+        </g>
+        <g fill="none" stroke="#2f8fd8" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="2 16">
+          <path id="c15fl1" d="M40 70 H380 V112" stroke-width="8"/>
+          <path id="c15fl2" d="M458 262 H640 V350" stroke-width="8"/>
+          <path id="c15fl3" d="M380 296 V355 H110" stroke-width="8"/>
+        </g>
+      </g>
+      <rect x="300" y="110" width="160" height="190" fill="#fffef7" stroke="none"/>
+      <rect id="c15water" x="302" y="298" width="156" height="0" fill="#7cc4f0" style="transition:y .15s linear,height .15s linear"/>
+      <g stroke="#2b2b3a" stroke-width="3" stroke-dasharray="7 6" fill="none">
+        <line x1="296" y1="205" x2="464" y2="205"/><line x1="296" y1="297" x2="464" y2="297"/>
+      </g>
+      <g class="rough"><path d="M298 108 V302 H462 V108" fill="none" stroke="#2b2b3a" stroke-width="5" stroke-linecap="round"/></g>
+      <rect x="302" y="205" width="156" height="92" fill="#3aa655" opacity=".14"/>
+      <g font-size="16" fill="#2b2b3a">
+        <text x="470" y="204">Inflation line 1500</text><text x="470" y="290">Dry line 40</text>
+        <text x="380" y="140" text-anchor="middle" font-size="18" font-weight="700">Total player wallets</text>
+        <text id="c15wtxt" x="380" y="190" text-anchor="middle" font-size="26">0</text>
+        <text x="40" y="38" font-size="18" font-weight="700">💧 Faucet (daily output)</text>
+        <text x="470" y="334" font-size="18" font-weight="700">🚰 Sink (spend)</text>
+        <text x="200" y="392" font-size="18" font-weight="700" text-anchor="middle" id="c15rtxt">♻️ Auto-recycle (off)</text>
+      </g>
+      <g id="c15loop" opacity=".18">
+        <path d="M300 170 C 210 170 215 95 170 82" fill="none" stroke="#e5484d" stroke-width="4" stroke-dasharray="8 6"/>
+        <path d="M170 82 l12 -2 -6 -9z" fill="#e5484d"/>
+        <text x="150" y="150" font-size="16" fill="#c4262c" text-anchor="middle">More money</text><text x="150" y="172" font-size="16" fill="#c4262c" text-anchor="middle">more output</text>
+      </g>
+      <g class="valve" id="c15v1" transform="translate(170 70)"><circle r="24" fill="#ffe58a" stroke="#2b2b3a" stroke-width="4"/><g id="c15v1w" stroke="#2b2b3a" stroke-width="5" stroke-linecap="round"><line x1="-16" y1="0" x2="16" y2="0"/><line x1="0" y1="-16" x2="0" y2="16"/></g><text id="c15v1t" y="46" text-anchor="middle" font-size="18" fill="#2b2b3a">100</text></g>
+      <g class="valve" id="c15v2" transform="translate(560 262)"><circle r="24" fill="#ffb3c6" stroke="#2b2b3a" stroke-width="4"/><g id="c15v2w" stroke="#2b2b3a" stroke-width="5" stroke-linecap="round"><line x1="-16" y1="0" x2="16" y2="0"/><line x1="0" y1="-16" x2="0" y2="16"/></g><text id="c15v2t" y="-38" text-anchor="middle" font-size="18" fill="#2b2b3a">100</text></g>
+      <g class="valve" id="c15v3" transform="translate(240 355)" opacity=".4"><circle r="24" fill="#b6e8a8" stroke="#2b2b3a" stroke-width="4"/><g id="c15v3w" stroke="#2b2b3a" stroke-width="5" stroke-linecap="round"><line x1="-16" y1="0" x2="16" y2="0"/><line x1="0" y1="-16" x2="0" y2="16"/></g><text id="c15v3t" y="-38" text-anchor="middle" font-size="18" fill="#2b2b3a">4%</text></g>
+    </svg>
+    <div class="row2">
+      <span class="lamp" id="c15lamp"></span><b id="c15state">Healthy</b>
+      <span class="stat">Day <b id="c15day">0</b></span>
+      <span class="stat">Stock <b id="c15w">300</b></span>
+      <span class="stat">Net change <b id="c15net">0</b>/day</span>
+    </div>
+    <div class="two">
+      <div>
+        <label class="ctl">Faucet: daily output <output id="c15f-v">100</output></label><input type="range" id="c15f" min="0" max="300" step="5" value="100">
+        <label class="ctl">Sink: what players want to spend each day <output id="c15s-v">100</output></label><input type="range" id="c15s" min="0" max="300" step="5" value="100">
+      </div>
+      <div>
+        <label class="chk"><input type="checkbox" id="c15inf"> 📈 Money makes money (inflation): daily output += stock × 2%</label>
+        <label class="chk"><input type="checkbox" id="c15rec"> ♻️ Auto-recycle: take a percentage of the stock each day</label>
+        <label class="ctl">Recycle share <output id="c15r-v">4%</output></label><input type="range" id="c15r" min="1" max="10" step="1" value="4" disabled>
+      </div>
+    </div>
+    <div style="margin-top:6px">
+      <b>One-click scenarios:</b>
+      <button class="btn alt" data-p="ok">Healthy</button>
+      <button class="btn alt" data-p="flood">Faucet only</button>
+      <button class="btn alt" data-p="dry">Sink too big</button>
+      <button class="btn alt" data-p="boom">Money makes money</button>
+      <button class="btn alt" data-p="fix">Auto-recycle to the rescue</button>
+    </div>
+    <button class="btn" id="c15pause">⏸ Pause</button>
+    <button class="btn pink" id="c15reset">↺ Reset stock</button>
+    <svg viewBox="0 0 700 170" width="100%" id="c15hist" role="img" aria-label="Line chart of the stock over time" style="margin-top:6px"></svg>
+    <div class="msg" id="c15msg"></div>
+  </div>
+  <div class="sticky" id="c15_task1">Try it: turn on “money makes money,” then find a way to keep the water level steadily in the green healthy band for a while. Hint: look at the two scenarios “Faucet only” and “Auto-recycle to the rescue” once each, and think about why the latter holds steady.</div>
+  <p class="small">Model (illustrative): each day income = faucet + [inflation]×stock×2%; actual spending = min(gold on hand, wants to spend); recycling = the remaining stock × recycle share (only when the switch is on). “Auto-recycle to the rescue” sets the faucet to 120, turns recycling on, and the stock settles at about 1000: <b>letting the sink grow with the stock is what makes an economy stable</b>.</p>
+
+  
+  <div class="sec"><span class="n">10</span><h2><span class="tag how">How to use it</span>Supporting interactive: balance three unit types</h2></div>
+  <p>A triangle of counters looks steady, but once the numbers move, it leans. Each unit’s “base strength” starts at 1. Raise one unit and watch how its average win rate changes. The goal: all three close to <b>33%</b> (the dashed line).</p>
+  <div class="board">
+    <svg viewBox="0 0 700 290" width="100%" role="img" aria-label="A triangle of counters: cavalry beat archers, archers beat spearmen, spearmen beat cavalry; the circle sizes change with strength">
+      <g class="rough" stroke="#2b2b3a" stroke-width="4">
+        <circle id="c15t1" cx="350" cy="64" r="26" fill="#ffe58a"/><circle id="c15t2" cx="170" cy="196" r="26" fill="#b6e8a8"/><circle id="c15t3" cx="530" cy="196" r="26" fill="#ffb3c6"/>
+        <g fill="none" stroke-linecap="round">
+          <path d="M322 98 L214 164"/><path d="M226 214 H474"/><path d="M486 164 L378 98"/>
+        </g>
+      </g>
+      <g fill="#2b2b3a"><path d="M206 169 l14 0 -6 -10z"/><path d="M482 214 l-14 -9 v18z"/><path d="M378 96 l-6 10 14 -2z"/></g>
+      <g font-size="20" fill="#2b2b3a">
+        <text x="412" y="70">Cavalry</text><text x="170" y="272" text-anchor="middle">Archers</text><text x="530" y="272" text-anchor="middle">Spearmen</text>
+        <text x="242" y="124" text-anchor="middle">beats</text><text x="350" y="204" text-anchor="middle">beats</text><text x="460" y="124" text-anchor="middle">beats</text>
+      </g>
+    </svg>
+    <label class="ctl">🐴 Cavalry strength <output id="a1">1.0</output></label><input type="range" id="s1" min="0.5" max="2" step="0.05" value="1">
+    <label class="ctl">🏹 Archer strength <output id="a2">1.0</output></label><input type="range" id="s2" min="0.5" max="2" step="0.05" value="1">
+    <label class="ctl">🔱 Spearman strength <output id="a3">1.0</output></label><input type="range" id="s3" min="0.5" max="2" step="0.05" value="1">
+    <div id="rates" style="margin-top:10px"></div>
+    <div class="msg" id="rmsg"></div>
+    <button class="btn alt" id="rreset">Reset all</button>
+  </div>
+  <div class="sticky" id="c15_task2">Try it: first raise cavalry to about 1.5 and see the other two units dragged down with it; then move only archers and spearmen, bringing the three win rates back within 3 percentage points of each other.</div>
+  <p class="small">Model (illustrative): the win-rate baseline is 30% when countered and 70% when countering; strength magnifies this edge. You will find that if you raise just one unit, the other two are dragged down; if all three rise together, the win rates come back, because counter balance depends on relative strength.</p>
+
+  <h3>Five rules of thumb for balance</h3>
+  <ul>
+    <li>Draw the relationship diagram first (who counters whom, where the money comes from and goes), then adjust the numbers.</li>
+    <li>Change only one or two knobs at a time and test before changing again, or you won’t know which one did the work.</li>
+    <li>When reading data, look at the mean, the median and the quantiles together.</li>
+    <li>Vary the rhythm and the kinds of reward instead of only raising them.</li>
+    <li>Give every faucet a sink that grows with the stock, and package the sink as “buying something,” not “confiscation.”</li>
+  </ul>
+
+  <div class="misc">
+    <h3>Common misconceptions</h3>
+    <ul>
+      <li>“A 50% win rate means balanced”: not necessarily. In a counter design the goal is for every option to have the same win rate, and you must also look at what players actually pick, and at “whether the choice is meaningful.”</li>
+      <li>“Looking at the mean is enough”: under a power-law distribution the mean is pulled up by a few extreme values, and the median is what stands for the “typical player.”</li>
+      <li>“If a reward isn’t exciting enough, raise the number”: under hedonic adaptation, raising it only buys a brief freshness and also pushes up inflation.</li>
+      <li>“Exponential growth must be avoided”: no. Exponential is the natural shape of a growth system; the key is to know where it crosses the line and to pair it with a cap, decay or a sink.</li>
+      <li>“The 80/20 rule is a law”: no, it is only a rule of thumb, and the ratio varies by field.</li>
+    </ul>
+  </div>
+
+  <div class="reflect">
+    <h3>Reflection and debate</h3>
+    <p><b>How thorough is hedonic adaptation?</b> “People always return to their original level of happiness” is a very influential view; later research found that adaptation differs across events and people, and some changes are long-lasting. The model in the chart is only a teaching simplification.</p>
+    <p><b>The analogy to virtual economies has limits.</b> The “currency” in a game is shaped by designers who can change the rules at any time and by players who are not fully rational, so the conclusions of real-world economics can’t be applied directly. Castronova’s estimation method is itself disputed.</p>
+    <p><b>Is a sink “farming” the players?</b> Packaging a sink as a product makes players feel better, but if the only purpose of the packaging is to keep people from noticing they have been charged, where is the line between that and charging “openly”? Worth thinking over yourself.</p>
+  </div>
+
+  <div class="key">
+    <h3>Key points</h3>
+    <ul>
+      <li>Balance does not mean “the same”; it means every choice has a reason to exist, and counters make the position of “strongest” disappear.</li>
+      <li>In an economy, check that faucets, buckets and sinks correspond; a reinforcing loop magnifies small differences, so a sink that grows with the stock is needed to balance it.</li>
+      <li>Loss aversion: the same amount hurts more when taken than when never received; a sink is best packaged as an exchange.</li>
+      <li>Hedonic adaptation: the same reward depreciates, and widening the gap and adding variety is cheaper than just raising it.</li>
+      <li>Players feel relative change, so use percentage bonuses; exponential growth, once tied to the stock, produces a critical line.</li>
+      <li>A power law makes the mean misleading, so look at the median too; “80/20” is only a rule of thumb.</li>
+    </ul>
+  </div>
+  <div class="tldr">Balance is not making the numbers “the same” but adjusting along with how people feel: players perceive by ratio, adapt, and fear loss more, while loops in an economy and power-law distributions magnify everything.</div>
+
+  <div class="sec"><span class="n">11</span><h2><span class="tag think">Practice</span>Quick quiz</h2></div>
+  <div id="quiz"></div>
+
+  <div class="sec"><span class="n">12</span><h2><span class="tag how">Your design</span>Your balance and economy</h2></div>
+  <div class="card o">
+    <p>Design a small game with <b>four characters</b>, draw who counters whom (like drawing a cycle), and write down what you think each character’s “unique value” is. Then write one sentence: what are the <b>faucet and sink of money (or stamina)</b> in your game, and how will you package the sink so players don’t resent it?</p>
+    <textarea rows="5" data-save="ch15" placeholder="Example: fire > grass > water > fire; add “light,” which does average damage to everyone but can heal… Faucet: quest rewards; sink: repair fees, skill upgrades…"></textarea>
+  </div>
+</main>
+<script src="../js/illus.js"></script>
+<script src="../js/illus-ch15.js"></script>
+<script src="../js/en/illus.js"></script>
+<script src="../js/en/illus-lib.js"></script>
+<script src="../js/en/illus-ch15.js"></script>
+<script src="../js/common.js"></script>
+<script>
+GD.mountQuiz(document.getElementById("quiz"), [
+  { q: "[Why it was invented] Early online games soon developed “inflation,” and designers later commonly added “sinks” such as repair and handling fees. The main reason is?", opts: ["To make players hate the game more", "With only faucets, gold flows in and never out, the stock grows without limit, and gold loses its meaning; a sink takes the excess gold out of the economy", "Sinks make the game look nicer", "To cut server costs"], a: 1, why: "Once the faucet is tied to the stock, a critical line also appears; only a sink tied to the stock (such as proportional recycling) can make an economy stable." },
+  { q: "[Why] Many RPGs write “damage bonus” as “+10%” and not “+5 points.” From the player’s point of view, the main reason is?", opts: ["Percentages are easier to calculate", "Players don’t like whole numbers", "Percentages are always more balanced", "What people feel is relative change, and a fixed addend feels like less and less as the numbers grow"], a: 3, why: "In the Weber–Fechner way of thinking, sensation depends on relative change. 100→105 is only 5%, while 10→15 is 50%. A percentage bonus makes the felt gain of each level more even." },
+  { q: "[Why] A game has an “average spend of 30 yuan per player,” but most players spent nothing. The most reasonable explanation and response is?", opts: ["The data is wrong", "Most players paid 30 yuan", "Spending roughly follows a power law: a few big spenders pull up the mean, so look at the median, quantiles and share of payers as well", "The mean always represents the typical player"], a: 2, why: "In a skewed (power-law) distribution the mean is far above the median. Looking only at the mean gives the false impression that everyone is paying for the game, and so misjudges experience and pricing." },
+  { q: "[Why it was invented] Which account of the origin of the “80/20 rule” is the safest?", opts: ["Pareto discovered an exact 80/20 law in his own pea pods", "Pareto compiled wealth and income statistics in the late 19th century and found that “high earners are few” roughly follows a power function; “80/20” is only a later rule of thumb, and the ratio varies by field", "The 80/20 rule is a law of physics", "Juran invented the power-law distribution"], a: 1, why: "Pareto’s contribution was discovering the shape of the distribution (a power function); 80/20 is a rule of thumb, and in practice it can be 70/30 or 90/10; the pea-pod story has no reliable source. Juran was the one who later applied it to quality management." },
+  { q: "Players claim the same 100-gold login reward every day, and after a month almost nobody cares. According to hedonic adaptation, a cheaper remedy is?", opts: ["Double the reward, then double it again", "Widen the gaps, add more kinds of reward, give the reward a new meaning", "Delete the reward", "Change the reward to a fixed 100.0001 a day"], a: 1, why: "Raising it lifts the baseline and causes inflation; gaps let the baseline fall, and variety lets each baseline recover." },
+  { q: "[Why] Two designs: A is “repairing gear costs 100 gold,” and B is “spend 100 gold to buy a new cloak.” The same gold flows out, yet players are often more annoyed by A. The best explanation is?", opts: ["Players can’t understand B", "Loss aversion: the pain of losing something you have is stronger than the joy of getting the same thing (although the size of this effect is still disputed)", "A’s price is higher", "Gold doesn’t decrease in B"], a: 1, why: "Packaging the sink as an exchange gives the player something, and the pain is lighter. But Gal and Rucker (2018) remind us that “losses generally loom larger than gains” has not been adequately demonstrated, and the specific situation is what matters." },
+]);
+</script>
+<script>
+(function () {
+  const g = id => document.getElementById(id);
+  const chipsFor = (el, items, cur, cb) => {
+    el.innerHTML = "";
+    items.forEach(([k, t]) => {
+      const b = document.createElement("button"); b.className = "chip" + (k === cur ? " on" : ""); b.textContent = t;
+      b.onclick = () => cb(k); el.appendChild(b);
+    });
+  };
+  const axes = (h, xl, yl) => '<line x1="50" y1="' + h + '" x2="680" y2="' + h + '" stroke="#2b2b3a" stroke-width="3"/><line x1="50" y1="12" x2="50" y2="' + h + '" stroke="#2b2b3a" stroke-width="3"/>' +
+    (xl ? '<text x="680" y="' + (h + 32) + '" text-anchor="end" font-size="16">' + xl + '</text>' : "") + (yl ? '<text x="64" y="26" font-size="16" fill="#444">' + yl + '</text>' : "");
+  const poly = (pts, col, dash, w) => '<polyline fill="none" stroke="' + col + '" stroke-width="' + (w || 4) + '"' + (dash ? ' stroke-dasharray="7 6"' : "") + ' stroke-linejoin="round" points="' + pts.map(p => p[0].toFixed(1) + "," + p[1].toFixed(1)).join(" ") + '"/>';
+
+  
+  function pw(si, sj, favored) { const b = favored ? 0.7 : 0.3; const x = si * b, y = sj * (1 - b); return x / (x + y); }
+  function rates() {
+    const s = [+g("s1").value, +g("s2").value, +g("s3").value];
+    const beats = [1, 2, 0];
+    return s.map((si, i) => {
+      let total = 0.5;
+      for (let j = 0; j < 3; j++) { if (j === i) continue; total += pw(si, s[j], beats[i] === j); }
+      return total / 3;
+    });
+  }
+  const names = ["🐴 Cavalry", "🏹 Archers", "🔱 Spearmen"], cols = ["#ffe58a", "#b6e8a8", "#ffb3c6"];
+  function upd1() {
+    [1, 2, 3].forEach(i => { const v = +g("s" + i).value; g("a" + i).textContent = v.toFixed(2); g("c15t" + i).setAttribute("r", (18 + (v - 0.5) / 1.5 * 22).toFixed(1)); });
+    const r = rates();
+    g("rates").innerHTML = r.map((v, i) => `<div class="hb"><span class="nm">${names[i]}</span><div class="bar"><i style="width:${v * 100}%;background:${cols[i]}"></i></div><span class="pc">${(v * 100).toFixed(1)}%</span></div>`).join("");
+    const spread = Math.max(...r) - Math.min(...r), top = r.indexOf(Math.max(...r));
+    g("rmsg").textContent = spread < 0.03 ? "✅ Well balanced! All three unit types have a reason to exist." : spread < 0.1 ? `🤔 A little lopsided: ${names[top]} has a slight edge, and players will tend to pick it.` : `⚠️ Out of balance! ${names[top]} is too strong, everyone will pick it, and the other units become mere extras.`;
+  }
+  ["s1", "s2", "s3"].forEach(id => (g(id).oninput = upd1));
+  g("rreset").onclick = () => { ["s1", "s2", "s3"].forEach(id => (g(id).value = 1)); upd1(); };
+  upd1();
+
+  
+  let pscale = "lin", pmode = "ideal", players = [], revealed = false;
+  g("c15g").oninput = () => (g("c15g-v").textContent = g("c15g").value);
+  function pgen() {
+    const a = +g("c15pa").value, n = 1000; players = [];
+    for (let i = 0; i < n; i++) {
+      const u = pmode === "ideal" ? (i + 0.5) / n : Math.random();
+      players.push(pmode === "ideal" ? Math.pow(u, -1 / a) : 1 / Math.pow(1 - u, 1 / a));
+    }
+    players.sort((x, y) => y - x); pdraw();
+  }
+  function pdraw() {
+    const a = +g("c15pa").value; g("c15pa-v").textContent = a.toFixed(2);
+    chipsFor(g("c15pchips"), [["lin", "Vertical axis: linear"], ["log", "Vertical axis: log"]], pscale, k => { pscale = k; pdraw(); });
+    const n = players.length, total = players.reduce((s, v) => s + v, 0), mean = total / n, med = (players[499] + players[500]) / 2, mx = players[0];
+    const share = q => players.slice(0, Math.round(n * q)).reduce((s, v) => s + v, 0) / total;
+    const below = players.filter(v => v < mean).length / n;
+    const Y = v => pscale === "lin" ? 205 - v / mx * 190 : 205 - Math.log(v) / Math.log(mx) * 190;
+    const bw = 630 / n;
+    let h = axes(205, "Players (sorted by spending from high to low) →");
+    let d = "M50 205 ";
+    players.forEach((v, i) => { d += "L" + (50 + i * bw).toFixed(1) + " " + Y(v).toFixed(1) + " "; });
+    d += "L680 205Z";
+    h += '<path d="' + d + '" fill="#cdbdff" stroke="#2b2b3a" stroke-width="2"/>';
+    h += '<rect x="50" y="12" width="' + (630 * 0.2) + '" height="193" fill="#ffe58a" opacity=".35"/><text x="' + (50 + 63) + '" y="228" font-size="16" text-anchor="middle">Richest 20%</text>';
+    h += '<line x1="50" y1="' + Y(mean) + '" x2="680" y2="' + Y(mean) + '" stroke="#e5484d" stroke-width="3" stroke-dasharray="8 5"/><text x="680" y="70" text-anchor="end" font-size="16" fill="#e5484d">Red dashed: mean ' + mean.toFixed(2) + '</text>';
+    h += '<line x1="50" y1="' + Y(med) + '" x2="680" y2="' + Y(med) + '" stroke="#2f9e44" stroke-width="3" stroke-dasharray="8 5"/><text x="680" y="92" text-anchor="end" font-size="16" fill="#2f9e44">Green dashed: median ' + med.toFixed(2) + '</text>';
+    g("c15psvg").innerHTML = h;
+    const k = (a - 1) / a, s20 = share(0.2) * 100, guess = +g("c15g").value;
+    g("c15pstat").innerHTML = '<span class="stat">Richest 20% hold <b>' + s20.toFixed(0) + '%</b> (theory ' + (Math.pow(0.2, k) * 100).toFixed(0) + '%)</span><span class="stat">Your guess <b>' + guess + '%</b></span><span class="stat">Top 1% hold <b>' + (share(0.01) * 100).toFixed(0) + '%</b></span><span class="stat">Players below the mean <b>' + (below * 100).toFixed(0) + '%</b></span><span class="stat">Mean / median <b>' + (mean / med).toFixed(1) + '</b></span>';
+    g("c15pmsg").textContent = "Your guess " + guess + "%; when α = " + a.toFixed(2) + " the richest 20% hold " + s20.toFixed(0) + "% (theory " + (Math.pow(0.2, k) * 100).toFixed(0) + "%)." + (a < 1.3 ? "This is the familiar “80/20” rule of thumb." : a > 2 ? "The tail has gotten lighter, and the distribution is closer to an average." : "") + " The mean is " + (mean / med).toFixed(1) + " times the median, " + (below * 100).toFixed(0) + "% of people are below the mean line." + (Math.abs(s20 - Math.pow(0.2, k) * 100) > 3 ? " (The sample is only 1000 people and the maximum is truncated, so it comes out slightly lower than theory; with more people it gets closer to theory.)" : "");
+  }
+  g("c15g-go").onclick = () => {
+    revealed = true; g("c15g-res").style.display = "block"; g("c15g-undo").style.display = "inline-block";
+    g("c15g-go").disabled = true; g("c15g").disabled = true; pgen();
+  };
+  g("c15g-undo").onclick = () => {
+    revealed = false; g("c15g-res").style.display = "none"; g("c15g-undo").style.display = "none";
+    g("c15g-go").disabled = false; g("c15g").disabled = false;
+  };
+  g("c15pa").oninput = pgen;
+  g("c15pgen").onclick = () => { pmode = "rand"; pgen(); };
+  g("c15pa").addEventListener("change", () => {});
+
+  
+  (function () {
+    const opts = [["a", "A The gap stays about the same, both around 2500"], ["b", "B The gap widens: one runs dry, the other explodes"], ["c", "C Both return to 2500"]];
+    chipsFor(g("c15bchips"), opts, null, k => {
+      g("c15bres").style.display = "block";
+      chipsFor(g("c15bchips"), opts, k, () => {});
+      const r = 0.02, S = 50, T = 200, lines = [2400, 2600].map(w0 => { const a = [w0]; for (let t = 1; t <= T; t++) a.push(Math.max(0, a[t - 1] * (1 + r) - S)); return a; });
+      const mx = Math.max(...lines[1], 3000), cap = 5000, top = Math.min(mx, cap);
+      const X = t => 50 + t / T * 630, Y = v => 205 - Math.min(v, top) / top * 190;
+      let h = axes(205, "Day →", "Vertical axis max " + top.toFixed(0));
+      h += '<line x1="50" y1="' + Y(2500) + '" x2="680" y2="' + Y(2500) + '" stroke="#2f9e44" stroke-width="3" stroke-dasharray="8 6"/><text x="676" y="' + (Y(2500) - 10) + '" text-anchor="end" font-size="16" fill="#1c7a34">Critical value 2500</text>';
+      h += poly(lines[0].map((v, t) => [X(t), Y(v)]), "#e5484d", false, 4.5) + poly(lines[1].map((v, t) => [X(t), Y(v)]), "#3b82f6", false, 4.5);
+      h += '<text x="690" y="40" text-anchor="end" font-size="16" fill="#3b82f6">Blue: start 2600</text><text x="690" y="60" text-anchor="end" font-size="16" fill="#e5484d">Red: start 2400</text>';
+      g("c15bsvg").innerHTML = h;
+      const zero = lines[0].findIndex((v, t) => t > 0 && v === 0);
+      g("c15bmsg").textContent = (k === "b" ? "✅ Right." : "❌ Not this one.") + " The start is only 8% apart: the red line bottoms out on day " + zero + " and the blue line has risen by day " + T + " to " + Math.round(lines[1][T]) + " (truncated in the chart). Under the same rule, a slightly different start gives opposite fates, which is why it needs a sink tied to the stock.";
+    });
+  })();
+
+  
+  function adaptSim(alpha, grow, gap, types, comp) {
+    const N = 30, beta = 0.1, A = new Array(types).fill(0), last = new Array(types).fill(0);
+    const felt = [], R = [];
+    for (let k = 0; k < N; k++) {
+      const t = k * gap, j = k % types;
+      A[j] *= Math.pow(1 - beta, t - last[j]); last[j] = t;
+      const r = comp ? 100 + A[j] : 100 * Math.pow(1 + grow, k);
+      felt.push(Math.max(0, r - A[j])); R.push(r);
+      A[j] += alpha * (r - A[j]);
+    }
+    return { felt, R };
+  }
+  (function () {
+    const base = adaptSim(0.3, 0, 1, 1, false), gap = adaptSim(0.3, 0, 5, 1, false), ty = adaptSim(0.3, 0, 1, 3, false), comp = adaptSim(0.3, 0, 1, 1, true);
+    const N = 30, X = k => 50 + k / (N - 1) * 630, Y = v => 225 - v / 110 * 205;
+    let h = axes(225, "Reward number →", "Experience %");
+    h += '<line x1="50" y1="' + Y(100) + '" x2="680" y2="' + Y(100) + '" stroke="#bbb" stroke-width="2" stroke-dasharray="3 5"/><text x="38" y="' + (Y(100) + 5) + '" text-anchor="end" font-size="15">100</text>';
+    h += poly(base.felt.map((v, k) => [X(k), Y(v)]), "#777", false, 4) + poly(gap.felt.map((v, k) => [X(k), Y(v)]), "#3b82f6", false, 4) + poly(ty.felt.map((v, k) => [X(k), Y(v)]), "#2f9e44", false, 4) + poly(comp.felt.map((v, k) => [X(k), Y(v)]), "#e5484d", true, 4);
+    
+    g("c15hsvg").innerHTML = h;
+    const avg = a => a.slice(-10).reduce((s, v) => s + v, 0) / 10;
+    g("c15hcap").textContent = "Average experience over the last 10 rewards: no design " + avg(base.felt).toFixed(0) + "%, widened gap " + avg(gap.felt).toFixed(0) + "%, 3 rewards " + avg(ty.felt).toFixed(0) + "%. The red line’s experience stays at 100%, but the 30th reward has to be this many times the 1st: " + (comp.R[29] / comp.R[0]).toFixed(1) + " — this is “number inflation.”";
+  })();
+  (function () {
+    const L = 30, V0 = 10, a = 5, VL = V0 + a * (L - 1), r = Math.pow(VL / V0, 1 / (L - 1)) - 1;
+    const rel = (f) => { const o = []; let prev = f(1); for (let i = 2; i <= L; i++) { const v = f(i); o.push((v - prev) / prev * 100); prev = v; } return o; };
+    const lin = rel(i => V0 + a * (i - 1)), ex = rel(i => V0 * Math.pow(1 + r, i - 1));
+    const mx = Math.max(...lin) * 1.08, X = i => 50 + i / (L - 2) * 630, Y = v => 225 - v / mx * 205;
+    let h = axes(225, "Level →", "Relative gain per level (%)");
+    h += poly(lin.map((v, i) => [X(i), Y(v)]), "#3b82f6", false, 4.5) + poly(ex.map((v, i) => [X(i), Y(v)]), "#e5484d", false, 4.5);
+    h += '<text x="690" y="40" text-anchor="end" font-size="16" fill="#3b82f6">Blue: linear (level 2 +' + lin[0].toFixed(0) + '% → by level 30 only +' + lin[28].toFixed(1) + '%)</text><text x="690" y="62" text-anchor="end" font-size="16" fill="#e5484d">Red: exponential (every level +' + (r * 100).toFixed(1) + '%)</text>';
+    g("c15wsvg").innerHTML = h;
+  })();
+  (function () {
+    const T = 30, r = 0.08, lin = [], ex = [];
+    for (let t = 0; t <= T; t++) { lin.push(1 + r * t); ex.push(Math.pow(1 + r, t)); }
+    const mx = ex[T], X = t => 50 + t / T * 630, Y = v => 225 - (v - 1) / (mx - 1) * 205;
+    let h = axes(225, "Step →", "Start = 1");
+    h += poly(lin.map((v, t) => [X(t), Y(v)]), "#3b82f6", false, 4.5) + poly(ex.map((v, t) => [X(t), Y(v)]), "#e5484d", false, 4.5);
+    h += '<text x="64" y="72" font-size="16" fill="#1d5fc9">Blue: linear +8% × start per step</text><text x="64" y="48" font-size="16" fill="#c4262c">Red: exponential ×1.08 per step</text>';
+    g("c15esvg").innerHTML = h;
+    g("c15ecap").textContent = "After 30 steps: linear " + lin[T].toFixed(1) + ", exponential " + ex[T].toFixed(1) + ", exponential is this many times linear: " + (ex[T] / lin[T]).toFixed(1) + "; doubling takes about " + (Math.log(2) / Math.log(1 + r)).toFixed(1) + " steps (rule of 72 ≈ " + (72 / 8).toFixed(0) + "). The first few steps hardly differ, and later it runs out of control.";
+  })();
+  (function () {
+    const p = 4, rho = 0.7, N = 8, v = []; for (let i = 0; i < N; i++) v.push(10 * Math.pow(rho, i));
+    const X = i => 60 + i * 78, Y = x => 185 - x / 10 * 150;
+    let h = '<line x1="50" y1="185" x2="680" y2="185" stroke="#2b2b3a" stroke-width="3"/>', n = 0;
+    v.forEach((x, i) => {
+      const buy = x >= p; if (buy) n++;
+      h += '<rect x="' + X(i) + '" y="' + Y(x) + '" width="52" height="' + (185 - Y(x)) + '" fill="' + (buy ? "#b6e8a8" : "#eee") + '" stroke="#2b2b3a" stroke-width="2.5"/><text x="' + (X(i) + 26) + '" y="232" text-anchor="middle" font-size="16">' + x.toFixed(1) + '</text><text x="' + (X(i) + 26) + '" y="208" text-anchor="middle" font-size="16">Potion ' + (i + 1) + '</text>';
+    });
+    h += '<line x1="50" y1="' + Y(p) + '" x2="680" y2="' + Y(p) + '" stroke="#e5484d" stroke-width="3.5" stroke-dasharray="8 5"/><text x="676" y="' + (Y(p) - 12) + '" text-anchor="end" font-size="16" fill="#c4262c">Price ' + p + '</text>';
+    g("c15msvg").innerHTML = h;
+    g("c15mcap").textContent = "Illustrative: potion 1 is worth 10 to him, and each next one is 0.7 times the one before; at a price of 4, the number of potions worth at least the price is " + n + " (green), potion " + (n + 1) + " is worth only " + v[n].toFixed(1) + ", so he stops at potion " + n + ". Want him to buy more? Lower the price, or offer a “cheaper the more you buy” bundle.";
+  })();
+
+  
+  (function () {
+    const R = 0.02, CAP = 3000;
+    const P = { f: 100, s: 100, inf: false, rec: false, rr: 4 };
+    const S = { W: 300, day: 0, hist: [300], run: true, inflow: 100, spend: 100, tax: 0 };
+    const svg = g("c15pipe");
+    const valves = [
+      { id: "c15v1", key: "f", min: 0, max: 300, step: 5, slider: "c15f", out: "c15f-v" },
+      { id: "c15v2", key: "s", min: 0, max: 300, step: 5, slider: "c15s", out: "c15s-v" },
+      { id: "c15v3", key: "rr", min: 1, max: 10, step: 1, slider: "c15r", out: "c15r-v" },
+    ];
+    function step() {
+      const inflow = P.f + (P.inf ? R * S.W : 0);
+      const avail = S.W + inflow;
+      const spend = Math.min(avail, P.s);
+      const tax = P.rec ? Math.min(avail - spend, P.rr / 100 * S.W) : 0;
+      S.W = Math.min(1e9, Math.max(0, avail - spend - tax));
+      S.day++; S.inflow = inflow; S.spend = spend; S.tax = tax;
+      S.hist.push(S.W); if (S.hist.length > 200) S.hist.shift();
+    }
+    const dash = { c15fl1: 0, c15fl2: 0, c15fl3: 0 };
+    function paint() {
+      
+      const hh = Math.min(S.W, CAP) / CAP * 188;
+      g("c15water").setAttribute("y", (298 - hh).toFixed(1)); g("c15water").setAttribute("height", hh.toFixed(1));
+      g("c15wtxt").textContent = S.W > 99999 ? "Overflow!" : Math.round(S.W);
+      g("c15w").textContent = S.W > 99999 ? "Off the chart" : Math.round(S.W);
+      g("c15day").textContent = S.day;
+      const net = S.inflow - S.spend - S.tax;
+      g("c15net").textContent = (net >= 0 ? "+" : "") + Math.round(net);
+      
+      valves.forEach(v => {
+        const frac = (P[v.key] - v.min) / (v.max - v.min);
+        g(v.id + "w").setAttribute("transform", "rotate(" + (frac * 270).toFixed(0) + ")");
+        g(v.id + "t").textContent = v.key === "rr" ? P.rr + "%" : P[v.key];
+        g(v.slider).value = P[v.key]; g(v.out).textContent = v.key === "rr" ? P.rr + "%" : P[v.key];
+      });
+      g("c15v3").setAttribute("opacity", P.rec ? "1" : ".4");
+      g("c15loop").setAttribute("opacity", P.inf ? "1" : ".18");
+      g("c15rtxt").textContent = P.rec ? "♻️ Auto-recycle: take this share of the stock each day: " + P.rr + "%" : "♻️ Auto-recycle (off)";
+      
+      const wd = f => (3 + Math.min(1, f / 300) * 11).toFixed(1);
+      [["c15fl1", S.inflow], ["c15fl2", S.spend], ["c15fl3", S.tax]].forEach(([id, f]) => {
+        g(id).setAttribute("stroke-width", wd(f)); g(id).setAttribute("opacity", f > 0.5 ? 1 : 0.1);
+      });
+      
+      const lamp = g("c15lamp"), st = g("c15state");
+      if (S.W < 40) { lamp.className = "lamp dry"; st.textContent = "Dry: players have almost no money"; }
+      else if (S.W > 1500) { lamp.className = "lamp hot"; st.textContent = "Inflation: so much money that it means nothing"; }
+      else { lamp.className = "lamp ok"; st.textContent = "Healthy: there is money, but you have to choose"; }
+      
+      const n = S.hist.length, mxh = Math.max(2000, ...S.hist), top = Math.min(mxh, 20000);
+      const X = i => 50 + i / 199 * 630, Y = v => 130 - Math.min(v, top) / top * 118;
+      let h = '<line x1="50" y1="130" x2="680" y2="130" stroke="#2b2b3a" stroke-width="3"/><line x1="50" y1="8" x2="50" y2="130" stroke="#2b2b3a" stroke-width="3"/>';
+      h += '<rect x="50" y="' + Y(1500) + '" width="630" height="' + (Y(40) - Y(1500)) + '" fill="#3aa655" opacity=".14"/><line x1="50" y1="' + Y(1500) + '" x2="680" y2="' + Y(1500) + '" stroke="#e5484d" stroke-width="2" stroke-dasharray="6 5"/>';
+      h += poly(S.hist.map((v, i) => [X(i), Y(v)]), "#e5484d", false, 4);
+      h += '<text x="56" y="22" font-size="16" fill="#555">Stock history (vertical axis max ' + Math.round(top) + ') Green band = healthy zone</text><text x="680" y="158" text-anchor="end" font-size="16">Last ' + n + ' days →</text>';
+      g("c15hist").innerHTML = h;
+      g("c15msg").textContent = S.W > 99999 ? "💥 The stock has gone off the chart: this is how exponential growth runs out of control when there is no sink." :
+        S.W > 1500 ? (P.inf ? "📈 “Money makes money” is on: the higher the stock, the higher the output, and the faster it grows. Try turning on “auto-recycle.”" : "📈 The faucet is wider than the sink: the stock keeps rising. Enlarge the sink or shrink the faucet.") :
+        S.W < 40 ? "📉 The sink has drained the water: players never have money and can’t afford what they want. Shrink the sink or enlarge the faucet." :
+        (P.inf && !P.rec && net > 1 ? "⚠️ It looks healthy now, but “money makes money” is on, and the stock will keep snowballing." : "✅ The water level is in the healthy band. Keep turning the valves and see how large a change breaks the balance.");
+    }
+    function setVal(key, val) { P[key] = val; paint(); }
+    
+    valves.forEach(v => {
+      const el = g(v.id); let sx = 0, sv = 0, drag = false;
+      el.addEventListener("pointerdown", e => { drag = true; sx = e.clientX; sv = P[v.key]; el.setPointerCapture(e.pointerId); if (v.key === "rr" && !P.rec) { P.rec = true; g("c15rec").checked = true; g("c15r").disabled = false; } e.preventDefault(); });
+      el.addEventListener("pointermove", e => {
+        if (!drag) return;
+        const k = 720 / svg.getBoundingClientRect().width, dx = (e.clientX - sx) * k;
+        let val = sv + dx / 150 * (v.max - v.min);
+        val = Math.round(val / v.step) * v.step; val = Math.max(v.min, Math.min(v.max, val));
+        setVal(v.key, val);
+      });
+      const end = () => { drag = false; };
+      el.addEventListener("pointerup", end); el.addEventListener("pointercancel", end);
+    });
+    g("c15f").oninput = () => setVal("f", +g("c15f").value);
+    g("c15s").oninput = () => setVal("s", +g("c15s").value);
+    g("c15r").oninput = () => setVal("rr", +g("c15r").value);
+    g("c15inf").onchange = () => { P.inf = g("c15inf").checked; paint(); };
+    g("c15rec").onchange = () => { P.rec = g("c15rec").checked; g("c15r").disabled = !P.rec; paint(); };
+    g("c15pause").onclick = () => { S.run = !S.run; g("c15pause").textContent = S.run ? "⏸ Pause" : "▶ Resume"; };
+    g("c15reset").onclick = () => { S.W = 300; S.day = 0; S.hist = [300]; S.inflow = P.f; S.spend = P.s; S.tax = 0; paint(); };
+    const PRE = {
+      ok: { f: 100, s: 100, inf: false, rec: false, rr: 4 },
+      flood: { f: 200, s: 100, inf: false, rec: false, rr: 4 },
+      dry: { f: 100, s: 220, inf: false, rec: false, rr: 4 },
+      boom: { f: 100, s: 100, inf: true, rec: false, rr: 4 },
+      fix: { f: 120, s: 100, inf: true, rec: true, rr: 4 },
+    };
+    document.querySelectorAll("[data-p]").forEach(b => (b.onclick = () => {
+      Object.assign(P, PRE[b.dataset.p]);
+      g("c15inf").checked = P.inf; g("c15rec").checked = P.rec; g("c15r").disabled = !P.rec;
+      S.W = 300; S.day = 0; S.hist = [300]; S.inflow = P.f; S.spend = P.s; S.tax = 0; paint();
+    }));
+    setInterval(() => { if (S.run) { step(); paint(); } }, 140);
+    
+    (function loop() {
+      [["c15fl1", S.inflow], ["c15fl2", S.spend], ["c15fl3", S.tax]].forEach(([id, f]) => {
+        dash[id] -= Math.min(1, f / 300) * 2.2 + (f > 0.5 ? 0.3 : 0);
+        g(id).setAttribute("stroke-dashoffset", dash[id].toFixed(1));
+      });
+      requestAnimationFrame(loop);
+    })();
+    S.inflow = P.f; S.spend = P.s;
+    paint();
+  })();
+})();
+</script>
+<script>
+(function(){
+  const g=id=>document.getElementById(id);
+  const done=(el,msg)=>{ if(el.classList.contains("c15done"))return; el.classList.add("c15done"); el.insertAdjacentHTML("beforeend"," <b>✅ Done!"+msg+"</b>"); };
+  function la(){
+    const x=+g("c15la").value; g("c15la-v").textContent=x;
+    g("c15la-w").style.height=(x/400*84+16)+"px"; g("c15la-l").style.height=(100/400*84+16)+"px";
+    g("c15la-w").textContent="Win "+x;
+    const r=x/100; let m="The win you asked for is <b>"+r.toFixed(1)+"</b> times the loss.";
+    if(r<1.3) m+="You treated winning and losing almost the same.";
+    else if(r<=2.6) m+="Tversky and Kahneman (1992) estimated a median of 2.25, and your number is in the same range: the piece you lose weighs more than the piece you gain.";
+    else m+="You weigh loss even more than the median of 2.25 in the report.";
+    g("c15la-msg").innerHTML=m;
+  }
+  g("c15la").addEventListener("input",la); la();
+  let streak=0,lastDay=-1;
+  setInterval(()=>{
+    const d=+g("c15day").textContent;
+    if(d===lastDay)return; lastDay=d;
+    if(g("c15inf").checked && g("c15lamp").className.indexOf("ok")>=0 && d>0) streak++; else streak=0;
+    if(streak>=100) done(g("c15_task1"),"“Money makes money” stays on and the water level still holds in the green band. You paired a reinforcing loop with a balancing loop.");
+  },100);
+  let armed=false;
+  ["s1","s2","s3"].forEach(id=>g(id).addEventListener("input",()=>{
+    if(+g("s1").value>=1.4) armed=true;
+    if(armed && g("rmsg").textContent.indexOf("Well balanced")>=0) done(g("c15_task2"),"You will find that when all three rise together, the win rates come back.");
+  }));
+  let rnd=false;
+  function chk(){ const a=+g("c15pa").value; if(rnd && a<=1.26) done(g("c15_task3"),"When α is small, the mean is several times the median, and most people are below the mean line."); }
+  g("c15pgen").addEventListener("click",()=>{ rnd=true; chk(); });
+  g("c15pa").addEventListener("input",chk);
+})();
+</script>
+</body>
+</html>

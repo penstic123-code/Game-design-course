@@ -14,6 +14,11 @@
   .path-card.on{background:var(--yellow);transform:rotate(-.6deg)}
   .path-card h4{margin:0;font-family:var(--hand);font-weight:400;font-size:1.3rem}
   .path-card p{margin:2px 0 0;font-size:.88rem;color:var(--soft);line-height:1.5}
+  .intro-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px 22px}
+  .intro h3{margin:0 0 4px}
+  .intro p,.intro li{line-height:1.6}
+  .intro ul{margin:0;padding-left:1.2em}
+  .intro-meta{margin:12px 0 4px;padding-top:10px;border-top:2px dashed var(--ink)}
   .chcard.dim{opacity:.28}
   .board-svg a:hover rect{filter:brightness(.94)}
   .board-svg a.dim{opacity:.25}
@@ -26,8 +31,8 @@
   <div class="hero">
     <div class="txt">
       <span class="badge" id="badge">互动课程</span>
-      <h1>游戏设计手绘笔记本</h1>
-      <p class="sub">不用会编程。每一章先讲“是什么”，再讲“为什么会这样”，然后让你动手玩、再反思。</p>
+      <h1 style="font-size:2.6rem;white-space:nowrap">游戏设计手绘笔记本</h1>
+      <p class="sub">29 章互动网页，从零学会游戏设计。不需要会编程。</p>
     </div>
     <svg viewBox="0 0 190 150" class="rough" aria-hidden="true">
       <rect x="20" y="40" width="150" height="85" rx="22" fill="#a8dcf0" stroke="#2b2b3a" stroke-width="4"/>
@@ -40,10 +45,31 @@
     </svg>
   </div>
 
-  <div class="card y">
-    <h3>怎么用这本笔记本？</h3>
-    <p>每章的节奏：<b>① 是什么（图解概念）→ ② 为什么被发明（还原当时的问题）→ ③ 为什么成立（底层原理 + 小实验）→ ④ 怎么用（动手玩）→ ⑤ 反思与争议 → ⑥ 练习和你的设计</b>。
-    答对本章全部练习题就算通关，进度和笔记保存在你的浏览器里。点分节标题可以收起，右下角 ☰ 是本章目录。</p>
+  <div class="card intro">
+    <div class="intro-grid">
+      <section>
+        <h3>🎮 讲什么</h3>
+        <p>游戏为什么好玩，以及怎样把好玩的想法做出来。从核心循环、玩家动机，讲到平衡、伦理，最后做出自己的原型。</p>
+      </section>
+      <section>
+        <h3>👥 给谁读</h3>
+        <ul>
+          <li>想做游戏的新手</li>
+          <li>学设计、产品、编程，想了解游戏的人</li>
+          <li>玩了很多游戏，想知道“为什么好玩”的玩家</li>
+        </ul>
+        <p class="small">不需要任何基础。</p>
+      </section>
+      <section>
+        <h3>✅ 学完能</h3>
+        <ul>
+          <li>拆解一个游戏的核心循环</li>
+          <li>设计并试玩一个纸面原型</li>
+          <li>看懂一款游戏为什么让人上头</li>
+        </ul>
+      </section>
+    </div>
+    <p class="intro-meta"><b>用时：</b>29 章，每章约 30 分钟，全部读完约 15 小时。<b>提示：</b>点分节标题可收起；右下角 ☰ 是本章目录；进度和笔记存在你的浏览器里。</p>
     <div class="prog"><i id="progbar"></i></div>
     <div class="small" id="progtxt"></div>
   </div>

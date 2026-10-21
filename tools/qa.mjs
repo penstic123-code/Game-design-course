@@ -43,6 +43,9 @@ const probe = `(async()=>{
   const skip=b=>/print|location|href/.test((b.getAttribute('onclick')||''))||b.closest('.navpanel')||b.classList.contains('navfab');
   const btns=[...document.querySelectorAll('main button, main .chip, main .opt, main [role=button]:not(.sec)')].filter(b=>!skip(b));
   for(const b of btns){try{b.click();out.clicked++}catch(e){out.err=(out.err||'')+e.message+';'}}
+  // 练习题：点选卡片再点答题位（先错后对）
+  out.quiz=0;
+  for(const qq of document.querySelectorAll('main .q')){const sl=qq.querySelector('.qz-slot');if(!sl)continue;for(const c of [...qq.querySelectorAll('.qz-card')]){if(c.disabled)continue;c.click();sl.click();}out.quiz++}
   await new Promise(r=>setTimeout(r,200));
   const rs=[...document.querySelectorAll('main input[type=range]')];
   for(const r of rs){for(const f of [0,.5,1]){const mn=+r.min||0,mx=+r.max||100;r.value=mn+(mx-mn)*f;r.dispatchEvent(new Event('input',{bubbles:true}));r.dispatchEvent(new Event('change',{bubbles:true}));}out.ranges++}

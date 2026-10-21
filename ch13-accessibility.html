@@ -44,7 +44,7 @@
     <div class="txt">
       <span class="badge">第 13 章</span>
       <h1>可访问性</h1>
-      <p class="sub">不是“为少数人加个选项”，而是让更多人能走进你的游戏。</p>
+      <p class="sub">不是“为少数人加个选项”，而是让更多人能走进游戏。</p>
     </div>
     <svg viewBox="0 0 190 150" class="rough" aria-hidden="true">
       <g stroke="#2b2b3a" stroke-width="5" stroke-linejoin="round" stroke-linecap="round">
@@ -60,9 +60,9 @@
   <div class="goals">
     <h3>学习目标</h3>
     <ul>
-      <li>读完你能区分<b>永久、暂时、情境</b>三类障碍，并说明为什么“可访问性”不只关乎少数人。</li>
-      <li>读完你能解释<b>路缘石效应</b>与<b>多通道冗余</b>，并用 WCAG 的对比度与闪光阈值检查一个界面。</li>
-      <li>读完你能亲手排查一个游戏界面里“只靠颜色/声音/长按”传达的信息，并给出修复办法。</li>
+      <li>读完能区分<b>永久、暂时、情境</b>三类障碍，并说明为什么“可访问性”不只关乎少数人。</li>
+      <li>读完能解释<b>路缘石效应</b>与<b>多通道冗余</b>，并用 WCAG 的对比度与闪光阈值检查一个界面。</li>
+      <li>读完能亲手排查一个游戏界面里“只靠颜色/声音/长按”传达的信息，并给出修复办法。</li>
     </ul>
     <span class="time">约 40 分钟</span>
   </div>
@@ -71,12 +71,12 @@
   <div class="withimg">
     <span data-illus="c13_stairs"></span>
     <div>
-  <p>先做个小实验：用一只手玩一款需要双手的动作游戏，比如左手握着咖啡，右手操作。没几分钟，你会发现很多游戏默认你有“两只手、全部手指灵活、看得清、听得到、反应够快”。</p>
-  <p><span class="term" tabindex="0" data-def="让尽可能多的人能够使用一件产品、一个界面或一个环境，不论他们的身体、感官、认知条件或所处情境如何。在游戏里，指让更多玩家能进入、理解并玩下去。">可访问性</span>（accessibility，常缩写 a11y）问的是：<b>你的设计对谁关上了门？</b>这里的“障碍”并不是某个人身上的标签，而是<b>人与设计之间的不匹配</b>。同一个人在不同时刻，会遇到不同的不匹配。</p>
-  <p>这个看法有个名字，叫障碍的<b>社会模型</b>：英国的残障者组织 UPIAS 在 1976 年的小册子《残障的基本原则》里就这样主张，迈克·奥利弗（Mike Oliver）1983 年的《Social Work with Disabled People》把它带给了更多专业人士。它把问题从“这个人哪里不行”挪到了“这个设计对谁关了门”。</p>
+  <p>先做个小实验：用一只手玩一款需要双手的动作游戏，比如左手握着咖啡，右手操作。没几分钟就会发现，很多游戏默认玩家有“两只手、全部手指灵活、看得清、听得到、反应够快”。</p>
+  <p><span class="term" tabindex="0" data-def="让尽可能多的人能够使用一件产品、一个界面或一个环境，不论他们的身体、感官、认知条件或所处情境如何。在游戏里，指让更多玩家能进入、理解并玩下去。">可访问性</span>（accessibility，常缩写 a11y）问的是：<b>设计对谁关上了门？</b>这里的“障碍”不是某个人身上的标签，而是<b>人与设计之间的不匹配</b>。同一个人在不同时刻，会遇到不同的不匹配。</p>
+  <p>这个看法叫障碍的<b>社会模型</b>。英国的残障者组织 UPIAS 在 1976 年的小册子《残障的基本原则》里就这样主张，迈克·奥利弗（Mike Oliver）1983 年的著作把它带给了更多专业人士。问题从“这个人哪里不行”，挪到了“这个设计对谁关了门”。</p>
     </div>
   </div>
-  <p>常见的分法是三类，这套“永久、暂时、情境”的框架常被归到微软的包容性设计工具包（Kat Holmes 主持）：</p>
+  <p>常见的分法是三类。这套“永久、暂时、情境”的框架常被归到微软的包容性设计工具包（Kat Holmes 主持）：</p>
   <div class="grid3">
     <div class="card y mini"><div class="ico">♾️</div><h3>永久</h3><p>长期存在：盲或低视力、失聪或重听、只有一只手或手臂、阅读障碍。</p></div>
     <div class="card b mini"><div class="ico">⏳</div><h3>暂时</h3><p>会好起来：手臂骨折打石膏、眼科检查后瞳孔放大、中耳炎、熬夜后注意力涣散。</p></div>
@@ -102,12 +102,12 @@
       </g>
     </svg>
   </div>
-  <p class="small">同一列竖着读：<b>需要的解决办法常常相同</b>。字幕既帮到失聪的玩家，也帮到地铁里静音的玩家；单手可用的按键布局，既帮到只有一只手的人，也帮到手臂骨折的人和正抱着孩子的人。</p>
+  <p class="small">同一列竖着读，<b>需要的解决办法常常相同</b>。字幕既帮到失聪的玩家，也帮到地铁里静音的玩家。单手可用的按键布局，既帮到只有一只手的人，也帮到手臂骨折的人和正抱着孩子的人。</p>
 
-  <div class="eg" data-ic="♾️"><span data-illus="c13_onehand"></span><div class="egt"><b>永久：</b>一位玩家天生只有一只手。对他来说，“同时按住方向键、跳跃、冲刺和攻击”不是难度，而是物理上的墙：不管他多想玩，手指的数量就摆在那里。</div></div>
-  <div class="eg" data-ic="⏳"><span data-illus="c13_cast"></span><div class="egt"><b>暂时：</b>你的右手打着石膏三周。你还是想玩，却发现游戏只允许 WASD 加鼠标。三周以后你好了，那堵墙对别人却一直在。</div></div>
-  <div class="eg" data-ic="📍"><span data-illus="c13_night"></span><div class="egt"><b>情境：</b>你在深夜的卧室里玩，孩子刚睡着，不敢开声音。如果关键提示全靠声音，你就“暂时失聪”了。你没有任何障碍，只是环境替你制造了一个。</div></div>
-  <div class="eg bad" data-ic="🎨"><span data-illus="c13_cbmode"></span><div class="egt"><b>反例（差一点就对）：</b>“我们有色盲模式”，可是模式里只是把红绿换成了更鲜艳的红绿。看似做了，实际上没有解决“只靠颜色区分”这个根本问题，下面的障碍模拟器里你可以亲手测。</div></div>
+  <div class="eg" data-ic="♾️"><span data-illus="c13_onehand"></span><div class="egt"><b>永久：</b>一位玩家天生只有一只手。对他来说，“同时按住方向键、跳跃、冲刺和攻击”不是难度，是物理上的墙：不管多想玩，手指的数量就摆在那里。</div></div>
+  <div class="eg" data-ic="⏳"><span data-illus="c13_cast"></span><div class="egt"><b>暂时：</b>右手打着石膏三周。还是想玩，却发现游戏只允许 WASD 加鼠标。三周以后手好了，那堵墙对别人却一直在。</div></div>
+  <div class="eg" data-ic="📍"><span data-illus="c13_night"></span><div class="egt"><b>情境：</b>深夜在卧室里玩，孩子刚睡着，不敢开声音。如果关键提示全靠声音，玩家就“暂时失聪”了。玩家没有任何障碍，是环境替他制造了一个。</div></div>
+  <div class="eg bad" data-ic="🎨"><span data-illus="c13_cbmode"></span><div class="egt"><b>反例（差一点就对）：</b>“我们有色盲模式”，可是模式里只是把红绿换成了更鲜艳的红绿。看似做了，实际上没有解决“只靠颜色区分”这个根本问题，下面的障碍模拟器可以亲手测。</div></div>
 
   <div class="sec"><span class="n">2</span><h2><span class="tag what">是什么</span>游戏里的常见做法，与“多通道冗余”</h2></div>
   <p>游戏比一般软件更苛刻：它同时要求<b>感知、判断、操作、时间压力</b>。所以游戏界常用一套选项来“放宽”每一个环节。按四大类整理：</p>
@@ -133,7 +133,7 @@
       <li>减少动态、闪光与屏幕晃动；可关的镜头摇晃</li>
       <li>清晰一致的图标与术语</li></ul></div>
   </div>
-  <p>这些选项背后有一个共同原则：<span class="term" tabindex="0" data-def="同一条重要信息通过两路或更多感官/表达方式同时传达（例如颜色+形状+文字，声音+画面+震动），任何一路缺失，信息仍然到达。">多通道冗余</span>——重要信息不要只走一条路。</p>
+  <p>这些选项背后有一个共同原则：<span class="term" tabindex="0" data-def="同一条重要信息通过两路或更多感官/表达方式同时传达（例如颜色+形状+文字，声音+画面+震动），任何一路缺失，信息仍然到达。">多通道冗余</span>，即重要信息不要只走一条路。</p>
   <div class="card">
     <svg viewBox="0 0 700 270" width="100%" role="img" aria-label="流程图：事件“敌人从左后方接近”同时通过画面边缘箭头、立体声脚步声、手柄左侧震动三条通道传出，不同的玩家至少能接收到其中一路。">
       <g class="rough" stroke="#2b2b3a" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -156,16 +156,16 @@
       </g>
     </svg>
   </div>
-  <p class="small">注意“冗余”不是“重复啰嗦”。它的代价通常很小（多画一个箭头），但换来的是：任何一路因为障碍、环境或设备而失效时，游戏仍然能玩。</p>
+  <p class="small">“冗余”不是“重复啰嗦”。它的代价通常很小（多画一个箭头），换来的是：任何一路因为障碍、环境或设备而失效时，游戏仍然能玩。</p>
   <div class="eg" data-ic="🎮"><span data-illus="c13_redundant"></span><div class="egt"><b>游戏：</b>敌人从左后方接近，屏幕左边缘出现箭头，耳机里是左声道的脚步声，手柄左侧轻轻震动。听不到的人看箭头，看不清的人听声音，两样都不方便的人还有震动。</div></div>
   <div class="eg" data-ic="🚦"><span data-illus="c13_signal"></span><div class="egt"><b>日常：</b>人行横道的信号灯，绿灯小人亮起时同时发出滴滴声。看不见的人听声音过马路，听不见的人看灯，戴着耳机的人也不会错过。</div></div>
-  <div class="eg bad" data-ic="🩸"><span data-illus="c13_hponly"></span><div class="egt"><b>反例：</b>低血量只用“屏幕边缘闪红光”提示。红绿色觉不同的玩家可能分不清，开了“减少动态”的玩家根本看不到闪烁，这条唯一的通道一断，警告就彻底消失了。</div></div>
+  <div class="eg bad" data-ic="🩸"><span data-illus="c13_hponly"></span><div class="egt"><b>反例：</b>低血量只用“屏幕边缘闪红光”提示。红绿色觉不同的玩家可能分不清，开了“减少动态”的玩家根本看不到闪烁。这条唯一的通道一断，警告就彻底消失了。</div></div>
 
   <div class="sec"><span class="n">3</span><h2><span class="tag origin">发明故事</span>它们是怎么被“发明”出来的</h2></div>
   <div class="story">
     <h3>故事一：一道路缘石，挡住了一群人</h3>
-    <p>想象你坐轮椅，要从家去街角的商店。路很平，直到路口——人行道和马路之间有一道十几厘米高的<b>路缘石</b>。对走路的人这几乎不存在，对轮椅使用者它是一堵墙。你只能绕很远，或者请人抬。</p>
-    <p>先别往下读。如果你是城市的设计者，只能用最便宜的办法解决这个问题，你会怎么做？下面是一道“先猜后揭晓”：你觉得<b>修了缓坡（路缘石坡道）之后，哪些人会因此受益</b>？</p>
+    <p>想象坐轮椅，要从家去街角的商店。路很平，直到路口：人行道和马路之间有一道十几厘米高的<b>路缘石</b>。对走路的人这几乎不存在，对轮椅使用者它是一堵墙。只能绕很远，或者请人抬。</p>
+    <p>先别往下读。如果是城市的设计者，只能用最便宜的办法解决这个问题，会怎么做？下面是一道“先猜后揭晓”：<b>修了缓坡（路缘石坡道）之后，哪些人会因此受益</b>？</p>
     <div class="c13_guess" id="c13_guess">
       <label><input type="checkbox" value="wc"> 轮椅使用者</label>
       <label><input type="checkbox" value="st"> 推婴儿车的家长</label>
@@ -178,43 +178,43 @@
     </div>
     <div class="row"><button class="btn" id="c13_reveal">揭晓</button><button class="btn alt" id="c13_greset">重猜</button></div>
     <div class="msg" id="c13_gmsg">先勾选你的预测，再点“揭晓”。</div>
-    <div class="sticky">试试看：先勾出你认为会受益的人，再点“揭晓”，数一数你漏猜了几类，想想为什么会漏。</div>
+    <div class="sticky">试试看：先勾出认为会受益的人，再点“揭晓”，数一数漏猜了几类，想想为什么会漏。</div>
 
     <h4>历史上发生了什么</h4>
     <div class="timeline">
-      <div class="ev hasimg"><span data-illus="c13_tl_kala"></span><div><b class="yr">二战后</b>　美国密歇根州卡拉马祖（Kalamazoo）的一位退伍军人说服市政府，在市中心四个街角把人行道切出坡道。这是常被提到的早期尝试，但它没有扩散成全国性的做法。</div></div>
+      <div class="ev hasimg"><span data-illus="c13_tl_kala"></span><div><b class="yr">二战后</b>　美国密歇根州卡拉马祖（Kalamazoo）的一位退伍军人说服市政府，在市中心四个街角把人行道切出坡道。这是常被提到的早期尝试，没有扩散成全国性的做法。</div></div>
       <div class="ev hasimg"><span data-illus="c13_tl_ed"></span><div><b class="yr">1960s</b>　埃德·罗伯茨（Ed Roberts）是小儿麻痹症幸存者，靠铁肺维生。1962 年加州大学伯克利分校起初拒收他，后来他入学，住在校内医院的房间里。他和其他残障学生组成“滚轮四人组”（Rolling Quads），开始争取残障者的公民权利。</div></div>
       <div class="ev hasimg"><span data-illus="c13_tl_berk"></span><div><b class="yr">1971</b>　9 月 28 日，伯克利市议会一致通过政策，在 15 个指定街角立即修建路缘石坡道。这被视为较早的、成规模的路缘石坡道项目。</div></div>
       <div class="ev hasimg"><span data-illus="c13_tl_ada"></span><div><b class="yr">1977–1990</b>　残障者抗议与占领联邦大楼、要求落实保护条款；1990 年美国《残疾人法案》（ADA）签署，要求公共场所、交通与就业方面的无障碍。</div></div>
-      <div class="ev hasimg"><span data-illus="c13_tl_blackwell"></span><div><b class="yr">2017</b>　安吉拉·格洛弗·布莱克韦尔（Angela Glover Blackwell）在《斯坦福社会创新评论》发表《路缘石效应》（<i>The Curb-Cut Effect</i>），把“为最边缘的人做的设计，最终惠及所有人”这一观察推广开来。</div></div>
+      <div class="ev hasimg"><span data-illus="c13_tl_blackwell"></span><div><b class="yr">2017</b>　安吉拉·格洛弗·布莱克韦尔（Angela Glover Blackwell）发表《路缘石效应》（<i>The Curb-Cut Effect</i>），把“为最边缘的人做的设计，最终惠及所有人”这一观察推广开来。</div></div>
     </div>
-    <p>关键洞察是：<b>障碍不在人身上，在环境里；改环境，比让每个人自己“克服”便宜得多，而且惠及更多人。</b>这也是“通用设计”（universal design）的核心。</p>
-    <p class="src">出处：99% Invisible《Curb Cuts》一集（99percentinvisible.org/episode/curb-cuts/，卡拉马祖与伯克利的时间线）；Blackwell (2017), <i>Stanford Social Innovation Review</i>。不同来源对“最早的路缘石坡道在哪里”的说法有出入，上面采用保守表述。</p>
+    <p>关键洞察是：<b>障碍不在人身上，在环境里。改环境，比让每个人自己“克服”便宜得多，而且惠及更多人。</b>这也是“通用设计”（universal design）的核心。</p>
+    <p class="src">出处：99% Invisible《Curb Cuts》一集（卡拉马祖与伯克利的时间线）；Blackwell (2017), <i>Stanford Social Innovation Review</i>。不同来源对“最早的路缘石坡道在哪里”说法有出入，上面采用保守表述。</p>
   </div>
 
   <div class="story">
     <h3>故事二：字幕为什么要“可开关”</h3>
-    <p>聋人和重听的观众看电视，只有画面，没有听到的内容。最直接的办法是把字幕<b>烧进</b>画面——这叫开放式字幕（open captions）。但这样所有观众都看到字幕，商业电视台担心不需要的人嫌烦、把观众赶走。问题于是变成：<b>能不能只对需要的人显示？</b></p>
+    <p>聋人和重听的观众看电视，只有画面，没有听到的内容。最直接的办法是把字幕<b>烧进</b>画面，这叫开放式字幕（open captions）。但这样所有观众都看到字幕，商业电视台担心不需要的人嫌烦、把观众赶走。问题于是变成：<b>能不能只对需要的人显示？</b></p>
     <div class="timeline">
       <div class="ev hasimg"><span data-illus="c13_tl_french"></span><div><b class="yr">1972</b>　美国公共电视台 PBS 的《法国大厨》（<i>The French Chef</i>）开始定期播出开放式字幕。</div></div>
       <div class="ev hasimg"><span data-illus="c13_tl_nci"></span><div><b class="yr">1979</b>　美国成立国家字幕协会（National Captioning Institute），目标之一是争取商业电视网的配合。</div></div>
-      <div class="ev hasimg"><span data-illus="c13_tl_cc"></span><div><b class="yr">1980-03-16</b>　美国首批定期的<b>隐藏式字幕</b>（closed captions）节目播出：字幕信号藏在电视信号里，需要解码器才显示——想看的人开，不想看的人关。</div></div>
-      <div class="ev hasimg"><span data-illus="c13_tl_decoder"></span><div><b class="yr">1990 年的《电视解码器电路法》</b>　要求 13 英寸及以上的模拟电视机内置解码功能，自 1993 年 7 月 1 日起执行。解码器从“要另外买的设备”变成“每台电视都有”。</div></div>
+      <div class="ev hasimg"><span data-illus="c13_tl_cc"></span><div><b class="yr">1980-03-16</b>　美国首批定期的<b>隐藏式字幕</b>（closed captions）节目播出：字幕信号藏在电视信号里，需要解码器才显示。想看的人开，不想看的人关。</div></div>
+      <div class="ev hasimg"><span data-illus="c13_tl_decoder"></span><div><b class="yr">1990 年</b>　《电视解码器电路法》要求 13 英寸及以上的模拟电视机内置解码功能，自 1993 年 7 月 1 日起执行。解码器从“要另外买的设备”变成“每台电视都有”。</div></div>
     </div>
     <p>后来字幕被大量<b>没有听障</b>的人使用：嘈杂的酒吧、安静的图书馆、学外语、深夜不想吵醒家人。游戏里的字幕也是同一个故事：<b>“可开关”</b>让需要的人用上，同时不打扰其他人。</p>
-    <p class="src">出处：Wikipedia《Closed captioning》条目对上述日期的整理；该条目对法案通过日期与法案名称年份的表述略有出入，这里只取其要求（13 英寸及以上、1993 年 7 月 1 日）。</p>
+    <p class="src">出处：Wikipedia《Closed captioning》条目对上述日期的整理；该条目对法案名称年份的表述略有出入，这里只取其要求。</p>
   </div>
 
   <div class="story">
     <h3>故事三：游戏界如何开始认真对待它</h3>
     <div class="timeline">
       <div class="ev hasimg"><span data-illus="c13_tl_able"></span><div><b class="yr">2004</b>　马克·巴莱特（Mark Barlet）创立 AbleGamers，起因是他的好友因多发性硬化症逐渐无法操作鼠标，却仍想玩游戏。这个非营利组织后来致力于评估玩家需求、提供设备和咨询。</div></div>
-      <div class="ev hasimg"><span data-illus="c13_tl_gag"></span><div><b class="yr">2012</b>　《游戏可访问性指南》（Game Accessibility Guidelines）发布（Game Informer 在 2012 年 9 月报道）。它由一组工作室、专家与学者合作编写，按<b>影响面、影响深度、实现成本</b>把建议分为基础、中级、高级三档，让开发者知道从哪里下手。</div></div>
-      <div class="ev hasimg"><span data-illus="c13_tl_xac"></span><div><b class="yr">2018</b>　微软于 5 月公布 Xbox 自适应手柄（Xbox Adaptive Controller），9 月 4 日上市。它的思路是：不替玩家选好操作方式，而是提供大按钮与大量接口，让玩家接上自己的外设搭出适合自己的“手柄”。</div></div>
-      <div class="ev hasimg"><span data-illus="c13_tl_tlou"></span><div><b class="yr">2020</b>　《最后生还者 第二章》（<i>The Last of Us Part II</i>）发售时提供 60 多项无障碍设置，并包含面向盲人和低视力玩家的功能；开发团队很早就请盲人顾问布兰登·科尔（Brandon Cole）参与咨询。它成为业界讨论“大作也能做到多深”的一个常被引用的例子。</div></div>
+      <div class="ev hasimg"><span data-illus="c13_tl_gag"></span><div><b class="yr">2012</b>　《游戏可访问性指南》（Game Accessibility Guidelines）发布。它由一组工作室、专家与学者合作编写，按<b>影响面、影响深度、实现成本</b>把建议分为基础、中级、高级三档，让开发者知道从哪里下手。</div></div>
+      <div class="ev hasimg"><span data-illus="c13_tl_xac"></span><div><b class="yr">2018</b>　微软公布 Xbox 自适应手柄（Xbox Adaptive Controller），9 月 4 日上市。它的思路是：不替玩家选好操作方式，而是提供大按钮与大量接口，让玩家接上自己的外设，搭出适合自己的“手柄”。</div></div>
+      <div class="ev hasimg"><span data-illus="c13_tl_tlou"></span><div><b class="yr">2020</b>　《最后生还者 第二章》（<i>The Last of Us Part II</i>）发售时提供 60 多项无障碍设置，并包含面向盲人和低视力玩家的功能。开发团队很早就请盲人顾问布兰登·科尔（Brandon Cole）参与咨询。</div></div>
     </div>
-    <p>这条线索共同指向：<b>无障碍不是事后补丁，而是越早问“这个设计对谁关了门”，成本越低。</b>另外，微软也提供自己的 Xbox Accessibility Guidelines（learn.microsoft.com/gaming/accessibility），把类似检查项整理成可对照的清单。</p>
-    <p class="src">出处：AbleGamers 官网“Mark Barlet”页（ablegamers.org/mark-barlet/）；Game Informer, 2012-09-04《Game Accessibility Guidelines Published》与 gameaccessibilityguidelines.com 站点说明；Microsoft Xbox News 2018-09-04；Naughty Dog / PlayStation Blog 2020-06 关于 TLOU2 无障碍功能的文章。这里不评价“谁最好”，只记录这些节点。</p>
+    <p>这些线索共同指向：<b>无障碍不是事后补丁，越早问“这个设计对谁关了门”，成本越低。</b>微软也提供自己的 Xbox Accessibility Guidelines，把类似检查项整理成可对照的清单。</p>
+    <p class="src">出处：AbleGamers 官网“Mark Barlet”页；Game Informer, 2012-09-04《Game Accessibility Guidelines Published》与 gameaccessibilityguidelines.com；Microsoft Xbox News 2018-09-04；Naughty Dog / PlayStation Blog 2020-06 关于 TLOU2 无障碍功能的文章。这里只记录这些节点，不评价“谁最好”。</p>
   </div>
 
   <div class="sec"><span class="n">4</span><h2><span class="tag why">为什么成立</span>通用设计、对比度、闪光与色觉</h2></div>
@@ -261,7 +261,7 @@
       </g>
     </svg>
   </div>
-  <p>互动：自己试试，选两个颜色，看比值与是否达标。试一下游戏里常见的“灰字配深色底”“黄字配白底”。</p>
+  <p>自己试试：选两个颜色，看比值与是否达标。试一下游戏里常见的“灰字配深色底”“黄字配白底”。</p>
   <div class="board">
     <div class="c13_cin">
       <label>文字色 <input type="color" id="c13_fg" value="#8d8d7f"></label>
@@ -278,25 +278,25 @@
   <div class="sticky" id="c13_ctask">试试看：点“游戏里的灰提示”，它几乎看不清。自己调颜色，或点“调到刚好达标”，把它救到 4.5:1，成功时这里会出现 ✔。</div>
   <div class="why-box">
     <h3>出自谁、什么观点</h3>
-    <p><b>对比度公式</b>来自 W3C 的 WCAG（这里采用 2.1 的规定）：先把 sRGB 的每个通道转成线性值，再按 0.2126R+0.7152G+0.0722B 算相对亮度，对比度 = (较亮 + 0.05) ÷ (较暗 + 0.05)。这个数值是一个<b>起点</b>，不能代替真人测试：字体粗细、抗锯齿、屏幕亮度和用户的视力都会影响实际可读性。</p>
-    <p class="src">出处：W3C《Understanding SC 1.4.3: Contrast (Minimum)》，www.w3.org/WAI/WCAG21/Understanding/contrast-minimum.html。游戏界面中的非文字元素（如血条边框）常参照 3:1 的做法。</p>
+    <p><b>对比度公式</b>来自 W3C 的 WCAG：先把 sRGB 的每个通道转成线性值，再按 0.2126R+0.7152G+0.0722B 算相对亮度，对比度 = (较亮 + 0.05) ÷ (较暗 + 0.05)。这个数值只是<b>起点</b>，不能代替真人测试：字体粗细、抗锯齿、屏幕亮度和视力都会影响实际可读性。</p>
+    <p class="src">出处：W3C《Understanding SC 1.4.3: Contrast (Minimum)》。游戏界面中的非文字元素（如血条边框）常参照 3:1 的做法。</p>
   </div>
 
   <h3>③ 闪光：别让画面伤到人</h3>
-  <p>少数人对闪烁画面敏感，可能诱发<span class="term" tabindex="0" data-def="对特定闪烁或图案敏感而诱发癫痫发作。有此类病史的人对高亮度、快速交替、大面积的闪光尤其敏感。">光敏性癫痫</span>发作。WCAG 2.3.1（A 级）的底线是：<b>任何一秒内，一般闪光不超过 3 次，红色闪光不超过 3 次</b>；或闪光区域足够小（该标准按“10 度视野内 0.006 球面度”这样的面积来界定）。这里的“一般闪光”指相对亮度出现一对相反变化、幅度达到最大亮度的至少 10%，且较暗一侧低于 0.80。</p>
-  <p>游戏设计者的含义：<b>爆炸白屏、频闪特效、快速切换的明暗</b>要小心，并提供“减少闪光/动态”的选项。</p>
-  <p class="src">出处：W3C《Understanding SC 2.3.1: Three Flashes or Below Threshold》，www.w3.org/WAI/WCAG21/Understanding/three-flashes-or-below-threshold.html。该标准针对网页，用于游戏时是参考而非法定要求；游戏平台与行业可能有自己的检测规程。</p>
+  <p>少数人对闪烁画面敏感，可能诱发<span class="term" tabindex="0" data-def="对特定闪烁或图案敏感而诱发癫痫发作。有此类病史的人对高亮度、快速交替、大面积的闪光尤其敏感。">光敏性癫痫</span>发作。WCAG 2.3.1（A 级）的底线是：<b>任何一秒内，一般闪光不超过 3 次，红色闪光不超过 3 次</b>；闪光区域足够小也可以。</p>
+  <p>对游戏设计者来说：<b>爆炸白屏、频闪特效、快速切换的明暗</b>要小心，并提供“减少闪光/动态”的选项。</p>
+  <p class="src">出处：W3C《Understanding SC 2.3.1: Three Flashes or Below Threshold》。该标准针对网页，用于游戏时是参考而非法定要求。</p>
 
   <h3>④ 色觉差异：不是少数的少数</h3>
-  <p>红绿色觉缺陷在不同人群里比例不同。据维基百科对文献的整理，在北欧裔人群中，<b>男性约 8%，女性约 0.5%</b>有红绿色觉缺陷；其中最常见的是绿色弱（deuteranomaly，男性约 5%）；蓝黄型（tritan）和全色盲（achromatopsia）都非常罕见（蓝黄型低于 0.01%）。</p>
-  <p>换句话说：<b>每 12 位男性玩家里，平均就约有 1 位“红绿难分”的人</b>。所以红蓝分阵营、红绿血量这类设计，不是边角问题。</p>
+  <p>红绿色觉缺陷在不同人群里比例不同。据维基百科对文献的整理，在北欧裔人群中，<b>男性约 8%，女性约 0.5%</b>有红绿色觉缺陷，其中最常见的是绿色弱（deuteranomaly，男性约 5%）。蓝黄型和全色盲都非常罕见。</p>
+  <p>也就是说，<b>每 12 位男性玩家里，平均就约有 1 位“红绿难分”的人</b>。红蓝分阵营、红绿血量这类设计，因此不是边角问题。</p>
   <p class="src">出处：Wikipedia《Color blindness》条目（Epidemiology 部分，引用多项人群研究）；比例随人群和测量方法不同而变化，这里只做数量级参考。</p>
 
   <h3>⑤ 认知负荷：无障碍和“好设计”是同一件事</h3>
   <div class="withimg rev">
     <span data-illus="c13_load"></span>
     <div>
-      <p>还记得新手教学为什么要一次只教一件事吗？因为人的工作记忆像一张很小的桌子，同一时刻摆不下几样东西。米勒（George Miller，1956）曾经概括为“7±2 个”，后来内尔森·考恩（Nelson Cowan，2001）重新梳理，认为纯粹的容量更像 4 个左右的“组块”，具体数字至今仍有争论。</p>
+      <p>还记得新手教学为什么要一次只教一件事吗？人的工作记忆像一张很小的桌子，同一时刻摆不下几样东西。米勒（George Miller，1956）曾经概括为“7±2 个”，后来内尔森·考恩（Nelson Cowan，2001）认为纯粹的容量更像 4 个左右的“组块”，具体数字至今仍有争论。</p>
       <p>约翰·斯维勒（John Sweller，1988）把这个想法用到学习上，提出认知负荷理论：任务太杂、信息太散，桌子就满了，再多的东西直接掉下去。游戏还要再加上时间压力：地图、血条、敌人、提示全要看，同时还得按键。</p>
       <p>对有阅读障碍、注意力难集中的人，或者刚下夜班的人，这张桌子更小。降低负荷的做法，比如清晰的图标、一次只教一件事、可回看的提示、不强迫快速反应，既帮助有认知障碍的玩家，也帮助疲惫的、分心的、第一次玩的人。<b>这就是路缘石效应的认知版本。</b></p>
     </div>
@@ -307,15 +307,15 @@
   <div class="withimg">
     <span data-illus="c13_veil"></span>
     <div>
-      <p>做个思想实验：你要设计一款游戏，但必须在<b>不知道自己将成为哪位玩家</b>的前提下做决定。你可能是双手灵活的老手，也可能只有一只手，或者色觉与别人不同。在这种处境里，你大概会很自然地把选项做足。</p>
-      <p>哲学家约翰·罗尔斯（John Rawls）在《正义论》（1971）里用的就是这种“无知之幕”：公平的规则，是在不知道自己处境的时候定下的。他讨论的是社会制度，搬到设计上只是一个类比，但它回答了“为什么要为少数人做”：因为设计的人没法保证自己永远不是那少数。</p>
-      <p>设计界对应的说法叫通用设计，据说建筑师罗恩·梅斯（Ron Mace）在 1985 年前后提出这个词，主张从一开始就让尽可能多的人能用，而不是做完再补丁。</p>
+      <p>做个思想实验：要设计一款游戏，但必须在<b>不知道自己将成为哪位玩家</b>的前提下做决定。可能是双手灵活的老手，也可能只有一只手，或者色觉与别人不同。在这种处境里，大概会很自然地把选项做足。</p>
+      <p>哲学家约翰·罗尔斯（John Rawls）在《正义论》（1971）里用的就是这种“无知之幕”：公平的规则，是在不知道自己处境的时候定下的。他讨论的是社会制度，搬到设计上只是一个类比，但它回答了“为什么要为少数人做”：设计的人没法保证自己永远不是那少数。</p>
+      <p>设计界对应的说法叫通用设计。据说建筑师罗恩·梅斯（Ron Mace）在 1985 年前后提出这个词，主张从一开始就让尽可能多的人能用，不要做完再补丁。</p>
     </div>
   </div>
   <p class="src">出处：John Rawls，《A Theory of Justice》（1971）；Ron Mace 与通用设计的渊源见 NC State 通用设计中心的介绍（年份各来源略有出入，这里取保守说法）。</p>
 
   <div class="sec"><span class="n">5</span><h2><span class="tag how">怎么用</span>招牌互动：障碍模拟器</h2></div>
-  <p>下面是一个简化的游戏画面：左上血条、右上小地图、红色的敌人和绿色的友军、底部一条提示文字，还有一个“只靠声音”的威胁。先做预测：<b>如果你选“绿色盲”，哪些信息会丢？</b>然后切换试试，页面会逐项诊断。最后打开“设计加固”，看多通道冗余怎么补上。</p>
+  <p>下面是一个简化的游戏画面：左上血条、右上小地图、红色的敌人和绿色的友军、底部一条提示文字，还有一个“只靠声音”的威胁。先做预测：<b>选“绿色盲”，哪些信息会丢？</b>然后切换试试，页面会逐项诊断。最后打开“设计加固”，看多通道冗余怎么补上。</p>
   <div class="board">
     <div><b>视觉类型（近似模拟）：</b></div>
     <div class="c13_chips" id="c13_modes"></div>
@@ -340,7 +340,7 @@
     <filter id="c13_f_blur"><feGaussianBlur stdDeviation="2.6"/></filter>
     <pattern id="c13_hatch" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="8" height="8" fill="#e0b020"/><rect width="3" height="8" fill="#222"/></pattern>
   </defs></svg>
-  <p class="small">简化声明：这些滤镜是对色觉缺陷的<b>近似</b>（色盲类型采用常见的颜色矩阵近似法，如 Machado 等人 2009 年提出的一类方法，我没有逐个核对数值，仅作教学示意），真实的感受因人而异，程度也有轻重之分；“低视力”只是高斯模糊。它们只能帮你<b>发现设计问题</b>，不能代替让真实的障碍用户来测试。</p>
+  <p class="small">简化声明：这些滤镜是对色觉缺陷的<b>近似</b>（采用常见的颜色矩阵近似法，数值没有逐个核对，仅作教学示意）。真实的感受因人而异；“低视力”只是高斯模糊。它们只能帮忙<b>发现设计问题</b>，不能代替让真实的障碍用户来测试。</p>
 
   <div class="sec"><span class="n">6</span><h2><span class="tag how">怎么用</span>辅助互动：按键重映射器（含单手检查）</h2></div>
   <p>先选一个动作（下面的按钮），再点键盘上的键来绑定。选择“单手模式”后，够不着的键会变暗，冲突（一个键绑了两个动作）会标红。试试：<b>只用左手，能不能把所有动作都绑好、没有冲突？</b></p>
@@ -372,25 +372,25 @@
     <div class="card g mini"><div class="ico">🤝</div><h3>和用户一起做</h3><p>障碍用户是专家，不是“被服务的对象”。早期就邀请，比上线后改便宜得多。</p></div>
   </div>
   <div class="eg" data-ic="🛗"><span data-illus="c13_braille"></span><div class="egt"><b>日常生活的例子：</b>电梯里的盲文按键对盲人是必需，对在黑暗里摸索的人也是线索；语音助手对运动障碍者是入口，也让开车的人少看一次屏幕。</div></div>
-  <div class="eg bad" data-ic="🔒"><span data-illus="c13_locked"></span><div class="egt"><b>反例：</b>某个游戏把无障碍选项都放在“困难模式之后才解锁的设置”里，或在你开了辅助模式后<b>锁成就</b>。选项在、但用了就被惩罚，等于没有。</div></div>
+  <div class="eg bad" data-ic="🔒"><span data-illus="c13_locked"></span><div class="egt"><b>反例：</b>某个游戏把无障碍选项都放在“困难模式之后才解锁的设置”里，或在玩家开了辅助模式后<b>锁成就</b>。选项在，但用了就被惩罚，等于没有。</div></div>
 
   <div class="misc">
     <h3>常见误区</h3>
     <ul>
-      <li><b>“可访问性 = 简单模式”</b>：难度只是众多选项之一；很多人要的是<b>换一种方式感知/操作</b>，挑战不变（比如可重映射按键、字幕）。</li>
+      <li><b>“可访问性 = 简单模式”</b>：难度只是众多选项之一。很多人要的是<b>换一种方式感知/操作</b>，挑战不变（比如可重映射按键、字幕）。</li>
       <li><b>“只有很少的玩家需要”</b>：除了永久障碍，还有暂时和情境障碍；红绿色觉缺陷在男性里也不算罕见。</li>
-      <li><b>“加个色盲模式就行”</b>：如果只是换了一套颜色，仍是靠颜色；更稳的是颜色之外再加形状、图案、文字。</li>
+      <li><b>“加个色盲模式就行”</b>：如果只是换了一套颜色，仍是靠颜色。更稳的是颜色之外再加形状、图案、文字。</li>
       <li><b>“做了选项就算完成”</b>：选项要<b>找得到</b>（首次启动就能设置）、<b>可预览</b>、<b>不惩罚使用者</b>。</li>
-      <li><b>“无障碍会破坏设计”</b>：好的做法常让设计更清晰；真正冲突的情形，需要具体权衡而不是一刀切。</li>
+      <li><b>“无障碍会破坏设计”</b>：好的做法常让设计更清晰。真正冲突的情形，需要具体权衡，不能一刀切。</li>
     </ul>
   </div>
 
   <div class="reflect">
     <h3>反思与争议</h3>
     <p><b>局限。</b>这里的模拟器和对比度计算都是简化的：不同的人障碍程度、辅助技术和使用习惯差别极大，“符合标准”不等于“好用”。WCAG 也是为网页设计的，搬到游戏里需要判断。</p>
-    <p><b>争议：难度该不该也是无障碍选项？</b>一种观点认为，调低难度、跳过战斗等本身就是重要的可访问手段，不应被污名化；另一种观点认为，某些游戏的核心挑战正是它想表达的内容，随意绕开会改变作品的意图。这里没有标准答案，常见的折中是：<b>提供细粒度的辅助</b>（放慢时间、辅助瞄准、可跳过的段落），并把选择权交给玩家，而不是“一刀切的简单模式”。</p>
+    <p><b>争议：难度该不该也是无障碍选项？</b>一种观点认为，调低难度、跳过战斗等本身就是重要的可访问手段，不应被污名化。另一种观点认为，某些游戏的核心挑战正是它想表达的内容，随意绕开会改变作品的意图。常见的折中是<b>提供细粒度的辅助</b>（放慢时间、辅助瞄准、可跳过的段落），把选择权交给玩家，不做“一刀切的简单模式”。</p>
     <p><b>争议：成本与优先级。</b>小团队资源有限，应该先做什么？《游戏可访问性指南》的“按影响面、影响深度和成本排序”提供了一种思路，但依游戏类型而变。</p>
-    <p><b>可能改变你的看法。</b>如果你原来觉得“无障碍是对少数人的照顾”，这一章想换成另一种看法：它更像<b>提高设计的容错度</b>——让游戏在更多的环境、更多的身体和更多的心情下仍然成立。</p>
+    <p><b>可能改变看法的一点。</b>如果原来觉得“无障碍是对少数人的照顾”，这里换一种看法：它更像<b>提高设计的容错度</b>，让游戏在更多的环境、更多的身体和更多的心情下仍然成立。</p>
   </div>
 
   <div class="key">
@@ -403,14 +403,14 @@
       <li>可访问性要<b>早做</b>、与用户<b>一起做</b>，并用真人测试验证。</li>
     </ul>
   </div>
-  <div class="tldr">障碍是人与设计之间的不匹配，而不是人的缺陷——给重要信息多开几条路，门就对更多人开着。</div>
+  <div class="tldr">障碍是人与设计之间的不匹配，不是人的缺陷。给重要信息多开几条路，门就对更多人开着。</div>
 
   <div class="sec"><span class="n">8</span><h2>练习</h2></div>
   <div id="quiz"></div>
 
   <div class="sec"><span class="n">9</span><h2>你的设计 / 你的思考</h2></div>
   <div class="card o">
-    <p>挑一个你熟悉的游戏（或你正在做的原型）：列出<b>三条只通过一条通道传达的重要信息</b>（只靠颜色？只靠声音？只靠快速反应？），再为每条补上第二条通道。最后写一写：它对哪些人最有用，对哪些“没有障碍”的人也会有用？</p>
+    <p>挑一个熟悉的游戏（或正在做的原型）：列出<b>三条只通过一条通道传达的重要信息</b>（只靠颜色？只靠声音？只靠快速反应？），再为每条补上第二条通道。最后写一写：它对哪些人最有用，对哪些“没有障碍”的人也会有用？</p>
     <textarea rows="6" data-save="ch13" placeholder="例：血量过低只用红色闪屏提示 → 加上心跳声和血条上的数字……"></textarea>
   </div>
 </main>
@@ -469,8 +469,8 @@ function c13toHex(rgb) { return "#" + rgb.map(v => Math.max(0, Math.min(255, Mat
     const chip = (ok, t) => `<span class="stat">${t} <b>${ok ? "✔" : "✘"}</b></span>`;
     $("c13_cstat").innerHTML = `<span class="stat">对比度 <b>${rd}:1</b></span>` + chip(r >= 4.5, "普通文字 AA（4.5）") + chip(r >= 3, "大字/图标 AA（3）") + chip(r >= 7, "普通文字 AAA（7）");
     if (r < 4.5) failed = true;
-    if (r >= 4.5 && failed) { const t = $("c13_ctask"); t.textContent = "✔ 完成：对比度 " + rd + ":1，普通文字达标。你刚才是靠眼睛，还是靠数字判断的？"; t.style.background = "#eaf9e4"; }
-    $("c13_cmsg").textContent = r >= 4.5 ? "普通文字也能达标。" : r >= 3 ? "只有大号文字（或粗体≥14 磅）达标：小字提示请别用这个组合。" : "太低：很多人会读不出来，哪怕你自己觉得“看得清”。";
+    if (r >= 4.5 && failed) { const t = $("c13_ctask"); t.textContent = "✔ 完成：对比度 " + rd + ":1，普通文字达标。刚才是靠眼睛，还是靠数字判断的？"; t.style.background = "#eaf9e4"; }
+    $("c13_cmsg").textContent = r >= 4.5 ? "普通文字也能达标。" : r >= 3 ? "只有大号文字（或粗体≥14 磅）达标：小字提示请别用这个组合。" : "太低：很多人会读不出来，哪怕自己觉得“看得清”。";
   }
   $("c13_fg").oninput = show; $("c13_bg").oninput = show;
   document.querySelectorAll("[data-cpre]").forEach(b => b.onclick = () => { const [f, g] = b.dataset.cpre.split(","); $("c13_fg").value = f; $("c13_bg").value = g; show(); });
@@ -554,7 +554,7 @@ function c13toHex(rgb) { return "#" + rgb.map(v => Math.max(0, Math.min(255, Mat
     const ratio = hi ? 21 : c13ratio(hintBase.fg, hintBase.bg);
     // 敌我
     if (!f && (m === "protan" || m === "deutan" || m === "mono")) out.push(["lost", "敌我识别（红=敌、绿=友）", "两种颜色在这类色觉下几乎无法区分，而且没有形状或文字作补充。"]);
-    else out.push(["ok", "敌我识别", f ? "颜色之外还有形状（三角/圆）和文字“敌/友”。" : "你的色觉能区分颜色，但这只靠颜色：换个类型就会丢。"]);
+    else out.push(["ok", "敌我识别", f ? "颜色之外还有形状（三角/圆）和文字“敌/友”。" : "色觉能区分颜色，但这只靠颜色：换个类型就会丢。"]);
     if (!f && m === "normal") out[out.length - 1][0] = "warn";
     // 小地图
     if (!f && (m === "tritan" || m === "mono")) out.push(["lost", "小地图安全区/危险区（蓝/黄）", "蓝黄在这类色觉下容易混淆，且只用颜色。"]);
@@ -568,7 +568,7 @@ function c13toHex(rgb) { return "#" + rgb.map(v => Math.max(0, Math.min(255, Mat
     else if (ratio < 4.5) out.push(["warn", "提示文字", `对比度约 ${(Math.floor(ratio * 100) / 100).toFixed(2)}:1，低于 4.5:1。打开“高对比度”或“设计加固”试试。`]);
     else out.push(["ok", "提示文字", `对比度约 ${(Math.floor(ratio * 100) / 100).toFixed(1)}:1，达标。`]);
     // 声音
-    if (S.mute && !S.cap && !f) out.push(["lost", "身后的脚步声", "威胁只通过声音传达，声音关闭后你什么都不知道。"]);
+    if (S.mute && !S.cap && !f) out.push(["lost", "身后的脚步声", "威胁只通过声音传达，声音关闭后什么都不知道。"]);
     else if (S.mute) out.push(["ok", "身后的脚步声", f ? "有字幕与方向箭头。" : "字幕提供了线索，但没有方向信息，可以更好。"]);
     else out.push(["ok", "身后的脚步声", "你能听到；但这只是一路，换个情境（静音）就会丢。"]);
     if (!S.mute && !f) out[out.length - 1][0] = "warn";
@@ -645,7 +645,7 @@ GD.mountQuiz($("quiz"), [
   { q: "一个 18 磅的大号标题，对比度是 3.5:1。按 WCAG AA，它的结论是？", opts: ["不达标，必须 4.5:1", "达标：大号文字的 AA 门槛是 3:1", "达标，因为 3.5 大于 1", "无法判断"], a: 1, why: "AA 级：普通文字 ≥ 4.5:1，大号文字（≥18 磅，或 ≥14 磅加粗）≥ 3:1。所以 3.5:1 的大标题达标，但同样配色的小字不达标。" },
   { q: "一款游戏用“红色=敌人，绿色=队友”区分阵营，且没有其他标记。最好的修复是？", opts: ["换一套更鲜艳的红和绿", "只加一个“色盲模式”开关，里面仍然是红绿", "在颜色之外再加形状、图案或文字等第二条通道", "什么都不做，因为色盲玩家很少"], a: 2, why: "多通道冗余：让信息不只靠颜色。红绿色觉缺陷在部分人群中比例不低（男性约 8% 的量级，来自北欧裔人群的统计整理），换更鲜艳的红绿依然无法解决问题。" },
   { q: "一个特效在一秒内白屏闪烁 5 次。按 WCAG 2.3.1 的闪光阈值，应该怎么办？", opts: ["没问题，特效就该炫", "超过了“任意一秒内最多 3 次闪光”的底线，应降低频率/面积，或提供减少闪光的选项", "只要不是红色就没问题", "把闪光变成 10 次更安全"], a: 1, why: "WCAG 2.3.1：任意一秒内一般闪光不超过 3 次（红色闪光同理），或闪光区域足够小。超过会增加光敏性癫痫风险，应降频、缩小范围，并提供“减少动态/闪光”选项。" },
-  { q: "（为什么）罗尔斯的“无知之幕”思想实验，对设计有什么启发？", opts: ["设计师应该蒙着眼睛做设计", "如果你不知道自己将是哪位玩家，就更愿意把选项做得让更多人用得上，因为谁都没法保证自己永远不是“少数”", "少数人的需求应该优先于多数人", "公平只关乎法律，与设计无关"], a: 1, why: "罗尔斯（1971）用它讨论制度的公平；搬到设计里是一个类比：人人都可能在某个时刻成为暂时或情境障碍的玩家，所以给更多人开门，其实是在给将来的自己留退路。" }
+  { q: "（为什么）罗尔斯的“无知之幕”思想实验，对设计有什么启发？", opts: ["设计师应该蒙着眼睛做设计", "如果不知道自己将是哪位玩家，就更愿意把选项做得让更多人用得上，因为谁都没法保证自己永远不是“少数”", "少数人的需求应该优先于多数人", "公平只关乎法律，与设计无关"], a: 1, why: "罗尔斯（1971）用它讨论制度的公平；搬到设计里是一个类比：人人都可能在某个时刻成为暂时或情境障碍的玩家，所以给更多人开门，其实是在给将来的自己留退路。" }
 ]);
 </script>
 </body>

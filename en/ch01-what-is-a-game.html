@@ -1,0 +1,559 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Chapter 1: What Is a Game?</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+  .c1def{display:flex;flex-wrap:wrap;gap:4px;margin:6px 0}
+  .c1row{display:flex;align-items:center;gap:8px;border:2.5px solid var(--ink);border-radius:12px 20px 12px 18px;padding:3px 12px;margin:6px 0;background:#fff;transition:background .25s,transform .25s}
+  .c1row .nm{flex:1;min-width:0}
+  .c1row .vd{flex:none;font-size:.9rem;white-space:nowrap}
+  .c1row.ok{background:#eaf9e4}
+  .c1row.bad{background:#ffe9ef;transform:translateX(4px)}
+  .c1row .tg{flex:none;font-size:.8rem;color:var(--soft);white-space:nowrap}
+  @media(max-width:700px){.c1row{flex-wrap:wrap}.c1row .tg{width:100%}}
+  .c1bars .rw{display:flex;align-items:center;gap:8px;margin:3px 0}
+  .c1bars .rw .nm{width:110px;flex:none;font-size:.95rem}
+  .c1bars .rw .bar{flex:1;margin:0;height:22px;border:2.5px solid var(--ink);border-radius:14px 8px 14px 8px;background:#fff;overflow:hidden}
+  .c1bars .rw .bar i{display:block;height:100%;width:0;transition:width .35s}
+  .c1bars .rw .v{width:48px;flex:none;text-align:right;font-family:var(--hand);font-size:1.15rem}
+  .c1tok{cursor:grab}
+  .c1tok:active{cursor:grabbing}
+</style>
+</head>
+<body data-ch="1">
+<main class="wrap">
+  <div class="hero">
+    <div class="txt">
+      <span class="badge">Chapter 1</span>
+      <h1>What Is a Game?</h1>
+      <p class="sub">First, what are we actually making? And why has such a simple-looking question stumped a whole line of philosophers?</p>
+    </div>
+    <svg viewBox="0 0 190 150" class="rough" aria-hidden="true">
+      <path d="M95 18 L170 70 H20 Z" fill="#ffb3c6" stroke="#2b2b3a" stroke-width="4" stroke-linejoin="round"/>
+      <rect x="30" y="70" width="130" height="62" fill="#ffe58a" stroke="#2b2b3a" stroke-width="4"/>
+      <path d="M52 70v62M82 70v62M112 70v62M142 70v62" stroke="#2b2b3a" stroke-width="4"/>
+      <text x="68" y="52" font-size="22">GAME</text>
+    </svg>
+  </div>
+
+  <div class="goals">
+    <h3>Learning goals</h3>
+    <span class="time">about 40 min</span>
+    <ul>
+      <li>Use four pillars (goal, rules, feedback, and voluntary participation) to decide whether an activity counts as a game, and say which pillar is missing.</li>
+      <li>Explain why “game” still has no agreed definition, and how philosophers have argued about it.</li>
+      <li>Explain why rules deliberately make things harder, why children and animals play at all, and sort games by four sources of fun.</li>
+    </ul>
+  </div>
+
+  
+  <div class="sec"><span class="n">1</span><h2><span class="tag what">What it is</span>Four pillars: what holds a game up</h2></div>
+  <div class="withimg">
+    <span data-illus="hideseek"></span>
+    <div>
+      <p>Start with a game everyone has played: hide-and-seek. One person closes their eyes and counts to ten while the others scatter and hide. The rules are so simple they need no explaining, yet a group of kids can run around all afternoon. What makes it so good?</p>
+      <p>Take it apart and four things turn up. The seeker has to find everybody and the hiders have to stay unfound: that is the <b>goal</b>. Nobody leaves the yard and nobody peeks while counting: those are the <b>rules</b>. A shriek when you get tagged, a pounding heart when you slip past, and at every moment you know whether you are winning or losing: that is <b>feedback</b>. And the last one may matter most: anyone who gets tired can say “I’m out,” and that is <b>voluntary participation</b>.</p>
+    </div>
+  </div>
+  <p>Designers like to call these four things the “four pillars” of a game. It is not a definition handed down by some scholar, just a handy pair of glasses. Pick any activity and count its pillars; the missing one usually decides what the activity turns into.</p>
+
+  <div class="grid4">
+    <div class="card y mini"><div class="ico">🚩</div><h3>Goal</h3><p>Where you are headed and what you are trying to get done. Without one, it is just a toy.</p></div>
+    <div class="card p mini"><div class="ico">📏</div><h3><span class="term" tabindex="0" data-def="The constraints that say what players may and may not do, there to create an interesting challenge">Rules</span></h3><p>What you can do and what you can’t. Rules create difficulty, and difficulty is what makes success feel earned.</p></div>
+    <div class="card b mini"><div class="ico">💡</div><h3><span class="term" tabindex="0" data-def="The game’s response to what the player does, telling them how well they are doing and how far they are from the goal">Feedback</span></h3><p>The game’s answer to every move: did that bring you closer, or farther away?</p></div>
+    <div class="card g mini"><div class="ico">🤝</div><h3><span class="term" tabindex="0" data-def="Players choose to take part and can leave at any time; the same activity done under compulsion often stops being a game">Voluntary participation</span></h3><p>You came in because you wanted to, and you can walk out any time. Being forced takes the fun out.</p></div>
+  </div>
+
+  <div class="card">
+    <h3>📊 The four pillars side by side: who has what</h3>
+    <svg viewBox="0 0 700 300" width="100%" role="img" aria-label="Table of the four pillars: hide-and-seek has all four, watching a movie has only voluntary participation, building blocks have feedback and voluntary participation, homework lacks voluntary participation">
+      <g class="rough" stroke="#2b2b3a" stroke-width="3.5" fill="none">
+        <path d="M20 52 H680"/><path d="M215 15 V285"/><path d="M590 15 V285"/>
+        <path d="M20 108 H680"/><path d="M20 164 H680"/><path d="M20 220 H680"/>
+      </g>
+      <g font-size="20" text-anchor="middle" fill="#2b2b3a">
+        <text x="260" y="40">Goal</text><text x="330" y="40">Rules</text><text x="400" y="40"><tspan font-size="15">Feedback</tspan></text><text x="470" y="40"><tspan font-size="14">Voluntary</tspan></text>
+        <text x="640" y="40"><tspan font-size="17">A game?</tspan></text>
+      </g>
+      <g font-size="22" fill="#2b2b3a">
+        <text x="28" y="90">🙈 Hide-and-seek</text><text x="28" y="146">🎬 A movie</text><text x="28" y="202">🧱 Blocks</text><text x="28" y="258">📝 Homework</text>
+      </g>
+      <g font-size="26" text-anchor="middle">
+        <g fill="#2f8f48"><text x="260" y="92">✔</text><text x="330" y="92">✔</text><text x="400" y="92">✔</text><text x="470" y="92">✔</text>
+          <text x="400" y="204">✔</text><text x="470" y="204">✔</text><text x="470" y="148">✔</text>
+          <text x="260" y="260">✔</text><text x="330" y="260">✔</text><text x="400" y="260">✔</text></g>
+        <g fill="#d6303a"><text x="260" y="148">✘</text><text x="330" y="148">✘</text><text x="400" y="148">✘</text>
+          <text x="260" y="204">✘</text><text x="330" y="204">✘</text><text x="470" y="260">✘</text></g>
+      </g>
+      <g font-size="19" text-anchor="middle" fill="#2b2b3a">
+        <text x="640" y="92">Yes 🎮</text><text x="640" y="148">No</text><text x="640" y="204"><tspan font-size="16">No goal</tspan></text><text x="640" y="260"><tspan font-size="16">Forced</tspan></text>
+      </g>
+    </svg>
+    <p class="small">The missing pillar decides what it becomes: without a goal it is a toy; without voluntary participation it is a chore.</p>
+  </div>
+
+  <div class="eg" data-ic="🙈"><span data-illus="found"></span><div class="egt"><b>Hide-and-seek</b>: the goal is not to be found, the rule is that nobody leaves the yard, being found or not is the feedback, and anyone can say “I’m out.” All four pillars stand in a neat row.</div></div>
+  <div class="eg" data-ic="🧹"><span data-illus="tidy"></span><div class="egt"><b>Tidying a room, turned into a game</b>: it is the same tidying, but add “get the floor visible in 10 minutes, and give yourself a star for every area you clear,” and goal, rules and feedback are all there. Plenty of people find they suddenly mind it less. Even small chores can have the four pillars “installed.”</div></div>
+  <div class="eg" data-ic="🧩"><span data-illus="tetris"></span><div class="egt"><b>Tetris</b>: the goal is to clear lines and score, the rules are that pieces can only fall and rotate, and the feedback is sound, line clears, and a speed that keeps climbing. All four pillars are present and each one is crystal clear.</div></div>
+  <div class="eg bad" data-ic="🧱"><span data-illus="blocks"></span><div class="egt"><b>Playing with blocks</b>: you play because you want to, and when the tower falls it clatters (feedback), but there is no goal and no rule. Two pillars are missing. The moment someone says “let’s see who builds the tallest, and a fall means you lose,” it becomes a game.</div></div>
+  <div class="eg bad" data-ic="📝"><span data-illus="homework"></span><div class="egt"><b>Homework you were told to do</b>: it has a goal, rules, and score feedback, but you had no choice. Just one pillar is missing, and the flavor changes from “game” to “task.”</div></div>
+  <div class="eg bad" data-ic="🎬"><span data-illus="movie"></span><div class="egt"><b>Watching a movie</b>: you chose it and you enjoy it, but there is nothing to achieve, no rule limits you, and nothing you do can change the plot. It is enjoyment, not a game.</div></div>
+
+  
+  <div class="sec"><span class="n">2</span><h2><span class="tag what">What it is</span>Four kinds of fun: where does the pleasure come from?</h2></div>
+  <p>The four pillars tell us what a game is made of, but not why it makes people happy. Chess and a merry-go-round are both called “play,” yet the first is fun because you win and the second because you get dizzy, which have almost nothing in common. In <i>Les jeux et les hommes</i> (1958; <i>Man, Play and Games</i>), the French scholar Roger Caillois asked a different question: not what a game <b>is</b>, but where people <b>get their pleasure</b>. He found only four answers.</p>
+  <div class="grid4">
+    <div class="card y mini"><span data-illus="agon"></span><h3><span class="term" tabindex="0" data-def="Agon (competition): testing skill or ability against others under conditions as fair as possible, as in chess or football">Competition</span></h3><p>Measuring yourself against others, with skill deciding who wins.<br>Chess, football, races</p></div>
+    <div class="card b mini"><span data-illus="alea"></span><h3><span class="term" tabindex="0" data-def="Alea (chance): the outcome is decided by chance factors the player cannot control, as in dice rolls or drawing lots">Chance</span></h3><p>Handing the result over to fate.<br>Dice, drawing lots, gacha pulls</p></div>
+    <div class="card p mini"><span data-illus="mimicry"></span><h3><span class="term" tabindex="0" data-def="Mimicry (simulation): acting out or pretending to be someone else, or entering another world, as in playing house or role-playing">Make-believe</span></h3><p>Pretending to be someone else, or stepping into another world.<br>Playing house, role-playing</p></div>
+    <div class="card g mini"><span data-illus="ilinx"></span><h3><span class="term" tabindex="0" data-def="Ilinx (vertigo): the pursuit of a brief, dizzying disruption of perception and a feeling of losing control, as in spinning or roller coasters">Vertigo</span></h3><p>Chasing a moment of dizzy, out-of-control thrill.<br>Merry-go-rounds, roller coasters</p></div>
+  </div>
+  <p>Most games, as it turns out, are mixtures. In <i>Teamfight Tactics</i> you have to work out a lineup strategy and also depend on which cards you draw; in a tabletop role-playing game you play a character, and the dice decide whether you succeed. Caillois also drew a horizontal axis: at one end is free, improvised “frolic” (<span class="term" tabindex="0" data-def="Paidia: free, improvised play with no fixed rules, such as roughhousing and chasing">paidia</span>), and at the other is “contest” with strict rules (<span class="term" tabindex="0" data-def="Ludus: structured play with clear rules that takes effort and skill, such as chess or hopscotch">ludus</span>). The same kind of fun can sit anywhere along this axis.</p>
+  <div class="card">
+    <svg viewBox="0 0 700 250" width="100%" role="img" aria-label="Spectrum from frolic (paidia) to contest (ludus), with kinds of play arranged by how strict their rules are">
+      <g class="rough" stroke="#2b2b3a" stroke-width="4" fill="none" stroke-linecap="round">
+        <path d="M50 130 H650"/><path d="M50 130 l16 -12 M50 130 l16 12"/><path d="M650 130 l-16 -12 M650 130 l-16 12"/>
+      </g>
+      <g font-size="22" fill="#2b2b3a">
+        <text x="50" y="30">Frolic (paidia)</text><text x="50" y="58" font-size="17" fill="#3f3f50"><tspan font-size="16">free, improvised, no fixed rules</tspan></text>
+        <text x="650" y="30" text-anchor="end">Contest (ludus)</text><text x="650" y="58" font-size="17" fill="#3f3f50" text-anchor="end"><tspan font-size="16">strict rules, takes effort</tspan></text>
+      </g>
+      <g font-size="18" text-anchor="middle" fill="#2b2b3a">
+        <circle cx="100" cy="130" r="7" fill="#b6e8a8" stroke="#2b2b3a" stroke-width="3"/><text x="100" y="170"><tspan font-size="16">Chase</tspan></text>
+        <circle cx="220" cy="130" r="7" fill="#ffb3c6" stroke="#2b2b3a" stroke-width="3"/><text x="220" y="105"><tspan font-size="16">Playing house</tspan></text>
+        <circle cx="330" cy="130" r="7" fill="#a8dcf0" stroke="#2b2b3a" stroke-width="3"/><text x="330" y="170"><tspan font-size="16">Dice, high wins</tspan></text>
+        <circle cx="450" cy="130" r="7" fill="#ffe58a" stroke="#2b2b3a" stroke-width="3"/><text x="450" y="105"><tspan font-size="16">Hopscotch</tspan></text>
+        <circle cx="560" cy="130" r="7" fill="#d8c8ff" stroke="#2b2b3a" stroke-width="3"/><text x="560" y="170">Chess</text>
+        <circle cx="620" cy="130" r="7" fill="#ffc078" stroke="#2b2b3a" stroke-width="3"/><text x="620" y="105"><tspan font-size="16">Pro league</tspan></text>
+      </g>
+      <text x="350" y="228" font-size="18" text-anchor="middle" fill="#3f3f50">Chasing has winners and losers too; chess just turns it into precise rules.</text>
+    </svg>
+  </div>
+  <div class="eg" data-ic="🎲"><span data-illus="autochess"></span><div class="egt"><b><i>Teamfight Tactics</i></b>: building a good lineup is competition, and the luck of the card refresh is chance. One game holds two kinds of fun.</div></div>
+  <div class="eg" data-ic="🎭"><span data-illus="trpg"></span><div class="egt"><b>Tabletop role-playing</b>: you play a character (make-believe), and the dice decide whether your actions succeed (chance).</div></div>
+  <div class="eg bad" data-ic="🤔"><span data-illus="simcity"></span><div class="egt"><b>Which kind is a management sim?</b> Caillois built his categories for traditional games, so video games fit a little awkwardly. Is building a city “pretending to be the mayor,” or “wrestling with yourself”? Different people will answer differently, and that is perfectly normal.</div></div>
+  <p class="small">Source: Roger Caillois, <i>Les jeux et les hommes</i> (1958). His ideas were inspired by, and also argue with, the Dutch scholar Johan Huizinga’s <i>Homo Ludens</i> (1938).</p>
+
+  
+  <div class="sec"><span class="n">3</span><h2><span class="tag origin">How it was invented</span>Why is “game” so hard to pin down?</h2></div>
+  <div class="story">
+    <h3>Everybody can play, yet nobody can say what it is</h3>
+    <div class="withimg rev">
+      <span data-illus="thinker"></span>
+      <div>
+        <p>It sounds a bit absurd. Nobody ever taught you, but you know hide-and-seek is a game and a final exam is not. Yet if someone asked you to write “game” down in one sentence, you would probably get stuck.</p>
+        <p>The twentieth-century philosopher Wittgenstein tripped over exactly this problem. Our intuition says a word can point to many things because they share a <b>common essence</b>, the way every triangle has three sides. So what about “game”? There ought to be one thread running through all games.</p>
+        <p>Before seeing what the philosophers did, <b>try it yourself first</b>. The “definition tester” below lets you build a definition out of “must have…” conditions and shows which activities it gets wrong.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🧪 Definition tester: can you write a definition with zero errors?</h3>
+    <p class="small">Click conditions to combine them into your definition (all the ones you switch on apply at once). Next to each activity is what common sense says about it. Try to bring the “misjudgments” down to 0.</p>
+    <div class="c1def" id="c1_crit"></div>
+    <div id="c1_rows"></div>
+    <div class="stat">Misjudgments right now <b id="c1_err">0</b></div>
+    <div class="stat">Your best score <b id="c1_best">–</b></div>
+    <button class="btn alt" id="c1_clear">Clear conditions</button>
+    <button class="btn pink" id="c1_rand">Try a random set</button>
+    <div class="msg" id="c1_msg" style="font-size:1.1rem">Click the conditions above to begin.</div>
+  </div>
+
+  <p>You probably noticed it: every “must” you add wrongly throws out some perfectly good game, and without it everything gets let in. This is the trap philosophers have been in for decades. Here is how they got through it, step by step:</p>
+  <div class="timeline">
+    <div class="ev hasimg"><span data-illus="magiccircle"></span><div><b class="yr">1938</b> The Dutch historian Huizinga argued in <i>Homo Ludens</i> that play is not a by-product of civilization but one of its sources. He also noticed something: once people start to play, it is as if a circle has been drawn on reality. Inside it a different set of rules applies, and outside everything returns to normal. He called it the “magic circle.” But his account reads more like a checklist of features, and it never pins down exactly where the circle is drawn.</div></div>
+    <div class="ev hasimg"><span data-illus="familytraits"></span><div><b class="yr">1953</b> Wittgenstein ran into the same trouble, but his method was unusual: don’t “think,” <i>look</i>. He laid out board games, card games, ball games, the Olympics, and asked what they have in common. Winning and losing? A child bouncing a ball off a wall and catching it has no winner. An opponent? Solitaire needs none. Always fun? Not necessarily. Searching and searching, he found only a <b>web of similarities</b>: A resembles B, B resembles C, yet A and C may have nothing in common. He called it <span class="term" tabindex="0" data-def="Family resemblance: members of a category share no single essential feature, only a network of overlapping similarities">family resemblance</span>: in a family, one person has Dad’s eyes and another has Mom’s nose, but no one feature is shared by the whole family.</div></div>
+    <div class="ev hasimg"><span data-illus="scholar"></span><div><b class="yr">1958</b> Caillois simply took another road. If no common feature can be found, stop asking “what is it?” and ask “where is the fun?” Sorting games into four families by the source of pleasure gives the four types you saw earlier.</div></div>
+    <div class="ev hasimg"><span data-illus="grasshopper"></span><div><b class="yr">1978</b> Not everyone was convinced. The philosopher Bernard Suits thought Wittgenstein had “looked too quickly”: games can be defined, and one thread is enough. His version: to play a game is to <b>voluntarily</b> attempt to overcome <b>unnecessary obstacles</b>. He put the idea in a quirky, delightful book called <i>The Grasshopper</i>.</div></div>
+    <div class="ev hasimg"><span data-illus="toolbox"></span><div><b class="yr">Today</b> The argument is not over. Game designers took the practical route: stop chasing the ultimate definition and keep a handy tool, which is the four pillars from the start. They work well on core cases, and when they break down on an edge case, that is often a hint that an interesting design space is hiding there.</div></div>
+  </div>
+
+  <div class="card">
+    <h3>🕸️ Family resemblance: no single thread runs through every member</h3>
+    <svg viewBox="0 0 700 340" width="100%" role="img" aria-label="Five games, each pair sharing a different similarity, but no feature that runs through all of them">
+      <g class="rough" stroke="#2b2b3a" stroke-width="3.5" fill="none" stroke-linecap="round">
+        <path d="M150 105 L290 62"/><path d="M410 62 L550 105"/><path d="M590 160 L520 262"/><path d="M400 292 L300 292"/><path d="M175 265 L108 165"/>
+      </g>
+      <g class="rough" stroke="#2b2b3a" stroke-width="3.5">
+        <ellipse cx="100" cy="125" rx="72" ry="30" fill="#d8c8ff"/>
+        <ellipse cx="350" cy="52" rx="72" ry="30" fill="#ffb3c6"/>
+        <ellipse cx="600" cy="125" rx="72" ry="30" fill="#a8dcf0"/>
+        <ellipse cx="500" cy="292" rx="85" ry="30" fill="#b6e8a8"/>
+        <ellipse cx="205" cy="292" rx="85" ry="30" fill="#ffe58a"/>
+      </g>
+      <g font-size="20" text-anchor="middle" fill="#2b2b3a">
+        <text x="100" y="132">♟️ Chess</text><text x="350" y="59">⚽ Football</text><text x="600" y="132">🙈 Hide-and-seek</text>
+        <text x="500" y="299">🏀 Wall ball</text><text x="205" y="299">🧩 Tetris</text>
+      </g>
+      <g font-size="17" text-anchor="middle" fill="#3f3f50">
+        <text x="190" y="62"><tspan font-size="15">has winners</tspan></text><text x="520" y="62"><tspan font-size="15">vs. other people</tspan></text><text x="618" y="212"><tspan font-size="15">no board</tspan></text><text x="618" y="234"><tspan font-size="15">involves moving</tspan></text>
+        <text x="350" y="326"><tspan font-size="15">solo is fine</tspan></text><text x="62" y="222"><tspan font-size="15">needs thinking</tspan></text>
+      </g>
+      <text x="350" y="185" font-size="22" text-anchor="middle" fill="#2b2b3a">No single feature</text>
+      <text x="350" y="212" font-size="22" text-anchor="middle" fill="#2b2b3a">runs through all members</text>
+    </svg>
+    <p class="small">The labels on the lines are the similarities between neighboring games. It is a sketch, not a strict classification.</p>
+  </div>
+  <div class="withimg">
+    <span data-illus="chairs"></span>
+    <div><p><b>“Family resemblance” in daily life</b>: what is a “chair”? A three-legged stool, a squashy sofa, a swing, an office swivel chair… it is hard to find one feature that all chairs share, yet you almost never get it wrong. “Game” is a word like that.</p></div>
+  </div>
+
+  <div class="why-box">
+    <h3>Suits’s reply: treat “unnecessary obstacles” as the heart of a game</h3>
+    <p>Suits thought Wittgenstein gave up too early. After looking closely at many games, he found they do share a structure. First there is a goal you could state even without the rules (say, getting a ball into a hole). Then rules block off the easiest route (no walking over and dropping it in; you must use a club). Finally, the players are willing to accept these limits, an attitude he called the <span class="term" tabindex="0" data-def="Lusory attitude: the player’s willingness to accept the “unnecessary obstacles” the rules create, and the very thing that makes a game a game">lusory attitude</span>. Put together: to play a game is to voluntarily try to overcome unnecessary obstacles.</p>
+    <p>Compare that with the four pillars and it lines up: his “prelusory goal” is the goal, his “rules” are the rules, and his “lusory attitude” is voluntary participation. Interestingly, “feedback” does not appear in his definition at all.</p>
+    <p>Not everyone agrees, of course. A professional footballer who plays for a salary: is he “playing”? Suits’s definition has trouble answering that, and the debate has never been settled.</p>
+    <div class="src">Sources: Ludwig Wittgenstein, <i>Philosophical Investigations</i> (1953), §§66–67; Bernard Suits, <i>The Grasshopper: Games, Life and Utopia</i> (1978); Johan Huizinga, <i>Homo Ludens</i> (1938).</div>
+  </div>
+
+  
+  <div class="sec"><span class="n">4</span><h2><span class="tag why">Why it works</span>Why do rules make things hard on purpose?</h2></div>
+  <div class="withimg">
+    <span data-illus="golf"></span>
+    <div>
+      <p>The most intriguing words in Suits’s definition are “unnecessary obstacles.” You could take a cable car up the mountain, and in golf you could simply carry the ball over and drop it in the hole, yet the rules block the easy route on purpose. Isn’t that just meddling?</p>
+      <p>Think about it: if golf let you walk the ball to the hole and put it in, it would be over in a second and you would feel no sense of achievement at all. It is the inconvenience of “clubs only” that turns “getting it in the hole” into something that takes skill and patience, so that at the moment you succeed you think “I did it.” <b>Obstacles are not the enemy of a game; they are its engine.</b></p>
+    </div>
+  </div>
+  <div class="why-box">
+    <h3>But the obstacles have to be accepted willingly</h3>
+    <p>Climbing stairs as a punishment is drudgery, while choosing to climb them for exercise is a little game. The only difference is whether you had a choice. That is the weight of the “voluntary” pillar: it turns the very same obstacle from torment into fun.</p>
+    <div class="src">Source: Bernard Suits, <i>The Grasshopper</i> (1978). This is Suits’s theory. It explains why games need rules, but it does not say which obstacles are the most fun.</div>
+  </div>
+  <div class="eg" data-ic="⛳"><span data-illus="golfswing"></span><div class="egt"><b>Golf</b>: the rules forbid carrying the ball to the hole; you may only hit it with a club. The easy route is blocked, so getting it in the hole means something.</div></div>
+  <div class="eg" data-ic="⛰️" data-t="Climbing in Breath of the Wild"><span data-illus="mountain"></span><div class="egt"><b>Climbing in <i>The Legend of Zelda: Breath of the Wild</i></b>: you could always walk around, but “climbing up by hand,” limited by the stamina bar, becomes a challenge that feels rewarding.</div></div>
+  <div class="eg" data-ic="🪜"><span data-illus="stairs"></span><div class="egt"><b>Choosing the stairs</b>: for the exercise, you give up the elevator, the easier option, and climbing becomes a little game of counting floors and watching the clock.</div></div>
+  <div class="eg bad" data-ic="📋"><span data-illus="forced"></span><div class="egt"><b>A tedious approval process at work</b>: it is a limit too, yet nobody finds it fun. Nobody asked for your consent, and it was not built to give you an interesting challenge.</div></div>
+
+  
+  <div class="sec"><span class="n">5</span><h2><span class="tag why">Why it works</span>Why do people and animals “play”?</h2></div>
+  <div class="withimg rev">
+    <span data-illus="kitten"></span>
+    <div>
+      <p>A kitten pounces on a ball of yarn, and having caught it does not eat it. Lion cubs wrestle, but their bites are gentle. They are not “working,” yet these moves look almost exactly like adult hunting and fighting.</p>
+      <p>Why would nature let young animals spend so much of their time on things that seem useless?</p>
+    </div>
+  </div>
+  <div class="why-box">
+    <h3>Play is a “safe practice ground”</h3>
+    <p>One influential view is that play lets the young rehearse, in an environment where <b>failure costs very little</b>, skills they will need later. The German scholar Karl Groos set out this “practice theory” systematically in <i>Die Spiele der Tiere</i> (1896) and <i>Die Spiele der Menschen</i> (1899). Missing the yarn ball once will not starve a kitten, but real prey gives only one chance.</p>
+    <p>Later researchers added an interesting detail: when animals play they often <b>handicap themselves</b>, with the stronger one holding back for the weaker one, and even <b>deliberately create small mishaps</b>. So play may be training not just specific moves but a flexible way of coping with the unexpected. (This is a view put forward in a 2001 review.)</p>
+    <p>That also shows why rules and feedback matter so much in games: they turn processes that are costly in real life into low-risk versions you can try again and again and get an immediate answer from.</p>
+    <div class="src">Sources: Karl Groos, <i>The Play of Animals</i> (1896) and <i>The Play of Man</i> (1899); Marek Špinka, Ruth Newberry and Marc Bekoff, “Mammalian play: training for the unexpected,” <i>The Quarterly Review of Biology</i> 76(2): 141–168 (2001). The function of play is still debated, and practice theory is only one of the proposals.</div>
+  </div>
+  <div class="eg" data-ic="🐱"><span data-illus="kittenpounce"></span><div class="egt"><b>A kitten pouncing on yarn</b>: chasing and pouncing rehearse hunting moves, and a miss costs no meal.</div></div>
+  <div class="eg" data-ic="🦁"><span data-illus="cubs"></span><div class="egt"><b>Lion cubs wrestling</b>: the bites are gentle, because what is being learned is “use full force but know when to ease off,” and where to stop.</div></div>
+  <div class="eg" data-ic="🏠"><span data-illus="housekids"></span><div class="egt"><b>Kids playing house and hide-and-seek</b>: practicing roles, negotiating who does what, and guessing what others are thinking.</div></div>
+  <div class="eg bad" data-ic="❓"><span data-illus="oddplay"></span><div class="egt"><b>Play that doesn’t quite fit</b>: purely recreational activity in adults, and play where it is hard to see what skill is being practiced. That is why practice theory explains only part of play, and why researchers suspect play may have several functions, perhaps even some that are by-products.</div></div>
+  <div class="card o">
+    <h3>👀 Small observation task (no tools needed)</h3>
+    <p>This week, watch one real moment of play: kids, a pet, or you and a friend horsing around. See whether you can spot these: ①<b>self-handicapping</b> (the stronger one eases off); ②<b>role reversal</b> (the chaser becomes the chased); ③<b>“this is play” signals</b> (laughing, exaggerated movements); ④<b>losing isn’t serious</b>. If all four are there, you have seen the “low-risk practice ground” with your own eyes; if not, ask yourself why.</p>
+  </div>
+
+  
+  <div class="sec"><span class="n">6</span><h2><span class="tag how">Try it</span>Knock down the house: what happens when a pillar goes?</h2></div>
+  <p>Now picture the four pillars as the supports of a house. Knock some down yourself, or tap one of the “real-life comparisons” below to see which pillars familiar things are missing.</p>
+  <div class="card">
+    <h3>🏠 Try removing a pillar</h3>
+    <svg viewBox="0 0 700 250" width="100%" role="img" aria-label="The house of games rests on four pillars: goal, rules, feedback, and voluntary participation" id="houseSvg">
+      <g id="hUpper" style="transition:transform .6s cubic-bezier(.3,1.6,.5,1),opacity .6s;transform-origin:350px 85px">
+        <g class="rough" stroke="#2b2b3a" stroke-width="4" stroke-linejoin="round">
+          <path d="M60 85 L350 15 L640 85 Z" fill="#ffb3c6"/>
+          <rect x="70" y="85" width="560" height="22" fill="#ffe58a"/>
+        </g>
+        <text x="350" y="68" font-size="26" text-anchor="middle" fill="#2b2b3a">Game</text>
+      </g>
+      <g class="rough" stroke="#2b2b3a" stroke-width="4"><rect x="60" y="215" width="580" height="22" fill="#d8c8ff"/></g>
+      <g class="pl" data-i="0" tabindex="0" role="button" aria-label="Remove Goal"><g class="rough" stroke="#2b2b3a" stroke-width="4"><rect x="110" y="107" width="70" height="108" fill="#fff7cf"/></g><text x="145" y="168" font-size="26" text-anchor="middle" fill="#2b2b3a">Goal</text></g>
+      <g class="pl" data-i="1" tabindex="0" role="button" aria-label="Remove Rules"><g class="rough" stroke="#2b2b3a" stroke-width="4"><rect x="250" y="107" width="70" height="108" fill="#ffe9ef"/></g><text x="285" y="168" font-size="26" text-anchor="middle" fill="#2b2b3a">Rules</text></g>
+      <g class="pl" data-i="2" tabindex="0" role="button" aria-label="Remove Feedback"><g class="rough" stroke="#2b2b3a" stroke-width="4"><rect x="390" y="107" width="70" height="108" fill="#e8f6fc"/></g><text x="425" y="168" font-size="26" text-anchor="middle" fill="#2b2b3a"><tspan font-size="15">Feedback</tspan></text></g>
+      <g class="pl" data-i="3" tabindex="0" role="button" aria-label="Remove Voluntary participation"><g class="rough" stroke="#2b2b3a" stroke-width="4"><rect x="530" y="107" width="70" height="108" fill="#eaf9e4"/></g><text x="565" y="168" font-size="26" text-anchor="middle" fill="#2b2b3a"><tspan font-size="14">Voluntary</tspan></text></g>
+    </svg>
+    <p class="small">👆 Tap any pillar to knock it down, and <b>tap again to put it back</b>. The more you remove, the shakier the house gets. <span class="stat">Removed <b id="pillarcount">0</b> / 4</span></p>
+    <div class="msg" id="pillarmsg">A complete house of games right now 🎮</div>
+    <div>
+      <span class="small">Real-life comparisons:</span>
+      <button class="chip" data-pre="movie">🎬 A movie</button>
+      <button class="chip" data-pre="homework">📝 Forced homework</button>
+      <button class="chip" data-pre="blocks">🧱 Playing with blocks</button>
+      <button class="chip" data-pre="blind">🙈 A game where you can't see results</button>
+    </div>
+    <button class="btn alt" id="pillarreset">Put everything back</button>
+  </div>
+  <div class="sticky">Try it: first turn the house into a “toy,” then tap just once to turn it back into a game. Blocks are an example: they have feedback and voluntary participation but no goal. Add “build the tallest tower, and if it falls you lose,” and they instantly become a game.</div>
+  <p>Of course, a house is only a metaphor, and it breaks down in places. A roller coaster seems to have no “goal,” yet people enjoy it all the same. In a case like that, a bigger idea steps in: <b>play</b>.</p>
+
+  
+  <div class="sec"><span class="n">7</span><h2><span class="tag how">Try it</span>The seasoning table: drag games between four “flavors”</h2></div>
+  <p>The four corners of the square are the four sources of fun: competition at top left, chance at top right, make-believe at bottom right, vertigo at bottom left. <b>Drag the games below into the square</b>: the closer to a corner, the stronger that flavor; between two corners, it is a mix. After you drop one, a dashed red circle shows a reference position. It doesn’t have to match exactly, since there is no single right answer here.</p>
+  <div class="card">
+    <svg id="c1_svg" viewBox="0 0 700 540" width="100%" style="touch-action:none;user-select:none" role="img" aria-label="A draggable seasoning table of the four flavors">
+      <g class="rough" stroke="#2b2b3a" stroke-width="4">
+        <rect x="170" y="40" width="360" height="460" fill="#fffdf3"/>
+      </g>
+      <g font-size="19" fill="#2b2b3a" pointer-events="none">
+        <text x="180" y="66">♟️ Competition</text><text x="520" y="66" text-anchor="end">🎲 Chance</text>
+        <text x="520" y="486" text-anchor="end">🎭 Make-believe</text><text x="180" y="486">🎢 Vertigo</text>
+      </g>
+      <g stroke="#d9cfb2" stroke-width="2" stroke-dasharray="6 6" pointer-events="none"><path d="M350 40 V500"/><path d="M170 270 H530"/></g>
+      <circle id="c1_ghost" r="26" cx="0" cy="0" fill="none" stroke="#d6303a" stroke-width="3" stroke-dasharray="5 4" style="display:none" pointer-events="none"/>
+      <text id="c1_ghostt" font-size="16" fill="#d6303a" text-anchor="middle" style="display:none" pointer-events="none"><tspan font-size="14">reference</tspan></text>
+      <g id="c1_toks"></g>
+    </svg>
+    <div class="c1bars" id="c1_bars"><div class="small">Drag a game into the square and its “flavor recipe” will show up here.</div></div>
+    <div class="msg" id="c1_cmsg" style="font-size:1.1rem"></div>
+    <button class="btn alt" id="c1_creset">Take them all back</button>
+  </div>
+
+  <div class="misc">
+    <h3>Common misconceptions</h3>
+    <ul>
+      <li><b>“Anything with rules is a game”</b>: traffic laws and company policies have rules too. What counts is that the rules exist to create an <b>interesting challenge</b>, and that you accept them willingly.</li>
+      <li><b>“A game must have winning and losing”</b>: sandboxes, interactive stories and management sims can have no clear win or loss, and players can set their own goals. You already tried this in the definition tester.</li>
+      <li><b>“Play is only for kids”</b>: adults play too, practicing skills and building relationships in a low-risk setting, just in different forms.</li>
+      <li><b>“The four pillars are the definition of a game”</b>: they are a handy tool, not a definition; real edge cases will make them break down.</li>
+    </ul>
+  </div>
+
+  <div class="reflect">
+    <h3>Reflection and debate</h3>
+    <p>“Can a game be defined at all?” is itself an unfinished argument: Wittgenstein’s camp says there is only family resemblance; Suits’s camp says a definition is possible; and some philosophers think the idea of family resemblance is itself problematic. Caillois’s four-way split is likewise just one view. The “practice theory” of play is the same: it is intuitive, but it cannot explain why adults play.</p>
+    <p>Try thinking of an example that <b>breaks the four pillars</b>, such as a management sandbox with no goal, or a virtual pet. Then ask: if you had to design one, how would you go about it?</p>
+  </div>
+
+  <div class="key">
+    <h3>Key points</h3>
+    <ul>
+      <li>Games are often broken into four pillars: <b>goal, rules, feedback, voluntary participation</b>. Designing a game means designing how these four work together. Whichever is missing decides what you get: no goal gives a toy, no choice gives a chore.</li>
+      <li>“Game” is hard to define because it is a <b>family-resemblance</b> concept: no single feature runs through all games (Wittgenstein).</li>
+      <li>Suits’s answer: a game is the voluntary overcoming of unnecessary obstacles. Rules create the obstacles on purpose, and voluntary participation turns them from torment into fun.</li>
+      <li>The four pillars are <b>a tool, not a definition</b>: they work on core cases and fail on edge cases.</li>
+      <li>Play can be seen as a low-risk practice ground; the pleasure of games comes roughly from four sources, competition, chance, make-believe and vertigo, and most games are mixtures.</li>
+    </ul>
+  </div>
+  <div class="tldr">A game is a low-risk rehearsal where you willingly accept rules, head for a goal, and keep getting answers back; the four pillars are useful, but they are a tool, not a definition.</div>
+
+  <div class="sec"><span class="n">8</span><h2><span class="tag think">Practice</span>Quick quiz</h2></div>
+  <div id="quiz"></div>
+
+  <div class="sec"><span class="n">9</span><h2><span class="tag how">Your design</span>Turn an ordinary chore into a game</h2></div>
+  <div class="card o">
+    <p>Pick something <b>ordinary</b>: tidying your room, memorizing vocabulary, walking to school… Write down what its goal, rules and feedback would be, then think about <b>how to make sure it is voluntary</b>.</p>
+    <textarea rows="5" data-save="ch1" placeholder="Example: tidying a room → Goal: get the floor visible in 10 minutes; Rules: use only one hand to pick things up; Feedback: every time an area is cleared, add a star to the timer…"></textarea>
+    <p class="small">✍️ Saved automatically in your browser.</p>
+  </div>
+</main>
+<script src="../js/illus.js"></script>
+<script src="../js/en/illus.js"></script>
+<script src="../js/en/illus-lib.js"></script>
+<script src="../js/common.js"></script>
+<script>
+
+const GONE = [
+  "Remove [Goal] → it becomes a <b>toy</b>: you can play with it, but there is no telling what counts as success.",
+  "Remove [Rules] → it becomes <b>aimless play</b>: anything goes, so there is no difficulty and therefore no sense of achievement.",
+  "Remove [Feedback] → it becomes <b>blind operation</b>: players can’t tell whether they are doing well, and soon lose interest.",
+  "Remove [Voluntary participation] → it becomes a <b>task or labor</b>: the same activity, done under compulsion, is no longer a game.",
+];
+(function () {
+  const gone = [false, false, false, false], W = [-1.5, -0.5, 0.5, 1.5];
+  const pls = [...document.querySelectorAll(".pl")], up = document.getElementById("hUpper");
+  pls.forEach(p => { p.style.cursor = "pointer"; p.style.transformBox = "fill-box"; p.style.transformOrigin = "50% 100%"; p.style.transition = "transform .55s cubic-bezier(.4,0,.6,1.4),opacity .5s"; });
+  function render(shakeIdx) {
+    const k = gone.filter(Boolean).length;
+    pls.forEach((p, i) => {
+      const side = i < 2 ? -1 : 1;
+      p.style.transform = gone[i] ? "translate(" + side * 10 + "px,95px) rotate(" + side * 55 + "deg)" : "";
+      p.style.opacity = gone[i] ? ".22" : "1";
+      p.setAttribute("aria-label", (gone[i] ? "Put back" : "Remove") + ["Goal", "Rules", "Feedback", "Voluntary participation"][i]);
+    });
+    const tilt = gone.reduce((s, g, i) => s + (g ? W[i] : 0), 0) * 1.6;
+    up.style.transform = k === 4 ? "translateY(105px) rotate(7deg)" : "translateY(" + k * 9 + "px) rotate(" + tilt + "deg)";
+    up.style.opacity = k === 4 ? ".55" : "1";
+    document.getElementById("pillarcount").textContent = k;
+    const msg = document.getElementById("pillarmsg");
+    msg.innerHTML = k === 0 ? "A complete house of games right now 🎮"
+      : k === 4 ? "💥 All four pillars are down. The house has collapsed, and this is nothing like a game anymore."
+      : gone.map((g, i) => (g ? GONE[i] : "")).filter(Boolean).join("<br>") + (k >= 2 ? "<br>🏚️ The house is swaying…" : "");
+    if (shakeIdx !== undefined && !gone[shakeIdx]) pls[shakeIdx].animate([{ transform: "translateX(0)" }, { transform: "translateX(-6px)" }, { transform: "translateX(6px)" }, { transform: "translateX(0)" }], 250);
+  }
+  pls.forEach((p, i) => {
+    const flip = () => { gone[i] = !gone[i]; render(i); };
+    p.addEventListener("click", flip);
+    p.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); flip(); } });
+  });
+  const PRE = { movie: [1, 1, 1, 0], homework: [0, 0, 0, 1], blocks: [1, 1, 0, 0], blind: [0, 0, 1, 0] };
+  const PRENOTE = {
+    movie: "🎬 A movie: no goal to reach, no rules limiting you, and nothing you do changes the outcome. Only “voluntary participation” is left. Enjoyable, but not a game.",
+    homework: "📝 Forced homework: the goal, rules and feedback are all there, and only “voluntary participation” is missing. It is a task, not a game.",
+    blocks: "🧱 Playing with blocks: there is feedback and voluntary participation, but no goal and no rules. Add “build the tallest tower” and it becomes a game.",
+    blind: "🙈 A game where you can’t see results: when players can’t tell how they are doing, even a fun goal soon loses its pull.",
+  };
+  document.querySelectorAll("[data-pre]").forEach(b => b.addEventListener("click", () => {
+    PRE[b.dataset.pre].forEach((v, i) => { gone[i] = !!v; });
+    render();
+    const m = document.getElementById("pillarmsg"); m.innerHTML = PRENOTE[b.dataset.pre] + "<br><span class='small'>(You can keep tapping pillars to put them back and see which one turns it into a game again.)</span>";
+  }));
+  document.getElementById("pillarreset").onclick = () => { gone.fill(false); render(); };
+})();
+
+(function () {
+  const $ = id => document.getElementById(id);
+  const CR = ["Must have winning and losing", "Must have an opponent", "Must have written rules", "Must have equipment", "Must have a clear goal", "Must be voluntary", "Must have no practical use"];
+  
+  const AC = [
+    ["♟️ Chess", [1, 1, 1, 1, 1, 1, 1], 1, "Has everything."],
+    ["🙈 Hide-and-seek", [1, 1, 1, 0, 1, 1, 1], 1, "Needs no equipment."],
+    ["🧩 Tetris", [0, 0, 1, 0, 1, 1, 1], 1, "You can only “lose,” never really “win,” and there is no opponent."],
+    ["🏀 One person bouncing a ball off a wall", [0, 0, 0, 1, 0, 1, 1], 1, "A similar example from Wittgenstein: the winning-and-losing condition disappears here."],
+    ["🏙️ SimCity-style sandbox", [0, 0, 1, 0, 0, 1, 1], 1, "No winning or losing; players set their own goals (see the edge cases below)."],
+    ["🏠 Playing house", [0, 0, 1, 1, 0, 1, 1], 1, "The agreement “you be the mom, I’ll be the baby” is the rules; nobody wins."],
+    ["📖 Solo Sudoku", [1, 0, 1, 1, 1, 1, 1], 1, "Some people feel a “puzzle” isn’t a game; here we go with everyday usage and count it."],
+    ["⚽ A pro football match (a job for the players)", [1, 1, 1, 1, 1, 1, 0], 1, "It has a practical use (earning money), yet is still called a “match.”"],
+    ["⚖️ A lawsuit", [1, 1, 1, 0, 1, 0, 0], 0, "It has winners, opponents and rules, but no one calls it a game."],
+    ["📝 Final exam", [1, 0, 1, 1, 1, 0, 0], 0, "Required, and with consequences."],
+    ["⚔️ Real war", [1, 1, 0, 1, 1, 0, 0], 0, "It has winners and opponents, but it isn’t voluntary and the consequences are severe."],
+    ["🎬 A movie", [0, 0, 0, 0, 0, 1, 1], 0, "Voluntary, but with no goal and no rules."],
+  ];
+  const on = CR.map(() => 0);
+  const crit = $("c1_crit"), rows = $("c1_rows");
+  const chips = CR.map((t, k) => {
+    const c = document.createElement("button"); c.className = "chip"; c.textContent = t;
+    c.onclick = () => { on[k] ^= 1; c.classList.toggle("on", !!on[k]); update(); };
+    crit.appendChild(c); return c;
+  });
+  const els = AC.map(a => {
+    const d = document.createElement("div"); d.className = "c1row";
+    d.innerHTML = '<span class="nm">' + a[0] + '</span><span class="vd"></span><span class="tg">Common sense: ' + (a[2] ? "a game" : "not a game") + "</span>";
+    rows.appendChild(d); return d;
+  });
+  function errOf(mask) {
+    let e = 0;
+    AC.forEach(a => { const pass = mask.every((m, k) => !m || a[1][k]); if ((pass ? 1 : 0) !== a[2]) e++; });
+    return e;
+  }
+  let bestAll = 99;
+  for (let m = 0; m < (1 << CR.length); m++) bestAll = Math.min(bestAll, errOf(CR.map((_, k) => (m >> k) & 1)));
+  let best = null;
+  function update() {
+    let e = 0, kill = [], leak = [];
+    AC.forEach((a, i) => {
+      const pass = on.every((m, k) => !m || a[1][k]);
+      const wrong = (pass ? 1 : 0) !== a[2];
+      els[i].classList.toggle("ok", !wrong); els[i].classList.toggle("bad", wrong);
+      els[i].querySelector(".vd").textContent = pass ? "Your definition: a game" : "Your definition: not a game";
+      if (wrong) { e++; (a[2] ? kill : leak).push(a); }
+    });
+    $("c1_err").textContent = e;
+    const any = on.some(Boolean);
+    if (any && (best === null || e < best)) best = e;
+    $("c1_best").textContent = best === null ? "–" : best;
+    let msg;
+    if (!any) msg = "You haven’t written any conditions yet, so everything counts as a game, and " + leak.length + " were “wrongly let in.” Click a condition to try.";
+    else if (e === 0) msg = "🎉 Zero misjudgments! But note that this holds only for these 12 activities and 7 conditions. Try a few trickier examples (a roller coaster, a virtual pet) and it may not hold.";
+    else {
+      msg = "";
+      if (kill.length) msg += "<b>Wrongly thrown out</b> (real games rejected):" + kill.map(a => a[0].replace(/\s*\(.*\)/, "") + " — " + a[3]).join(";") + "<br>";
+      if (leak.length) msg += "<b>Wrongly let in</b> (not games, but admitted):" + leak.map(a => a[0]).join(",") + "<br>";
+    }
+    msg += '<span class="small">Across all 128 possible combinations of these 7 “musts,” the best any of them can do is still ' + bestAll + " errors." + (bestAll > 0 ? "This is what “family resemblance” is getting at: a string of “musts” cannot fence in every game." : "") + "</span>";
+    $("c1_msg").innerHTML = msg;
+  }
+  $("c1_clear").onclick = () => { on.fill(0); chips.forEach(c => c.classList.remove("on")); update(); };
+  $("c1_rand").onclick = () => { for (let k = 0; k < on.length; k++) { on[k] = Math.random() < 0.35 ? 1 : 0; chips[k].classList.toggle("on", !!on[k]); } update(); };
+  update();
+})();
+
+(function () {
+  const $ = id => document.getElementById(id);
+  const svg = $("c1_svg"), layer = $("c1_toks"), ghost = $("c1_ghost"), ghostt = $("c1_ghostt");
+  const SQ = { x: 170, y: 40, w: 360, h: 460 };
+  const NM = ["Competition (agon)", "Chance (alea)", "Make-believe (mimicry)", "Vertigo (ilinx)"], CL = ["#ffc078", "#a8dcf0", "#ffb3c6", "#b6e8a8"];
+  
+  const G = [
+    ["♟️", "Chess", .06, .08, "Pure skill with almost no luck: competition."],
+    ["🎰", "Gacha", .94, .06, "The result is set by probability: chance."],
+    ["🏠", "Playing house", .94, .94, "Pretending to be someone else: make-believe."],
+    ["🎢", "Roller coaster", .06, .94, "Chasing the dizzy feeling of losing control: vertigo."],
+    ["🎲", "Monopoly", .5, .1, "Dice decide your movement (chance) while you fight over winning (competition): a mix of competition and chance."],
+    ["🃏", "Texas Hold’em", .38, .1, "Dealing is luck, while betting and mind games are skill: a competition-and-chance mix leaning toward competition."],
+    ["🎭", "Tabletop RPG", .94, .5, "Playing a character (make-believe) plus dice rolls to resolve actions (chance)."],
+    ["⛷️", "Ski racing", .06, .5, "Racing others for speed (competition) while enjoying the dizzying rush of the downhill (vertigo)."],
+    ["🎪", "Costume carnival", .5, .94, "Dressing up as someone else (make-believe) while being swept up in the dizzying revelry (vertigo)."],
+  ];
+  const NS = "http://www.w3.org/2000/svg";
+  const toks = G.map((g, i) => {
+    const hx = i < 5 ? 68 : 632, hy = 64 + (i < 5 ? i : i - 5) * 100;
+    const el = document.createElementNS(NS, "g"); el.setAttribute("class", "c1tok");
+    el.innerHTML = '<circle r="27" fill="#fff" stroke="#2b2b3a" stroke-width="3"/><text y="10" font-size="28" text-anchor="middle">' + g[0] + '</text><text y="48" font-size="16" text-anchor="middle" fill="#2b2b3a">' + g[1] + "</text>";
+    const t = { el, hx, hy, x: hx, y: hy, placed: false };
+    el.setAttribute("transform", "translate(" + hx + "," + hy + ")");
+    layer.appendChild(el); return t;
+  });
+  function pt(e) {
+    const p = svg.createSVGPoint(); p.x = e.clientX; p.y = e.clientY;
+    return p.matrixTransform(svg.getScreenCTM().inverse());
+  }
+  function weights(u, v) { return [(1 - u) * (1 - v), u * (1 - v), u * v, (1 - u) * v]; }
+  function show(i, close) {
+    const t = toks[i], g = G[i], u = (t.x - SQ.x) / SQ.w, v = (t.y - SQ.y) / SQ.h, w = weights(u, v);
+    $("c1_bars").innerHTML = "<b>" + g[0] + " " + g[1] + " — “flavor recipe” (based on where you placed it)</b>" + w.map((x, k) =>
+      '<div class="rw"><div class="nm">' + NM[k] + '</div><div class="bar"><i style="width:' + Math.round(x * 100) + "%;background:" + CL[k] + '"></i></div><div class="v">' + Math.round(x * 100) + "%</div></div>").join("");
+    const rx = SQ.x + g[2] * SQ.w, ry = SQ.y + g[3] * SQ.h;
+    ghost.setAttribute("cx", rx); ghost.setAttribute("cy", ry); ghost.style.display = "";
+    ghostt.setAttribute("x", rx); ghostt.setAttribute("y", ry - 32); ghostt.style.display = "";
+    const d = Math.hypot(u - g[2], v - g[3]);
+    $("c1_cmsg").innerHTML = (d < 0.2 ? "Very close to the reference position (the dashed red circle) ✔." : "Your position is some distance from the reference position (the dashed red circle). There is no right answer; being able to explain your reasoning matters more.") + "<br>" + g[4] +
+      '<br><span class="small">Placed ' + toks.filter(x => x.placed).length + " / " + G.length + ". Note that the square is a simplified two-dimensional layout; real games mix flavors in more complicated ways than this.</span>";
+  }
+  toks.forEach((t, i) => {
+    let drag = false, dx = 0, dy = 0;
+    t.el.addEventListener("pointerdown", e => {
+      drag = true; t.el.setPointerCapture(e.pointerId);
+      const p = pt(e); dx = t.x - p.x; dy = t.y - p.y;
+      layer.appendChild(t.el); e.preventDefault();
+    });
+    t.el.addEventListener("pointermove", e => {
+      if (!drag) return;
+      const p = pt(e); t.x = p.x + dx; t.y = p.y + dy;
+      t.el.setAttribute("transform", "translate(" + t.x + "," + t.y + ")");
+    });
+    const end = e => {
+      if (!drag) return; drag = false;
+      const inside = t.x > SQ.x - 12 && t.x < SQ.x + SQ.w + 12 && t.y > SQ.y - 12 && t.y < SQ.y + SQ.h + 12;
+      if (inside) {
+        t.x = Math.max(SQ.x, Math.min(SQ.x + SQ.w, t.x)); t.y = Math.max(SQ.y, Math.min(SQ.y + SQ.h, t.y));
+        t.placed = true; t.el.setAttribute("transform", "translate(" + t.x + "," + t.y + ")"); show(i);
+      } else {
+        t.placed = false; t.x = t.hx; t.y = t.hy;
+        t.el.animate([{ opacity: .4 }, { opacity: 1 }], 250);
+        t.el.setAttribute("transform", "translate(" + t.hx + "," + t.hy + ")");
+      }
+    };
+    t.el.addEventListener("pointerup", end); t.el.addEventListener("pointercancel", end);
+  });
+  $("c1_creset").onclick = () => {
+    toks.forEach(t => { t.placed = false; t.x = t.hx; t.y = t.hy; t.el.setAttribute("transform", "translate(" + t.hx + "," + t.hy + ")"); });
+    ghost.style.display = "none"; ghostt.style.display = "none";
+    $("c1_bars").innerHTML = '<div class="small">Drag a game into the square and its “flavor recipe” will show up here.</div>'; $("c1_cmsg").textContent = "";
+  };
+})();
+
+GD.mountQuiz(document.getElementById("quiz"), [
+  { q: "In hopscotch, you chalk out squares and require “hop on one foot, don’t step on the lines.” Which element is this?", opts: ["Goal", "Rules", "Feedback", "Voluntary participation"], a: 1, why: "The rules limit what players can do, and that creates difficulty." },
+  { q: "A player clicks a button and “+100” pops up with a crisp sound effect. What is this doing?", opts: ["Setting a goal", "Adding a rule", "Giving feedback", "Making the player willing"], a: 2, why: "Feedback lets players know right away what their action did." },
+  { q: "Which of these is least like a game?", opts: ["A timed jigsaw challenge", "A video you happened to scroll past on the subway", "Charades with friends", "A game of chess"], a: 1, why: "Watching a video has no goal, no rules, and nothing you do affects the outcome." },
+  { q: "[Why] Why do games deliberately set rules that make things harder? (according to Suits)", opts: ["To save the designer effort", "Rules rule out more efficient means, making the goal something that takes skill and effort, which is what makes it feel like an achievement", "Because players like being punished", "There is no reason"], a: 1, why: "Suits holds that a game is the voluntary overcoming of unnecessary obstacles; if pressing one button won the level, there would be no challenge and no sense of achievement." },
+  { q: "[Why] A kitten keeps pouncing on a ball of yarn. According to “practice theory,” what is the most reasonable explanation?", opts: ["The yarn ball is real prey", "Practicing, in a low-risk setting, the hunting moves it will need later", "It wants a reward", "It serves no function at all, and this has been proven"], a: 1, why: "Practice theory says play lets the young practice skills when failure costs little. But it is only an influential view, not a settled conclusion." },
+  { q: "[Why it was invented] Why did Wittgenstein come up with “family resemblance”?", opts: ["To give “game” a stricter definition", "He tried to find what all games have in common, couldn’t, and found only overlapping similarities", "To prove that games have no rules", "To criticize Caillois’s classification"], a: 1, why: "He told people “don’t think, look,” and found that winning, opponents, entertainment… are not shared by all games, so he used “family resemblance” to describe concepts like this." },
+  { q: "[Why it was invented] If the four pillars are not a definition, why do game design courses still use them?", opts: ["Because they have been proven to be the only correct one", "Because they are a handy thinking tool: on core cases they help you spot what is missing, and the edge cases where they fail point to design space", "Because there is nothing else", "Because Suits decreed it"], a: 1, why: "Designers need a framework that “guides action,” not an “unassailable definition.” Every tool has limits, and you use it well once you know them." },
+  { q: "<i>Teamfight Tactics</i> demands strategy and also depends on card luck. How would you describe it with Caillois’s categories?", opts: ["Pure agon", "Pure alea", "A mix of agon and alea", "ilinx"], a: 2, why: "Most games are mixtures: competitive skill is agon, and random card draws are alea." },
+]);
+</script>
+</body>
+</html>

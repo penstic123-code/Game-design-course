@@ -1,0 +1,715 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Chapter 7: Feedback &amp; Game Feel</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+  #arena{position:relative;height:320px;border:3px solid var(--ink);border-radius:14px;background:#fffdf3;overflow:hidden;user-select:none;touch-action:manipulation}
+  #c7world{position:absolute;inset:0;display:grid;place-items:center}
+  #target{font-size:6rem;cursor:pointer;line-height:1;display:inline-block;position:relative;z-index:2}
+  .part{position:absolute;pointer-events:none;font-size:1.5rem;z-index:3}
+  .dmg{position:absolute;pointer-events:none;font-family:var(--hand);font-size:2.2rem;color:#e5484d;text-shadow:2px 2px 0 #fff;z-index:4;white-space:nowrap}
+  .c7ring{position:absolute;pointer-events:none;border:4px solid #7a5af8;border-radius:50%;width:40px;height:40px;margin:-20px 0 0 -20px;z-index:1}
+  .c7flash{position:absolute;inset:0;background:#fff;opacity:0;pointer-events:none;z-index:5}
+  .c7badge{position:absolute;left:50%;top:10px;transform:translateX(-50%);font-family:var(--hand);font-size:1.3rem;background:var(--ink);color:#fff;padding:0 14px;border-radius:14px;z-index:6;display:none}
+  .c7shadow{position:absolute;left:50%;bottom:58px;width:110px;height:16px;margin-left:-55px;border-radius:50%;background:rgba(0,0,0,.14);z-index:0}
+  .c7tg{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+  .c7row{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:6px 0}
+  .c7row label{font-size:.95rem;cursor:pointer}
+  .c7out{margin-top:8px;padding:8px 12px;border:2px dashed var(--ink);border-radius:10px;background:var(--blue);font-size:.98rem}
+  .c7stage{height:120px;border:3px solid var(--ink);border-radius:12px;background:#fffdf3;display:grid;place-items:center;overflow:hidden;user-select:none;position:relative}
+  #c7fx,#c7coin,#c7acoin{font-size:3.4rem;line-height:1;display:inline-block}
+  .c7lane{position:relative;height:56px;border:2.5px solid var(--ink);border-radius:10px;background:#fffdf3;margin:6px 0;overflow:hidden}
+  .c7lane .sq{position:absolute;left:0;top:5px;width:44px;height:44px;border:3px solid var(--ink);border-radius:10px}
+  .c7lane .lab{position:absolute;right:8px;top:12px;font-family:var(--hand);font-size:1.1rem;color:var(--soft)}
+  .c7lane .goal{position:absolute;right:52px;top:0;bottom:0;border-left:2.5px dashed var(--ink);opacity:.4}
+  .c7meter{height:20px;border:2.5px solid var(--ink);border-radius:10px;background:#fff;overflow:hidden;margin:6px 0}
+  .c7meter i{display:block;height:100%;width:0;background:linear-gradient(90deg,#b6e8a8,#ffe58a,#ffb3c6);transition:width .35s}
+  .c7seg{cursor:pointer}
+  .c7seg:focus{outline:none}
+  .c7seg:focus .c7segbox,.c7seg:hover .c7segbox{stroke-width:6}
+  .c7rt{display:grid;place-items:center;height:110px;border:3px solid var(--ink);border-radius:12px;background:var(--yellow);font-family:var(--hand);font-size:1.5rem;cursor:pointer;user-select:none;touch-action:manipulation;text-align:center;padding:0 10px}
+  .c7rt.wait{background:#ffb3c6}
+  .c7rt.go{background:#8be08b}
+  .c7ok{color:#1d7a38;font-weight:700}
+</style>
+</head>
+<body data-ch="7">
+<main class="wrap">
+  <div class="hero">
+    <div class="txt">
+      <span class="badge">Chapter 7</span>
+      <h1>Feedback &amp; Game Feel</h1>
+      <p class="sub">Same rules, so why do some games feel great to hit and others feel like paper?</p>
+    </div>
+    <svg viewBox="0 0 190 150" class="rough" aria-hidden="true">
+      <circle cx="95" cy="80" r="34" fill="#ffe58a" stroke="#2b2b3a" stroke-width="4"/>
+      <path d="M95 22v16M95 122v16M37 80h16M137 80h16M54 39l11 11M125 110l11 11M136 39l-11 11M54 121l11-11" stroke="#2b2b3a" stroke-width="5" stroke-linecap="round"/>
+    </svg>
+  </div>
+
+  <div class="goals">
+    <h3>Learning goals</h3>
+    <span class="time">about 40 min</span>
+    <ul>
+      <li>Say what “game feel” and “juice” each mean, and explain why developers had to invent these two words.</li>
+      <li>Explain why feedback has to be fast, and why “about 100 milliseconds” is only a rule of thumb, not an iron law.</li>
+      <li>Tell three kinds of easing apart, set effect intensity tiers by multiples rather than equal steps, and explain why the same effect fades after many repeats and how to rescue it.</li>
+    </ul>
+  </div>
+
+  
+  <div class="sec"><span class="n">1</span><h2><span class="tag what">What it is</span>Game feel: an exaggerated response to every action</h2></div>
+  <div class="withimg">
+    <span data-illus="c07_anatomy"></span>
+    <div>
+      <p>Picture two versions of Breakout. Ball, paddle, bricks, with not one word of difference in the rules. Playing the first is like flipping through slides: the ball touches a brick, the brick vanishes, the number goes up by one, and that’s it. In the second, the ball hits a brick and bounces away with a “pop,” the brick shakes before shattering into pieces, and the paddle is squashed down just a little when it catches the ball.</p>
+      <p>You can’t say what exactly is better, only that the second one has “oomph.” In the industry that oomph is called <span class="term" tabindex="0" data-def="Game feel: the subjective tactile sense of how good it feels to act on a game and how well it follows your hands.">game feel</span>. The small effects that don’t change the rules and make actions feel great purely through immediate, exaggerated responses have a vivid name: <span class="term" tabindex="0" data-def="Juice: small effects (animation, sound, particles and so on) that don’t change the rules and make actions more satisfying purely through immediate, exaggerated feedback.">juice</span>.</p>
+      <p>In the end it comes down to one sentence: the player does something, the game has to respond, and the response has to be <b>fast enough, visible enough and weighty enough</b>. Without that response, a button is just a toggle.</p>
+    </div>
+  </div>
+  <div class="card">
+    <svg viewBox="0 0 700 236" width="100%" role="img" aria-label="A block without feedback compared with a block with feedback: on the left nothing changes after the press, on the right the block deforms, throws off particles and makes a sound">
+      <g class="rough" stroke="#2b2b3a" stroke-width="4">
+        <rect x="60" y="80" width="80" height="80" fill="#ddd"/>
+        <path d="M190 120 H270" fill="none"/>
+        <path d="M270 120 l-14 -9 v18z" fill="#2b2b3a"/>
+        <rect x="320" y="80" width="80" height="80" fill="#ddd"/>
+        <path d="M450 120 H510" fill="none"/><path d="M510 120 l-14 -9 v18z" fill="#2b2b3a"/>
+        <rect x="548" y="66" width="96" height="96" fill="#ffe58a" transform="rotate(-8 596 114)"/>
+        <g fill="none" stroke-linecap="round"><path d="M662 52 l12 -12 M672 100 h18 M654 150 l12 12 M528 52 l-8 -14"/></g>
+      </g>
+      <g font-size="22" text-anchor="middle" fill="#2b2b3a"><text x="100" y="48">Press</text><text x="360" y="48">Press</text><text x="230" y="102">Pop</text><text x="480" y="100">POP!!</text></g>
+      <g font-size="18" text-anchor="middle" fill="#2b2b3a">
+        <text x="150" y="224">No feedback: like a toggle</text><text x="520" y="224">With feedback: deformation, particles, sound</text>
+      </g>
+    </svg>
+  </div>
+  <div class="eg" data-ic="🪙"><span data-illus="c07_coinchain"></span><div class="egt"><b>Collecting coins in a row</b>: the “ding” goes up in pitch a little each time and the character gives a small hop, so you know at once you are scoring in a streak. The rules haven’t changed; the response just says one more thing.</div></div>
+  <div class="eg" data-ic="🛗"><span data-illus="c07_elevator"></span><div class="egt"><b>The light on an elevator button</b>: once it’s pressed and the light comes on, you stand and wait at ease; if the light doesn’t come on, you can’t help pressing again. That extra press is the symptom of missing feedback.</div></div>
+  <div class="eg bad" data-ic="💥"><span data-illus="c07_latefire"></span><div class="egt"><b>A dazzling explosion, half a second late</b>: you press fire and the big blast comes half a second later. However gorgeous the picture, the controls still feel “soft.” <b>Juice can’t save sluggishness.</b></div></div>
+
+  
+  <div class="sec"><span class="n">2</span><h2><span class="tag what">What it is</span>One “hit,” split into four small stretches</h2></div>
+  <p>Slow down a single hit and it is really a very short timeline: first the player has to be “acknowledged,” then there is often a moment of pause, then comes squash and rebound, and finally aftershocks and fade-out. Each stretch does a different job and goes wrong in a different way. Click the diagram below to see what each stretch is doing.</p>
+  <div class="card">
+    <svg viewBox="0 0 700 290" width="100%" role="img" aria-label="Feedback timeline of one strike, clickable: acknowledge, hit stop, squash and rebound, aftershock and fade, four stretches">
+      <text x="350" y="30" font-size="20" text-anchor="middle" fill="#2b2b3a">Timeline of one “hit” (a sketch; durations vary by game)</text>
+      <g class="c7seg" data-i="0" tabindex="0" role="button" aria-label="Acknowledge stage"><g class="rough" stroke="#2b2b3a" stroke-width="3.5"><rect class="c7segbox" x="30" y="56" width="130" height="90" fill="#b6e8a8"/></g><text x="95" y="96" font-size="19" text-anchor="middle" fill="#2b2b3a">Acknowledge</text><text x="95" y="126" font-size="16" text-anchor="middle" fill="#2b2b3a">within ~100 ms</text></g>
+      <g class="c7seg" data-i="1" tabindex="0" role="button" aria-label="Hit-stop stage"><g class="rough" stroke="#2b2b3a" stroke-width="3.5"><rect class="c7segbox" x="160" y="56" width="90" height="90" fill="#ffb3c6"/></g><text x="205" y="96" font-size="19" text-anchor="middle" fill="#2b2b3a">Hit stop</text><text x="205" y="126" font-size="16" text-anchor="middle" fill="#2b2b3a">tens of ms</text></g>
+      <g class="c7seg" data-i="2" tabindex="0" role="button" aria-label="Squash-and-rebound stage"><g class="rough" stroke="#2b2b3a" stroke-width="3.5"><rect class="c7segbox" x="250" y="56" width="200" height="90" fill="#ffe58a"/></g><text x="350" y="96" font-size="19" text-anchor="middle" fill="#2b2b3a">Squash → rebound</text><text x="350" y="126" font-size="16" text-anchor="middle" fill="#2b2b3a">easing · overshoot</text></g>
+      <g class="c7seg" data-i="3" tabindex="0" role="button" aria-label="Aftershock-and-fade stage"><g class="rough" stroke="#2b2b3a" stroke-width="3.5"><rect class="c7segbox" x="450" y="56" width="220" height="90" fill="#a8dcf0"/></g><text x="560" y="96" font-size="19" text-anchor="middle" fill="#2b2b3a">Aftershock · fade</text><text x="560" y="126" font-size="16" text-anchor="middle" fill="#2b2b3a"><tspan font-size="13">particles, numbers, sound tail</tspan></text></g>
+      <g class="rough" stroke="#2b2b3a" stroke-width="3.5" fill="none" stroke-linecap="round"><path d="M30 190 H670"/><path d="M30 178 v24"/><path d="M160 180 v20"/></g>
+      <text x="30" y="228" font-size="17" fill="#2b2b3a">Press t = 0</text>
+      <text x="670" y="228" font-size="17" text-anchor="end" fill="#2b2b3a">time →</text>
+      <text x="350" y="268" font-size="17" text-anchor="middle" fill="#2b2b3a">👆 Click any stretch to see why it is there</text>
+    </svg>
+    <div class="c7out" id="c7segmsg">Click “Acknowledge” first: the first thing that has to happen after the player presses the button.</div>
+  </div>
+
+  
+  <div class="sec"><span class="n">3</span><h2><span class="tag origin">How it was invented</span>Why give “game feel” a name?</h2></div>
+  <div class="story">
+    <h3>Two games with the same rules play completely differently</h3>
+    <div class="withimg rev">
+      <span data-illus="c07_twobreak"></span>
+      <div>
+        <p>Imagine you are a developer on a small team, and you and a friend each made a Breakout with exactly the same rules. His version is clearly more fun. You ask him: “What did you actually change?” He scratches his head: “It’s just… more satisfying?”</p>
+        <p>For a long time this question had no good answer. “Satisfying” was treated as a kind of mysticism: either left for the artists and sound designers to add at the end, or noticed only when players complained about “soft,” “floaty,” “no oomph.” Without shared words you can’t troubleshoot, much less teach newcomers.</p>
+        <p>The turning point was a plain idea: game feel can be <b>broken apart, named, and layered on one item at a time while testing</b>. The animation industry had done this long before, and human–computer interaction had gathered rule-of-thumb numbers for “how fast counts as immediate”; what game developers had to do was join the two lines.</p>
+      </div>
+    </div>
+    <div class="timeline">
+      <div class="ev hasimg"><span data-illus="c07_disney"></span><div><b class="yr">From the 1930s</b> Disney animators work out “squash and stretch”: a ball is flattened as it lands and stretched as it bounces up, and at once the object seems to have weight and spring. In 1981, Frank Thomas and Ollie Johnston sum these methods up in 12 principles in <i>The Illusion of Life</i>.</div></div>
+      <div class="ev hasimg"><span data-illus="c07_response"></span><div><b class="yr">1968 / 1993</b> Robert B. Miller discusses in 1968 how fast a computer should respond in a conversation with a person; in 1993 Jakob Nielsen’s <i>Usability Engineering</i> sums up this kind of experience in three limits: 0.1 seconds, 1 second and 10 seconds.</div></div>
+      <div class="ev hasimg"><span data-illus="c07_swinkbook"></span><div><b class="yr">2008</b> Steve Swink publishes <i>Game Feel: A Game Designer’s Guide to Virtual Sensation</i> (Morgan Kaufmann; some catalogs list it as 2009). The book analyzes game feel in six aspects, input, response, context, polish, metaphor and rules, and for the first time the games field has a systematic vocabulary.</div></div>
+      <div class="ev hasimg"><span data-illus="c07_juiceit"></span><div><b class="yr">2012</b> Martin Jonasson and Petri Purho give the talk “Juice it or lose it” at GDC Europe: with a Breakout clone they layer on easing, squash and stretch, screen shake, particles and sound one by one, live, with the rules unmoved yet the experience completely different. Reportedly an earlier version was given at the Nordic Game Jam in May the same year.</div></div>
+      <div class="ev hasimg"><span data-illus="c07_shake"></span><div><b class="yr">Around 2013</b> Jan Willem Nijman of Vlambeer gives “The Art of Screenshake,” turning details like “screen shake” into a checklist you can follow: every item added makes the game hit harder. (I couldn’t verify the exact occasion of the talk.)</div></div>
+    </div>
+    <p>Taken together, these are what turned “game feel” and “juice” from a bit of jargon into tools you can discuss. Incidentally, the word “juice” was already circulating among developers before these talks; I couldn’t find its earliest source, so no conclusion is drawn here.</p>
+  </div>
+  <div class="board">
+    <b>Try it yourself first, then see how it was done historically</b>
+    <p class="small">When this coin is picked up, <b>nothing happens</b> for now. Use the knobs below to set it to what you think “has feel,” press “Pick up” a few times to feel it, and when you are happy press “Compare with the 2012 approach.”</p>
+    <label class="ctl">Bounce (squash + rebound) <output id="c7o_bo">0</output></label><input type="range" id="c7o_b" min="0" max="100" value="0">
+    <label class="ctl">Particle count <output id="c7o_po">0</output></label><input type="range" id="c7o_p" min="0" max="24" value="0">
+    <label class="ctl">Screen shake <output id="c7o_so">0</output></label><input type="range" id="c7o_s" min="0" max="12" value="0">
+    <label class="ctl">Sound (0 = none, otherwise = strength of a pitch that rises with the combo) <output id="c7o_ao">0</output></label><input type="range" id="c7o_a" min="0" max="10" value="0">
+    <div class="c7stage" id="c7o_stage" style="height:150px"><span id="c7coin">🪙</span></div>
+    <div class="c7row"><button class="btn" id="c7o_go">🪙 Pick up</button><button class="btn green" id="c7o_cmp">Compare with the 2012 approach</button><button class="btn pink" id="c7o_reset">Reset all to zero</button></div>
+    <div class="c7out" id="c7o_out">Drag the knobs and press pick up a few times. You will find that not a word of the rules changed, yet the feel is different.</div>
+  </div>
+  <div class="sticky">Try it: set all four knobs above 0 but none past halfway, then press “Compare.”<span class="c7ok" id="c7t1" hidden> ✅ Done: a little of each, layered up, gives it life.</span></div>
+
+  
+  <div class="sec"><span class="n">4</span><h2><span class="tag why">Why it works</span>Why feedback has to be fast: the sense of causality and the perceptual time window</h2></div>
+  <div class="withimg">
+    <span data-illus="c07_lightswitch"></span>
+    <div>
+      <p>You flip a switch and the light comes on. You never doubt “was that me who just pressed it?” But if the light came on half a second late, you would probably press again without thinking, or even suspect it was broken.</p>
+      <p>“Button → reaction” in a game is the same thing. Once feedback drags on too long, the player no longer feels “I made that happen,” and the controls turn “soft.” So how fast is fast?</p>
+    </div>
+  </div>
+  <div class="why-box">
+    <h3>The brain binds “what I did” to “what happened,” but only within a very narrow time window</h3>
+    <p>In the mid-twentieth century the Belgian psychologist Albert Michotte ran a classic set of experiments: on a screen one square hits another and the second one immediately moves, and people see it as “the first one knocked it away”; if the second one moves a little later, the impression of a “hit” disappears and it becomes two things each moving on its own. A sense of causality needs two events to be very close together.</p>
+    <p>In 2002, Patrick Haggard and colleagues found a related phenomenon: when a key press is something you <b>actively</b> do, you feel the press and the sound that follows to be closer together than they really are, called “intentional binding.” In other words, the feeling of “I did it” itself pulls the action and its result together. (How to explain and measure it is still debated.)</p>
+    <p>The most widely circulated numbers in human–computer interaction come from Miller (1968) and Nielsen (1993): within about 0.1 seconds people feel it is “immediate”; within about 1 second their train of thought isn’t interrupted; and around 10 seconds attention is near its limit. The broadcast industry’s ITU-R BT.1359 recommendation for lip sync gives numbers of a similar order: audience members start to notice when the sound leads the picture by about 45 milliseconds or lags it by about 125 (the figures come from secondhand accounts of that recommendation, not checked against the original, and were measured on news-broadcast footage).</p>
+    <p>Here is something interesting. Large-scale measurements show that adults take a little over 230 milliseconds on average to press a key in response to a suddenly appearing dot of light. You simply can’t “react” within 100 milliseconds, yet you can notice a 100-millisecond gap between your action and its result. So how fast it feels is not a matter of reaction speed, but of whether the brain has joined “what I did” to “what happened.”</p>
+    <p><b>100 milliseconds is a common rule of thumb, not a law of physics</b>. Rhythm games and fighting games are sensitive to differences of tens of milliseconds, while clicking a menu is much more forgiving; and latency from the screen, the audio and the input device stacks up layer by layer.</p>
+    <div class="src">Sources: Albert Michotte, <i>La perception de la causalité</i> (1946; English translation <i>The Perception of Causality</i>, 1963); Haggard, Clark &amp; Kalogeras, “Voluntary action and conscious awareness,” <i>Nature Neuroscience</i> 5: 382–385 (2002); Miller, AFIPS Fall Joint Computer Conference (1968); Nielsen, <i>Usability Engineering</i> (1993; these numbers have also been criticized as not coming from rigorous experiments); Woods et al., “Factors influencing the latency of simple reaction time,” <i>Frontiers in Human Neuroscience</i> (2015), 1,469 adults aged 18–65, with visual simple reaction time averaging about 231 ms (about 213 ms after subtracting device latency).</div>
+  </div>
+  <div class="board">
+    <b>Small experiment 1: your reaction time</b>
+    <p class="small">Click the square to begin. When it turns green, click at once. Take 5 trials and look at your average, then think: how much slower is your reaction time than “100 milliseconds”? (The browser itself adds up to a few tens of milliseconds of extra delay, so treat the result as a rough guide.)</p>
+    <div class="c7rt" id="c7rt_box" tabindex="0" role="button">Click here to start</div>
+    <div class="c7out" id="c7rt_msg">No data yet.</div>
+  </div>
+  <div class="board">
+    <b>Small experiment 2: find your “sluggishness threshold”</b>
+    <p class="small">Press “Hit me,” and after the delay you set the dummy will pop and make a sound; then you choose “Has feel” or “Sluggish.” Tick “Blind test” to randomize the delay each time and only reveal it after you vote. After 6 or more trials, having picked both feelings, your threshold is estimated.</p>
+    <label class="ctl">Feedback delay <output id="c7do">100</output> ms</label>
+    <input type="range" id="c7d" min="0" max="600" step="10" value="100">
+    <div class="c7row"><label><input type="checkbox" id="c7blind"> Blind test (random delay, revealed after you vote)</label></div>
+    <div class="c7stage"><span id="c7fx">🪵</span></div>
+    <div class="c7row">
+      <button class="btn" id="c7btn">👊 Hit me</button>
+      <button class="btn green" id="c7good" disabled>Has feel</button>
+      <button class="btn pink" id="c7bad" disabled>Sluggish</button>
+      <button class="btn alt" id="c7vreset">Clear records</button>
+      <span class="stat">Recorded <b id="c7n">0</b></span>
+    </div>
+    <div class="msg" id="c7msg" style="font-size:1.05rem;font-family:var(--body)">Press “Hit me” first.</div>
+    <svg id="c7sc" viewBox="0 0 580 148" width="100%" role="img" aria-label="Scatter plot of your judgments at different delays"></svg>
+    <div class="c7out" id="c7est">Not enough data yet. Green dot = has feel, red dot = sluggish.</div>
+  </div>
+  <div class="sticky">Try it: finish 6 trials, pick both feelings at least once, get your own “sluggishness threshold,” and compare it with 100 ms.<span class="c7ok" id="c7t2" hidden> ✅ Done: you have your own threshold.</span></div>
+  <div class="eg" data-ic="🥁"><span data-illus="c07_rhythm"></span><div class="egt"><b>Sound half a beat late in a rhythm game</b>: on screen the note has already reached the judgment line, but the sound comes a bit later. You feel “I pressed off,” when really the device latency is putting the blame on you.</div></div>
+  <div class="eg" data-ic="🖱️"><span data-illus="c07_triplesubmit"></span><div class="egt"><b>A web button that didn’t respond when clicked</b>: you click three times and submit three orders. When the feedback didn’t keep up, people made up for it with “press again.”</div></div>
+  <div class="eg bad" data-ic="🧮"><span data-illus="c07_batched"></span><div class="egt"><b>Saving feedback for the end to save performance</b>: putting every hit’s feedback into the next frame or later, to handle together. The data is perfectly right, but what the player feels is “did I hit it?” Fast is not optional.</div></div>
+
+  
+  <div class="sec"><span class="n">5</span><h2><span class="tag why">Why it works</span>Predictive processing and easing: why a bit of exaggeration actually feels right</h2></div>
+  <div class="withimg rev">
+    <span data-illus="c07_cup"></span>
+    <div>
+      <p>You pick up a cup you thought was full, and it’s empty, and your hand “floats” and feels odd. Your hand had prepared the strength for a cup of water in advance, and the mismatch between reality and preparation gives you a small jolt.</p>
+      <p>Conversely, if something’s reaction matches your intention and has a touch of “overdoing it,” you feel you are in <b>control</b> of it. Something that shoots off at a push and then stops steadily just feels good.</p>
+      <p>There is a family of theories in cognitive science that can be borrowed to explain this.</p>
+    </div>
+  </div>
+  <div class="why-box">
+    <h3>The brain is always predicting, and an easing function is a tool for drawing “expectation” as a curve</h3>
+    <p><span class="term" tabindex="0" data-def="Predictive processing: a family of theories in cognitive science holding that the brain constantly predicts sensory input and uses prediction error to update itself.">Predictive processing</span> (predictive coding) holds that the brain does not passively receive sensory signals but constantly <b>predicts</b> what it will feel next and corrects itself with “prediction error.” It is the same family of ideas as the prediction error in the core-loop chapter. Borrowed to explain game feel: when the response matches your intention you feel “it listens to me”; add a bit more exaggeration, so the result is slightly more “forceful” than expected, and it often feels more weighty.</p>
+    <p>To keep this exaggeration under control, use an <span class="term" tabindex="0" data-def="Easing function: sets the speed curve of a quantity changing over time, such as fast then slow, or overshooting and then rebounding.">easing function</span>: it decides how the speed of an action changes over time. <b>Linear</b> is constant speed, like a machine; <b>ease-out</b> starts fast and slows as it gets there; <b>overshoot-and-rebound</b> (<span class="term" tabindex="0" data-def="Overshoot: the position goes past the target and then springs back, often used to show elasticity and impact.">overshoot</span>) shoots past the target and bounces back. What animators call <span class="term" tabindex="0" data-def="Squash and stretch: letting an object flatten under force and lengthen in motion, showing weight and elasticity, one of the basic principles of traditional animation.">squash and stretch</span> is really the same idea.</p>
+    <p>Predictive processing is an influential but still contested framework in cognitive science; “exaggeration equals a sense of control” is an analogy and rule of thumb borrowed by game designers, not a rigorously proven theorem.</p>
+    <div class="src">Sources: studies of predictive coding often cite Rao &amp; Ballard (1999), and Karl Friston and Andy Clark (2013) wrote reviews; easing equations are widely used in animation and interaction, often traced to a set of formulas compiled by Robert Penner; for squash and stretch see Thomas &amp; Johnston (1981).</div>
+  </div>
+  <div class="board">
+    <b>Small experiment: one action, three kinds of easing</b>
+    <p class="small">All three squares move from the left to the dashed line on the right. Press “Launch together” for the whole picture, or launch one alone and read the note. You can also adjust the duration and the overshoot amount, and the curve chart below changes in step.</p>
+    <label class="ctl">Action duration <output id="c7duro">400</output> ms</label>
+    <input type="range" id="c7dur" min="150" max="900" step="10" value="400">
+    <label class="ctl">Overshoot amount (affects only the third) <output id="c7oso">1.7</output></label>
+    <input type="range" id="c7os" min="0.5" max="3" step="0.1" value="1.7">
+    <div class="c7lane"><div class="sq" id="c7sq_lin" style="background:#a8dcf0"></div><span class="goal"></span><span class="lab">Linear</span></div>
+    <div class="c7lane"><div class="sq" id="c7sq_out" style="background:#b6e8a8"></div><span class="goal"></span><span class="lab">Ease-out</span></div>
+    <div class="c7lane"><div class="sq" id="c7sq_back" style="background:#ffb3c6"></div><span class="goal"></span><span class="lab">Overshoot</span></div>
+    <div class="c7row"><button class="btn" id="c7go">▶ Launch together</button><button class="btn alt" data-k="lin">Launch linear only</button><button class="btn alt" data-k="out">Launch ease-out only</button><button class="btn alt" data-k="back">Launch overshoot only</button></div>
+    <svg id="c7cv" viewBox="0 0 610 240" width="100%" role="img" aria-label="Curves of three easing functions"></svg>
+    <div class="c7out" id="c7pickmsg">Press one of the “only” buttons to see an explanation. There is no standard answer; it depends on what you want to express.</div>
+  </div>
+  <div class="sticky">Try it: launch each of the three easings alone once, then say which one gets there first and which one settles last.<span class="c7ok" id="c7t3" hidden> ✅ Done: you have seen all three. Ease-out arrives first, overshoot settles last.</span></div>
+  <div class="eg" data-ic="📋"><span data-illus="c07_menu"></span><div class="egt"><b>A menu slides in with “ease-out”</b>: it moves right from the start and comes to a gentle stop in place, both crisp and not stiff. The distance moved per frame gets shorter and shorter, which is ease-out.</div></div>
+  <div class="eg" data-ic="🚪"><span data-illus="c07_cabinet"></span><div class="egt"><b>A cabinet door with a soft-close damper</b>: it closes fast and then slow, with no “bang” of a hard stop. Your hand’s expectations of the two responses are completely different, and the first makes you feel the cabinet is a good one.</div></div>
+  <div class="eg bad" data-ic="📶"><span data-illus="c07_progressbar"></span><div class="egt"><b>A progress bar with “overshoot”</b>: it shoots past 100% and comes back, and players will think something went wrong. For things that need to be exact and even, linear is actually best.</div></div>
+
+  
+  <div class="sec"><span class="n">6</span><h2><span class="tag why">Why it works</span>The nonlinearity of perception: why effect strength should be designed in proportion</h2></div>
+  <div class="withimg">
+    <span data-illus="c07_candle"></span>
+    <div>
+      <p>Light a candle in a pitch-dark room and you notice at once; light another in the noon sun and nothing changes. Both are “the brightness of one more candle,” yet the feeling is worlds apart.</p>
+      <p>This matters a lot to people who make effects. Raise the screen shake from 2 pixels to 4 and the player sees at a glance that it got stronger; raise it from 20 to 22, the same 2 pixels more, and hardly anyone can tell.</p>
+      <p>The reason is that people’s sensitivity to change depends on the <b>proportion</b> of the change to the original intensity.</p>
+    </div>
+  </div>
+  <div class="why-box">
+    <h3>The Weber–Fechner law (short version)</h3>
+    <p>In the nineteenth century the German physiologist Ernst Weber measured the <b>smallest change</b> people can detect (the <span class="term" tabindex="0" data-def="Just-noticeable difference (JND): the smallest change in a stimulus that can just be detected.">just-noticeable difference</span>) and found it roughly <b>proportional</b> to the original stimulus intensity. This is <span class="term" tabindex="0" data-def="Weber’s law: ΔI / I ≈ constant, so the change needed is proportional to the original intensity (approximately true around medium intensities).">Weber’s law</span>: ΔI / I ≈ constant. In 1860 Gustav Fechner went further and proposed that the perceived intensity is roughly proportional to the <b>logarithm</b> of the stimulus intensity.</p>
+    <p>The lesson for design is that the “tiers” of effects, volume and vibration should grow by <b>multiples</b>, not by adding a fixed amount each tier. From 2 to 4 is a doubling, visible at a glance; from 20 to 22 is only 10% more, often invisible.</p>
+    <p>It is only an approximation: it deviates at very weak or very strong stimuli; S. S. Stevens in 1957 also proposed describing sensation with a power function, which many think fits better. Both are “explanations,” not formulas for you to copy.</p>
+    <div class="src">Sources: Ernst Weber (nineteenth-century sensory research); Gustav Fechner, <i>Elemente der Psychophysik</i> (1860); S. S. Stevens, “On the psychophysical law,” <i>Psychological Review</i> 64: 153–181 (1957).</div>
+  </div>
+  <div class="card">
+    <svg viewBox="0 0 700 316" width="100%" role="img" aria-label="Two kinds of tiers for shake amplitude: on the left, equal steps of 2, 4, 6, 8 pixels, with the later tiers hard to tell apart; on the right, multiples of 2, 4, 8, 16 pixels, clear at a glance">
+      <g class="rough" stroke="#2b2b3a" stroke-width="3.5">
+        <path d="M40 240 H320" fill="none"/><path d="M390 240 H670" fill="none"/>
+        <rect x="60" y="224" width="40" height="16" fill="#ffb3c6"/><rect x="120" y="208" width="40" height="32" fill="#ffb3c6"/><rect x="180" y="192" width="40" height="48" fill="#ffb3c6"/><rect x="240" y="176" width="40" height="64" fill="#ffb3c6"/>
+        <rect x="410" y="224" width="40" height="16" fill="#b6e8a8"/><rect x="470" y="208" width="40" height="32" fill="#b6e8a8"/><rect x="530" y="176" width="40" height="64" fill="#b6e8a8"/><rect x="590" y="112" width="40" height="128" fill="#b6e8a8"/>
+      </g>
+      <g font-size="18" fill="#2b2b3a" text-anchor="middle">
+        <text x="180" y="34" font-size="20">Equal steps: 2, 4, 6, 8 px</text><text x="530" y="34" font-size="20">Multiples: 2, 4, 8, 16 px</text>
+        <text x="180" y="62" font-size="16">The last tiers differ by only 33%, 25%, hard to tell apart</text><text x="530" y="62" font-size="16">Each tier is twice the one before, clear at a glance</text>
+        <text x="80" y="264">2</text><text x="140" y="264">4</text><text x="200" y="264">6</text><text x="260" y="264">8</text>
+        <text x="430" y="264">2</text><text x="490" y="264">4</text><text x="550" y="264">8</text><text x="610" y="264">16</text>
+        <text x="180" y="292">small → large (four tiers)</text><text x="530" y="292">small → large (four tiers)</text>
+      </g>
+    </svg>
+  </div>
+  <div class="eg" data-ic="📳"><span data-illus="c07_shake3"></span><div class="egt"><b>Three tiers of screen shake</b>: a basic attack shakes 2 pixels, a heavy hit 8, a critical 16. Players don’t need a hint; one shake tells them which kind of event happened.</div></div>
+  <div class="eg" data-ic="📱"><span data-illus="c07_brightness"></span><div class="egt"><b>A phone brightness slider</b>: going from 5% to 10% is a huge difference, while from 85% to 90% is almost unnoticeable. Volume settings being scaled in decibels rather than linearly is the same principle.</div></div>
+  <div class="eg bad" data-ic="🔢"><span data-illus="c07_fontgrow"></span><div class="egt"><b>Damage numbers two sizes bigger per tier</b>: size 20, 22, 24, and nobody can tell them apart. The ultimate looks no different from a basic attack.</div></div>
+
+  
+  <div class="sec"><span class="n">7</span><h2><span class="tag why">Why it works</span>Hedonic adaptation: why the same effect loses its charm by the hundredth pickup</h2></div>
+  <div class="withimg rev">
+    <span data-illus="c07_fadecoin"></span>
+    <div>
+      <p>Do you remember the “ding” of the first coin you picked up? Now think of the hundredth. The sound is exactly the same and the picture exactly the same, but you feel nothing at all.</p>
+      <p>This is a problem for game feel design. You worked hard on a lovely set of feedback, and after half an hour of play players have become “immune” to it. If you pile on more, you just fall into an increasingly expensive arms race.</p>
+      <p>This isn’t because your feedback was poor; it is simply how the human nervous system works.</p>
+    </div>
+  </div>
+  <div class="why-box">
+    <h3>Habituation and hedonic adaptation: repeated stimuli fade, and the baseline moves</h3>
+    <p>At the lowest level is <b>habituation</b>: for stimuli that keep recurring with no consequence, the neural response gets weaker and weaker. In 1966, Richard Thompson and William Spencer summarized this family of phenomena as a set of regularities, including “the more a stimulus is repeated, the weaker the response” and “switch to a new stimulus and the response comes back.”</p>
+    <p>One level up is psychological <span class="term" tabindex="0" data-def="Hedonic adaptation: people gradually adapt to repeated pleasures (or pains), with feelings falling back close to the original baseline; also called the “hedonic treadmill.”">hedonic adaptation</span>. In 1971, Philip Brickman and Donald Campbell offered the “hedonic treadmill” metaphor: however fast we run, the baseline of happiness moves forward with us. In 1978 Brickman and colleagues surveyed Illinois lottery winners and people disabled in accidents and found that after a few months the happiness of both groups had moved toward that of a control group, which became the most often cited evidence.</p>
+    <p>But this conclusion was later revised. Richard Lucas in 2007, using large longitudinal data from Germany and Britain, pointed out that for major events such as unemployment and disability, adaptation is often incomplete. So don’t treat it as an iron law of “people get used to anything”; the safer statement is: <b>small repeated stimuli certainly fade</b>.</p>
+    <p>The lesson for designers: don’t brute-force with more. <b>Leave room for variation</b> in the feedback (the pitch and the look of the sparks differ a little each time), make big events far bigger than small ones (the multiple tiers from the previous section), and let players rest now and then, and the satisfaction will return.</p>
+    <div class="src">Sources: Thompson &amp; Spencer, “Habituation: A model phenomenon for the study of neuronal substrates of behavior,” <i>Psychological Review</i> 73(1): 16–43 (1966); Brickman &amp; Campbell, “Hedonic relativism and planning the good society,” in M. H. Appley (ed.), <i>Adaptation-level theory</i>, Academic Press (1971): 287–302; Brickman, Coates &amp; Janoff-Bulman, “Lottery winners and accident victims: Is happiness relative?”, <i>Journal of Personality and Social Psychology</i> 36(8): 917–927 (1978; a very small sample); Lucas, “Adaptation and the set-point model of subjective well-being,” <i>Current Directions in Psychological Science</i> 16: 75–79 (2007).</div>
+  </div>
+  <div class="board">
+    <b>Small experiment: pick up again and again, and watch the satisfaction drop</b>
+    <p class="small">Keep pressing “Pick up” and watch how the “satisfaction” below changes. Then tick “Add variation,” so that pitch and sparks differ a little each time, and keep pressing. “Take a break” restores your sense. <b>This is an illustrative model for demonstration, not experimental data.</b></p>
+    <div class="c7stage" style="height:110px"><span id="c7acoin">🪙</span></div>
+    <div class="c7row"><button class="btn" id="c7a_go">🪙 Pick up</button><label><input type="checkbox" id="c7a_var"> Add variation (slightly different each time)</label><button class="btn alt" id="c7a_rest">☕ Take a break</button><button class="btn pink" id="c7a_reset">Start over</button><span class="stat">Picked up <b id="c7a_n">0</b> times</span><span class="stat">Current satisfaction <b id="c7a_v">–</b></span></div>
+    <svg id="c7a_sv" viewBox="0 0 580 144" width="100%" role="img" aria-label="Bar chart of satisfaction at each pickup"></svg>
+    <div class="c7out" id="c7a_msg">Press “Pick up” to begin.</div>
+  </div>
+  <div class="sticky">Try it: first without variation, keep pressing until satisfaction falls below 20%; then tick “Add variation” and bring satisfaction back above 60%.<span class="c7ok" id="c7t4" hidden> ✅ Done: leaving room for variation beats piling on more.</span></div>
+  <div class="eg" data-ic="📱"><span data-illus="c07_newphone"></span><div class="egt"><b>The thrill of a new phone</b>: on day one you can’t put it down, and on day a hundred you swipe at it idly. The phone didn’t change; your baseline did.</div></div>
+  <div class="eg" data-ic="🎼"><span data-illus="c07_varied"></span><div class="egt"><b>A pickup that’s slightly different each time</b>: the pitch floats randomly within a range and the shape of the sparks changes too. The brain treats it as a “new stimulus” each time.</div></div>
+  <div class="eg bad" data-ic="🌋"><span data-illus="c07_samefx"></span><div class="egt"><b>Every hit a big move</b>: to keep stimulating, every hit plays the largest effect. The screen gets flooded, and the real heavy hits can’t be told apart.</div></div>
+
+  
+  <div class="sec"><span class="n">8</span><h2><span class="tag how">Try it</span>Hands-on: add juice to a training dummy</h2></div>
+  <p>Click the dummy to hit it. First <b>turn off all effects</b> and hit a few times, then <b>turn the switches on one by one</b>, and watch the note below and the “juice index.” Every switch is exaggerated on purpose so you can see what it does.</p>
+  <div class="board">
+    <div class="c7tg" id="toggles"></div>
+    <div class="c7row"><label><input type="checkbox" id="c7red"> Reduce motion (simulates an accessibility option: shake and flash weakened or off)</label></div>
+    <div id="arena">
+      <div id="c7world"><span class="c7shadow" id="c7shadow"></span><span id="target">🪵</span></div>
+      <div class="c7flash" id="c7flash"></div>
+      <div class="c7badge" id="c7badge">⏸ Hit stop</div>
+    </div>
+    <div class="c7meter"><i id="c7mi"></i></div>
+    <div class="c7row"><span class="stat">Hits <b id="hits">0</b></span><span class="stat">Combo <b id="c7combo">0</b></span><span class="stat">Juice index <b id="c7ji">0/8</b></span>
+      <button class="btn alt" id="allon">All on!</button><button class="btn pink" id="alloff">All off</button><button class="btn green" id="c7rnd">Random set</button></div>
+    <div class="c7out" id="c7cap">Everything is off now: click the dummy and only the “Hits” number changes, like a toggle.</div>
+  </div>
+  <div class="sticky">Try it: turn on at least 5 effects (remember “Floating numbers”), click the dummy repeatedly, and land the critical on the 5th hit.<span class="c7ok" id="c7t5" hidden> ✅ Done: with layers of feedback stacked, the critical stands out more than a normal hit.</span></div>
+  <div class="grid3">
+    <div class="card y mini"><div class="ico">🔊</div><h3>Sound</h3><p>The cheapest and most effective feedback.</p></div>
+    <div class="card b mini"><div class="ico">📳</div><h3>Shake / hit stop</h3><p>Gives a strike “weight.” <span class="term" tabindex="0" data-def="Hit stop: a very brief pause of the picture or character at the moment of impact, strengthening the sense of the strike’s weight.">Hit stop</span>: a pause of tens of milliseconds on impact.</p></div>
+    <div class="card p mini"><div class="ico">✨</div><h3>Particles / floating numbers</h3><p>Make the result “visible.” Satisfying.</p></div>
+  </div>
+
+  <div class="misc">
+    <h3>Common misconceptions</h3>
+    <ul>
+      <li><b>“The more effects, the better the feel.”</b> No: too much covers up information and causes discomfort; the point is to be immediate, weighty and in proportion to how important the event is.</li>
+      <li><b>“Game feel is only the artists’ and sound designers’ job.”</b> Input latency, frame rate, how forgiving the hit detection is, and the easing curve of an action are just as critical.</li>
+      <li><b>“100 milliseconds is an iron law.”</b> It is a common rule-of-thumb threshold that varies with the task, the device and the player.</li>
+      <li><b>“Easing only makes animation look nice.”</b> It directly changes the sense of weight an action gives and how responsive it feels.</li>
+      <li><b>“If the effects aren’t enough, add more.”</b> Repeated stimuli fade by nature, and adding more only costs more; leaving room for variation and spreading out the tiers works better.</li>
+      <li><b>“Finish the content first and add juice last.”</b> Game feel is the foundation of “playing,” and adding it late often means changing a lot of code and numbers; many teams get it right at the prototype stage.</li>
+    </ul>
+  </div>
+
+  <div class="reflect">
+    <h3>Reflection and debate</h3>
+    <p>“Feedback should be fast” has its limits too: to show weight, hit stop is precisely <b>making the picture a little slower on purpose</b>, and some games deliberately use delay to create tension or a sense of charging up. So a more accurate statement is: <b>the player’s action must be acknowledged immediately, and after that the pacing of the presentation can be designed</b>.</p>
+    <p>The predictive-processing account is an analogy borrowed by designers; the Weber–Fechner law holds only approximately around medium intensities; and research on hedonic adaptation is being revised too. These are explanations to help you think, not formulas to copy.</p>
+    <p>Also, intense shaking and flashing can make some players uncomfortable, so options such as “reduce motion” are needed. In a game you have played, was there a moment when “the effects were gorgeous, but it wasn’t satisfying at all”? What was missing?</p>
+  </div>
+
+  <div class="key">
+    <h3>Key points</h3>
+    <ul>
+      <li>Game feel comes from <b>immediate, visible, exaggerated</b> feedback: sound, animation, shake, particles, numbers.</li>
+      <li>Words like “game feel” and “juice” appeared so that a difference that was hard to put into words could be <b>named, broken apart and tested item by item</b>.</li>
+      <li>Feedback has to be <b>fast</b>: about 100 milliseconds is a common rule-of-thumb threshold, and the longer the gap between action and result, the weaker the sense of causality.</li>
+      <li>Easing functions determine the “weight” of an action: linear is like a machine, ease-out is crisper, and overshoot is springier.</li>
+      <li>Feedback should be proportional to the importance of the event: <b>small actions get small feedback, big events get big feedback</b>, with tiers spread by multiples.</li>
+      <li>The same stimulus fades with repetition: rescue it with <b>variation</b> and <b>spread-out tiers</b>, not endless piling on; don’t overdo it, and provide a “reduce motion” option.</li>
+    </ul>
+  </div>
+  <div class="tldr">Game feel = causality that is fast enough, plus responses “exaggerated” by easing, plus intensity tiers that are spread in proportion and still leave room for variation.</div>
+
+  <div class="sec"><span class="n">9</span><h2><span class="tag think">Practice</span>Quick quiz</h2></div>
+  <div id="quiz"></div>
+
+  <div class="sec"><span class="n">10</span><h2><span class="tag how">Your design</span>Design a set of feedback for “collecting a coin”</h2></div>
+  <div class="card o">
+    <p>Picture the simplest action: “collect one coin.” Write down 4 different kinds of feedback (visual / sound / motion / number), then think: by the 100th coin, how do you keep it from getting boring?</p>
+    <textarea rows="5" data-save="ch7" placeholder="Example: the coin is pulled toward the character with a “ding,” the pitch rising a step at a time with each consecutive pickup; the character gives a little hop; the counter pops…"></textarea>
+    <p class="small">✍️ Saved automatically in your browser.</p>
+  </div>
+</main>
+<script src="../js/illus.js"></script>
+<script src="../js/illus-ch07.js"></script>
+<script src="../js/en/illus.js"></script>
+<script src="../js/en/illus-lib.js"></script>
+<script src="../js/en/illus-ch07.js"></script>
+<script src="../js/common.js"></script>
+<script>
+const $ = id => document.getElementById(id);
+GD.mountQuiz($("quiz"), [
+  { q: "What is “hit stop” (the picture pausing briefly at the moment of impact) mainly for?", opts: ["To save performance", "To make the strike feel more weighty", "To add difficulty", "To tell the player to pause"], a: 1, why: "The pause lets the brain “see” the impact and creates a sense of force. It deliberately slows the picture by tens of milliseconds, while the acknowledgment of the input is still immediate." },
+  { q: "Which is a more reasonable design for how feedback strength relates to event importance?", opts: ["The bigger the better", "Proportional: big events exaggerated, small events slight, tiers spread by multiples", "All events the same", "Add a fixed amount per tier"], a: 1, why: "Sensitivity to change depends on proportion (an approximation of Weber’s law). If everything flashes wildly, players can’t tell what matters." },
+  { q: "[Why] Feedback appears 0.4 seconds after a click, and players feel it is “soft and doesn’t follow the hand.” What is the most reasonable explanation?", opts: ["0.4 seconds is too short for players to notice", "The longer gap between action and result weakens the sense of causality, “I made it happen”", "The longer the delay, the more weight it feels", "Only online games feel this way"], a: 1, why: "The brain binds “what I did” to “what happened,” but only within a very narrow time window. About 100 milliseconds is a common rule of thumb, and it varies by task." },
+  { q: "[Why] The average simple reaction time of adults is about 230 milliseconds, so why can we still notice a 100-millisecond feedback delay?", opts: ["We actually can’t; it’s an illusion", "Noticing the delay depends on matching your own action to its result, not on a contest of who “reacts” faster", "Because reaction time was measured wrongly", "Because the smaller the delay, the louder the sound"], a: 1, why: "Reaction time measures how long it takes to act after seeing a stimulus; noticing delay measures whether the gap between action and result lines up. The two are different things." },
+  { q: "[Why it was invented] Two Breakout games with exactly the same rules, one clearly more fun. What were developers lacking that led to expressions like “game feel” and “juice”?", opts: ["More levels", "A shared language and method for naming, breaking apart and testing this kind of “soft difference” item by item", "Higher screen resolution", "More complicated rules"], a: 1, why: "Without a vocabulary you can’t discuss, troubleshoot or teach; Swink’s <i>Game Feel</i> and the 2012 talk “Juice it or lose it” turned the “hard-to-describe satisfaction” into a checklist that can be tried item by item." },
+  { q: "[Why] Players have picked up a coin a hundred times, and the same “ding” and the same burst of sparks no longer register. The more effective approach is:", opts: ["Keep raising the volume and the sparks", "Make the pitch and sparks slightly different each time, and make the tier for big events far larger than for small ones", "Cancel all feedback", "Give feedback only the first time"], a: 1, why: "Repeated stimuli get habituated and fade; a new stimulus brings the response back. Piling on is expensive, while leaving variation and spreading the tiers is cheaper." },
+]);
+</script>
+<script>
+(function () {
+  const g = id => document.getElementById(id);
+  const reduceOn = () => g("c7red").checked;
+  const done = id => { const el = g(id); if (el) el.hidden = false; };
+  let actx = null;
+  function ensureAudio() { try { actx = actx || new (window.AudioContext || window.webkitAudioContext)(); if (actx.state === "suspended") actx.resume(); } catch (e) {} }
+  function beep(f, vol) {
+    try {
+      if (!actx) ensureAudio();
+      if (!actx) return;
+      const o = actx.createOscillator(), gn = actx.createGain(), t = actx.currentTime;
+      o.type = "square"; o.frequency.setValueAtTime(f, t); o.frequency.exponentialRampToValueAtTime(f / 2, t + .12);
+      gn.gain.setValueAtTime(vol || .1, t); gn.gain.exponentialRampToValueAtTime(.001, t + .15);
+      o.connect(gn); gn.connect(actx.destination); o.start(); o.stop(t + .16);
+    } catch (e) {}
+  }
+  const SQUASH = [{ transform: "scale(1,1)" }, { transform: "scale(1.45,.55) rotate(-8deg)" }, { transform: "scale(.8,1.3) rotate(4deg)" }, { transform: "scale(1.1,.92)" }, { transform: "scale(1,1)" }];
+
+  
+  const SEG = [
+    "<b>Acknowledge (within about 100 milliseconds)</b>: the instant the player presses, something has to tell them “got it”: a sound, a small movement, a bit of light will do. This stretch fears slowness most; once it is late, the sense of causality breaks.",
+    "<b>Hit stop (tens of milliseconds)</b>: on impact the picture freezes for a moment, as if pinning the “bang” in place. It is slow on purpose, to let the brain see the blow, which is why it feels heavy.",
+    "<b>Squash → rebound</b>: the object is flattened and bounces back, using easing and overshoot to draw “force acting.” This stretch decides whether something looks soft or hard, light or heavy.",
+    "<b>Aftershock · fade</b>: particles drift apart, numbers float up, the sound leaves a little tail. Don’t drag it out: end crisply, so the next action isn’t blocked by the last one’s effects."
+  ];
+  document.querySelectorAll(".c7seg").forEach(s => {
+    const show = () => { g("c7segmsg").innerHTML = SEG[+s.dataset.i]; };
+    s.addEventListener("click", show);
+    s.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); show(); } });
+  });
+
+  
+  let oCombo = 0, oLast = 0;
+  const oSl = { b: g("c7o_b"), p: g("c7o_p"), s: g("c7o_s"), a: g("c7o_a") };
+  const oOut = { b: g("c7o_bo"), p: g("c7o_po"), s: g("c7o_so"), a: g("c7o_ao") };
+  Object.keys(oSl).forEach(k => oSl[k].addEventListener("input", () => (oOut[k].textContent = oSl[k].value)));
+  g("c7o_go").onclick = () => {
+    ensureAudio();
+    const st = g("c7o_stage"), coin = g("c7coin"), now = performance.now();
+    oCombo = now - oLast < 900 ? oCombo + 1 : 0; oLast = now;
+    const b = +oSl.b.value, p = +oSl.p.value, s = +oSl.s.value, a = +oSl.a.value;
+    if (b > 0) {
+      const k = b / 100;
+      coin.animate([{ transform: "translateY(0) scale(1)" }, { transform: "translateY(" + (-50 * k) + "px) scale(" + (1 - .2 * k) + "," + (1 + .35 * k) + ")" },
+        { transform: "translateY(0) scale(" + (1 + .4 * k) + "," + (1 - .4 * k) + ")" }, { transform: "translateY(" + (-12 * k) + "px) scale(1,1)" }, { transform: "translateY(0) scale(1)" }], 100 + 380 * k);
+    }
+    if (s > 0) st.animate([{ transform: "translate(0,0)" }, { transform: "translate(" + (-s) + "px," + (s * .6) + "px)" }, { transform: "translate(" + s + "px," + (-s * .6) + "px)" }, { transform: "translate(" + (-s * .5) + "px,0)" }, { transform: "translate(0,0)" }], 240);
+    for (let i = 0; i < p; i++) {
+      const e = document.createElement("span"); e.textContent = "✨"; e.style.cssText = "position:absolute;left:50%;top:50%;pointer-events:none;font-size:1.3rem";
+      st.appendChild(e);
+      const an = Math.random() * 6.28, d = 40 + Math.random() * 60;
+      e.animate([{ transform: "translate(0,0) scale(1)", opacity: 1 }, { transform: "translate(" + Math.cos(an) * d + "px," + Math.sin(an) * d + "px) scale(.3)", opacity: 0 }], 550).onfinish = () => e.remove();
+    }
+    if (a > 0) beep(380 + Math.min(oCombo, 8) * 50 * (a / 5), .03 + a * .012);
+    const n = (b > 0) + (p > 0) + (s > 0) + (a > 0);
+    g("c7o_out").textContent = n === 0 ? "Nothing happened: this is the version with rules only and no feedback." : "You have layered on " + n + " kinds of feedback. Keep adjusting, or press “Compare.”";
+  };
+  g("c7o_reset").onclick = () => { Object.keys(oSl).forEach(k => { oSl[k].value = 0; oOut[k].textContent = 0; }); g("c7o_out").textContent = "Reset to zero: back to the coin where “nothing happens.”"; };
+  g("c7o_cmp").onclick = () => {
+    const v = { "Bounce": +oSl.b.value, "Particles": +oSl.p.value, "Shake": +oSl.s.value, "Sound": +oSl.a.value };
+    const zeros = Object.keys(v).filter(k => !v[k]);
+    const maxed = +oSl.b.value >= 100 && +oSl.p.value >= 24 && +oSl.s.value >= 12 && +oSl.a.value >= 10;
+    const half = +oSl.b.value <= 50 && +oSl.p.value <= 12 && +oSl.s.value <= 6 && +oSl.a.value <= 5;
+    let h = "<b>The historical approach:</b> the 2012 demo “Juice it or lose it” layered easing, squash and stretch, screen shake, particles and sound onto the same Breakout with unchanged rules, <b>one item at a time, adding only a little each time</b>, pausing after each to see the change. The point is not how strong any one item is, but that <b>every event has a response, and its strength is in proportion to the event’s importance</b>.<br>";
+    if (zeros.length === 4) h += "All four items are at 0 now: this is the “stiff version” from the start of the talk.";
+    else if (maxed) h += "You maxed out all four. Picking up one small coin already makes this much fuss, so when a “big event” comes you have no more exaggerated tier left to use, which is why you leave headroom in proportion.";
+    else if (zeros.length) h += "You have " + zeros.join(",") + " left at 0. That’s fine, but try turning each on a little and see whether the overall feel goes from “has a response” to “has weight.”";
+    else h += "You used a little of all four kinds, close to the thinking of that talk: none of them extreme, and layered together they give it life.";
+    g("c7o_out").innerHTML = h;
+    if (!zeros.length && half) done("c7t1");
+  };
+
+  
+  (function () {
+    const box = g("c7rt_box"), res = [];
+    let st = 0, t0 = 0, tm = 0;
+    const act = () => {
+      if (st === 0) {
+        st = 1; box.className = "c7rt wait"; box.textContent = "Wait for it to turn green… not yet";
+        tm = setTimeout(() => { st = 2; t0 = performance.now(); box.className = "c7rt go"; box.textContent = "Now click!"; }, 1000 + Math.random() * 2000);
+      } else if (st === 1) {
+        clearTimeout(tm); st = 0; box.className = "c7rt"; box.textContent = "Too early. Click again to start over";
+      } else {
+        const d = Math.round(performance.now() - t0); res.push(d); st = 0;
+        box.className = "c7rt"; box.textContent = d + " ms. Click to go again";
+        const avg = Math.round(res.reduce((a, b) => a + b, 0) / res.length);
+        g("c7rt_msg").innerHTML = "Trial " + res.length + " ·" + d + " ms; average " + avg + " ms." + (res.length >= 5 ? "<br>That’s all 5 trials. In studies the average for adults is a little over 230 ms. You can’t catch up to 100 ms by “reacting,” yet you can still feel a 100 ms delay, and that is the work of the sense of causality." : "");
+      }
+    };
+    box.addEventListener("pointerdown", e => { e.preventDefault(); act(); });
+    box.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); act(); } });
+  })();
+
+  
+  const votes = []; let pending = null, timer = 0, tok = 0;
+  g("c7d").addEventListener("input", () => (g("c7do").textContent = g("c7d").value));
+  function setVote(on) { g("c7good").disabled = g("c7bad").disabled = !on; }
+  function fx() { beep(420, .1); g("c7fx").animate(SQUASH.slice(0, 4).concat([{ transform: "scale(1,1)" }]), 260); }
+  g("c7btn").onclick = () => {
+    ensureAudio();
+    const blind = g("c7blind").checked;
+    const d = blind ? Math.floor(Math.random() * 61) * 10 : +g("c7d").value;
+    const my = ++tok, t0 = performance.now();
+    pending = null; setVote(false); clearTimeout(timer);
+    const fire = () => {
+      if (my !== tok) return;
+      const real = performance.now() - t0;
+      pending = { d: real };
+      fx(); setVote(true);
+      g("c7msg").textContent = blind ? "How does it feel?" : "Actual delay about " + Math.round(real) + " ms. How does it feel?";
+    };
+    if (d <= 0) fire(); else timer = setTimeout(fire, d);
+  };
+  function estimate() {
+    const nb = votes.filter(v => !v.good).length, ng = votes.length - nb;
+    if (votes.length < 6 || !nb || !ng) return null;
+    let best = 1e9, ts = [];
+    for (let t = 0; t <= 620; t += 5) {
+      let e = 0;
+      for (const v of votes) { if (!v.good && v.d < t) e++; if (v.good && v.d >= t) e++; }
+      if (e < best) { best = e; ts = [t]; } else if (e === best) ts.push(t);
+    }
+    return { t: ts[Math.floor(ts.length / 2)], err: best };
+  }
+  function drawVotes() {
+    const X = d => 40 + Math.min(d, 600) / 600 * 500;
+    let s = '<rect x="40" y="34" width="500" height="76" fill="#fffef7" stroke="#2b2b3a" stroke-width="3"/>' +
+      '<line x1="' + X(100) + '" x2="' + X(100) + '" y1="34" y2="110" stroke="#2b2b3a" stroke-width="2" stroke-dasharray="5 5"/>' +
+      '<text x="' + (X(100) + 4) + '" y="24" font-size="19">100 ms rule of thumb</text>';
+    [0, 100, 200, 300, 400, 500, 600].forEach(v => { s += '<text x="' + X(v) + '" y="138" text-anchor="middle" font-size="18">' + v + '</text>'; });
+    votes.forEach((v, i) => {
+      s += '<circle cx="' + X(v.d).toFixed(1) + '" cy="' + (52 + (i % 4) * 16) + '" r="6" fill="' + (v.good ? "#b6e8a8" : "#ffb3c6") + '" stroke="#2b2b3a" stroke-width="2.5"/>';
+    });
+    const e = estimate();
+    if (e) s += '<line x1="' + X(e.t) + '" x2="' + X(e.t) + '" y1="34" y2="110" stroke="#e5484d" stroke-width="3"/>';
+    g("c7sc").innerHTML = s;
+    g("c7n").textContent = votes.length;
+    if (!e) g("c7est").textContent = votes.length < 6 ? "Run a few more trials (at least 6, with both feelings picked). Green dot = has feel, red dot = sluggish." : "You need to pick both feelings to estimate a threshold. Try longer or shorter delays.";
+    else {
+      done("c7t2");
+      if (e.t <= 0) g("c7est").textContent = "You find almost every delay sluggish.";
+      else if (e.t > 600) g("c7est").textContent = "You find every delay in the tested range has feel.";
+      else g("c7est").innerHTML = "Your “sluggishness threshold” is about <b>" + e.t + " ms</b> (red line; of your" + votes.length + " votes, " + e.err + " don’t fit this line). Compared with the usual rule of thumb of about 100 ms, you are" + (e.t > 130 ? "more tolerant" : e.t < 70 ? "more sensitive" : "about the same") + ". This is only a rough personal estimate and is affected by your device and attention.";
+    }
+  }
+  function vote(good) {
+    if (!pending) return;
+    votes.push({ d: pending.d, good });
+    g("c7msg").textContent = "Recorded (delay about " + Math.round(pending.d) + " ms, your judgment:" + (good ? "has feel" : "sluggish") + "). You can keep pressing “Hit me.”";
+    pending = null; setVote(false); drawVotes();
+  }
+  g("c7good").onclick = () => vote(true);
+  g("c7bad").onclick = () => vote(false);
+  g("c7vreset").onclick = () => { votes.length = 0; pending = null; setVote(false); g("c7msg").textContent = "Cleared; starting over."; drawVotes(); };
+  drawVotes();
+
+  
+  const EAS = {
+    lin: { n: "Linear", col: "#3b8fd0", f: t => t },
+    out: { n: "Ease-out", col: "#2b9a4a", f: t => 1 - Math.pow(1 - t, 3) },
+    back: { n: "Overshoot", col: "#e5484d", f: t => { const c1 = +g("c7os").value, c3 = c1 + 1; return 1 + c3 * Math.pow(t - 1, 3) + c1 * Math.pow(t - 1, 2); } }
+  };
+  const KEYS = ["lin", "out", "back"], tried = new Set();
+  const PX = t => 64 + t * 476, PY = v => 205 - v / 1.3 * 175;
+  let raf = 0;
+  function plot(tcur, act) {
+    let s = '<rect x="64" y="30" width="476" height="175" fill="#fffef7" stroke="#2b2b3a" stroke-width="3"/>' +
+      '<line x1="64" x2="540" y1="' + PY(1) + '" y2="' + PY(1) + '" stroke="#2b2b3a" stroke-width="2" stroke-dasharray="6 6"/>' +
+      '<text x="550" y="' + (PY(1) + 5) + '" font-size="15">Target</text>' +
+      '<text x="302" y="228" text-anchor="middle" font-size="16">time →</text>' +
+      '<text x="26" y="118" transform="rotate(-90 26 118)" text-anchor="middle" font-size="16">position →</text>';
+    KEYS.forEach(k => {
+      const pts = []; for (let i = 0; i <= 60; i++) { const t = i / 60; pts.push(PX(t).toFixed(1) + "," + PY(EAS[k].f(t)).toFixed(1)); }
+      s += '<polyline fill="none" stroke="' + EAS[k].col + '" stroke-width="4" points="' + pts.join(" ") + '"/>';
+      if (tcur !== null && (!act || act.includes(k))) s += '<circle cx="' + PX(tcur).toFixed(1) + '" cy="' + PY(EAS[k].f(tcur)).toFixed(1) + '" r="7" fill="' + EAS[k].col + '" stroke="#2b2b3a" stroke-width="2.5"/>';
+    });
+    g("c7cv").innerHTML = s;
+  }
+  function setPos(k, v) {
+    const sq = g("c7sq_" + k), lane = sq.parentNode;
+    sq.style.transform = "translateX(" + (v * (lane.clientWidth - 98)) + "px)";
+  }
+  function launch(act) {
+    cancelAnimationFrame(raf);
+    const dur = +g("c7dur").value, t0 = performance.now();
+    const frame = now => {
+      const t = Math.min(1, Math.max(0, (now - t0) / dur));
+      KEYS.forEach(k => setPos(k, (!act || act.includes(k)) ? EAS[k].f(t) : 0));
+      plot(t, act);
+      if (t < 1) raf = requestAnimationFrame(frame);
+    };
+    frame(t0);
+    raf = requestAnimationFrame(frame);
+  }
+  g("c7go").onclick = () => { launch(null); g("c7pickmsg").textContent = "All three launch together: notice that ease-out “arrives” first, and overshoot settles last."; };
+  const PICK = {
+    lin: "<b>Linear</b>: constant speed, like a machine. It suits progress bars and timer bars where you want “even and exact”; used on a strike it often feels weak, since forces in real life always come with acceleration and deceleration.",
+    out: "<b>Ease-out</b>: fast from the start (immediate response), slowly coming to rest at the end. Most interface animation and character movement use it; it is crisp without being stiff.",
+    back: "<b>Overshoot</b>: shoots past the target and springs back, exaggerating “impact” and “elasticity” with a strong cartoon feel, good for squash and stretch and items popping out. Too large an amount feels floaty."
+  };
+  document.querySelectorAll("[data-k]").forEach(b => b.addEventListener("click", () => {
+    launch([b.dataset.k]);
+    g("c7pickmsg").innerHTML = PICK[b.dataset.k] + "<br><span class='small'>There is no absolute “best”: whether to convey mechanical, crisp or springy depends on the physical feel the action wants to express.</span>";
+    tried.add(b.dataset.k); if (tried.size === 3) done("c7t3");
+  }));
+  g("c7dur").addEventListener("input", () => { g("c7duro").textContent = g("c7dur").value; });
+  g("c7os").addEventListener("input", () => { g("c7oso").textContent = g("c7os").value; plot(null); });
+  KEYS.forEach(k => setPos(k, 0));
+  plot(null);
+  window.addEventListener("resize", () => KEYS.forEach(k => setPos(k, 0)));
+
+  
+  (function () {
+    let n = 0, low = false; const ser = [];
+    function draw() {
+      let s = '<line x1="66" y1="14" x2="66" y2="104" stroke="#2b2b3a" stroke-width="2.5"/><line x1="66" y1="104" x2="552" y2="104" stroke="#2b2b3a" stroke-width="2.5"/>' +
+        '<text x="58" y="26" text-anchor="end" font-size="19">100%</text><text x="58" y="106" text-anchor="end" font-size="19">0</text>' +
+        '<text x="309" y="134" text-anchor="middle" font-size="19">Each pickup →</text>';
+      const last = ser.slice(-24);
+      last.forEach((v, i) => { const h = Math.max(2, v.f * 86); s += '<rect x="' + (76 + i * 19.5).toFixed(1) + '" y="' + (104 - h).toFixed(1) + '" width="16" height="' + h.toFixed(1) + '" fill="' + (v.v ? "#a8dcf0" : "#ffb3c6") + '" stroke="#2b2b3a" stroke-width="2"/>'; });
+      g("c7a_sv").innerHTML = s;
+    }
+    function pick() {
+      ensureAudio();
+      const v = g("c7a_var").checked;
+      const f = v ? .6 + .4 * Math.random() : Math.max(.06, Math.exp(-n / 6));
+      n++; ser.push({ f, v });
+      g("c7a_n").textContent = n; g("c7a_v").textContent = Math.round(f * 100) + "%";
+      const c = g("c7acoin"), k = .25 + f * 1.2;
+      c.animate([{ transform: "scale(1)" }, { transform: "scale(" + (1 + .5 * k) + "," + (1 - .35 * k) + ")" }, { transform: "scale(1)" }], 100 + 260 * f);
+      const st = c.parentNode, cnt = Math.round(f * 10);
+      for (let i = 0; i < cnt; i++) {
+        const e = document.createElement("span"); e.textContent = v ? ["✨", "⭐", "💫", "🌟"][Math.floor(Math.random() * 4)] : "✨";
+        e.style.cssText = "position:absolute;left:50%;top:50%;pointer-events:none;font-size:" + (.8 + f * .8) + "rem"; st.appendChild(e);
+        const an = Math.random() * 6.28, d = 20 + f * 60 * Math.random() + 20;
+        e.animate([{ transform: "translate(0,0) scale(1)", opacity: 1 }, { transform: "translate(" + Math.cos(an) * d + "px," + Math.sin(an) * d + "px) scale(.3)", opacity: 0 }], 500).onfinish = () => e.remove();
+      }
+      beep(v ? 360 + Math.random() * 420 : 520, .02 + f * .1);
+      if (!v && f < .2) low = true;
+      let m = "Trial " + n + " · satisfaction " + Math.round(f * 100) + "%.";
+      if (!v) m += f < .2 ? "Almost nothing left: for the same stimulus, the brain treats it as background noise. Now tick “Add variation” and press again." : "The same stimulus keeps repeating, and satisfaction keeps dropping.";
+      else m += "With variation, the brain treats each as a new stimulus, and satisfaction stays high.";
+      g("c7a_msg").textContent = m;
+      if (v && low && f >= .6) done("c7t4");
+      draw();
+    }
+    g("c7a_go").onclick = pick;
+    g("c7a_rest").onclick = () => { n = 0; g("c7a_n").textContent = 0; g("c7a_msg").textContent = "After a rest the baseline is back: press again and it will be as fresh as the first time."; };
+    g("c7a_reset").onclick = () => { n = 0; low = false; ser.length = 0; g("c7a_n").textContent = 0; g("c7a_v").textContent = "–"; g("c7a_msg").textContent = "Started over."; draw(); };
+    draw();
+  })();
+
+  
+  const FX = { sound: "🔊 Sound", shake: "📳 Screen shake", squash: "🍞 Squash", part: "✨ Particles", text: "💥 Floating numbers", stop: "⏸ Hit stop", flash: "⚡ Flash", knock: "🌀 Knockback" };
+  const DESC = {
+    sound: "<b>Sound</b>: a “ding” on a hit, with the pitch rising step by step on a combo; the purple rings are a sketch that “draws” the sound. Ears are the fastest feedback channel.",
+    shake: "<b>Screen shake</b>: the whole scene jolts once. Powerful, but don’t use it every time; save it for heavy hits.",
+    squash: "<b>Squash</b>: the dummy is flattened and springs back, and the shadow beneath its feet changes too. Drawing “force acting” is one of the oldest tricks in animation.",
+    part: "<b>Particles</b>: debris flies in all directions. It turns the fact of a “hit” into visible matter.",
+    text: "<b>Floating numbers</b>: damage numbers pop up; from the 5th hit it becomes a large critical. Numbers quantify the result so players know “how well they did.”",
+    stop: "<b>Hit stop</b>: at the moment of impact the dummy is pinned in its flattened pose, and the other effects burst out a little later. The pause itself is the sense of power.",
+    flash: "<b>Flash</b>: the whole dummy overexposes to white for an instant, telling the player at once “that hit landed.” Very cheap, but keep the flashing restrained.",
+    knock: "<b>Knockback</b>: the dummy is pushed away and springs back to its place with overshoot. Displacement combined with easing makes it seem to have mass."
+  };
+  const on = {}; Object.keys(FX).forEach(k => (on[k] = false));
+  const tg = g("toggles");
+  function syncMeter() {
+    const n = Object.keys(on).filter(k => on[k]).length;
+    g("c7mi").style.width = (n / 8 * 100) + "%";
+    g("c7ji").textContent = n + "/8";
+    return n;
+  }
+  function capNow(n, lastKey) {
+    let h = lastKey ? DESC[lastKey] + "<br>" : "";
+    h += n === 0 ? "Everything is off now: click the dummy and only the “Hits” number changes, like a toggle."
+      : n <= 2 ? "There is a little response now, but it is still rather “dry.”"
+      : n <= 5 ? "It is starting to feel good: every hit has a clear sense of an “event.”"
+      : "Very “juicy”! Note: the more frequent the events, the more headroom you must leave for each effect, or big events get drowned out and players grow immune to them quickly.";
+    g("c7cap").innerHTML = h;
+  }
+  Object.keys(FX).forEach(k => {
+    const b = document.createElement("button"); b.className = "chip"; b.textContent = FX[k]; b.dataset.k = k;
+    b.onclick = () => { on[k] = !on[k]; b.classList.toggle("on", on[k]); if (on[k] && k === "sound") ensureAudio(); capNow(syncMeter(), on[k] ? k : null); };
+    tg.appendChild(b);
+  });
+  function setAll(v) { Object.keys(on).forEach(k => (on[k] = v)); tg.querySelectorAll(".chip").forEach(c => c.classList.toggle("on", v)); if (v) ensureAudio(); capNow(syncMeter(), null); }
+  g("allon").onclick = () => setAll(true); g("alloff").onclick = () => setAll(false);
+  g("c7rnd").onclick = () => { Object.keys(on).forEach(k => (on[k] = Math.random() < .5)); tg.querySelectorAll(".chip").forEach(c => c.classList.toggle("on", on[c.dataset.k])); ensureAudio(); capNow(syncMeter(), null); };
+
+  let n = 0, combo = 0, lastHit = 0;
+  const arena = g("arena"), world = g("c7world"), target = g("target");
+  target.onpointerdown = e => {
+    const nowT = performance.now(); combo = nowT - lastHit < 700 ? combo + 1 : 0; lastHit = nowT;
+    g("hits").textContent = ++n; g("c7combo").textContent = combo + 1;
+    const r = arena.getBoundingClientRect(), tr = target.getBoundingClientRect();
+    const cx = tr.left - r.left + tr.width / 2, cy = tr.top - r.top + tr.height / 2;
+    const dir = e.clientX < tr.left + tr.width / 2 ? 1 : -1;
+    const red = reduceOn(), crit = (combo + 1) % 5 === 0;
+    if (crit && on.text && Object.keys(on).filter(k => on[k]).length >= 5) done("c7t5");
+    const run = () => {
+      if (on.sound) {
+        beep(300 + Math.min(combo, 8) * 60, .12);
+        for (let i = 0; i < 3; i++) {
+          const ring = document.createElement("span"); ring.className = "c7ring"; ring.style.left = cx + "px"; ring.style.top = cy + "px"; arena.appendChild(ring);
+          ring.animate([{ transform: "scale(.5)", opacity: .9 }, { transform: "scale(" + (4 + i * 1.5) + ")", opacity: 0 }], { duration: 500 + i * 120, delay: i * 90, fill: "backwards" }).onfinish = () => ring.remove();
+        }
+        const nt = document.createElement("span"); nt.className = "part"; nt.textContent = "♪"; nt.style.left = cx + 50 + "px"; nt.style.top = cy - 30 + "px"; arena.appendChild(nt);
+        nt.animate([{ transform: "translateY(0)", opacity: 1 }, { transform: "translateY(-50px)", opacity: 0 }], 600).onfinish = () => nt.remove();
+      }
+      if (on.shake) { const m = red ? 3 : 18; world.animate([{ transform: "translate(0,0)" }, { transform: "translate(" + -m + "px," + m * .6 + "px)" }, { transform: "translate(" + m * .9 + "px," + -m * .7 + "px)" }, { transform: "translate(" + -m * .5 + "px," + m * .4 + "px)" }, { transform: "translate(" + m * .3 + "px,0)" }, { transform: "translate(0,0)" }], red ? 160 : 300); }
+      if (on.squash) { target.animate(SQUASH, 340); g("c7shadow").animate([{ transform: "scaleX(1)" }, { transform: "scaleX(1.5)" }, { transform: "scaleX(.9)" }, { transform: "scaleX(1)" }], 340); }
+      if (on.flash && !red) { g("c7flash").animate([{ opacity: .85 }, { opacity: 0 }], 160); target.animate([{ filter: "brightness(4) saturate(0)" }, { filter: "none" }], 200); }
+      if (on.knock) { const d = 55 * dir; target.animate([{ transform: "translateX(0)" }, { transform: "translateX(" + d + "px)", offset: .3 }, { transform: "translateX(" + (-d * .25) + "px)", offset: .65 }, { transform: "translateX(0)" }], { duration: 520, easing: "cubic-bezier(.3,1.4,.6,1)" }); }
+      if (on.part) for (let i = 0; i < 16; i++) {
+        const p = document.createElement("span"); p.className = "part"; p.textContent = ["✨", "⭐", "💥", "🪵"][i % 4];
+        p.style.left = cx + "px"; p.style.top = cy + "px"; arena.appendChild(p);
+        const a = Math.random() * Math.PI * 2, d = 60 + Math.random() * 100, dx = Math.cos(a) * d, dy = Math.sin(a) * d;
+        p.animate([{ transform: "translate(0,0) scale(1.2)", opacity: 1 }, { transform: "translate(" + dx + "px," + (dy - 25) + "px) scale(1)", opacity: 1, offset: .5 }, { transform: "translate(" + dx * 1.2 + "px," + (dy + 45) + "px) scale(.3)", opacity: 0 }], 750).onfinish = () => p.remove();
+      }
+      if (on.text) {
+        const t = document.createElement("span"); t.className = "dmg"; t.textContent = (crit ? "CRIT!" : combo ? combo + 1 + "-hit combo " : "") + (10 + Math.floor(Math.random() * 20)) * (crit ? 3 : 1);
+        t.style.left = cx - 30 + "px"; t.style.top = cy - 70 + "px"; if (crit) t.style.fontSize = "3.2rem"; arena.appendChild(t);
+        t.animate([{ transform: "translateY(0) scale(.5)", opacity: 1 }, { transform: "translateY(-40px) scale(" + (crit ? 1.5 : 1.2) + ")", opacity: 1, offset: .3 }, { transform: "translateY(-80px) scale(1)", opacity: 0 }], 900).onfinish = () => t.remove();
+      }
+    };
+    if (on.stop) {
+      const badge = g("c7badge"); badge.style.display = "block";
+      target.style.transform = "scale(1.35,.7)"; arena.style.background = "#e8e8f0";
+      setTimeout(() => { target.style.transform = ""; arena.style.background = ""; badge.style.display = "none"; run(); }, red ? 40 : 110);
+    } else run();
+  };
+  syncMeter();
+})();
+</script>
+</body>
+</html>

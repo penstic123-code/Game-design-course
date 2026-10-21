@@ -1,0 +1,681 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Chapter 20: Genre Design Patterns</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+  .gtag{display:inline-block;font-size:.9rem;border:2px solid var(--ink);border-radius:12px;padding:0 8px;margin:2px;background:#fff}
+  .halo{paint-order:stroke;stroke:#fff;stroke-width:4px;stroke-linejoin:round}
+  .scroll{overflow-x:auto}
+  
+  .rchip{display:inline-flex;align-items:center;gap:6px;font:inherit;font-size:1rem;border:2.5px solid var(--ink);background:#fff;border-radius:20px;padding:2px 12px;cursor:pointer;margin:3px}
+  .rchip i{display:inline-block;width:16px;height:16px;border:2px solid var(--ink);border-radius:50%}
+  .rchip.on{background:var(--green)}
+  
+  table.dl{border-collapse:collapse;width:100%;font-size:.95rem}
+  table.dl th,table.dl td{border:2.5px solid var(--ink);padding:5px 6px;text-align:center}
+  table.dl th{background:var(--yellow);font-family:var(--hand);font-weight:400;font-size:1.05rem}
+  table.dl td.nm{text-align:left;white-space:nowrap}
+  table.dl td.ok{background:#eaf9e4}table.dl td.no{background:#f3f0e6;color:#999}
+  table.dl tr.pass td.nm{background:#b6e8a8;font-weight:700}
+  table.dl tr.fail td.nm{background:#f0eee6;color:#8a8a8a}
+  .reqrow label{display:inline-block;margin:3px 12px 3px 0;font-size:.98rem;cursor:pointer}
+  
+  #c20_plane g.reg{cursor:pointer}
+  #c20_plane g.reg:hover .shape{filter:brightness(.93)}
+  .tbl2{width:100%;border-collapse:collapse;font-size:.95rem;margin:6px 0}
+  .tbl2 th,.tbl2 td{border:2.5px solid var(--ink);padding:4px 8px;text-align:center}
+  .tbl2 th{background:var(--yellow);font-family:var(--hand);font-weight:400}
+  
+  #c20_grid{display:grid;grid-template-columns:repeat(20,1fr);gap:2px;max-width:560px;margin:8px auto}
+  #c20_grid i{aspect-ratio:1;background:#d9d4c3;border:1.5px solid var(--ink);border-radius:3px;transition:opacity .4s,background .4s,transform .3s}
+  #c20_grid i.win{background:#ffd23f;transform:scale(1.12)}
+  #c20_grid i.dim{opacity:.07}
+  .fr{display:grid;grid-template-columns:120px 1fr;gap:8px;align-items:center;margin:6px 0}
+  .fbar{height:20px;background:#fff;border:2.5px solid var(--ink);border-radius:8px;position:relative;overflow:hidden}
+  .fbar span{display:block;height:100%;background:var(--orange)}
+  .fbar.b2 span{background:var(--blue)}
+  .fnum{font-size:.9rem;margin:2px 0 0}
+  .band{position:relative;height:22px;background:#fff;border:2.5px solid var(--ink);border-radius:8px}
+  .band .rg{position:absolute;top:2px;bottom:2px;background:var(--orange);border:1.5px solid var(--ink);border-radius:4px}
+  .band .bs{position:absolute;top:-3px;bottom:-3px;width:4px;background:#2b2b3a}
+  @media(max-width:700px){.fr{grid-template-columns:1fr}}
+  .sticky.done{background:#dff5d4}
+  .c20ok{font-weight:700}
+</style>
+</head>
+<body data-ch="20">
+<main class="wrap">
+  <div class="hero">
+    <div class="txt">
+      <span class="badge">Chapter 20</span>
+      <h1>Genre Design Patterns</h1>
+      <p class="sub">A genre is not a label but a contract of “loop + promise.”</p>
+    </div>
+    <svg viewBox="0 0 190 150" class="rough" aria-hidden="true">
+      <rect x="20" y="20" width="60" height="45" rx="8" fill="#ffe58a" stroke="#2b2b3a" stroke-width="4"/>
+      <rect x="105" y="20" width="60" height="45" rx="8" fill="#b6e8a8" stroke="#2b2b3a" stroke-width="4"/>
+      <rect x="20" y="85" width="60" height="45" rx="8" fill="#ffb3c6" stroke="#2b2b3a" stroke-width="4"/>
+      <rect x="105" y="85" width="60" height="45" rx="8" fill="#a8dcf0" stroke="#2b2b3a" stroke-width="4"/>
+      <path d="M80 42 H105 M50 65 V85 M135 65 V85 M80 108 H105" stroke="#2b2b3a" stroke-width="4" fill="none"/>
+    </svg>
+  </div>
+
+  <div class="goals">
+    <h3>Learning goals</h3>
+    <span class="time">about 45 min</span>
+    <ul>
+      <li>Say each of five common genres’ “core loop + player promise,” and tell how the label “genre” <b>grew</b>.</li>
+      <li>Spot <span class="term" tabindex="0" data-def="Survivorship bias: observing only the samples that “survived” and ignoring those that didn’t, and so drawing wrong conclusions about cause.">survivorship bias</span>, explain why “what successful games have in common” is not “the cause of success,” and know what other data to look at.</li>
+      <li>Use the player’s <span class="term" tabindex="0" data-def="Schema: a preset framework in the brain of “what this kind of thing is usually like,” used to understand new information quickly.">schema</span> and expectations to judge whether “breaking a genre convention” brings delight or confusion, and say why games of the same kind always cluster.</li>
+    </ul>
+  </div>
+
+  
+  <div class="sec"><span class="n">1</span><h2><span class="tag what">What it is</span>Genre = core loop + player promise</h2></div>
+  <p>You see the word “roguelike” on a store page, and without opening a single screenshot you have already guessed a lot: every run is a little different, dying will hurt, and you will probably be unable to resist another run. Who told you? Nobody, it was the word itself.</p>
+  <p>So for a designer a genre is more like a <b>contract</b>. A player who picks this genre is expecting a certain <b>core loop</b> (covered in Chapter 2: the set of actions players repeat over and over), and also certain <b>player promises</b>, that is, “you will get this kind of experience.”</p>
+  <div class="grid2">
+    <div class="card y"><h3>🔁 Core loop</h3><p>The set of actions players repeat over and over: for example “jump → land → move forward,” or “draw a card → play a card → win → get a new card.”</p></div>
+    <div class="card p"><h3>🤝 Player promise</h3><p>The experience this genre guarantees by default: platformers promise <b>“failure is my execution’s fault”</b>; roguelikes promise <b>“every run is different”</b>; puzzles promise <b>“the moment it clicks feels great.”</b></p></div>
+  </div>
+  <div class="card">
+    <svg viewBox="0 0 740 300" width="100%" role="img" aria-label="Genre contract schematic: the designer promises a core loop and a player promise; keeping it brings trust, and breaking it brings a feeling of being cheated">
+      <defs><marker id="c20ar" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2b2b3a"/></marker></defs>
+      <g class="rough" stroke="#2b2b3a" stroke-width="3.5">
+        <rect x="10" y="20" width="170" height="90" rx="10" fill="#fff7cf"/>
+        <rect x="560" y="20" width="170" height="90" rx="10" fill="#e8f6fc"/>
+        <rect x="215" y="10" width="310" height="120" rx="6" fill="#fff"/>
+        <rect x="30" y="190" width="320" height="90" rx="10" fill="#eaf9e4"/>
+        <rect x="390" y="190" width="320" height="90" rx="10" fill="#ffe9ef"/>
+        <path d="M180 65 H213 M527 65 H558" fill="none" marker-end="url(#c20ar)"/>
+        <path d="M300 130 L200 188" fill="none" marker-end="url(#c20ar)"/>
+        <path d="M440 130 L540 188" fill="none" marker-end="url(#c20ar)"/>
+      </g>
+      <g font-size="18" fill="#2b2b3a" text-anchor="middle">
+        <text x="95" y="58">Designer</text><text x="95" y="88">“I’m making a roguelike”</text>
+        <text x="645" y="58">Player</text><text x="645" y="88">“Then I expect…”</text>
+        <text x="370" y="42" font-size="20">📜 Genre contract</text>
+        <text x="370" y="72">① Loop: what you repeat</text>
+        <text x="370" y="100">② Promise: what you’ll feel</text>
+        <text x="190" y="225">Kept ✔</text><text x="190" y="255">“This is it”: trust</text>
+        <text x="550" y="225">Broken ✘</text><text x="550" y="255">“Cheated”: worse than less content</text>
+      </g>
+    </svg>
+  </div>
+  <div class="eg" data-ic="🏃" data-t="Platformer"><span data-illus="c20_coyote"></span><div class="egt"><b>Platformer</b>: you buy it to get steadily more precise with your hands. As long as lenient rules like “coyote time” (you can still jump for a moment after running off an edge) are in place, when you die you think “my bad, one more try.”</div></div>
+  <div class="eg" data-ic="🧩" data-t="Puzzle"><span data-illus="c20_aha"></span><div class="egt"><b>Puzzle</b>: the promise is “I can work it out by thinking.” With enough clues but no direct answer, you get that “aha.”</div></div>
+  <div class="eg" data-ic="🌶️" data-t="Sichuan restaurant"><span data-illus="c20_chili"></span><div class="egt"><b>Walking into a Sichuan restaurant</b>: you assume “there will be spice.” Open a horror film and you assume “I’ll be scared.” A cuisine and a film genre are both contracts nobody wrote down.</div></div>
+  <div class="eg bad" data-ic="💢" data-t="Sloppy hitbox"><span data-illus="c20_hitbox"></span><div class="egt"><b>Breaking a promise</b>: the advertising says “precision platforming,” but the hit detection is vague and you fall though you clearly touched the platform. Players don’t mind that it is hard; they feel <b>cheated</b>, because the promise “failure is my fault” was not kept.</div></div>
+
+  
+  <div class="sec"><span class="n">2</span><h2><span class="tag what">What it is</span>Design patterns of five genres</h2></div>
+  <p>Each promise differs, and so does the way of keeping it. Each of the five genres below grew up around its own promise.</p>
+  <div class="card g">
+    <h3>🏃 Platformer: precise control + level teaching</h3>
+    <div class="withimg"><span data-illus="c20_gplat"></span><div>
+      <p><b>Promise:</b> a fair challenge, and when I die it’s my fault.</p>
+      <p>Feel is the foundation: jump height, acceleration and air control must be tuned to be very smooth. Common forgiving tricks include <span class="term" tabindex="0" data-def="Coyote time: a lenient design that still allows a jump in the brief moment right after the character runs off a platform edge.">coyote time</span> and “input buffering” (pressing jump slightly early still counts).</p>
+      <p>The level itself is the tutorial: learn one move in a safe place first, then add danger, and finally combine (covered in Chapter 11). Checkpoints should be dense and restarts quick, so that “try again” costs almost nothing.</p>
+    </div></div>
+  </div>
+  <div class="card o">
+    <h3>💀 Roguelike: procedural generation + permadeath + two kinds of growth</h3>
+    <div class="withimg rev"><span data-illus="c20_grogue"></span><div>
+      <p><b>Promise:</b> every run is a new story. The name comes from the old game <i>Rogue</i> of around 1980.</p>
+      <p><span class="term" tabindex="0" data-def="Using rules and random numbers to generate maps, enemies, rewards and other content automatically at runtime, instead of placing everything by hand.">Procedural generation</span> re-assembles maps, enemies and rewards every run, so players can’t memorize a routine. <span class="term" tabindex="0" data-def="The rule that progress is wiped on death and you start over (permadeath).">Permadeath</span> gives every decision weight, because dying means starting over.</p>
+      <p>In-run growth works only within this run and is gone when you die; <span class="term" tabindex="0" data-def="Permanent unlocks or upgrades that persist after death (meta progression), as opposed to in-run growth that lasts only for one run.">meta-progression</span> is kept after death. Works with meta-progression are often called roguelites.</p>
+    </div></div>
+  </div>
+  <div class="card v">
+    <h3>🃏 Deckbuilder: deck + random draws + synergy</h3>
+    <div class="withimg"><span data-illus="c20_gdeck"></span><div>
+      <p><b>Promise:</b> my cleverness builds a powerful deck.</p>
+      <p>The player first <b>builds</b> the deck (choosing which cards to add) and then <b>draws at random</b> from it in battle. The strategy is in the building, and the tension comes from the drawing.</p>
+      <p><span class="term" tabindex="0" data-def="The combined effect of several elements is greater than the sum of each on its own (synergy).">Synergy</span> is the heart of the fun: put a few cards together and the effect exceeds the sum of the parts, for example “stack armor” with “more armor means more damage.” A good design leaves several synergy routes instead of only one best solution. Adding cards is always more tempting than cutting them, but the thicker the deck, the harder it is to draw the core combination, so “trimming the deck” is itself an interesting choice.</p>
+    </div></div>
+  </div>
+  <div class="card b">
+    <h3>🏰 Strategy / 4X: the triangle of economy, expansion and military</h3>
+    <div class="withimg rev"><span data-illus="c20_g4x"></span><div>
+      <p><b>Promise:</b> my long-term planning makes an empire grow. <span class="term" tabindex="0" data-def="4X: explore, expand, exploit and exterminate, four verbs that sum up the core behavior of this kind of strategy game.">4X</span> stands for four verbs: explore, expand, exploit, exterminate.</p>
+      <p>The three hold each other in check: only developing the economy gets you attacked, only building an army leaves you broke, and only expanding stretches your front too long. The player must keep weighing “invest now” against “be safe now.”</p>
+      <p>Compounding is the core: early economic investment snowballs (covered by the faucets and sinks of Chapter 15), so “sinks” like war and upkeep are needed to keep the snowball from going too far. Turns are long and information plentiful, and the interface and hints are almost as important as the rules.</p>
+    </div></div>
+  </div>
+  <div class="card y">
+    <h3>🧩 Puzzle: insight + clues</h3>
+    <div class="withimg"><span data-illus="c20_gpuzzle"></span><div>
+      <p><b>Promise:</b> I can work it out by thinking. The core experience is <b>insight</b>: you are stuck, and suddenly you see the rule and it all clears.</p>
+      <p>There must be enough clues, but the answer must not be spelled out: too few and it is guessing, too many and there is no insight. Start from one simple rule, add variations level by level, and let the player learn in small examples before using it in big problems.</p>
+      <p>You also have to guard against “brute-force trial and error”: if clicking every option in turn gets you through, the insight is gone. A player stuck too long needs hints, but it should be the player who decides whether to take one.</p>
+    </div></div>
+  </div>
+
+  <h3>Genre radar: stacked comparison</h3>
+  <p>Put the five genres on the same set of dimensions and you will see the difference in their “personalities.” <b>Tick the genres below to stack them layer by layer</b>, and below it will tell you who is highest in each dimension.</p>
+  <div class="card">
+    <svg viewBox="0 0 700 420" width="100%" role="img" aria-label="Radar chart of five game genres on five dimensions, with ticks to stack them">
+      <g id="c20_radar" class="rough" stroke="#2b2b3a" stroke-width="3"></g>
+      <g id="c20_radarLabels" font-size="18" fill="#2b2b3a"></g>
+    </svg>
+    <div id="c20_rchips"></div>
+    <div><button class="btn alt" id="c20_rall">Stack all</button><button class="btn pink" id="c20_rnone">Clear</button></div>
+    <div class="outbox" id="c20_rtext" style="font-size:1rem;margin-top:6px"></div>
+    <p class="small">The numbers are <b>illustrative ratings</b> (0 to 5) given for explanation, not statistics; works within a genre differ a lot.</p>
+  </div>
+  <div class="sticky" id="c20k1">Try it: stack “Platformer” and “Puzzle” and find the dimension where both are high. <span class="c20ok"></span></div>
+
+  
+  <div class="sec"><span class="n">3</span><h2><span class="tag what">What it is</span>Two kinds of growth in roguelikes: in-run and meta</h2></div>
+  <p>A roguelike has a contradiction: permadeath makes people tense, but if one death wipes everything, who can stand it? Its solution is to split growth into two layers.</p>
+  <div class="card">
+    <svg id="c20_growth" viewBox="0 0 740 330" width="100%" role="img" aria-label="Left: with only in-run growth every run starts at the same point; right: with meta-progression the start rises run after run"></svg>
+    <p class="small">Schematic: each rising line is the growth of power within one run, and ✖ is death. On the left every run restarts from the same starting point; on the right failure leaves a permanent bonus and the starting point gets higher and higher.</p>
+  </div>
+  <div class="grid2">
+    <div class="card g"><h3>In-run growth</h3><p>Each run starts from zero, bringing <b>immediate choices and surprises</b>. What is lost is lost when you die, so decisions carry weight.</p></div>
+    <div class="card p"><h3>Meta-progression</h3><p>It lets failure accumulate something, reducing frustration; but too much lets newcomers “grind” instead of “learn,” so it needs restraint.</p></div>
+  </div>
+  <div class="eg" data-ic="🧛" data-t="Vampire Survivors"><span data-illus="c20_vamp"></span><div class="egt"><b><i>Vampire Survivors</i></b>: gold earned each run buys permanent upgrades, a typical meta-progression that lets even the worst run “earn something.”</div></div>
+  <div class="eg" data-ic="🔥" data-t="Hades"><span data-illus="c20_hades"></span><div class="egt"><b><i>Hades</i></b>: death is part of the story, you return to the start after dying and upgrade permanent abilities with what you saved, while the rooms and blessing combinations differ every run.</div></div>
+  <div class="eg" data-ic="🏋️" data-t="Working out"><span data-illus="c20_gym"></span><div class="egt"><b>Working out</b>: each workout’s state is “in-run,” and the fitness left by months of persistence is “meta.” With meta-progression, “a poor workout today” isn’t wasted.</div></div>
+  <div class="eg bad" data-ic="⚔️" data-t="Upgrades too strong"><span data-illus="c20_op"></span><div class="egt"><b>A near miss: meta upgrades given too generously.</b> After a few runs the character is strong enough not to need thought, the challenge is ground flat, and the player’s fun changes from “how to win” to “grind enough and you win.” Meta-progression should cushion frustration, not replace skill.</div></div>
+
+  
+  <div class="sec"><span class="n">4</span><h2><span class="tag origin">How it was invented</span>How the word “genre” grew</h2></div>
+  <p>Nobody declared one day that “from now on the world has roguelikes.” A genre is <b>first a batch of similar games, and then someone wanting to give them a common name</b>, and only once the name is chosen do the arguments over the boundary begin. You saw the same in Chapter 1: the word “game” has no agreed definition, only family resemblance. Genres are the same, only younger and more quarrelsome.</p>
+  <div class="story">
+    <h3>From <i>Rogue</i> to “roguelike”</h3>
+    <p><b>The problem at the time.</b> Around 1980, Michael Toy and Glenn Wichman, students at the University of California, Santa Cruz, made a game that drew dungeons in characters, <i>Rogue</i>, whose map was shown on the terminal through the curses library written by Ken Arnold. It spread with BSD UNIX and was included in 4.2BSD in 1983, but <b>without source code</b>; only with 4.3BSD in 1986 did the source become available. People who wanted to play “something like it” had to remake it from scratch.</p>
+    <p><b>Early attempts.</b> Hobbyists made similar games like Hack, Moria and Angband, and players were scattered among different Usenet newsgroups, hard to find each other.</p>
+    <p><b>The key step.</b> In 1993 someone proposed merging these discussions under one name. According to Wikipedia’s account, it was argued for about three weeks and in the end <b>rec.games.roguelike.*</b> was chosen, on the grounds that <i>Rogue</i> was the oldest of this kind of game, making it “the least bad option.” One word, and that is how a batch of games was framed as “a genre.”</p>
+    <p><b>Then the boundary starts to drift.</b> In 2008 the International Roguelike Development Conference was held in Berlin and the community drafted the “Berlin Interpretation.” It is not a definition but a <b>list of factors</b>, with the high-weight ones including random environment generation, permadeath, turn-based play and grid movement; it takes ADOM, Angband, Linley’s Dungeon Crawl, NetHack and Rogue as the benchmark for measuring “how roguelike a game is.” In the same year the indie game <i>Spelunky</i> appeared, meeting only some of these factors yet called a roguelike by many, and so terms like roguelite followed.</p>
+  </div>
+  <div class="timeline">
+    <div class="ev hasimg"><span data-illus="c20_rogue"></span><div><b class="yr">Around 1980</b> <i>Rogue</i> (Toy, Wichman, using Arnold’s curses library): a dungeon and an adventurer represented by an @ drawn in characters.</div></div>
+    <div class="ev hasimg"><span data-illus="c20_bsd"></span><div><b class="yr">1983 / 1986</b> 4.2BSD carried <i>Rogue</i> but without source; the source became available only with 4.3BSD. People who wanted to make similar games had to remake it from scratch, so a batch of “look-alike” games appeared.</div></div>
+    <div class="ev hasimg"><span data-illus="c20_usenet"></span><div><b class="yr">1993</b> Several Usenet newsgroups merge and are named rec.games.roguelike.*. One name framed a batch of games as a genre.</div></div>
+    <div class="ev hasimg"><span data-illus="c20_berlin"></span><div><b class="yr">2008</b> The Berlin Interpretation: a list of factors, not a definition.</div></div>
+    <div class="ev hasimg"><span data-illus="c20_lite"></span><div><b class="yr">From 2008</b> Works like <i>Spelunky</i> that meet only some factors become popular, terms like roguelite appear, and the boundary keeps being argued over.</div></div>
+  </div>
+  <p><b>Draw your own line first, then see how others draw theirs.</b> Below are 6 games often brought up in discussion. Step one: by intuition, mark <b>which ones you think count as roguelikes</b>; step two: tick the conditions you think a “roguelike must have,” and see which games get counted by that definition. Does it match your intuition?</p>
+  <div class="board" id="c20_draw">
+    <div class="small"><b>Step one:</b> click a game’s name to mark “I think it’s a roguelike” (click again to undo).</div>
+    <div id="c20_gmarks"></div>
+    <div class="small" style="margin-top:8px"><b>Step two:</b> tick the conditions that are “required”:</div>
+    <div class="reqrow" id="c20_reqs"></div>
+    <div>
+      <button class="btn alt" data-p="strict">Strict (all)</button>
+      <button class="btn green" data-p="mid">Middle (first two)</button>
+      <button class="btn pink" data-p="loose">Loose (just restart from scratch on death)</button>
+      <button class="btn" data-p="none">Clear</button>
+    </div>
+    <div class="scroll"><table class="dl" id="c20_dtab"></table></div>
+    <div class="msg" id="c20_dmsg" style="font-size:1.05rem;font-family:var(--body)"></div>
+  </div>
+  <div class="sticky" id="c20k2">Try it: first click “Strict” and see which games drop out; then click “Loose” and see which get let in. <span class="c20ok"></span></div>
+  <p class="small">This is an <b>illustrative classification</b> meant to show that “definitions drift”: the factors are a simplified five, and the judgments about each work are disputed too (for example <i>Slay the Spire</i> only unlocks new content without adding stats, and in <i>Vampire Survivors</i> the stages are fixed and what is random is the upgrade choices). It is not an authoritative division of genres. The lesson for designers: don’t agonize over “does my game count as some genre,” and think clearly about <b>what you are promising the player</b>.</p>
+
+  
+  <div class="sec"><span class="n">5</span><h2><span class="tag origin">How it was invented</span>Wald’s airplane: “who is missing” is the key</h2></div>
+  <div class="story">
+    <h3>Where on the plane should armor go?</h3>
+    <div class="withimg rev"><span data-illus="c20_planeback"></span><div>
+      <p><b>The problem at the time.</b> During the Second World War the US military wanted to add armor to bombers, but armor is heavy and can’t cover the whole plane. Where should it go? Researchers examined planes that had <b>returned</b>, and the wings and fuselage were riddled with bullet holes, with few near the engines. The intuition came naturally: “reinforce where the holes are.”</p>
+      <p><b>The key step.</b> Abraham Wald, working with Columbia University’s Statistical Research Group (SRG), saw the other side: these were the planes that <b>made it back</b>. The places with few holes might be exactly the places where “if hit, it doesn’t come back,” and those planes were not in the sample at all. What needed reinforcing was the places on returning planes with <b>no bullet holes</b>.</p>
+      <p>Wald’s 1943 set of memoranda dealt with exactly how to estimate the survival probability of each part of a plane when only survivors can be seen; one, titled “A Method of Estimating Plane Vulnerability Based on Damage of Survivors,” was reprinted by the Center for Naval Analyses in 1980. Mangel and Samaniego gave a popular introduction in the 1984 <i>Journal of the American Statistical Association</i>.</p>
+    </div></div>
+    <p class="small">The details of the much-retold “bullet-hole diagram” differ across retellings (who drew the diagram, the exact data), so the widely accepted main point is taken here: <b>who is missing from the analyzed sample</b>. The planes and numbers below are <b>illustrative</b>, not historical data.</p>
+    <div class="timeline">
+      <div class="ev hasimg"><span data-illus="c20_wald"></span><div><b class="yr">1943</b> Wald writes a series of memoranda on aircraft survivability at the SRG: don’t look only at the planes that came back, work out the part that didn’t.</div></div>
+      <div class="ev hasimg"><span data-illus="c20_jasa"></span><div><b class="yr">1984</b> Mangel &amp; Samaniego, “Abraham Wald’s work on aircraft survivability”, Journal of the American Statistical Association 79(386): 259–267.</div></div>
+      <div class="ev hasimg"><span data-illus="c20_ask"></span><div><b class="yr">Today</b> “Survivorship bias” becomes a common concept in statistics and behavioral science: when evaluating successes, first ask “what about the failures?”</div></div>
+    </div>
+    <p><b>Try it first: you decide where the armor goes.</b> The picture below shows 140 “bullet holes on returning planes” (illustrative: each plane is hit at random, the chance of crashing after a hit differs by part, and we see only those that made it back). Click parts of the plane to choose <b>2 places</b> for armor (each halves the “chance of crashing when hit,” illustrative), then click “Reveal.”</p>
+    <div class="board">
+      <svg id="c20_plane" viewBox="0 0 720 350" width="100%" role="img" aria-label="Top view of a bomber, the distribution of bullet holes on returning planes, with parts you can click to add armor"></svg>
+      <div>
+        <span class="stat">Armor chosen <b id="c20_an">0</b> / 2</span>
+        <button class="btn green" id="c20_ago" disabled>🔍 Reveal</button>
+        <button class="btn pink" id="c20_areset">Start over</button>
+      </div>
+      <div id="c20_aout"></div>
+    </div>
+    <div class="sticky" id="c20k3">Try it: first reinforce the two places with the most holes by intuition and reveal; then start over, pick the two places with the fewest holes, and compare how much each plan lowers the chance of crashing. <span class="c20ok"></span></div>
+  </div>
+
+  
+  <div class="sec"><span class="n">6</span><h2><span class="tag why">Why it works</span>Looking only at winners misleads: survivorship bias</h2></div>
+  <p>You want to make “the next hit,” so you study the 20 most successful indie games and find “70% are pixel art” and “half have roguelike elements.” The conclusion seems ready to jump out: make a pixel-art roguelike!</p>
+  <p>But have you thought about how much of the thousands of failures is pixel art? If it is also 70%, this “finding” carries no information. Wald’s plane is the same trap.</p>
+  <div class="why-box">
+    <h3>Survivorship bias</h3>
+    <p><b>The principle:</b> when we observe only the samples left after selection, we mistake “the traits selection left behind” for “the cause of success.” To test whether “trait X is a cause of success,” you need at least three more things: the <span class="term" tabindex="0" data-def="Base rate: the share a trait takes in the whole sample to begin with.">base rate</span> (how much of all games had X to begin with), <b>the failed samples</b> (is the success rate of games with X higher than without X), and <b>sample size</b> (with 20 winners, how big is the random fluctuation).</p>
+    <p>In symbols: what we see is P(pixel art | success), and what we want to know is P(success | pixel art). The two differ unless you also know P(pixel art) and P(success).</p>
+    <div class="src">Sources: Wald’s research on aircraft survivability at the Statistical Research Group (1943 memoranda; Mangel &amp; Samaniego, 1984, JASA). “Survivorship bias” is a common concept in statistics and behavioral science, and the difference between conditional probabilities is basic probability theory.</div>
+  </div>
+  <div class="eg" data-ic="🎮" data-t="Hits are all online"><span data-illus="c20_hits"></span><div class="egt"><b>“Hit games all have online play, so make it online”</b>: if 40% of all games had online play to begin with, 40% of winners having it says nothing. What to compare is the success rate with online play and without.</div></div>
+  <div class="eg" data-ic="🎓" data-t="Dropout founder"><span data-illus="c20_dropout"></span><div class="egt"><b>“So-and-so dropped out, founded a company and became a billionaire, so dropping out helps you succeed”</b>: we don’t see the far more numerous people who dropped out and stayed unknown.</div></div>
+  <div class="eg" data-ic="🏛️" data-t="Old buildings are sturdy"><span data-illus="c20_oldbuild"></span><div class="egt"><b>“Old houses are all sturdy, and today’s houses are poor quality”</b>: the badly built old houses collapsed or were torn down long ago, and we see only the ones that survived.</div></div>
+  <div class="eg bad" data-ic="🧪" data-t="Run a control"><span data-illus="c20_ab"></span><div class="egt"><b>A right example: run a control.</b> Randomly split players into two groups, give a feature to only one, and compare retention. With no “selection,” a difference can be due to that feature.</div></div>
+
+  
+  <div class="sec"><span class="n">7</span><h2><span class="tag why">Why it works</span>A genre is a psychological expectation: delight and confusion when breaking convention</h2></div>
+  <p>You open a game labeled “platformer,” and your finger is already ready for “hold to jump higher.” If this time the key press waits half a second before the jump, you get irritated; but if in the tenth minute the game lets you discover that “the jump button is also a grappling hook,” you laugh. Both break expectations, and the feelings are worlds apart.</p>
+  <div class="why-box">
+    <h3>Schema and expectation: the psychology of the genre promise</h3>
+    <p><b>The principle:</b> in psychology, a <span class="term" tabindex="0" data-def="Schema: a preset framework in the brain of “what this kind of thing is usually like,” used to understand new information quickly.">schema</span> is the preset framework in the brain of “what this kind of thing is usually like.” The concept is often traced to Bartlett (1932): he had British subjects retell an unfamiliar North American Indian folk tale (“The War of the Ghosts”) and found that in retelling, people rewrote the parts that didn’t fit their own culture’s expectations into forms that “made sense.” Expectations reshape how we understand new information. (How strong the conclusions of this kind of early memory research are has also been much discussed since.)</p>
+    <p>When players see a genre name, they start up a schema: how to control, what to expect, what counts as fair. If it fits the schema, the player gets going quickly and with little effort; if it goes against it, the player must relearn, the cost is confusion, and the gain may be delight. A common view: things that <b>break expectations but make sense afterward</b> most easily feel like delight; breaking expectations in a way that <b>doesn’t make sense</b> (inaccurate hit detection, going against the genre’s core promise) makes people feel cheated.</p>
+    <div class="src">Sources: Frederic Bartlett, <i>Remembering</i> (1932), which introduced the concept of schema and applied it to the study of memory; “expectation and delight” is common design experience in the games industry, not a single law. The distinction between “surface / core” below is a design judgment, and in reality depends on execution.</div>
+  </div>
+  <div class="card">
+    <svg viewBox="0 0 740 330" width="100%" role="img" aria-label="Two-layer convention schematic: breaking a surface convention is low risk, breaking a core promise is high risk and needs new fun as compensation; the arrow on the right runs from delight to confusion">
+      <defs><marker id="c20ar2" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2b2b3a"/></marker></defs>
+      <g class="rough" stroke="#2b2b3a" stroke-width="3.5">
+        <rect x="20" y="20" width="540" height="130" rx="12" fill="#e8f6fc"/>
+        <rect x="20" y="170" width="540" height="140" rx="12" fill="#ffe9ef"/>
+        <path d="M640 290 V50" fill="none" marker-end="url(#c20ar2)"/>
+      </g>
+      <g font-size="18" fill="#2b2b3a">
+        <text x="36" y="52" font-size="21">Surface conventions: art style, theme, UI skin</text>
+        <text x="36" y="84">E.g. swap the platformer’s hero from a person to a blob of jelly</text>
+        <text x="36" y="112">Break it → mostly “fresh,” low risk</text>
+        <text x="36" y="138">The player’s promise hasn’t moved, only the outfit changed</text>
+        <text x="36" y="202" font-size="21">Core promise: loop, fairness, rules</text>
+        <text x="36" y="234">E.g. a roguelike with identical maps every run / a puzzle that allows brute force</text>
+        <text x="36" y="262">Break it → the player feels “cheated,” high risk</text>
+        <text x="36" y="288">Unless new fun compensates, and it is explained</text>
+        <text x="600" y="30" font-size="17">Delight</text><text x="600" y="316" font-size="17">Confusion</text>
+      </g>
+    </svg>
+  </div>
+  <div class="eg" data-ic="🪝" data-t="Jump key as grapple"><span data-illus="c20_grapple"></span><div class="egt"><b>The jump key is also a grappling hook</b>: it breaks a control convention, but makes sense afterward and brings new fun, which is delight.</div></div>
+  <div class="eg" data-ic="👾" data-t="Monster as victim"><span data-illus="c20_monster"></span><div class="egt"><b>In a horror game “the monster is actually a victim”</b>: it breaks the expectation “monster = threat.” With clues laid in the middle, making sense afterward, it is delight; with no groundwork it is abrupt.</div></div>
+  <div class="eg" data-ic="🍰" data-t="Mild dessert"><span data-illus="c20_dessert"></span><div class="egt"><b>A Sichuan restaurant serves a non-spicy dessert</b>: most people find it a fun finish; but if all the main dishes aren’t spicy either, guests feel “this isn’t Sichuan food at all.”</div></div>
+  <div class="eg bad" data-ic="🔁" data-t="Same every run"><span data-illus="c20_endless"></span><div class="egt"><b>A near miss: a “roguelike” that is the same every run.</b> Suppose a game called <i>Endless Tower</i> makes the maps, enemies and rewards identical every run for “fairness.” It breaks the roguelike’s core promise that “every run is a new story,” with no new fun to compensate, and players soon turn to memorizing.</div></div>
+  <div class="eg bad" data-ic="🖱️" data-t="Brute force"><span data-illus="c20_brute"></span><div class="egt"><b>A near miss: a puzzle you can brute-force.</b> The game doesn’t punish errors, and clicking every button in turn clears it. The promise “I can work it out by thinking” falls through, and the player is bored.</div></div>
+
+  
+  <div class="sec"><span class="n">8</span><h2><span class="tag why">Why it works</span>Why do games of the same kind always cluster? Local optima</h2></div>
+  <div class="withimg rev">
+    <span data-illus="c20_peaks"></span>
+    <div>
+      <p>Once a genre takes off, the games everyone makes grow more and more alike: the same core loop, the same upgrade tree, the same art style. Nobody ordered it; each person is just “making what already works a bit better.”</p>
+      <p>It is like a climber looking for the highest point in thick fog: he can see only what is underfoot, and goes wherever it is higher. When every direction around him slopes down, he stops. But the peak in the fog may be only a low hill, and the higher one lies on the other side of the valley.</p>
+    </div>
+  </div>
+  <div class="why-box">
+    <h3>Local optima and “hill climbing”</h3>
+    <p>On a “landscape,” improving only in small steps easily leaves you stuck at a <span class="term" tabindex="0" data-def="Local optimum: the best position within a small neighborhood, but not necessarily the best overall. A method that makes only small improvements stops here.">local optimum</span>: highest in the neighborhood, but not the highest overall. To reach a higher peak you often have to go downhill first, that is, get worse for a while before getting better. The evolutionary biologist Sewall Wright first drew this “fitness landscape” in 1932; the metaphor was later borrowed widely in optimization, product design and other fields. Seeing “genre clustering” as hill climbing is an analogy of this course.</p>
+    <div class="src">Source: Sewall Wright, “The roles of mutation, inbreeding, crossbreeding and selection in evolution,” Proceedings of the Sixth International Congress of Genetics, 1932.</div>
+  </div>
+  <div class="board">
+    <svg id="c20_hill" viewBox="0 0 700 260" width="100%" style="touch-action:none;cursor:crosshair;background:#fffdf3;border:3px solid var(--ink);border-radius:10px" role="img" aria-label="A curve with two peaks, the low one on the left and the high on the right; click the curve to choose a start, and the climber only walks toward higher ground"></svg>
+    <div class="c8row" style="display:flex;flex-wrap:wrap;gap:6px;margin:6px 0">
+      <button class="btn" id="c20_climb">🧗 Climb from here</button>
+      <button class="btn green" id="c20_rand10">🎲 Try 10 random starts, one climb each</button>
+      <button class="btn pink" id="c20_hreset">Start over</button>
+    </div>
+    <div class="msg" id="c20_hmsg" style="font-size:1.05rem;font-family:var(--body)">Click anywhere on the curve to pick a start, then click “Climb from here.”</div>
+  </div>
+  <div class="sticky" id="c20k4">Try it: put the start at the foot of the low hill on the left and climb once to see where the climber stops; then click “Try 10 random starts” and count how many times the climber reaches the highest peak. <span class="c20ok"></span></div>
+  <p class="small">Illustrative: the curve is two hills drawn by hand for demonstration, not real genre data.</p>
+
+  
+  <div class="sec"><span class="n">9</span><h2><span class="tag how">How to use it</span>Signature interactive: circle the “secrets of success,” then check against everyone with one click</h2></div>
+  <p><b>How to play:</b> click “Generate” to get 200 games. Each has 6 design traits, and <b>the traits have no connection to success at all, purely random</b> (each time 20 winners are drawn, the golden squares). <b>First look at just these 20 winners</b> and tick what you think are the “secrets of success”; then click <b>“Compare with all in one click”</b> and see how much of your secret appears among the failures. Finally click “Repeat 200 times” and see whether these “secrets” change every time.</p>
+  <div class="board">
+    <label style="display:block;margin-bottom:6px"><input type="checkbox" id="c20_real"> 🔬 Make “online play” <b>really useful</b> in this world (about 3 times the chance of success). Regenerate after ticking and see whether the correct test can detect it when there really is a relationship.</label>
+    <div>
+      <button class="btn" id="c20_gen">🎲 Generate 200 games</button>
+      <button class="btn alt" id="c20_view" disabled>👀 Compare with all in one click</button>
+      <button class="btn green" id="c20_rep" disabled>🔁 Repeat 200 times</button>
+    </div>
+    <div id="c20_grid"></div>
+    <p class="small" id="c20_hint">Click “Generate” first.</p>
+    <div id="c20_rows"></div>
+    <div class="msg" id="c20_msg" style="font-size:1.05rem;font-family:var(--body)"></div>
+    <div id="c20_repout"></div>
+  </div>
+  <div class="sticky" id="c20k5">Try it: first, while looking only at winners, tick two “secrets,” then click “Compare with all in one click” to verify, and finally repeat 200 times to see whether the secrets change every time. <span class="c20ok"></span></div>
+  <p class="small"><b>Note:</b> this is a <b>purely random simulation</b>, not real industry data. Each trait’s share in the whole is fixed (pixel art 70%, roguelike elements 30%, online play 40%, story 50%, free 60%, open world 20%). With only 20 winning samples, the share fluctuates randomly by about ±10 percentage points each time.</p>
+  <h3>Ask these four questions when you meet a “summary of success stories”</h3>
+  <ol>
+    <li>How much of <b>all</b> games of this kind had this trait to begin with? (base rate)</li>
+    <li>Is the success rate of games with it higher than of those without? (failed samples)</li>
+    <li>How large is the sample? Would it change with another batch? (random fluctuation)</li>
+    <li>Are other factors (publishing, timing, luck) at work at the same time? (confounding)</li>
+  </ol>
+
+  <div class="misc">
+    <h3>Common misconceptions</h3>
+    <ul>
+      <li><b>“Successful works all have X, so making X will succeed.”</b> It ignores that failed works have plenty of X too (the base rate), and factors like luck, publishing and timing.</li>
+      <li><b>“Mixing two hot genres must be even hotter.”</b> The promises of two genres may conflict (for example the precise control of “failure is my fault” against the uncertainty of “random every time”), so check the promises first.</li>
+      <li><b>“Genre conventions are made to be broken.”</b> Conventions are the player’s shortcut; breaking one or two on purpose brings delight, and breaking them all makes a game nobody can read.</li>
+      <li><b>“A genre has one official definition.”</b> It is agreed on by the community and it drifts; you tried it yourself in the line-drawing interactive.</li>
+    </ul>
+  </div>
+
+  <div class="reflect">
+    <h3>Reflection and debate</h3>
+    <p>Survivorship bias reminds us not to over-read success stories, but that doesn’t mean success stories have no reference value: combining base rates and failed samples, and then running controls, you can still learn something. The details of Wald’s story differ across retellings, and the widely accepted main point is taken here. The judgment of “delight or confusion” varies by player group: veterans want freshness and newcomers may need familiarity, and the judgments in the text are only a kind of design experience. Local optima should also be seen from another angle: a low hill is not necessarily bad, it may mean a stable gameplay that people buy, and treating it as a “trap to escape” is itself one-sided. As for “genres are agreed on by the community,” that is a common view, and some argue that genres correspond to stable gameplay structures. Do you think a genre is more like a “fact” or a “convention”?</p>
+  </div>
+
+  <div class="key">
+    <h3>Key points</h3>
+    <ul>
+      <li>Genre = <b>core loop + player promise</b>. First think clearly about what experience you promise the player, and then decide which genre to use.</li>
+      <li>Platformers rely on <b>feel and level teaching</b>; puzzles on <b>clues and insight</b>; deckbuilders put strategy in <b>building</b> and tension in <b>drawing</b>; the core of 4X is the mutual check of <b>economy, expansion and military</b>; roguelikes rely on <b>procedural generation + permadeath</b>, with in-run growth bringing drama and meta-progression cushioning frustration.</li>
+      <li><b>A genre is first a batch of similar games and then someone naming it</b> (as when a newsgroup was named roguelike in 1993); the boundary is agreed on by the community and drifts.</li>
+      <li><b>Survivorship bias</b> (Wald’s plane): when analyzing a sample, first ask “who is missing”; look at the base rate, failed samples and sample size.</li>
+      <li>A genre is the player’s <b>psychological expectation</b>: breaking a surface convention is low risk, while breaking a core promise needs new fun as compensation; improving only in small steps easily leaves you stuck at a <b>local optimum</b>, which is why games of one kind cluster.</li>
+    </ul>
+  </div>
+  <div class="tldr">A genre is a contract of expectations written to the player: use it to save effort, break it deliberately now and then, but don’t take “what the winners have in common” as a recipe.</div>
+
+  <div class="sec"><span class="n">10</span><h2><span class="tag think">Practice</span>Check yourself</h2></div>
+  <div id="quiz"></div>
+
+  <div class="sec"><span class="n">11</span><h2><span class="tag how">Your design</span>Mix two genres</h2></div>
+  <div class="card o">
+    <p>Mix two genres, write one sentence of the “<b>player promise</b>,” and then write down its core loop. Example: deckbuilder + platformer, “use the cards in your hand to add skills to jumping”? Think: would the promises of the two genres conflict? Which layer of convention did you break (surface or core)?</p>
+    <textarea rows="5" data-save="ch20" placeholder="Genre A + Genre B: the promise is…; the core loop is…; a possible conflict is…"></textarea>
+    <p class="small">✍️ Saved automatically in your browser.</p>
+  </div>
+</main>
+<script src="../js/illus.js"></script>
+<script src="../js/illus-ch20.js"></script>
+<script src="../js/en/illus.js"></script>
+<script src="../js/en/illus-lib.js"></script>
+<script src="../js/en/illus-ch20.js"></script>
+<script src="../js/common.js"></script>
+<script>
+const $ = id => document.getElementById("c20_" + id);
+const SVGNS = "http://www.w3.org/2000/svg";
+
+(function () {
+  const AXES = ["Control precision", "Randomness", "Long-term planning", "Replay value", "Handcrafted share"];
+  const GENRES = [
+    { n: "Platformer", c: "#ffd23f", v: [5, 1, 1, 2, 5] },
+    { n: "Roguelike", c: "#ff9f43", v: [3, 4, 3, 5, 1] },
+    { n: "Deckbuilder", c: "#a58be8", v: [1, 4, 4, 4, 2] },
+    { n: "Strategy/4X", c: "#5bb5dd", v: [1, 2, 5, 3, 2] },
+    { n: "Puzzle", c: "#6fcf6f", v: [1, 0, 3, 1, 5] },
+  ];
+  const shown = new Set([0, 1]);
+  const CX = 350, CY = 215, R = 150;
+  const ang = i => (-90 + 72 * i) * Math.PI / 180;
+  const pt = (i, val) => [CX + R * val / 5 * Math.cos(ang(i)), CY + R * val / 5 * Math.sin(ang(i))];
+  function draw() {
+    let s = "";
+    for (let lv = 1; lv <= 5; lv++) s += `<polygon points="${AXES.map((_, i) => pt(i, lv).join(",")).join(" ")}" fill="${lv % 2 ? "#fffef7" : "#fff"}" stroke-width="2" stroke="#9a9a9a"/>`;
+    AXES.forEach((_, i) => { s += `<line x1="${CX}" y1="${CY}" x2="${pt(i, 5)[0]}" y2="${pt(i, 5)[1]}" stroke="#9a9a9a" stroke-width="2"/>`; });
+    GENRES.forEach((g, gi) => {
+      if (!shown.has(gi)) return;
+      s += `<polygon points="${g.v.map((v, i) => pt(i, v).join(",")).join(" ")}" fill="${g.c}" fill-opacity=".5" stroke="#2b2b3a" stroke-width="4" stroke-linejoin="round"/>`;
+    });
+    $("radar").innerHTML = s;
+    $("radarLabels").innerHTML = AXES.map((t, i) => {
+      const p = pt(i, 5.9), c = Math.cos(ang(i));
+      return `<text x="${p[0]}" y="${p[1] + 6}" text-anchor="${Math.abs(c) < 0.2 ? "middle" : c > 0 ? "start" : "end"}">${t}</text>`;
+    }).join("");
+    $("rchips").innerHTML = GENRES.map((g, i) => `<button class="rchip ${shown.has(i) ? "on" : ""}" data-i="${i}"><i style="background:${g.c}"></i>${shown.has(i) ? "✔ " : ""}${g.n}</button>`).join("");
+    $("rchips").querySelectorAll("button").forEach(b => (b.onclick = () => { const i = +b.dataset.i; shown.has(i) ? shown.delete(i) : shown.add(i); draw(); }));
+    const sel = [...shown];
+    if (!sel.length) $("rtext").textContent = "No genres stacked yet. Tick one and see.";
+    else if (sel.length === 1) { const g = GENRES[sel[0]]; const mx = Math.max(...g.v); $("rtext").innerHTML = "<b>" + g.n + "</b> stands out most in:" + AXES.filter((_, i) => g.v[i] === mx).join(",") + " (" + mx + "  pts). Stack another genre to compare."; }
+    else $("rtext").innerHTML = "<b>Highest in each dimension:</b><br>" + AXES.map((a, i) => { const mx = Math.max(...sel.map(k => GENRES[k].v[i])); return a + ":" + sel.filter(k => GENRES[k].v[i] === mx).map(k => GENRES[k].n).join(",") + " (" + mx + ")"; }).join("<br>");
+  }
+  $("rall").onclick = () => { GENRES.forEach((_, i) => shown.add(i)); draw(); };
+  $("rnone").onclick = () => { shown.clear(); draw(); };
+  draw();
+})();
+
+(function () {
+  const W0 = 40, PW = 320, GAP = 20, Y0 = 280, YH = 220;
+  function panel(ox, meta) {
+    let s = `<rect x="${ox}" y="40" width="${PW}" height="${Y0 - 40}" fill="#fffef7" stroke="#2b2b3a" stroke-width="3"/>`;
+    const runs = 5, seg = PW / runs, ends = [6, 8, 5, 9, 7];
+    for (let r = 0; r < runs; r++) {
+      const base = meta ? 18 + r * 20 : 18, top = base + ends[r] * (meta ? 12 : 14);
+      const x0 = ox + r * seg + 8, x1 = ox + (r + 1) * seg - 16;
+      const yb = Y0 - base, yt = Y0 - Math.min(top, YH - 22);
+      s += `<polyline points="${x0},${yb} ${(x0 + x1) / 2},${yb - (yb - yt) * 0.4} ${x1},${yt}" fill="none" stroke="${meta ? "#3aa655" : "#ff7a59"}" stroke-width="5" stroke-linejoin="round"/>`;
+      s += `<text x="${x1}" y="${yt - 12}" font-size="18" text-anchor="middle" class="halo">✖</text>`;
+      if (meta) s += `<line x1="${x0 - 6}" y1="${yb}" x2="${x0 + 10}" y2="${yb}" stroke="#2b2b3a" stroke-width="3"/>`;
+    }
+    if (meta) s += `<path d="M${ox + 12} ${Y0 - 18} L${ox + PW - 20} ${Y0 - 100}" stroke="#2b2b3a" stroke-width="3" stroke-dasharray="6 5" fill="none"/>`;
+    s += `<text x="${ox + PW / 2}" y="26" font-size="19" text-anchor="middle">${meta ? "With meta: start rises" : "In-run only: same start"}</text>`;
+    s += `<text x="${ox + PW / 2}" y="${Y0 + 28}" font-size="17" text-anchor="middle">Run 1 → Run 5</text>`;
+    return s;
+  }
+  document.getElementById("c20_growth").innerHTML = panel(W0, false) + panel(W0 + PW + GAP + 20, true);
+})();
+
+(function () {
+  const FACT = ["Randomly generated map", "Start over from scratch on death", "Turn-based", "Grid movement", "No permanent meta upgrades"];
+  const GAMES = [
+    { n: "Rogue (1980)", f: [1, 1, 1, 1, 1] },
+    { n: "NetHack (1987)", f: [1, 1, 1, 1, 1] },
+    { n: "Spelunky (2008)", f: [1, 1, 0, 0, 1] },
+    { n: "Slay the Spire", f: [1, 1, 1, 0, 1] },
+    { n: "Hades", f: [1, 1, 0, 0, 0] },
+    { n: "Vampire Survivors", f: [0, 1, 0, 0, 0] },
+  ];
+  const mark = GAMES.map(() => false), req = FACT.map(() => false);
+  function draw() {
+    $("gmarks").innerHTML = GAMES.map((g, i) => `<button class="chip ${mark[i] ? "on" : ""}" data-i="${i}">${mark[i] ? "✔ " : ""}${g.n}</button>`).join("");
+    $("gmarks").querySelectorAll("button").forEach(b => (b.onclick = () => { mark[+b.dataset.i] = !mark[+b.dataset.i]; draw(); }));
+    $("reqs").innerHTML = FACT.map((t, i) => `<label><input type="checkbox" data-i="${i}" ${req[i] ? "checked" : ""}> ${t}</label>`).join("");
+    $("reqs").querySelectorAll("input").forEach(cb => (cb.onchange = () => { req[+cb.dataset.i] = cb.checked; draw(); }));
+    const any = req.some(Boolean);
+    const pass = GAMES.map(g => any && req.every((r, k) => !r || g.f[k]));
+    $("dtab").innerHTML = "<tr><th>Game</th>" + FACT.map((t, k) => `<th>${req[k] ? "★ " : ""}${t}</th>`).join("") + "<th>By your definition</th></tr>" +
+      GAMES.map((g, i) => `<tr class="${any ? (pass[i] ? "pass" : "fail") : ""}"><td class="nm">${mark[i] ? "👈 " : ""}${g.n}</td>` + g.f.map((v, k) => `<td class="${v ? "ok" : "no"}">${v ? "✔" : "✘"}</td>`).join("") + `<td>${any ? (pass[i] ? "✅ Counts" : "❌ Doesn’t") : "—"}</td></tr>`).join("");
+    if (!any) { $("dmsg").textContent = "Tick one or more “required” conditions, or click a preset above."; return; }
+    const n = pass.filter(Boolean).length, agree = GAMES.filter((_, i) => pass[i] === mark[i]).length;
+    let m = "By your definition, the number of roguelikes is " + n + " / " + GAMES.length + "  of ${GAMES.length}; it matches your first-step intuition on " + agree + " / " + GAMES.length + ".";
+    GAMES.forEach((g, i) => { if (pass[i] !== mark[i]) m += (mark[i] ? "  You thought" : "  You didn’t mark but the definition let in") + g.n.replace(/\(.*\)/, "") + (mark[i] ? " counts, but the definition excluded it" : "") + ";"; });
+    m += " This is “definition drift”: the same batch of games, draw the line elsewhere, and it is a different genre.";
+    $("dmsg").textContent = m;
+  }
+  document.querySelectorAll("#c20_draw [data-p]").forEach(b => (b.onclick = () => {
+    const p = b.dataset.p;
+    for (let k = 0; k < req.length; k++) req[k] = p === "strict" ? true : p === "mid" ? k < 2 : p === "loose" ? k === 1 : false;
+    draw();
+  }));
+  draw();
+})();
+
+(function () {
+  
+  const REG = [
+    { k: "nose", n: "Nose / cockpit", w: 0.10, v: 0.45, rects: [[342, 50, 36, 40]] },
+    { k: "body", n: "Body", w: 0.30, v: 0.12, rects: [[338, 125, 44, 140]] },
+    { k: "wing", n: "Wing", w: 0.30, v: 0.05, rects: [[112, 168, 76, 50], [242, 168, 92, 50], [386, 168, 92, 50], [532, 168, 76, 50]] },
+    { k: "eng", n: "Engine", w: 0.15, v: 0.55, rects: [[196, 158, 40, 70], [484, 158, 40, 70]] },
+    { k: "tail", n: "Tail", w: 0.15, v: 0.15, rects: [[276, 280, 168, 24]] },
+  ];
+  const K = 140;
+  let seed = 7; const rnd = () => { seed = (seed * 16807) % 2147483647; return seed / 2147483647; };
+  const dots = [], lost = [];
+  REG.forEach(r => {
+    r.back = Math.round(K * r.w * (1 - r.v)); r.gone = Math.round(K * r.w * r.v);
+    const area = r.rects.reduce((s, q) => s + q[2] * q[3], 0);
+    const place = (n, arr) => { for (let i = 0; i < n; i++) { let a = rnd() * area, q = r.rects[0]; for (const t of r.rects) { if (a < t[2] * t[3]) { q = t; break; } a -= t[2] * t[3]; } arr.push([q[0] + rnd() * q[2], q[1] + rnd() * q[3]]); } };
+    place(r.back, dots); place(r.gone, lost);
+  });
+  const armor = new Set(); let revealed = false;
+  const base = REG.reduce((s, r) => s + r.w * r.v, 0);
+  const crash = set => REG.reduce((s, r) => s + r.w * r.v * (set.has(r.k) ? 0.5 : 1), 0);
+  function draw() {
+    const fill = k => armor.has(k) ? "#a8dcf0" : "#e6e6ee";
+    let s = '<g class="rough" stroke="#2b2b3a" stroke-width="3.5">';
+    
+    s += `<g class="reg" data-k="body"><rect class="shape" x="330" y="108" width="60" height="180" fill="${fill("body")}"/></g>`;
+    s += `<g class="reg" data-k="nose"><ellipse class="shape" cx="360" cy="72" rx="32" ry="40" fill="${fill("nose")}"/></g>`;
+    s += `<g class="reg" data-k="wing"><rect class="shape" x="100" y="160" width="230" height="66" fill="${fill("wing")}"/><rect class="shape" x="390" y="160" width="230" height="66" fill="${fill("wing")}"/></g>`;
+    s += `<g class="reg" data-k="eng"><rect class="shape" x="192" y="150" width="48" height="86" rx="8" fill="${fill("eng")}"/><rect class="shape" x="480" y="150" width="48" height="86" rx="8" fill="${fill("eng")}"/></g>`;
+    s += `<g class="reg" data-k="tail"><rect class="shape" x="268" y="276" width="184" height="32" fill="${fill("tail")}"/></g>`;
+    s += "</g>";
+    
+    const lab = (t, x, y) => `<text x="${x}" y="${y}" font-size="17" text-anchor="middle" class="halo" style="pointer-events:none">${t}</text>`;
+    s += lab("Nose", 360, 22) + lab("Body", 360, 150) + lab("Wing", 150, 152) + lab("Wing", 570, 152) + lab("Engine", 216, 146) + lab("Engine", 504, 146) + lab("Tail", 360, 326);
+    armor.forEach(k => { const c = { nose: [360, 78], body: [360, 200], wing: [150, 200], eng: [216, 200], tail: [360, 298] }[k]; s += `<text x="${c[0]}" y="${c[1]}" font-size="26" text-anchor="middle" style="pointer-events:none">🛡</text>`; });
+    
+    dots.forEach(d => (s += `<circle cx="${d[0].toFixed(1)}" cy="${d[1].toFixed(1)}" r="3.6" fill="#2b2b3a" style="pointer-events:none"/>`));
+    if (revealed) lost.forEach(d => (s += `<text x="${d[0].toFixed(1)}" y="${(d[1] + 5).toFixed(1)}" font-size="15" text-anchor="middle" fill="#e5484d" font-weight="700" style="pointer-events:none">×</text>`));
+    s += `<text x="20" y="30" font-size="17" fill="#2b2b3a">● Bullet holes on returning planes${revealed ? " × Holes on planes that didn’t return" : ""}</text>`;
+    $("plane").innerHTML = s;
+    $("plane").querySelectorAll("g.reg").forEach(g => (g.onclick = () => {
+      if (revealed) return; const k = g.dataset.k;
+      if (armor.has(k)) armor.delete(k); else if (armor.size < 2) armor.add(k);
+      draw();
+    }));
+    $("an").textContent = armor.size; $("ago").disabled = armor.size !== 2 || revealed;
+  }
+  $("ago").onclick = () => {
+    revealed = true; draw();
+    const byHoles = REG.slice().sort((a, b) => b.back - a.back).slice(0, 2).map(r => r.k);
+    const byFew = REG.slice().sort((a, b) => a.back / (a.rects.reduce((s, q) => s + q[2] * q[3], 0)) - b.back / (b.rects.reduce((s, q) => s + q[2] * q[3], 0))).slice(0, 2).map(r => r.k);
+    const nm = ks => ks.map(k => REG.find(r => r.k === k).n).join(" +");
+    const cut = set => ((1 - crash(set) / base) * 100).toFixed(0);
+    $("aout").innerHTML = '<table class="tbl2"><tr><th>Part</th><th>Holes on returning planes</th><th>Didn’t return</th><th>Crash chance when hit (illustrative)</th></tr>' +
+      REG.map(r => `<tr><td>${r.n}</td><td>${r.back}</td><td>${r.gone}</td><td>${(r.v * 100).toFixed(0)}%</td></tr>`).join("") + "</table>" +
+      `<div class="outbox"><b>Three plans, how much each lowers the chance of crashing per hit:</b><br>Your plan (${nm([...armor])}): <b>${cut(armor)}%</b><br>“Reinforce the two places with the most holes” (${nm(byHoles)}): <b>${cut(new Set(byHoles))}%</b><br>“Reinforce the two places with the fewest holes on returning planes” (${nm(byFew)}): <b>${cut(new Set(byFew))}%</b></div>` +
+      '<div class="msg" style="font-size:1.05rem;font-family:var(--body)">In this model where each plane gets hit is random; the parts with the fewest holes are exactly the parts where “if hit, it doesn’t come back”: the red × marks are all there. Wald’s idea: <b>who is missing from the sample matters more than what is in it</b>.</div>';
+  };
+  $("areset").onclick = () => { armor.clear(); revealed = false; $("aout").innerHTML = ""; draw(); };
+  draw();
+})();
+
+(function () {
+  const FE = [["Pixel art", 0.7], ["Roguelike elements", 0.3], ["Online play", 0.4], ["Has story", 0.5], ["Free", 0.6], ["Open world", 0.2]];
+  const N = 200, NS = 20;
+  let games = [], view = "succ", picks = new Set(), real = false;
+  function world(realFlag) {
+    const gs = [];
+    for (let i = 0; i < N; i++) {
+      const f = FE.map(x => Math.random() < x[1]);
+      const w = realFlag && f[2] ? 3 : 1;
+      gs.push({ f, win: false, key: Math.pow(Math.random(), 1 / w) });
+    }
+    gs.slice().sort((a, b) => b.key - a.key).slice(0, NS).forEach(g => (g.win = true));
+    return gs;
+  }
+  function gen() {
+    real = $("real").checked; games = world(real);
+    view = "succ"; picks = new Set(); $("repout").innerHTML = "";
+    $("view").disabled = false; $("rep").disabled = false; draw();
+  }
+  const pct = (a, b) => (b ? (100 * a / b).toFixed(0) : "0") + "%";
+  function draw() {
+    if (!games.length) return;
+    $("view").textContent = view === "succ" ? "👀 Compare with all in one click" : "↩ Back to winners only";
+    $("grid").innerHTML = games.map(g => "<i class='" + (g.win ? "win" : view === "succ" ? "dim" : "") + "'></i>").join("");
+    const wins = games.filter(g => g.win), loses = games.filter(g => !g.win);
+    $("hint").textContent = view === "succ" ? "Gold = the 20 successful games (the rest faded). Click traits below to tick what you think is the “secret of success.”" : "Gray = the 180 failed games. Compare: how does the winners’ share of the trait differ from the losers’ and from all games?";
+    $("rows").innerHTML = FE.map((x, k) => {
+      const w = wins.filter(g => g.f[k]).length, all = games.filter(g => g.f[k]).length, l = loses.filter(g => g.f[k]).length;
+      let extra = "<div class='fbar'><span style='width:" + (100 * w / NS) + "%'></span></div>";
+      if (view === "all") {
+        extra += "<div class='fbar b2'><span style='width:" + (100 * l / loses.length) + "%'></span></div>" +
+          "<div class='fnum'>Among winners " + pct(w, NS) + " (orange); among losers " + pct(l, loses.length) + " (blue); all games " + pct(all, N) + ". <b>Success rate with this trait " + pct(w, all) + "  / without " + pct(NS - w, N - all) + "</b></div>";
+      } else extra += "<div class='fnum'>Of the 20 successful games, " + w + "  have it (" + pct(w, NS) + ")</div>";
+      return "<div class='fr'><button class='chip " + (picks.has(k) ? "on" : "") + "' data-k='" + k + "'>" + (picks.has(k) ? "✔ " : "") + x[0] + "</button><div>" + extra + "</div></div>";
+    }).join("");
+    $("rows").querySelectorAll("button[data-k]").forEach(b => (b.onclick = () => { const k = +b.dataset.k; picks.has(k) ? picks.delete(k) : picks.add(k); draw(); }));
+    if (view === "succ") $("msg").textContent = picks.size ? "The “secrets of success” you chose:" + [...picks].map(k => FE[k][0]).join(",") + ". Now click “Compare with all in one click” to verify." : "";
+    else if (!picks.size) $("msg").textContent = "You haven’t ticked any “secret.” Go back, tick a few, and come to verify.";
+    else {
+      const names = [...picks].map(k => FE[k][0]).join(",");
+      if (real) {
+        const all = games.filter(g => g.f[2]).length, w = wins.filter(g => g.f[2]).length;
+        $("msg").innerHTML = "You chose " + names + ". In this run of the world, “online play” is <b>really useful</b>: success rate with online play " + pct(w, all) + ", without it " + pct(NS - w, N - all) + ". The correct method (comparing the success rates of “with / without”) can tell the real signal from random fluctuation, which “share among winners” cannot. The other traits are still random.";
+      } else $("msg").innerHTML = "You chose " + names + ": look at each row, and the share among losers is about the same as among winners, and the success rates “with / without” are similar too (the difference is only random fluctuation from 20 samples). <b>The traits have nothing to do with success: that is set directly in the simulation.</b> Click “Generate” again and the secrets will change.";
+    }
+  }
+  $("gen").onclick = gen;
+  $("view").onclick = () => { view = view === "succ" ? "all" : "succ"; draw(); };
+  $("rep").onclick = () => {
+    const T = 200, shares = FE.map(() => []), top = FE.map(() => 0);
+    for (let t = 0; t < T; t++) {
+      const gs = world(real), wins = gs.filter(g => g.win);
+      let bestK = 0, bestD = -1;
+      FE.forEach((x, k) => { const s = wins.filter(g => g.f[k]).length / NS; shares[k].push(s); const d = s - x[1]; if (d > bestD) { bestD = d; bestK = k; } });
+      top[bestK]++;
+    }
+    $("repout").innerHTML = "<p><b>Repeated " + T + "  times</b> (black line = the trait’s true share among all; orange band = the 90% range of its share among winners):</p>" +
+      FE.map((x, k) => { const a = shares[k].slice().sort((p, q) => p - q), lo = a[Math.floor(T * 0.05)], hi = a[Math.ceil(T * 0.95) - 1];
+        return "<div class='fr'><span>" + x[0] + " (all " + Math.round(x[1] * 100) + "%)</span><div><div class='band'><div class='rg' style='left:" + lo * 100 + "%;width:" + Math.max(1, (hi - lo) * 100) + "%'></div><div class='bs' style='left:" + x[1] * 100 + "%'></div></div><div class='fnum'>Share among winners " + Math.round(lo * 100) + "%–" + Math.round(hi * 100) + "%; times it was “the one that looks most like the secret” (the biggest excess over all): <b>" + top[k] + " / " + T + "</b></div></div></div>"; }).join("") +
+      "<div class='msg' style='font-size:1.05rem;font-family:var(--body)'>" + (real ? "Online play’s orange band sits to the right overall (really useful), while the bands of the other traits sway around the black line." : "Every trait’s range sways up and down around the black line, and almost every trait has a chance to be “the number-one secret”: looking only at 20 winners you can “discover” one every time, but it is different every time.") + "</div>";
+  };
+})();
+
+GD.mountQuiz(document.getElementById("quiz"), [
+  { q: "“A genre is core loop + player promise.” Which of these best shows a “player promise”?", opts: ["A platformer has many levels", "Platformer players expect “failure is my execution’s fault,” so hit detection must be fair", "The game’s look is pixel art", "The game sells cheap"], a: 1, why: "A promise is the experience the player expects by default when choosing this genre. Breaking it (for example with inaccurate hit detection) hurts more than having less content." },
+  { q: "In a roguelike, the main role of meta-progression is:", opts: ["Make every run’s map identical", "Let failure accumulate something and cushion frustration", "Cancel permadeath", "Make the game no longer need randomness"], a: 1, why: "Meta-progression gives something even after death; but give too much and the challenge is ground flat, so it needs restraint." },
+  { q: "In a deckbuilder, “synergy” means:", opts: ["The combined effect of several cards is greater than the sum of each on its own", "Every card has a consistent art style", "The speed at which the opponent plays cards", "The bigger the deck the better"], a: 0, why: "Synergy is the source of fun in building. A good design offers several synergy routes, not just one best solution." },
+  { q: "(Why it was invented) Why did the word “roguelike” appear around 1993?", opts: ["Because the author of <i>Rogue</i> trademarked this kind of game", "Because similar games scattered across different newsgroups needed a common name to merge the discussion, and <i>Rogue</i> was the oldest of them", "Because all such games use the same engine", "Because an official genre classification standard was released"], a: 1, why: "A genre is “first a batch of similar games, then someone naming it.” The merged Usenet group chose roguelike because <i>Rogue</i> was the oldest, “the least bad option.” Only after the name was chosen did the boundary begin to be argued over." },
+  { q: "Why can’t “70% of successful games are pixel art” show that “pixel art makes games succeed”?", opts: ["Because pixel art is hard to make", "Because there is no comparison: pixel art may make up 70% of all games (including failures) to begin with, and a selected sample doesn’t show the failures", "Because there are too many successful games", "Because pixel art suits only indie games"], a: 1, why: "This is survivorship bias. What to compare is “the success rate of games with this trait” against “the success rate of games without it,” with the base rate taken into account." },
+  { q: "(Why it was invented) Why did Wald suggest putting armor where returning planes had “no bullet holes”?", opts: ["Because armor is cheaper there", "Because we can see only the planes that came back; parts with no holes are probably the ones that, once hit, never return, and exactly they are what the data lacks", "Because where there are many holes it is safest and needs no protection", "Because the military required armor spread evenly"], a: 1, why: "The key is “who is missing from the sample.” Parts with many holes on returning planes show “hit there and it still flew back”; the holes in fatal places stayed on the planes that didn’t return." },
+  { q: "Why does “breaking genre convention” sometimes bring delight and sometimes disaster?", opts: ["Because players’ taste is unstable", "Because a genre is a set of expectations (a schema) in the player’s mind: breaking it in a way that makes sense and brings new fun is delight, while going against the core promise without compensation is confusion", "Because delight comes only from visuals", "Because no convention should ever be broken"], a: 1, why: "A genre promise is the player’s expectation. Surface conventions can be broken boldly; when a core promise is broken, players feel cheated unless new fun compensates." },
+  { q: "[Why] Why do games grow more and more alike after a genre takes off?", opts: ["Because the law requires games of one kind to be similar", "Because everyone improves in small steps on what already works, and tends to get stuck together on the same local-optimum hill; to reach a higher hill you must first accept getting worse", "Because players hate new things", "Because the engine supports only one kind of gameplay"], a: 1, why: "A method that improves only in small steps stops at the best position around it. This is an analogy borrowed from the “fitness landscape,” not a strict law." },
+]);
+</script>
+<script>
+(function () {
+  const q = id => document.getElementById(id);
+  function done(id, msg) { const e = q(id); if (!e || e.classList.contains("done")) return; e.classList.add("done"); e.querySelector(".c20ok").textContent = " ✅ Done!" + msg; }
+  new MutationObserver(() => { const t = q("c20_rchips").textContent; if (t.indexOf("✔ Platformer") >= 0 && t.indexOf("✔ Puzzle") >= 0) done("c20k1", "Only “share of handcrafted design” is full marks for both: levels and puzzles are placed one by one by the author, not by randomness, so replay value is low."); }).observe(q("c20_rchips"), { childList: true, subtree: true });
+  const seen = {};
+  document.querySelectorAll("#c20_draw [data-p]").forEach(b => b.addEventListener("click", () => { seen[b.dataset.p] = 1; if (seen.strict && seen.loose) done("c20k2", "The same batch of games, draw the line elsewhere, and the number counted as roguelikes changes: the definition drifts."); }));
+  let reveals = 0;
+  q("c20_ago").addEventListener("click", () => { reveals++; if (reveals >= 2) done("c20k3", "The two places with the fewest holes often lower the crash chance the most: that is where the truly fatal spots are."); });
+  new MutationObserver(() => { if (q("c20_repout").textContent.trim()) done("c20k5", "The “secrets” change every time, because 20 samples show only random fluctuation. Look at the success rates with and without, not just the share among winners."); }).observe(q("c20_repout"), { childList: true });
+
+  
+  const NS = "http://www.w3.org/2000/svg", svg = q("c20_hill");
+  const f = x => 0.05 + 0.45 * Math.exp(-Math.pow((x - 0.25) / 0.09, 2)) + 1.0 * Math.exp(-Math.pow((x - 0.74) / 0.1, 2));
+  const X = x => 40 + x * 620, Y = v => 236 - v * 190;
+  let pts = "M" + X(0) + " 244 "; for (let i = 0; i <= 200; i++) { const x = i / 200; pts += "L" + X(x).toFixed(1) + " " + Y(f(x)).toFixed(1) + " "; } pts += "L" + X(1) + " 244 Z";
+  svg.innerHTML = '<path d="' + pts + '" fill="#d8f0cc" stroke="#2b2b3a" stroke-width="4" stroke-linejoin="round"/>' +
+    '<text x="' + X(0.25) + '" y="' + (Y(f(0.25)) - 12) + '" font-size="17" text-anchor="middle" fill="#2b2b3a">Low peak</text>' +
+    '<text x="' + X(0.74) + '" y="' + (Y(f(0.74)) - 12) + '" font-size="17" text-anchor="middle" fill="#2b2b3a">Highest peak</text>' +
+    '<g id="c20_hm" style="display:none"><circle r="9" fill="#ffd34d" stroke="#2b2b3a" stroke-width="3"/></g>';
+  const mk = q("c20_hm") || svg.querySelector("#c20_hm");
+  let cx = null, busy = false, lowStop = false, rnd = false;
+  function place(x) { mk.style.display = ""; mk.setAttribute("transform", "translate(" + X(x) + "," + (Y(f(x)) - 9) + ")"); }
+  function climbEnd(x) { let g = 0; while (g++ < 400) { const a = f(x + 0.004), b = f(x - 0.004); if (a > f(x) && a >= b && x < 1) x += 0.004; else if (b > f(x) && x > 0) x -= 0.004; else break; } return x; }
+  svg.addEventListener("pointerdown", e => {
+    if (busy) return; const p = svg.createSVGPoint(); p.x = e.clientX; p.y = e.clientY; const m = p.matrixTransform(svg.getScreenCTM().inverse());
+    cx = Math.max(0, Math.min(1, (m.x - 40) / 620)); place(cx); q("c20_hmsg").textContent = "Start chosen; click “Climb from here.”";
+  });
+  q("c20_climb").onclick = () => {
+    if (cx === null) { q("c20_hmsg").textContent = "First click the curve to pick a start."; return; }
+    if (busy) return; busy = true;
+    const t = setInterval(() => {
+      const a = f(cx + 0.004), b = f(cx - 0.004);
+      if (a > f(cx) && a >= b && cx < 1) cx += 0.004; else if (b > f(cx) && cx > 0) cx -= 0.004; else { clearInterval(t); busy = false; end(); return; }
+      place(cx);
+    }, 12);
+    function end() {
+      const top = cx > 0.5;
+      q("c20_hmsg").innerHTML = top ? "Reached the summit: this start happened to be on the high peak’s side." : "Stopped on the low peak: it is downhill all around, so the climber won’t move again, yet the highest hill is on the right. To get there, you have to go downhill first.";
+      if (!top) lowStop = true; if (lowStop && rnd) done("c20k4", "A method that only walks uphill leaves success to the starting point; to reach the highest peak, change the start, or be willing to go downhill first.");
+    }
+  };
+  q("c20_rand10").onclick = () => {
+    if (busy) return; let ok = 0; for (let i = 0; i < 10; i++) if (climbEnd(Math.random()) > 0.5) ok++;
+    q("c20_hmsg").textContent = "Random 10 starts: " + ok + "  times reached the highest peak," + (10 - ok) + "  times stuck on the low peak. Trying more starts is “exploring.”"; rnd = true;
+    if (lowStop) done("c20k4", "A method that only walks uphill leaves success to the starting point; to reach the highest peak, change the start, or be willing to go downhill first.");
+  };
+  q("c20_hreset").onclick = () => { cx = null; mk.style.display = "none"; q("c20_hmsg").textContent = "Click anywhere on the curve to pick a start, then click “Climb from here.”"; };
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,770 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Chapter 16: Progression &amp; Growth Systems</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+  .row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:6px 0}
+  .c16-svg{width:100%;display:block;touch-action:manipulation}
+  .c16-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px 18px}
+  @media(max-width:700px){.c16-grid{grid-template-columns:1fr}}
+  .c16-note{font-size:.95rem;color:var(--soft)}
+  .c16-diag{background:#fff;border:2.5px solid var(--ink);border-radius:12px;padding:8px 14px;margin:8px 0;font-size:1rem;line-height:1.7}
+  .c16-diag .red{color:#b3261e}.c16-diag .ylw{color:#8a5d00}.c16-diag .grn{color:#1d6a2c}
+  .c16-node{cursor:pointer}
+  .c16-node:focus{outline:none}
+  .c16-node:focus circle.c16-body{stroke-width:6}
+  .c16-info{min-height:3.6em;background:#fff;border:2.5px dashed var(--ink);border-radius:10px;padding:6px 12px;font-size:1rem;margin:6px 0}
+  .c16-bar{height:18px;border:2px solid var(--ink);border-radius:6px;background:#8fd3f4;min-width:4px}
+  .c16-rowline{display:grid;grid-template-columns:150px 1fr 110px;gap:8px;align-items:center;margin:6px 0;font-size:.95rem}
+  @media(max-width:700px){.c16-rowline{grid-template-columns:1fr}}
+  .c16done{background:#eaf9e4 !important}
+</style>
+</head>
+<body data-ch="16">
+<main class="wrap">
+  <div class="hero">
+    <div class="txt">
+      <span class="badge">Chapter 16</span>
+      <h1>Progression &amp; Growth Systems</h1>
+      <p class="sub">Why will a player play one more hour? Because they can see themselves getting stronger.</p>
+    </div>
+    <svg viewBox="0 0 190 150" class="rough" aria-hidden="true">
+      <g stroke="#2b2b3a" stroke-width="5" stroke-linejoin="round" stroke-linecap="round">
+        <rect x="20" y="100" width="30" height="30" fill="#ffe58a"/>
+        <rect x="55" y="80" width="30" height="50" fill="#b6e8a8"/>
+        <rect x="90" y="55" width="30" height="75" fill="#a8dcf0"/>
+        <rect x="125" y="25" width="30" height="105" fill="#ffb3c6"/>
+        <path d="M30 88 L66 66 L102 42 L140 12" fill="none"/><path d="M128 10 L142 10 L142 24" fill="none"/>
+      </g>
+    </svg>
+  </div>
+
+  <div class="goals">
+    <h3>Learning goals</h3>
+    <ul>
+      <li>Tell apart the five kinds of growth in a progression system (numbers, abilities, gear and collection, player skill, meta-progression) and say what problem each is good for.</li>
+      <li>Explain why the experience needed per level usually keeps growing, use a curve to spot a “wall,” “too fast” and “number inflation,” and say what problems experience points and skill trees were invented to solve.</li>
+      <li>Design an experience curve and a decent skill tree, point out the must-pick nodes and trap options in it, and watch out for “experience points becoming the goal themselves.”</li>
+    </ul>
+    <span class="time">about 55 min</span>
+  </div>
+
+  
+  <div class="sec"><span class="n">1</span><h2><span class="tag what">What it is</span>Progression: five ways a player “gets stronger”</h2></div>
+  <p>Why do you stay an hour longer in a game? Often it is not because “this round was especially fun” but because of <b>“one more monster and I level up.”</b> That pull is <span class="term" tabindex="0" data-def="The visible, lasting changes a player accumulates over time in a game: numbers, abilities, items, knowledge, unlocked content and so on.">progression</span>. Remember the core loop? Do something, get something, do something better. A progression system keeps the “get something” from evaporating with every lap of the loop, and stacks it up layer by layer instead.</p>
+  <p>But “getting stronger” is really five different things, and mixing them up leads to muddled design.</p>
+  <div class="card">
+    <svg class="c16-svg" id="c16_types" viewBox="0 0 700 340" role="img" aria-label="Diagram of progression types: progression in the center, surrounded by stat growth, ability growth, gear and collection, player skill growth and meta-progression, with prestige resetting back to the start.">
+      <g class="rough" stroke="#2b2b3a" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="270" y="125" width="160" height="60" rx="16" fill="#fff7cf"/>
+        <rect x="20" y="20" width="170" height="64" rx="12" fill="#e8f6fc"/>
+        <rect x="265" y="14" width="170" height="64" rx="12" fill="#eaf9e4"/>
+        <rect x="510" y="20" width="170" height="64" rx="12" fill="#ffe9ef"/>
+        <rect x="20" y="236" width="190" height="64" rx="12" fill="#fff0dc"/>
+        <rect x="255" y="250" width="190" height="64" rx="12" fill="#f1eaff"/>
+        <rect x="500" y="236" width="180" height="64" rx="12" fill="#fff7cf"/>
+        <path d="M270 140 L190 84"/><path d="M350 125 L350 78"/><path d="M430 140 L510 84"/>
+        <path d="M270 170 L205 236"/><path d="M350 185 L350 250"/><path d="M430 170 L500 236"/>
+      </g>
+      <g font-size="17" text-anchor="middle" fill="#2b2b3a">
+        <text x="350" y="162" font-size="22" font-weight="700">Progression</text>
+        <text x="105" y="48" font-weight="700">Stat growth</text><text x="105" y="72">XP, levels, stats</text>
+        <text x="350" y="42" font-weight="700">Ability growth</text><text x="350" y="66">Skill tree, new moves</text>
+        <text x="595" y="48" font-weight="700">Gear &amp; collection</text><text x="595" y="72">Weapons, codex, skins</text>
+        <text x="115" y="264" font-weight="700">Player skill</text><text x="115" y="288">You get practiced</text>
+        <text x="350" y="278" font-weight="700">Meta-progression</text><text x="350" y="302">Unlocks kept after death</text>
+        <text x="590" y="264" font-weight="700">Prestige / reset</text><text x="590" y="288">Reset for a bonus</text>
+      </g>
+    </svg>
+  </div>
+  <div class="grid2">
+    <div class="card b"><h3>Stat growth (the character gets stronger)</h3><p>When <span class="term" tabindex="0" data-def="Experience points (XP): points a player accumulates by doing things; once enough are collected, the character levels up. They compress “did a lot of things” into one number.">experience points</span> fill up, the <span class="term" tabindex="0" data-def="Level: a discrete step bought with experience points; each level usually brings stats and unlocks.">level</span> goes up by one and health and attack rise. It is the easiest to make, and the easiest to turn a game into “numbers chasing numbers.”</p></div>
+    <div class="card g"><h3>Ability growth (the character learns new things)</h3><p>Unlocking a double jump, a grappling hook, a new skill. It changes <b>what you can do</b>, not just how well you do it. “You can only get across once you have the hook” uses an ability as a key.</p></div>
+    <div class="card p"><h3>Gear and collection</h3><p>Swapping weapons, collecting sets, completing a codex. Growth comes from “finding” rather than “accumulating,” so the surprise is stronger, but it depends on drops, and drops are random.</p></div>
+    <div class="card y"><h3>Player skill growth</h3><p>The character’s numbers haven’t changed at all, but <b>you</b> have learned to read the boss’s wind-up. Soulslikes, fighting games and speedrunning all rely on it. This kind of growth is not diluted by number inflation, but it is invisible, and design has to “light it up.”</p></div>
+  </div>
+  <div class="grid2">
+    <div class="card v"><h3><span class="term" tabindex="0" data-def="Meta-progression: growth that is kept after a single run ends, such as unlocking new characters or permanent bonuses; it connects one run to the next.">Meta-progression</span> (growth outside a run)</h3><p>A run fails, but you take something away: a new character unlocked, a permanent bonus, more options. “Losing” is no longer pure loss.</p></div>
+    <div class="card o"><h3><span class="term" tabindex="0" data-def="Prestige/reset: voluntarily zeroing out progress in exchange for a permanent bonus, so the player can relive the fast growth of the early game.">Prestige / reset</span></h3><p>Zero out on purpose, take a permanent bonus, and climb again. A staple trick of idle games, covered in detail shortly.</p></div>
+  </div>
+  <div class="eg" data-ic="🗡️" data-t="Loot grinding"><span data-illus="c16_loot"></span><div class="egt"><b>Diablo-style loot grinding</b>: character level is only an entry ticket, and the real pursuit is the dropped gear. Growth comes mainly from “gear and collection,” plus a little stat growth.</div></div>
+  <div class="eg" data-ic="🪝" data-t="Getting a new ability"><span data-illus="c16_ability"></span><div class="egt"><b>Hollow Knight and other metroidvanias</b>: health goes up only a little, but every new ability suddenly opens a place on the map you couldn’t get past before. Growth comes mainly from “ability growth,” and the numbers hardly matter.</div></div>
+  <div class="eg" data-ic="🚲" data-t="Learning to ride a bike"><span data-illus="c16_bike"></span><div class="egt"><b>Learning to ride a bike</b> (daily life): your “gear” hasn’t changed and there are no “numbers,” but today you can ride 100 meters without falling. This is pure player-skill growth, and one of the oldest and most lasting sources of joy for humans.</div></div>
+  <div class="eg bad" data-ic="🔢" data-t="Numbers go up"><span data-illus="c16_numbers"></span><div class="egt"><b>Counterexample: leveling up is just “bigger numbers.”</b> Monster health grows in step with your level, so from level 1 to level 50 every monster takes 10 hits. Leveling up changed only the numbers on the screen, not how you play. It looks like progress and is not.</div></div>
+
+  
+  <div class="sec"><span class="n">2</span><h2><span class="tag what">What it is</span>The experience curve: how much to reach the next level?</h2></div>
+  <p>At the heart of stat growth is a table: how much experience it takes to go from level n to level n+1. Draw that table out and you have the <span class="term" tabindex="0" data-def="Experience curve: the curve of “experience needed for each level” plotted against level, which sets how tight or loose the leveling pace is.">experience curve</span>. Three shapes are the most common.</p>
+  <div class="card">
+    <svg class="c16-svg" id="c16_curves" viewBox="0 0 700 330" role="img" aria-label="Comparison of three experience curves: linear, polynomial and exponential, with level on the horizontal axis and experience needed for the next level on the vertical axis."></svg>
+    <p class="c16-note">Illustrative: all three curves are generated from the same “growth rate” parameter (r=0.10), and the vertical axis is the experience needed for the next level. Linear is “a steady increase,” polynomial (here a square) speeds up as it goes, and exponential is “each level is a fixed multiple of the last”: slower than polynomial at first, then it overtakes and keeps shooting up.</p>
+  </div>
+  <p>Linear is easy to grasp and keeps a steady rhythm, but late in the game it can feel “weightless.” Polynomial (square, cube) speeds up gradually, gentler than exponential, and is a common compromise; real games often hand-fix the table on top of it. Exponential races through the first few levels and then hits an ever-taller wall, and is mostly used in “endless growth” idle games, together with resets.</p>
+  <p>Beyond the curve are three more knobs. The first is the level cap: a <span class="term" tabindex="0" data-def="Hard cap: a value at which growth stops completely (for example max level 60).">hard cap</span> is clear-cut, while a <span class="term" tabindex="0" data-def="Soft cap: growth is not impossible, but it gets slower and more expensive (diminishing returns).">soft cap</span> means “you can still grow, but it is less and less worth it,” which keeps deep players busy without breaking balance. The second is that income grows too: monsters in high-level zones give more experience, the curve is the denominator and income is the numerator, and judging how fast leveling is has to look at both. The third is the <span class="term" tabindex="0" data-def="Power fantasy: the experience of imagining and feeling “I have become strong,” a core selling point of many games.">power fantasy</span>: you go back to the starting village and cut down in one stroke the monster that once beat you down, and that thrill requires old content not to have grown stronger along with you.</p>
+  <div class="eg" data-ic="🪜" data-t="Slower and slower"><span data-illus="c16_stairs"></span><div class="egt"><b>Many Japanese role-playing games</b>: in the early game each level takes just a few battles, and later a level takes a long grind; the curve clearly bends, and players get through on “the next level is right in front of me” (a general description of the experience, not any one game’s numbers).</div></div>
+  <div class="eg" data-ic="🔥" data-t="Streak levels"><span data-illus="c16_streak"></span><div class="egt"><b>The “streak levels” of a language-learning app</b> (daily life): the first few levels arrive in days, and later ones take longer and longer; newcomers get quick wins and veterans get a long-term goal.</div></div>
+  <div class="eg bad" data-ic="⚖️" data-t="Level scaling"><span data-illus="c16_scaling"></span><div class="egt"><b>Counterexample: level scaling.</b> Every enemy grows stronger in step with you, which looks like “always a challenge” but cancels the power fantasy: you gain 20 levels and the small fry are still a headache. Many players dislike it for exactly this reason, that growth is cancelled out.</div></div>
+
+  
+  <div class="sec"><span class="n">3</span><h2><span class="tag what">What it is</span>Making progress visible, and how “zeroing out” can also be progress</h2></div>
+  <p>However clever the numbers, if the player can’t see them they might as well not exist. Progress has to be shown in layers, with feedback at every scale from seconds to hours.</p>
+  <div class="card">
+    <svg class="c16-svg" viewBox="0 0 700 320" role="img" aria-label="Layers of progress feedback: from floating XP text lasting seconds, to progress bars, level-up pop-ups, unlock notices and milestone achievements, with the time scale growing longer each step.">
+      <g class="rough" stroke="#2b2b3a" stroke-width="4" stroke-linejoin="round" stroke-linecap="round">
+        <rect x="20" y="250" width="124" height="50" fill="#fff7cf"/>
+        <rect x="150" y="200" width="124" height="100" fill="#e8f6fc"/>
+        <rect x="280" y="150" width="124" height="150" fill="#eaf9e4"/>
+        <rect x="410" y="100" width="124" height="200" fill="#ffe9ef"/>
+        <rect x="540" y="50" width="140" height="250" fill="#f1eaff"/>
+      </g>
+      <g font-size="17" text-anchor="middle" fill="#2b2b3a">
+        <text x="82" y="272" font-weight="700">Floating text</text><text x="82" y="292">+30 XP</text>
+        <text x="212" y="222" font-weight="700">Progress bar</text><text x="212" y="244">Almost full</text>
+        <text x="342" y="172" font-weight="700">Level-up pop-up</text><text x="342" y="194">Sound + glow</text>
+        <text x="472" y="122" font-weight="700">Unlock notice</text><text x="472" y="144">New skill/zone</text>
+        <text x="610" y="72" font-weight="700">Milestone</text><text x="610" y="94">Title/achievement</text>
+        <text x="82" y="36">Seconds</text><text x="212" y="36">Tens of seconds</text><text x="342" y="36">Minutes</text><text x="472" y="36">Tens of minutes</text><text x="610" y="36">Hours</text>
+      </g>
+    </svg>
+    <p class="c16-note">Illustrative: the shorter the feedback, the more “fine-grained”; the longer, the more “ceremonial.” A good progression system has something to see at every time scale, and if any layer is missing, players may “feel no progress” during that stretch.</p>
+  </div>
+  <p>The magic of a progress bar is that “only 5% from leveling up” makes it very hard to put the phone down. It is tied to the goal gradient, in which people try harder the closer they get to a goal, and the “Why it works” part below gives the research. When a new feature unlocks, <b>tell the player</b>: in quite a few games players unlock a new skill and never notice it, and the progress is wasted. And when leveling up, don’t just hand over numbers; let the player feel the difference right away: a staging of the new move, an enemy knocked flying in one hit. Numbers are the ledger, and the feeling is the reward.</p>
+  <p>Progression has a natural enemy: <b>reaching the end</b>. When numbers grow far enough, they either hit a wall or become “hundreds of millions” everywhere, and the player feels nothing. Designers came up with two ways to turn “zeroing out” into a reward: prestige lets the player voluntarily clear everything in exchange for a permanent multiplier, and meta-progression lets even a failed run earn something. The key is that every round has to be faster than the last, or the reset is just a punishment.</p>
+  <div class="eg" data-ic="🏔️" data-t="Idle-game ascension"><span data-illus="c16_prestige"></span><div class="egt"><b>The “ascension” of idle games</b>: numbers climb from single digits into scientific notation, and each ascension takes away a permanent bonus; restarting takes only a few minutes to catch up with what a whole day used to give, and the player experiences it as “faster and faster.”</div></div>
+  <div class="eg" data-ic="🗝️" data-t="Unlocks outside the run"><span data-illus="c16_meta"></span><div class="egt"><b>Meta-unlocks in roguelikes</b>: you lost this run, but you took a key away, and next run you can unlock a new character or new options. Losing is no longer pure loss but groundwork for the next run (a general description of this kind of design, not any one game’s numbers).</div></div>
+  <div class="eg bad" data-ic="🐌" data-t="Slower after reset"><span data-illus="c16_slower"></span><div class="egt"><b>Counterexample: slower after a reset.</b> If the early game after a reset is even slower than the last round, or the permanent bonus is too small to notice, players feel “that was for nothing” and won’t reset again. The next round must be visibly faster.</div></div>
+
+  
+  <div class="sec"><span class="n">4</span><h2><span class="tag origin">How it was invented</span>How were experience points and levels “invented”?</h2></div>
+  <div class="story">
+    <h3>The problem: the battle is over, but the story isn’t</h3>
+    <p>In the late 1960s and early 1970s the “war games” hobbyists played meant setting out little figures on a table, and when a battle ended it was over, and next time you set them up again. But someone thought: <b>what if each little figure were a “character” who had to keep existing across many games?</b> How would that character “get stronger”? What would measure it? When would it count as having “gone up a step”?</p>
+    <p>Before looking at history, try it yourself. You are the designer, a player earns an average of 100 experience per play session, and you want the pace of leveling from level 2 to level 12 to be “a little anticipation but not too much torment.” Drag the slider to decide “how much more each level asks than the last,” and see about how many sessions each level takes.</p>
+    <div class="board">
+      <label class="ctl">Experience needed per level is more than the last by <output id="c16_or_v">40</output>% (level 1 needs 200 points)</label>
+      <input type="range" id="c16_or" min="0" max="120" step="5" value="40">
+      <label class="ctl"><input type="checkbox" id="c16_oc"> Higher-level zones also pay more (each level gained, 30% more per session)</label>
+      <svg class="c16-svg" id="c16_osvg" viewBox="0 0 700 280" role="img" aria-label="Bar chart of how many sessions each level from 2 to 12 needs"></svg>
+      <div class="msg" id="c16_omsg"></div>
+      <button class="btn green" id="c16_oreveal">See how people did it back then</button>
+      <div id="c16_orev" class="c16-diag" style="display:none"></div>
+    </div>
+  </div>
+  <div class="timeline">
+    <div class="ev hasimg"><span data-illus="c16_chainmail"></span><div><b class="yr">1971</b> <i>Chainmail</i> (medieval wargame rules by Gary Gygax and Jeff Perren) is published. Its “fantasy supplement” already has stronger units like “Hero,” “Superhero” and “Wizard,” but when a battle ends, the pieces go back in the box.</div></div>
+    <div class="ev hasimg"><span data-illus="c16_blackmoor"></span><div><b class="yr">About 1971–73</b> In the Blackmoor campaign based on <i>Chainmail</i>, Dave Arneson let a single character persist across many games. According to the player Greg Svenson’s recollection, early on a monster’s hit points were the experience points earned for killing it, players did not keep the tally themselves, and Arneson announced when it was time to level up (accounts differ somewhat between sources).</div></div>
+    <div class="ev hasimg"><span data-illus="c16_dnd"></span><div><b class="yr">1974</b> <i>Dungeons &amp; Dragons</i> (Gygax and Arneson, TSR) is published and writes “experience” into explicit rules: kill monsters and take treasure to gain experience, and level up when the total reaches a threshold. According to the rule tables compiled by fans, the thresholds of the first few levels roughly double each level and get harder higher up; and according to Jon Peterson’s research, in the original game treasure brought in far more experience than killing monsters.</div></div>
+    <div class="ev hasimg"><span data-illus="c16_plato"></span><div><b class="yr">1974–75</b> The earliest computer role-playing games appear on large mainframes (such as <i>dnd</i> and <i>pedit5</i> on the PLATO system; which came first and the details vary by source), and they carry the whole “experience and levels” scheme over. The computer keeps the books for the player, and from then on the experience curve can be written as a formula.</div></div>
+  </div>
+  <div class="story">
+    <h3>The key insight: compress “what you’ve done” into one comparable number</h3>
+    <p>Why “points”? Without numbers, there is only the game master saying “you’ve leveled up.” Points let players know how far they are from the goal, and make the rules public, open to argument and open to design. Why “levels”? Continuous points are bland; cut into steps, each step brings a concentrated reward: new stats, new abilities, and that is the ceremony of leveling up.</p>
+    <p>Why do the thresholds keep getting higher? If every level were equally easy, high-level characters would quickly become “gods,” so how the thresholds are set has been a parameter repeatedly fixed from the start. The trade-off you just made on the slider is the same one the designers made back then.</p>
+    <p class="c16-note">Fact-check note: the usual account of the “starting point” of experience points and levels is Arneson’s Blackmoor campaign and then <i>D&amp;D</i> in 1974; scholars and fans dispute “who deserves the credit” (Arneson and TSR later also had a royalties lawsuit). Only the parts on which sources agree are written here.</p>
+  </div>
+
+  <div class="withimg">
+    <span data-illus="c16_techtree"></span>
+    <div>
+      <p>With levels, a new trouble appeared: if leveling up just raises stats automatically, then all characters of the same class and level are exactly alike. Designers wanted each level-up to bring a <b>choice</b>. The earlier approach was a fixed level-up table, where you automatically learned certain things at certain levels; the newer idea was to give players a few points and let them decide where to put them, with “learn A before B” prerequisites between skills, which drawn out became a tree.</p>
+      <p>Strategy games already had this prerequisite structure in the “tech tree,” and a character’s skill tree is related to it. The 1996 <i>Diablo</i> gave each class a page of skills unlocked by level; what is often said to be the prototype of the modern skill tree is <i>Diablo II</i> in 2000 (how much credit belongs to which designer differs by source, so no conclusion is drawn here). Later online games developed it into the “talent tree,” letting even the same class follow different schools. There is no agreed answer to “who made the first skill tree,” so it is left out.</p>
+    </div>
+  </div>
+  <div class="story">
+    <h3>Reset for a reward: why would anyone think of “zeroing out”</h3>
+    <p>This one has no reliable single origin, so only the motivation is told. The numbers in an idle game swell along an exponential curve, progress gets slower and slower, and the player eventually meets a wall. The designers did not tear down the wall. They gave the player a choice: zero yourself out in exchange for a permanent multiplier, then climb the same mountain at greater speed. That gives back the thrill of “fast early growth,” lifts the scale of the numbers to a new level, and still keeps the main thread of “the more you play, the stronger you get.”</p>
+  </div>
+  <div class="card">
+    <svg class="c16-svg" viewBox="0 0 700 220" role="img" aria-label="Evolution diagram: a wargame battle ends; characters need to persist, which calls for points and levels; then skill points and skill trees appear; then resets and meta-progression.">
+      <g class="rough" stroke="#2b2b3a" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="10" y="30" width="150" height="70" rx="12" fill="#fff7cf"/>
+        <rect x="190" y="30" width="150" height="70" rx="12" fill="#e8f6fc"/>
+        <rect x="370" y="30" width="150" height="70" rx="12" fill="#eaf9e4"/>
+        <rect x="550" y="30" width="140" height="70" rx="12" fill="#f1eaff"/>
+        <path d="M160 65 H188"/><path d="M178 58 L190 65 L178 72"/>
+        <path d="M340 65 H368"/><path d="M358 58 L370 65 L358 72"/>
+        <path d="M520 65 H548"/><path d="M538 58 L550 65 L538 72"/>
+      </g>
+      <g font-size="17" text-anchor="middle" fill="#2b2b3a">
+        <text x="85" y="58" font-weight="700">Battle ends</text><text x="85" y="82">No lasting change</text>
+        <text x="265" y="58" font-weight="700">XP and levels</text><text x="265" y="82">Ledger + step rewards</text>
+        <text x="445" y="58" font-weight="700">Skill points &amp; tree</text><text x="445" y="82">Leveling needs choices</text>
+        <text x="620" y="58" font-weight="700">Reset / meta</text><text x="620" y="82">Zero out also counts</text>
+        <text x="85" y="140">New problems:</text><text x="265" y="140">Higher means slower,</text><text x="445" y="140">Must-picks and traps,</text><text x="620" y="140">Could it</text>
+        <text x="85" y="164">Where does growth go?</text><text x="265" y="164">Need a cap?</text><text x="445" y="164">Still to balance</text><text x="620" y="164">become punishment?</text>
+      </g>
+    </svg>
+  </div>
+
+  
+  <div class="sec"><span class="n">5</span><h2><span class="tag why">Why it works</span>Why do people love to “get stronger”: competence and visible progress</h2></div>
+  <p>Before designing an experience curve, it helps to know what it is catching in the player. The first thing is <b>the sense of competence</b>.</p>
+  <div class="why-box">
+    <h3>Competence: I am becoming “capable”</h3>
+    <p>In their 2000 self-determination theory, Ryan and Deci hold that people have three basic psychological needs: autonomy, competence and relatedness. Visible growth is the most direct source of competence: you did something, and the world answers “you are stronger now.” So the basic job of a progression system is to make progress visible: unseen, it is not felt.</p>
+    <div class="src">Source: Ryan, R. M., &amp; Deci, E. L. (2000). Self-determination theory and the facilitation of intrinsic motivation, social development, and well-being. <i>American Psychologist</i>, 55(1), 68–78. Applying it to game progression is an analogy.</div>
+  </div>
+  <div class="withimg rev">
+    <span data-illus="c16_coffee"></span>
+    <div>
+      <p>The second is that the closer people get to a goal, the harder they push, which is the goal gradient. The psychologist Hull (1932) had already proposed that animals run faster the closer they get to the goal. Kivetz, Urminsky and Zheng (2006), using real data from coffee-shop punch cards, found that the closer a customer got to “a free cup once the card is full,” the shorter the gap between visits.</p>
+      <p>There is an even neater experiment. Nunes and Drèze (2006) randomly handed out two kinds of punch cards at a car wash: one with 8 blank spaces, one with 10 spaces but with 2 already stamped for you. Either way another 8 washes were needed, yet after nine months only 19% of the first kind were completed against 34% of the second. The feeling of “already having progress” itself pushes people forward.</p>
+    </div>
+  </div>
+  <div class="why-box">
+    <h3>The goal gradient and “endowed progress”</h3>
+    <p>A progress bar is <b>making this visible closeness</b>: give the player a little progress from the very start (the tutorial gives a few levels), and give plenty of “almost there” pictures before a level-up. The effect is clear in the car-wash experiment, but how much of it carries over to games still has to be checked in playtests.</p>
+    <div class="src">Sources: Kivetz, R., Urminsky, O., &amp; Zheng, Y. (2006). The goal-gradient hypothesis resurrected. <i>Journal of Marketing Research</i>, 43(1), 39–58; Nunes, J. C., &amp; Drèze, X. (2006). The endowed progress effect. <i>Journal of Consumer Research</i>, 32(4), 504–512 (a field experiment, about 300 cards).</div>
+  </div>
+  <div class="why-box">
+    <h3>Growth should rise together with challenge</h3>
+    <p>Flow requires challenge and ability to roughly match, and the zone of proximal development says that tasks just out of reach but within a stretch are best for learning. The job of a growth system is this: each time the player’s ability goes up a step, the challenge rises with it, so the two advance alternately inside the “flow channel.”</p>
+    <svg class="c16-svg" viewBox="0 0 700 300" role="img" aria-label="Growth and challenge in step: player ability rises in steps, challenge rises smoothly, the two stay within the flow channel; at each level-up the player’s ability jumps one step.">
+      <g class="rough" stroke="#2b2b3a" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M60 250 L60 20"/><path d="M60 250 H680"/>
+        <path d="M60 230 L240 170 L420 110 L600 50 L680 28" stroke="#e5484d" stroke-dasharray="10 8"/>
+        <path d="M60 235 H150 V190 H260 V145 H370 V100 H480 V58 H590 V25 H680" stroke="#3b82f6"/>
+      </g>
+      <g font-size="17" fill="#2b2b3a">
+        <text x="70" y="26">Ability / challenge</text><text x="600" y="282" text-anchor="end">Time →</text>
+        <text x="410" y="205" fill="#c4262c">Challenge (rises smoothly)</text>
+        <text x="90" y="130" fill="#1d5fc9">Player ability (steps up)</text>
+      </g>
+    </svg>
+    <div class="src">Sources: Csikszentmihalyi, M. (1990). <i>Flow</i>; Vygotsky, L. S. (1978). <i>Mind in Society</i>. Merging them into “progress in step with challenge” is one common reading in game design.</div>
+  </div>
+
+  
+  <div class="sec"><span class="n">6</span><h2><span class="tag why">Why it works</span>Why does the thrill of leveling fade? And why do experience points “lead players astray”?</h2></div>
+  <div class="withimg">
+    <span data-illus="c16_monkey"></span>
+    <div>
+      <p>Remember Schultz’s monkeys? Once they had learned that “light on means juice,” the juice itself no longer excited the dopamine neurons, and only an unexpected extra portion did. Move that idea to leveling up and something a bit painful appears: when leveling up becomes entirely predictable, the 30th ding is just like the 30th sip of juice.</p>
+      <p>That is also why progression systems often need “a bit of surprise”: an occasional extra piece of good gear, an occasional crit, so that prediction comes out a little wrong. But it is a double-edged sword, because the same mechanism is exactly how slot machines hold people.</p>
+    </div>
+  </div>
+  <div class="why-box">
+    <h3>Reward prediction error, and the other side of hedonic adaptation</h3>
+    <p>Schultz, Dayan and Montague (1997) concluded that the monkeys’ dopamine neurons report a “prediction error”: they fire more when things are better than expected, barely respond when things are as expected, and fall below baseline when things are worse. So <b>a fully predictable reward gets duller and duller</b>, which is the same thing as hedonic adaptation in the previous chapter told two ways: the baseline is moving up. Conversely, only when each level teaches the player something new can the “above expectation” part keep being produced.</p>
+    <p>A reminder: converting neuroscience findings straight into design rules is a common practice in the design world, but it is not an accepted one-to-one mapping.</p>
+    <div class="src">Sources: Schultz, W., Dayan, P., &amp; Montague, P. R. (1997). A neural substrate of prediction and reward. <i>Science</i>, 275(5306), 1593–1599. For hedonic adaptation see Brickman &amp; Campbell (1971).</div>
+  </div>
+  <p>Number inflation also brings up a perception problem. How people feel a change depends roughly on the relative change: going from 10 attack to 15 and going from 1000 to 1005 feel completely different. To make every level “feel like something,” growth has to be proportional, and proportional growth is exponential in shape, so the numbers just keep doubling up, and this is the root of number inflation.</p>
+  <div class="withimg rev">
+    <span data-illus="c16_farm"></span>
+    <div>
+      <p>The last trouble is more hidden. You give the player experience points meaning to reflect “how well you are playing.” But once experience becomes the goal, players look for the least effort way to farm it: swinging at the same rat in a hole again and again, numbers shooting up, while the chests and signposts go completely unseen.</p>
+      <p>The number isn’t lying. It just no longer stands for what you wanted it to stand for.</p>
+    </div>
+  </div>
+  <div class="why-box">
+    <h3>Goodhart’s law: when a measure becomes a target</h3>
+    <p>The British economist Charles Goodhart pointed out in 1975, discussing monetary policy, that once a statistical regularity is used as the basis for control, it stops holding. In 1997 the anthropologist Marilyn Strathern summed it up in the widely repeated form: “When a measure becomes a target, it ceases to be a good measure.” Experience points are a proxy for “how engaged and how skilled the player is,” and once players play directly for them, they and the real play come apart. The remedy is to have experience come from <b>the behavior you really want to encourage</b>, and to give diminishing returns for repeating the same thing.</p>
+    <div class="src">Sources: Goodhart, C. A. E. (1975), “Problems of Monetary Management: The UK Experience”, <i>Papers in Monetary Economics</i> (Reserve Bank of Australia); Strathern, M. (1997), “‘Improving ratings’: audit in the British University system”, <i>European Review</i> 5(3): 305–321.</div>
+  </div>
+
+  <h3>Verification experiment: is growth actually “cancelled out”? A number-inflation comparison</h3>
+  <p>Below is an illustrative model: your attack grows by g per level, and the health of enemies in the current zone grows by gz per level. Watch three things: how many hits it takes to kill a mob back in the starter zone (power fantasy); how many hits to kill an enemy in the current zone (sense of challenge); and how long the attack number gets (inflation).</p>
+  <div class="board">
+    <label class="ctl">Level <output id="c16_iv_n">20</output></label>
+    <input type="range" id="c16_in" min="1" max="60" step="1" value="20">
+    <label class="ctl">Your attack grows per level <output id="c16_iv_g">15</output>%</label>
+    <input type="range" id="c16_ig" min="3" max="40" step="1" value="15">
+    <label class="ctl">Current-zone enemy health grows per level <output id="c16_iv_z">12</output>%</label>
+    <input type="range" id="c16_iz" min="0" max="40" step="1" value="12">
+    <div id="c16_irows"></div>
+    <div class="c16-diag" id="c16_imsg"></div>
+  </div>
+  <p class="c16-note">Illustrative: attack = 10×(1+g)^(level−1); starter-zone enemy health is fixed at 100; current-zone enemy health = 100×(1+gz)^(level−1). Set gz equal to g and you get “level scaling”: fighting in the current zone always takes the same number of hits.</p>
+  <p>Old content has to “fall behind” for there to be a power fantasy, and current content has to “keep up” for there to be a challenge. Both are needed, so gz should be slightly below g, but then the numbers inevitably swell; try pulling the level up to 60.</p>
+
+  
+  <div class="sec"><span class="n">7</span><h2><span class="tag how">How to use it</span>Signature interactive: the experience curve designer</h2></div>
+  <p>You are this game’s numbers designer. Choose a curve type, adjust the base experience, growth rate and level cap, and set how much experience the player gets <b>per day</b>. The page draws in real time the experience needed per level and the time per level, and marks: <span style="color:#1d6a2c"><b>green</b></span> = normal, <span style="color:#8a5d00"><b>yellow</b></span> = getting steep, <span style="color:#b3261e"><b>red</b></span> = “wall” (time suddenly balloons), and also gives a diagnosis of “max level before the story is even finished.”</p>
+  <div class="board" id="c16_designer">
+    <div class="row" id="c16_types_btn">
+      <button class="chip on" data-t="lin">Linear</button>
+      <button class="chip" data-t="poly">Polynomial (square)</button>
+      <button class="chip" data-t="exp">Exponential</button>
+      <span class="c16-note">Presets:</span>
+      <button class="btn alt" data-p="dnd" style="font-size:1rem;padding:0 10px">Doubling curve</button>
+      <button class="btn alt" data-p="calm" style="font-size:1rem;padding:0 10px">Gentle linear</button>
+      <button class="btn alt" data-p="boost" style="font-size:1rem;padding:0 10px">With income bonus</button>
+      <button class="btn alt" data-p="fast" style="font-size:1rem;padding:0 10px">Too fast</button>
+    </div>
+    <div class="c16-grid">
+      <div><label class="ctl">Base experience (needed for level 1)<output id="c16_v_base">200</output></label><input type="range" id="c16_base" min="50" max="1000" step="10" value="200"></div>
+      <div><label class="ctl">Growth rate r<output id="c16_v_r">0.20</output></label><input type="range" id="c16_r" min="0" max="1" step="0.01" value="0.2"></div>
+      <div><label class="ctl">Level cap<output id="c16_v_L">30</output></label><input type="range" id="c16_L" min="10" max="99" step="1" value="30"></div>
+      <div><label class="ctl">Experience the player gets per day (at level 1)<output id="c16_v_inc">200</output></label><input type="range" id="c16_inc" min="50" max="1000" step="10" value="200"></div>
+      <div><label class="ctl">High-level zone income bonus: each level gained +<output id="c16_v_s">0</output>%</label><input type="range" id="c16_s" min="0" max="15" step="1" value="0"></div>
+      <div><label class="ctl">Main story takes about (days)<output id="c16_v_D">40</output></label><input type="range" id="c16_D" min="5" max="200" step="1" value="40"></div>
+    </div>
+    <label class="ctl"><input type="checkbox" id="c16_log"> Log scale (use when the values differ hugely; the vertical axis shows ratios, not absolute values)</label>
+    <svg class="c16-svg" id="c16_dsvg" viewBox="0 0 700 540" role="img" aria-label="Top: the curve of experience needed for the next level; bottom: bar chart of time per level, with green, yellow and red marking the walls."></svg>
+    <div id="c16_dstat"></div>
+    <div class="c16-diag" id="c16_ddiag"></div>
+  </div>
+  <div class="sticky" id="c16_task1">Try it: first choose “Exponential,” raise the growth rate, and watch the red bars grow; then find a way for it to have no red wall while the time to max level roughly matches the time to finish the story (the diagnosis shows a green “reasonable range”). Hint: add a little income bonus, or switch to linear.</div>
+  <p class="c16-note">Illustrative: linear need=base×(1+r×(n−1)); polynomial need=base×(1+r×(n−1))²; exponential need=base×(1+r)^(n−1). Time for level n = need(n) ÷ (daily experience×(1+bonus)^(n−1)). A “wall” = a level taking more than 2 times the average of the previous three (yellow: 1.4 times).</p>
+
+  
+  <div class="sec"><span class="n">8</span><h2><span class="tag how">How to use it</span>Supporting interactive: building a skill tree</h2></div>
+  <p>With the numbers in place, look at “choice.” The tree below has 24 clickable nodes, and you have only <b>12</b> skill points. The bigger the circle, the more points it costs: small circle 1 point, medium 2, large 3. To light a node, first light the prerequisite nodes it connects to. Blue = melee, green = ranged, orange = support; a <span class="term" tabindex="0" data-def="Merge node: a node that unlocks only when both of two prerequisite nodes are lit (an AND relation).">merge node</span> (purple) needs both sides lit.</p>
+  <div class="card">
+    <svg class="c16-svg" viewBox="0 0 700 200" role="img" aria-label="Sketch of skill-tree structures: linear chain, fork (pick either), merge (needs both).">
+      <g class="rough" stroke="#2b2b3a" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="40" cy="60" r="16" fill="#fff7cf"/><circle cx="110" cy="60" r="16" fill="#fff7cf"/><circle cx="180" cy="60" r="16" fill="#fff7cf"/>
+        <path d="M56 60 H94"/><path d="M126 60 H164"/>
+        <circle cx="300" cy="35" r="16" fill="#e8f6fc"/><circle cx="370" cy="70" r="16" fill="#e8f6fc"/>
+        <circle cx="300" cy="100" r="16" fill="#e8f6fc"/><path d="M316 38 L354 62"/><path d="M316 98 L354 76"/>
+        <circle cx="520" cy="35" r="16" fill="#f1eaff"/><circle cx="520" cy="105" r="16" fill="#f1eaff"/><circle cx="620" cy="70" r="18" fill="#ffe9ef"/>
+        <path d="M536 40 L603 66"/><path d="M536 100 L603 76"/>
+      </g>
+      <g font-size="17" text-anchor="middle" fill="#2b2b3a">
+        <text x="110" y="122" font-weight="700">Linear chain</text><text x="110" y="146">All the way down, no choice</text>
+        <text x="335" y="152" font-weight="700">Either prerequisite</text><text x="335" y="176">A or B, one is enough</text>
+        <text x="570" y="152" font-weight="700">Merge (both needed)</text><text x="570" y="176">A and B to unlock C</text>
+      </g>
+    </svg>
+    <p class="c16-note">Illustrative: a linear chain has order but no choice; “either prerequisite” gives the path a choice; “both prerequisites” forces the player to invest in two lines at once (encouraging mixed builds, and possibly creating must-picks).</p>
+  </div>
+  <div class="board">
+    <div class="row">
+      <span class="stat">Points left <b id="c16_t_pts">12</b></span>
+      <span class="stat">Damage <b id="c16_t_d">0</b></span>
+      <span class="stat">Survival <b id="c16_t_s">0</b></span>
+      <span class="stat">Mobility <b id="c16_t_m">0</b></span>
+    </div>
+    <svg class="c16-svg" id="c16_tsvg" viewBox="0 0 700 580" role="img" aria-label="Skill tree: three branches and three merge nodes; click a node to spend skill points."></svg>
+    <div class="c16-info" id="c16_tinfo">Hover a node for its description and click to spend (click again to undo; when you undo a prerequisite, nodes that depend on it are taken back too).</div>
+    <div class="row">
+      <button class="btn pink" id="c16_treset">Reset</button>
+      <button class="btn alt" id="c16_trand">Random build</button>
+      <button class="btn alt" id="c16_tsaveA">Save as build A</button>
+      <button class="btn green" id="c16_tanalyze">Analyze this tree</button>
+    </div>
+    <div class="c16-diag" id="c16_tsummary"></div>
+    <div class="c16-diag" id="c16_tanalysis" style="display:none"></div>
+  </div>
+  <div class="sticky" id="c16_task2">Try it: use the 12 points to put together a build that includes a merge node, then click “Analyze this tree,” find the must-pick nodes marked with red dashed circles, and think about why they are must-picks.</div>
+  <p class="c16-note">“Analyze this tree” randomly generates 6000 valid builds, takes the top 10 for each goal of damage, survival, mobility and overall (the weighted product of the three), and checks whether some node appears in the top 10 of every goal (<b>must-pick</b>) or never appears (<b>trap</b>). This is an estimate from random sampling, not a strict optimum; the numbers are illustrative.</p>
+
+  <div class="eg" data-ic="🌳" data-t="A good skill tree"><span data-illus="c16_goodtree"></span><div class="egt"><b>A good skill tree</b>: the melee, ranged and support lines all have strong builds, merge nodes encourage mixing, and no node is “you lose if you skip it.” You have to weigh things before clicking.</div></div>
+  <div class="eg" data-ic="🎓" data-t="Course prerequisites"><span data-illus="c16_prereq"></span><div class="egt"><b>Prerequisites for university courses</b> (daily life): you study calculus before linear algebra and probability, and finish both before you can take machine learning. It is a “skill tree” with a merge node, and you really do have choices.</div></div>
+  <div class="eg bad" data-ic="🚧" data-t="A bad skill tree"><span data-illus="c16_badtree"></span><div class="egt"><b>A bad skill tree</b>: one entry node (such as “+20% health”) is cheap and strong, and everyone takes it; some ultimate node costs an absurd amount and is not strong, and nobody takes it. It looks like twenty-some choices, but there is really one best path, which is a “false choice.”</div></div>
+
+  <div class="misc">
+    <h3>Common misconceptions</h3>
+    <ul>
+      <li><b>“The more progression, the better”:</b> if everything carries growth, players are flooded; and the more progression there is, the easier it is for players to “play only for the numbers,” whether or not the gameplay in their hands is fun.</li>
+      <li><b>“Bigger numbers feel great”:</b> when numbers swell to astronomical sizes, each level’s change is just one more digit and nobody feels anything; the real thrill comes from changes in play (new abilities, new ways of fighting).</li>
+      <li><b>“Max level is the end”:</b> if there is no new goal after max level, players leave; either have soft caps, meta-progression or resets, or let “player skill growth” be the long-term goal.</li>
+      <li><b>“Level scaling keeps the game always challenging”:</b> it also wipes out the power fantasy and cancels the sense of growth (see the number-inflation comparison above).</li>
+      <li><b>“Variable drops are free stickiness”:</b> random rewards are very attractive, but they cut both ways; once tied to spending, they come close to the edge of ethics.</li>
+    </ul>
+  </div>
+
+  <div class="reflect">
+    <h3>Reflection and debate</h3>
+    <p><b>Can extrinsic rewards “crowd out” intrinsic enjoyment?</b> This is the “overjustification” question psychology has discussed for a long time: adding a reward to something already fun can sometimes weaken a person’s original interest. Does a progress bar in a game amplify the fun, or turn the game into clocking in? This is a contested view, the conditions and conclusions of studies are inconsistent, and designers are best off running their own playtests.</p>
+    <p><b>Are “grinding” and “the grind” good design?</b> Some think a moderate “numbers chase” gives casual players something to do; others think it uses “time” to pass for “content.” Both positions hold up, and it depends on the target player.</p>
+    <p>If you used to think “progression = leveling up,” I hope you now think differently: progression is a system, which makes the player’s investment seen, kept and amplified; whether numbers are the lead is a design choice.</p>
+  </div>
+
+  <div class="key">
+    <h3>Key points</h3>
+    <ul>
+      <li><b>Five kinds of growth:</b> stats, abilities, gear and collection, player skill, meta-progression; plus prestige resets. Don’t understand “progression” as only “levels.”</li>
+      <li><b>The experience curve</b> sets the pace: linear, polynomial and exponential each have their character; look at both experience needed and income, or you can’t see the “wall.”</li>
+      <li><b>The logic of invention:</b> a character must persist across many plays, hence points and levels; leveling must offer choices, hence skill points and skill trees; numbers run out, hence resets and meta-progression.</li>
+      <li><b>Why it works:</b> competence, the goal gradient and endowed progress, prediction error and hedonic adaptation, relative perception; so growth must be visible and keep supplying new stimulation.</li>
+      <li><b>Don’t let a measure lead the player astray:</b> once experience points become the goal, players will farm them; have experience come from the behavior you want to encourage.</li>
+      <li><b>Design check:</b> Is there a wall? Will players hit max level before finishing? Are there must-pick nodes and trap options? Have the numbers swollen until they mean nothing?</li>
+    </ul>
+  </div>
+  <div class="tldr">A progression system turns “what you have done” into “getting stronger that you can see”; a good design lets growth and challenge rise together, instead of numbers chasing numbers.</div>
+
+  <div class="sec"><span class="n">9</span><h2><span class="tag think">Practice</span>Quick quiz</h2></div>
+  <div id="quiz"></div>
+
+  <div class="sec"><span class="n">10</span><h2><span class="tag how">Your design</span>Your design / your thoughts</h2></div>
+  <div class="card o">
+    <p>Think of a game you know well and answer: ① Which kinds of growth make up its progression? ② At which level or stage did you feel “a wall” or “nothing happening”? ③ If you were to redo its experience curve or skill tree, what would you change? Write down <b>one</b> specific change and the reason.</p>
+    <textarea rows="6" data-save="ch16" placeholder="Example: in a certain game, after level 30 each level takes 3 hours of grinding with no new skills… I would make…"></textarea>
+  </div>
+</main>
+<script src="../js/illus.js"></script>
+<script src="../js/illus-ch16.js"></script>
+<script src="../js/en/illus.js"></script>
+<script src="../js/en/illus-lib.js"></script>
+<script src="../js/en/illus-ch16.js"></script>
+<script src="../js/common.js"></script>
+<script>
+const $ = id => document.getElementById(id);
+const NS = "http://www.w3.org/2000/svg";
+function c16done(el, msg) { if (el.classList.contains("c16done")) return; el.classList.add("c16done"); el.insertAdjacentHTML("beforeend", " <b>✅ Done!" + msg + "</b>"); }
+function fmt(x) {
+  if (x >= 1e9) return (x / 1e9).toFixed(1) + "B";
+  if (x >= 1e6) return (x / 1e6).toFixed(1) + "M";
+  if (x >= 1e4) return (x / 1e3).toFixed(0) + "K";
+  if (x >= 100) return Math.round(x).toString();
+  if (x >= 10) return x.toFixed(1);
+  return x.toFixed(2);
+}
+function fmtDays(d) {
+  if (d < 1) return (d * 24).toFixed(1) + "  hours";
+  if (d < 100) return d.toFixed(1) + "  days";
+  return Math.round(d) + "  days";
+}
+
+(function () {
+  const r = 0.1, N = 40;
+  const f = {
+    lin: n => 1 + r * (n - 1),
+    poly: n => Math.pow(1 + r * (n - 1), 2),
+    exp: n => Math.pow(1 + r, n - 1)
+  };
+  const mx = 42;
+  const X = n => 60 + (n - 1) / (N - 1) * 600, Y = v => 250 - Math.min(v, mx) / mx * 220;
+  let h = '<g stroke="#2b2b3a" stroke-width="3"><line x1="60" y1="250" x2="680" y2="250"/><line x1="60" y1="20" x2="60" y2="250"/></g>';
+  const cols = { lin: "#3b82f6", poly: "#3aa655", exp: "#e5484d" };
+  const names = { lin: "Linear", poly: "Polynomial", exp: "Exponential" };
+  let g = '<g class="rough" fill="none" stroke-width="5" stroke-linejoin="round" stroke-linecap="round">';
+  Object.keys(f).forEach(k => {
+    const pts = []; for (let n = 1; n <= N; n++) pts.push(X(n).toFixed(1) + "," + Y(f[k](n)).toFixed(1));
+    g += `<polyline stroke="${cols[k]}" points="${pts.join(" ")}"/>`;
+  });
+  g += "</g>";
+  h += g + '<g font-size="17" fill="#2b2b3a">';
+  h += `<text x="470" y="52" fill="${cols.exp}">Exponential: ever steeper</text>`;
+  h += `<text x="560" y="196" fill="${cols.poly}">Polynomial</text>`;
+  h += `<text x="640" y="206" fill="${cols.lin}">Linear</text>`;
+  h += '<text x="68" y="26">Experience to level up</text><text x="680" y="314" text-anchor="end">Level →</text>';
+  h += '<text x="60" y="274">1</text><text x="360" y="274">20</text><text x="640" y="274">40</text></g>';
+  $("c16_curves").innerHTML = h;
+})();
+
+(function () {
+  const BASE = 200, INC = 100, N = 12;
+  function run() {
+    const r = +$("c16_or").value / 100, boost = $("c16_oc").checked ? 0.3 : 0;
+    $("c16_or_v").textContent = Math.round(r * 100);
+    const days = []; let need = BASE, mx = 0;
+    for (let n = 2; n <= N; n++) {
+      const inc = INC * Math.pow(1 + boost, n - 2);
+      const d = need / inc; days.push(d); mx = Math.max(mx, d);
+      need *= (1 + r);
+    }
+    const sc = Math.max(10, mx);
+    let h = '<line x1="40" y1="220" x2="680" y2="220" stroke="#2b2b3a" stroke-width="3"/>';
+    const bw = 580 / days.length;
+    days.forEach((d, i) => {
+      const ht = Math.max(2, d / sc * 170), x = 60 + i * bw;
+      const col = d < 12 ? "#8fd3f4" : (d < 40 ? "#ffe58a" : "#ffb3c6");
+      h += `<rect x="${x + 4}" y="${220 - ht}" width="${bw - 8}" height="${ht}" fill="${col}" stroke="#2b2b3a" stroke-width="3"/>`;
+      h += `<text x="${x + bw / 2}" y="242" font-size="16" text-anchor="middle">${i + 2}</text>`;
+      if (ht > 22 || d < sc * 0.99) h += `<text x="${x + bw / 2}" y="${220 - ht - 6}" font-size="16" text-anchor="middle">${d < 10 ? d.toFixed(1) : Math.round(d)}</text>`;
+    });
+    h += '<text x="680" y="264" font-size="16" text-anchor="end">Level reached →</text><text x="64" y="24" font-size="16">Sessions per level</text>';
+    $("c16_osvg").innerHTML = h;
+    const total = days.reduce((a, c) => a + c, 0);
+    const last = days[days.length - 1], first = days[0];
+    let m = `Going from level 1 to 12 takes about ${Math.round(total)} play sessions in all; the last level takes ${last < 10 ? last.toFixed(1) : Math.round(last)} and the first only ${first.toFixed(0)}.`;
+    if (last / first > 20) m += "  The last level is " + Math.round(last / first) + " times the first: the late game may feel like a wall.";
+    else if (last / first < 2) m += "  Levels are about equal, so the pace is flat, but high and low levels look like they carry the same “weight.”";
+    else m += "  The pace is slowing, but you can still see the end.";
+    $("c16_omsg").textContent = m;
+  }
+  $("c16_or").addEventListener("input", run);
+  $("c16_oc").addEventListener("change", run);
+  $("c16_oreveal").onclick = () => {
+    const el = $("c16_orev"); el.style.display = "block";
+    el.innerHTML = "<b>How it was done back then:</b> according to the 1974 rule table compiled by fans, the thresholds of the first few levels roughly double each level and get harder higher up; and the deeper the dungeon, the more treasure, which is the equivalent of the “high-level zone income” above. The trade-off you just made on the slider is exactly what the designers had to make: how to raise the thresholds and how the income should follow, so that no wall appears. (The exact numbers for each level have not been checked one by one here, so they are not listed.)";
+  };
+  run();
+})();
+
+(function () {
+  function run() {
+    const n = +$("c16_in").value, g = +$("c16_ig").value / 100, z = +$("c16_iz").value / 100;
+    $("c16_iv_n").textContent = n; $("c16_iv_g").textContent = Math.round(g * 100); $("c16_iv_z").textContent = Math.round(z * 100);
+    const atk = 10 * Math.pow(1 + g, n - 1), hpz = 100 * Math.pow(1 + z, n - 1);
+    const hitsStarter = Math.max(1, Math.ceil(100 / atk)), hitsHere = Math.max(1, Math.ceil(hpz / atk));
+    const wid = h => Math.min(100, 8 + Math.log10(h + 1) * 28);
+    const row = (nm, hits, extra) => `<div class="c16-rowline"><span>${nm}</span><div class="c16-bar" style="width:${wid(hits)}%"></div><span>${extra}</span></div>`;
+    $("c16_irows").innerHTML =
+      row("Hits to kill a starter-zone mob", hitsStarter, hitsStarter + "  hits") +
+      row("Hits to kill a current-zone enemy", hitsHere, hitsHere > 99999 ? "10,000+ hits" : hitsHere + "  hits") +
+      `<div class="c16-rowline"><span>Your attack</span><div class="c16-bar" style="width:${wid(atk / 10)}%;background:#ffe58a"></div><span>${fmt(atk)} (${Math.floor(Math.log10(atk)) + 1} digits)</span></div>`;
+    let m;
+    if (hitsHere > 40) m = `<span class="red">The current enemy takes ${hitsHere} hits: growth has lost the race to the monsters, and leveling up makes the game feel worse, like a wall.</span> `;
+    else if (Math.abs(g - z) < 0.015) m = `<span class="ylw">Growth is almost cancelled by the monsters (about ${hitsHere} hits in the current zone, hardly changing with level). The numbers go up and the feeling doesn’t change, which is “level scaling.”</span> `;
+    else if (hitsHere < 2 && n > 3) m = `<span class="ylw">One hit kills in the current zone: too easy, no challenge.</span> `;
+    else m = `<span class="grn">Starter zone ${hitsStarter} hits, current zone ${hitsHere} hits: old content is crushed, new content still challenges, so both the power fantasy and the challenge are served.</span> `;
+    if (atk > 1e6) m += `Attack has reached ${fmt(atk)}, and the numbers have swollen absurdly: you need abbreviated display, a reset, or a lower growth rate.`;
+    $("c16_imsg").innerHTML = m;
+  }
+  ["c16_in", "c16_ig", "c16_iz"].forEach(id => $(id).addEventListener("input", run));
+  run();
+})();
+
+(function () {
+  let type = "lin";
+  const PRE = {
+    dnd: { t: "exp", base: 20, r: 1.0, L: 12, inc: 100, s: 0, D: 30 },
+    calm: { t: "lin", base: 300, r: 0.3, L: 30, inc: 200, s: 0, D: 40 },
+    boost: { t: "poly", base: 150, r: 0.15, L: 40, inc: 200, s: 6, D: 60 },
+    fast: { t: "lin", base: 100, r: 0.05, L: 20, inc: 400, s: 0, D: 30 }
+  };
+  const need = (n, base, r) => type === "lin" ? base * (1 + r * (n - 1)) : type === "poly" ? base * Math.pow(1 + r * (n - 1), 2) : base * Math.pow(1 + r, n - 1);
+  let touched = false, sawRed = false;
+  function run() {
+    const base = +$("c16_base").value, r = +$("c16_r").value, L = +$("c16_L").value, inc = +$("c16_inc").value, s = +$("c16_s").value / 100, D = +$("c16_D").value, lg = $("c16_log").checked;
+    $("c16_v_base").textContent = base; $("c16_v_r").textContent = r.toFixed(2); $("c16_v_L").textContent = L; $("c16_v_inc").textContent = inc; $("c16_v_s").textContent = Math.round(s * 100); $("c16_v_D").textContent = D;
+    document.querySelectorAll("#c16_types_btn .chip").forEach(c => c.classList.toggle("on", c.dataset.t === type));
+    const m = L - 1; 
+    const nd = [], dy = [], cum = []; let c = 0;
+    for (let n = 1; n <= m; n++) {
+      const nn = need(n, base, r), d = nn / (inc * Math.pow(1 + s, n - 1));
+      nd.push(nn); dy.push(d); c += d; cum.push(c);
+    }
+    const col = [];
+    for (let i = 0; i < m; i++) {
+      let ref;
+      if (i === 0) { col.push("g"); continue; }
+      const from = Math.max(0, i - 3), sl = dy.slice(from, i); ref = sl.reduce((a, b) => a + b, 0) / sl.length;
+      const ratio = dy[i] / ref;
+      col.push(ratio > 2 ? "r" : ratio > 1.4 ? "y" : "g");
+    }
+    const T = v => lg ? Math.log(1 + v) : v;
+    const X = i => 60 + (m === 1 ? 0 : i / (m - 1)) * 600;
+    const mxN = Math.max(...nd.map(T)), mxD = Math.max(...dy.map(T));
+    let h = '<g stroke="#2b2b3a" stroke-width="3"><line x1="60" y1="210" x2="690" y2="210"/><line x1="60" y1="30" x2="60" y2="210"/><line x1="60" y1="470" x2="690" y2="470"/><line x1="60" y1="290" x2="60" y2="470"/></g>';
+    h += `<text x="64" y="22" font-size="16">Experience for the next level${lg ? " (log)" : ""} (max ${fmt(Math.max(...nd))})</text>`;
+    h += `<text x="64" y="282" font-size="16">Time per level${lg ? " (log)" : ""} (longest ${fmtDays(Math.max(...dy))})</text>`;
+    const pts = nd.map((v, i) => X(i).toFixed(1) + "," + (210 - T(v) / mxN * 170).toFixed(1)).join(" ");
+    h += `<polyline fill="none" stroke="#3b82f6" stroke-width="5" stroke-linejoin="round" points="${pts}"/>`;
+    const bw = Math.max(2, 600 / m * 0.78), COL = { g: "#b6e8a8", y: "#ffe58a", r: "#ff8a8a" };
+    let pastD = false;
+    dy.forEach((d, i) => {
+      const ht = Math.max(2, T(d) / mxD * 170), x = X(i) - bw / 2;
+      const past = (i > 0 ? cum[i - 1] : 0) >= D;
+      h += `<rect x="${x.toFixed(1)}" y="${(470 - ht).toFixed(1)}" width="${bw.toFixed(1)}" height="${ht.toFixed(1)}" fill="${COL[col[i]]}" stroke="#2b2b3a" stroke-width="2.5" ${past ? 'opacity=".45"' : ""}/>`;
+    });
+    
+    let lvD = cum.findIndex(v => v >= D);
+    if (lvD >= 0) {
+      const x = X(lvD);
+      h += `<line x1="${x.toFixed(1)}" y1="290" x2="${x.toFixed(1)}" y2="470" stroke="#2b2b3a" stroke-width="3" stroke-dasharray="8 6"/><text x="${Math.min(x + 6, 520).toFixed(1)}" y="310" font-size="16">Clear (day ${D}) ≈ Lv${lvD + 1}</text>`;
+    }
+    h += `<text x="60" y="496" font-size="16">1</text><text x="${X(m - 1).toFixed(1)}" y="496" font-size="16" text-anchor="end">${m}</text><text x="690" y="514" font-size="16" text-anchor="end">Level-up number → (translucent = after clearing the game)</text>`;
+    $("c16_dsvg").innerHTML = h;
+
+    const total = cum[m - 1], reds = [], ylws = [];
+    col.forEach((k, i) => { if (k === "r") reds.push(i + 1); if (k === "y") ylws.push(i + 1); });
+    $("c16_dstat").innerHTML = `<span class="stat">To max level <b>${fmtDays(total)}</b></span><span class="stat">At clear about <b>Lv ${lvD >= 0 ? lvD + 1 : L}</b></span><span class="stat">Red <b>${reds.length}</b> Yellow <b>${ylws.length}</b></span><span class="stat">Last level <b>${fmtDays(dy[m - 1])}</b></span>`;
+    let msg = "";
+    if (total < D) msg += `<div class="red">Too fast: max level at about day ${Math.round(total)}, ${Math.round(D - total)} days before the game is cleared. The later content has no growth reward and may feel “empty.” You can raise the growth rate, lower the income bonus, or lengthen the curve.</div>`;
+    else if (total > D * 3) msg += `<div class="ylw">Max level takes ${fmtDays(total)}, ${(total / D).toFixed(1)} times the clear time: most players won’t reach max level. If this is a “long-term goal” for hardcore players, fine; otherwise the curve is too steep.</div>`;
+    else msg += `<div class="grn">Time to max level ${fmtDays(total)} is in a reasonable range against the clear time (${D} days): players are close to or slightly below max level when they clear.</div>`;
+    if (reds.length) msg += `<div class="red">Wall: levels ${reds.slice(0, 6).join(", ")}${reds.length > 6 ? " and more" : ""} take more than 2 times the average of the levels before them (the longest takes ${fmtDays(Math.max(...reds.map(k => dy[k - 1])))}). Players will slow down or leave here, unless you compensate with “higher income” or “new zones” (try adding a little income bonus).</div>`;
+    else if (ylws.length) msg += `<div class="ylw">${ylws.length} levels get steeper but there is no wall: the pace is gradually slowing, which is the normal “the further, the costlier.”</div>`;
+    else msg += `<div class="grn">No wall, steady pace.</div>`;
+    if (dy[0] > 1) msg += `<div class="ylw">Level 1 already takes ${fmtDays(dy[0])}: too slow, and newcomers lack early quick feedback (see Chapter 10).</div>`;
+    if (lg) msg += `<div class="c16-note">Log scale: bar height shows relative size, not absolute time, and big gaps are compressed.</div>`;
+    $("c16_ddiag").innerHTML = msg;
+    if (/class="red"/.test(msg)) sawRed = true;
+    if (touched && sawRed && !/class="red"/.test(msg) && /class="grn">Time to max level/.test(msg)) c16done($("c16_task1"), "No wall, and a reasonable time to max level.");
+  }
+  document.querySelectorAll("#c16_types_btn .chip").forEach(b => b.onclick = () => { touched = true; type = b.dataset.t; run(); });
+  document.querySelectorAll("#c16_types_btn [data-p]").forEach(b => b.onclick = () => {
+    touched = true; const p = PRE[b.dataset.p]; type = p.t;
+    $("c16_base").value = p.base; $("c16_r").value = p.r; $("c16_L").value = p.L; $("c16_inc").value = p.inc; $("c16_s").value = p.s; $("c16_D").value = p.D;
+    run();
+  });
+  ["c16_base", "c16_r", "c16_L", "c16_inc", "c16_s", "c16_D"].forEach(id => $(id).addEventListener("input", () => { touched = true; run(); }));
+  $("c16_log").addEventListener("change", run);
+  run();
+})();
+
+(function () {
+  const BUDGET = 12, BX = [120, 350, 580], OFF = 48;
+  const BR = [
+    { nm: "Melee", col: "#a8dcf0", ns: [["Brawn", 2, 0, 0, "Strength+: damage up slightly"], ["Smash", 3, 0, 0, "Smash: high damage, slow"], ["Block", 0, 2, 0, "Block: reduces damage taken"], ["Rage", 4, 0, 0, "Rage: big damage at low health"], ["Bulwark", 0, 4, 0, "Bulwark: greatly increases survival"], ["Whirl", 6, 0, 0, "Whirlwind: high damage in an area"], ["Titan", 8, 3, 0, "Titan: ultimate damage with a bit of defense"]] },
+    { nm: "Ranged", col: "#b6e8a8", ns: [["Aim", 2, 0, 0, "Aim: accuracy and damage up slightly"], ["Rapid", 3, 0, 0, "Rapid fire: faster attack speed"], ["Roll", 0, 0, 3, "Roll: more mobility"], ["Pierce", 4, 0, 0, "Pierce: arrows go through several enemies"], ["Trap", 1, 1, 2, "Trap: controls enemies, also defends"], ["Volley", 6, 0, 0, "Chain shot: high damage"], ["Hawk", 8, 0, 2, "Hawkeye: ultimate damage and mobility"]] },
+    { nm: "Support", col: "#ffc078", ns: [["Tough", 0, 4, 0, "Tough: lots of extra health (cheap and strong)"], ["Heal", 0, 3, 0, "Heal: restores health over time"], ["Haste", 0, 0, 3, "Haste: more mobility"], ["Aura", 1, 3, 0, "Aura: more survival and a little damage"], ["Purge", 0, 2, 0, "Purge: removes negative effects"], ["Revive", 0, 5, 0, "Revive: come back once in battle"], ["Haven", 0, 8, 0, "Haven: ultimate survival"]] }
+  ];
+  const nodes = [{ id: "root", nm: "Start", x: 350, y: 515, cost: 0, req: [], mode: "any", D: 0, S: 0, M: 0, br: -1, desc: "Start: free", root: true }];
+  const YS = { A: 430, B1: 340, B2: 340, C1: 250, C2: 250, D: 160, E: 62 };
+  const KEYS = ["A", "B1", "B2", "C1", "C2", "D", "E"];
+  const COST = { A: 1, B1: 1, B2: 1, C1: 1, C2: 1, D: 2, E: 3 };
+  BR.forEach((b, bi) => {
+    KEYS.forEach((k, ki) => {
+      const v = b.ns[ki];
+      const x = BX[bi] + (k === "B1" || k === "C1" ? -OFF : (k === "B2" || k === "C2" ? OFF : 0));
+      const req = k === "A" ? ["root"] : k === "B1" || k === "B2" ? ["b" + bi + "A"] : k === "C1" ? ["b" + bi + "B1"] : k === "C2" ? ["b" + bi + "B2"] : k === "D" ? ["b" + bi + "C1", "b" + bi + "C2"] : ["b" + bi + "D"];
+      nodes.push({ id: "b" + bi + k, nm: v[0], x, y: YS[k], cost: COST[k], req, mode: "any", D: v[1], S: v[2], M: v[3], br: bi, desc: v[4] });
+    });
+  });
+  nodes.push({ id: "h1", nm: "Venom", x: 235, y: 262, cost: 2, req: ["b0B2", "b1B1"], mode: "all", D: 4, S: 0, M: 1, br: 3, desc: "Venom (merge): needs “Block” and “Rapid”; damage + mobility" });
+  nodes.push({ id: "h2", nm: "Agile", x: 465, y: 262, cost: 2, req: ["b1B2", "b2B1"], mode: "all", D: 1, S: 2, M: 4, br: 3, desc: "Agile (merge): needs “Roll” and “Heal”; mostly mobility" });
+  nodes.push({ id: "h3", nm: "Bolt", x: 235, y: 150, cost: 2, req: ["b0C2", "b1C1"], mode: "all", D: 5, S: 2, M: 0, br: 3, desc: "Bolt (merge): needs “Bulwark” and “Pierce”; damage + survival" });
+  const byId = {}; nodes.forEach(n => byId[n.id] = n);
+  const sel = new Set(["root"]);
+  let saveA = null;
+  const COLS = ["#a8dcf0", "#b6e8a8", "#ffc078", "#d8c8ff"];
+  let mustSet = new Set(), trapSet = new Set(), analyzed = false;
+
+  const reqOK = (n, s) => n.req.length === 0 || (n.mode === "all" ? n.req.every(r => s.has(r)) : n.req.some(r => s.has(r)));
+  const spent = s => { let c = 0; s.forEach(id => c += byId[id].cost); return c; };
+  function prune() {
+    let ch = true;
+    while (ch) { ch = false; sel.forEach(id => { if (id !== "root" && !reqOK(byId[id], sel)) { sel.delete(id); ch = true; } }); }
+  }
+  function totals(s) { const t = { D: 0, S: 0, M: 0 }; s.forEach(id => { const n = byId[id]; t.D += n.D; t.S += n.S; t.M += n.M; }); return t; }
+
+  
+  const svg = $("c16_tsvg");
+  const RAD = n => n.root ? 24 : (n.cost >= 3 ? 40 : n.cost === 2 ? 34 : 28);
+  function build() {
+    let h = '<g class="rough" stroke="#2b2b3a" fill="none" stroke-linecap="round">';
+    nodes.forEach(n => n.req.forEach(r => {
+      const p = byId[r], dx = n.x - p.x, dy = n.y - p.y, L = Math.hypot(dx, dy), ux = dx / L, uy = dy / L;
+      const x1 = p.x + ux * (RAD(p) + 4), y1 = p.y + uy * (RAD(p) + 4), x2 = n.x - ux * (RAD(n) + 4), y2 = n.y - uy * (RAD(n) + 4);
+      h += `<line data-e="${n.id}-${r}" x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}" stroke-width="3" />`;
+    }));
+    h += "</g>";
+    nodes.forEach(n => {
+      const R = RAD(n);
+      h += `<g class="c16-node" data-id="${n.id}" tabindex="0" role="button" aria-label="${n.nm} (${n.cost} pts)"><circle class="c16-body" cx="${n.x}" cy="${n.y}" r="${R}" fill="${n.root ? "#fff" : COLS[n.br]}" stroke="#2b2b3a" stroke-width="3"/><text x="${n.x}" y="${n.y + 6}" font-size="16" text-anchor="middle" fill="#2b2b3a" pointer-events="none">${n.nm}</text>`;
+      h += `<circle class="c16-must" cx="${n.x}" cy="${n.y}" r="${R + 7}" fill="none" stroke="#e5484d" stroke-width="4" stroke-dasharray="5 4" style="display:none" pointer-events="none"/></g>`;
+    });
+    h += '<g font-size="17" fill="#2b2b3a" text-anchor="middle"><text x="120" y="566">Melee</text><text x="350" y="566">Ranged</text><text x="580" y="566">Support</text></g>';
+    svg.innerHTML = h;
+    svg.querySelectorAll(".c16-node").forEach(g => {
+      const id = g.dataset.id;
+      g.addEventListener("click", () => toggle(id));
+      g.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); toggle(id); } });
+      g.addEventListener("pointerenter", () => info(id));
+      g.addEventListener("focus", () => info(id));
+    });
+  }
+  function info(id) {
+    const n = byId[id];
+    const v = (n.D ? "Damage +" + n.D + " " : "") + (n.S ? "Survival +" + n.S + " " : "") + (n.M ? "Mobility +" + n.M : "");
+    const rq = n.req.length ? "Requires: " + n.req.map(r => byId[r].nm).join(n.mode === "all" ? " and " : " or ") : "";
+    $("c16_tinfo").innerHTML = `<b>${n.nm}</b> (${n.cost} pts, ${n.cost >= 3 ? "large circle" : n.cost === 2 ? "medium circle" : "small circle"})${v ? " " + v : ""}<br>${n.desc}${rq ? " " + rq : ""}`;
+  }
+  function toggle(id) {
+    if (id === "root") return;
+    if (sel.has(id)) { sel.delete(id); prune(); }
+    else {
+      const n = byId[id], left = BUDGET - spent(sel);
+      if (!reqOK(n, sel)) { $("c16_tinfo").innerHTML = `<span style="color:#b3261e">The prerequisite skill isn’t lit yet.</span>`; return; }
+      if (n.cost > left) { $("c16_tinfo").innerHTML = `<span style="color:#b3261e">Not enough points: this needs ${n.cost}, and you have only ${left} left.</span>`; return; }
+      sel.add(id);
+    }
+    info(id); render();
+  }
+  function render() {
+    const left = BUDGET - spent(sel);
+    const t = totals(sel);
+    $("c16_t_pts").textContent = left; $("c16_t_d").textContent = t.D; $("c16_t_s").textContent = t.S; $("c16_t_m").textContent = t.M;
+    svg.querySelectorAll(".c16-node").forEach(g => {
+      const n = byId[g.dataset.id], c = g.querySelector(".c16-body"), on = sel.has(n.id);
+      const avail = !on && reqOK(n, sel) && n.cost <= left;
+      c.setAttribute("fill", on ? (n.root ? "#fff7cf" : COLS[n.br]) : (avail ? "#fff" : "#e9e6dc"));
+      c.setAttribute("stroke-width", on ? 6 : (avail ? 4 : 2));
+      c.setAttribute("stroke", on ? "#2b2b3a" : (avail ? "#2b2b3a" : "#a9a69b"));
+      g.style.opacity = on || avail ? 1 : .55;
+      g.querySelector(".c16-must").style.display = analyzed && mustSet.has(n.id) ? "" : "none";
+    });
+    svg.querySelectorAll("line[data-e]").forEach(l => {
+      const [a, b] = l.dataset.e.split("-");
+      const on = sel.has(a) && sel.has(b);
+      l.setAttribute("stroke", on ? "#2b2b3a" : "#b8b4a5"); l.setAttribute("stroke-width", on ? 6 : 3);
+    });
+    
+    const brPts = [0, 0, 0, 0];
+    sel.forEach(id => { const n = byId[id]; if (n.br >= 0) brPts[n.br] += n.cost; });
+    const used = BUDGET - left, tot = Math.max(1, used);
+    const names = ["Melee", "Ranged", "Support", "Merge"];
+    const mainI = brPts.indexOf(Math.max(...brPts));
+    let s;
+    if (used === 0) s = "No points spent yet. Try lighting the entrance of one branch first.";
+    else {
+      const share = brPts[mainI] / tot;
+      const kind = share >= 0.7 ? `${names[mainI]} specialist` : (brPts[3] > 0 ? "Mixed build (with merge)" : "Mixed build");
+      s = `<b>Build type: ${kind}</b> Points spread:` + names.map((nm, i) => `${nm} ${brPts[i]}`).join(" / ") + `.`;
+      const mx = Math.max(t.D, t.S, t.M);
+      s += mx > 0 ? `  Leans toward ${t.D === mx ? "damage" : t.S === mx ? "survival" : "mobility"}.` : "";
+      if (left === 0) s += "  You’ve used all your points; try “Reset” for another route and see which choices could actually be swapped.";
+    }
+    if (saveA) {
+      const common = [...sel].filter(id => saveA.has(id) && id !== "root").length;
+      const ta = totals(saveA);
+      const d = (x, y) => (x - y >= 0 ? "+" : "") + (x - y);
+      s += `<br>Compared with build A: damage ${d(t.D, ta.D)}, survival ${d(t.S, ta.S)}, mobility ${d(t.M, ta.M)}; the two share ${common} nodes.`;
+    }
+    $("c16_tsummary").innerHTML = s;
+  }
+  function randBuild() {
+    const s = new Set(["root"]);
+    for (;;) {
+      const left = BUDGET - spent(s);
+      const c = nodes.filter(n => !s.has(n.id) && reqOK(n, s) && n.cost <= left);
+      if (!c.length) break;
+      s.add(c[Math.floor(Math.random() * c.length)].id);
+    }
+    return s;
+  }
+  $("c16_treset").onclick = () => { sel.clear(); sel.add("root"); $("c16_tinfo").textContent = "Reset done."; render(); };
+  $("c16_trand").onclick = () => { const s = randBuild(); sel.clear(); s.forEach(i => sel.add(i)); render(); };
+  $("c16_tsaveA").onclick = () => { saveA = new Set(sel); $("c16_tinfo").textContent = "Saved as build A. Switch to a different build and the differences will show below."; render(); };
+  $("c16_tanalyze").onclick = () => {
+    const N = 6000, seen = new Map();
+    for (let i = 0; i < N; i++) { const s = randBuild(), k = [...s].sort().join(","); if (!seen.has(k)) seen.set(k, s); }
+    const builds = [...seen.values()].map(s => ({ s, t: totals(s) }));
+    const objs = {
+      "Damage": b => b.t.D, "Survival": b => b.t.S, "Mobility": b => b.t.M,
+      "Overall": b => (b.t.D + 4) * (b.t.S + 4) * (b.t.M + 4)
+    };
+    const inAll = [], inAny = new Set();
+    Object.keys(objs).forEach(k => {
+      const top = builds.slice().sort((a, b) => objs[k](b) - objs[k](a)).slice(0, 10);
+      const common = new Set(nodes.filter(n => !n.root).map(n => n.id).filter(id => top.every(b => b.s.has(id))));
+      inAll.push(common);
+      top.forEach(b => b.s.forEach(id => inAny.add(id)));
+    });
+    
+    mustSet = new Set(nodes.filter(n => !n.root).map(n => n.id).filter(id => inAll.every(c => c.has(id))));
+    trapSet = new Set(nodes.filter(n => !n.root && !inAny.has(n.id)).map(n => n.id));
+    analyzed = true;
+    const nm = ids => [...ids].map(i => byId[i].nm).join(",") || "(none)";
+    let h = `<b>Analysis (random sample of ${builds.length} different builds):</b><br>`;
+    h += mustSet.size ? `<span class="red">Must-pick nodes (red dashed circles on the chart): ${nm(mustSet)}</span>. Whether you aim for damage, survival, mobility or all-round, the best builds all carry them, and that is “you lose if you skip it.”` : `<span class="grn">No node appears in the top 10 of every goal: there is no real must-pick.</span>`;
+    h += `<br>Nodes that never appear in any goal’s top 10 (trap options): <b>${nm(trapSet)}</b>.`;
+    h += `<br>${trapSet.size > 5 ? "Too many traps: those points are basically wasted, and the player seems to have choices but only a few paths are really open." : "Not many traps, but you should still check that every node suits some build."}`;
+    h += `<br><span class="c16-note">Hint: must-picks are often caused by “structure” (every strong node has to pass through it) or “value for cost” (cheap and strong). You can adjust their prices or values and see what happens.</span>`;
+    const el = $("c16_tanalysis"); el.style.display = "block"; el.innerHTML = h;
+    render();
+    if ([...sel].some(id => id[0] === "h")) c16done($("c16_task2"), "Your build has a merge node; now see which nodes on the chart are marked as must-picks.");
+  };
+  build(); render();
+})();
+
+GD.mountQuiz($("quiz"), [
+  { q: "[Why] Why do most games make the “experience needed for the next level” grow instead of being the same every level?", opts: ["Because programmers are too lazy to write different numbers", "Hedonic adaptation and relative perception make small late increments feel like nothing; making higher levels harder prolongs the sense of growth while keeping the early game quick to pick up", "Because players like being tortured", "Because the game would crash otherwise"], a: 1, why: "How people feel a change depends on relative change, and people adapt to the existing level. So early levels come fast (quick feedback), and later levels come slowly with big rewards (stretching growth). None of the other options is a reason." },
+  { q: "[Why it was invented] Why did experience points and levels first appear in tabletop role-playing games?", opts: ["Because computers of the time could do the arithmetic automatically", "Because wargames start over every battle, while a character must persist across many plays, which needs a way to keep the books and give “promotion”", "Because they wanted to get players to spend money", "Because it makes the game shorter"], a: 1, why: "A <i>Chainmail</i>-style wargame simply ended when the battle did; Arneson’s Blackmoor campaign and the 1974 <i>D&amp;D</i> needed a single character to grow across sessions, hence experience points and level thresholds. Computers came after this and were not the cause." },
+  { q: "Experience curve need(n)=100×2^(n−1), and the player gets a fixed 400 experience per day (not changing with level). About how many days does it take to go from level 8 to level 9?", opts: ["8 days", "32 days", "128 days", "3 days"], a: 1, why: "need(8)=100×2^7=12800, divided by 400 = 32 days. This is the “wall” of an exponential curve: each level takes twice as long as the last, unless income also rises with level." },
+  { q: "In a skill tree, an entry node costing only 1 point, “+40% health,” appears in the best plan of every build. What does this most suggest?", opts: ["It is well designed, because everyone likes it", "It is a must-pick node: it looks like a choice but isn’t, weakening “meaningful choice”", "Skill trees should be entirely free", "The players didn’t play seriously"], a: 1, why: "A must-pick node (included in the best builds for all goals) is a “false choice,” and its price, strength or position should be adjusted so that different builds each have trade-offs." },
+  { q: "[Why] In the car-wash punch-card experiment, more people completed the card of “10 spaces with 2 already stamped” than the card of “8 blank spaces.” What does this show?", opts: ["Players like free things", "Visible existing progress itself pushes people forward (the endowed progress effect)", "More spaces are better", "Stamps make the car wash cheaper"], a: 1, why: "Both cards still needed 8 more washes, and the only difference was the feeling of “already having progress.” The result of Nunes and Drèze (2006) was 34% against 19%. Giving newcomers a few levels and leaving the progress bar “almost there” in games uses the same idea." },
+  { q: "A game gives +1 experience for each monster killed, and many players camp at a spawn point swinging at the same rat, ignoring the story and the chests. Which principle explains this best?", opts: ["Hedonic adaptation", "Goodhart’s law: experience points are a proxy for “engagement,” and once they become the goal, they come apart from the behavior you really want to encourage", "Loss aversion", "The zone of proximal development"], a: 1, why: "When a measure becomes a target, it stops being a good measure. The remedy is to have experience come from the behavior you want to encourage, and to give diminishing returns for repeating the same thing." },
+]);
+</script>
+</body>
+</html>

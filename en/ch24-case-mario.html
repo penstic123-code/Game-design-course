@@ -1,0 +1,823 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Chapter 24: Case Study: Mario 1-1</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+  .dx{display:grid;grid-template-columns:190px 1fr;gap:14px;align-items:start}
+  .dx .chips{display:flex;flex-direction:column}
+  .dx .chip{text-align:left;margin:3px 0}
+  .dx .panel{margin:0;min-height:170px}
+  .dx .panel h3{margin:0 0 4px}
+  @media(max-width:700px){.dx{grid-template-columns:1fr}.dx .chips{flex-direction:row;flex-wrap:wrap}}
+  #gc{display:block;width:100%;max-width:640px;height:auto;margin:0 auto;background:#a8dcf0;border:3px solid var(--ink);border-radius:8px;outline:none;touch-action:none}
+  #gc:focus{box-shadow:0 0 0 4px var(--yellow)}
+  .pad{display:flex;gap:8px;justify-content:center;margin-top:10px;flex-wrap:wrap}
+  .pad .btn{margin:0;padding:10px 22px;font-size:1.4rem;touch-action:none;user-select:none}
+  .knobs{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+  @media(max-width:700px){.knobs{grid-template-columns:1fr}}
+  .stop{cursor:pointer}
+  .stop:focus{outline:none}
+  .stop:focus .hl,.stop:hover .hl{stroke-width:6}
+  .wbpal{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
+  .wbpal .el{font:inherit;font-size:1rem;border:2.5px solid var(--ink);background:#fff;border-radius:14px 8px 14px 8px;padding:3px 12px;cursor:grab;touch-action:none;user-select:none}
+  .wbpal .el.sel{background:var(--yellow);transform:rotate(-2deg)}
+  .wbslots{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin:8px 0}
+  .wbslots .sl{min-height:74px;border:3px dashed var(--ink);border-radius:12px;background:#fff;padding:4px;text-align:center;font-size:.9rem;cursor:pointer;display:flex;flex-direction:column;justify-content:center;align-items:center;position:relative}
+  .wbslots .sl small{color:var(--soft);font-size:.7rem;position:absolute;top:1px;left:5px}
+  .wbslots .sl.full{border-style:solid;background:#fff7cf}
+  .wbslots .sl.warn{background:#ffe0e0}
+  .wbslots .sl.over{outline:3px dashed var(--blue)}
+  .wbslots .sl .em{font-size:1.5rem;line-height:1.2}
+  @media(max-width:700px){.wbslots{grid-template-columns:repeat(3,1fr)}}
+  .wbghost{position:fixed;z-index:200;pointer-events:none;background:var(--yellow);border:2.5px solid var(--ink);border-radius:12px;padding:2px 10px;font-size:1rem}
+  .wbfb li{margin:3px 0}
+  .c24sim{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0}
+  @media(max-width:700px){.c24sim{grid-template-columns:1fr}}
+  .c24sim .stat{display:block;margin:0}
+  .lp{position:relative}
+  .lp .lpsvg{position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none;overflow:visible;z-index:2}
+  .lp .lpcols{display:grid;grid-template-columns:1fr 1fr;gap:12px 44px;align-items:start;position:relative;z-index:1}
+  .lp .lpl{display:flex;flex-direction:column;gap:10px;position:sticky;top:70px}
+  .lp .lpr{display:flex;flex-direction:column;gap:6px}
+  .lp .lpp{font:inherit;font-size:.95rem;line-height:1.35;border:2.5px solid var(--ink);background:#fff;border-radius:16px 8px 16px 8px;padding:6px 10px;cursor:grab;touch-action:none;user-select:none;text-align:left}
+  .lp .lpp.sel{background:var(--yellow);transform:rotate(-1.5deg)}
+  .lp .lpp::after{content:" ●";color:#e5484d}
+  .lp .lpi{display:block;width:100%;text-align:left;font:inherit;font-size:.92rem;line-height:1.4;border:2.5px solid var(--ink);border-radius:12px 20px 12px 18px;padding:6px 10px;background:#fffef7;cursor:pointer}
+  .lp .lpi.ok{background:var(--green);cursor:default}
+  .lp .lpi.bad{background:#ffd9d9;animation:lpshake .3s}
+  .lp .lpi.over{outline:3px dashed var(--blue)}
+  .lp .lpfb{font-size:.85rem;margin:2px 0 4px 4px;color:var(--ink)}
+  @keyframes lpshake{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+</style>
+</head>
+<body data-ch="24">
+<main class="wrap">
+  <div class="hero">
+    <div class="txt">
+      <span class="badge">Chapter 24 · Case study</span>
+      <h1>Super Mario 1-1</h1>
+      <p class="sub">A tutorial without a single word taught hundreds of millions of players.</p>
+    </div>
+    <svg viewBox="0 0 190 150" class="rough" aria-hidden="true">
+      <g stroke="#2b2b3a" stroke-width="4" stroke-linejoin="round">
+        <rect x="55" y="20" width="60" height="60" rx="6" fill="#ffe58a"/>
+        <rect x="20" y="110" width="150" height="26" fill="#e0a06a"/>
+        <ellipse cx="140" cy="96" rx="22" ry="16" fill="#a5683d"/>
+      </g>
+      <text x="74" y="66" font-size="44" fill="#2b2b3a">?</text>
+    </svg>
+  </div>
+
+  <div class="goals"><span class="time">⏱ about 45 min</span><h3>Learning goals</h3><ul>
+    <li>Explain why the opening of 1-1 puts just one Goomba, what the designers swapped out at the time, and why.</li>
+    <li>Take apart the teaching order of any level with “introduce → practice → vary,” and explain with the zone of proximal development and scaffolding why it teaches.</li>
+    <li>Say what forgiving feel and cheap failure each protect in the player, and know which statements are the designers’ recollections and which are only our reading afterward.</li>
+  </ul></div>
+
+  
+  <div class="sec"><span class="n">1</span><h2><span class="tag what">What it is</span>A first level without a single word</h2></div>
+  <p>Someone playing <i>Super Mario Bros.</i> for the first time sees not a word: no “press A to jump,” no “stomp enemies,” and nobody tells you to go right. Yet within a minute, most people have learned to run, jump, stomp and bump bricks.</p>
+  <p>This is Nintendo’s 1985 work, generally credited as designed mainly by Shigeru Miyamoto and Takashi Tezuka, with music by Koji Kondo. Its first level, 1-1, became the most-cited model of “teaching without text” in game design. What exactly did it do?</p>
+  <div class="card">
+    <svg viewBox="0 0 760 300" width="100%" role="img" aria-label="Mario’s core loop: run right, meet an obstacle, jump, clear it and collect, a harder next stretch">
+      <g class="rough" stroke="#2b2b3a" stroke-width="4" stroke-linejoin="round">
+        <rect x="20" y="105" width="150" height="80" rx="22" fill="#ffe58a"/>
+        <rect x="215" y="20" width="150" height="80" rx="22" fill="#a8dcf0"/>
+        <rect x="410" y="20" width="150" height="80" rx="22" fill="#ffb3c6"/>
+        <rect x="590" y="105" width="150" height="80" rx="22" fill="#b6e8a8"/>
+        <rect x="305" y="205" width="160" height="80" rx="22" fill="#d8c8ff"/>
+        <g fill="none" stroke-width="4.5" stroke-linecap="round">
+          <path d="M172 128 Q195 80 213 66"/><path d="M367 60 L408 60"/><path d="M562 66 Q580 80 598 103"/>
+          <path d="M660 187 Q620 260 467 250"/><path d="M303 250 Q150 260 105 187"/>
+        </g>
+      </g>
+      <g font-size="22" text-anchor="middle" fill="#2b2b3a">
+        <text x="95" y="143">① Run right</text><text x="290" y="58">② Meet obstacle</text><text x="485" y="58">③ Jump</text>
+        <text x="665" y="143">④ Clear, collect</text><text x="385" y="252">⑤ Harder stretch</text>
+      </g>
+      <g font-size="17" text-anchor="middle" fill="#4b4b5e">
+        <text x="95" y="169">Momentum and speed</text><text x="290" y="84">Enemies, pits, pipes</text><text x="485" y="84">Hold: jump higher</text>
+        <text x="665" y="169">Coins, flagpole</text>
+      </g>
+    </svg>
+    <p class="small">This is a seconds-long <span class="term" tabindex="0" data-def="Core loop: the smallest closed circle of “action → feedback → reward” that the player repeats over and over.">micro loop</span>: every jump is one “action–feedback,” repeated dozens of times in a level.</p>
+  </div>
+
+  <div class="withimg">
+    <span data-illus="c24_screen"></span>
+    <div>
+      <p>Look at the very first screen after the game starts. You, a stretch of flat ground, a question-mark block overhead, and a Goomba walking toward you in the distance. There is nothing else: no second threat, no second thing to learn.</p>
+      <p>This screen does just one thing: it sets the concept of “enemy” alone in front of you. You have only two paths: run into it, or jump over it or onto it. Whichever you take, you understand at once: this thing hurts, and a stomp flattens it.</p>
+      <p>1-1 teaches the player in three ways. The first is what you just saw: introduce alone first, then combine.</p>
+    </div>
+  </div>
+  <div class="eg" data-ic="🍄"><span data-illus="c24_e_goomba"></span><div class="egt"><b>Mario</b>: the opening has only one Goomba and no other threat beside it. Only later come combinations like “pipe + enemy” and “pit + platform.”</div></div>
+  <div class="eg" data-ic="🚗"><span data-illus="c24_e_drive"></span><div class="egt"><b>Learning to drive</b>: practice starting and stopping on an empty lot first, then merge and change lanes on the road. Nobody throws you into rush hour on day one.</div></div>
+  <div class="eg" data-ic="🎹"><span data-illus="c24_e_piano"></span><div class="egt"><b>Learning the piano</b>: master one hand first, then play with both. Practicing both hands at once is learning two new things at once.</div></div>
+  <div class="eg bad" data-ic="🪧"><span data-illus="c24_e_wall"></span><div class="egt"><b>The “tutorial wall”</b>: ten pop-up boxes in the first minute, eight systems explained at once. With so much information, the player remembers nothing, and might as well just play. <b>The point of this counterexample: not teaching too little, but teaching too much at once.</b></div></div>
+
+  
+  <div class="sec"><span class="n">2</span><h2><span class="tag origin">How it was invented</span>With no text, how do you teach a first-time player?</h2></div>
+  <div class="story">
+    <h3>1985: plug in the cartridge and play, and few opened the manual</h3>
+    <p>Home consoles then had no such thing as “onboarding.” Players got a cartridge and started playing, and the manual might lie in a drawer for a lifetime. The designers faced a very real problem: at the start of the first level the player knows nothing, so how do you, without writing a word, get them to learn to run, jump, stomp enemies and bump bricks?</p>
+    <p>More interesting, according to Takashi Tezuka’s recollection, 1-1 was not made first, but fixed in the last stage of development to balance the difficulty of the whole game. That is, this “teaching model” was tuned again and again, not a single flash of inspiration.</p>
+    <p>Before looking at how they did it, <b>play level designer yourself</b>.</p>
+  </div>
+
+  <div class="board" id="c24wb">
+    <h3>🧰 Experiment A: design your opening (6 slots)</h3>
+    <p class="small">Drag elements into the slots below (or click an element first, then a slot; click a filled slot to take it back). The “danger” in the curve below is an illustrative value I assigned each element, and the “skill” assumes the player learns a bit more with each slot passed. See where it gets too steep to get past.</p>
+    <div class="wbpal" id="c24pal"></div>
+    <div class="wbslots" id="c24slots"></div>
+    <svg viewBox="0 0 600 200" width="100%" role="img" aria-label="The danger and player-skill curve of your opening" id="c24curve"></svg>
+    <ul class="wbfb" id="c24fb"></ul>
+    <button class="btn green" id="c24reveal">Compare with 1-1’s actual arrangement</button>
+    <button class="btn alt" id="c24clr">Clear and start over</button>
+    <div id="c24rev"></div>
+  </div>
+  <div class="sticky">Try it: arrange an opening with “no red warnings”; then deliberately put “Goomba + pit” in slot 1 and see how wide the gap between the skill line and the danger line splits.</div>
+
+  <p>Below are several public accounts of the design process of 1-1. They come from interviews with Miyamoto and Tezuka around 2015, some retold through the media, so take them as the designers’ own recollections, not word-for-word history:</p>
+  <div class="timeline">
+    <div class="ev hasimg"><span data-illus="c24_t_graph"></span><div><b class="yr">Graph paper</b> Tezuka said levels were first drawn on graph paper and handed to the programmers, with a playable version coming back only the next day, “a slow turnaround.” Small changes were made by laying tracing paper over the original, drawn and handed back in. Trial and error was costly, so every encounter had to be thought through beforehand.</div></div>
+    <div class="ev hasimg"><span data-illus="c24_t_koopa"></span><div><b class="yr">The first enemy</b> According to a report of a 2015 <i>Eurogamer</i> interview, Miyamoto said they first wanted a Koopa (a turtle) as the opening enemy, then felt that for a first-time player “jump on it and kick it away” was a bit too hard. A shell is not dealt with by a single stomp, so they made a “bad mushroom” instead, the Goomba.</div></div>
+    <div class="ev hasimg"><span data-illus="c24_t_mush"></span><div><b class="yr">The mushroom</b> According to a report of the same interview, Miyamoto wanted the player to feel the reaction of “Mario getting big,” and getting big needed a power-up, hence the Super Mushroom. It looks a bit like the Goomba, and newcomers often dodge it; but the low bricks overhead make it hard not to touch, and one touch makes you big, and only then do you understand “it’s a good thing.”</div></div>
+    <div class="ev hasimg"><span data-illus="c24_t_hole"></span><div><b class="yr">Learning as you play</b> Miyamoto said the purpose of the first level is to let players “learn what this game is about”; he wanted players to grasp the rules while doing the things they would naturally do, with no tutorial. He also said one line: once players understand what to do, “it becomes their game.”</div></div>
+    <div class="ev hasimg"><span data-illus="c24_t_watch"></span><div><b class="yr">Repeated playtesting</b> Tezuka (2015 <i>Sankei Shimbun</i> interview) said levels almost never succeed the first time, “people rarely play the way you intended,” so he watches from the side and then adjusts; when designers make levels themselves, because they know the answer, “they inevitably make them too hard.”</div></div>
+  </div>
+  <p class="small">Sources: <a href="https://www.gamerevolution.com/features/362525-perfect-level-super-mario-bros-world-1-1-changed-everything">Game Revolution’s quotation of Miyamoto’s <i>Eurogamer</i> interview</a>; <a href="https://www.gigazine.net/gsc_news/en/20150914-mario-world-making">GIGAZINE (2015-09-14, retelling the Eurogamer interview)</a>; <a href="https://soranews24.com/2015/09/09/super-mario-bros-creator-explains-how-and-why-he-designed-world-1-1-of-the-8-bit-classic-%E3%80%90video%E3%80%91/amp/">SoraNews24 (2015-09-09)</a>; <a href="https://shmuplations.com/?p=22080">Tezuka’s <i>Sankei Shimbun</i> interview (2015-11-30, English translation by shmuplations)</a>. Retold content may differ slightly from the original words, and only the parts on which the sources agree are taken here.</p>
+
+  <div class="card">
+    <svg viewBox="0 0 760 340" width="100%" role="img" aria-label="The evolution of 1-1’s design logic: problem, solution and new problem passed along in turn">
+      <g class="rough" stroke="#2b2b3a" stroke-width="4" stroke-linejoin="round">
+        <rect x="15" y="15" width="225" height="90" rx="14" fill="#fff7cf"/>
+        <rect x="270" y="15" width="225" height="90" rx="14" fill="#a8dcf0"/>
+        <rect x="520" y="15" width="225" height="90" rx="14" fill="#b6e8a8"/>
+        <rect x="15" y="190" width="225" height="90" rx="14" fill="#ffe9ef"/>
+        <rect x="270" y="190" width="225" height="90" rx="14" fill="#f1eaff"/>
+        <rect x="520" y="190" width="225" height="90" rx="14" fill="#fff0dc"/>
+        <g fill="none" stroke-width="4.5" stroke-linecap="round">
+          <path d="M240 60 H268"/><path d="M495 60 H518"/><path d="M632 107 Q632 150 128 188"/><path d="M240 235 H268"/><path d="M495 235 H518"/>
+        </g>
+      </g>
+      <g font-size="19" fill="#2b2b3a" text-anchor="middle">
+        <text x="127" y="52">Problem: no text</text><text x="127" y="80">How to teach the player?</text>
+        <text x="382" y="52">The first enemy should be</text><text x="382" y="80">“one stomp and done”</text>
+        <text x="632" y="52">Swap out the turtle,</text><text x="632" y="80">open with a Goomba</text>
+        <text x="127" y="227">New problem: the mushroom</text><text x="127" y="255">looks like a foe, dodged</text>
+        <text x="382" y="227">Pop it from a block</text><text x="382" y="255">overhead: undodgeable</text>
+        <text x="632" y="227">New problem: designers</text><text x="632" y="255">always make levels hard</text>
+      </g>
+      <text x="380" y="316" font-size="17" fill="#4b4b5e" text-anchor="middle">Fix: watch how players play, then adjust. The above is the designers’ recollection, retold through the media</text>
+    </svg>
+  </div>
+
+  
+  <div class="sec"><span class="n">3</span><h2><span class="tag what">What it is</span>The teaching order of 1-1: introduce, practice, vary</h2></div>
+  <p>Setting aside the designers’ recollections and looking only at what the player meets in the first half of 1-1, you find a clear rhythm: each thing <b>appears once alone</b> first, then is <b>practiced in different ways a few times</b>, and finally put into <b>a higher-risk setting</b>. This figure is a simplified summary of the first half, not a cell-by-cell reconstruction. Click each station to see what the designers “taught.”</p>
+  <div class="card">
+    <svg viewBox="0 0 760 330" width="100%" role="img" aria-label="1-1’s teaching timeline: Goomba, question block, pipe, pit, stairs and flagpole">
+      <g class="rough" stroke="#2b2b3a" stroke-width="4" stroke-linejoin="round">
+        <rect x="20" y="200" width="270" height="22" fill="#e0a06a"/>
+        <rect x="330" y="200" width="410" height="22" fill="#e0a06a"/>
+      </g>
+      <g class="stop" tabindex="0" role="button" data-i="0" aria-label="Station 1 Goomba">
+        <rect class="hl" x="30" y="40" width="120" height="46" rx="14" fill="#ffe58a" stroke="#2b2b3a" stroke-width="4"/>
+        <text x="90" y="72" font-size="20" text-anchor="middle" fill="#2b2b3a">① Goomba</text>
+        <g class="rough" stroke="#2b2b3a" stroke-width="4"><ellipse cx="90" cy="184" rx="16" ry="13" fill="#a5683d"/></g>
+      </g>
+      <g class="stop" tabindex="0" role="button" data-i="1" aria-label="Station 2 question block">
+        <rect class="hl" x="160" y="110" width="120" height="46" rx="14" fill="#a8dcf0" stroke="#2b2b3a" stroke-width="4"/>
+        <text x="220" y="142" font-size="20" text-anchor="middle" fill="#2b2b3a">② ? block</text>
+        <g class="rough" stroke="#2b2b3a" stroke-width="4"><rect x="205" y="165" width="30" height="30" fill="#ffd34d"/></g>
+      </g>
+      <g class="stop" tabindex="0" role="button" data-i="2" aria-label="Station 3 pipe">
+        <rect class="hl" x="340" y="40" width="110" height="46" rx="14" fill="#b6e8a8" stroke="#2b2b3a" stroke-width="4"/>
+        <text x="395" y="72" font-size="20" text-anchor="middle" fill="#2b2b3a">③ Pipe</text>
+        <g class="rough" stroke="#2b2b3a" stroke-width="4"><rect x="350" y="160" width="22" height="40" fill="#7ed17f"/><rect x="392" y="135" width="22" height="65" fill="#7ed17f"/></g>
+      </g>
+      <g class="stop" tabindex="0" role="button" data-i="3" aria-label="Station 4 pit">
+        <rect class="hl" x="470" y="110" width="90" height="46" rx="14" fill="#ffb3c6" stroke="#2b2b3a" stroke-width="4"/>
+        <text x="515" y="142" font-size="20" text-anchor="middle" fill="#2b2b3a">④ Pit</text>
+        <path d="M292 205 L292 262 M328 205 L328 262" stroke="#2b2b3a" stroke-width="3" stroke-dasharray="6 5" fill="none"/>
+        <text x="310" y="282" font-size="17" text-anchor="middle" fill="#4b4b5e">Pit</text>
+      </g>
+      <g class="stop" tabindex="0" role="button" data-i="4" aria-label="Station 5 stairs and flagpole">
+        <rect class="hl" x="590" y="40" width="150" height="46" rx="14" fill="#d8c8ff" stroke="#2b2b3a" stroke-width="4"/>
+        <text x="665" y="72" font-size="20" text-anchor="middle" fill="#2b2b3a">⑤ Stairs + flag</text>
+        <g class="rough" stroke="#2b2b3a" stroke-width="4"><rect x="590" y="180" width="20" height="20" fill="#d9c9a0"/><rect x="610" y="160" width="20" height="40" fill="#d9c9a0"/><rect x="630" y="140" width="20" height="60" fill="#d9c9a0"/><path d="M706 200 L706 110" fill="none"/><path d="M706 110 L730 120 L706 130z" fill="#ffb3c6"/></g>
+      </g>
+      <g font-size="17" fill="#4b4b5e" text-anchor="middle">
+        <text x="90" y="250">Introduce</text><text x="220" y="250">Introduce</text><text x="395" y="250">Practice</text><text x="515" y="250">Vary</text><text x="665" y="250">Vary / wrap up</text>
+      </g>
+      <text x="380" y="316" font-size="17" fill="#4b4b5e" text-anchor="middle">Left to right in time: first screen → goal flag. Click a station for the explanation</text>
+    </svg>
+    <div class="board" id="tlpanel" style="min-height:110px"><b>👆 Click any station above.</b></div>
+  </div>
+
+  <p>Now take it all apart again with the conceptual tools from earlier. Click the tags on the left, all six.</p>
+  <div class="dx">
+    <div class="chips" id="chips"></div>
+    <div class="card y panel" id="panel"><h3>👈 Click a tag first</h3><p>Each tag matches a concept you have already learned.</p></div>
+  </div>
+  <div class="small" id="dxcount">Seen 0 / 6</div>
+
+  
+  <div class="sec"><span class="n">4</span><h2><span class="tag what">What it is</span>The second way: give controls some forgiveness, so the hands have weight</h2></div>
+  <div class="withimg rev">
+    <span data-illus="c24_weight"></span>
+    <div>
+      <p>Teaching alone isn’t enough; the controls themselves must also be trustworthy. When you press the jump key, the character should jump when you want, as high as you want. If it is off by a little, the player doesn’t feel “I need more practice,” only “it doesn’t listen to me.”</p>
+      <p>According to GIGAZINE’s retelling of Miyamoto, he felt the earlier <i>Donkey Kong</i> had “low freedom,” so he let Mario move in the air after jumping; the “slide” while running was to give Mario a sense of weight. Jumping with a running start goes farther, and holding the jump key goes higher (<span class="term" tabindex="0" data-def="Variable jump height: the longer you hold the jump key, the higher you jump, and releasing early makes the jump lower, so the player can fine-tune where they land.">variable jump height</span>), and these later became standard in platformers.</p>
+      <p>Many such games add a more hidden layer of forgiveness: for a short time just after walking off a platform edge you can still jump, called <span class="term" tabindex="0" data-def="Coyote time: a short window after the character leaves a platform edge in which a jump is still allowed; the name comes from the coyote in cartoons who falls only after running off the cliff.">coyote time</span>; pressing jump an instant before landing and jumping as soon as you land is called <span class="term" tabindex="0" data-def="Input buffering: storing an action the player pressed slightly early and carrying it out when the conditions are met.">input buffering</span>. Which of these the original <i>Mario</i> used exactly, the community accounts differ, so no conclusion is drawn here; the mini level on the page makes them switches so you can feel them yourself.</p>
+    </div>
+  </div>
+  <div class="eg" data-ic="🦊"><span data-illus="c24_e_coyote"></span><div class="egt"><b>Coyote time</b>: for a short time after stepping off the edge you can still jump. You won’t notice it exists, and only feel “I definitely pressed it right, and it did jump” (the mini level below lets you switch it on and off).</div></div>
+  <div class="eg" data-ic="⏱️"><span data-illus="c24_e_buffer"></span><div class="egt"><b>Input buffering</b>: pressing jump an instant before landing, then jumping right on landing. The hand is a little faster than the eye, and the game remembers the intention for you.</div></div>
+  <div class="eg" data-ic="📱"><span data-illus="c24_e_phone"></span><div class="egt"><b>A phone keyboard’s error tolerance</b>: if your finger lands a little off, you still type the letter you wanted. The same idea in life: don’t punish “almost.”</div></div>
+  <div class="eg bad" data-ic="🎯"><span data-illus="c24_e_frame"></span><div class="egt"><b>Frame-perfect, zero tolerance</b>: one frame off counts as failure, and the player feels “it isn’t my fault” rather than “I should practice.” <b>The point of this counterexample: forgiveness isn’t lowering difficulty, it is making the controls match the intention.</b></div></div>
+
+  
+  <div class="sec"><span class="n">5</span><h2><span class="tag what">What it is</span>The third way: make failure cheap</h2></div>
+  <p>The third way is the least conspicuous and the most crucial. In 1-1 you will certainly fail several times: bumped by a Goomba, dropped into a pit. But a few seconds later you are standing near the start again, with your hand already on the jump key.</p>
+  <p>The cheaper failure is, the more the player dares to try jumps they are unsure of, and those “unsure tries” are exactly the main way they learn the game.</p>
+  <div class="eg" data-ic="🔁"><span data-illus="c24_e_respawn"></span><div class="egt"><b>Mario</b>: fall in a pit or get hit, and you restart within seconds, with no need to rewatch an opening or walk a long road.</div></div>
+  <div class="eg" data-ic="🏊"><span data-illus="c24_e_pool"></span><div class="egt"><b>Learning to swim</b>: splash about in the shallow end first, and you don’t go into deep water right away. The shallow end is a protected place for trial and error.</div></div>
+  <div class="eg" data-ic="📝"><span data-illus="c24_e_draft"></span><div class="egt"><b>Writing a draft</b>: you can scribble freely on scratch paper, with no pressure that “one mistake voids the whole book.” So you dare to write sentences you haven’t thought through.</div></div>
+  <div class="eg bad" data-ic="🥾"><span data-illus="c24_e_longrun"></span><div class="egt"><b>Half an hour to redo after failing</b>: each death means a long walk before you can try again, and the player chooses “not to take risks.” <b>The point of this counterexample: not failure itself, but the price of failure decides whether people dare to learn.</b></div></div>
+
+  <!-- 6 ZPD -->
+  <div class="sec"><span class="n">6</span><h2><span class="tag why">Why it works</span>Why does climbing one step at a time teach</h2></div>
+  <div class="withimg">
+    <span data-illus="c24_ramp"></span>
+    <div>
+      <p>Look back at the pipes: first short, then medium, then tall. Why not put the tallest first? Because the player’s question is never “can I jump?” but “can I clear it?” A short pipe he clears at once, and confidence is built; a medium pipe he must hold longer, and he learns something new; the tall pipe needs everything accumulated before. Each step asks a little more than what was just learned, and not so much more that it can’t be jumped.</p>
+      <p>Educational psychologists call this “a little more” range the <span class="term" tabindex="0" data-def="Zone of proximal development (ZPD): the range of what a learner cannot yet do alone but can do with help from a person or from design. (Vygotsky)">zone of proximal development</span>: what a learner can’t yet do alone but can reach with a helping hand. Too close, and there is nothing to learn; too far, and only frustration is left.</p>
+      <p>The “helping hand” in 1-1 is not a teacher but the level itself: the lonely first enemy, the flat runway, the pipes growing taller one notch at a time. They are like <span class="term" tabindex="0" data-def="Scaffolding: giving support while the learner temporarily can’t do something, then withdrawing it step by step as ability grows. (Wood, Bruner, Ross, 1976)">scaffolding</span> built beside a wall, taken away bit by bit as you get stronger.</p>
+    </div>
+  </div>
+  <div class="why-box">
+    <h3>Who said it: Vygotsky and scaffolding</h3>
+    <p>The zone of proximal development was proposed by the Soviet psychologist Lev Vygotsky, whose ideas were written mainly in the 1930s and later collected in <i>Mind in Society</i> (1978). The “scaffolding” metaphor comes from another body of work: in 1976 David Wood, Jerome Bruner and Gail Ross observed how tutors guided children through a building task, helping with the parts the child temporarily couldn’t do and gradually withdrawing as the child improved.</p>
+    <p>Note that moving this educational psychology onto game levels is an analogy, not strict experimental evidence. The zone of proximal development is itself a rather broad concept, often loosely cited in education, and how to measure it exactly is still debated.</p>
+    <div class="src">Sources: L. S. Vygotsky, <i>Mind in Society</i> (1978); David Wood, Jerome S. Bruner &amp; Gail Ross, “The role of tutoring in problem solving,” <i>Journal of Child Psychology and Psychiatry</i> 17(2): 89–100 (1976).</div>
+  </div>
+
+  <!-- 7 Gee -->
+  <div class="sec"><span class="n">7</span><h2><span class="tag why">Why it works</span>Why cheap failure makes people dare to learn</h2></div>
+  <div class="withimg rev">
+    <span data-illus="c24_safe"></span>
+    <div>
+      <p>In reality, learning often costs you for failing: a bad exam leaves a transcript, a slip leaves consequences. So people are naturally conservative in reality and pick the safe road. Games can rewrite this account: fall in a pit and it costs a few seconds at most.</p>
+      <p>The education scholar James Paul Gee, in <i>What Video Games Have to Teach Us About Learning and Literacy</i> (2003), listed this as one of the learning principles of good games, using the psychologist Erikson’s term “psychosocial moratorium”: learners can take risks in a space where the consequences are turned down. His point is that bold attempts are themselves learning.</p>
+      <p>The small experiment below lets you turn two knobs yourself: whether the level’s difficulty is a staircase or a “cliff” from the start, and how long it takes to try again after failing.</p>
+    </div>
+  </div>
+  <div class="board">
+    <h3>🧪 Experiment B: stairs versus cliff, and the price of failure</h3>
+    <p class="small"><b>This is this page’s illustrative model, with parameters set by this page, not measured.</b> 2000 simulated players face 6 obstacles in turn: the success rate depends on the obstacle’s difficulty and the player’s current skill; success teaches a lot and failure teaches a little; after each failure the player may quit because “retrying is too much trouble,” and the chance of quitting rises with the retry time.</p>
+    <label class="ctl">Difficulty arrangement
+      <select id="c24mode"><option value="ramp">Stairs: each obstacle a bit harder than the last</option><option value="cliff">Cliff: high difficulty from the start</option></select>
+    </label>
+    <label class="ctl">After each failure, retrying takes <output id="c24costO">3</output> seconds<input type="range" id="c24cost" min="1" max="60" value="3"></label>
+    <button class="btn green" id="c24run">Run 2000 simulated players</button>
+    <div class="c24sim" id="c24res" aria-live="polite"></div>
+  </div>
+  <div class="sticky">Try it: first pick “Stairs,” drag the retry time to 3 seconds and to 60 seconds and run each once; then pick “Cliff” and repeat. See which knob has the bigger effect on “how many finish.” <span id="c24simtask" class="small"></span></div>
+
+  <div class="why-box">
+    <h3>Gee’s argument and its limits</h3>
+    <p>Gee’s argument comes from his observation and theoretical thinking about game learning environments, not from controlled experiments. “Lowering the cost of failure helps learning” also has its range of application: it speaks of teaching and the beginner stage; for games that pursue high-risk thrills, high stakes are exactly the source of the fun, and other trade-offs apply. In 1-1 retrying is fast, which fits this principle of his.</p>
+    <div class="src">Source: James Paul Gee, <i>What Video Games Have to Teach Us About Learning and Literacy</i> (2003), on “psychosocial moratorium” (the concept comes from Erik Erikson).</div>
+  </div>
+
+  <h3>Interactive: connect a principle to a phenomenon</h3>
+  <p>Hold one of the principle cards on the left and <b>drag a line</b> to the matching phenomenon on the right (or click the principle card first, then the phenomenon). A right link turns green and gives an explanation, a wrong one flashes red with a hint; a principle card can be reused.</p>
+  <div class="card b" id="c24pair"></div>
+  <div class="small" id="c24paircnt"></div>
+
+  
+  <div class="sec"><span class="n">8</span><h2><span class="tag how">How to use it</span>Play the mini 1-1, then tune the “feel”</h2></div>
+  <p>Below is a mini level written in the spirit of 1-1 (simplified, not the original). Click the screen to get keyboard focus: ←/→ or A/D to move, Space/↑/W to jump, hold Shift or X to run faster. On a phone, use the buttons below. Goal: touch the flagpole.</p>
+  <div class="board">
+    <canvas id="gc" width="512" height="288" tabindex="0" aria-label="The mini Mario level"></canvas>
+    <div class="pad" id="pad">
+      <button class="btn alt" data-k="left">◀</button>
+      <button class="btn alt" data-k="right">▶</button>
+      <button class="btn pink" data-k="run">Run</button>
+      <button class="btn green" data-k="jump">Jump</button>
+    </div>
+    <div style="margin-top:8px;text-align:center">
+      <span class="stat">🪙 <b id="coins">0</b></span>
+      <span class="stat">Score <b id="score">0</b></span>
+      <span class="stat">Tries <b id="tries">1</b></span>
+      <span class="stat">Time <b id="time">0</b>s</span>
+      <span class="stat">Forgiveness saves <b id="sv">0</b> times</span>
+      <button class="btn" id="restart">Restart</button>
+    </div>
+    <div class="msg" id="gmsg" style="text-align:center">Click the screen to start.</div>
+  </div>
+
+  <h3>The feel lab</h3>
+  <p>A “good jump” is not one number but a set of parameters working together. Drag the sliders and go back to play, and feel the difference.</p>
+  <div class="card b">
+    <div class="knobs">
+      <label class="ctl">Jump strength <output id="o1"></output><input type="range" id="k1" min="8" max="14" step="0.5" value="11"></label>
+      <label class="ctl">Gravity <output id="o2"></output><input type="range" id="k2" min="0.3" max="0.9" step="0.05" value="0.5"></label>
+      <label class="ctl">Acceleration <output id="o3"></output><input type="range" id="k3" min="0.1" max="0.9" step="0.05" value="0.3"></label>
+    </div>
+    <label class="ctl"><input type="checkbox" id="c1" checked> Variable jump height (release earlier = jump lower)</label>
+    <label class="ctl"><input type="checkbox" id="c2" checked> Forgiving feel (still able to jump shortly after leaving a platform + a jump pressed slightly early still counts)</label>
+    <div><span class="stat">Hold to jump: about <b id="hh">3.8</b> blocks high</span> <span class="stat">Tap to jump: about <b id="hl">1.5</b> blocks high</span></div>
+    <button class="btn" id="kreset">Restore defaults</button>
+    <p class="small">Jump height is roughly estimated as “strength² ÷ (2 × gravity),” in units of one brick; with variable jump height off, a tap and a hold are equally high.</p>
+  </div>
+  <div class="sticky">Try it: ① with “Forgiving feel” on, deliberately jump a little late at a platform edge until the “Forgiveness saves” counter shows a number; ② turn off “Variable jump height” and go stomp the first Goomba: is it harder to fine-tune where you land?  <span id="c24task" class="small"></span></div>
+
+  <div class="grid2">
+    <div class="card y"><h3>① Safety first, then danger</h3><p>In a space without pressure, let the player learn the first move through their own trial and error. The lower the cost of failure, the bolder the learning.</p></div>
+    <div class="card b"><h3>② Let the environment teach</h3><p>Teach with layout, position and enemy behavior, not pop-ups. What players find themselves is remembered more firmly.</p></div>
+    <div class="card g"><h3>③ One idea, three ways of saying it</h3><p>Introduce → practice → vary. The same “jump” appears first alone, then again and again with different heights and different risks.</p></div>
+    <div class="card p"><h3>④ Feel is an ensemble of parameters</h3><p>Acceleration, inertia, variable jump height, forgiveness time… each is subtle, and stacked together they are “jumping smoothly.”</p></div>
+  </div>
+
+  <div class="misc">
+    <h3>Common misconceptions</h3>
+    <ul>
+      <li><b>“1-1 is the one right answer to teaching”</b>: it is just one effective approach; text tutorials and coach-style hints work equally well in other games.</li>
+      <li><b>“Teaching without text means giving no hints at all”</b>: 1-1’s hints are hidden in the layout, and the design work is not small; and, according to the designers, it was tuned through repeated playtesting.</li>
+      <li><b>“Forgiving feel means lowering difficulty”</b>: it makes the controls more “responsive,” and the difficulty is still in the level.</li>
+      <li><b>“Applying the principles equals understanding the design”</b>: the zone of proximal development and psychosocial moratorium are explanations after the fact, and we are not sure the designers thought that way at the time. The real test is to see how players play.</li>
+    </ul>
+  </div>
+
+  <div class="reflect">
+    <h3>Think about it: <span class="term" tabindex="0" data-def="Seeing only the successful cases and mistaking their practices for the cause of success; cases with the same practices that failed and were forgotten are ignored.">survivorship bias</span></h3>
+    <p>1-1 is cited countless times because <i>Super Mario Bros.</i> was a huge success. We rarely see the games that used similar “teaching without text” and remained unknown. So “it taught this way and so it succeeded” may be only survivorship bias: success also has hardware timing, brand, overall quality and many other factors.</p>
+    <p>Write a sentence: <b>in your own game, which design that “copies 1-1” might not suit it? Why?</b></p>
+    <textarea rows="3" data-save="ch24reflect" placeholder="E.g. my game is story-driven, and players need to be told the goal…"></textarea>
+  </div>
+
+  <div class="key">
+    <h3>Key points</h3>
+    <ul>
+      <li>1-1 teaches through designed situations, not text: introduce safely, practice repeatedly, then add variation.</li>
+      <li>The key decision: the first enemy should be “one stomp and done” (according to Miyamoto’s recollection, the turtle was given up for this) and should appear alone; the mushroom comes out of an overhead block so newcomers can’t dodge it.</li>
+      <li>Difficulty should climb along the player’s zone of proximal development; the level itself is the scaffolding.</li>
+      <li>Feel is a set of parameters: inertia, gravity, variable jump height, forgiveness time; the point of forgiveness is to make the controls match the intention.</li>
+      <li>Cheap failure makes players dare to try; and difficulty has to be tuned by watching players play, because the designer knows the answer.</li>
+    </ul>
+  </div>
+  <div class="tldr">1-1 builds scaffolding with the level itself, gives the controls forgiveness and makes failure cheap, so it teaches without a word, but it is only a much-discussed surviving case.</div>
+
+  <div class="sec"><span class="n">9</span><h2><span class="tag think">Practice</span>Practice</h2></div>
+  <div id="quiz"></div>
+
+  <div class="sec"><span class="n">10</span><h2><span class="tag think">Reflection</span>Your breakdown</h2></div>
+  <div class="card o">
+    <p>Pick a game you like and recall its <b>first level (or starting village)</b>. What did it teach you without any text? Following “introduce → practice → vary,” write its first three encounters; then think: <b>if its first enemy were swapped for a harder one, what would happen?</b></p>
+    <textarea rows="6" data-save="ch24" placeholder="E.g. Hollow Knight: the narrow passage at the start → teaches me to attack → the same enemy moved up high, needing a jump to hit…"></textarea>
+  </div>
+</main>
+<script src="../js/illus.js"></script>
+<script src="../js/illus-ch24.js"></script>
+<script src="../js/en/illus.js"></script>
+<script src="../js/en/illus-lib.js"></script>
+<script src="../js/en/illus-ch24.js"></script>
+<script src="../js/common.js"></script>
+<script>
+const $ = id => document.getElementById(id);
+function mountLinkPair(root, cnt, P, items) {
+  root.classList.add("lp");
+  root.innerHTML = '<svg class="lpsvg" aria-hidden="true"></svg><div class="lpcols"><div class="lpl"></div><div class="lpr"></div></div>';
+  const svg = root.querySelector("svg"), L = root.querySelector(".lpl"), R = root.querySelector(".lpr");
+  const lb = [], rb = [], fb = [], got = [], pairs = [];
+  let sel = -1, done = 0, miss = 0, drag = null, flash = null;
+  P.forEach((p, i) => { const b = document.createElement("button"); b.type = "button"; b.className = "lpp"; b.textContent = p; b.dataset.p = i; L.appendChild(b); lb.push(b); });
+  items.forEach((it, i) => {
+    const w = document.createElement("div");
+    const b = document.createElement("button"); b.type = "button"; b.className = "lpi"; b.textContent = it.t; b.dataset.i = i;
+    const f = document.createElement("div"); f.className = "lpfb"; f.setAttribute("aria-live", "polite");
+    w.append(b, f); R.appendChild(w); rb.push(b); fb.push(f);
+  });
+  function pt(el, side) { const r = el.getBoundingClientRect(), q = root.getBoundingClientRect(); return [(side === "r" ? r.right : r.left) - q.left, r.top + r.height / 2 - q.top]; }
+  function path(a, b, col, dash) { const mx = (a[0] + b[0]) / 2; return '<path d="M' + a[0] + ' ' + a[1] + ' C' + mx + ' ' + a[1] + ' ' + mx + ' ' + b[1] + ' ' + b[0] + ' ' + b[1] + '" fill="none" stroke="' + col + '" stroke-width="4" stroke-linecap="round"' + (dash ? ' stroke-dasharray="7 6"' : "") + "/>"; }
+  function draw() {
+    let s = "";
+    pairs.forEach(p => { s += path(pt(lb[p.p], "r"), pt(rb[p.i], "l"), "#2f9e44"); });
+    if (flash) s += path(pt(lb[flash.p], "r"), pt(rb[flash.i], "l"), "#e5484d", true);
+    if (drag && drag.on) { const q = root.getBoundingClientRect(); s += path(pt(lb[drag.p], "r"), [drag.x - q.left, drag.y - q.top], "#ff8fab", true); }
+    svg.innerHTML = s;
+  }
+  function upd() { cnt.textContent = "Linked " + done + " / " + items.length + " Mistakes " + miss + (done === items.length ? " ✔ All correct!" : ""); }
+  function setSel(p) { sel = p; lb.forEach((b, i) => b.classList.toggle("sel", i === p)); }
+  function assign(i, p) {
+    if (got[i]) return;
+    const it = items[i];
+    if (it.a === p) {
+      got[i] = true; done++; pairs.push({ p, i }); rb[i].classList.remove("bad"); rb[i].classList.add("ok");
+      fb[i].innerHTML = "✅ <b>" + P[p] + "</b>:" + it.why;
+    } else {
+      miss++; rb[i].classList.remove("bad"); void rb[i].offsetWidth; rb[i].classList.add("bad");
+      fb[i].textContent = "❌ “" + P[p] + "” doesn’t quite fit. Hint:" + it.hint;
+      flash = { p, i }; setTimeout(() => { flash = null; draw(); }, 900);
+    }
+    upd(); draw();
+  }
+  lb.forEach((b, p) => {
+    b.addEventListener("pointerdown", e => {
+      drag = { p, on: false, x: e.clientX, y: e.clientY, sx: e.clientX, sy: e.clientY };
+      try { b.setPointerCapture(e.pointerId); } catch (_) {}
+    });
+    b.addEventListener("pointermove", e => {
+      if (!drag) return;
+      drag.x = e.clientX; drag.y = e.clientY;
+      if (!drag.on && Math.hypot(e.clientX - drag.sx, e.clientY - drag.sy) > 6) { drag.on = true; setSel(p); }
+      if (drag.on) { rb.forEach(x => x.classList.remove("over")); const t = document.elementFromPoint(e.clientX, e.clientY); const it = t && t.closest && t.closest(".lpi"); if (it) it.classList.add("over"); draw(); }
+    });
+    const end = e => {
+      if (!drag) return;
+      const d = drag; drag = null; rb.forEach(x => x.classList.remove("over"));
+      if (d.on) {
+        const t = document.elementFromPoint(e.clientX, e.clientY), it = t && t.closest && t.closest(".lpi");
+        if (it && e.type === "pointerup") { assign(+it.dataset.i, p); }
+        setSel(-1); draw();
+      } else if (e.type === "pointerup") { setSel(sel === p ? -1 : p); draw(); }
+    };
+    b.addEventListener("pointerup", end); b.addEventListener("pointercancel", end);
+    b.addEventListener("click", e => { if (e.detail === 0) setSel(sel === p ? -1 : p); });
+  });
+  rb.forEach((b, i) => {
+    b.addEventListener("click", () => {
+      if (got[i]) return;
+      if (sel < 0) { fb[i].textContent = "👆 Hold a principle card on the left and drag it here (or click the principle card, then click here)."; return; }
+      const p = sel; assign(i, p); if (!got[i]) {  } else setSel(-1);
+    });
+  });
+  window.addEventListener("resize", draw); window.addEventListener("scroll", draw, { passive: true });
+  upd(); draw();
+}
+
+(function () {
+  const EL = [
+    { id: "gb", n: "Goomba", em: "🍄", d: 2, t: "Stomp or dodge" },
+    { id: "qb", n: "Question block", em: "❓", d: 0, t: "Bump a block for a reward" },
+    { id: "sp", n: "Low pipe", em: "🟩", d: 1, t: "Short jump" },
+    { id: "tp", n: "Tall pipe", em: "🟢", d: 2, t: "Hold to jump high" },
+    { id: "pit", n: "Pit", em: "🕳️", d: 3, t: "Long jump; falling means failure" },
+    { id: "st", n: "Stairs", em: "🪜", d: 2, t: "Repeated jumps" },
+    { id: "cb", n: "Goomba + pit", em: "💥", d: 5, t: "Combined challenge" },
+  ];
+  const BY = Object.fromEntries(EL.map(e => [e.id, e]));
+  const ACTUAL = ["gb", "qb", "sp", "tp", "pit", "st"]; 
+  const slots = Array(6).fill(null);
+  let sel = null;
+  const pal = $("c24pal"), box = $("c24slots");
+  EL.forEach(e => {
+    const b = document.createElement("button"); b.type = "button"; b.className = "el"; b.dataset.id = e.id; b.textContent = e.em + " " + e.n;
+    b.title = "Danger " + e.d + " (illustrative)";
+    let st = null, ghost = null;
+    b.addEventListener("pointerdown", ev => { st = { x: ev.clientX, y: ev.clientY, on: false }; try { b.setPointerCapture(ev.pointerId); } catch (_) {} });
+    b.addEventListener("pointermove", ev => {
+      if (!st) return;
+      if (!st.on && Math.hypot(ev.clientX - st.x, ev.clientY - st.y) > 6) { st.on = true; ghost = document.createElement("div"); ghost.className = "wbghost"; ghost.textContent = b.textContent; document.body.appendChild(ghost); }
+      if (st.on) { ghost.style.left = ev.clientX + 8 + "px"; ghost.style.top = ev.clientY + 8 + "px"; box.querySelectorAll(".sl").forEach(x => x.classList.remove("over")); const t = document.elementFromPoint(ev.clientX, ev.clientY), s = t && t.closest && t.closest(".sl"); if (s) s.classList.add("over"); }
+    });
+    const end = ev => {
+      if (!st) return; const s0 = st; st = null;
+      if (ghost) { ghost.remove(); ghost = null; }
+      box.querySelectorAll(".sl").forEach(x => x.classList.remove("over"));
+      if (s0.on) { if (ev.type === "pointerup") { const t = document.elementFromPoint(ev.clientX, ev.clientY), s = t && t.closest && t.closest(".sl"); if (s) { slots[+s.dataset.i] = e.id; sel = null; render(); } } }
+      else if (ev.type === "pointerup") { sel = sel === e.id ? null : e.id; render(); }
+    };
+    b.addEventListener("pointerup", end); b.addEventListener("pointercancel", end);
+    b.addEventListener("click", ev => { if (ev.detail === 0) { sel = sel === e.id ? null : e.id; render(); } });
+    pal.appendChild(b);
+  });
+  for (let i = 0; i < 6; i++) {
+    const s = document.createElement("div"); s.className = "sl"; s.dataset.i = i; s.tabIndex = 0; s.setAttribute("role", "button");
+    const act = () => { if (slots[i]) slots[i] = null; else if (sel) { slots[i] = sel; sel = null; } render(); };
+    s.addEventListener("click", act);
+    s.addEventListener("keydown", ev => { if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); act(); } });
+    box.appendChild(s);
+  }
+  function render() {
+    pal.querySelectorAll(".el").forEach(b => b.classList.toggle("sel", b.dataset.id === sel));
+    const ok = []; let skill = 1; const pts = [], notes = []; let passed = 0, flagged = [];
+    slots.forEach((id, i) => {
+      const el = box.children[i]; el.className = "sl";
+      if (!id) { el.innerHTML = "<small>" + (i + 1) + "</small><span class=\"small\">empty</span>"; pts.push(null); return; }
+      const e = BY[id]; const warn = e.d > skill + 1.0;
+      el.classList.add("full"); if (warn) { el.classList.add("warn"); flagged.push(i); }
+      el.innerHTML = "<small>" + (i + 1) + "</small><span class=\"em\">" + e.em + "</span>" + e.n;
+      pts.push({ i, d: e.d, s: skill }); passed++; skill += 0.9;
+    });
+    
+    let sv = '<g class="rough" fill="none" stroke="#2b2b3a" stroke-width="4" stroke-linecap="round"><path d="M50 34 V160 H580"/></g>';
+    sv += '<g font-size="17" fill="#2b2b3a"><text x="58" y="26">Danger / skill</text><text x="470" y="190">Slot 1 → 6</text></g>';
+    const X = i => 90 + i * 85, Y = v => 160 - v * 25;
+    let ds = "", ss = "";
+    pts.forEach(p => { if (!p) return; ds += (ds ? " " : "") + X(p.i) + "," + Y(p.d); ss += (ss ? " " : "") + X(p.i) + "," + Y(p.s); });
+    if (ss) sv += '<polyline points="' + ss + '" fill="none" stroke="#4a7de0" stroke-width="5" stroke-dasharray="9 6"/>';
+    if (ds) sv += '<polyline points="' + ds + '" fill="none" stroke="#e5484d" stroke-width="5"/>';
+    pts.forEach(p => { if (p) sv += '<circle cx="' + X(p.i) + '" cy="' + Y(p.d) + '" r="9" fill="' + (flagged.includes(p.i) ? "#e5484d" : "#ffe58a") + '" stroke="#2b2b3a" stroke-width="3"/>'; });
+    sv += '<g font-size="16" fill="#e5484d"><text x="320" y="26">━ Danger</text></g><g font-size="16" fill="#4a7de0"><text x="440" y="26">┅ Player skill</text></g>';
+    $("c24curve").innerHTML = sv;
+    
+    const f = [];
+    slots.forEach((id, i) => {
+      if (!id) return; const e = BY[id];
+      if (flagged.includes(i)) f.push("❗ Slot " + (i + 1) + "  “" + e.n + "”" + (i === 0 ? ": you meet it right at the start, when the player hasn’t learned anything yet." : ": the danger is above the player’s skill at this point, and it is easy to get stuck (try putting it later, or put a few practice ones first)."));
+    });
+    const filled = slots.filter(Boolean);
+    if (filled.length === 6) {
+      if (!filled.some(id => BY[id].d === 0)) f.push("💨 There is no “zero-risk” slot of breathing room anywhere, and the player will stay tense throughout.");
+      const cnt = {}; filled.forEach(id => cnt[id] = (cnt[id] || 0) + 1);
+      Object.keys(cnt).forEach(id => { if (cnt[id] >= 3) f.push("🔁 “" + BY[id].n + "” appears " + cnt[id] + "  times, which is monotonous: can it be varied?"); });
+      if (!f.length) f.push("✅ This arrangement has no obvious steep slope: the danger in each slot is within what the player’s skill can “reach” (by my illustrative model).");
+    } else f.push("There are still " + (6 - filled.length) + "  empty slots, keep placing.");
+    $("c24fb").innerHTML = f.map(x => "<li>" + x + "</li>").join("");
+  }
+  $("c24clr").onclick = () => { slots.fill(null); sel = null; $("c24rev").innerHTML = ""; render(); };
+  $("c24reveal").onclick = () => {
+    const same = slots.filter((id, i) => id === ACTUAL[i]).length;
+    $("c24rev").innerHTML = '<div class="card y"><p><b>The actual arrangement of the first half of 1-1 (simplified summary):</b>' + ACTUAL.map(id => BY[id].em + BY[id].n).join(" → ") + ".</p>" +
+      "<p>Your arrangement matches it in the same slot in <b>" + same + " / 6</b> slots. Note a few key points: <b>① the opening is a single Goomba</b> (according to the designers’ recollection, so the first enemy could be solved with one stomp, no turtle was used); <b>② the question block follows right after</b>, letting you discover without pressure that “bumping a block gives a reward”; <b>③ the pipes go from low to high</b>, to practice “jumping” thoroughly; <b>④ pits and stairs come later</b>, to face higher risk with the skill already learned.</p>" +
+      '<p class="small">This order is a simplified summary of 1-1, not a cell-by-cell reconstruction; the “danger / skill” above is this page’s illustrative model, not the designers’ algorithm of the time. Your version being different doesn’t mean it’s wrong: it reminds you that <b>a good opening keeps the danger always a little higher than the skill, not far higher.</b></p></div>';
+  };
+  render();
+})();
+
+const DX = [
+  ["Four pillars", "Goal · rules · feedback · voluntary", "<b>Goal</b>: reach the flagpole.<br><b>Rules</b>: stomping an enemy destroys it, touching it means failure; falling into a pit means failure; bumping a question block drops a coin.<br><b>Feedback</b>: the coin sound, the instant of the squash, the visuals and music.<br><b>Voluntary</b>: each attempt costs very little, and you can restart at any time."],
+  ["Core loop", "Run → jump → clear", "Seconds: run up, take off, land. Minutes: a string of obstacles met in a level. Longer: level after level, difficulty and elements gradually increasing. Every obstacle is a small “action → immediate feedback” loop."],
+  ["Player motivation", "Autonomy · competence", "<b>Competence</b>: from “killed by a Goomba” to “stomping it steadily,” the progress is visible to the eye.<br><b>Autonomy</b>: on the same stretch of road you can dash at full speed, collect coins, or explore the bricks. The designers gave one main road and left a few side paths."],
+  ["Flow and difficulty", "The difficulty staircase", "The beginning is almost risk-free, then pipe heights, pits and more enemies are introduced gradually. The challenge advances along a slowly rising line, the player’s skill grows along the way, and it is easy to stay in the flow channel."],
+  ["Feedback and feel", "Inertia and jump height", "Mario has the inertia of acceleration and deceleration, and the longer you hold the jump key the higher you jump (variable jump height), and with subtle forgiving design added, “jump as high as you want” becomes bodily intuition. The feel lab is its miniature."],
+  ["Levels and teaching", "Introduce · practice · vary", "The first enemy appears alone with no other distraction; the question block teaches the player “you can bump it”; then the same action is repeated on pipes and pits, with higher difficulty. <b>Alone first, then combined</b> is what this level most wants you to take away."],
+];
+const seen = new Set();
+DX.forEach((d, i) => {
+  const b = document.createElement("button");
+  b.className = "chip"; b.textContent = d[0];
+  b.onclick = () => {
+    document.querySelectorAll("#chips .chip").forEach(x => x.classList.remove("on"));
+    b.classList.add("on");
+    $("panel").innerHTML = "<h3>" + d[0] + " · " + d[1] + "</h3><p>" + d[2] + "</p>";
+    seen.add(i); $("dxcount").textContent = "Seen " + seen.size + " / " + DX.length + (seen.size === DX.length ? " ✔ All taken apart!" : "");
+  };
+  $("chips").appendChild(b);
+});
+
+const TL = [
+  ["① The lone Goomba (introduce)", "The first screen often has only one enemy walking toward you, with no other threat beside it. You either jump or get hit: either way, you understand at once that “this thing hurts.” The cost of failure is small (restart), so it is a <b>safe introduction</b>."],
+  ["② The question block (introduce)", "The question block appears overhead in a conspicuous color and position, encouraging you to jump and bump it. It is often analyzed as: the designers wanted the player to discover without pressure the rule “bump a block for a reward,” hooking “jumping” to “reward.”"],
+  ["③ Pipes (practice)", "The pipes grow taller gradually, requiring jumps of different lengths to clear. This is <b>practice</b> of “jumping”: the same action, with the difficulty scale rising notch by notch, and you learn “hold longer to jump higher” at the same time."],
+  ["④ The pit (vary)", "The pit is a “variation”: before, you couldn’t fall; now you fail. It is the same jump, but the consequence is raised, exactly putting the skill already learned into a higher-risk setting. By then you usually already have enough practice."],
+  ["⑤ Stairs and flagpole (vary / wrap up)", "The stairs require continuous jumps, a small synthesis of skill; the flagpole makes “arrival” clearly visible. Grabbing the pole higher usually scores more, a small “reward for mastery.” The whole stretch is like an easy graduation exam."],
+];
+function showTL(i) { $("tlpanel").innerHTML = "<h3 style='margin:0'>" + TL[i][0] + "</h3><p>" + TL[i][1] + "</p>"; }
+document.querySelectorAll(".stop").forEach(g => {
+  const i = +g.dataset.i;
+  g.addEventListener("click", () => showTL(i));
+  g.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); showTL(i); } });
+});
+
+(function () {
+  $("c24cost").oninput = () => { $("c24costO").textContent = $("c24cost").value; };
+  const sigma = (x, lo, hi) => Math.max(lo, Math.min(hi, x));
+  function learner(mode, cost) {
+    let k = 0, tries = 0, secs = 0;
+    const quitP = Math.min(0.6, 0.03 + cost * 0.01);
+    for (let i = 0; i < 6; i++) {
+      const d = mode === "ramp" ? 0.2 + 0.55 * i : 1.8;
+      let n = 0;
+      for (;;) {
+        n++; tries++; secs += 8;
+        const p = sigma(0.9 - 0.45 * (d - k), 0.03, 0.9);
+        if (Math.random() < p) { k += d >= k - 0.5 ? 0.5 : 0.05; break; }
+        k += 0.08; secs += cost;
+        if (Math.random() < quitP || n >= 30) return { done: false, tries, secs };
+      }
+    }
+    return { done: true, tries, secs };
+  }
+  $("c24run").onclick = () => {
+    const mode = $("c24mode").value, cost = +$("c24cost").value, N = 2000;
+    let ok = 0, tries = 0, secs = 0;
+    for (let i = 0; i < N; i++) { const r = learner(mode, cost); if (r.done) { ok++; secs += r.secs; } tries += r.tries; }
+    $("c24res").innerHTML = '<div class="stat">Players who finished <b>' + (ok / N * 100).toFixed(0) + '</b> %</div><div class="stat">Average number of tries <b>' + (tries / N).toFixed(1) + '</b></div>' +
+      '<div class="stat">Average time of finishers <b>' + (ok ? (secs / ok).toFixed(0) : "–") + '</b> s</div><div class="stat">Players who quit midway <b>' + ((N - ok) / N * 100).toFixed(0) + '</b> %</div>';
+    $("c24simtask").textContent = "  ✔ Run once:" + (mode === "ramp" ? "Stairs" : "Cliff") + ", retry " + cost + "  s.";
+  };
+})();
+
+const T = 32, NC = 48, NR = 9, VW = 512, VH = 288, LW = NC * T;
+const cv = $("gc"), ctx = cv.getContext("2d");
+let saved = 0, grid, coinsList, enemies, pops, bumps, cam, p, state, deadT, frame, coins, score, tries = 1, active = false, jumpBuf, coyote, wasGround;
+const keys = { left: false, right: false, run: false, jump: false };
+const P = { jump: 11, g: 0.5, acc: 0.3, varJump: true, kind: true };
+
+function build() {
+  grid = Array.from({ length: NR }, () => Array(NC).fill(0));
+  for (let c = 0; c < NC; c++) { grid[7][c] = 1; grid[8][c] = 1; }
+  [35, 36].forEach(c => { grid[7][c] = 0; grid[8][c] = 0; });
+  grid[4][16] = 3; grid[4][17] = 2; grid[4][18] = 3; grid[4][19] = 2; grid[4][20] = 3;
+  const pipe = (c, h) => { for (let k = 0; k < h; k++) { const r = 6 - k; grid[r][c] = 5; grid[r][c + 1] = 5; if (k === h - 1) { grid[r][c] = 6; grid[r][c + 1] = 6; } } };
+  pipe(24, 2); pipe(30, 3);
+  for (let k = 0; k < 4; k++) for (let r = 6; r >= 6 - k; r--) grid[r][41 + k] = 7;
+  coinsList = [[9,5],[10,5],[34,5],[35,4],[36,4],[37,5],[27,5],[42,2],[43,2]].map(a => ({ x: a[0] * T + 16, y: a[1] * T + 16, got: false }));
+  enemies = [11, 22, 27, 39].map(c => ({ x: c * T + 4, y: 6 * T + 8, w: 24, h: 24, vx: 0, vy: 0, dir: -1, active: false, squish: 0, gone: false }));
+  pops = []; bumps = {};
+}
+function reset(full) {
+  build(); p = { x: 2 * T, y: 7 * T - 28, w: 22, h: 28, vx: 0, vy: 0, face: 1, ground: false };
+  cam = 0; state = "run"; frame = 0; deadT = 0; jumpBuf = 0; coyote = 0; wasGround = false;
+  if (full) { coins = 0; score = 0; tries = 1; }
+  hud();
+}
+function svShow() { $("sv").textContent = saved; if (saved >= 1) $("c24task").textContent = "  ✔ Forgiving feel has saved you " + saved + "  times."; }
+function hud() { $("coins").textContent = coins; $("score").textContent = score; $("tries").textContent = tries; $("time").textContent = Math.floor(frame / 60); }
+
+function solid(c, r) { if (c < 0 || c >= NC) return true; if (r < 0 || r >= NR) return false; return grid[r][c] > 0; }
+function move(b) {
+  let hitWall = false, bumpCol = -1, bumpRow = -1;
+  b.x += b.vx;
+  const r0 = Math.floor(b.y / T), r1 = Math.floor((b.y + b.h - 1) / T);
+  if (b.vx > 0) { const c = Math.floor((b.x + b.w) / T); for (let r = r0; r <= r1; r++) if (solid(c, r)) { b.x = c * T - b.w; b.vx = 0; hitWall = true; break; } }
+  else if (b.vx < 0) { const c = Math.floor(b.x / T); for (let r = r0; r <= r1; r++) if (solid(c, r)) { b.x = (c + 1) * T; b.vx = 0; hitWall = true; break; } }
+  b.y += b.vy; b.ground = false;
+  const c0 = Math.floor(b.x / T), c1 = Math.floor((b.x + b.w - 1) / T);
+  if (b.vy > 0) { const r = Math.floor((b.y + b.h) / T); for (let c = c0; c <= c1; c++) if (solid(c, r)) { b.y = r * T - b.h; b.vy = 0; b.ground = true; break; } }
+  else if (b.vy < 0) {
+    const r = Math.floor(b.y / T); const mid = Math.floor((b.x + b.w / 2) / T); let cc = -1;
+    if (solid(mid, r)) cc = mid; else for (let c = c0; c <= c1; c++) if (solid(c, r)) { cc = c; break; }
+    if (cc >= 0) { b.y = (r + 1) * T; b.vy = 0; bumpCol = cc; bumpRow = r; }
+  }
+  return { hitWall, bumpCol, bumpRow };
+}
+function die() { if (state !== "run") return; state = "dead"; deadT = 70; p.vy = -8; $("gmsg").textContent = "Failed—no matter, restart right away."; }
+function win() { if (state !== "run") return; state = "win"; const t = Math.floor(frame / 60); $("gmsg").textContent = "🎉 Reached the goal! Time " + t + "  s, coins " + coins + ", tries " + tries + " . Click “Restart” to go again."; }
+
+function step() {
+  frame++;
+  if (state === "dead") { deadT--; p.vy += P.g; p.y += p.vy; if (deadT <= 0) { const t = tries + 1; reset(true); tries = t; hud(); $("gmsg").textContent = ""; } return; }
+  if (state !== "run") return;
+  const dir = (keys.right ? 1 : 0) - (keys.left ? 1 : 0);
+  const max = keys.run ? 4.2 : 2.6;
+  const a = p.ground ? P.acc : P.acc * 0.7;
+  if (dir) {
+    if (Math.sign(p.vx) === -dir) p.vx += dir * a * 2.2; else if (Math.abs(p.vx) < max) p.vx = Math.max(-max, Math.min(max, p.vx + dir * a));
+    if (Math.abs(p.vx) > max) p.vx -= Math.sign(p.vx) * 0.15;
+    p.face = dir;
+  } else { const fr = p.ground ? P.acc * 1.1 : 0.03; p.vx = Math.abs(p.vx) <= fr ? 0 : p.vx - Math.sign(p.vx) * fr; }
+  
+  const coyMax = P.kind ? 6 : 0;
+  if (wasGround) coyote = coyMax; else coyote = Math.max(0, coyote - 1);
+  if (jumpBuf > 0 && (wasGround || coyote > 0)) { if (P.kind && (!wasGround || jumpBuf < 6)) { saved++; svShow(); } p.vy = -P.jump - Math.abs(p.vx) * 0.12; jumpBuf = 0; coyote = 0; p.ground = false; }
+  if (jumpBuf > 0) jumpBuf--;
+  let g = P.g;
+  if (p.vy < 0 && !keys.jump && P.varJump) g *= 2.6;
+  p.vy = Math.min(12, p.vy + g);
+  const res = move(p);
+  wasGround = p.ground;
+  if (res.bumpRow >= 0) {
+    const t = grid[res.bumpRow][res.bumpCol];
+    bumps[res.bumpCol + "," + res.bumpRow] = 8;
+    if (t === 3) { grid[res.bumpRow][res.bumpCol] = 4; coins++; score += 200; pops.push({ x: res.bumpCol * T + 16, y: res.bumpRow * T - 8, vy: -6, life: 30, txt: "+200" }); hud(); }
+  }
+  cam = Math.max(0, Math.min(LW - VW, p.x + p.w / 2 - 220));
+  
+  coinsList.forEach(c => { if (!c.got && Math.abs(c.x - (p.x + p.w / 2)) < 20 && Math.abs(c.y - (p.y + p.h / 2)) < 24) { c.got = true; coins++; score += 100; pops.push({ x: c.x, y: c.y - 10, vy: -2, life: 25, txt: "+100" }); hud(); } });
+  
+  enemies.forEach(e => {
+    if (e.gone) return;
+    if (!e.active && e.x < cam + VW + 40) e.active = true;
+    if (!e.active) return;
+    if (e.squish > 0) { e.squish--; if (e.squish <= 0) e.gone = true; return; }
+    e.vx = e.dir * 0.7; e.vy = Math.min(12, e.vy + 0.5);
+    const r = move(e); if (r.hitWall) e.dir = -e.dir;
+    if (e.y > VH + 80) e.gone = true;
+    if (p.x < e.x + e.w && p.x + p.w > e.x && p.y < e.y + e.h && p.y + p.h > e.y) {
+      const prevBottom = p.y + p.h - p.vy;
+      if (p.vy > 0 && prevBottom <= e.y + 10) { e.squish = 25; p.vy = keys.jump ? -9 : -6; score += 100; pops.push({ x: e.x + 12, y: e.y, vy: -2, life: 25, txt: "+100" }); hud(); }
+      else if (state === "run") die();
+    }
+  });
+  pops.forEach(o => { o.y += o.vy; o.life--; if (o.vy < 0) o.vy += 0.15; });
+  pops = pops.filter(o => o.life > 0);
+  Object.keys(bumps).forEach(k => { bumps[k]--; if (bumps[k] <= 0) delete bumps[k]; });
+  if (p.y > VH + 40) die();
+  if (p.x + p.w > 46 * T + 10) win();
+  if (frame % 6 === 0) hud();
+}
+
+function ink(w) { ctx.strokeStyle = "#2b2b3a"; ctx.lineWidth = w || 2; }
+function tile(t, c, r) {
+  let x = c * T - cam, y = r * T;
+  const bk = bumps[c + "," + r]; if (bk) y -= Math.sin(bk / 8 * Math.PI) * 8;
+  if (x < -T || x > VW) return;
+  ink(2);
+  if (t === 1) { ctx.fillStyle = "#c8884a"; ctx.fillRect(x, y, T, T); ctx.strokeRect(x + 1, y + 1, T - 2, T - 2); if (r === 7) { ctx.fillStyle = "#8ed081"; ctx.fillRect(x + 1, y + 1, T - 2, 8); ctx.strokeRect(x + 1, y + 1, T - 2, 8); } }
+  else if (t === 2) { ctx.fillStyle = "#e08a5a"; ctx.fillRect(x, y, T, T); ctx.strokeRect(x + 1, y + 1, T - 2, T - 2); ctx.beginPath(); ctx.moveTo(x, y + 16); ctx.lineTo(x + T, y + 16); ctx.moveTo(x + 16, y); ctx.lineTo(x + 16, y + 16); ctx.moveTo(x + 8, y + 16); ctx.lineTo(x + 8, y + T); ctx.moveTo(x + 24, y + 16); ctx.lineTo(x + 24, y + T); ctx.stroke(); }
+  else if (t === 3 || t === 4) { ctx.fillStyle = t === 3 ? "#ffd34d" : "#b9a98a"; ctx.fillRect(x, y, T, T); ctx.strokeRect(x + 1, y + 1, T - 2, T - 2); if (t === 3) { ctx.fillStyle = "#2b2b3a"; ctx.font = "24px 'Ma Shan Zheng',sans-serif"; ctx.textAlign = "center"; ctx.fillText("?", x + 16, y + 24); } }
+  else if (t === 5 || t === 6) { ctx.fillStyle = "#7ed17f"; const pad = t === 6 ? 0 : 3; ctx.fillRect(x + pad, y, T - pad * 2, T); ctx.strokeRect(x + pad + 1, y + 1, T - pad * 2 - 2, T - 2); }
+  else if (t === 7) { ctx.fillStyle = "#d9c9a0"; ctx.fillRect(x, y, T, T); ctx.strokeRect(x + 1, y + 1, T - 2, T - 2); ctx.beginPath(); ctx.moveTo(x + 5, y + 5); ctx.lineTo(x + 27, y + 5); ctx.stroke(); }
+}
+function draw() {
+  ctx.fillStyle = "#a8dcf0"; ctx.fillRect(0, 0, VW, VH);
+  
+  ctx.fillStyle = "#fff"; ink(2);
+  [[80, 50], [330, 80], [620, 45], [900, 70], [1200, 50]].forEach(a => { const x = a[0] - cam * 0.5; if (x < -80 || x > VW + 80) return; ctx.beginPath(); ctx.ellipse(x, a[1], 36, 16, 0, 0, 7); ctx.ellipse(x + 24, a[1] - 8, 22, 14, 0, 0, 7); ctx.fill(); ctx.stroke(); });
+  const c0 = Math.max(0, Math.floor(cam / T)), c1 = Math.min(NC - 1, c0 + 17);
+  for (let r = 0; r < NR; r++) for (let c = c0; c <= c1; c++) if (grid[r][c]) tile(grid[r][c], c, r);
+  
+  const fx = 46 * T + 14 - cam; ink(3); ctx.fillStyle = "#fff"; ctx.fillRect(fx, 1.5 * T, 4, 5.5 * T); ctx.strokeRect(fx, 1.5 * T, 4, 5.5 * T);
+  ctx.fillStyle = "#ffe58a"; ctx.beginPath(); ctx.arc(fx + 2, 1.5 * T - 4, 6, 0, 7); ctx.fill(); ctx.stroke();
+  ctx.fillStyle = "#ffb3c6"; ctx.beginPath(); ctx.moveTo(fx + 4, 1.7 * T); ctx.lineTo(fx + 30, 1.7 * T + 10); ctx.lineTo(fx + 4, 1.7 * T + 22); ctx.closePath(); ctx.fill(); ctx.stroke();
+  
+  coinsList.forEach(c => { if (c.got) return; const w = Math.abs(Math.sin(frame / 14 + c.x)) * 6 + 3; ctx.fillStyle = "#ffd34d"; ink(2); ctx.beginPath(); ctx.ellipse(c.x - cam, c.y, w, 9, 0, 0, 7); ctx.fill(); ctx.stroke(); });
+  
+  enemies.forEach(e => {
+    if (e.gone) return; const x = e.x - cam; if (x < -40 || x > VW + 40) return;
+    ink(2.5); ctx.fillStyle = "#a5683d";
+    if (e.squish > 0) { ctx.beginPath(); ctx.ellipse(x + 12, e.y + 20, 14, 5, 0, 0, 7); ctx.fill(); ctx.stroke(); return; }
+    ctx.beginPath(); ctx.ellipse(x + 12, e.y + 11, 13, 11, 0, 0, 7); ctx.fill(); ctx.stroke();
+    ctx.fillStyle = "#fff"; ctx.fillRect(x + 6, e.y + 7, 5, 6); ctx.fillRect(x + 14, e.y + 7, 5, 6);
+    ctx.fillStyle = "#2b2b3a"; ctx.fillRect(x + 8, e.y + 9, 2, 4); ctx.fillRect(x + 15, e.y + 9, 2, 4);
+    const f = Math.floor(frame / 10) % 2; ctx.fillStyle = "#6b4226"; ctx.fillRect(x + 2 + f * 2, e.y + 19, 8, 5); ctx.fillRect(x + 14 - f * 2, e.y + 19, 8, 5);
+  });
+  
+  if (p) {
+    const x = p.x - cam, y = p.y; ink(2.5);
+    ctx.fillStyle = "#4a7de0"; ctx.fillRect(x, y + 14, p.w, 14); ctx.strokeRect(x, y + 14, p.w, 14);
+    ctx.fillStyle = "#ffd9b0"; ctx.fillRect(x + 2, y + 5, p.w - 4, 10); ctx.strokeRect(x + 2, y + 5, p.w - 4, 10);
+    ctx.fillStyle = "#e5484d"; ctx.fillRect(x, y, p.w, 7); ctx.strokeRect(x, y, p.w, 7);
+    ctx.fillRect(x + (p.face > 0 ? 8 : -2), y + 4, 16, 4);
+    ctx.fillStyle = "#2b2b3a"; ctx.fillRect(x + (p.face > 0 ? 14 : 5), y + 8, 3, 4);
+  }
+  pops.forEach(o => { ctx.fillStyle = "#2b2b3a"; ctx.font = "18px 'Ma Shan Zheng',sans-serif"; ctx.textAlign = "center"; ctx.fillText(o.txt, o.x - cam, o.y); });
+  if (!active && state === "run") { ctx.fillStyle = "rgba(253,248,236,.75)"; ctx.fillRect(0, 100, VW, 70); ctx.fillStyle = "#2b2b3a"; ctx.font = "28px 'Ma Shan Zheng',sans-serif"; ctx.textAlign = "center"; ctx.fillText("Click the screen to start (← → to move, Space to jump)", VW / 2, 145); }
+}
+let last = 0, accT = 0;
+function loop(t) {
+  const dt = Math.min(100, t - (last || t)); last = t; accT += dt;
+  while (accT >= 1000 / 60) { accT -= 1000 / 60; if (active || state !== "run") step(); }
+  draw(); requestAnimationFrame(loop);
+}
+
+function setKey(k, v) { if (k === "jump" && v && !keys.jump) jumpBuf = P.kind ? 6 : 1; keys[k] = v; }
+const KM = { ArrowLeft: "left", a: "left", A: "left", ArrowRight: "right", d: "right", D: "right", ArrowUp: "jump", w: "jump", W: "jump", " ": "jump", Shift: "run", x: "run", X: "run" };
+window.addEventListener("keydown", e => {
+  const tag = (e.target.tagName || "").toLowerCase();
+  if (tag === "textarea" || (tag === "input" && e.target.type === "text")) return;
+  const k = KM[e.key]; if (!k || !active) return;
+  e.preventDefault(); if (!e.repeat) setKey(k, true);
+});
+window.addEventListener("keyup", e => { const k = KM[e.key]; if (k) setKey(k, false); });
+window.addEventListener("blur", () => { Object.keys(keys).forEach(k => keys[k] = false); });
+cv.addEventListener("pointerdown", () => { active = true; cv.focus(); $("gmsg").textContent = ""; });
+document.addEventListener("pointerdown", e => { if (!cv.contains(e.target) && !$("pad").contains(e.target)) active = false; });
+document.querySelectorAll("#pad .btn").forEach(b => {
+  const k = b.dataset.k;
+  b.addEventListener("pointerdown", e => { e.preventDefault(); active = true; $("gmsg").textContent = ""; setKey(k, true); });
+  ["pointerup", "pointerleave", "pointercancel"].forEach(ev => b.addEventListener(ev, () => setKey(k, false)));
+});
+$("restart").onclick = () => { saved = 0; svShow(); reset(true); active = true; cv.focus(); $("gmsg").textContent = ""; };
+
+function knobs() {
+  P.jump = +$("k1").value; P.g = +$("k2").value; P.acc = +$("k3").value; P.varJump = $("c1").checked; P.kind = $("c2").checked;
+  $("o1").textContent = P.jump; $("o2").textContent = P.g; $("o3").textContent = P.acc;
+  const hold = P.jump * P.jump / (2 * P.g) / 32, tap = P.varJump ? P.jump * P.jump / (2 * P.g * 2.6) / 32 : hold;
+  $("hh").textContent = hold.toFixed(1); $("hl").textContent = tap.toFixed(1);
+}
+["k1", "k2", "k3", "c1", "c2"].forEach(id => $(id).addEventListener("input", knobs));
+$("kreset").onclick = () => { $("k1").value = 11; $("k2").value = 0.5; $("k3").value = 0.3; $("c1").checked = true; $("c2").checked = true; knobs(); };
+knobs(); reset(true); requestAnimationFrame(loop);
+
+GD.mountQuiz($("quiz"), [
+  { q: "Why does 1-1 open by having the player face “one lone enemy”?", opts: ["To make the level look easy", "To let the player learn the basic rules by themselves in a safe, isolated situation", "To save production cost", "To increase the number of enemies"], a: 1, why: "Introducing one element alone first lets the player clearly connect “cause” and “result,” and this is a safe introduction." },
+  { q: "[Why it was invented] According to Miyamoto’s recollection, why was the first enemy not a turtle (a Koopa) but made a Goomba?", opts: ["The turtle’s art was too expensive", "A turtle can’t be solved with one stomp, which is a bit too hard for a newcomer as the first enemy, so an enemy that is “one stomp and done” was needed", "Because a shell couldn’t be drawn", "Because players don’t like turtles"], a: 1, why: "His account: they first wanted to use a turtle, but felt that for a first-time player, jumping on it and then kicking it was a bit hard; so they made the “bad mushroom.” The first enemy should let the player solve it with the most basic move (jumping)." },
+  { q: "[Why it was invented] Why did Tezuka say to “watch how players play, then adjust,” instead of getting it right in one go himself?", opts: ["Because players like being watched", "Designers know the answer and easily make levels too hard, and people rarely play the way designers expect; only watching how new players actually play reveals it", "Because it saves money", "Because the rules require it"], a: 1, why: "This is his own recollection: making levels yourself, you inevitably make them too hard, and players rarely play the way you imagine." },
+  { q: "In “introduce → practice → vary,” the pipes growing gradually taller are?", opts: ["Introduce", "Practice", "Vary", "Ending"], a: 1, why: "The same jump, with the difficulty rising notch by notch, is practice." },
+  { q: "[Why] Why do the pipes get taller one notch at a time, rather than putting the tallest first?", opts: ["To save map space", "Each notch is only a little more than what was just learned, always within the player’s reach (the zone of proximal development), and the level itself acts as scaffolding", "Because tall pipes are harder to draw", "To make the player die more"], a: 1, why: "The zone of proximal development: what you can’t do alone but can reach with support. Too close, nothing to learn; too far, only frustration." },
+  { q: "[Why] Why does “still being able to jump a short time after leaving a platform” make players feel the controls are precise?", opts: ["Because it makes the game easier", "It counts an “almost” action as success too, matching feedback to intention, and the player feels “I made it jump”", "Because players can’t see this mechanism", "Because it reduces the number of enemies"], a: 1, why: "Players are sensitive to the cause-and-effect of “key → result”; forgiving detection avoids the frustration of “but I did press it.”" },
+  { q: "[Why] Why is “cheap failure” good for learning? (by Gee’s view)", opts: ["Because players like failing", "Learners can take risks in a space where consequences are turned down, and bold attempts are themselves learning; but this applies mainly to teaching and the beginner stage", "Because after failing you can just clear the level", "It makes no sense"], a: 1, why: "Gee follows Erikson’s “psychosocial moratorium,” holding that games let learners try in a space with lighter consequences. For games pursuing high-risk thrills, other trade-offs apply." },
+]);
+
+mountLinkPair($("c24pair"), $("c24paircnt"),
+  ["Scaffolding / zone of proximal development", "Safe failure (low cost of error)", "Forgiveness and instant response", "Teach one thing at a time"],
+  [
+    { t: "Pipes get higher each time and pits wider each time, and the player doesn’t feel “taught” yet jumps more and more steadily.", a: 0, why: "Difficulty is broken into small steps, each within what the player can “reach,” which is the game version of scaffolding and the zone of proximal development.", hint: "The keywords are “harder step by step” and “within reach.”" },
+    { t: "After falling into a pit you can restart in a few seconds, and the player tries again without hesitation.", a: 1, why: "The cost of failure is low, so trial and error isn’t scary, and the player dares to try jumps they’re unsure of, and learning can happen.", hint: "The keyword is “cost.”" },
+    { t: "Pressing jump just as you step off the edge still makes you jump, and the player feels “I definitely pressed it right.”", a: 2, why: "Forgiving detection counts actions “a few frames off” as success too, and what the player gets is the feeling that “my input was accurately answered.”", hint: "This is about the relation between “the key press” and “the result.”" },
+    { t: "Hold the jump key to jump higher, release and it immediately gets lower, and the player feels the character is “an extension of my hand.”", a: 2, why: "An instant response proportional to the input makes the player strongly feel “I caused this result.”", hint: "Think: who does the player feel “made it jump”?" },
+    { t: "The first screen has only one Goomba, no pipes, no pits, and the player sees at a glance that it is dangerous.", a: 3, why: "With only one new thing at a time, the player can match cause with result and isn’t overwhelmed by a pile of new information (remember cognitive load?).", hint: "The keywords are “alone” and “one.”" },
+  ]);
+</script>
+</body>
+</html>

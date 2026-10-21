@@ -5,6 +5,8 @@
 /* 英文字母和数字用清晰的手写体（本地文件，离线可用）；汉字仍用 Ma Shan Zheng。字体详情见 lib/README.md */
 @font-face{font-family:"HandLatin";src:url("../lib/fonts/PatrickHand-Regular.ttf") format("truetype");
   unicode-range:U+0030-0039,U+0041-005A,U+0061-007A;font-display:swap}
+/* 英文版：同一个字体文件，不限制字符范围（含标点），离线也能用 */
+@font-face{font-family:"HandEn";src:url("../lib/fonts/PatrickHand-Regular.ttf") format("truetype");font-display:swap}
 :root{
   --accent:#ffe58a; --accent2:#ffc078;
   --paper:#fdf8ec; --ink:#2b2b3a; --soft:#4b4b5e; --line:#e6dcc3;
@@ -164,7 +166,7 @@ footer.credit{text-align:center;color:var(--soft);font-size:.85rem;margin-top:30
 .langsw{font-family:var(--hand);font-size:1.1rem;text-decoration:none;border:2.5px solid var(--ink);border-radius:12px 6px 12px 6px;padding:0 10px;background:var(--blue);margin-left:8px;white-space:nowrap;line-height:1.6}
 .langsw:hover{background:var(--yellow)}
 .langsw.fixed{position:fixed;top:10px;right:12px;z-index:60}
-html[lang^="en"]{--hand:"Kalam","Patrick Hand","Comic Sans MS",cursive;--body:"Patrick Hand","Kalam","Comic Sans MS","Segoe Print",sans-serif}
+html[lang^="en"]{--hand:"Kalam","HandEn","Comic Sans MS",cursive;--body:"HandEn","Patrick Hand","Comic Sans MS","Segoe Print",sans-serif}
 html[lang^="en"] body{font-size:20px;line-height:1.7}
 html[lang^="en"] h1{font-size:2.6rem}html[lang^="en"] h2{font-size:1.8rem}html[lang^="en"] h3{font-size:1.3rem}
 
@@ -287,3 +289,32 @@ body[data-pat="3"]{background-image:repeating-linear-gradient(45deg,var(--line) 
 .egcar .eg .illus{width:250px}
 .card.mini .illus{max-width:250px}
 @media(max-width:700px){.withimg .illus{width:min(280px,86%)}.egcar .eg .illus{width:min(260px,88%)}}
+
+/* ---------- English: texts generated through CSS content ---------- */
+html[lang^="en"] .eg::before{content:"Example "}
+html[lang^="en"] .eg.bad::before{content:"Counterexample "}
+html[lang^="en"] .tldr::before{content:"In one line:"}
+html[lang^="en"] .chcard.done::after{content:"✔ Done"}
+html[lang^="en"] .egcar .eg::before,html[lang^="en"] .egcar .eg.bad::before{content:none}
+html[lang^="en"] svg text{font-family:"HandEn","Kalam","Comic Sans MS",cursive}
+
+/* ---- 练习题：拖动作答（qz-） ---- */
+.q .qz-slot{min-height:56px;margin:8px 0 10px;padding:8px 12px;border:3px dashed var(--ink);border-radius:14px 22px 14px 20px;background:#fff;display:flex;align-items:center;justify-content:center;text-align:center;transition:background .15s}
+.qz-ph{color:#4a4a5a;font-size:.95rem}
+.qz-slot.over,.qz-slot.armed{background:var(--yellow);border-style:solid}
+.qz-slot.ok{border-style:solid;background:var(--green)}
+.qz-slot:focus-visible,.qz-card:focus-visible{outline:3px solid #2b6cff;outline-offset:2px}
+.qz-tray{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.q .qz-card{margin:0;width:100%;touch-action:none;user-select:none;-webkit-user-select:none;cursor:grab;text-align:center;padding:10px 12px;min-height:48px;position:relative}
+.qz-card.sel{background:var(--yellow);outline:3px solid var(--ink)}
+.qz-card.drag{z-index:50;cursor:grabbing;box-shadow:5px 7px 0 rgba(43,43,58,.35);transition:none}
+.qz-card.ok{background:var(--green);width:auto;max-width:100%;cursor:default;box-shadow:none}
+.qz-card.no{background:#ddd;color:#4a4a5a;text-decoration:line-through;cursor:default;opacity:.8}
+.qz-card:disabled:not(.ok):not(.no){opacity:.55}
+.qz-card.shake{animation:qzshake .4s}
+@keyframes qzshake{0%,100%{translate:0}20%{translate:-7px}40%{translate:7px}60%{translate:-5px}80%{translate:5px}}
+.qz-live{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+@media (prefers-reduced-motion:reduce){.qz-card.shake{animation:none}.qz-slot{transition:none}}
+@media (max-width:520px){.qz-tray{grid-template-columns:1fr 1fr}}
+.q .qz-card:hover:not(:disabled){transform:none;background:var(--yellow)}
+.q .qz-card.ok,.q .qz-card.ok:disabled{opacity:1;color:var(--ink);background:transparent;border-color:transparent;font-weight:700}

@@ -1,0 +1,661 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Chapter 11: Level Design &amp; Teaching</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+  #grid{display:grid;grid-template-columns:repeat(10,1fr);gap:2px;background:var(--ink);border:3px solid var(--ink);max-width:560px;margin:8px auto;touch-action:none}
+  #grid div{aspect-ratio:1;background:#fffdf3;display:grid;place-items:center;font-size:clamp(14px,4.2vw,28px);cursor:pointer;user-select:none;line-height:1}
+  #grid div.wall{background:#8a7f6a}
+  .palette{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
+  .pad{display:grid;grid-template-columns:repeat(3,56px);gap:6px;justify-content:center;margin-top:8px}
+  .pad button{height:48px}
+  .c11_thirds{display:grid;grid-template-columns:4fr 3fr 3fr;max-width:560px;margin:0 auto;text-align:center;font-size:.85rem;color:var(--soft)}
+  .c11_thirds div{border-top:3px solid var(--ink);padding-top:2px}
+  .c11_cards{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
+  .c11_cards .chip{flex:1;min-width:230px;text-align:left;border-radius:14px;margin:0}
+  .c11_cards .chip:disabled{opacity:.4;cursor:not-allowed}
+  .c11_slots{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:8px 0}
+  .c11_slots div{border:3px dashed var(--ink);border-radius:12px;padding:6px 8px;min-height:5.6em;background:#fffef7;font-size:.88rem;line-height:1.5}
+  .c11_slots div b{background:none;font-family:var(--hand);font-size:1.15rem;display:block}
+  @media(max-width:700px){.c11_slots{grid-template-columns:1fr}}
+  .c11_res p{margin:.3em 0;font-size:.98rem}
+  .c11_res .ok{color:#1d7a38}.c11_res .no{color:#c0282d}
+  .c11_mode{margin-bottom:6px}
+  .c11_pane{display:none}.c11_pane.on{display:block}
+  .c11_zone{cursor:pointer}
+  .c11_zone:focus{outline:none}
+  .c11_zone:focus .c11_zb,.c11_zone:hover .c11_zb{stroke-width:6}
+  .c11_ok{color:#1d7a38;font-weight:700}
+  .c11_out{margin-top:8px;padding:8px 12px;border:2px dashed var(--ink);border-radius:10px;background:var(--blue);font-size:.98rem}
+</style>
+</head>
+<body data-ch="11">
+<main class="wrap">
+  <div class="hero">
+    <div class="txt">
+      <span class="badge">Chapter 11</span>
+      <h1>Level Design &amp; Teaching</h1>
+      <p class="sub">The best tutorial is one where the player never notices they’re in class.</p>
+    </div>
+    <svg viewBox="0 0 190 150" class="rough" aria-hidden="true">
+      <rect x="10" y="100" width="170" height="30" fill="#b6e8a8" stroke="#2b2b3a" stroke-width="4"/>
+      <rect x="60" y="55" width="30" height="30" fill="#ffe58a" stroke="#2b2b3a" stroke-width="4"/><text x="68" y="78" font-size="24">?</text>
+      <circle cx="30" cy="85" r="12" fill="#ffb3c6" stroke="#2b2b3a" stroke-width="4"/>
+      <path d="M130 100 v-22 h30 v22" fill="#a8dcf0" stroke="#2b2b3a" stroke-width="4"/>
+    </svg>
+  </div>
+
+  <div class="goals">
+    <h3>Learning goals</h3>
+    <span class="time">about 45 min</span>
+    <ul>
+      <li>Design a teaching level with “introduce → practice → vary,” and say why “wordless teaching” had to be invented.</li>
+      <li>Explain the <span class="term" tabindex="0" data-def="A concept from Vygotsky: the range of tasks a person can’t do alone but can do with a little help.">zone of proximal development</span> and <span class="term" tabindex="0" data-def="Temporary support set up where the learner can’t reach (hints, a safe environment), gradually withdrawn as they learn.">scaffolding</span>, and judge whether a challenge is “just within reach.”</li>
+      <li>Use <span class="term" tabindex="0" data-def="Working memory can handle only a limited amount of information at a time; too much and it “overloads.”">cognitive load</span> and <span class="term" tabindex="0" data-def="Spreading review over longer and longer time intervals helps long-term memory more than massed repetition.">spaced repetition</span> to plan “how many to teach at once, and how long before they come back,” and build a playable teaching mini-level by hand.</li>
+    </ul>
+  </div>
+
+  <!-- 1 -->
+  <div class="sec"><span class="n">1</span><h2><span class="tag what">What it is</span>The three-step method of teaching players</h2></div>
+  <div class="withimg">
+    <span data-illus="c11_world11"></span>
+    <div>
+      <p>In the first level of <i>Super Mario Bros.</i> (1985) there is not a single word on the screen. You stand on flat ground, and something on the right is ambling toward you. You don’t know what it is, so you probably walk forward, bump into it, and die. You try again, press jump, land on its head, and it flattens.</p>
+      <p>From start to finish nobody told you “press the button to jump, and stomping an enemy defeats it,” yet you have learned it. Many people regard this level as the model of a teaching level.</p>
+      <p>Behind it is a very plain structure that can be summed up in three steps: first <b>introduce</b> the new thing in a safe place and let the player meet it alone; then <b>practice</b> it again and again with a little risk; finally <b>combine</b> it with other things, or reverse the player’s expectation. The player’s experience is: see it, use it, master it.</p>
+    </div>
+  </div>
+  <div class="card">
+    <svg viewBox="0 0 780 284" width="100%" role="img" aria-label="Three steps: introduce, practice, vary">
+      <g class="rough" stroke="#2b2b3a" stroke-width="4">
+        <rect x="20" y="24" width="230" height="180" rx="18" fill="#fff7cf"/><rect x="275" y="24" width="230" height="180" rx="18" fill="#e8f6fc"/><rect x="530" y="24" width="230" height="180" rx="18" fill="#ffe9ef"/>
+        <path d="M252 114 h21 M507 114 h21" fill="none" stroke-linecap="round"/>
+      </g>
+      <g text-anchor="middle" fill="#2b2b3a">
+        <text x="135" y="68" font-size="28">① Introduce</text><text x="390" y="68" font-size="28">② Practice</text><text x="645" y="68" font-size="28">③ Vary</text>
+        <g font-size="19">
+          <text x="135" y="106">In a safe place</text><text x="135" y="132">show the new thing alone</text>
+          <text x="390" y="106">use it with a bit of risk</text><text x="390" y="132">repeat to consolidate</text>
+          <text x="645" y="106">combine with other things</text><text x="645" y="132">or reverse expectation</text>
+        </g>
+        <g font-size="16" fill="#3f3f50">
+          <text x="135" y="166">e.g. a slow-walking monster</text><text x="135" y="188">no pit beside it</text>
+          <text x="390" y="166">e.g. several monsters in a row</text><text x="390" y="188">each can be stomped</text>
+          <text x="645" y="166">e.g. a monster at the landing spot</text><text x="645" y="188">moving platforms below</text>
+        </g>
+        <text x="390" y="260" font-size="20">Player: see → use → master</text>
+      </g>
+    </svg>
+  </div>
+  <div class="sticky">Teaching principle: <b>first let the player watch, then let the player do, and finally let the player create</b>. Text is the last resort.</div>
+  <div class="eg" data-ic="🍄"><span data-illus="c11_stomp"></span><div class="egt"><b>Teaching “stomping”</b>: first place one slow monster on open ground (introduce), then a row of three (practice), and finally put the monster at a jump’s landing spot with moving platforms below (vary). Each step adds only a little.</div></div>
+  <div class="eg" data-ic="🚲"><span data-illus="c11_bike"></span><div class="egt"><b>Teaching a child to ride a bike</b>: first ride on flat ground with two training wheels (introduce), take one off and ride in circles (practice), finally remove them, go up a little slope and dodge obstacles (vary).</div></div>
+  <div class="eg bad" data-ic="💀"><span data-illus="c11_allatonce"></span><div class="egt"><b>A new mechanic debuts as a “family bucket.”</b> Monsters at the landing spot, moving platforms, spikes and a countdown, all heaped together. The player can’t tell which new thing killed them and only feels “this game is hard,” and all they learn is frustration.</div></div>
+
+  <!-- 2 -->
+  <div class="sec"><span class="n">2</span><h2><span class="tag what">What it is</span>Pacing and “is the risk worth it?”: tension and release, and risk and reward</h2></div>
+  <p>Teaching is only half of a level. The other half is getting the player all the way through without tiring or boredom: tension and release, and something to choose.</p>
+  <p>Pacing first. A level that is tense all the way, the player can’t sustain; remember flow? A challenge far above ability is anxiety. A level that is flat all the way won’t do either: the player has no decisions to make, and boredom is all that is left. A good level is like breathing: tense for a while, a breath, tense again, and each time a little higher than the last.</p>
+  <p>Now risk and reward. Put a coin next to some spikes: take it or not? That is how a choice comes into being. Wanting the reward means taking a risk, and whether to risk it is up to the player.</p>
+  <div class="card">
+    <svg viewBox="0 0 780 310" width="100%" role="img" aria-label="Level pacing: tension rises and falls over time, with resting points in the troughs and each peak higher than the last">
+      <g class="rough" stroke="#2b2b3a" stroke-width="4" fill="none" stroke-linecap="round">
+        <path d="M80 22 V240 H740"/>
+        <path d="M92 214 C130 206 150 124 196 124 S256 218 296 220 S352 94 412 94 S462 224 512 222 S580 58 650 58" stroke="#e5484d" stroke-width="5"/>
+        <path d="M296 232 V256 M512 232 V256" stroke="#2f9e44" stroke-dasharray="4 5" stroke-width="3"/>
+      </g>
+      <g fill="#b6e8a8" stroke="#2b2b3a" stroke-width="3"><circle cx="296" cy="220" r="8"/><circle cx="512" cy="222" r="8"/></g>
+      <g font-size="18" fill="#2b2b3a" text-anchor="middle">
+        <text x="196" y="104">Small challenge</text><text x="412" y="74">Bigger challenge</text><text x="650" y="38">Climax</text>
+        <text x="296" y="282" fill="#1d6b35">Rest point (supplies, scenery)</text><text x="512" y="282" fill="#1d6b35">Rest point</text>
+      </g>
+      <text x="726" y="226" font-size="18" text-anchor="end" fill="#2b2b3a">Level progress →</text>
+      <text x="92" y="40" font-size="18" fill="#2b2b3a">Tension ↑</text>
+    </svg>
+  </div>
+  <div class="eg" data-ic="🪙"><span data-illus="c11_cointrap"></span><div class="egt"><b>A coin placed beside a trap</b>: take it and there is a reward, but you might fall in. The player has to weigh their own skill, and so a choice appears.</div></div>
+  <div class="eg" data-ic="🏃"><span data-illus="c11_intervals"></span><div class="egt"><b>Interval training</b>: sprint for 30 seconds, walk for 60, then go again. Sprinting all the way just makes people quit midway. Put a safe camp after a tough battle in a level, and the next fight feels even tenser.</div></div>
+  <div class="eg bad" data-ic="😵"><span data-illus="c11_norest"></span><div class="egt"><b>High pressure all the way, not one rest point</b>: players tire and perform worse, and even the best design is worn out. Conversely, a level that is flat all the way and has no risk leaves the player with no decisions to make either.</div></div>
+
+  <!-- 3 -->
+  <div class="sec"><span class="n">3</span><h2><span class="tag origin">How it was invented</span>How “wordless teaching” and “spaced review” were thought up</h2></div>
+  <div class="story">
+    <h3>Story one: nobody reads the manual, so how do you teach players?</h3>
+    <div class="withimg rev">
+      <span data-illus="c11_manual"></span>
+      <div>
+        <p>Home-console games in the 1980s usually described how to play in the manual in the box. But players who got a cartridge mostly just plugged it in and played; arcade games were blunter still, and once you put in a coin you had to get going, with nobody wanting to read a page of text first. Designers had a plain problem: <b>if players don’t read text, how can they learn to jump, stomp, bump and dodge in a few dozen seconds?</b></p>
+        <p>The most direct method was to open with a screen of text, or overlay hints on the picture. But players skipped it with one button press; and even if they read it, they only “knew,” and the hands hadn’t “learned.”</p>
+        <p>So there was a change of mind: <b>let the level itself be the teacher</b>. Put the new thing in a safe place and let the player run into it, try it, and see the consequence at once.</p>
+      </div>
+    </div>
+    <p>According to media reports of a 2015 talk between Nintendo’s Shigeru Miyamoto and Takashi Tezuka, 1-1 was designed just this way: the first enemy walks slowly toward you, and bumping into it kills you, forcing you to see that you must jump; the Super Mushroom looks like an enemy, but the low ceiling overhead leaves you only able to hit the bricks, and watching it come out from inside tells you it is a good thing; there is ground under the first pit, so you can fall in and climb back out, while the second is truly bottomless, and Tezuka said that newcomers mostly fall into the first one. (These are retellings, and I couldn’t check the original video directly, so go by the original interview.)</p>
+    <p>Since then “introduce in a safe environment first, then add risk, then combine and vary” has become the common approach to level teaching. Later, education scholars also drew similar learning principles from games, as the “Why it works” sections below explain.</p>
+    <div class="timeline">
+      <div class="ev hasimg"><span data-illus="c11_mario85"></span><div><b class="yr">1985</b> <i>Super Mario Bros.</i> is released, and level 1-1 teaches the basic moves through play with almost no text.</div></div>
+      <div class="ev hasimg"><span data-illus="c11_gee"></span><div><b class="yr">2003</b> James Paul Gee publishes <i>What Video Games Have to Teach Us About Learning and Literacy</i>, setting out the “learning principles” of good games systematically.</div></div>
+      <div class="ev hasimg"><span data-illus="c11_miyamoto"></span><div><b class="yr">2015</b> Miyamoto and Tezuka talk about the design thinking behind 1-1 in a Eurogamer video (as relayed by media).</div></div>
+    </div>
+    <p class="small">Relayed sources: <a href="https://www.mcvuk.com/development-news/video-miyamoto-shares-his-level-design-secrets/">MCV</a>, <a href="https://soranews24.com/2015/09/09/super-mario-bros-creator-explains-how-and-why-he-designed-world-1-1-of-the-8-bit-classic-%e3%80%90video%e3%80%91/amp/">SoraNews24</a>.</p>
+  </div>
+  <p><b>Try it yourself first, then see the designer’s thinking.</b> Below are 5 kinds of “new things.” Suppose the player is playing for the first time, and click them <b>in the order you think they should appear</b>, filling the 5 slots; then press “Reveal” to compare with the design principle of “from safe to dangerous.” Press “Undo” to change your mind.</p>
+  <div class="board">
+    <div class="c11_cards" id="c11_cards"></div>
+    <div class="c11_slots" id="c11_slots"></div>
+    <div>
+      <button class="btn green" id="c11_rev" disabled>🔍 Reveal</button>
+      <button class="btn alt" id="c11_undo">Undo one step</button>
+      <button class="btn pink" id="c11_reset">Reselect</button>
+    </div>
+    <div class="c11_res" id="c11_res"></div>
+  </div>
+  <div class="sticky">Try it: fill all 5 cards and press “Reveal” to see how many places match “from safe to dangerous.”<span class="c11_ok" id="c11_t1" hidden> ✅ Done: however many match, you were already ordering by “is the cost of failing small enough.”</span></div>
+
+  <div class="story">
+    <h3>Story two: why are learned skills “returned to the teacher” after a few days?</h3>
+    <div class="withimg">
+      <span data-illus="c11_leak"></span>
+      <div>
+        <p>Nineteenth-century psychologists wanted to know: <b>can memory be measured like a physical quantity?</b> But everyday memory is too messy: your memory of a song is mixed with emotions, associations and the number of times you’ve heard it before, so it can’t be compared.</p>
+        <p>Memorizing poems or texts doesn’t work either: everyone’s familiarity with the content differs, so the results can’t be compared.</p>
+        <p>Hermann Ebbinghaus came up with a way: <b>make a batch of meaningless syllables</b> (such as “DAX” and “BOK”) that nobody knows, so nobody has an advantage. Using himself as the subject, he memorized a list, relearned it after different delays, and used “how much time relearning saved compared to the first time” (the savings method) to measure how much memory remained.</p>
+      </div>
+    </div>
+    <p>He wrote up his results in <i>Über das Gedächtnis</i> (<i>Memory</i>) in 1885. The conclusion: forgetting goes <b>fast first, then slow</b>, with the steepest drop right after learning and an ever flatter curve afterward. In 2015 Murre and Dros redid the experiment with a similar method, and the results resembled Ebbinghaus’s original data; they also noted that the curve may have a small rebound near 24 hours.</p>
+    <p>Since forgetting is fast, the remedy is to <b>review before it is forgotten</b>. Cognitive psychology has since found the “spacing effect” again and again: spreading review over multiple points in time sticks better than repeating all at once. For a level designer, translated: a mechanic that has been taught should come back a few levels later in a new guise.</p>
+    <div class="timeline">
+      <div class="ev hasimg"><span data-illus="c11_ebbing"></span><div><b class="yr">1885</b> Ebbinghaus publishes <i>Über das Gedächtnis</i>, measuring forgetting with nonsense syllables and the “savings method.”</div></div>
+      <div class="ev hasimg"><span data-illus="c11_cepeda"></span><div><b class="yr">2006</b> A meta-analysis by Cepeda and colleagues of 184 articles, 317 experiments and 839 assessments: spaced review retains better, and the best interval lengthens with “how long you need to remember.”</div></div>
+      <div class="ev hasimg"><span data-illus="c11_murre"></span><div><b class="yr">2015</b> Murre and Dros publish a replication of Ebbinghaus’s forgetting curve, with results similar to the original data.</div></div>
+    </div>
+  </div>
+  <p><b>Guess first, then look at the curve.</b> You just learned a new trick and <b>don’t review</b>. How much do you think will remain after 1 day and after 7 days? Drag the sliders, press “Reveal,” and compare with a <b>sketch</b> exponential forgetting curve (real speed varies with content and person; look only at the shape).</p>
+  <div class="board">
+    <label class="ctl">Remaining after 1 day <output id="c11_g1o">50%</output></label><input type="range" id="c11_g1" min="0" max="100" value="50">
+    <label class="ctl">Remaining after 7 days <output id="c11_g7o">30%</output></label><input type="range" id="c11_g7" min="0" max="100" value="30">
+    <button class="btn green" id="c11_gv">🔍 Reveal the sketch curve</button>
+    <svg viewBox="0 0 610 250" width="100%" role="img" aria-label="Your guess and the sketch forgetting curve">
+      <rect x="64" y="14" width="480" height="170" fill="#fffef7" stroke="#2b2b3a" stroke-width="3"/>
+      <g stroke="#e6dcc3" stroke-width="2"><line x1="64" y1="99" x2="544" y2="99"/></g>
+      <polyline id="c11_gc" fill="none" stroke="#3aa655" stroke-width="5" stroke-linejoin="round" style="display:none"/>
+      <polyline id="c11_gg" fill="none" stroke="#ff7a59" stroke-width="4" stroke-dasharray="7 5" stroke-linejoin="round"/>
+      <g id="c11_gd" fill="#ffe58a" stroke="#2b2b3a" stroke-width="2.5"></g>
+      <text x="56" y="26" text-anchor="end" font-size="17">100%</text><text x="56" y="184" text-anchor="end" font-size="17">0</text>
+      <g font-size="17" text-anchor="middle"><text x="64" y="208">0</text><text x="184" y="208">3 days</text><text x="304" y="208">6 days</text><text x="424" y="208">9 days</text><text x="544" y="208">12 days</text></g>
+      <text x="304" y="238" text-anchor="middle" font-size="18">Days →</text>
+    </svg>
+    <p class="small">Orange dashed line = your guess, green line = sketch curve.</p>
+    <div class="msg" id="c11_gm">Drag the sliders first, then reveal.</div>
+  </div>
+
+  <!-- 4 -->
+  <div class="sec"><span class="n">4</span><h2><span class="tag why">Why it works</span>Put it in a safe place first: keep the cost of failure small</h2></div>
+  <div class="withimg rev">
+    <span data-illus="c11_padded"></span>
+    <div>
+      <p>Think back to that small pit in 1-1 with a floor. Fall in, and you lose nothing: just climb out and jump again. This is no coincidence: when a new thing first appears, letting the player afford to fail is the precondition for teaching to work at all.</p>
+      <p>Remember the kitten pouncing on the ball of yarn? Missing doesn’t mean going hungry. One explanation for why the young spend so much time on “useless” roughhousing is that play lets them rehearse, where the cost of failing is very low, the skills they will need later.</p>
+      <p>A level’s first puzzle is in fact the player’s first “playground.”</p>
+    </div>
+  </div>
+  <div class="why-box">
+    <h3>Low-cost trial and error: the other face of play</h3>
+    <p>The American psychologist Jerome Bruner argued in a 1972 paper that one reason childhood is so long is to give the young time to try out all kinds of combinations without serious consequences, and play is just such a “test plot.” The 2001 review by Špinka and colleagues mentioned earlier also stresses that animals at play often handicap themselves on purpose and create small mishaps, as if training a flexible response to the unexpected.</p>
+    <p>Applied to levels, the meaning is plain: <b>the lower the cost of failing, the more the player dares to try, and the faster they learn</b>. The cost includes whether the retry button is visible, whether you must walk a long way again, and whether you lose things. Keep the cost of the first few failures as low as possible, and raise it once the player has the skill.</p>
+    <p>To be clear, whether play really has this function is still debated in the field; what is borrowed here is the relatively safe part, that “low-cost trial and error helps learning.”</p>
+    <div class="src">Sources: Jerome S. Bruner, “The nature and uses of immaturity,” <i>American Psychologist</i> 27(8) (1972); Špinka, Newberry &amp; Bekoff, “Mammalian play: training for the unexpected,” <i>The Quarterly Review of Biology</i> 76(2): 141–168 (2001); for the level practice, see the retelling of 1-1 above.</div>
+  </div>
+  <div class="eg" data-ic="🕳️"><span data-illus="c11_firstpit"></span><div class="egt"><b>The first pit in 1-1 has a floor</b>: falling in just means climbing back. Only once you can jump does a truly bottomless pit appear. The penalty rises along with the skill.</div></div>
+  <div class="eg" data-ic="✈️"><span data-illus="c11_simulator"></span><div class="egt"><b>A flight simulator</b>: pilots practice emergency landings in the simulator, and a mistake just blacks out the screen. The truly deadly things are first practiced in a place where nobody dies.</div></div>
+  <div class="eg bad" data-ic="☠️"><span data-illus="c11_onehit"></span><div class="egt"><b>One hit kills on first touching a new hazard, then a 30-second respawn animation</b>: the player never gets a chance to “just try it,” every trial and error costs a fortune, so they tread timidly and learn slower.</div></div>
+
+  <!-- 5 -->
+  <div class="sec"><span class="n">5</span><h2><span class="tag why">Why it works</span>Just within reach: the zone of proximal development and scaffolding</h2></div>
+  <div class="withimg">
+    <span data-illus="c11_rungs"></span>
+    <div>
+      <p>Teaching a friend who has never played games, you wouldn’t make them fight a boss right away. You’d let them wander around open ground first, then add a slow-moving enemy, then two… You’ve actually been doing the same thing the whole time: making each step “a little more” than they can do now.</p>
+      <p>Too easy and they get bored, too hard and they give up. What teaches the most is the stretch in the middle.</p>
+      <p>Psychology gave this stretch a name long ago.</p>
+    </div>
+  </div>
+  <div class="why-box">
+    <h3>The zone of proximal development (ZPD), scaffolding, and “learning by doing”</h3>
+    <p>The Soviet psychologist Lev Vygotsky split tasks into three kinds: those in the <span class="term" tabindex="0" data-def="Zone of proximal development (ZPD): the range of tasks that can’t be done alone but can be done with hints or help, where learning mainly happens.">zone of proximal development</span> (doable with a little help), those already mastered, and those far beyond ability. Learning mainly happens in the first. Later, Wood, Bruner and Ross (1976) used “<span class="term" tabindex="0" data-def="Scaffolding: temporary support given when the learner can’t reach, such as a safe environment or hints, gradually withdrawn as they grow skilled.">scaffolding</span>” for <b>temporary help that gets taken away</b>. In games it is a safe field, a slowed-down enemy, a highlighted hint.</p>
+    <p>Seymour Papert stressed learning in the process of doing and playing with your hands; James Gee summed up a set of “learning principles of good games,” such as “well-ordered problems” (early problems lay the groundwork for later ones) and “pleasantly frustrating” (hard, but feeling doable). The mainstream view in educational psychology is that, for beginners, <b>doing it themselves</b> under guidance is usually better than just listening.</p>
+    <p>“Introduce → practice → vary” is the game version of scaffolding: the scaffolding is thickest at introduction (safe, alone), slowly comes down during practice, and is almost gone at variation.</p>
+    <div class="src">Sources: Vygotsky, <i>Mind in Society</i> (Harvard UP, English edition 1978); Wood, D., Bruner, J. S. &amp; Ross, G. (1976). The role of tutoring in problem solving. <i>Journal of Child Psychology and Psychiatry</i>, 17(2), 89–100 (<a href="https://pubmed.ncbi.nlm.nih.gov/932126/">PubMed</a>); Papert, <i>Mindstorms</i> (1980); Gee, <i>What Video Games Have to Teach Us About Learning and Literacy</i> (2003). The term “scaffolding” comes from the paper by Wood et al. and only later became linked with the ZPD.</div>
+  </div>
+  <div class="card">
+    <svg viewBox="0 0 780 270" width="100%" role="img" aria-label="Task difficulty in three bands from left to right: already mastered, zone of proximal development, too hard, clickable">
+      <g class="c11_zone" data-i="0" tabindex="0" role="button" aria-label="Already mastered"><g class="rough" stroke="#2b2b3a" stroke-width="4"><rect class="c11_zb" x="20" y="30" width="230" height="120" fill="#eaf9e4"/></g>
+        <text x="135" y="82" font-size="24" text-anchor="middle" fill="#2b2b3a">Mastered</text><text x="135" y="116" font-size="18" text-anchor="middle" fill="#3f3f50">Too easy: boring</text></g>
+      <g class="c11_zone" data-i="1" tabindex="0" role="button" aria-label="Zone of proximal development"><g class="rough" stroke="#2b2b3a" stroke-width="4"><rect class="c11_zb" x="250" y="30" width="290" height="120" fill="#fff7cf"/></g>
+        <text x="395" y="74" font-size="26" text-anchor="middle" fill="#2b2b3a"><tspan font-size="15">Zone of proximal development</tspan></text><text x="395" y="106" font-size="18" text-anchor="middle" fill="#3f3f50">doable with a little hint</text><text x="395" y="130" font-size="18" text-anchor="middle" fill="#3f3f50">learns the most</text></g>
+      <g class="c11_zone" data-i="2" tabindex="0" role="button" aria-label="Too hard"><g class="rough" stroke="#2b2b3a" stroke-width="4"><rect class="c11_zb" x="540" y="30" width="220" height="120" fill="#ffe9ef"/></g>
+        <text x="650" y="82" font-size="24" text-anchor="middle" fill="#c0282d">Too hard</text><text x="650" y="116" font-size="18" text-anchor="middle" fill="#3f3f50">can’t do it: give up</text></g>
+      <g class="rough" stroke="#2b2b3a" stroke-width="4" fill="none" stroke-linecap="round"><path d="M20 190 H752 M740 180 l12 10 -12 10"/></g>
+      <text x="20" y="236" font-size="18" fill="#2b2b3a">Task difficulty →</text>
+      <text x="760" y="236" font-size="16" text-anchor="end" fill="#3f3f50">👆 Click a band to see its note</text>
+    </svg>
+    <div class="c11_out" id="c11_zmsg">Click one of the bands above and see what kind of level belongs there.</div>
+  </div>
+  <div class="eg" data-ic="🎯"><span data-illus="c11_adaptive"></span><div class="egt"><b>Adaptive hints</b>: when the player fails repeatedly, give a bit more hint (the scaffolding thickens); when they succeed repeatedly, take the hint away and let them finish alone.</div></div>
+  <div class="eg" data-ic="🏊"><span data-illus="c11_floatboard"></span><div class="egt"><b>Learning to swim</b>: first hold a kickboard, then switch to a flotation belt, and finally wear nothing. The help is taken away step by step until the person floats on their own.</div></div>
+  <div class="eg bad" data-ic="⬆️"><span data-illus="c11_forever"></span><div class="egt"><b>Scaffolding that never comes down</b>: a big “Jump!” arrow always lit on the ground, so the player learns to depend on the hint and can’t play once it’s switched off.</div></div>
+
+  <!-- 6 -->
+  <div class="sec"><span class="n">6</span><h2><span class="tag why">Why it works</span>Teach one at a time: cognitive load</h2></div>
+  <div class="withimg rev">
+    <span data-illus="c11_juggle"></span>
+    <div>
+      <p>Take several phone calls at once, memorize several new names, and solve a problem all at the same time, and most likely everything gets muddled. When a game tutorial pops up “jump, dash, grapple, inventory, crafting” all at once, the player’s reaction is often: can’t remember any of it, and closes it.</p>
+      <p>Remember how too much information on an interface leaves people at a loss? Teaching has the same flaw: the more new things appear at once, the less the player’s head can hold.</p>
+    </div>
+  </div>
+  <div class="why-box">
+    <h3>Cognitive load theory</h3>
+    <p>The amount of information a person can hold and process in their head at once is very limited, and this “temporary store” is called <span class="term" tabindex="0" data-def="Working memory: the brain’s limited space for temporarily holding and processing information, with room for only a few “units” at a time.">working memory</span>. Miller (1956) stressed that what people can hold is about 7±2 “chunks,” and Cowan (2001) argued that, with factors like chunking excluded, it is closer to <b>about 4 chunks</b>. The exact figure is disputed, while “very limited” is the consensus.</p>
+    <p>John Sweller’s 1988 paper pointed out that conventional problem solving uses up a lot of working memory, leaving little to spare for “learning,” and this later grew into <span class="term" tabindex="0" data-def="Cognitive load theory: when the total information to process while learning exceeds working memory, learning drops sharply; instructional design should minimize unnecessary burden.">cognitive load theory</span>: the more new things are introduced at once and the more complex each is, the higher the total load, and the worse the learning.</p>
+    <p>Conversely there is good news: skilled people <b>pack several operations into one chunk</b>. A veteran has long seen “move + jump” as one thing, so they can layer new things on faster.</p>
+    <div class="src">Sources: Miller (1956), <i>Psychological Review</i> 63(2), 81–97; Cowan (2001), <i>Behavioral and Brain Sciences</i> 24(1), 87–114; Sweller (1988), <i>Cognitive Science</i> 12(2), 257–285. The curves in the “learning curve lab” later are a <b>sketch model</b> made up for this course to show the shape, not data from these papers.</div>
+  </div>
+  <div class="eg" data-ic="🚪"><span data-illus="c11_portal"></span><div class="egt"><b>One room, one thing</b>: a teaching level that is often praised has each of its first few rooms introduce a single mechanic (like the start of <i>Portal</i>), layering the next once it is learned.</div></div>
+  <div class="eg" data-ic="👵"><span data-illus="c11_grandma"></span><div class="egt"><b>Teaching an elder to use a smartphone</b>: today teach only “making a call,” next time “sending a picture.” Explain ten functions in one go and all you get is “I can’t remember.”</div></div>
+  <div class="eg bad" data-ic="🧠"><span data-illus="c11_expert"></span><div class="egt"><b>A near-miss</b>: “newcomers can be taught only one at a time” does not mean “veterans too.” Players familiar with similar games have packed “move + jump” into one chunk and can layer new things faster.</div></div>
+
+  <!-- 7 -->
+  <div class="sec"><span class="n">7</span><h2><span class="tag why">Why it works</span>Come back after a while: spaced repetition and deliberate practice</h2></div>
+  <div class="withimg">
+    <span data-illus="c11_rusty"></span>
+    <div>
+      <p>You learned the “dash jump” in level one, didn’t use it for the next ten levels, and in level eleven you’re asked to use it and your hands have probably gone rusty. Conversely, if every few levels it appears in a new guise, you keep remembering it.</p>
+      <p>This matches the forgetting curve described earlier: forgetting is fast first and slow later, so the sooner the first review comes, the better the return.</p>
+    </div>
+  </div>
+  <div class="why-box">
+    <h3>The forgetting curve, the spacing effect and deliberate practice</h3>
+    <p>Ebbinghaus (1885) found that without review, memory decays fast first and slow later, often simplified to the exponential curve R = e^(−t/S) (R is how much is remembered, and S is “stability,” the larger the slower the forgetting). A fairly solid finding in cognitive psychology is the <span class="term" tabindex="0" data-def="Spacing effect: spreading review across several time points with gradually lengthening intervals is remembered longer than one block of massed repetition.">spacing effect</span>: the 2006 meta-analysis by Cepeda and colleagues pooled 184 articles and 317 experiments and found spaced review beats massed review, with the “best interval” growing longer as the time you need to remember grows.</p>
+    <p>In 1993, Ericsson and colleagues, studying the development of experts, proposed <span class="term" tabindex="0" data-def="Deliberate practice: practice aimed at one’s weak points, at a difficulty slightly beyond the comfort zone, with a clear goal and immediate feedback.">deliberate practice</span>: not mere repetition, but practice <b>slightly above the current level</b> and with feedback, which echoes the zone of proximal development in the previous section.</p>
+    <p>“An old mechanic comes back after a while” puts spaced repetition into a level: learn the dash jump in level 2, reuse it simply in level 3, add a twist in level 6, and bring it back as a combination in level 12…</p>
+    <div class="src">Sources: Ebbinghaus, <i>Über das Gedächtnis</i> (1885); Murre &amp; Dros (2015), <i>PLoS ONE</i> 10(7): e0120644 (replication); Cepeda, Pashler, Vul, Wixted &amp; Rohrer (2006), <i>Psychological Bulletin</i> 132, 354–380; Ericsson, Krampe &amp; Tesch-Römer (1993), <i>Psychological Review</i> 100(3), 363–406. Exponential decay is a <b>rough approximation</b> of real forgetting.</div>
+  </div>
+  <div class="eg" data-ic="🦘"><span data-illus="c11_dashagain"></span><div class="egt"><b>An old mechanic returns a few levels later</b>: learn the dash jump in level 2, reuse it simply across a platform gap in level 4, combine it with moving platforms in level 8, and make it one step of a boss fight in level 15.</div></div>
+  <div class="eg" data-ic="📖"><span data-illus="c11_vocab"></span><div class="egt"><b>A vocabulary app</b>: words that are “about to be forgotten” are pushed to you again after a longer gap, with each interval longer than the last.</div></div>
+  <div class="eg bad" data-ic="🔁"><span data-illus="c11_massed"></span><div class="egt"><b>The same mechanic tested ten times in one level</b>: it is familiar right then, but forgotten a few levels later, and the player quickly gets bored.</div></div>
+
+  
+  <div class="sec"><span class="n">8</span><h2><span class="tag how">Try it</span>Play with it: build a little level that “teaches”</h2></div>
+  <p>A 10×7 grid. Pick a tool, then click or drag on cells to draw. <b>Goal: a little level that can be cleared, has risk and reward, and goes “safe first, dangerous later.”</b> Press “Check level,” and the system counts traps in the <b>left, middle and right thirds</b> to see whether you achieved “introduce → practice → vary”; you can also load an example first to compare.</p>
+  <div class="board">
+    <div class="palette" id="palette"></div>
+    <div id="grid"></div>
+    <div class="c11_thirds"><div>① Introduce</div><div>② Practice</div><div>③ Vary</div></div>
+    <div style="text-align:center;margin-top:6px">
+      <button class="btn green" id="check">✔ Check level</button>
+      <button class="btn alt" id="play">▶ Test play</button>
+      <button class="btn pink" id="clear">Clear</button>
+      <button class="btn" id="c11_pgood">📘 Load the “gradual” example</button>
+      <button class="btn" id="c11_pbad">📕 Load the “firing from the start” counterexample</button>
+    </div>
+    <div class="pad" id="pad" style="display:none">
+      <span></span><button class="btn" data-d="U">↑</button><span></span>
+      <button class="btn" data-d="L">←</button><button class="btn" data-d="D">↓</button><button class="btn" data-d="R">→</button>
+    </div>
+    <div class="msg" id="lmsg">Draw a level first.</div>
+    <span class="stat">🪙 <b id="coins">0</b></span><span class="stat">Steps <b id="steps">0</b></span>
+  </div>
+  <div class="sticky">Try it: make a level that can be cleared, with no traps in the introduction segment, trap counts that don’t drop from one segment to the next, and at least one coin right next to a trap, then press “Check level.”<span class="c11_ok" id="c11_t2" hidden> ✅ Done: your level has the steps of “introduce → practice → vary” and one choice to take a risk.</span></div>
+  <p class="small">The checking rules are a teaching simplification: the 10 columns are split into three segments of 4/3/3 and the traps of each are counted; the ideal “introduction” segment has no traps, and risk afterward shouldn’t decline. Real levels are of course more complex; this just lets you verify “safe first, dangerous later” by hand.</p>
+
+  
+  <div class="sec"><span class="n">9</span><h2><span class="tag how">Try it</span>Learning-curve lab: how many to teach at once? How long before review?</h2></div>
+  <p>Two “whys” each come with a small experiment; choose one:</p>
+  <div class="board">
+    <div class="c11_mode"><button class="chip on" id="c11_m0">🧠 How many at once (cognitive load)</button><button class="chip" id="c11_m1">⏳ How long before review (spaced repetition)</button></div>
+    <div class="c11_pane on" id="c11_p0">
+      <label class="ctl">Number of new mechanics introduced at once, N<output id="c11_no">3</output></label>
+      <input type="range" id="c11_n" min="1" max="6" step="1" value="3">
+      <label class="ctl">Complexity of one mechanic (1 = like “jump,” 3 = like a “crafting system”)<output id="c11_do">1.5</output></label>
+      <input type="range" id="c11_d" min="1" max="3" step="0.5" value="1.5">
+      <svg viewBox="0 0 610 250" width="100%" role="img" aria-label="Sketch curve of the number of mechanics introduced at once against player understanding">
+        <rect x="64" y="14" width="480" height="170" fill="#fffef7" stroke="#2b2b3a" stroke-width="3"/>
+        <g stroke="#e6dcc3" stroke-width="2"><line x1="64" y1="99" x2="544" y2="99"/></g>
+        <polyline id="c11_line" fill="none" stroke="#e5484d" stroke-width="5" stroke-linejoin="round"/>
+        <g id="c11_pt"></g>
+        <text x="56" y="26" text-anchor="end" font-size="17">100%</text><text x="56" y="184" text-anchor="end" font-size="17">0</text>
+        <g id="c11_xt" font-size="17" text-anchor="middle"></g>
+        <text x="304" y="238" text-anchor="middle" font-size="18">Number of new things taught at once → (vertical axis: player understanding)</text>
+      </svg>
+      <div><span class="stat">Total load now <b id="c11_load">-</b></span><span class="stat">Taught together: understanding <b id="c11_u1">-</b></span><span class="stat">Taught one by one: understanding of each <b id="c11_u2">-</b></span></div>
+      <div class="msg" id="c11_cm"></div>
+      <p class="small"><b>Sketch model:</b> total load = N × complexity; understanding = 100% ÷ (1 + e^(1.1×(load − 5))), that is, understanding falls to half at a load of about 5 “units.” The numbers are made up for this course to show the shape of the curve and were not measured in experiments; players familiar with similar games “pack” several operations, and the whole curve shifts right.</p>
+      <div class="sticky">Try it: set the complexity to 2 or 3 and find the largest number that still keeps understanding above 50%.<span class="c11_ok" id="c11_t3" hidden> ✅ Done: the higher the complexity, the fewer you can teach at once.</span></div>
+    </div>
+    <div class="c11_pane" id="c11_p1">
+      <label class="ctl">Review interval (every few “days” the old mechanic appears once; think of “days” as “a number of levels”)<output id="c11_io">1</output></label>
+      <input type="range" id="c11_i" min="1" max="14" step="1" value="1">
+      <label class="ctl">Number of reviews<output id="c11_ro">5</output></label>
+      <input type="range" id="c11_r" min="0" max="8" step="1" value="5">
+      <svg viewBox="0 0 610 250" width="100%" role="img" aria-label="Sketch curve of memory strength over time">
+        <rect x="64" y="14" width="480" height="170" fill="#fffef7" stroke="#2b2b3a" stroke-width="3"/>
+        <g stroke="#e6dcc3" stroke-width="2"><line x1="64" y1="99" x2="544" y2="99"/></g>
+        <polyline id="c11_g" fill="none" stroke="#9a9a9a" stroke-width="3" stroke-dasharray="6 5"/>
+        <polyline id="c11_f" fill="none" stroke="#3aa655" stroke-width="5" stroke-linejoin="round"/>
+        <g id="c11_rv" fill="#ffe58a" stroke="#2b2b3a" stroke-width="2.5"></g>
+        <text x="56" y="26" text-anchor="end" font-size="17">100%</text><text x="56" y="184" text-anchor="end" font-size="17">0</text>
+        <g id="c11_ft" font-size="17" text-anchor="middle"></g>
+        <text x="304" y="238" text-anchor="middle" font-size="18">Day →</text>
+      </svg>
+      <p class="small">Gray dashed line = never reviewed, green line = your review schedule, yellow dots = the moments of review.</p>
+      <div><span class="stat">Memory on day 30 <b id="c11_m30">-</b></span><span class="stat">Lowest point <b id="c11_min">-</b></span><span class="stat">Days below 50% <b id="c11_low">-</b></span></div>
+      <div class="msg" id="c11_fm"></div>
+      <p class="small"><b>Sketch model:</b> initial stability S = 3 days; each review brings memory back to 100% and doubles the stability. The real effect of spaced repetition varies with person and content, and the multiplier is not fixed either. In games “review” is not necessarily repetition; more often it is <b>using it again with a twist</b>.</p>
+      <div class="sticky">Try it: adjust the interval and the number of reviews so that memory on day 30 stays above 60% and never dips below 50% along the way.<span class="c11_ok" id="c11_t4" hidden> ✅ Done: every review comes just before it’s forgotten.</span></div>
+    </div>
+  </div>
+
+  <div class="misc">
+    <h3>Common misconceptions</h3>
+    <ul>
+      <li><b>“Teaching means popping up text instructions.”</b> Text is often the last resort; “demonstrating” with terrain, layout and safe trial and error is usually more effective.</li>
+      <li><b>“The harder, the more you learn.”</b> Too hard triggers giving up; learning depends on “just within reach,” not on “the hardest.”</li>
+      <li><b>Tidy percentages like “lecture keeps 10%, learning by doing keeps 90%.”</b> The “learning pyramid” numbers going around online have no reliable source and shouldn’t be taken at face value; all that can be said is that “active participation is usually better than passive listening.”</li>
+      <li><b>“Spaced repetition = mindless repeated repetition.”</b> The key is <b>spacing in time</b> and often <b>using it again with a twist</b>, not repeating one thing ten times.</li>
+      <li><b>“Being able to afford failure means no penalty.”</b> The cost rises along with skill: small at first, higher once learned, or the challenge has no weight.</li>
+    </ul>
+  </div>
+  <div class="reflect">
+    <h3>Reflection and debate</h3>
+    <p>The zone of proximal development is a <b>qualitative concept</b>, and it is hard to measure precisely “how far counts as within reach”; the term “scaffolding” comes from the 1976 paper by Wood et al. and was only later linked to the ZPD, and some scholars criticize this merging as too casual.</p>
+    <p>Kirschner, Sweller and Clark (2006) argued that for novices, nearly unguided discovery teaching is worse than explicit instruction. This is their view, and it drew rebuttals too; the three-step method here counts as “guided exploration.” Gee’s learning principles come from analysis and observation of games and are more like a thought-provoking theory than the conclusion of a strict controlled experiment.</p>
+    <p>Research on deliberate practice is disputed too: in 2019 Macnamara and Maitra tried to replicate the 1993 violinist study and found the explanatory power of practice much smaller than the original reported. Figures such as cognitive load’s “4 chunks” are likewise disputed, and players’ experience varies widely.</p>
+    <p>Many accounts of the “design intent” of Mario 1-1 come from media retellings and later interpretation, and don’t necessarily equal the design documents of the time. What do you think: if a player just likes “being thrown into the deep end,” should a teaching level still look after them?</p>
+  </div>
+
+  <div class="key">
+    <h3>Key points</h3>
+    <ul>
+      <li>The three teaching steps: <b>introduce (safe) → practice (with risk) → vary (combine / reverse)</b>.</li>
+      <li><b>Why they were invented:</b> players don’t read manuals, so the level itself becomes the teacher (wordless teaching); and people forget quickly, so old mechanics are brought back after a while in a new guise.</li>
+      <li>First <b>make sure it can be cleared</b>, then tune the difficulty; place <b>rewards and risk</b>; give the level <b>rhythm</b> (tense → rest → tenser).</li>
+      <li><b>Why it works:</b> put new things first where failure is cheap; keep the challenge in the “zone of proximal development”; <b>teach one at a time</b> to avoid cognitive overload; and <b>bring old mechanics back after a while</b> to fight forgetting.</li>
+    </ul>
+  </div>
+  <div class="tldr">A good teaching level = introduce first where failure costs very little, make every step a little more than the player can do now, add only one new thing at a time, and bring the old skills back on stage now and then.</div>
+
+  <div class="sec"><span class="n">10</span><h2><span class="tag think">Practice</span>Quick quiz</h2></div>
+  <div id="quiz"></div>
+
+  <div class="sec"><span class="n">11</span><h2><span class="tag how">Your design</span>Write your first three rooms</h2></div>
+  <div class="card o">
+    <p>Pick a <b>new mechanic</b> you want to teach players (say “hold to jump higher”). Using the three-step method, write the first three rooms or scenes: introduce, practice, vary; then one sentence: <b>after how many levels, and with what new twist, does it come back once more?</b></p>
+    <textarea rows="5" data-save="ch11" placeholder="Mechanic: double jump&#10;① Introduce: a slightly high step that can only be climbed with a double jump, with no danger in falling&#10;② Practice: three steps in a row, each higher than the last&#10;③ Vary: the steps move / spikes below&#10;Review: use it once more in the boss fight of level 6"></textarea>
+    <p class="small">✍️ Saved automatically in your browser.</p>
+  </div>
+</main>
+<script src="../js/illus.js"></script>
+<script src="../js/illus-ch11.js"></script>
+<script src="../js/en/illus.js"></script>
+<script src="../js/en/illus-lib.js"></script>
+<script src="../js/en/illus-ch11.js"></script>
+<script src="../js/common.js"></script>
+<script>
+const $ = id => document.getElementById(id);
+const done = id => { const el = $(id); if (el) el.hidden = false; };
+const COLS = 10, ROWS = 7;
+const TOOLS = { wall: ["🧱 Wall", "#"], coin: ["🪙 Coin", "c"], spike: ["🔥 Trap", "x"], start: ["🙂 Start", "s"], goal: ["🚩 Goal", "g"], erase: ["🧽 Eraser", "."] };
+const ICON = { "#": "", c: "🪙", x: "🔥", s: "🙂", g: "🚩", ".": "" };
+let tool = "wall", map = Array.from({ length: ROWS }, () => Array(COLS).fill("."));
+map[3][0] = "s"; map[3][9] = "g";
+const grid = $("grid"), cells = [];
+for (let r = 0; r < ROWS; r++) for (let c = 0; c < COLS; c++) { const d = document.createElement("div"); d.dataset.r = r; d.dataset.c = c; grid.appendChild(d); cells.push(d); }
+Object.keys(TOOLS).forEach(k => {
+  const b = document.createElement("button"); b.className = "chip" + (k === tool ? " on" : ""); b.textContent = TOOLS[k][0];
+  b.onclick = () => { tool = k; document.querySelectorAll("#palette .chip").forEach(x => x.classList.remove("on")); b.classList.add("on"); }; $("palette").appendChild(b);
+});
+let playing = false, pos = null, coins = 0, steps = 0;
+function render() {
+  cells.forEach(d => {
+    const r = +d.dataset.r, c = +d.dataset.c, v = map[r][c];
+    d.className = v === "#" ? "wall" : ""; d.textContent = ICON[v];
+    if (playing && pos.r === r && pos.c === c) d.textContent = "🙂";
+    else if (playing && v === "s") d.textContent = "";
+  });
+}
+function paint(d) {
+  if (playing || !d || d.dataset.r === undefined) return;
+  const r = +d.dataset.r, c = +d.dataset.c, t = TOOLS[tool][1];
+  if (t === "s" || t === "g") for (let i = 0; i < ROWS; i++) for (let j = 0; j < COLS; j++) if (map[i][j] === t) map[i][j] = ".";
+  map[r][c] = t; render();
+}
+let down = false;
+grid.addEventListener("pointerdown", e => { down = true; paint(e.target); });
+grid.addEventListener("pointerover", e => down && paint(e.target));
+window.addEventListener("pointerup", () => (down = false));
+function blank() { const m = Array.from({ length: ROWS }, () => Array(COLS).fill(".")); m[3][0] = "s"; m[3][9] = "g"; return m; }
+$("clear").onclick = () => { backup = null; playing = false; $("pad").style.display = "none"; map = blank(); render(); $("lmsg").textContent = "Cleared."; };
+const PRESETS = {
+  good: ["##########", "#.....x..#", "#.######.#", "s.c..x.c.g", "#.######.#", "#.....c.x#", "##########"],
+  bad: [".........." , ".xxx.....c", ".xxx......", "sxxx.....g", ".xxx......", ".xxx.....c", ".........."]
+};
+function loadPreset(k, msg) {
+  backup = null; playing = false; $("pad").style.display = "none";
+  map = PRESETS[k].map(row => row.split("")); render(); $("lmsg").textContent = msg;
+}
+$("c11_pgood").onclick = () => loadPreset("good", "Loaded the “gradual” example: press “Check level” to see the three-segment count, then change it yourself.");
+$("c11_pbad").onclick = () => loadPreset("bad", "Loaded the counterexample: the traps are heaped at the very start. Press “Check level” and see what’s wrong.");
+
+function find(ch) { for (let r = 0; r < ROWS; r++) for (let c = 0; c < COLS; c++) if (map[r][c] === ch) return { r, c }; return null; }
+function bfs(avoidTraps) {
+  const s = find("s"), g = find("g"); if (!s || !g) return -1;
+  const dist = {}, q = [s]; dist[s.r + "," + s.c] = 0;
+  while (q.length) {
+    const p = q.shift();
+    if (p.r === g.r && p.c === g.c) return dist[p.r + "," + p.c];
+    [[1, 0], [-1, 0], [0, 1], [0, -1]].forEach(([dr, dc]) => {
+      const r = p.r + dr, c = p.c + dc, k = r + "," + c;
+      if (r < 0 || c < 0 || r >= ROWS || c >= COLS || dist[k] !== undefined) return;
+      const v = map[r][c]; if (v === "#" || (avoidTraps && v === "x")) return;
+      dist[k] = dist[p.r + "," + p.c] + 1; q.push({ r, c });
+    });
+  }
+  return -1;
+}
+function count(ch) { return map.flat().filter(v => v === ch).length; }
+$("check").onclick = () => {
+  const s = find("s"), g = find("g");
+  if (!s || !g) return ($("lmsg").textContent = "⚠️ You need a start 🙂 and a goal 🚩.");
+  const d = bfs(true), dAny = bfs(false), coinsN = count("c"), traps = count("x");
+  let t = [], stairs = false;
+  if (dAny < 0) t.push("❌ It can’t be cleared! The walls block the way.");
+  else if (d < 0) t.push("⚠️ It can be cleared only by crossing a trap. That is only “you must get hurt”; leave a safe route.");
+  else t.push("✅ It can be cleared! The shortest safe path is " + d + " steps.");
+  t.push("🪙 " + coinsN + " coins, 🔥 " + traps + " traps.");
+  const seg = [0, 0, 0];
+  for (let r = 0; r < ROWS; r++) for (let c = 0; c < COLS; c++) if (map[r][c] === "x") seg[c <= 3 ? 0 : c <= 6 ? 1 : 2]++;
+  t.push("Traps per segment: introduction " + seg[0] + " practice " + seg[1] + " variation " + seg[2] + ".");
+  if (traps === 0) t.push("Tip: with no traps there is no risk, hence no choice, and nothing to “teach.”");
+  else {
+    if (seg[0] === 0) t.push("👍 No traps in the introduction segment: players can get used to the controls in a safe place first.");
+    else t.push("⚠️ There are already " + seg[0] + " traps in the introduction segment: a newcomer is punished before they have learned, and the scaffolding is too thin.");
+    if (seg[2] >= seg[1] && seg[1] >= seg[0] && seg[2] > seg[0]) { t.push("👍 Risk doesn’t drop from segment to segment: the steps of introduce → practice → vary are there."); stairs = true; }
+    else if (seg[0] > seg[2]) t.push("⚠️ Risk is arranged “backwards”: it gets easier the further on you go, and the player’s skill growth isn’t used.");
+  }
+  if (coinsN === 0) t.push("Tip: with no coins, the player has no motive to “risk it to get one.”");
+  let risky = 0;
+  for (let r = 0; r < ROWS; r++) for (let c = 0; c < COLS; c++) if (map[r][c] === "c") {
+    let near = false;
+    [[1, 0], [-1, 0], [0, 1], [0, -1]].forEach(([dr, dc]) => { const rr = r + dr, cc = c + dc; if (rr >= 0 && cc >= 0 && rr < ROWS && cc < COLS && map[rr][cc] === "x") near = true; });
+    if (near) risky++;
+  }
+  if (coinsN && traps) t.push(risky ? "👍 There are " + risky + " coins right next to traps: this is the “is the risk worth it” choice." : "Try placing a coin beside a trap to form an “is the risk worth it” choice.");
+  if (dAny >= 0 && d >= 0 && d < 12) t.push("The route is rather short; you can use walls to lengthen it and create rhythm.");
+  $("lmsg").innerHTML = t.join("<br>");
+  if (d >= 0 && traps > 0 && seg[0] === 0 && stairs && risky > 0) done("c11_t2");
+};
+let backup = null;
+function restore() { if (backup) { map = backup; backup = null; } }
+function startPlay() {
+  restore();
+  const s = find("s"); if (!s || !find("g")) return ($("lmsg").textContent = "⚠️ You need a start and a goal.");
+  backup = map.map(r => r.slice()); playing = true; pos = { ...s }; coins = 0; steps = 0; $("coins").textContent = 0; $("steps").textContent = 0;
+  $("pad").style.display = "grid"; $("lmsg").textContent = "Arrow keys / WASD / the buttons below to move."; render();
+}
+$("play").onclick = startPlay;
+const key = { ArrowUp: "U", ArrowDown: "D", ArrowLeft: "L", ArrowRight: "R", w: "U", s: "D", a: "L", d: "R" };
+document.addEventListener("keydown", e => { if (playing && key[e.key]) { e.preventDefault(); go(key[e.key]); } });
+$("pad").querySelectorAll("[data-d]").forEach(b => (b.onclick = () => go(b.dataset.d)));
+function go(dir) {
+  const dr = { U: -1, D: 1, L: 0, R: 0 }[dir], dc = { U: 0, D: 0, L: -1, R: 1 }[dir];
+  const r = pos.r + dr, c = pos.c + dc;
+  if (r < 0 || c < 0 || r >= ROWS || c >= COLS || map[r][c] === "#") return;
+  pos = { r, c }; steps++; $("steps").textContent = steps;
+  const v = map[r][c];
+  if (v === "c") { map[r][c] = "."; coins++; $("coins").textContent = coins; }
+  if (v === "x") { $("lmsg").textContent = "🔥 Stepped on a trap! Back to the start."; const s = find("s"); pos = { ...s }; }
+  if (v === "g") { $("lmsg").textContent = "🎉 Cleared! Steps " + steps + ", coins " + coins + ". Is your level fun?"; playing = false; $("pad").style.display = "none"; restore(); }
+  render();
+}
+render();
+
+(function () {
+  const Z = [
+    "<b>Already mastered</b>: tasks here the player can do with their eyes closed. In a level they can serve only as a warm-up or review, and stay too long and the player gets bored.",
+    "<b>Zone of proximal development</b>: the player can’t do it alone yet, but with a bit of safe terrain, a slowed-down enemy or a hint, they can. The introduction and practice of a new mechanic should both fall here.",
+    "<b>Too hard</b>: out of reach however many hints. The player will feel “this game is broken” and quit. If the difficulty must spike this high, lift them up to it with the earlier levels first."
+  ];
+  document.querySelectorAll(".c11_zone").forEach(z => {
+    const show = () => { $("c11_zmsg").innerHTML = Z[+z.dataset.i]; };
+    z.addEventListener("click", show);
+    z.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); show(); } });
+  });
+})();
+
+(function () {
+  const CARDS = [
+    { k: "A", r: 1, t: "A reward drops from a question-mark block (with no risk at all)", why: "Give a little sweetness first, building the confidence that “bumping things brings good results.”" },
+    { k: "B", r: 2, t: "A single slow-walking monster, which can be jumped over or stomped", why: "A first contact with “danger,” but dodgeable and low in cost." },
+    { k: "C", r: 3, t: "Pipes of different heights (needing jumps of different heights)", why: "Some analysts think this teaches “the longer you hold, the higher you jump,” and failing just means being blocked." },
+    { k: "D", r: 4, t: "A small pit with ground at the bottom (you can fall in and climb out)", why: "A first “falling” risk, but with a very light penalty (per media retellings, the designers did this on purpose)." },
+    { k: "E", r: 5, t: "A bottomless pit (fall in and you fail)", why: "Only after you have learned to jump is the real penalty released." },
+  ];
+  let seq = [];
+  function draw() {
+    $("c11_cards").innerHTML = "";
+    CARDS.forEach((c, i) => {
+      const b = document.createElement("button");
+      b.className = "chip"; b.disabled = seq.includes(i) || seq.length >= 5;
+      b.textContent = c.k + ":" + c.t;
+      b.onclick = () => { seq.push(i); $("c11_res").innerHTML = ""; draw(); };
+      $("c11_cards").appendChild(b);
+    });
+    $("c11_slots").innerHTML = [0, 1, 2, 3, 4].map(i => "<div><b>Slot " + (i + 1) + " of 5</b>" + (seq[i] !== undefined ? CARDS[seq[i]].k + ":" + CARDS[seq[i]].t : "<span class='small'>Click a card above to place it here</span>") + "</div>").join("");
+    $("c11_rev").disabled = seq.length < 5;
+  }
+  $("c11_undo").onclick = () => { seq.pop(); $("c11_res").innerHTML = ""; draw(); };
+  $("c11_reset").onclick = () => { seq = []; $("c11_res").innerHTML = ""; draw(); };
+  $("c11_rev").onclick = () => {
+    let match = 0, out = [];
+    seq.forEach((ci, i) => { if (CARDS[ci].r === i + 1) match++; });
+    out.push("<p><b>Your order:</b>" + seq.map(i => CARDS[i].k).join(" → ") + " <b>The “safe to dangerous” order:</b> A → B → C → D → E matching positions " + match + " / 5.</p>");
+    CARDS.forEach(c => out.push("<p class='" + (seq.indexOf(CARDS.indexOf(c)) + 1 === c.r ? "ok" : "no") + "'><b>" + c.k + "</b> (position " + c.r + "):" + c.why + "</p>"));
+    out.push("<p class='small'>Note: this is a <b>design principle</b> arranged by “rising risk,” not a cell-by-cell record of where each element appears in 1-1. Ordering it differently isn’t necessarily wrong; the point is to ask: <b>is the cost of failing small enough the first time each new thing appears?</b></p>");
+    $("c11_res").innerHTML = out.join("");
+    done("c11_t1");
+  };
+  draw();
+})();
+
+(function () {
+  const S = 3, R = t => Math.exp(-t / S);
+  const X = t => 64 + t / 12 * 480, Y = r => 184 - r * 170;
+  function guess() {
+    const g1 = +$("c11_g1").value / 100, g7 = +$("c11_g7").value / 100;
+    $("c11_g1o").textContent = Math.round(g1 * 100) + "%"; $("c11_g7o").textContent = Math.round(g7 * 100) + "%";
+    $("c11_gg").setAttribute("points", [[0, 1], [1, g1], [7, g7], [12, g7 * Math.exp(-5 / 6)]].map(p => X(p[0]) + "," + Y(p[1])).join(" "));
+    $("c11_gd").innerHTML = [[1, g1], [7, g7]].map(p => "<circle cx='" + X(p[0]) + "' cy='" + Y(p[1]) + "' r='7'/>").join("");
+  }
+  $("c11_g1").oninput = guess; $("c11_g7").oninput = guess; guess();
+  $("c11_gv").onclick = () => {
+    const pts = []; for (let i = 0; i <= 120; i++) pts.push(X(i / 10) + "," + Y(R(i / 10)));
+    $("c11_gc").setAttribute("points", pts.join(" ")); $("c11_gc").style.display = "";
+    const g1 = +$("c11_g1").value, g7 = +$("c11_g7").value, r1 = Math.round(R(1) * 100), r7 = Math.round(R(7) * 100);
+    $("c11_gm").textContent = "Sketch curve: after 1 day about " + r1 + "%, after 7 days about " + r7 + "% (you guessed " + g1 + "% / " + g7 + "%). The point is the shape: steep then flat, dropping fastest in the first day or two, so the first review is best done early. The exact values vary with content and person; don’t take them literally.";
+  };
+})();
+
+(function () {
+  [0, 1].forEach(i => ($("c11_m" + i).onclick = () => {
+    [0, 1].forEach(j => { $("c11_m" + j).classList.toggle("on", i === j); $("c11_p" + j).classList.toggle("on", i === j); });
+  }));
+  const U = load => 100 / (1 + Math.exp(1.1 * (load - 5)));
+  function cog() {
+    const n = +$("c11_n").value, d = +$("c11_d").value;
+    $("c11_no").textContent = n; $("c11_do").textContent = d;
+    const X = k => 64 + (k - 1) / 5 * 480, Y = u => 184 - u / 100 * 170;
+    const pts = [];
+    for (let k = 1; k <= 6; k++) pts.push(X(k) + "," + Y(U(k * d)));
+    $("c11_line").setAttribute("points", pts.join(" "));
+    $("c11_xt").innerHTML = [1, 2, 3, 4, 5, 6].map(k => "<text x='" + X(k) + "' y='208'>" + k + "</text>").join("");
+    $("c11_pt").innerHTML = "<circle cx='" + X(n) + "' cy='" + Y(U(n * d)) + "' r='9' fill='#ffe58a' stroke='#2b2b3a' stroke-width='3'/>";
+    const a = U(n * d), b = U(d);
+    $("c11_load").textContent = (n * d).toFixed(1);
+    $("c11_u1").textContent = a.toFixed(0) + "%";
+    $("c11_u2").textContent = b.toFixed(0) + "%";
+    $("c11_cm").textContent = n === 1 ? "Teaching one at a time: this is already the “one by one” case, so the two numbers are the same." :
+      a < 40 ? "⚠️ Teaching " + n + " together: understanding is only " + a.toFixed(0) + "%, against " + b.toFixed(0) + "% when taught one by one. Split them into different levels." :
+      "The cost of teaching together is still tolerable (" + a.toFixed(0) + "% vs " + b.toFixed(0) + "%), but it is still lower than one by one. Try raising the complexity and see.";
+    if (d >= 2 && a >= 50 && (n === 6 || U((n + 1) * d) < 50)) done("c11_t3");
+  }
+  $("c11_n").oninput = cog; $("c11_d").oninput = cog; cog();
+
+  function curve(interval, reviews) {
+    const T = 30, S0 = 3, K = 2;
+    const rt = []; for (let i = 1; i <= reviews; i++) if (i * interval <= T) rt.push(i * interval);
+    const set = new Set(rt), pts = []; let S = S0, last = 0;
+    for (let i = 0; i <= 300; i++) {
+      const t = i / 10;
+      pts.push([t, Math.exp(-(t - last) / S)]);
+      if (i % 10 === 0 && set.has(t)) { pts.push([t, 1]); S *= K; last = t; }
+    }
+    return { pts, rt };
+  }
+  function forget() {
+    const iv = +$("c11_i").value, rv = +$("c11_r").value;
+    $("c11_io").textContent = iv; $("c11_ro").textContent = rv;
+    const c = curve(iv, rv), base = curve(1, 0).pts, pts = c.pts;
+    const X = t => 64 + t / 30 * 480, Y = r => 184 - r * 170;
+    $("c11_f").setAttribute("points", pts.map(p => X(p[0]) + "," + Y(p[1])).join(" "));
+    $("c11_g").setAttribute("points", base.map(p => X(p[0]) + "," + Y(p[1])).join(" "));
+    $("c11_rv").innerHTML = c.rt.map(t => "<circle cx='" + X(t) + "' cy='" + Y(1) + "' r='6'/>").join("");
+    $("c11_ft").innerHTML = [0, 10, 20, 30].map(t => "<text x='" + X(t) + "' y='208'>" + t + "</text>").join("");
+    const lastR = pts[pts.length - 1][1];
+    let mn = 1, low = 0;
+    pts.forEach(p => { mn = Math.min(mn, p[1]); if (p[1] < 0.5) low++; });
+    $("c11_m30").textContent = (lastR * 100).toFixed(0) + "%";
+    $("c11_min").textContent = (mn * 100).toFixed(0) + "%";
+    $("c11_low").textContent = (low / 10).toFixed(1);
+    $("c11_fm").textContent = rv === 0 ? "Never reviewed: almost everything is forgotten after a few days. The player has to relearn, which is as good as not having been taught." :
+      mn < 0.3 ? "⚠️ The interval is too long: just before the review, memory has dropped to " + (mn * 100).toFixed(0) + "%, the player has basically forgotten, which is the same as teaching again. Shorten the interval, or give a bit more hint at review." :
+      lastR > 0.6 && mn >= 0.5 ? "✅ A good interval: each reappearance comes just before forgetting, and memory stays high." :
+      "👌 Okay: try shortening the first few intervals, or add more reviews, and compare the memory on day 30.";
+    if (lastR > 0.6 && mn >= 0.5) done("c11_t4");
+  }
+  $("c11_i").oninput = forget; $("c11_r").oninput = forget; forget();
+})();
+
+GD.mountQuiz($("quiz"), [
+  { q: "[Why] Why should a new mechanic first appear in a safe place where “failing doesn’t hurt”?", opts: ["To make the game shorter", "The lower the cost of failing, the more the player dares to try and the faster they learn, so they get a real chance to “get the hang of it”", "Because simple levels need no testing", "Because players don’t want to use their brains the first time"], a: 1, why: "Low-cost trial and error helps learning, like young animals rehearsing skills where there are no serious consequences. With the cost rising along with skill, the challenge doesn’t lose its weight." },
+  { q: "[Why it was invented] Why does a level like 1-1 use “wordless teaching” instead of opening with a screen of text?", opts: ["Because text is expensive", "Because players often don’t read instructions, and even if they do they only “know” without the hands having learned; let the level itself be the teacher, and the player really learns by running into it and trying it in a safe environment", "Because text makes the game harder", "Because players all read it twice"], a: 1, why: "The problem was “players don’t read, so how do they learn to jump, stomp, bump and dodge within dozens of seconds”; the insight was to let the level itself be the teacher. (For the exact design intent, go by interviews with Nintendo staff.)" },
+  { q: "[Why it was invented] Ebbinghaus found that forgetting goes “fast first, then slow.” What does this suggest for level design?", opts: ["Taught mechanics don’t need to appear again", "Old mechanics should come back, after a while and before they are forgotten, with a new twist", "All mechanics should appear ten times in a row in one level", "The forgetting curve has nothing to do with games"], a: 1, why: "Since forgetting is fast, the remedy is review before forgetting; the spacing effect shows that spaced review lasts longer than massed repetition." },
+  { q: "[Why] Why does “teaching five new controls at once” in the first level often work poorly?", opts: ["Because players don’t like learning", "Because the new information processed at once exceeds working memory and the cognitive load is too high", "Because the more controls, the shorter the game", "Because tutorials must have text"], a: 1, why: "Cognitive load theory: working memory is limited, and introducing too many new things at once makes understanding fall off sharply; teach them apart and each can be learned." },
+  { q: "[Why] From the angle of the “zone of proximal development,” why is the first challenge of a new mechanic usually designed to be very simple and very safe?", opts: ["To make the game shorter", "Because the player’s skill is lowest at that point, and only a task “a little above the current skill” is within reach", "Because simple levels need no testing", "Because players don’t want to use their brains the first time"], a: 1, why: "Learning happens in the range of “doable with a little help.” The starting skill is low, so the first step’s challenge must be low too, then gradually raised while the scaffolding is withdrawn." },
+  { q: "Using the idea of “spaced repetition,” which of these level designs is most reasonable?", opts: ["Teach the dash jump in level 2 and never use it again", "Have the dash jump appear ten times in a row in level 2", "Introduce the dash jump in level 2, then bring it back with a new twist every few levels", "Save the dash jump for the last level as a test"], a: 2, why: "The spacing effect: reviewing after a while and before forgetting sticks better; using it again with a twist also practices transfer." }
+]);
+</script>
+</body>
+</html>

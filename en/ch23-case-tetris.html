@@ -1,0 +1,810 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Chapter 23: Case Study: Tetris</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+  .dx{display:grid;grid-template-columns:190px 1fr;gap:14px;align-items:start}
+  .dx .chips{display:flex;flex-direction:column}
+  .dx .chip{text-align:left;margin:3px 0}
+  .dx .panel{margin:0;min-height:170px}
+  .dx .panel h3{margin:0 0 4px}
+  @media(max-width:700px){.dx{grid-template-columns:1fr}.dx .chips{flex-direction:row;flex-wrap:wrap}}
+  .tt{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;align-items:flex-start}
+  #tc{background:#fffdf3;border:3px solid var(--ink);border-radius:8px;width:240px;max-width:60vw;height:auto;touch-action:none}
+  #nc{background:#fffdf3;border:3px solid var(--ink);border-radius:8px;display:block}
+  .tside{min-width:150px}
+  .pad{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:10px;max-width:340px;margin-left:auto;margin-right:auto}
+  .pad .btn{margin:0;padding:8px 0;font-size:1.3rem;touch-action:none;user-select:none}
+  .shp{display:flex;flex-wrap:wrap;gap:10px;margin:10px 0;min-height:70px}
+  .shp svg{width:64px;height:64px;background:#fff;border:2.5px solid var(--ink);border-radius:8px}
+  .strip{display:flex;flex-wrap:wrap;gap:2px;margin:4px 0 10px}
+  .strip span{width:14px;height:14px;border:1.5px solid var(--ink);border-radius:3px;background:#fff;font-size:10px;line-height:11px;text-align:center}
+  .strip span.I{background:#a8dcf0;border-width:2.5px}
+  .strip span.gapmax{outline:3px solid #e5484d}
+  .c23cols{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  @media(max-width:700px){.c23cols{grid-template-columns:1fr}}
+  .c23res{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:10px 0}
+  @media(max-width:700px){.c23res{grid-template-columns:1fr}}
+  .c23res .stat{display:block;margin:0}
+  .c23pe{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:700px){.c23pe{grid-template-columns:1fr}}
+  .c23pe .pecard{border:2.5px solid var(--ink);border-radius:12px 20px 12px 18px;background:#fff;padding:8px}
+  .c23pe .pecard.on{background:var(--green)}
+  .lp{position:relative}
+  .lp .lpsvg{position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none;overflow:visible;z-index:2}
+  .lp .lpcols{display:grid;grid-template-columns:1fr 1fr;gap:12px 44px;align-items:start;position:relative;z-index:1}
+  .lp .lpl{display:flex;flex-direction:column;gap:10px;position:sticky;top:70px}
+  .lp .lpr{display:flex;flex-direction:column;gap:6px}
+  .lp .lpp{font:inherit;font-size:.95rem;line-height:1.35;border:2.5px solid var(--ink);background:#fff;border-radius:16px 8px 16px 8px;padding:6px 10px;cursor:grab;touch-action:none;user-select:none;text-align:left}
+  .lp .lpp.sel{background:var(--yellow);transform:rotate(-1.5deg)}
+  .lp .lpp::after{content:" ●";color:#e5484d}
+  .lp .lpi{display:block;width:100%;text-align:left;font:inherit;font-size:.92rem;line-height:1.4;border:2.5px solid var(--ink);border-radius:12px 20px 12px 18px;padding:6px 10px;background:#fffef7;cursor:pointer}
+  .lp .lpi.ok{background:var(--green);cursor:default}
+  .lp .lpi.bad{background:#ffd9d9;animation:lpshake .3s}
+  .lp .lpi.over{outline:3px dashed var(--blue)}
+  .lp .lpfb{font-size:.85rem;margin:2px 0 4px 4px;color:var(--ink)}
+  @keyframes lpshake{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+</style>
+</head>
+<body data-ch="23">
+<main class="wrap">
+  <div class="hero">
+    <div class="txt">
+      <span class="badge">Chapter 23 · Case study</span>
+      <h1>Tetris</h1>
+      <p class="sub">The rules fit on one page, and people have been playing it for forty years.</p>
+    </div>
+    <svg viewBox="0 0 190 150" class="rough" aria-hidden="true">
+      <g stroke="#2b2b3a" stroke-width="4" stroke-linejoin="round">
+        <rect x="30" y="100" width="30" height="30" fill="#ffb3c6"/><rect x="60" y="100" width="30" height="30" fill="#ffb3c6"/><rect x="60" y="70" width="30" height="30" fill="#ffb3c6"/><rect x="90" y="70" width="30" height="30" fill="#ffb3c6"/>
+        <rect x="120" y="100" width="30" height="30" fill="#a8dcf0"/><rect x="90" y="100" width="30" height="30" fill="#ffe58a"/>
+        <rect x="120" y="10" width="30" height="30" fill="#b6e8a8"/><rect x="120" y="40" width="30" height="30" fill="#b6e8a8"/><rect x="150" y="40" width="30" height="30" fill="#b6e8a8"/>
+      </g>
+    </svg>
+  </div>
+
+  <div class="goals"><span class="time">⏱ about 40 min</span><h3>Learning goals</h3><ul>
+    <li>Explain why the pieces have 4 cells and come in 7 kinds, not 5 cells and 12 kinds, and how this trade-off served both “enough variety” and “learned at a glance.”</li>
+    <li>Take a minimal game apart with “one knob for difficulty, one bag for luck,” and say what problem the four-line high score, the shuffle bag and the certain-loss ending each solve.</li>
+    <li>Explain the urge to “play one more” with prediction error and the peak-end rule, and know which parts are evidence and which are only conjecture.</li>
+  </ul></div>
+
+  
+  <div class="sec"><span class="n">1</span><h2><span class="tag what">What it is</span>How do rules of three sentences last for decades?</h2></div>
+  <p>If you had to explain how to play <i>Tetris</i> to someone who had never seen it, in three sentences, you probably could. First: seven shapes, each made of four small squares, fall one at a time from the top of a well. Second: you can only shift one left or right, or turn it. Third: fill a whole row across and that row disappears; stack up to the top and you lose.</p>
+  <p>Three sentences, done. Yet those same three sentences stole countless lunch breaks on the 1989 Game Boy, and to this day people practice until their fingers shake to set records. How did three sentences hold up for decades?</p>
+  <div class="card">
+    <svg viewBox="0 0 760 300" width="100%" role="img" aria-label="The Tetris core loop: a new piece appears, move and rotate, lock, clear a line, falling gets faster, back to a new piece">
+      <g class="rough" stroke="#2b2b3a" stroke-width="4" stroke-linejoin="round">
+        <rect x="20" y="105" width="150" height="80" rx="22" fill="#ffe58a"/>
+        <rect x="215" y="20" width="150" height="80" rx="22" fill="#a8dcf0"/>
+        <rect x="410" y="20" width="150" height="80" rx="22" fill="#ffb3c6"/>
+        <rect x="590" y="105" width="150" height="80" rx="22" fill="#b6e8a8"/>
+        <rect x="305" y="205" width="160" height="80" rx="22" fill="#d8c8ff"/>
+        <g fill="none" stroke-width="4.5" stroke-linecap="round">
+          <path d="M172 128 Q195 80 213 66"/><path d="M367 60 L408 60"/><path d="M562 66 Q580 80 598 103"/>
+          <path d="M660 187 Q620 260 467 250"/><path d="M303 250 Q150 260 105 187"/>
+        </g>
+      </g>
+      <g font-size="22" text-anchor="middle" fill="#2b2b3a">
+        <text x="95" y="143">① New piece</text><text x="290" y="58">② Move, turn</text><text x="485" y="58">③ Lock</text>
+        <text x="665" y="143">④ Clear line</text><text x="385" y="252">⑤ Speeds up</text>
+      </g>
+      <g font-size="17" text-anchor="middle" fill="#4b4b5e">
+        <text x="95" y="169">Plan from the preview</text><text x="290" y="84">Every step is a choice</text><text x="485" y="84">No taking it back</text>
+        <text x="665" y="169">Flash, points</text>
+      </g>
+    </svg>
+    <p class="small">There is no “growth” step in this loop: the player doesn’t get stronger, the challenge does. That is what makes it quite unlike most games.</p>
+  </div>
+
+  <div class="withimg">
+    <span data-illus="c23_mini"></span>
+    <div>
+      <p>To see why it lasts, we have to separate “the rules” from “the position.” The rules are just those few sentences, small enough for a card. The position is another matter: when you place the first piece, the well is empty; by the thirtieth, where each piece may go is limited by your previous twenty-nine decisions, and the shape you face has probably never been met by anyone else in the world.</p>
+      <p>Not one of these positions was written by the designer. Plays like “leave a whole column for a long bar,” “keep the stack low to survive” and “risk saving up four rows for one big clear” grew out of players running into the rules. In MDA terms, the rules are the mechanics, and the plays that grew are the dynamics. Minimal mechanics with rich dynamics is the core hand this game holds.</p>
+      <p>But be careful: few rules do not guarantee much variety. The examples below set the positive and the negative side by side.</p>
+    </div>
+  </div>
+  <div class="eg" data-ic="🧩"><span data-illus="c23_e_pieces"></span><div class="egt"><b>Tetris</b>: only 7 shapes, all recognized at a glance. But each can go in a dozen columns and turn four ways, so a single step has dozens of placements, and the previous step’s choice changes every later choice, a combination space so large it can hardly be exhausted.</div></div>
+  <div class="eg" data-ic="⚫"><span data-illus="c23_e_go"></span><div class="egt"><b>Go</b>: the rules can be told in very few words: place a stone, capture, count territory. Yet its variety runs so deep that after more than two thousand years of play new things are still being found.</div></div>
+  <div class="eg" data-ic="🧱"><span data-illus="c23_e_lego"></span><div class="egt"><b>LEGO bricks</b>: a counterpart from daily life. With just one rule, “studs snap together,” a child builds houses, spaceships and nameless monsters.</div></div>
+  <div class="eg bad" data-ic="❌"><span data-illus="c23_e_ttt"></span><div class="egt"><b>Tic-tac-toe</b>: also minimal rules, but a 3×3 grid is simply too small, and as long as neither side errs, the result must be a draw, which children see through after a few games. <b>The point of this counterexample: variety does not come from few rules, but from a combination space that is large enough.</b></div></div>
+
+  
+  <div class="sec"><span class="n">2</span><h2><span class="tag origin">How it was invented</span>How a box of puzzle pieces became blocks that fall</h2></div>
+  <div class="story">
+    <h3>Moscow, a puzzle in a shop</h3>
+    <p>Alexey Pajitnov was then doing speech-recognition research at the Computer Center of the Soviet Academy of Sciences in Moscow, and in his spare time liked writing small games. One day he bought a box of <span class="term" tabindex="0" data-def="Pentomino: a shape made of 5 squares joined edge to edge. Not counting duplicates by rotation and flipping, there are 12 in all; often made into a puzzle in which they must be packed into a box.">pentomino</span> puzzle pieces in a shop: twelve shapes each made of five squares, to be packed snugly into a box. He fiddled with them in the office and thought: could this be moved into a computer?</p>
+    <p>His first attempt was almost a straight copy: move the pieces with the arrow keys and fit them together one by one. But according to Vadim Gerasimov, the teenager who later helped port the game, this version was rather dull. A puzzle is fun on a table because you can pick it up, study it and think slowly; moved onto a screen, only shifting around is left.</p>
+    <p>The turning point came from making the pieces move on their own: a never-ending stream of shapes falling from a rectangular well, faster and faster, and you have to place them before they land. But a new problem came at once: <b>how many cells should each piece have?</b> Don’t look at the answer yet; try it yourself.</p>
+  </div>
+
+  <div class="board">
+    <h3>🧱 Experiment A: you decide, how many cells per piece?</h3>
+    <p class="small">Drag the slider and the page counts on the spot how many distinct shapes there are “without flipping, rotation only” (a real enumeration, not hard-coded). When you have decided, click “This one,” then compare with the history.</p>
+    <label class="ctl">Cells per piece <output id="c23nO">3</output><input type="range" id="c23n" min="2" max="5" value="3"></label>
+    <div class="shp" id="c23shapes" aria-live="polite"></div>
+    <div><span class="stat">Without flipping: <b id="c23cnt">2</b> kinds</span> <span class="stat">With flipping: <b id="c23free">2</b> kinds</span></div>
+    <div class="msg" id="c23nm"></div>
+    <button class="btn green" id="c23lock">This one, reveal the history</button>
+    <div id="c23rev"></div>
+  </div>
+  <div class="sticky">Try it: drag the slider to 2, 3, 4, 5 in turn, count the shapes at each, then go back to the one in your mind and click “This one.” After you have seen all 4, a small conclusion appears. <span id="c23seen" class="small"></span></div>
+
+  <p>Pajitnov’s choice agrees with what several reports say: twelve five-cell shapes were too complicated. On a machine with no graphical interface they were hard to draw and hard to fit on a limited screen, and players would first have to spend effort recognizing shapes. So he changed to four cells, 7 shapes in all. The game’s name came from this too: the Greek for “four” (tetra), plus his favorite sport, tennis.</p>
+  <p>But with only falling and placing, the well would fill up quickly and the game would be over. Hence the next rule: when a row is completely filled, erase it. Jimmy Maher, in reviewing this history, wrote that it gave the player a little time and space. With that rule the game’s character changed completely: you are no longer finishing a box of puzzle pieces, which has an end; you are in a tug-of-war you cannot win, trying to drag out the time.</p>
+
+  <div class="timeline">
+    <div class="ev hasimg"><span data-illus="c23_t_pento"></span><div><b class="yr">Around 1984</b> Moscow. Pajitnov buys a pentomino puzzle and wants to move it onto a computer. (Sources differ on the year: in an interview with <i>The Guardian</i> he said June 1984, and some sources say it was finished in 1985.)</div></div>
+    <div class="ev hasimg"><span data-illus="c23_t_dull"></span><div><b class="yr">First attempt</b> A straight copy of the puzzle, using arrow keys to fit five-cell pieces into “creatures,” “quite boring,” in Gerasimov’s words. The fun of a puzzle on a table didn’t come along onto the screen.</div></div>
+    <div class="ev hasimg"><span data-illus="c23_t_fall"></span><div><b class="yr">The key idea</b> Let shapes fall from the top of the well and fall faster and faster, change to four cells and 7 kinds, and erase rows that are filled. The first version ran on an Elektronika 60 with no graphical interface, with blocks made of spaces and square brackets, written in Pascal, and reportedly with no score and no levels.</div></div>
+    <div class="ev hasimg"><span data-illus="c23_t_port"></span><div><b class="yr">1985–1986</b> Gerasimov, sixteen, ported it to Soviet IBM PC compatibles and added color; Dmitry Pavlovsky added a high-score table. Floppy disks spread one copy at a time through Moscow’s computer circles.</div></div>
+    <div class="ev hasimg"><span data-illus="c23_t_gb"></span><div><b class="yr">1989</b> Henk Rogers negotiated Nintendo’s handheld and home-console rights from the Soviet side. The Game Boy version went on sale in Japan on June 14, and in the United States on July 31 bundled with the console, and from then on it went around the world.</div></div>
+  </div>
+  <p class="small">Sources: Wikipedia’s “Tetris” entry (citing <i>The Guardian</i>’s 2014 interview with Pajitnov); Jimmy Maher, “The Digital Antiquarian,” 2017-06-30 (filfre.net); NPR’s 2025 interview with Pajitnov. The motive for clearing lines comes from a secondhand overview, not his own words.</p>
+
+  <div class="card">
+    <svg viewBox="0 0 760 330" width="100%" role="img" aria-label="The design evolution of Tetris: problem, solution and new problem passed along in turn">
+      <g class="rough" stroke="#2b2b3a" stroke-width="4" stroke-linejoin="round">
+        <rect x="15" y="15" width="225" height="90" rx="14" fill="#fff7cf"/>
+        <rect x="270" y="15" width="225" height="90" rx="14" fill="#a8dcf0"/>
+        <rect x="520" y="15" width="225" height="90" rx="14" fill="#b6e8a8"/>
+        <rect x="15" y="185" width="225" height="90" rx="14" fill="#ffe9ef"/>
+        <rect x="270" y="185" width="225" height="90" rx="14" fill="#f1eaff"/>
+        <rect x="520" y="185" width="225" height="90" rx="14" fill="#fff0dc"/>
+        <g fill="none" stroke-width="4.5" stroke-linecap="round">
+          <path d="M240 60 H268"/><path d="M495 60 H518"/><path d="M632 107 Q632 150 128 183"/><path d="M240 230 H268"/><path d="M495 230 H518"/>
+        </g>
+      </g>
+      <g font-size="19" fill="#2b2b3a" text-anchor="middle">
+        <text x="127" y="52">Problem: wanting to put</text><text x="127" y="80">the puzzle on a computer</text>
+        <text x="382" y="52">A straight copy is dull</text><text x="382" y="80">→ Let shapes fall</text>
+        <text x="632" y="52">New problem: five-cell shapes</text><text x="632" y="80">hard to draw, recognize, place</text>
+        <text x="127" y="222">Change to 4 cells, 7 kinds</text><text x="127" y="250">Recognized at a glance</text>
+        <text x="382" y="222">New problem: the well fills</text><text x="382" y="250">the game ends soon</text>
+        <text x="632" y="222">Erase filled rows</text><text x="632" y="250">(secondhand overview)</text>
+      </g>
+      <text x="380" y="308" font-size="17" fill="#4b4b5e" text-anchor="middle">The later relay: pure random can go long without a long bar → redraw once → shuffle bag</text>
+    </svg>
+  </div>
+
+  
+  <div class="sec"><span class="n">3</span><h2><span class="tag what">What it is</span>One knob: difficulty rests almost only on “speed”</h2></div>
+  <div class="withimg rev">
+    <span data-illus="c23_knob"></span>
+    <div>
+      <p>Making the shapes “fall faster and faster” later became the difficulty method shared by every version. Think how convenient it is: not a word of the rules changed, the player has nothing more to learn, only one number is turned, and the same rules go from a leisurely stroll to a hundred-meter sprint.</p>
+      <p>For the player this knob is also the easiest to understand. You don’t need to read a manual to know that “faster” means “harder,” and you feel that difficulty step by step through your own hands.</p>
+      <p>The figure below is this page’s setting: level 0 drops one cell every 800 milliseconds, each level multiplies the interval by 0.82, bottoming out at 70 milliseconds. (Level 0 of the Nintendo NES version is 48 frames per cell, which at 60 frames per second is exactly about 800 milliseconds; the curve after that is one this page set itself for demonstration, not the original’s numbers.)</p>
+    </div>
+  </div>
+  <div class="card b">
+    <svg viewBox="0 0 640 270" width="100%" role="img" aria-label="The fall interval decreasing with level, vertical axis the interval, lower means faster">
+      <g class="rough" fill="none" stroke="#2b2b3a" stroke-width="4" stroke-linecap="round">
+        <path d="M70 40 L70 210 L610 210"/>
+        <polyline id="curve" stroke="#e5484d" stroke-width="5"/>
+      </g>
+      <g id="curvedots"></g>
+      <g font-size="18" fill="#2b2b3a"><text x="76" y="26">Fall interval (higher is slower)</text><text x="480" y="252">Level →</text><text x="20" y="215">Fast</text><text x="70" y="234" text-anchor="middle">0</text><text x="580" y="234" text-anchor="middle">15</text></g>
+    </svg>
+    <p class="small">The challenge is raised along a line that keeps climbing; the player’s skill, though, has a ceiling. The curve has no top, so some day the challenge will exceed the skill.</p>
+  </div>
+  <p>This explains why it has no end. There is no “clearing the game”: you are just caught up with, step by step, by ever faster blocks. Mathematicians have even proved it: Heidi Burgiel, in her 1997 paper “How to Lose at Tetris,” showed that as long as the piece sequence has long enough runs of alternating S and Z shapes, the game must eventually end however you place them; and under pure random generation, such a sequence is bound to appear sooner or later, so every game is a certain loss. Failure being inevitable makes every game a contest of “how long can you hold on.”</p>
+  <div class="eg" data-ic="🏃"><span data-illus="c23_e_tread"></span><div class="egt"><b>A treadmill</b>: only one knob, speed. The same person goes from a stroll to a sprint, and the machine itself hasn’t changed at all.</div></div>
+  <div class="eg" data-ic="🐍"><span data-illus="c23_e_snake"></span><div class="egt"><b>Snake</b>: the difficulty in the game grows by itself: the more you eat, the longer the body, and the harder it is to go around yourself. Each bite the player takes turns their own knob.</div></div>
+  <div class="eg" data-ic="🎾"><span data-illus="c23_e_pong"></span><div class="egt"><b>A tennis ball machine</b>: the ball speed is raised notch by notch, and your reactions are pushed to the limit little by little. The thing in life most like a “speed knob.”</div></div>
+  <div class="eg bad" data-ic="💡"><span data-illus="c23_e_react"></span><div class="egt"><b>A game that only speeds up</b>: the lights flash faster and faster, and the play hasn’t changed at all. Late on, all that remains is a pure reaction test. <b>The point of this counterexample: the speed knob works in Tetris because at every speed the placement choices stay interesting; speed with nothing to think about leaves only hand speed.</b></div></div>
+
+  
+  <div class="sec"><span class="n">4</span><h2><span class="tag what">What it is</span>One bag: putting a bridle on luck</h2></div>
+  <div class="withimg">
+    <span data-illus="c23_drought"></span>
+    <div>
+      <p>The order of the pieces is random, which is another reason it stays fresh. But randomness brings a trouble: if every piece is drawn independently from 7 kinds, a long stretch with no long bar <span class="term" tabindex="0" data-def="The long bar (I piece): four squares in a line, the only piece that can clear four rows at once.">I</span> is entirely possible, just when you need it most.</p>
+      <p>People are not sensitive to randomness. True randomness naturally contains long “droughts,” but the player’s feeling is only: the game is out to get me.</p>
+      <p>Designers thought of more than one fix. The NES version’s way was plain: if the piece drawn is the same as the last one, redraw once. This stops three identical pieces in a row but cannot stop a long bar from being missing for dozens of pieces. The later official design guideline’s way is the <span class="term" tabindex="0" data-def="7-bag, the shuffle bag: put one of each of the 7 pieces in a bag, shuffle and deal them out in turn, then swap in a new bag. Officially called the Random Generator.">shuffle bag</span> (7-bag): one of each of the 7 kinds goes into the bag, which is shuffled and dealt out, then a fresh bag is used. According to the Tetris Wiki, it was first used in <i>The New Tetris</i>, where the bag held 9 of each kind, 63 in all.</p>
+    </div>
+  </div>
+
+  <div class="board">
+    <h3>🎲 Experiment B: three deals, which makes you wait longest</h3>
+    <p class="small">Click the buttons, and each deals 140 pieces. Blue squares are the long bar I, and the red frame marks the “longest stretch with no I.” Look at one game first, then click “Run 1000 games” for averages.</p>
+    <div class="c23cols">
+      <div><b>Pure random</b><div class="strip" id="c23sr"></div><div class="small" id="c23tr"></div></div>
+      <div><b>NES-style (redraw once)</b><div class="strip" id="c23sn"></div><div class="small" id="c23tn"></div></div>
+      <div><b>7-bag shuffle bag</b><div class="strip" id="c23sb"></div><div class="small" id="c23tb"></div></div>
+    </div>
+    <button class="btn alt" id="c23deal">Deal 140 more</button>
+    <button class="btn green" id="c23mc">Run 1000 games, see the average</button>
+    <div class="c23res" id="c23res" aria-live="polite"></div>
+    <p class="small">With the shuffle bag, the same piece can appear at most 2 times in a row (the last piece of one bag and the first of the next), and two I pieces are at most 12 pieces apart.</p>
+  </div>
+  <div class="sticky">Try it: click “Run 1000 games” and compare the average “longest stretch with no I” under the three methods, and the unluckiest game. You will see how low the shuffle bag presses the worst case.</div>
+  <div class="eg" data-ic="👜"><span data-illus="c23_e_bag"></span><div class="egt"><b>The shuffle bag</b>: keep the randomness, cut off the extremes. Who comes first and who later in each bag is uncertain, but every kind of piece is sure to appear within 14 pieces.</div></div>
+  <div class="eg" data-ic="🃏"><span data-illus="c23_e_cards"></span><div class="egt"><b>A shuffled deck of cards</b>: each card is in the deck only once, so you can’t draw five aces in a row. The “randomness” at a card table has memory to begin with.</div></div>
+  <div class="eg" data-ic="🎵"><span data-illus="c23_e_shuffle"></span><div class="egt"><b>A playlist on “shuffle”</b>: many players shuffle the playlist first and then play it in order, instead of drawing each song independently, so the same song doesn’t play twice in a row (a common approach, and it varies by software).</div></div>
+  <div class="eg bad" data-ic="🪙"><span data-illus="c23_e_coin"></span><div class="egt"><b>Flipping a coin repeatedly</b>: a coin has no memory, and after five heads in a row, the next is still half and half; it won’t “make up” for you. Pure randomness does not seek balance for the player, which is why the designer must do it for the player.</div></div>
+
+  
+  <div class="sec"><span class="n">5</span><h2><span class="tag why">Why it works</span>Why does the four-line clear feel especially good</h2></div>
+  <div class="withimg rev">
+    <span data-illus="c23_surprise"></span>
+    <div>
+      <p>You have built up a three-deep gap and waited a dozen pieces, and finally the long bar arrives. It drops straight into the gap, four rows burst at once, and the score jumps a good way. The thrill of that moment is something no other line clear can match.</p>
+      <p>Look at the ledger first. At level 0, clearing 1 row scores 40, 2 rows 100, 3 rows 300 and 4 rows 1200 (the NES calculation, later multiplied by level plus one). If the score were proportional to rows, four rows would be 160. The actual is 1200, nearly 7.5 times as much.</p>
+      <p>A reward better than you expected: this “better than expected” has a name in neuroscience: <span class="term" tabindex="0" data-def="Prediction error: the gap between what is actually received and what the brain expected. Better than expected is a positive error, worse than expected a negative one; it is thought to be the driving signal of learning.">reward prediction error</span>. Remember the gacha mentioned in the core-loop chapter? The same kind of mechanism. The difference is that gacha hands you its surprise by probability, while Tetris’s surprise is something you build up yourself, layer by layer.</p>
+    </div>
+  </div>
+  <div class="board">
+    <h3>🔮 Guess first, then reveal: what should four rows be worth?</h3>
+    <p class="small">Clearing 4 rows at once, how many times the score of clearing 1 row should it be? Drag the slider to give your guess, then see the actual.</p>
+    <label class="ctl">My guess is <output id="c23gO">4</output> times<input type="range" id="c23g" min="1" max="40" value="4"></label>
+    <button class="btn green" id="c23gb">Reveal</button>
+    <div id="c23gr"></div>
+  </div>
+  <div class="why-box">
+    <h3>Dopamine computes “how far off,” not “how great it feels”</h3>
+    <p>In the 1990s Wolfram Schultz and colleagues recorded dopamine neurons in monkey brains. They found: when an unexpected reward (say a drop of juice) appears, these neurons fire briefly; once a signal can announce the reward, the excitement moves to the signal itself, and when the reward truly arrives there is hardly a ripple; and when a predicted reward doesn’t come, the firing falls below normal. This amounts to a ledger of “how much the prediction missed,” which corresponds exactly to the error term used to update expectations in reinforcement-learning algorithms.</p>
+    <p>The lesson for designers: a reward’s size is not absolute; it depends on how far it is from expectation. The same 1200 points, if you can clear four rows easily every time, is no longer special. To keep surprise effective, rewards must be tied to things “you aren’t too sure of.” (This is reasoned from animal experiments to players, a plausible inference, with no direct measurement on Tetris players. Also, researchers don’t entirely agree on whether dopamine is “pleasure” or a “learning signal,” and the latter, common view is taken here.)</p>
+    <div class="src">Source: Wolfram Schultz, Peter Dayan &amp; P. Read Montague, “A Neural Substrate of Prediction and Reward,” <i>Science</i> 275: 1593–1599 (1997).</div>
+  </div>
+
+  
+  <div class="sec"><span class="n">6</span><h2><span class="tag why">Why it works</span>Why do you want another game after losing</h2></div>
+  <div class="withimg">
+    <span data-illus="c23_peakend"></span>
+    <div>
+      <p>Every game of Tetris ends the same way: you lose. By common sense, a game that always ends in failure should leave people discouraged. The reality is the opposite: in the half second after losing, your hand is already pressing “play again.”</p>
+      <p>The psychologist Daniel Kahneman and colleagues ran a famous experiment. Participants put one hand in 14°C cold water for 60 seconds, and another time for 90 seconds, except that in the last 30 seconds the water was quietly warmed by one degree, easing the pain slightly. Asked later which one they would repeat, most chose the longer one, though it clearly hurt 30 seconds more.</p>
+      <p>Their reading: when people recall an experience, they hardly care how long it was and mostly look at two points, the most intense moment (the peak) and the moment it ended (the end). This rule of thumb later came to be called the <span class="term" tabindex="0" data-def="The peak-end rule: people’s overall judgment of an experience is determined mainly by its most intense moment and by how it felt at the end, and is little affected by its duration. (Kahneman et al., 1993)">peak-end rule</span>.</p>
+    </div>
+  </div>
+  <div class="board">
+    <h3>⏳ Which will be remembered better?</h3>
+    <p class="small">Below are two games’ “enjoyment” over time (illustrative). Guess first: looking back, which game would most people feel was better? Then see the result computed from “the average of the peak and the end.”</p>
+    <div class="c23pe" id="c23pe"></div>
+    <div id="c23per"></div>
+  </div>
+  <div class="why-box">
+    <h3>Memory is not adding up the time</h3>
+    <p>Applied to Tetris, this gives one reading: although a game ends in failure, the last few dozen seconds before it are often the most tense and absorbing stretch of the whole game, and replaying costs almost nothing, so the bad ending hasn’t had time to leave an impression before the next game has begun. This is only one reading using the peak-end rule, with no study of this game.</p>
+    <p>The rule itself is fairly solid: a 2022 meta-analysis pooling over a hundred effect sizes found that peak and end predict later evaluation strongly, but the overall average predicts it as well, with little difference between them; and duration has almost no effect. So a more accurate statement: memory does not add up by length, it looks at a few especially striking moments.</p>
+    <div class="src">Sources: Daniel Kahneman, Barbara Fredrickson, Charles Schreiber &amp; Donald Redelmeier, “When More Pain Is Preferred to Less: Adding a Better End,” <i>Psychological Science</i> 4(6): 401–405 (1993); the meta-analysis by Alaybek et al., <i>Organizational Behavior and Human Decision Processes</i> 170 (2022).</div>
+  </div>
+  <div class="why-box">
+    <h3>One more: less is brainpower</h3>
+    <p>The number of shapes counted in Experiment A is in fact also a cognitive-load question. <span class="term" tabindex="0" data-def="Cognitive load: working-memory capacity is limited; the more mental effort goes into learning the rules and the interface, the less is left for the task itself. (Sweller)">Cognitive load</span> theory, proposed by John Sweller from 1988, says working memory can hold only very little at once. Seven shapes, three actions and no text tutorial mean a newcomer has almost nothing to memorize, and all the brainpower can go into “where does this piece go.” The difficulty has been moved to spatial reasoning and hand speed, not to understanding the rules.</p>
+    <div class="src">Source: John Sweller, “Cognitive load during problem solving: Effects on learning,” <i>Cognitive Science</i> 12(2) (1988).</div>
+  </div>
+
+  <h3>Interactive: connect a principle to a phenomenon</h3>
+  <p>Hold one of the principle cards on the left and <b>drag a line</b> to the matching phenomenon on the right (or click the principle card first, then the phenomenon). A right link turns green and gives an explanation, a wrong one flashes red with a hint; a principle card can be reused.</p>
+  <div class="card b" id="c23pair"></div>
+  <div class="small" id="c23paircnt"></div>
+
+  
+  <div class="sec"><span class="n">7</span><h2><span class="tag how">How to use it</span>Play a round yourself, then learn from it</h2></div>
+  <p>On a computer use ←/→ to move, ↑ to rotate, ↓ to drop faster, Space to drop to the bottom, and P to pause; on a phone use the buttons below. This mini version makes the three designs discussed above into switches: <b>the piece generator</b>, <b>the line-clear rule</b>, and the <b>speed knob</b> that quickens as you level up by clearing lines.</p>
+  <div class="board">
+    <div class="tt">
+      <canvas id="tc" width="240" height="480" aria-label="The Tetris playing field"></canvas>
+      <div class="tside">
+        <div class="small">Next</div>
+        <canvas id="nc" width="96" height="72"></canvas>
+        <div style="margin-top:8px">
+          <span class="stat">Score <b id="sc">0</b></span><br>
+          <span class="stat">Lines <b id="ln">0</b></span><br>
+          <span class="stat">Level <b id="lv">0</b></span><br>
+          <span class="stat">Fall interval <b id="iv">800</b>ms</span><br>
+          <span class="stat">Pieces dropped <b id="pc">0</b></span><br>
+          <span class="stat">Since last I <b id="dr">0</b> pieces (longest <b id="drm">0</b>)</span>
+        </div>
+        <label class="ctl">Piece generator
+          <select id="rnd"><option value="bag">7-bag shuffle bag</option><option value="nes">NES-style (redraw once)</option><option value="pure">Pure random</option></select>
+        </label>
+        <label class="ctl"><input type="checkbox" id="lcck" checked> Clear full rows</label>
+        <button class="btn green" id="start">Start / replay</button>
+        <button class="btn alt" id="pause">Pause</button>
+        <div class="msg" id="tmsg"></div>
+      </div>
+    </div>
+    <div class="pad" id="pad">
+      <button class="btn alt" data-a="left">◀</button>
+      <button class="btn alt" data-a="right">▶</button>
+      <button class="btn pink" data-a="rot">⟳ Rotate</button>
+      <button class="btn" data-a="down">▼</button>
+      <button class="btn green" data-a="drop" style="grid-column:1/5">⤓ Drop to bottom</button>
+    </div>
+  </div>
+  <div class="sticky">Try it: first untick “Clear full rows” and play a game to see how many pieces you last; then tick it and try to clear enough to level up, and feel the speed pick up. Then switch the piece generator to “Pure random” and watch the “Since last I” field. <span id="c23task" class="small"></span></div>
+  <p class="small">Scoring follows the NES idea: 1/2/3/4 rows = 40/100/300/1200 × (level+1). This page’s speed curve is one set up for demonstration, not the original’s numbers.</p>
+
+  <h3>Take it apart with the tools you’ve learned</h3>
+  <p>Click the concept tags on the left, all six.</p>
+  <div class="dx">
+    <div class="chips" id="chips"></div>
+    <div class="card y panel" id="panel"><h3>👈 Click a tag first</h3><p>Each tag matches a concept you have already learned.</p></div>
+  </div>
+  <div class="small" id="dxcount">Seen 0 / 6</div>
+
+  <div class="grid2">
+    <div class="card y"><h3>① Find your “main knob”</h3><p>Difficulty rests on a single parameter, “speed,” easy to tune, easy to understand, easy to balance. Does your game have such a knob?</p></div>
+    <div class="card b"><h3>② Minimal rules, endless combinations</h3><p>7 shapes × a dozen columns × 4 orientations, dozens of placements per step, and no “right answer” holds forever.</p></div>
+    <div class="card p"><h3>③ Give information, not answers</h3><p>The next-piece preview and the ghost landing spot tell you only the consequences, and the decision stays with the player, so the choice means something.</p></div>
+    <div class="card g"><h3>④ Put a bridle on randomness</h3><p>What players can’t stand is extreme luck, not randomness itself. Keep the surprise, cut off the extremes.</p></div>
+  </div>
+
+  <div class="misc">
+    <h3>Common misconceptions</h3>
+    <ul>
+      <li><b>“Few rules means easy to make”</b>: minimalism is the result of repeated polishing. Cutting twelve shapes to seven and putting the randomness into a bag, every step is a trade-off, and often harder than adding rules.</li>
+      <li><b>“The case shows the one right way”</b>: a loop without “growth” suits it, and not necessarily your game.</li>
+      <li><b>“Psychology principles are a winning recipe”</b>: prediction error and the peak-end rule help you form hypotheses, and in the end players’ playtests must verify them.</li>
+      <li><b>“The line-clear rule was Pajitnov’s explicit design intent”</b>: this page cites a secondhand overview, and we have not found his own words.</li>
+    </ul>
+  </div>
+
+  <div class="reflect">
+    <h3>Think about it: <span class="term" tabindex="0" data-def="Seeing only the successful cases and mistaking their practices for the cause of success; cases with the same practices that failed and were forgotten are ignored.">survivorship bias</span></h3>
+    <p>We keep discussing Tetris because it succeeded. Many games with equally minimal rules and equally rising speed are known to almost nobody, and we don’t use them as cases. So “it did this, so it succeeded” may be only survivorship bias, with timing, licensing and platform (a Game Boy bundle) just as much to thank.</p>
+    <p>Write a sentence: <b>if your game copied one of its practices and nobody played it, which link would you suspect first?</b></p>
+    <textarea rows="3" data-save="ch23reflect" placeholder="E.g. I’d suspect a different target audience; or that its rhythm, timing or market environment was different…"></textarea>
+  </div>
+
+  <div class="key">
+    <h3>Key points</h3>
+    <ul>
+      <li>The key trade-off: changing from 12 five-cell shapes to 7 four-cell ones, balancing “enough variety” and “learned at a glance.”</li>
+      <li>Minimal mechanics grow rich dynamics; few rules do not mean much variety, and tic-tac-toe is the counterexample.</li>
+      <li>Difficulty rests almost only on one knob, “speed,” and the challenge keeps rising until it exceeds anyone’s skill, so the game has no end, only being caught.</li>
+      <li>The shuffle bag is a design for randomness: keep the surprise, cut off the extremes, with at most 12 pieces between two long bars.</li>
+      <li>The high score of a four-line clear creates a reward beyond expectation (prediction error); the tension at the end of a game and a cheap restart may make “one more game” feel natural (the peak-end rule, a reading).</li>
+    </ul>
+  </div>
+  <div class="tldr">Tetris uses a few rules, one speed knob and one shuffle bag, and draws on cognitive load, prediction error and the peak-end rule at once, but it is a surviving case, not a winning recipe.</div>
+
+  <div class="sec"><span class="n">8</span><h2><span class="tag think">Practice</span>Quick quiz</h2></div>
+  <div id="quiz"></div>
+
+  <div class="sec"><span class="n">9</span><h2><span class="tag think">Reflection</span>Your breakdown</h2></div>
+  <div class="card o">
+    <p>Pick a game you like with <b>simple rules that can be played for a long time</b> (match-three, Snake, Minesweeper, 2048, Go…). Using “mechanics → dynamics → aesthetics,” write: <b>can its rules be told in a few sentences? What plays did those sentences give rise to that you didn’t expect?</b> Then try to think: if the designer had doubled some element (say, one more shape), what would happen?</p>
+    <textarea rows="6" data-save="ch23" placeholder="E.g. <i>2048</i>: mechanics: slide and merge equal numbers; dynamics: keep the big number in a corner, plan long chains; aesthetics: challenge and the tension of “almost”…"></textarea>
+  </div>
+</main>
+<script src="../js/illus.js"></script>
+<script src="../js/illus-ch23.js"></script>
+<script src="../js/en/illus.js"></script>
+<script src="../js/en/illus-lib.js"></script>
+<script src="../js/en/illus-ch23.js"></script>
+<script src="../js/common.js"></script>
+<script>
+const $ = id => document.getElementById(id);
+function mountLinkPair(root, cnt, P, items) {
+  root.classList.add("lp");
+  root.innerHTML = '<svg class="lpsvg" aria-hidden="true"></svg><div class="lpcols"><div class="lpl"></div><div class="lpr"></div></div>';
+  const svg = root.querySelector("svg"), L = root.querySelector(".lpl"), R = root.querySelector(".lpr");
+  const lb = [], rb = [], fb = [], got = [], pairs = [];
+  let sel = -1, done = 0, miss = 0, drag = null, flash = null;
+  P.forEach((p, i) => { const b = document.createElement("button"); b.type = "button"; b.className = "lpp"; b.textContent = p; b.dataset.p = i; L.appendChild(b); lb.push(b); });
+  items.forEach((it, i) => {
+    const w = document.createElement("div");
+    const b = document.createElement("button"); b.type = "button"; b.className = "lpi"; b.textContent = it.t; b.dataset.i = i;
+    const f = document.createElement("div"); f.className = "lpfb"; f.setAttribute("aria-live", "polite");
+    w.append(b, f); R.appendChild(w); rb.push(b); fb.push(f);
+  });
+  function pt(el, side) { const r = el.getBoundingClientRect(), q = root.getBoundingClientRect(); return [(side === "r" ? r.right : r.left) - q.left, r.top + r.height / 2 - q.top]; }
+  function path(a, b, col, dash) { const mx = (a[0] + b[0]) / 2; return '<path d="M' + a[0] + ' ' + a[1] + ' C' + mx + ' ' + a[1] + ' ' + mx + ' ' + b[1] + ' ' + b[0] + ' ' + b[1] + '" fill="none" stroke="' + col + '" stroke-width="4" stroke-linecap="round"' + (dash ? ' stroke-dasharray="7 6"' : "") + "/>"; }
+  function draw() {
+    let s = "";
+    pairs.forEach(p => { s += path(pt(lb[p.p], "r"), pt(rb[p.i], "l"), "#2f9e44"); });
+    if (flash) s += path(pt(lb[flash.p], "r"), pt(rb[flash.i], "l"), "#e5484d", true);
+    if (drag && drag.on) { const q = root.getBoundingClientRect(); s += path(pt(lb[drag.p], "r"), [drag.x - q.left, drag.y - q.top], "#ff8fab", true); }
+    svg.innerHTML = s;
+  }
+  function upd() { cnt.textContent = "Linked " + done + " / " + items.length + " Mistakes " + miss + (done === items.length ? " ✔ All correct!" : ""); }
+  function setSel(p) { sel = p; lb.forEach((b, i) => b.classList.toggle("sel", i === p)); }
+  function assign(i, p) {
+    if (got[i]) return;
+    const it = items[i];
+    if (it.a === p) {
+      got[i] = true; done++; pairs.push({ p, i }); rb[i].classList.remove("bad"); rb[i].classList.add("ok");
+      fb[i].innerHTML = "✅ <b>" + P[p] + "</b>:" + it.why;
+    } else {
+      miss++; rb[i].classList.remove("bad"); void rb[i].offsetWidth; rb[i].classList.add("bad");
+      fb[i].textContent = "❌ “" + P[p] + "” doesn’t quite fit. Hint:" + it.hint;
+      flash = { p, i }; setTimeout(() => { flash = null; draw(); }, 900);
+    }
+    upd(); draw();
+  }
+  lb.forEach((b, p) => {
+    b.addEventListener("pointerdown", e => {
+      drag = { p, on: false, x: e.clientX, y: e.clientY, sx: e.clientX, sy: e.clientY };
+      try { b.setPointerCapture(e.pointerId); } catch (_) {}
+    });
+    b.addEventListener("pointermove", e => {
+      if (!drag) return;
+      drag.x = e.clientX; drag.y = e.clientY;
+      if (!drag.on && Math.hypot(e.clientX - drag.sx, e.clientY - drag.sy) > 6) { drag.on = true; setSel(p); }
+      if (drag.on) { rb.forEach(x => x.classList.remove("over")); const t = document.elementFromPoint(e.clientX, e.clientY); const it = t && t.closest && t.closest(".lpi"); if (it) it.classList.add("over"); draw(); }
+    });
+    const end = e => {
+      if (!drag) return;
+      const d = drag; drag = null; rb.forEach(x => x.classList.remove("over"));
+      if (d.on) {
+        const t = document.elementFromPoint(e.clientX, e.clientY), it = t && t.closest && t.closest(".lpi");
+        if (it && e.type === "pointerup") { assign(+it.dataset.i, p); }
+        setSel(-1); draw();
+      } else if (e.type === "pointerup") { setSel(sel === p ? -1 : p); draw(); }
+    };
+    b.addEventListener("pointerup", end); b.addEventListener("pointercancel", end);
+    b.addEventListener("click", e => { if (e.detail === 0) setSel(sel === p ? -1 : p); });
+  });
+  rb.forEach((b, i) => {
+    b.addEventListener("click", () => {
+      if (got[i]) return;
+      if (sel < 0) { fb[i].textContent = "👆 Hold a principle card on the left and drag it here (or click the principle card, then click here)."; return; }
+      const p = sel; assign(i, p); if (!got[i]) {  } else setSel(-1);
+    });
+  });
+  window.addEventListener("resize", draw); window.addEventListener("scroll", draw, { passive: true });
+  upd(); draw();
+}
+
+const DX = [
+  ["Four pillars", "Goal · rules · feedback · voluntary", "<b>Goal</b>: fill whole rows to clear them and last as long as possible (no end).<br><b>Rules</b>: 7 kinds of piece, gravity, moving and rotating, clearing full rows, and you lose when the stack reaches the top.<br><b>Feedback</b>: the line-clear flash, the score, the quickening pace.<br><b>Voluntary</b>: you can restart at any time, and nothing forces you to continue."],
+  ["Core loop", "See → place → clear → faster", "The micro loop is just a few seconds: see the preview, place, lock. The middle loop is “clear lines → level up → faster.” <b>No items, no character building</b>, so the “growth” slot is replaced by “challenging yourself higher.” The reward in the loop doesn’t have to be getting stronger; it can be a deeper sense of mastery."],
+  ["MDA", "Mechanics → dynamics → aesthetics", "<b>Mechanics</b>: shapes, rotation, gravity, line clearing.<br><b>Dynamics</b>: players themselves play out “leave a column for a long bar,” “keep low to survive,” “risk saving for four rows,” none of which the designer wrote into the rules.<br><b>Aesthetics</b>: challenge, and the satisfaction of turning a messy pile tidy. Dynamics “grow” out of mechanics."],
+  ["Flow and difficulty", "The speed curve", "Difficulty is tuned by raising fall speed with level, and the challenge steadily rises so skilled players never get bored. But the curve has no top, and it must eventually exceed anyone’s skill, and the game ends naturally: “can never be cleared” is a design choice."],
+  ["Feedback and feel", "The thrill of clearing lines", "The flash on clearing, the “thud” of a hard drop, the pause at lock, and the ghost piece showing where it lands give a purely logical little game a crisp feel. Try it in the game above: without the flash, wouldn’t something be missing?"],
+  ["Meaningful choice", "Every piece is a decision", "The same piece has a dozen columns and several orientations to choose from; the next-piece preview lets you choose with information, and the consequences carry into later positions (the stack you built can’t be undone). The choices have clear short-term consequences and long-term effects, so they mean something."],
+];
+const seen = new Set();
+DX.forEach((d, i) => {
+  const b = document.createElement("button");
+  b.className = "chip"; b.textContent = d[0];
+  b.onclick = () => {
+    document.querySelectorAll("#chips .chip").forEach(x => x.classList.remove("on"));
+    b.classList.add("on");
+    $("panel").innerHTML = "<h3>" + d[0] + " · " + d[1] + "</h3><p>" + d[2] + "</p>";
+    seen.add(i); $("dxcount").textContent = "Seen " + seen.size + " / " + DX.length + (seen.size === DX.length ? " ✔ All taken apart!" : "");
+  };
+  $("chips").appendChild(b);
+});
+
+const gapOf = lv => Math.max(70, Math.round(800 * Math.pow(0.82, lv)));
+(function () {
+  const pts = [], dots = [];
+  for (let l = 0; l <= 15; l++) {
+    const x = 70 + l * 34, y = 210 - gapOf(l) / 800 * 150;
+    pts.push(x.toFixed(0) + "," + y.toFixed(0));
+    if (l % 5 === 0 || l === 15) dots.push('<circle cx="' + x + '" cy="' + y.toFixed(0) + '" r="7" fill="#ffe58a" stroke="#2b2b3a" stroke-width="3"/><text x="' + (x + 14) + '" y="' + (y - 12).toFixed(0) + '" font-size="18" fill="#2b2b3a">' + gapOf(l) + 'ms</text>');
+  }
+  $("curve").setAttribute("points", pts.join(" "));
+  $("curvedots").innerHTML = dots.join("");
+})();
+
+(function () {
+  const norm = cells => { const mx = Math.min(...cells.map(c => c[0])), my = Math.min(...cells.map(c => c[1])); return cells.map(c => [c[0] - mx, c[1] - my]).sort((a, b) => a[0] - b[0] || a[1] - b[1]); };
+  const key = cells => norm(cells).map(c => c.join(",")).join(";");
+  const rotC = cells => cells.map(c => [-c[1], c[0]]);
+  const flipC = cells => cells.map(c => [-c[0], c[1]]);
+  function canon(cells, flips) {
+    let best = null, cur = cells;
+    for (let f = 0; f < (flips ? 2 : 1); f++) {
+      for (let r = 0; r < 4; r++) { const k = key(cur); if (best === null || k < best) best = k; cur = rotC(cur); }
+      cur = flipC(cells);
+    }
+    return best;
+  }
+  const cache = {};
+  function polys(n, flips) {
+    const id = n + "/" + flips; if (cache[id]) return cache[id];
+    let level = [[[0, 0]]];
+    for (let s = 1; s < n; s++) {
+      const map = new Map();
+      level.forEach(p => {
+        const have = new Set(p.map(c => c.join(",")));
+        p.forEach(c => [[1, 0], [-1, 0], [0, 1], [0, -1]].forEach(d => {
+          const q = [c[0] + d[0], c[1] + d[1]]; if (have.has(q.join(","))) return;
+          const np = p.concat([q]), k = canon(np, flips); if (!map.has(k)) map.set(k, norm(np));
+        }));
+      });
+      level = Array.from(map.values());
+    }
+    return (cache[id] = level);
+  }
+  const NOTE = {
+    2: "Only 1 shape, and any placement is much the same: there is almost no “choice” to make.",
+    3: "Only 2 kinds (straight and bent). Easy to recognize, but the positions they make are too monotonous.",
+    4: "7 kinds: recognized at a glance, yet enough ways to fit them. (The decision at this step is revealed below.)",
+    5: "Without flipping there are 18 kinds (12 with flipping): too many shapes, and a newcomer must first spend effort recognizing shapes before strategy is even possible.",
+  };
+  const COLS = ["#ffb3c6", "#a8dcf0", "#b6e8a8", "#ffe58a", "#d8c8ff", "#ffc078", "#8fb8ff"];
+  const visited = new Set();
+  function render() {
+    const n = +$("c23n").value; $("c23nO").textContent = n;
+    const ps = polys(n, false), fr = polys(n, true);
+    $("c23cnt").textContent = ps.length; $("c23free").textContent = fr.length;
+    $("c23shapes").innerHTML = ps.map((p, i) => {
+      const w = Math.max(...p.map(c => c[0])) + 1, h = Math.max(...p.map(c => c[1])) + 1, u = Math.min(11, 50 / Math.max(w, h)), ox = (64 - w * u) / 2, oy = (64 - h * u) / 2;
+      return '<svg viewBox="0 0 64 64" aria-hidden="true">' + p.map(c => '<rect x="' + (ox + c[0] * u) + '" y="' + (oy + c[1] * u) + '" width="' + u + '" height="' + u + '" fill="' + COLS[i % COLS.length] + '" stroke="#2b2b3a" stroke-width="2"/>').join("") + "</svg>";
+    }).join("");
+    $("c23nm").textContent = NOTE[n];
+    $("c23rev").innerHTML = "";
+    visited.add(n);
+    $("c23seen").textContent = visited.size >= 4 ? " ✔ You’ve seen all four: 2 cells with 1 shape is too few, 5 cells without flipping with 18 shapes is too many, and 4 cells with 7 shapes is just right." : "(Seen " + visited.size + " / 4 tiers)";
+  }
+  $("c23n").oninput = render;
+  $("c23lock").onclick = () => {
+    const n = +$("c23n").value, ps = polys(n, false).length, fr = polys(n, true).length;
+    $("c23rev").innerHTML = '<div class="card y"><p>You chose <b>' + n + '  cells (' + ps + '  kinds)</b>.' +
+      (n === 4 ? "Same as Pajitnov!" : "Pajitnov’s choice was <b>4 cells (7 kinds)</b>.") +
+      'The puzzle in his hands had 12 five-cell shapes, which he judged too complicated on a computer, so he simplified to four cells: few enough shapes to recognize at a glance, yet enough to make endlessly varied positions.</p>' +
+      '<p>One more detail the page computed: a physical puzzle can be flipped, and five cells give 12 kinds; but blocks on a screen can only be rotated, a mirror image counts as two, and five cells become 18. Four cells are the same: with flipping 5 kinds, without flipping 7 (S and Z, J and L are mirror images of each other). So the “recognizing shapes” burden of five cells is even heavier than the puzzle on a table. This is the page’s calculation, not Pajitnov’s own words.</p>' +
+      '<p class="small">Sources: Wikipedia’s “Tetris” entry; Jimmy Maher, filfre.net (2017-06-30). The number of shapes is enumerated live by the page.</p></div>';
+  };
+  render();
+})();
+
+const NAMES = ["I", "O", "T", "S", "Z", "J", "L"];
+const COL = { I: "#a8dcf0", O: "#ffe58a", T: "#d8c8ff", S: "#b6e8a8", Z: "#ffb3c6", J: "#8fb8ff", L: "#ffc078" };
+function shuffle(a) { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+const rndPiece = () => NAMES[Math.floor(Math.random() * 7)];
+function dealSeq(mode, N) {
+  const out = []; let bag = [], last = null;
+  for (let i = 0; i < N; i++) {
+    let t;
+    if (mode === "bag") { if (!bag.length) bag = shuffle(NAMES); t = bag.pop(); }
+    else { t = rndPiece(); if (mode === "nes" && t === last) t = rndPiece(); }
+    out.push(t); last = t;
+  }
+  return out;
+}
+function gapInfo(seq) {
+  let last = -1, best = 0, bs = -1;
+  seq.forEach((t, i) => { if (t === "I") { const g = i - last - 1; if (g > best) { best = g; bs = last + 1; } last = i; } });
+  const tail = seq.length - last - 1; if (tail > best) { best = tail; bs = last + 1; }
+  return { best, bs };
+}
+(function () {
+  const N = 140;
+  function show(seq, stripId, txtId) {
+    const { best, bs } = gapInfo(seq);
+    $(stripId).innerHTML = seq.map((t, i) => '<span class="' + (t === "I" ? "I" : "") + (i >= bs && i < bs + best ? " gapmax" : "") + '">' + (t === "I" ? "I" : "") + "</span>").join("");
+    $(txtId).innerHTML = "Longest stretch with no I: <b>" + best + "</b> pieces; I appeared " + seq.filter(t => t === "I").length + "  times in all";
+  }
+  function deal() { show(dealSeq("pure", N), "c23sr", "c23tr"); show(dealSeq("nes", N), "c23sn", "c23tn"); show(dealSeq("bag", N), "c23sb", "c23tb"); }
+  $("c23deal").onclick = deal; deal();
+  $("c23mc").onclick = () => {
+    const M = [["pure", "Pure random"], ["nes", "NES-style"], ["bag", "7-bag"]];
+    $("c23res").innerHTML = M.map(m => {
+      let sum = 0, worst = 0;
+      for (let k = 0; k < 1000; k++) { const g = gapInfo(dealSeq(m[0], N)).best; sum += g; if (g > worst) worst = g; }
+      return '<div class="stat"><b>' + m[1] + '</b><br>Average longest drought <b>' + (sum / 1000).toFixed(1) + '</b> pieces<br>Unluckiest game <b>' + worst + '</b> pieces</div>';
+    }).join("");
+  };
+})();
+
+(function () {
+  $("c23g").oninput = () => { $("c23gO").textContent = $("c23g").value; };
+  $("c23gb").onclick = () => {
+    const g = +$("c23g").value, real = 1200 / 40;
+    const bar = (label, v, col) => '<div class="rw" style="display:flex;align-items:center;gap:8px;margin:3px 0"><div style="width:130px;flex:none;font-size:.95rem">' + label + '</div><div style="flex:1;height:22px;border:2.5px solid var(--ink);border-radius:14px 8px 14px 8px;background:#fff;overflow:hidden"><i style="display:block;height:100%;width:' + Math.min(100, v / 1200 * 100) + '%;background:' + col + '"></i></div><div style="width:64px;text-align:right;font-family:var(--hand);font-size:1.15rem">' + v + '</div></div>';
+    $("c23gr").innerHTML = bar("Clear 1 row", 40, "#a8dcf0") + bar("Your guess for 4 rows", 40 * g, "#ffe58a") + bar("4 separate single clears", 160, "#b6e8a8") + bar("Actual 4 rows", 1200, "#ff8fab") +
+      "<p>You guessed <b>" + g + "  times</b>; the actual is <b>30 times</b> (1200 ÷ 40)." + (g >= 25 && g <= 35 ? "A very good guess: you have seen how steep this reward is." : g < 25 ? "Most people underestimate: by rows, linearly, four rows are only 160 points. The actual is far above expectation, and that gap is the source of the surprise." : "You guessed even more extreme than the actual, which shows it is steep enough to be unimaginable.") + "</p>";
+  };
+})();
+
+(function () {
+  const S = [
+    { n: "A Short and fierce (4 minutes)", v: [6, 8, 8, 8] },
+    { n: "B The same start as A, then 3 more minutes of cooling off", v: [6, 8, 8, 8, 5, 4, 3] },
+  ];
+  const sum = a => a.reduce((x, y) => x + y, 0);
+  const box = $("c23pe"); let picked = -1;
+  function spark(v) {
+    const W = 300, H = 110, px = i => 14 + i * (W - 28) / 6, py = x => H - 10 - x * 9;
+    const pts = v.map((x, i) => px(i) + "," + py(x)).join(" ");
+    const pk = v.indexOf(Math.max(...v));
+    return '<svg viewBox="0 0 ' + W + " " + H + '" width="100%" role="img" aria-label="Enjoyment curve over time"><g class="rough" fill="none" stroke="#2b2b3a" stroke-width="3.5" stroke-linecap="round"><path d="M8 100 H290"/><polyline points="' + pts + '" stroke="#e5484d" stroke-width="4.5"/></g>' +
+      '<circle cx="' + px(pk) + '" cy="' + py(v[pk]) + '" r="6" fill="#ffe58a" stroke="#2b2b3a" stroke-width="3"/><circle cx="' + px(v.length - 1) + '" cy="' + py(v[v.length - 1]) + '" r="6" fill="#a8dcf0" stroke="#2b2b3a" stroke-width="3"/></svg>';
+  }
+  S.forEach((s, i) => {
+    const d = document.createElement("div"); d.className = "pecard";
+    d.innerHTML = "<b>" + s.n + "</b>" + spark(s.v) + '<div class="small">Yellow dot is the peak, blue dot is the end.</div><button class="btn" data-i="' + i + '">I guess this game is remembered better</button>';
+    box.appendChild(d);
+  });
+  box.querySelectorAll("button").forEach(b => b.onclick = () => {
+    picked = +b.dataset.i;
+    box.querySelectorAll(".pecard").forEach((c, i) => c.classList.toggle("on", i === picked));
+    const pe = S.map(s => (Math.max(...s.v) + s.v[s.v.length - 1]) / 2), tot = S.map(s => sum(s.v));
+    $("c23per").innerHTML = '<div class="msg">Total enjoyment: A <b>' + tot[0] + '</b>, B <b>' + tot[1] + '</b> (B is more).<br>By “the average of the peak and the end”: A <b>' + pe[0] + '</b>, B <b>' + pe[1] + '</b> (A is higher).<br>' +
+      (picked === 0 ? "Your choice agrees with the peak-end rule’s prediction:" : "You chose B, with more total. The peak-end rule predicts just the opposite:") +
+      "the extra time in B did not buy a better memory, and instead dragged down the ending. <span class='small'>(The numbers are illustrative; in the real experiment it was cold water, not a game, and the overall average can also predict memory, hard to tell apart.)</span></div>";
+  });
+})();
+
+const COLS = 10, ROWS = 20, CS = 24;
+const SHAPES = {
+  I: [[0,0,0,0],[1,1,1,1],[0,0,0,0],[0,0,0,0]],
+  O: [[1,1],[1,1]],
+  T: [[0,1,0],[1,1,1],[0,0,0]],
+  S: [[0,1,1],[1,1,0],[0,0,0]],
+  Z: [[1,1,0],[0,1,1],[0,0,0]],
+  J: [[1,0,0],[1,1,1],[0,0,0]],
+  L: [[0,0,1],[1,1,1],[0,0,0]],
+};
+const ctx = $("tc").getContext("2d"), nctx = $("nc").getContext("2d");
+let board, cur, next, bag, score, lines, level, acc, last, state = "idle", clearing = null, sinceI, maxI, soft = false;
+
+function rot(m) { const n = m.length, r = Array.from({ length: n }, () => Array(n).fill(0)); for (let y = 0; y < n; y++) for (let x = 0; x < n; x++) r[x][n - 1 - y] = m[y][x]; return r; }
+function hit(m, px, py) {
+  for (let y = 0; y < m.length; y++) for (let x = 0; x < m[y].length; x++) if (m[y][x]) {
+    const bx = px + x, by = py + y;
+    if (bx < 0 || bx >= COLS || by >= ROWS) return true;
+    if (by >= 0 && board[by][bx]) return true;
+  }
+  return false;
+}
+let lastT = null, pcs = 0;
+function draw7() {
+  const m = $("rnd").value; let t;
+  if (m === "bag") { if (!bag.length) bag = shuffle(NAMES); t = bag.pop(); }
+  else { t = NAMES[Math.floor(Math.random() * 7)]; if (m === "nes" && t === lastT) t = NAMES[Math.floor(Math.random() * 7)]; }
+  lastT = t; return t;
+}
+function makePiece(t) { const m = SHAPES[t].map(r => r.slice()); return { t, m, x: Math.floor((COLS - m.length) / 2), y: t === "I" ? -1 : 0 }; }
+function interval() { return gapOf(level); }
+function spawn() {
+  cur = next || makePiece(draw7());
+  next = makePiece(draw7());
+  pcs++;
+  if (cur.t === "I") { sinceI = 0; } else { sinceI++; if (sinceI > maxI) maxI = sinceI; }
+  if (hit(cur.m, cur.x, cur.y)) {
+    state = "over"; const nl = !$("lcck").checked;
+    $("tmsg").textContent = "Game over! Score " + score + ", " + pcs + "  pieces dropped in all." + (nl ? "Without the line-clear rule the well fills up fast." : "Play again?");
+    if (nl) $("c23task").textContent = " ✔ Without line clearing, you lasted " + pcs + "  pieces dropped in all.";
+  }
+  stats();
+}
+function stats() {
+  $("sc").textContent = score; $("ln").textContent = lines; $("lv").textContent = level; $("iv").textContent = interval();
+  $("pc").textContent = pcs; $("dr").textContent = sinceI; $("drm").textContent = maxI;
+}
+function reset() {
+  board = Array.from({ length: ROWS }, () => Array(COLS).fill(0));
+  bag = []; lastT = null; pcs = 0; next = null; score = 0; lines = 0; level = 0; acc = 0; clearing = null; sinceI = 0; maxI = 0;
+  state = "run"; $("tmsg").textContent = ""; $("pause").textContent = "Pause";
+  spawn();
+}
+function lock() {
+  cur.m.forEach((row, y) => row.forEach((v, x) => { if (v && cur.y + y >= 0) board[cur.y + y][cur.x + x] = cur.t; }));
+  const full = [];
+  if ($("lcck").checked) for (let y = 0; y < ROWS; y++) if (board[y].every(v => v)) full.push(y);
+  if (full.length) { clearing = { rows: full, t: 220 }; }
+  else spawn();
+}
+function finishClear() {
+  const n = clearing.rows.length;
+  score += [0, 40, 100, 300, 1200][n] * (level + 1);
+  clearing.rows.forEach(y => { board.splice(y, 1); board.unshift(Array(COLS).fill(0)); });
+  lines += n; level = Math.min(15, Math.floor(lines / 10));
+  $("tmsg").textContent = ["", "Clear 1 row", "2 rows!", "3 rows!!", "Four rows!!!"][n];
+  clearing = null; spawn();
+}
+function move(dx) { if (state !== "run" || clearing) return; if (!hit(cur.m, cur.x + dx, cur.y)) cur.x += dx; }
+function down(manual) {
+  if (state !== "run" || clearing) return;
+  if (!hit(cur.m, cur.x, cur.y + 1)) { cur.y++; if (manual) score++; stats(); } else { lock(); }
+}
+function rotate() {
+  if (state !== "run" || clearing) return;
+  const r = rot(cur.m);
+  for (const k of [0, -1, 1, -2, 2]) if (!hit(r, cur.x + k, cur.y)) { cur.m = r; cur.x += k; return; }
+}
+function hardDrop() {
+  if (state !== "run" || clearing) return;
+  let c = 0; while (!hit(cur.m, cur.x, cur.y + 1)) { cur.y++; c++; }
+  score += c * 2; lock(); stats();
+}
+function ghostY() { let y = cur.y; while (!hit(cur.m, cur.x, y + 1)) y++; return y; }
+
+function cell(c, x, y, color, a) {
+  c.globalAlpha = a || 1;
+  c.fillStyle = color; c.fillRect(x * CS + 1, y * CS + 1, CS - 2, CS - 2);
+  c.strokeStyle = "#2b2b3a"; c.lineWidth = 2; c.strokeRect(x * CS + 1.5, y * CS + 1.5, CS - 3, CS - 3);
+  c.globalAlpha = 1;
+}
+function render() {
+  ctx.clearRect(0, 0, 240, 480);
+  ctx.strokeStyle = "#e6dcc3"; ctx.lineWidth = 1;
+  for (let i = 1; i < COLS; i++) { ctx.beginPath(); ctx.moveTo(i * CS, 0); ctx.lineTo(i * CS, 480); ctx.stroke(); }
+  for (let j = 1; j < ROWS; j++) { ctx.beginPath(); ctx.moveTo(0, j * CS); ctx.lineTo(240, j * CS); ctx.stroke(); }
+  if (board) {
+    for (let y = 0; y < ROWS; y++) for (let x = 0; x < COLS; x++) if (board[y][x]) cell(ctx, x, y, COL[board[y][x]]);
+    if (clearing) {
+      const on = Math.floor(clearing.t / 55) % 2 === 0;
+      clearing.rows.forEach(y => { ctx.fillStyle = on ? "#fff" : "#ffe58a"; ctx.fillRect(0, y * CS, 240, CS); });
+    } else if (state !== "idle" && cur) {
+      const gy = ghostY();
+      cur.m.forEach((row, y) => row.forEach((v, x) => { if (v && gy + y >= 0) cell(ctx, cur.x + x, gy + y, COL[cur.t], .22); }));
+      cur.m.forEach((row, y) => row.forEach((v, x) => { if (v && cur.y + y >= 0) cell(ctx, cur.x + x, cur.y + y, COL[cur.t]); }));
+    }
+  }
+  if (state === "idle" || state === "over" || state === "pause") {
+    ctx.fillStyle = "rgba(253,248,236,.8)"; ctx.fillRect(0, 170, 240, 120);
+    ctx.fillStyle = "#2b2b3a"; ctx.font = "30px 'Ma Shan Zheng','LXGW WenKai',cursive"; ctx.textAlign = "center";
+    ctx.fillText(state === "idle" ? "Press “Start”" : state === "pause" ? "Paused" : "Game over", 120, 230);
+    ctx.font = "17px 'LXGW WenKai',sans-serif";
+    if (state !== "pause") ctx.fillText(state === "idle" ? "or press Enter" : "press Enter to replay", 120, 262);
+  }
+  nctx.clearRect(0, 0, 96, 72);
+  if (next) {
+    const m = next.m, off = (4 - m.length) / 2;
+    m.forEach((row, y) => row.forEach((v, x) => {
+      if (v) { nctx.fillStyle = COL[next.t]; nctx.fillRect((x + off) * 22 + 4, y * 22 + 4, 20, 20); nctx.strokeStyle = "#2b2b3a"; nctx.lineWidth = 2; nctx.strokeRect((x + off) * 22 + 4, y * 22 + 4, 20, 20); }
+    }));
+  }
+}
+function loop(t) {
+  const dt = Math.min(100, t - (last || t)); last = t;
+  if (state === "run") {
+    if (clearing) { clearing.t -= dt; if (clearing.t <= 0) finishClear(); }
+    else { acc += dt; const iv = interval(); while (acc >= iv && state === "run" && !clearing) { acc -= iv; down(false); } }
+  }
+  render(); requestAnimationFrame(loop);
+}
+
+function togglePause() { if (state === "run") { state = "pause"; $("pause").textContent = "Resume"; } else if (state === "pause") { state = "run"; $("pause").textContent = "Pause"; } }
+$("start").onclick = reset; $("pause").onclick = togglePause;
+window.addEventListener("keydown", e => {
+  const tag = (e.target.tagName || "").toLowerCase();
+  if (tag === "textarea" || tag === "select" || tag === "input" && e.target.type === "text") return;
+  if (e.key === "Enter" && (state === "idle" || state === "over") && tag !== "button") { e.preventDefault(); reset(); return; }
+  if (e.key === "p" || e.key === "P") { togglePause(); return; }
+  if (state !== "run") return;
+  const k = e.key;
+  if (k === "ArrowLeft") { move(-1); e.preventDefault(); }
+  else if (k === "ArrowRight") { move(1); e.preventDefault(); }
+  else if (k === "ArrowUp" || k === "x" || k === "X") { rotate(); e.preventDefault(); }
+  else if (k === "ArrowDown") { down(true); acc = 0; e.preventDefault(); }
+  else if (k === " ") { hardDrop(); e.preventDefault(); }
+});
+
+document.querySelectorAll("#pad .btn").forEach(b => {
+  const a = b.dataset.a;
+  const act = () => { if (a === "left") move(-1); else if (a === "right") move(1); else if (a === "rot") rotate(); else if (a === "down") { down(true); acc = 0; } else hardDrop(); };
+  let timer = null;
+  const stop = () => { clearInterval(timer); timer = null; };
+  b.addEventListener("pointerdown", e => { e.preventDefault(); act(); if (a === "left" || a === "right" || a === "down") { stop(); timer = setInterval(act, 110); } });
+  ["pointerup", "pointerleave", "pointercancel"].forEach(ev => b.addEventListener(ev, stop));
+});
+requestAnimationFrame(loop);
+
+GD.mountQuiz($("quiz"), [
+  { q: "What is special about Tetris’s “goal” design?", opts: ["There is a clear final level", "No end: the goal is to last longer and clear better, and the difficulty must eventually exceed the player", "The goal is to collect all the pieces", "The goal is given by the story"], a: 1, why: "It has no “clearing the game,” only a challenge that keeps rising until the player is beaten; failure is inevitable, so “how long you last” becomes the contest." },
+  { q: "[Why it was invented] Why did Pajitnov change the five-cell puzzle into 7 four-cell pieces?", opts: ["Because a computer can only draw four cells", "Twelve five-cell shapes were too complicated on a computer: hard to draw, recognize and place, while 4 cells and 7 shapes are recognized at a glance and varied enough", "Because four cells are cheaper", "Because this way no rotation is needed"], a: 1, why: "This is the account several reports agree on. Blocks on a screen also can’t be flipped, so mirror images count as two and five cells would become 18, making the burden of recognizing shapes even heavier." },
+  { q: "[Why it was invented] Why was the early straight copy of the puzzle not fun, and what turned it into a game?", opts: ["The computer was too slow to fit them", "A table puzzle is enjoyed by studying it slowly, and on a screen only moving is left; letting shapes fall faster and faster from the top of the well brought time pressure and tension", "Because players don’t like puzzles", "Because there was no color"], a: 1, why: "According to Gerasimov, the straight copy was “quite boring”; the turning point was letting the pieces fall by themselves and speed up, along with clearing full rows." },
+  { q: "[Why it was invented] What problem does the shuffle bag (7-bag) mainly solve?", opts: ["Making the game faster", "Avoiding the extremes of pure randomness, such as a long wait for a long bar that makes the player feel targeted", "Making more piece colors", "Adding more piece kinds"], a: 1, why: "With one of each of 7 in a bag, the randomness remains, but the extreme swings of luck are held in check: two I pieces are at most 12 apart. Pure randomness doesn’t “balance things” for you." },
+  { q: "[Why] Why is a 1200-point “four-line clear” designed to be far above four single clears (160 in all)?", opts: ["To make the game end sooner", "To create a “better than expected” reward and encourage players to take the risk of saving up rows", "Because it must be so mathematically", "There is no reason, it was just set at random"], a: 1, why: "A superlinear reward both brings surprise (prediction error) and makes “safe clears versus risking a four-line clear” a meaningful trade-off. (Reasoned from animal experiments to players; an inference.)" },
+  { q: "In MDA, “players themselves play out a strategy of ‘leaving a column for a long bar’” is?", opts: ["Mechanics", "Dynamics", "Aesthetics", "Prototype"], a: 1, why: "Dynamics are behaviors that emerge when players interact with the mechanics, and the designer did not write them directly into the rules." },
+  { q: "[Why] In Kahneman’s cold-water experiment, why were most people willing to repeat the longer one with 30 seconds more pain?", opts: ["They like pain", "Memory mostly looks at the most intense moment and the moment of ending, the longer one’s ending hurt less, and duration was almost ignored", "They didn’t hear the question", "Because the water in the longer one was warmer"], a: 1, why: "This is the peak-end rule (together with duration neglect). It describes evaluation afterward, and doesn’t show that the feeling at the time was better." },
+]);
+
+mountLinkPair($("c23pair"), $("c23paircnt"),
+  ["Flow and the difficulty curve", "Prediction error", "The peak-end rule", "Cognitive load"],
+  [
+    { t: "With each level the fall interval shortens and the operating window narrows; even the best player eventually can’t keep up.", a: 0, why: "The challenge is pushed up along a monotonically rising curve, chasing the player’s skill all the way, a plain implementation of the “flow channel.”", hint: "This phenomenon is about “challenge changing over time, and which is higher compared with skill.”" },
+    { t: "After saving up several rows, a long bar arrives for a four-line clear, the score soars, and the thrill far exceeds ordinary single-row clears.", a: 1, why: "A “better than expected” reward (1200 against 160 at level 0) creates strong surprise and also encourages players to risk saving up.", hint: "Think: how large is the gap between the reward and “the size you expected”?" },
+    { t: "A newcomer can understand all the rules in thirty seconds, with no text tutorial, and puts all their attention on “where does this piece go.”", a: 3, why: "With few rules and a clean interface, learning the rules takes very little brainpower, and almost all attention is left for spatial reasoning.", hint: "This phenomenon is about “how much information the mind can handle at once.”" },
+    { t: "A game ends in failure, but what the player remembers afterward is the last stretch of tension and a lovely four-line clear, so half a second later they press “play again.”", a: 2, why: "Memory is shaped mainly by peak and end, not by adding up the length of the whole game. (This is a reading, not an experimental conclusion about this game.)", hint: "The keyword is “how it is recalled afterward.”" },
+    { t: "Occasionally the next long bar arrives “right on time” and saves a risky position, and the player can’t help cheering.", a: 1, why: "This is a “better than expected” result. The uncertainty of rewards and exceeding expectations make the same event more memorable.", hint: "The emotion here comes from “an unexpectedly good result.”" },
+  ]);
+</script>
+</body>
+</html>
