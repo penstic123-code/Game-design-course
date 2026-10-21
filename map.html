@@ -34,7 +34,7 @@
     <div class="txt">
       <span class="badge">全课知识图谱</span>
       <h1>概念关系图</h1>
-      <p class="sub">60 个核心概念怎么互相连接？拖动、点击、搜索，找到你想学的那一条线。</p>
+      <p class="sub">110 个概念怎么互相连接？拖动、点击、搜索，找到你想学的那一条线。</p>
     </div>
     <svg viewBox="0 0 190 150" class="rough" aria-hidden="true">
       <g stroke="#2b2b3a" stroke-width="4" fill="none"><path d="M45 40 L110 30 L150 75 L100 120 L40 100 Z"/><path d="M45 40 L150 75 M110 30 L100 120"/></g>
@@ -56,7 +56,7 @@
       <button class="btn pink" id="clearSel">取消选择</button>
     </div>
     <div class="legend" id="legend"></div>
-    <div id="gwrap"><svg id="gsvg" viewBox="0 0 1100 780" role="img" aria-label="概念关系图"></svg></div>
+    <div id="gwrap"><svg id="gsvg" viewBox="0 0 1400 1000" role="img" aria-label="概念关系图"></svg></div>
   </div>
 
   <div class="card info" id="info"><h3>👆 点一个概念</h3><p class="small">这里会显示它的解释、所在章节，以及它和其他概念的关系。</p></div>
@@ -65,7 +65,7 @@
 <script src="js/graph.js"></script>
 <script>
 const G = window.GRAPH, NS = "http://www.w3.org/2000/svg";
-const W = 1100, H = 780;
+const W = 1400, H = 1000;
 const partOf = ch => GD.partOf(ch);
 const col = ch => GD.PARTS[partOf(ch)].accent;
 const col2 = ch => GD.PARTS[partOf(ch)].accent2;
@@ -76,7 +76,7 @@ const TYPES = {
   contrast: ["对照/张力", "#e5484d", "3 5", false],
   link: ["相关", "#9a9aa8", "", false],
 };
-const nodes = G.nodes.map((n, i) => ({ ...n, x: 110 + partOf(n.ch) * 220 + (Math.random() - .5) * 160, y: 80 + Math.random() * (H - 160), vx: 0, vy: 0, on: true }));
+const nodes = G.nodes.map((n, i) => ({ ...n, x: 150 + partOf(n.ch) * 275 + (Math.random() - .5) * 160, y: 80 + Math.random() * (H - 160), vx: 0, vy: 0, on: true }));
 const byId = Object.fromEntries(nodes.map(n => [n.id, n]));
 const edges = G.edges.map(e => ({ ...e, A: byId[e.a], B: byId[e.b] })).filter(e => e.A && e.B);
 const svg = document.getElementById("gsvg");
@@ -130,8 +130,8 @@ function colsLayout() {
   nodes.forEach(n => groups[partOf(n.ch)].push(n));
   groups.forEach((g, pi) => {
     g.sort((a, b) => a.ch - b.ch);
-    const cx = 110 + pi * 220, rows = Math.ceil(g.length / (pi === 0 ? 5 : 8));
-    g.forEach((n, k) => { n.tx = cx + ((k % 2) ? 38 : -38) * (pi === 3 ? 0.6 : 1); n.ty = 60 + (k + 0.5) * ((H - 100) / g.length); });
+    const cx = 150 + pi * 275, rows = Math.ceil(g.length / 2);   // 每篇两列并排，行距按节点数分配
+    g.forEach((n, k) => { n.tx = cx + ((k % 2) ? 66 : -66); n.ty = 50 + (Math.floor(k / 2) + 0.5) * ((H - 110) / rows); });
   });
 }
 function render() {
