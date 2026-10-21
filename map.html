@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>概念关系图</title>
+<link rel="stylesheet" href="css/style.css">
+<style>
+  .wrap{max-width:1180px}
+  #gwrap{overflow-x:auto}
+  #gsvg{min-width:900px}
+  #gwrap{position:relative;background:#fffef7;border:3px solid var(--ink);border-radius:14px 30px 14px 26px;box-shadow:5px 6px 0 var(--ink)}
+  #gsvg{width:100%;height:auto;display:block;touch-action:none;cursor:grab}
+  #gsvg text{font-family:var(--hand);paint-order:stroke;stroke:#fffef7;stroke-width:5px;stroke-linejoin:round;pointer-events:none}
+  .node{cursor:pointer}
+  .node circle{stroke:#2b2b3a;stroke-width:3;transition:r .15s}
+  .node.dim{opacity:.15}
+  .node.sel circle{stroke-width:5}
+  .edge{fill:none;transition:opacity .2s}
+  .edge.dim{opacity:.06}
+  .legend{display:flex;flex-wrap:wrap;gap:8px 14px;margin:8px 0;font-size:.9rem;align-items:center}
+  .legend i{display:inline-block;width:30px;height:0;border-top:3px solid var(--ink);vertical-align:middle;margin-right:4px}
+  .info{min-height:130px}
+  .info h3{margin:0}
+  .info .rels a{display:inline-block;margin:2px 4px 2px 0;border:2px solid var(--ink);border-radius:10px;padding:0 8px;font-size:.9rem;text-decoration:none;background:#fff;cursor:pointer}
+  .info .rels a:hover{background:var(--yellow)}
+  .pchips .chip.off{opacity:.35;text-decoration:line-through}
+  input.search{max-width:260px;padding:4px 10px;border-radius:20px}
+</style>
+</head>
+<body data-ch="0">
+<main class="wrap">
+  <div class="hero">
+    <div class="txt">
+      <span class="badge">全课知识图谱</span>
+      <h1>概念关系图</h1>
+      <p class="sub">60 个核心概念怎么互相连接？拖动、点击、搜索，找到你想学的那一条线。</p>
+    </div>
+    <svg viewBox="0 0 190 150" class="rough" aria-hidden="true">
+      <g stroke="#2b2b3a" stroke-width="4" fill="none"><path d="M45 40 L110 30 L150 75 L100 120 L40 100 Z"/><path d="M45 40 L150 75 M110 30 L100 120"/></g>
+      <circle cx="45" cy="40" r="14" fill="#ffe58a" stroke="#2b2b3a" stroke-width="4"/><circle cx="110" cy="30" r="14" fill="#a8dcf0" stroke="#2b2b3a" stroke-width="4"/>
+      <circle cx="150" cy="75" r="14" fill="#b6e8a8" stroke="#2b2b3a" stroke-width="4"/><circle cx="100" cy="120" r="14" fill="#ffb3c6" stroke="#2b2b3a" stroke-width="4"/><circle cx="40" cy="100" r="14" fill="#d8c8ff" stroke="#2b2b3a" stroke-width="4"/>
+    </svg>
+  </div>
+
+  <div class="card y">
+    <b>怎么看：</b>圆点是一个概念（颜色=所属篇章），连线是关系。<b>点一个概念</b>，只高亮与它直接相关的内容，并在下方显示它是什么、在哪一章、与谁有关；<b>拖动</b>圆点可以重新摆放；按“按篇章分列”可以看到整门课的结构。
+  </div>
+
+  <div class="board">
+    <div class="pchips" id="pchips"></div>
+    <div style="margin:6px 0">
+      <input type="text" class="search" id="search" placeholder="🔍 搜索概念，如：心流、古德哈特">
+      <button class="btn alt" id="layoutForce">🕸️ 力导向布局</button>
+      <button class="btn" id="layoutCols">📚 按篇章分列</button>
+      <button class="btn pink" id="clearSel">取消选择</button>
+    </div>
+    <div class="legend" id="legend"></div>
+    <div id="gwrap"><svg id="gsvg" viewBox="0 0 1100 780" role="img" aria-label="概念关系图"></svg></div>
+  </div>
+
+  <div class="card info" id="info"><h3>👆 点一个概念</h3><p class="small">这里会显示它的解释、所在章节，以及它和其他概念的关系。</p></div>
+</main>
+<script src="js/common.js"></script>
+<script src="js/graph.js"></script>
+<script>
+const G = window.GRAPH, NS = "http://www.w3.org/2000/svg";
+const W = 1100, H = 780;
+const partOf = ch => GD.partOf(ch);
+const col = ch => GD.PARTS[partOf(ch)].accent;
+const col2 = ch => GD.PARTS[partOf(ch)].accent2;
+const TYPES = {
+  needs: ["前置：先懂它才能懂后者", "#2b2b3a", "", true],
+  explains: ["解释：给出原理", "#e8751a", "8 5", true],
+  applies: ["应用：用到另一个场景", "#2f9e44", "", true],
+  contrast: ["对照/张力", "#e5484d", "3 5", false],
+  link: ["相关", "#9a9aa8", "", false],
+};
+const nodes = G.nodes.map((n, i) => ({ ...n, x: 110 + partOf(n.ch) * 220 + (Math.random() - .5) * 160, y: 80 + Math.random() * (H - 160), vx: 0, vy: 0, on: true }));
+const byId = Object.fromEntries(nodes.map(n => [n.id, n]));
+const edges = G.edges.map(e => ({ ...e, A: byId[e.a], B: byId[e.b] })).filter(e => e.A && e.B);
+const svg = document.getElementById("gsvg");
+svg.innerHTML = `<defs>${Object.entries(TYPES).filter(t => t[1][3]).map(([k, t]) => `<marker id="ar-${k}" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="${t[1]}"/></marker>`).join("")}</defs><g id="gE"></g><g id="gN"></g>`;
+const gE = document.getElementById("gE"), gN = document.getElementById("gN");
+const R = n => 16 + Math.min(9, edgesOf(n).length * 1.0);
+const _cache = {};
+function edgesOf(n) { return _cache[n.id] || (_cache[n.id] = edges.filter(e => e.A === n || e.B === n)); }
+edges.forEach(e => {
+  const p = document.createElementNS(NS, "path"), t = TYPES[e.type];
+  p.setAttribute("class", "edge"); p.setAttribute("stroke", t[1]); p.setAttribute("stroke-width", e.type === "link" ? 1.6 : 2.4);
+  if (t[2]) p.setAttribute("stroke-dasharray", t[2]);
+  if (t[3]) p.setAttribute("marker-end", `url(#ar-${e.type})`);
+  e.el = p; gE.appendChild(p);
+});
+nodes.forEach(n => {
+  const g = document.createElementNS(NS, "g"); g.setAttribute("class", "node");
+  const c = document.createElementNS(NS, "circle"); c.setAttribute("fill", col(n.ch));
+  const t = document.createElementNS(NS, "text"); t.setAttribute("text-anchor", "middle"); t.setAttribute("font-size", "18"); t.textContent = n.zh;
+  const num = document.createElementNS(NS, "text"); num.setAttribute("text-anchor", "middle"); num.setAttribute("font-size", "13"); num.setAttribute("dy", "5"); num.textContent = n.ch; num.style.stroke = "none";
+  g.append(c, t, num); n.el = g; n.c = c; n.t = t; gN.appendChild(g);
+});
+
+// ---------- 布局 ----------
+let alpha = 1, mode = "force", running = false;
+function stepForce() {
+  const K = 0.012;
+  nodes.forEach(n => { n.fx = 0; n.fy = 0; });
+  for (let i = 0; i < nodes.length; i++) for (let j = i + 1; j < nodes.length; j++) {
+    const a = nodes[i], b = nodes[j]; if (!a.on || !b.on) continue;
+    let dx = a.x - b.x, dy = a.y - b.y, d2 = dx * dx + dy * dy + 0.01, d = Math.sqrt(d2);
+    const f = 11000 / d2; dx /= d; dy /= d;
+    a.fx += dx * f; a.fy += dy * f; b.fx -= dx * f; b.fy -= dy * f;
+  }
+  edges.forEach(e => {
+    if (!e.A.on || !e.B.on) return;
+    const dx = e.B.x - e.A.x, dy = e.B.y - e.A.y, d = Math.sqrt(dx * dx + dy * dy) + 0.01, f = (d - 120) * 0.035;
+    e.A.fx += dx / d * f; e.A.fy += dy / d * f; e.B.fx -= dx / d * f; e.B.fy -= dy / d * f;
+  });
+  nodes.forEach(n => {
+    const px = 110 + partOf(n.ch) * 220;
+    n.fx += (px - n.x) * K * 0.6; n.fy += (H / 2 - n.y) * 0.003;       // 同一篇章略微聚拢
+    if (n.drag) return;
+    n.vx = (n.vx + n.fx * alpha) * 0.82; n.vy = (n.vy + n.fy * alpha) * 0.82;
+    n.x = Math.max(60, Math.min(W - 60, n.x + n.vx)); n.y = Math.max(40, Math.min(H - 40, n.y + n.vy));
+  });
+  alpha = Math.max(0.03, alpha * 0.985);
+}
+function colsLayout() {
+  const groups = GD.PARTS.map(() => []);
+  nodes.forEach(n => groups[partOf(n.ch)].push(n));
+  groups.forEach((g, pi) => {
+    g.sort((a, b) => a.ch - b.ch);
+    const cx = 110 + pi * 220, rows = Math.ceil(g.length / (pi === 0 ? 5 : 8));
+    g.forEach((n, k) => { n.tx = cx + ((k % 2) ? 38 : -38) * (pi === 3 ? 0.6 : 1); n.ty = 60 + (k + 0.5) * ((H - 100) / g.length); });
+  });
+}
+function render() {
+  edges.forEach(e => {
+    const vis = e.A.on && e.B.on; e.el.style.display = vis ? "" : "none"; if (!vis) return;
+    const dx = e.B.x - e.A.x, dy = e.B.y - e.A.y, d = Math.sqrt(dx * dx + dy * dy) + 0.01;
+    const rA = R(e.A) + 1, rB = R(e.B) + 3, x1 = e.A.x + dx / d * rA, y1 = e.A.y + dy / d * rA, x2 = e.B.x - dx / d * rB, y2 = e.B.y - dy / d * rB;
+    const mx = (x1 + x2) / 2 - dy * 0.08, my = (y1 + y2) / 2 + dx * 0.08;
+    e.el.setAttribute("d", `M${x1} ${y1} Q${mx} ${my} ${x2} ${y2}`);
+  });
+  nodes.forEach(n => {
+    n.el.style.display = n.on ? "" : "none";
+    n.el.setAttribute("transform", `translate(${n.x},${n.y})`);
+    n.c.setAttribute("r", R(n)); n.t.setAttribute("y", R(n) + 19);
+  });
+}
+function loop() {
+  if (mode === "force") stepForce();
+  else nodes.forEach(n => { if (!n.drag) { n.x += (n.tx - n.x) * 0.15; n.y += (n.ty - n.y) * 0.15; } });
+  render();
+  if ((mode === "force" && alpha > 0.04) || (mode === "cols" && nodes.some(n => !n.drag && (Math.abs(n.tx - n.x) > .5 || Math.abs(n.ty - n.y) > .5))) || nodes.some(n => n.drag)) requestAnimationFrame(loop);
+  else running = false;
+}
+function kick(a) { alpha = a || 0.6; if (!running) { running = true; requestAnimationFrame(loop); } }
+for (let i = 0; i < 420; i++) stepForce(); alpha = 0.2; render(); kick(0.15);
+document.getElementById("layoutForce").onclick = () => { mode = "force"; kick(0.9); };
+document.getElementById("layoutCols").onclick = () => { mode = "cols"; colsLayout(); kick(); };
+
+// ---------- 交互：拖动 / 选择 ----------
+let sel = null, dragN = null, moved = false;
+function pt(e) { const r = svg.getBoundingClientRect(); return [(e.clientX - r.left) / r.width * W, (e.clientY - r.top) / r.height * H]; }
+nodes.forEach(n => {
+  n.el.addEventListener("pointerdown", e => { dragN = n; n.drag = true; moved = false; svg.setPointerCapture(e.pointerId); e.preventDefault(); kick(0.3); });
+});
+svg.addEventListener("pointermove", e => { if (!dragN) return; const [x, y] = pt(e); dragN.x = Math.max(30, Math.min(W - 30, x)); dragN.y = Math.max(30, Math.min(H - 30, y)); dragN.vx = dragN.vy = 0; moved = true; if (mode === "cols") { dragN.tx = dragN.x; dragN.ty = dragN.y; } kick(0.3); });
+svg.addEventListener("pointerup", () => { if (!dragN) return; const n = dragN; n.drag = false; dragN = null; if (!moved) select(n); });
+svg.addEventListener("click", e => { if (e.target === svg) select(null); });
+document.getElementById("clearSel").onclick = () => select(null);
+function select(n) {
+  sel = n;
+  nodes.forEach(m => { const rel = n && (m === n || edgesOf(n).some(e => e.A === m || e.B === m)); m.el.classList.toggle("dim", !!n && !rel); m.el.classList.toggle("sel", m === n); });
+  edges.forEach(e => e.el.classList.toggle("dim", !!n && e.A !== n && e.B !== n));
+  const info = document.getElementById("info");
+  if (!n) { info.innerHTML = '<h3>👆 点一个概念</h3><p class="small">这里会显示它的解释、所在章节，以及它和其他概念的关系。</p>'; return; }
+  const row = (title, list) => list.length ? `<div class="rels"><b>${title}</b> ${list.map(m => `<a data-id="${m.id}">${m.zh}（第${m.ch}章）</a>`).join("")}</div>` : "";
+  const es = edgesOf(n);
+  const pre = es.filter(e => e.B === n && (e.type === "needs" || e.type === "explains" || e.type === "applies")).map(e => e.A);
+  const nxt = es.filter(e => e.A === n && (e.type === "needs" || e.type === "explains" || e.type === "applies")).map(e => e.B);
+  const oth = es.filter(e => e.type === "contrast" || e.type === "link").map(e => (e.A === n ? e.B : e.A));
+  info.innerHTML = `<h3 style="color:#2b2b3a">${n.zh} <span class="tag what" style="background:${col(n.ch)}">${GD.PARTS[partOf(n.ch)].zh}</span></h3>
+    <p>${n.dz}</p><p><a href="${GD.CH[n.ch - 1][1]}"><span class="btn alt" style="font-size:1rem">📖 去第 ${n.ch} 章：${GD.CH[n.ch - 1][0]}</span></a></p>
+    ${row("⬅️ 先修 / 原理", pre)}${row("➡️ 延伸 / 应用", nxt)}${row("↔️ 对照 / 相关", oth)}`;
+  info.querySelectorAll("a[data-id]").forEach(a => (a.onclick = () => { const m = byId[a.dataset.id]; select(m); info.scrollIntoView({ block: "nearest" }); }));
+}
+
+// ---------- 过滤 / 搜索 / 图例 ----------
+const pch = document.getElementById("pchips");
+GD.PARTS.forEach((p, i) => {
+  const b = document.createElement("button"); b.className = "chip on"; b.style.background = p.accent; b.textContent = p.zh;
+  b.onclick = () => { const off = !b.classList.toggle("off"); nodes.filter(n => partOf(n.ch) === i).forEach(n => (n.on = off)); if (sel && !sel.on) select(null); render(); kick(0.4); };
+  pch.appendChild(b);
+});
+document.getElementById("legend").innerHTML = Object.values(TYPES).map(t => `<span><i style="border-top-color:${t[1]};border-top-style:${t[2] ? "dashed" : "solid"}"></i>${t[0]}</span>`).join("");
+document.getElementById("search").addEventListener("input", e => {
+  const q = e.target.value.trim(); if (!q) return select(null);
+  const hit = nodes.find(n => n.on && (n.zh.includes(q) || n.en.toLowerCase().includes(q.toLowerCase()) || n.dz.includes(q)));
+  if (hit) select(hit);
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,829 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>第24章 案例：马力欧 1-1</title>
+<link rel="stylesheet" href="css/style.css">
+<style>
+  .dx{display:grid;grid-template-columns:190px 1fr;gap:14px;align-items:start}
+  .dx .chips{display:flex;flex-direction:column}
+  .dx .chip{text-align:left;margin:3px 0}
+  .dx .panel{margin:0;min-height:170px}
+  .dx .panel h3{margin:0 0 4px}
+  @media(max-width:700px){.dx{grid-template-columns:1fr}.dx .chips{flex-direction:row;flex-wrap:wrap}}
+  #gc{display:block;width:100%;max-width:640px;height:auto;margin:0 auto;background:#a8dcf0;border:3px solid var(--ink);border-radius:8px;outline:none;touch-action:none}
+  #gc:focus{box-shadow:0 0 0 4px var(--yellow)}
+  .pad{display:flex;gap:8px;justify-content:center;margin-top:10px;flex-wrap:wrap}
+  .pad .btn{margin:0;padding:10px 22px;font-size:1.4rem;touch-action:none;user-select:none}
+  .knobs{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+  @media(max-width:700px){.knobs{grid-template-columns:1fr}}
+  .stop{cursor:pointer}
+  .stop:focus{outline:none}
+  .stop:focus .hl,.stop:hover .hl{stroke-width:6}
+  .wbpal{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
+  .wbpal .el{font:inherit;font-size:1rem;border:2.5px solid var(--ink);background:#fff;border-radius:14px 8px 14px 8px;padding:3px 12px;cursor:grab;touch-action:none;user-select:none}
+  .wbpal .el.sel{background:var(--yellow);transform:rotate(-2deg)}
+  .wbslots{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin:8px 0}
+  .wbslots .sl{min-height:74px;border:3px dashed var(--ink);border-radius:12px;background:#fff;padding:4px;text-align:center;font-size:.9rem;cursor:pointer;display:flex;flex-direction:column;justify-content:center;align-items:center;position:relative}
+  .wbslots .sl small{color:var(--soft);font-size:.7rem;position:absolute;top:1px;left:5px}
+  .wbslots .sl.full{border-style:solid;background:#fff7cf}
+  .wbslots .sl.warn{background:#ffe0e0}
+  .wbslots .sl.over{outline:3px dashed var(--blue)}
+  .wbslots .sl .em{font-size:1.5rem;line-height:1.2}
+  @media(max-width:700px){.wbslots{grid-template-columns:repeat(3,1fr)}}
+  .wbghost{position:fixed;z-index:200;pointer-events:none;background:var(--yellow);border:2.5px solid var(--ink);border-radius:12px;padding:2px 10px;font-size:1rem}
+  .wbfb li{margin:3px 0}
+  .c24sim{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0}
+  @media(max-width:700px){.c24sim{grid-template-columns:1fr}}
+  .c24sim .stat{display:block;margin:0}
+  .lp{position:relative}
+  .lp .lpsvg{position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none;overflow:visible;z-index:2}
+  .lp .lpcols{display:grid;grid-template-columns:1fr 1fr;gap:12px 44px;align-items:start;position:relative;z-index:1}
+  .lp .lpl{display:flex;flex-direction:column;gap:10px;position:sticky;top:70px}
+  .lp .lpr{display:flex;flex-direction:column;gap:6px}
+  .lp .lpp{font:inherit;font-size:.95rem;line-height:1.35;border:2.5px solid var(--ink);background:#fff;border-radius:16px 8px 16px 8px;padding:6px 10px;cursor:grab;touch-action:none;user-select:none;text-align:left}
+  .lp .lpp.sel{background:var(--yellow);transform:rotate(-1.5deg)}
+  .lp .lpp::after{content:" ●";color:#e5484d}
+  .lp .lpi{display:block;width:100%;text-align:left;font:inherit;font-size:.92rem;line-height:1.4;border:2.5px solid var(--ink);border-radius:12px 20px 12px 18px;padding:6px 10px;background:#fffef7;cursor:pointer}
+  .lp .lpi.ok{background:var(--green);cursor:default}
+  .lp .lpi.bad{background:#ffd9d9;animation:lpshake .3s}
+  .lp .lpi.over{outline:3px dashed var(--blue)}
+  .lp .lpfb{font-size:.85rem;margin:2px 0 4px 4px;color:var(--ink)}
+  @keyframes lpshake{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+</style>
+</head>
+<body data-ch="24">
+<main class="wrap">
+  <div class="hero">
+    <div class="txt">
+      <span class="badge">第 24 章 · 案例</span>
+      <h1>超级马力欧 1-1</h1>
+      <p class="sub">一个没有一个字的教程，教会了几亿玩家。</p>
+    </div>
+    <svg viewBox="0 0 190 150" class="rough" aria-hidden="true">
+      <g stroke="#2b2b3a" stroke-width="4" stroke-linejoin="round">
+        <rect x="55" y="20" width="60" height="60" rx="6" fill="#ffe58a"/>
+        <rect x="20" y="110" width="150" height="26" fill="#e0a06a"/>
+        <ellipse cx="140" cy="96" rx="22" ry="16" fill="#a5683d"/>
+      </g>
+      <text x="74" y="66" font-size="44" fill="#2b2b3a">?</text>
+    </svg>
+  </div>
+
+  <div class="goals"><span class="time">⏱ 约 45 分钟</span><h3>学习目标</h3><ul>
+    <li>读完你能说清：1-1 的开场为什么只放一只栗宝宝，设计者当时换掉了什么，又是为什么。</li>
+    <li>读完你能用“引入 → 练习 → 变化”拆解任何一个关卡的教学顺序，并用最近发展区与脚手架解释它为什么教得会。</li>
+    <li>读完你能说出宽容手感和低成本失败各自在保护玩家的什么，也知道哪些说法是设计者的回忆，哪些只是我们事后的解读。</li>
+  </ul></div>
+
+  <!-- 1 是什么 -->
+  <div class="sec"><span class="n">1</span><h2><span class="tag what">是什么</span>没有一个字的第一关</h2></div>
+  <p>第一次玩《超级马力欧兄弟》的人，面前没有一个字：没有“按 A 键跳跃”，没有“踩敌人”，也没人告诉你该往右走。可大多数人不到一分钟，就已经学会了跑、跳、踩、顶砖块。</p>
+  <p>这是任天堂 1985 年的作品，通常认为主要由宫本茂和手塚卓志设计，近藤浩治作曲。它的第一关 1-1，成了游戏设计里被引用得最多的“无文字教学”范本。它到底做了什么？</p>
+  <div class="card">
+    <svg viewBox="0 0 760 300" width="100%" role="img" aria-label="马力欧核心循环：向右跑、遇障碍、起跳、过关收获、更难的下一段">
+      <g class="rough" stroke="#2b2b3a" stroke-width="4" stroke-linejoin="round">
+        <rect x="20" y="105" width="150" height="80" rx="22" fill="#ffe58a"/>
+        <rect x="215" y="20" width="150" height="80" rx="22" fill="#a8dcf0"/>
+        <rect x="410" y="20" width="150" height="80" rx="22" fill="#ffb3c6"/>
+        <rect x="590" y="105" width="150" height="80" rx="22" fill="#b6e8a8"/>
+        <rect x="305" y="205" width="160" height="80" rx="22" fill="#d8c8ff"/>
+        <g fill="none" stroke-width="4.5" stroke-linecap="round">
+          <path d="M172 128 Q195 80 213 66"/><path d="M367 60 L408 60"/><path d="M562 66 Q580 80 598 103"/>
+          <path d="M660 187 Q620 260 467 250"/><path d="M303 250 Q150 260 105 187"/>
+        </g>
+      </g>
+      <g font-size="22" text-anchor="middle" fill="#2b2b3a">
+        <text x="95" y="143">① 向右跑</text><text x="290" y="58">② 遇障碍</text><text x="485" y="58">③ 起跳</text>
+        <text x="665" y="143">④ 过关收获</text><text x="385" y="252">⑤ 更难一段</text>
+      </g>
+      <g font-size="17" text-anchor="middle" fill="#4b4b5e">
+        <text x="95" y="169">惯性与速度</text><text x="290" y="84">敌人、坑、水管</text><text x="485" y="84">按多久，跳多高</text>
+        <text x="665" y="169">金币、旗杆</text>
+      </g>
+    </svg>
+    <p class="small">这是秒级的<span class="term" tabindex="0" data-def="核心循环：玩家反复进行的“行动→反馈→奖励”的最小闭环。">微循环</span>：每一次跳跃都是一次“行动—反馈”，一关里要重复几十次。</p>
+  </div>
+
+  <div class="withimg">
+    <span data-illus="c24_screen"></span>
+    <div>
+      <p>先看打开游戏的第一屏。你、一片平地、头顶一个问号砖块，远处走来一只栗宝宝。除此之外什么也没有，没有第二个威胁，没有第二个要学的东西。</p>
+      <p>这一屏只做一件事：把“敌人”这个概念，单独摆在你面前。你只有两条路，撞上去，或者跳过去、踩上去。不管走哪一条，你都立刻明白了：这家伙会伤人，而踩它一脚，它就扁了。</p>
+      <p>1-1 靠三个做法教会玩家。第一个，就是刚才看到的：先单独引入，再组合。</p>
+    </div>
+  </div>
+  <div class="eg" data-ic="🍄"><span data-illus="c24_e_goomba"></span><div class="egt"><b>马力欧</b>：开场只有一只栗宝宝，旁边没有别的威胁。后面才出现“水管 + 敌人”“坑 + 平台”这样的组合。</div></div>
+  <div class="eg" data-ic="🚗"><span data-illus="c24_e_drive"></span><div class="egt"><b>学开车</b>：先在空场地练起步、停车，再上路会车、并线。没人会第一天就把你扔进早高峰。</div></div>
+  <div class="eg" data-ic="🎹"><span data-illus="c24_e_piano"></span><div class="egt"><b>学钢琴</b>：先单手弹熟，再双手合奏。同时练两只手，等于同时学两件新事。</div></div>
+  <div class="eg bad" data-ic="🪧"><span data-illus="c24_e_wall"></span><div class="egt"><b>“教程墙”</b>：第一分钟弹出十个提示框，同时讲解八个系统。信息一多，玩家什么也记不住，还不如直接去玩。<b>反例的要点：不是教得少，是一次教得太多。</b></div></div>
+
+  <!-- 2 发明故事 -->
+  <div class="sec"><span class="n">2</span><h2><span class="tag origin">发明故事</span>没有文字，怎么教会第一次玩的人？</h2></div>
+  <div class="story">
+    <h3>1985 年：卡带一插就玩，说明书多半没人翻</h3>
+    <p>那时的家用游戏机没有“新手引导”这个说法。玩家拿到卡带就开始玩，手册也许在抽屉里躺一辈子。设计者面对的问题很现实：第一关开始时玩家什么都不会，你要怎么在不写一个字的情况下，让他学会跑、跳、踩敌人和顶砖块？</p>
+    <p>更有意思的是，据手塚卓志回忆，1-1 并不是最先做出来的，而是开发的最后阶段，为了平衡整个游戏的难度才定下来的。也就是说，这个“教学范本”是反复调出来的，不是一次灵光。</p>
+    <p>先别看他们是怎么做的，<b>自己当一回关卡设计师</b>。</p>
+  </div>
+
+  <div class="board" id="c24wb">
+    <h3>🧰 实验 A：设计你的开场（6 格）</h3>
+    <p class="small">把元素拖进下面的格子（也可以先点元素，再点格子；点已放的格子可取走）。下面曲线里的“危险度”是我给每种元素标的示意值，“技能”假设玩家每过一格就多学一点。看看哪里陡得过不去。</p>
+    <div class="wbpal" id="c24pal"></div>
+    <div class="wbslots" id="c24slots"></div>
+    <svg viewBox="0 0 600 200" width="100%" role="img" aria-label="你的开场的危险度与玩家技能曲线" id="c24curve"></svg>
+    <ul class="wbfb" id="c24fb"></ul>
+    <button class="btn green" id="c24reveal">对照 1-1 的实际安排</button>
+    <button class="btn alt" id="c24clr">清空重来</button>
+    <div id="c24rev"></div>
+  </div>
+  <div class="sticky">试试看：排出一个“没有任何红色警告”的开场；然后故意把“栗宝宝+坑”放在第 1 格，看看技能线和危险线之间裂开多大的口子。</div>
+
+  <p>下面是关于 1-1 设计过程的几条公开说法。它们来自宫本茂和手塚卓志 2015 年前后的访谈，部分经媒体转述，请当作设计者自己的回忆，而不是逐字的史实：</p>
+  <div class="timeline">
+    <div class="ev hasimg"><span data-illus="c24_t_graph"></span><div><b class="yr">方格纸</b>　手塚卓志说，关卡先画在方格纸上交给程序员，第二天才拿回可以玩的版本，“周转很慢”。小改动就在原稿上盖一张描图纸，画好再交上去。试错的代价很高，所以每个遭遇都得事先想清楚。</div></div>
+    <div class="ev hasimg"><span data-illus="c24_t_koopa"></span><div><b class="yr">第一只敌人</b>　据 2015 年《Eurogamer》访谈的报道，宫本茂说最初想用库巴兵（乌龟）当开场敌人，后来觉得对第一次玩的人，“跳上去再把它踢走”有点太难。龟壳不是一踩就解决的，于是他们改做了一个“坏蘑菇”，也就是栗宝宝。</div></div>
+    <div class="ev hasimg"><span data-illus="c24_t_mush"></span><div><b class="yr">蘑菇</b>　据同一次访谈的报道，宫本茂想让玩家体会到“马力欧变大”的反应，而变大需要一个道具，于是有了超级蘑菇。它和栗宝宝长得有点像，新手常会躲开它；可头顶低矮的砖块让你很难不碰到，一碰你就变大了，这才明白“它是好东西”。</div></div>
+    <div class="ev hasimg"><span data-illus="c24_t_hole"></span><div><b class="yr">边玩边学</b>　宫本茂说，第一关的目的，是让玩家“学会这个游戏是怎么回事”；他希望玩家在做那些自然会做的动作时就弄懂规则，不需要教程。他还说过一句：一旦玩家明白了该做什么，“它就成了他们的游戏”。</div></div>
+    <div class="ev hasimg"><span data-illus="c24_t_watch"></span><div><b class="yr">反复试玩</b>　手塚卓志（2015 年《产经新闻》访谈）说，关卡几乎从来不会第一次就成功，“人们很少照你想的方式玩”，所以他会在一旁看，再调整；设计者自己做关卡，因为知道答案，“难免会做得太难”。</div></div>
+  </div>
+  <p class="small">出处：<a href="https://www.gamerevolution.com/features/362525-perfect-level-super-mario-bros-world-1-1-changed-everything">Game Revolution 对宫本茂《Eurogamer》访谈的引述</a>；<a href="https://www.gigazine.net/gsc_news/en/20150914-mario-world-making">GIGAZINE（2015-09-14，转述 Eurogamer 访谈）</a>；<a href="https://soranews24.com/2015/09/09/super-mario-bros-creator-explains-how-and-why-he-designed-world-1-1-of-the-8-bit-classic-%E3%80%90video%E3%80%91/amp/">SoraNews24（2015-09-09）</a>；<a href="https://shmuplations.com/?p=22080">手塚卓志《产经新闻》访谈（2015-11-30，shmuplations 英译）</a>。转述内容可能与原话略有出入，这里只取各来源一致的部分。</p>
+
+  <div class="card">
+    <svg viewBox="0 0 760 340" width="100%" role="img" aria-label="1-1 设计逻辑的演化图：问题、方案、新问题依次接力">
+      <g class="rough" stroke="#2b2b3a" stroke-width="4" stroke-linejoin="round">
+        <rect x="15" y="15" width="225" height="90" rx="14" fill="#fff7cf"/>
+        <rect x="270" y="15" width="225" height="90" rx="14" fill="#a8dcf0"/>
+        <rect x="520" y="15" width="225" height="90" rx="14" fill="#b6e8a8"/>
+        <rect x="15" y="190" width="225" height="90" rx="14" fill="#ffe9ef"/>
+        <rect x="270" y="190" width="225" height="90" rx="14" fill="#f1eaff"/>
+        <rect x="520" y="190" width="225" height="90" rx="14" fill="#fff0dc"/>
+        <g fill="none" stroke-width="4.5" stroke-linecap="round">
+          <path d="M240 60 H268"/><path d="M495 60 H518"/><path d="M632 107 Q632 150 128 188"/><path d="M240 235 H268"/><path d="M495 235 H518"/>
+        </g>
+      </g>
+      <g font-size="19" fill="#2b2b3a" text-anchor="middle">
+        <text x="127" y="52">问题：没有文字</text><text x="127" y="80">怎么教会玩家？</text>
+        <text x="382" y="52">第一个敌人要</text><text x="382" y="80">“一踩就好”</text>
+        <text x="632" y="52">换掉乌龟，</text><text x="632" y="80">用栗宝宝开场</text>
+        <text x="127" y="227">新问题：蘑菇</text><text x="127" y="255">像敌人，会被躲</text>
+        <text x="382" y="227">让它从头顶砖块</text><text x="382" y="255">里出来，躲不开</text>
+        <text x="632" y="227">新问题：设计者</text><text x="632" y="255">总把关卡做难</text>
+      </g>
+      <text x="380" y="316" font-size="17" fill="#4b4b5e" text-anchor="middle">解法：看玩家怎么玩，再调整。以上为设计者的回忆，经媒体转述</text>
+    </svg>
+  </div>
+
+  <!-- 3 拆解 -->
+  <div class="sec"><span class="n">3</span><h2><span class="tag what">是什么</span>1-1 的教学顺序：引入、练习、变化</h2></div>
+  <p>把设计者的回忆放在一边，只看 1-1 前半段玩家会遇到什么，会发现它有一条清楚的节奏：每样东西先<b>单独出现一次</b>，再<b>换着花样练几遍</b>，最后放进<b>更高风险的场合</b>。这张图是对前半段的简化概括，不是逐格还原。点每个站点，看设计者“教”了什么。</p>
+  <div class="card">
+    <svg viewBox="0 0 760 330" width="100%" role="img" aria-label="1-1 教学时间线：栗宝宝、问号砖块、水管、坑、阶梯和旗杆">
+      <g class="rough" stroke="#2b2b3a" stroke-width="4" stroke-linejoin="round">
+        <rect x="20" y="200" width="270" height="22" fill="#e0a06a"/>
+        <rect x="330" y="200" width="410" height="22" fill="#e0a06a"/>
+      </g>
+      <g class="stop" tabindex="0" role="button" data-i="0" aria-label="站点1 栗宝宝">
+        <rect class="hl" x="30" y="40" width="120" height="46" rx="14" fill="#ffe58a" stroke="#2b2b3a" stroke-width="4"/>
+        <text x="90" y="72" font-size="20" text-anchor="middle" fill="#2b2b3a">① 栗宝宝</text>
+        <g class="rough" stroke="#2b2b3a" stroke-width="4"><ellipse cx="90" cy="184" rx="16" ry="13" fill="#a5683d"/></g>
+      </g>
+      <g class="stop" tabindex="0" role="button" data-i="1" aria-label="站点2 问号砖块">
+        <rect class="hl" x="160" y="110" width="120" height="46" rx="14" fill="#a8dcf0" stroke="#2b2b3a" stroke-width="4"/>
+        <text x="220" y="142" font-size="20" text-anchor="middle" fill="#2b2b3a">② 问号砖</text>
+        <g class="rough" stroke="#2b2b3a" stroke-width="4"><rect x="205" y="165" width="30" height="30" fill="#ffd34d"/></g>
+      </g>
+      <g class="stop" tabindex="0" role="button" data-i="2" aria-label="站点3 水管">
+        <rect class="hl" x="340" y="40" width="110" height="46" rx="14" fill="#b6e8a8" stroke="#2b2b3a" stroke-width="4"/>
+        <text x="395" y="72" font-size="20" text-anchor="middle" fill="#2b2b3a">③ 水管</text>
+        <g class="rough" stroke="#2b2b3a" stroke-width="4"><rect x="350" y="160" width="22" height="40" fill="#7ed17f"/><rect x="392" y="135" width="22" height="65" fill="#7ed17f"/></g>
+      </g>
+      <g class="stop" tabindex="0" role="button" data-i="3" aria-label="站点4 坑">
+        <rect class="hl" x="470" y="110" width="90" height="46" rx="14" fill="#ffb3c6" stroke="#2b2b3a" stroke-width="4"/>
+        <text x="515" y="142" font-size="20" text-anchor="middle" fill="#2b2b3a">④ 坑</text>
+        <path d="M292 205 L292 262 M328 205 L328 262" stroke="#2b2b3a" stroke-width="3" stroke-dasharray="6 5" fill="none"/>
+        <text x="310" y="282" font-size="17" text-anchor="middle" fill="#4b4b5e">坑</text>
+      </g>
+      <g class="stop" tabindex="0" role="button" data-i="4" aria-label="站点5 阶梯和旗杆">
+        <rect class="hl" x="590" y="40" width="150" height="46" rx="14" fill="#d8c8ff" stroke="#2b2b3a" stroke-width="4"/>
+        <text x="665" y="72" font-size="20" text-anchor="middle" fill="#2b2b3a">⑤ 阶梯+旗</text>
+        <g class="rough" stroke="#2b2b3a" stroke-width="4"><rect x="590" y="180" width="20" height="20" fill="#d9c9a0"/><rect x="610" y="160" width="20" height="40" fill="#d9c9a0"/><rect x="630" y="140" width="20" height="60" fill="#d9c9a0"/><path d="M706 200 L706 110" fill="none"/><path d="M706 110 L730 120 L706 130z" fill="#ffb3c6"/></g>
+      </g>
+      <g font-size="17" fill="#4b4b5e" text-anchor="middle">
+        <text x="90" y="250">引入</text><text x="220" y="250">引入</text><text x="395" y="250">练习</text><text x="515" y="250">变化</text><text x="665" y="250">变化 / 收束</text>
+      </g>
+      <text x="380" y="316" font-size="17" fill="#4b4b5e" text-anchor="middle">按时间从左到右：第一屏 → 过关旗。点站点看讲解</text>
+    </svg>
+    <div class="board" id="tlpanel" style="min-height:110px"><b>👆 点上面任意一个站点。</b></div>
+  </div>
+
+  <p>再用前面学过的概念工具，把它整个拆一遍。点左边的标签，六个都点一遍。</p>
+  <div class="dx">
+    <div class="chips" id="chips"></div>
+    <div class="card y panel" id="panel"><h3>👈 先点一个标签</h3><p>每个标签对应一个你已经学过的概念。</p></div>
+  </div>
+  <div class="small" id="dxcount">已看 0 / 6</div>
+
+  <!-- 4 手感 -->
+  <div class="sec"><span class="n">4</span><h2><span class="tag what">是什么</span>第二个做法：给操作一点宽容，让手有分量</h2></div>
+  <div class="withimg rev">
+    <span data-illus="c24_weight"></span>
+    <div>
+      <p>光会教还不够，操作本身也得让人信得过。你按下跳跃键，角色就该在你想要的时候、跳到你想要的高度。差一点点，玩家不会觉得“我还要练”，只会觉得“它不听我的”。</p>
+      <p>据 GIGAZINE 转述宫本茂的话，他觉得前作《大金刚》“自由度低”，所以让马力欧起跳后还能在空中移动；跑动时的“打滑”，是为了给马力欧一种重量感。助跑再跳会跳得更远，按住跳跃键跳得更高（<span class="term" tabindex="0" data-def="可变跳跃高度：按住跳跃键越久跳得越高，松手越早跳得越矮，让玩家能微调落点。">可变跳跃高度</span>），这些后来都成了平台跳跃游戏的标准配置。</p>
+      <p>许多这类游戏还会再加一层更隐蔽的宽容：刚走出平台边缘的一小段时间里仍然允许起跳，叫<span class="term" tabindex="0" data-def="Coyote time：角色离开平台边缘后的很短时间内仍允许起跳，名字来自卡通里跑出悬崖才掉落的土狼。">土狼时间</span>；落地前一瞬提前按下跳跃，落地后立刻起跳，叫<span class="term" tabindex="0" data-def="输入缓冲：把玩家稍早按下的操作暂存起来，等条件满足时再执行。">输入缓冲</span>。原版《马力欧》具体用了哪些，社区说法不一，这里不下结论，页面里的迷你关把它们做成了开关，让你自己感受。</p>
+    </div>
+  </div>
+  <div class="eg" data-ic="🦊"><span data-illus="c24_e_coyote"></span><div class="egt"><b>土狼时间</b>：刚走出平台边缘的短暂时间里仍能起跳。你不会察觉它的存在，只会觉得“我明明按准了，它也确实跳了”（下面的迷你关可以开关体验）。</div></div>
+  <div class="eg" data-ic="⏱️"><span data-illus="c24_e_buffer"></span><div class="egt"><b>输入缓冲</b>：落地前一瞬间提前按下跳跃，落地后立刻起跳。手比眼睛快一点，游戏替你记住了这次意图。</div></div>
+  <div class="eg" data-ic="📱"><span data-illus="c24_e_phone"></span><div class="egt"><b>手机输入法的容错</b>：手指点偏了一点，仍然能打出你想要的字。生活里同一个道理：不去惩罚“差一点”。</div></div>
+  <div class="eg bad" data-ic="🎯"><span data-illus="c24_e_frame"></span><div class="egt"><b>逐帧精确判定、零容错</b>：差一帧就算失败，玩家会觉得“不是我的错”，而不是“我该练习”。<b>反例的要点：宽容不是降低难度，而是让操作和意图对得上。</b></div></div>
+
+  <!-- 5 失败便宜 -->
+  <div class="sec"><span class="n">5</span><h2><span class="tag what">是什么</span>第三个做法：让失败很便宜</h2></div>
+  <p>第三个做法最不起眼，却最关键。你在 1-1 里一定会失败好几次：被栗宝宝撞到，掉进坑里。可几秒之后你又站在了起点附近，手已经按在跳跃键上。</p>
+  <p>失败越便宜，玩家越敢试没把握的跳跃，而这些“没把握的尝试”，正是他们学会这个游戏的主要方式。</p>
+  <div class="eg" data-ic="🔁"><span data-illus="c24_e_respawn"></span><div class="egt"><b>马力欧</b>：掉坑、被撞，几秒内重来，不用重看开场，不用重走长路。</div></div>
+  <div class="eg" data-ic="🏊"><span data-illus="c24_e_pool"></span><div class="egt"><b>学游泳</b>：先在浅水区扑腾，不会一上来就进深水。浅水区就是一块受保护的试错场。</div></div>
+  <div class="eg" data-ic="📝"><span data-illus="c24_e_draft"></span><div class="egt"><b>写草稿</b>：草稿纸上随便划，没有“写错了就作废整本”的压力。所以你敢写出没想清楚的句子。</div></div>
+  <div class="eg bad" data-ic="🥾"><span data-illus="c24_e_longrun"></span><div class="egt"><b>失败要重打半小时</b>：每次死亡都要先走很长的路才能再试一次，玩家会选择“不冒险”。<b>反例的要点：不是失败本身，而是失败的价格，决定了人敢不敢学。</b></div></div>
+
+  <!-- 6 ZPD -->
+  <div class="sec"><span class="n">6</span><h2><span class="tag why">为什么成立</span>为什么一格一格往上爬，就能学会</h2></div>
+  <div class="withimg">
+    <span data-illus="c24_ramp"></span>
+    <div>
+      <p>回头看水管：先是矮的，再是中等的，最后是高的。为什么不直接放最高的？因为玩家面对的问题，从来不是“能不能跳”，而是“跳得过去吗”。矮管他一次就过，信心有了；中管他得按得久一点，学到了新东西；高管需要前面所有的积累。每一格都比刚学会的多一点点，又不会多到跳不过去。</p>
+      <p>教育心理学家把这个“多一点点”的范围，叫<span class="term" tabindex="0" data-def="最近发展区（ZPD）：学习者独自做不到、但在有人或有设计帮助时能做到的那一段范围。（Vygotsky）">最近发展区</span>：学习者独自还做不到、但有人搭一把手就够得着的那一段。离得太近，没东西可学；离得太远，只剩挫败。</p>
+      <p>1-1 里的“搭一把手”不是老师，是关卡本身：孤零零的第一只敌人、平坦的跑道、一格格变高的水管。它们像搭在墙外的<span class="term" tabindex="0" data-def="脚手架（scaffolding）：在学习者暂时做不到时给予支持，随能力提高逐步撤掉。（Wood、Bruner、Ross，1976）">脚手架</span>，随着你变强一点点撤走。</p>
+    </div>
+  </div>
+  <div class="why-box">
+    <h3>谁说的：维果茨基与脚手架</h3>
+    <p>最近发展区是苏联心理学家列夫·维果茨基（Lev Vygotsky）提出的，他的思想主要写于 1930 年代，后来收在《社会中的心智》（Mind in Society，1978）里。“脚手架”这个比喻则来自另一批研究：1976 年，伍德（David Wood）、布鲁纳（Jerome Bruner）和罗斯（Gail Ross）观察导师怎样带孩子完成一项搭建任务，导师在孩子暂时做不到的部分上帮一把，随着孩子进步再一点点收手。</p>
+    <p>要注意的是，把这套教育心理学搬到游戏关卡上，是类比，不是严格的实验证据。最近发展区本身也是个相当宽泛的概念，常被教育界宽泛引用，具体怎么测量，至今有争论。</p>
+    <div class="src">出处：L. S. Vygotsky,《Mind in Society》（1978）；David Wood, Jerome S. Bruner &amp; Gail Ross, “The role of tutoring in problem solving”, 《Journal of Child Psychology and Psychiatry》17(2): 89–100（1976）。</div>
+  </div>
+
+  <!-- 7 Gee -->
+  <div class="sec"><span class="n">7</span><h2><span class="tag why">为什么成立</span>失败便宜，为什么让人敢学</h2></div>
+  <div class="withimg rev">
+    <span data-illus="c24_safe"></span>
+    <div>
+      <p>现实里，学东西常常要为失败付钱：考砸了有成绩单，操作失误了有后果。所以人在现实里天然保守，会挑稳妥的路。游戏却能把这笔账改写：掉进坑里，顶多几秒钟。</p>
+      <p>教育学者詹姆斯·保罗·吉（James Paul Gee）在《电子游戏带给我们的学习与读写启示》（2003）里，把这一点列为好游戏的学习原则之一，他沿用了心理学家埃里克森的“心理社会延缓期”这个词：学习者可以在后果被调低的空间里冒险。他的意思是，勇敢尝试，本身就是学习。</p>
+      <p>下面这个小实验，让你亲手拧两个旋钮：关卡难度是台阶式还是一上来就“悬崖”，以及失败后要花多长时间才能重来。</p>
+    </div>
+  </div>
+  <div class="board">
+    <h3>🧪 实验 B：台阶 vs 悬崖，失败的价格</h3>
+    <p class="small"><b>这是本页的示意模型，参数是本页设定的，不是实测。</b>2000 个模拟玩家依次面对 6 个障碍：成功率取决于障碍难度和他当前的技能；成功会学到不少，失败也会学到一点；每次失败后，他可能因为“重来太麻烦”而放弃，放弃的概率随重来时间升高。</p>
+    <label class="ctl">难度安排
+      <select id="c24mode"><option value="ramp">台阶：每个障碍比上一个高一点</option><option value="cliff">悬崖：一开始就是高难度</option></select>
+    </label>
+    <label class="ctl">每次失败后，重来要花 <output id="c24costO">3</output> 秒<input type="range" id="c24cost" min="1" max="60" value="3"></label>
+    <button class="btn green" id="c24run">跑 2000 个模拟玩家</button>
+    <div class="c24sim" id="c24res" aria-live="polite"></div>
+  </div>
+  <div class="sticky">试试看：先选“台阶”，把重来时间拖到 3 秒和 60 秒，各跑一次；再选“悬崖”重复。看看哪一个旋钮对“有多少人通关”影响更大。<span id="c24simtask" class="small"></span></div>
+
+  <div class="why-box">
+    <h3>吉的论点与它的边界</h3>
+    <p>吉的论述来自他对游戏学习环境的观察和理论思考，不是对照实验。“降低失败代价有助于学习”也有适用范围：它说的是教学和新手阶段；对于追求高风险刺激的游戏，高代价恰恰是乐趣的来源，要另做取舍。1-1 里重来很快，是符合他的这一条的。</p>
+    <div class="src">出处：James Paul Gee, 《What Video Games Have to Teach Us About Learning and Literacy》（2003），关于“psychosocial moratorium”的论述（该概念源自 Erik Erikson）。</div>
+  </div>
+
+  <h3>互动：把原理连到现象上</h3>
+  <p>按住左边一张原理卡，<b>拖一条线</b>到右边对应的现象上（也可以先点原理卡，再点现象）。连对线会变绿并给出解释，连错会闪红并给提示；原理卡可以重复使用。</p>
+  <div class="card b" id="c24pair"></div>
+  <div class="small" id="c24paircnt"></div>
+
+  <!-- 8 怎么用 -->
+  <div class="sec"><span class="n">8</span><h2><span class="tag how">怎么用</span>亲手玩迷你 1-1，再调“手感”</h2></div>
+  <p>下面是按 1-1 精神写的迷你关卡（简化版，不是原版）。点一下画面获得键盘焦点：←/→ 或 A/D 移动，空格/↑/W 跳，按住 Shift 或 X 加速跑。手机用下方按钮。目标：碰到终点旗杆。</p>
+  <div class="board">
+    <canvas id="gc" width="512" height="288" tabindex="0" aria-label="迷你马力欧关卡"></canvas>
+    <div class="pad" id="pad">
+      <button class="btn alt" data-k="left">◀</button>
+      <button class="btn alt" data-k="right">▶</button>
+      <button class="btn pink" data-k="run">跑</button>
+      <button class="btn green" data-k="jump">跳</button>
+    </div>
+    <div style="margin-top:8px;text-align:center">
+      <span class="stat">🪙 <b id="coins">0</b></span>
+      <span class="stat">分数 <b id="score">0</b></span>
+      <span class="stat">尝试 <b id="tries">1</b></span>
+      <span class="stat">用时 <b id="time">0</b>s</span>
+      <span class="stat">宽容救场 <b id="sv">0</b> 次</span>
+      <button class="btn" id="restart">重新开始</button>
+    </div>
+    <div class="msg" id="gmsg" style="text-align:center">点击画面开始。</div>
+  </div>
+
+  <h3>手感实验室</h3>
+  <p>“好玩的跳”不是一个数字，是一组参数的配合。拖动滑块再回去玩，感受差别。</p>
+  <div class="card b">
+    <div class="knobs">
+      <label class="ctl">跳跃力度 <output id="o1"></output><input type="range" id="k1" min="8" max="14" step="0.5" value="11"></label>
+      <label class="ctl">重力 <output id="o2"></output><input type="range" id="k2" min="0.3" max="0.9" step="0.05" value="0.5"></label>
+      <label class="ctl">加速度 <output id="o3"></output><input type="range" id="k3" min="0.1" max="0.9" step="0.05" value="0.3"></label>
+    </div>
+    <label class="ctl"><input type="checkbox" id="c1" checked> 可变跳跃高度（松手更早 = 跳得更矮）</label>
+    <label class="ctl"><input type="checkbox" id="c2" checked> 宽容手感（离开平台后短时间内仍能起跳 + 起跳提前按也算）</label>
+    <div><span class="stat">按住跳：约 <b id="hh">3.8</b> 格高</span> <span class="stat">轻点跳：约 <b id="hl">1.5</b> 格高</span></div>
+    <button class="btn" id="kreset">恢复默认</button>
+    <p class="small">跳跃高度按“力度²÷(2×重力)”粗算，单位是一格砖；可变跳高关掉时，轻点和按住一样高。</p>
+  </div>
+  <div class="sticky">试试看：①开着“宽容手感”，在平台边缘故意晚一点起跳，直到上面的“宽容救场”跳出数字；②关掉“可变跳跃高度”，再去踩第一只栗宝宝，是不是更难微调落点了？<span id="c24task" class="small"></span></div>
+
+  <div class="grid2">
+    <div class="card y"><h3>① 先给安全，再给危险</h3><p>在没有压力的空间里，让玩家用自己的试错学会第一个动作。失败成本越低，学习越敢。</p></div>
+    <div class="card b"><h3>② 让环境当老师</h3><p>用布局、位置和敌人行为教学，而不是弹窗。玩家自己发现的东西，记得更牢。</p></div>
+    <div class="card g"><h3>③ 一个想法，三种说法</h3><p>引入 → 练习 → 变化。同一个“跳”，先单独出现，再换高度、换风险地反复出现。</p></div>
+    <div class="card p"><h3>④ 手感是参数的合奏</h3><p>加速度、惯性、可变跳高、宽容时间……每个都很细微，叠起来就是“跳得顺”。</p></div>
+  </div>
+
+  <div class="misc">
+    <h3>常见误区</h3>
+    <ul>
+      <li><b>“1-1 是教学的唯一标准答案”</b>：它只是一种有效做法；文字教程、教练式提示在别的游戏里同样有效。</li>
+      <li><b>“无文字教学等于完全不提示”</b>：1-1 的提示藏在布局里，设计工作量并不小；而且据设计者说，它还是反复试玩后调出来的。</li>
+      <li><b>“宽容手感等于降低难度”</b>：它让操作更“跟手”，难度仍在关卡里。</li>
+      <li><b>“把原理套上去，就等于理解了设计”</b>：最近发展区、心理社会延缓期都是事后的解释，设计者当年是否这样想，我们不确定。真正的检验是看玩家怎么玩。</li>
+    </ul>
+  </div>
+
+  <div class="reflect">
+    <h3>想一想：<span class="term" tabindex="0" data-def="只看到成功的案例，就误以为它们的做法是成功原因；那些做法相同却失败、被遗忘的案例被忽略了。">幸存者偏差</span></h3>
+    <p>1-1 被无数次引用，因为《超级马力欧兄弟》大获成功。我们很少看到那些用了类似“无文字教学”却默默无闻的游戏。所以“它这么教所以成功”可能只是幸存者偏差：成功还有硬件时机、品牌、整体品质等许多因素。</p>
+    <p>请你写一句：<b>你自己的游戏里，哪个设计“照搬 1-1”可能并不适合？为什么？</b></p>
+    <textarea rows="3" data-save="ch24reflect" placeholder="例：我的游戏是剧情向的，玩家需要被告知目标……"></textarea>
+  </div>
+
+  <div class="key">
+    <h3>本章要点</h3>
+    <ul>
+      <li>1-1 靠设计出来的情境而不是文字教学：安全地引入、重复练习、再加变化。</li>
+      <li>关键决定：第一个敌人要“一踩就好”（据宫本茂回忆，为此放弃了乌龟），并且单独出现；蘑菇从头顶砖块里出来，让新手躲不开。</li>
+      <li>难度要贴着玩家的最近发展区往上爬；关卡本身就是脚手架。</li>
+      <li>手感是一组参数：惯性、重力、可变跳高、宽容时间；宽容的目的是让操作和意图对得上。</li>
+      <li>失败便宜，玩家才敢试；而难度要靠看玩家试玩来调，因为设计者知道答案。</li>
+    </ul>
+  </div>
+  <div class="tldr">1-1 靠关卡本身搭脚手架、给操作以宽容、让失败很便宜，所以不用一个字也教得会，但这只是一个被反复讨论的幸存案例。</div>
+
+  <div class="sec"><span class="n">9</span><h2><span class="tag think">练习</span>练习</h2></div>
+  <div id="quiz"></div>
+
+  <div class="sec"><span class="n">10</span><h2><span class="tag think">反思</span>你的拆解</h2></div>
+  <div class="card o">
+    <p>选一个你喜欢的游戏，回忆它的<b>第一个关卡（或新手村）</b>。它在没有文字的情况下教了你什么？按“引入 → 练习 → 变化”写出前三个遭遇；再想想：<b>如果它的第一个敌人换成更难的一个，会发生什么？</b></p>
+    <textarea rows="6" data-save="ch24" placeholder="例：《空洞骑士》：开场的狭窄通道 → 教会我攻击 → 同样的敌人换到高处，需要跳着打……"></textarea>
+  </div>
+</main>
+<script src="js/illus.js"></script>
+<script src="js/illus-ch24.js"></script>
+<script src="js/common.js"></script>
+<script>
+const $ = id => document.getElementById(id);
+function mountLinkPair(root, cnt, P, items) {
+  root.classList.add("lp");
+  root.innerHTML = '<svg class="lpsvg" aria-hidden="true"></svg><div class="lpcols"><div class="lpl"></div><div class="lpr"></div></div>';
+  const svg = root.querySelector("svg"), L = root.querySelector(".lpl"), R = root.querySelector(".lpr");
+  const lb = [], rb = [], fb = [], got = [], pairs = [];
+  let sel = -1, done = 0, miss = 0, drag = null, flash = null;
+  P.forEach((p, i) => { const b = document.createElement("button"); b.type = "button"; b.className = "lpp"; b.textContent = p; b.dataset.p = i; L.appendChild(b); lb.push(b); });
+  items.forEach((it, i) => {
+    const w = document.createElement("div");
+    const b = document.createElement("button"); b.type = "button"; b.className = "lpi"; b.textContent = it.t; b.dataset.i = i;
+    const f = document.createElement("div"); f.className = "lpfb"; f.setAttribute("aria-live", "polite");
+    w.append(b, f); R.appendChild(w); rb.push(b); fb.push(f);
+  });
+  function pt(el, side) { const r = el.getBoundingClientRect(), q = root.getBoundingClientRect(); return [(side === "r" ? r.right : r.left) - q.left, r.top + r.height / 2 - q.top]; }
+  function path(a, b, col, dash) { const mx = (a[0] + b[0]) / 2; return '<path d="M' + a[0] + ' ' + a[1] + ' C' + mx + ' ' + a[1] + ' ' + mx + ' ' + b[1] + ' ' + b[0] + ' ' + b[1] + '" fill="none" stroke="' + col + '" stroke-width="4" stroke-linecap="round"' + (dash ? ' stroke-dasharray="7 6"' : "") + "/>"; }
+  function draw() {
+    let s = "";
+    pairs.forEach(p => { s += path(pt(lb[p.p], "r"), pt(rb[p.i], "l"), "#2f9e44"); });
+    if (flash) s += path(pt(lb[flash.p], "r"), pt(rb[flash.i], "l"), "#e5484d", true);
+    if (drag && drag.on) { const q = root.getBoundingClientRect(); s += path(pt(lb[drag.p], "r"), [drag.x - q.left, drag.y - q.top], "#ff8fab", true); }
+    svg.innerHTML = s;
+  }
+  function upd() { cnt.textContent = "已连线 " + done + " / " + items.length + "　失误 " + miss + (done === items.length ? "　✔ 全部连对！" : ""); }
+  function setSel(p) { sel = p; lb.forEach((b, i) => b.classList.toggle("sel", i === p)); }
+  function assign(i, p) {
+    if (got[i]) return;
+    const it = items[i];
+    if (it.a === p) {
+      got[i] = true; done++; pairs.push({ p, i }); rb[i].classList.remove("bad"); rb[i].classList.add("ok");
+      fb[i].innerHTML = "✅ <b>" + P[p] + "</b>：" + it.why;
+    } else {
+      miss++; rb[i].classList.remove("bad"); void rb[i].offsetWidth; rb[i].classList.add("bad");
+      fb[i].textContent = "❌ 「" + P[p] + "」不太贴切。提示：" + it.hint;
+      flash = { p, i }; setTimeout(() => { flash = null; draw(); }, 900);
+    }
+    upd(); draw();
+  }
+  lb.forEach((b, p) => {
+    b.addEventListener("pointerdown", e => {
+      drag = { p, on: false, x: e.clientX, y: e.clientY, sx: e.clientX, sy: e.clientY };
+      try { b.setPointerCapture(e.pointerId); } catch (_) {}
+    });
+    b.addEventListener("pointermove", e => {
+      if (!drag) return;
+      drag.x = e.clientX; drag.y = e.clientY;
+      if (!drag.on && Math.hypot(e.clientX - drag.sx, e.clientY - drag.sy) > 6) { drag.on = true; setSel(p); }
+      if (drag.on) { rb.forEach(x => x.classList.remove("over")); const t = document.elementFromPoint(e.clientX, e.clientY); const it = t && t.closest && t.closest(".lpi"); if (it) it.classList.add("over"); draw(); }
+    });
+    const end = e => {
+      if (!drag) return;
+      const d = drag; drag = null; rb.forEach(x => x.classList.remove("over"));
+      if (d.on) {
+        const t = document.elementFromPoint(e.clientX, e.clientY), it = t && t.closest && t.closest(".lpi");
+        if (it && e.type === "pointerup") { assign(+it.dataset.i, p); }
+        setSel(-1); draw();
+      } else if (e.type === "pointerup") { setSel(sel === p ? -1 : p); draw(); }
+    };
+    b.addEventListener("pointerup", end); b.addEventListener("pointercancel", end);
+    b.addEventListener("click", e => { if (e.detail === 0) setSel(sel === p ? -1 : p); });
+  });
+  rb.forEach((b, i) => {
+    b.addEventListener("click", () => {
+      if (got[i]) return;
+      if (sel < 0) { fb[i].textContent = "👆 先按住左边的一张原理卡，拖到这里（或点一下原理卡，再点这里）。"; return; }
+      const p = sel; assign(i, p); if (!got[i]) { /* 保持选中，方便换一张试 */ } else setSel(-1);
+    });
+  });
+  window.addEventListener("resize", draw); window.addEventListener("scroll", draw, { passive: true });
+  upd(); draw();
+}
+
+/* ===== 实验 A：设计你的开场 ===== */
+(function () {
+  const EL = [
+    { id: "gb", n: "栗宝宝", em: "🍄", d: 2, t: "踩与躲" },
+    { id: "qb", n: "问号砖块", em: "❓", d: 0, t: "顶砖块拿奖励" },
+    { id: "sp", n: "低水管", em: "🟩", d: 1, t: "短跳" },
+    { id: "tp", n: "高水管", em: "🟢", d: 2, t: "长按跳高" },
+    { id: "pit", n: "坑", em: "🕳️", d: 3, t: "跳远，掉下去会失败" },
+    { id: "st", n: "阶梯", em: "🪜", d: 2, t: "连续跳" },
+    { id: "cb", n: "栗宝宝+坑", em: "💥", d: 5, t: "组合挑战" },
+  ];
+  const BY = Object.fromEntries(EL.map(e => [e.id, e]));
+  const ACTUAL = ["gb", "qb", "sp", "tp", "pit", "st"]; // 1-1 前半段的简化概括
+  const slots = Array(6).fill(null);
+  let sel = null;
+  const pal = $("c24pal"), box = $("c24slots");
+  EL.forEach(e => {
+    const b = document.createElement("button"); b.type = "button"; b.className = "el"; b.dataset.id = e.id; b.textContent = e.em + " " + e.n;
+    b.title = "危险度 " + e.d + "（示意）";
+    let st = null, ghost = null;
+    b.addEventListener("pointerdown", ev => { st = { x: ev.clientX, y: ev.clientY, on: false }; try { b.setPointerCapture(ev.pointerId); } catch (_) {} });
+    b.addEventListener("pointermove", ev => {
+      if (!st) return;
+      if (!st.on && Math.hypot(ev.clientX - st.x, ev.clientY - st.y) > 6) { st.on = true; ghost = document.createElement("div"); ghost.className = "wbghost"; ghost.textContent = b.textContent; document.body.appendChild(ghost); }
+      if (st.on) { ghost.style.left = ev.clientX + 8 + "px"; ghost.style.top = ev.clientY + 8 + "px"; box.querySelectorAll(".sl").forEach(x => x.classList.remove("over")); const t = document.elementFromPoint(ev.clientX, ev.clientY), s = t && t.closest && t.closest(".sl"); if (s) s.classList.add("over"); }
+    });
+    const end = ev => {
+      if (!st) return; const s0 = st; st = null;
+      if (ghost) { ghost.remove(); ghost = null; }
+      box.querySelectorAll(".sl").forEach(x => x.classList.remove("over"));
+      if (s0.on) { if (ev.type === "pointerup") { const t = document.elementFromPoint(ev.clientX, ev.clientY), s = t && t.closest && t.closest(".sl"); if (s) { slots[+s.dataset.i] = e.id; sel = null; render(); } } }
+      else if (ev.type === "pointerup") { sel = sel === e.id ? null : e.id; render(); }
+    };
+    b.addEventListener("pointerup", end); b.addEventListener("pointercancel", end);
+    b.addEventListener("click", ev => { if (ev.detail === 0) { sel = sel === e.id ? null : e.id; render(); } });
+    pal.appendChild(b);
+  });
+  for (let i = 0; i < 6; i++) {
+    const s = document.createElement("div"); s.className = "sl"; s.dataset.i = i; s.tabIndex = 0; s.setAttribute("role", "button");
+    const act = () => { if (slots[i]) slots[i] = null; else if (sel) { slots[i] = sel; sel = null; } render(); };
+    s.addEventListener("click", act);
+    s.addEventListener("keydown", ev => { if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); act(); } });
+    box.appendChild(s);
+  }
+  function render() {
+    pal.querySelectorAll(".el").forEach(b => b.classList.toggle("sel", b.dataset.id === sel));
+    const ok = []; let skill = 1; const pts = [], notes = []; let passed = 0, flagged = [];
+    slots.forEach((id, i) => {
+      const el = box.children[i]; el.className = "sl";
+      if (!id) { el.innerHTML = "<small>" + (i + 1) + "</small><span class=\"small\">空</span>"; pts.push(null); return; }
+      const e = BY[id]; const warn = e.d > skill + 1.0;
+      el.classList.add("full"); if (warn) { el.classList.add("warn"); flagged.push(i); }
+      el.innerHTML = "<small>" + (i + 1) + "</small><span class=\"em\">" + e.em + "</span>" + e.n;
+      pts.push({ i, d: e.d, s: skill }); passed++; skill += 0.9;
+    });
+    // 曲线
+    let sv = '<g class="rough" fill="none" stroke="#2b2b3a" stroke-width="4" stroke-linecap="round"><path d="M50 34 V160 H580"/></g>';
+    sv += '<g font-size="17" fill="#2b2b3a"><text x="58" y="26">危险度 / 技能</text><text x="470" y="190">格子 1 → 6</text></g>';
+    const X = i => 90 + i * 85, Y = v => 160 - v * 25;
+    let ds = "", ss = "";
+    pts.forEach(p => { if (!p) return; ds += (ds ? " " : "") + X(p.i) + "," + Y(p.d); ss += (ss ? " " : "") + X(p.i) + "," + Y(p.s); });
+    if (ss) sv += '<polyline points="' + ss + '" fill="none" stroke="#4a7de0" stroke-width="5" stroke-dasharray="9 6"/>';
+    if (ds) sv += '<polyline points="' + ds + '" fill="none" stroke="#e5484d" stroke-width="5"/>';
+    pts.forEach(p => { if (p) sv += '<circle cx="' + X(p.i) + '" cy="' + Y(p.d) + '" r="9" fill="' + (flagged.includes(p.i) ? "#e5484d" : "#ffe58a") + '" stroke="#2b2b3a" stroke-width="3"/>'; });
+    sv += '<g font-size="16" fill="#e5484d"><text x="320" y="26">━ 危险度</text></g><g font-size="16" fill="#4a7de0"><text x="440" y="26">┅ 玩家技能</text></g>';
+    $("c24curve").innerHTML = sv;
+    // 反馈
+    const f = [];
+    slots.forEach((id, i) => {
+      if (!id) return; const e = BY[id];
+      if (flagged.includes(i)) f.push("❗ 第 " + (i + 1) + " 格「" + e.n + "」" + (i === 0 ? "：开场就遇到它，玩家还什么都没学会。" : "：危险度高于玩家此时的技能，容易卡住（试试往后放，或先放几个练习）。"));
+    });
+    const filled = slots.filter(Boolean);
+    if (filled.length === 6) {
+      if (!filled.some(id => BY[id].d === 0)) f.push("💨 全程没有一格“零风险”的喘息，玩家会一直紧绷。");
+      const cnt = {}; filled.forEach(id => cnt[id] = (cnt[id] || 0) + 1);
+      Object.keys(cnt).forEach(id => { if (cnt[id] >= 3) f.push("🔁 「" + BY[id].n + "」出现了 " + cnt[id] + " 次，单调——能不能换个变化？"); });
+      if (!f.length) f.push("✅ 这个排布没有明显的陡坡：每一格的危险度都在玩家技能“够得着”的范围内（以我的示意模型计）。");
+    } else f.push("还有 " + (6 - filled.length) + " 个空格，继续放。");
+    $("c24fb").innerHTML = f.map(x => "<li>" + x + "</li>").join("");
+  }
+  $("c24clr").onclick = () => { slots.fill(null); sel = null; $("c24rev").innerHTML = ""; render(); };
+  $("c24reveal").onclick = () => {
+    const same = slots.filter((id, i) => id === ACTUAL[i]).length;
+    $("c24rev").innerHTML = '<div class="card y"><p><b>1-1 前半段的实际安排（简化概括）：</b>' + ACTUAL.map(id => BY[id].em + BY[id].n).join(" → ") + "。</p>" +
+      "<p>你的排布与它在同一格相同的有 <b>" + same + " / 6</b> 格。注意几个关键点：<b>① 开场是单独的一只栗宝宝</b>（据设计者的回忆，为了让第一个敌人一踩就能解决，没有用乌龟）；<b>② 问号砖块紧随其后</b>，让你在无压力时发现“顶砖块有奖励”；<b>③ 水管由低到高</b>，把“跳”练到位；<b>④ 坑和阶梯放到后面</b>，用已经学会的技能去面对更高的风险。</p>" +
+      '<p class="small">这条顺序是对 1-1 的简化概括，不是逐格还原；上方的“危险度/技能”是本页的示意模型，并不是设计者当年的算法。你的版本不同不代表错——它提醒你：<b>好的开场，是让危险度始终比技能高一点点，而不是高很多。</b></p></div>';
+  };
+  render();
+})();
+
+/* ===== 拆解面板 ===== */
+const DX = [
+  ["四根柱子", "目标·规则·反馈·自愿", "<b>目标</b>：到达终点旗杆。<br><b>规则</b>：踩敌人可以消灭它，碰到会失败；掉进坑里失败；顶问号砖块掉金币。<br><b>反馈</b>：金币声、踩扁的瞬间、画面与音乐。<br><b>自愿</b>：每次尝试成本极低，随时重来。"],
+  ["核心循环", "跑→跳→过", "秒级：跑起来、起跳、落点。分钟级：一关里连续遇到的一串障碍。更长：一关接一关，难度和元素逐渐增加。每一个障碍都是一次“行动 → 立即反馈”的小循环。"],
+  ["玩家动机", "自主·胜任", "<b>胜任</b>：从“被栗宝宝撞死”到“稳稳踩中”，进步肉眼可见。<br><b>自主</b>：同一段路，你可以全速冲、也可以收金币，还可以探索砖块。设计者给了一条主路，也留了点旁支。"],
+  ["心流与难度", "难度阶梯", "开头几乎零风险，之后逐步引入水管高度、坑、更多敌人。挑战沿着一条缓缓上升的线前进，玩家技能在途中同步增长，容易保持在心流通道里。"],
+  ["反馈与手感", "惯性与跳高", "马力欧有加速和减速的惯性，按住跳跃键越久跳得越高（可变跳跃高度），再加上细微的宽容设计，让“想跳多高就多高”成为身体直觉。手感实验室就是它的缩影。"],
+  ["关卡与教学", "引入·练习·变化", "第一只敌人孤零零地出现，没有别的干扰；问号砖块教玩家“可以顶”；之后同一动作在水管和坑上重复，而且难度变高。<b>先单独，再组合</b>，是这个关卡最想让你带走的东西。"],
+];
+const seen = new Set();
+DX.forEach((d, i) => {
+  const b = document.createElement("button");
+  b.className = "chip"; b.textContent = d[0];
+  b.onclick = () => {
+    document.querySelectorAll("#chips .chip").forEach(x => x.classList.remove("on"));
+    b.classList.add("on");
+    $("panel").innerHTML = "<h3>" + d[0] + " · " + d[1] + "</h3><p>" + d[2] + "</p>";
+    seen.add(i); $("dxcount").textContent = "已看 " + seen.size + " / " + DX.length + (seen.size === DX.length ? " ✔ 全部拆完！" : "");
+  };
+  $("chips").appendChild(b);
+});
+
+/* ===== 时间线 ===== */
+const TL = [
+  ["① 单独的栗宝宝（引入）", "第一屏里往往只有一个朝你走来的敌人，旁边没有别的威胁。你要么跳，要么被撞——不管哪种，你立刻明白了“这家伙会伤人”。失败的代价很小（重来），所以是<b>安全的引入</b>。"],
+  ["② 问号砖块（引入）", "问号砖块以显眼的颜色和位置出现在你头顶，鼓励你去跳、去顶。常被分析为：设计者希望玩家在无压力时发现“可以顶砖块拿奖励”这一规则，把‘跳’和‘奖励’挂上钩。"],
+  ["③ 水管（练习）", "水管的高度逐渐变高，需要你用不同长度的跳跃越过去。这是对“跳”的<b>练习</b>：同样动作，难度刻度一格格上升，你同时在学“按住更久跳更高”。"],
+  ["④ 坑（变化）", "坑是“变化”：以前掉不下去，现在会失败。同样是跳，后果升高了——这正是把已学会的技能放进更高风险环境。通常在这之前你已经有了足够的练习。"],
+  ["⑤ 阶梯与旗杆（变化 / 收束）", "阶梯要求你连着跳，是技能的小综合；终点旗杆让‘到达’清晰可见。抓住旗杆越高通常得分越多，也是给玩家一点“掌握后的小奖励”。整段像一次轻松的毕业考。"],
+];
+function showTL(i) { $("tlpanel").innerHTML = "<h3 style='margin:0'>" + TL[i][0] + "</h3><p>" + TL[i][1] + "</p>"; }
+document.querySelectorAll(".stop").forEach(g => {
+  const i = +g.dataset.i;
+  g.addEventListener("click", () => showTL(i));
+  g.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); showTL(i); } });
+});
+
+/* ===== 实验 B：台阶 vs 悬崖（示意模型） ===== */
+(function () {
+  $("c24cost").oninput = () => { $("c24costO").textContent = $("c24cost").value; };
+  const sigma = (x, lo, hi) => Math.max(lo, Math.min(hi, x));
+  function learner(mode, cost) {
+    let k = 0, tries = 0, secs = 0;
+    const quitP = Math.min(0.6, 0.03 + cost * 0.01);
+    for (let i = 0; i < 6; i++) {
+      const d = mode === "ramp" ? 0.2 + 0.55 * i : 1.8;
+      let n = 0;
+      for (;;) {
+        n++; tries++; secs += 8;
+        const p = sigma(0.9 - 0.45 * (d - k), 0.03, 0.9);
+        if (Math.random() < p) { k += d >= k - 0.5 ? 0.5 : 0.05; break; }
+        k += 0.08; secs += cost;
+        if (Math.random() < quitP || n >= 30) return { done: false, tries, secs };
+      }
+    }
+    return { done: true, tries, secs };
+  }
+  $("c24run").onclick = () => {
+    const mode = $("c24mode").value, cost = +$("c24cost").value, N = 2000;
+    let ok = 0, tries = 0, secs = 0;
+    for (let i = 0; i < N; i++) { const r = learner(mode, cost); if (r.done) { ok++; secs += r.secs; } tries += r.tries; }
+    $("c24res").innerHTML = '<div class="stat">通关的人 <b>' + (ok / N * 100).toFixed(0) + '</b> %</div><div class="stat">平均尝试次数 <b>' + (tries / N).toFixed(1) + '</b></div>' +
+      '<div class="stat">通关者平均用时 <b>' + (ok ? (secs / ok).toFixed(0) : "–") + '</b> 秒</div><div class="stat">中途放弃的人 <b>' + ((N - ok) / N * 100).toFixed(0) + '</b> %</div>';
+    $("c24simtask").textContent = " ✔ 已跑一次：" + (mode === "ramp" ? "台阶" : "悬崖") + "，重来 " + cost + " 秒。";
+  };
+})();
+
+/* ===== 迷你 1-1 ===== */
+const T = 32, NC = 48, NR = 9, VW = 512, VH = 288, LW = NC * T;
+const cv = $("gc"), ctx = cv.getContext("2d");
+let saved = 0, grid, coinsList, enemies, pops, bumps, cam, p, state, deadT, frame, coins, score, tries = 1, active = false, jumpBuf, coyote, wasGround;
+const keys = { left: false, right: false, run: false, jump: false };
+const P = { jump: 11, g: 0.5, acc: 0.3, varJump: true, kind: true };
+
+function build() {
+  grid = Array.from({ length: NR }, () => Array(NC).fill(0));
+  for (let c = 0; c < NC; c++) { grid[7][c] = 1; grid[8][c] = 1; }
+  [35, 36].forEach(c => { grid[7][c] = 0; grid[8][c] = 0; });
+  grid[4][16] = 3; grid[4][17] = 2; grid[4][18] = 3; grid[4][19] = 2; grid[4][20] = 3;
+  const pipe = (c, h) => { for (let k = 0; k < h; k++) { const r = 6 - k; grid[r][c] = 5; grid[r][c + 1] = 5; if (k === h - 1) { grid[r][c] = 6; grid[r][c + 1] = 6; } } };
+  pipe(24, 2); pipe(30, 3);
+  for (let k = 0; k < 4; k++) for (let r = 6; r >= 6 - k; r--) grid[r][41 + k] = 7;
+  coinsList = [[9,5],[10,5],[34,5],[35,4],[36,4],[37,5],[27,5],[42,2],[43,2]].map(a => ({ x: a[0] * T + 16, y: a[1] * T + 16, got: false }));
+  enemies = [11, 22, 27, 39].map(c => ({ x: c * T + 4, y: 6 * T + 8, w: 24, h: 24, vx: 0, vy: 0, dir: -1, active: false, squish: 0, gone: false }));
+  pops = []; bumps = {};
+}
+function reset(full) {
+  build(); p = { x: 2 * T, y: 7 * T - 28, w: 22, h: 28, vx: 0, vy: 0, face: 1, ground: false };
+  cam = 0; state = "run"; frame = 0; deadT = 0; jumpBuf = 0; coyote = 0; wasGround = false;
+  if (full) { coins = 0; score = 0; tries = 1; }
+  hud();
+}
+function svShow() { $("sv").textContent = saved; if (saved >= 1) $("c24task").textContent = " ✔ 宽容手感已经救了你 " + saved + " 次。"; }
+function hud() { $("coins").textContent = coins; $("score").textContent = score; $("tries").textContent = tries; $("time").textContent = Math.floor(frame / 60); }
+
+function solid(c, r) { if (c < 0 || c >= NC) return true; if (r < 0 || r >= NR) return false; return grid[r][c] > 0; }
+function move(b) {
+  let hitWall = false, bumpCol = -1, bumpRow = -1;
+  b.x += b.vx;
+  const r0 = Math.floor(b.y / T), r1 = Math.floor((b.y + b.h - 1) / T);
+  if (b.vx > 0) { const c = Math.floor((b.x + b.w) / T); for (let r = r0; r <= r1; r++) if (solid(c, r)) { b.x = c * T - b.w; b.vx = 0; hitWall = true; break; } }
+  else if (b.vx < 0) { const c = Math.floor(b.x / T); for (let r = r0; r <= r1; r++) if (solid(c, r)) { b.x = (c + 1) * T; b.vx = 0; hitWall = true; break; } }
+  b.y += b.vy; b.ground = false;
+  const c0 = Math.floor(b.x / T), c1 = Math.floor((b.x + b.w - 1) / T);
+  if (b.vy > 0) { const r = Math.floor((b.y + b.h) / T); for (let c = c0; c <= c1; c++) if (solid(c, r)) { b.y = r * T - b.h; b.vy = 0; b.ground = true; break; } }
+  else if (b.vy < 0) {
+    const r = Math.floor(b.y / T); const mid = Math.floor((b.x + b.w / 2) / T); let cc = -1;
+    if (solid(mid, r)) cc = mid; else for (let c = c0; c <= c1; c++) if (solid(c, r)) { cc = c; break; }
+    if (cc >= 0) { b.y = (r + 1) * T; b.vy = 0; bumpCol = cc; bumpRow = r; }
+  }
+  return { hitWall, bumpCol, bumpRow };
+}
+function die() { if (state !== "run") return; state = "dead"; deadT = 70; p.vy = -8; $("gmsg").textContent = "失败了——没关系，立刻重来。"; }
+function win() { if (state !== "run") return; state = "win"; const t = Math.floor(frame / 60); $("gmsg").textContent = "🎉 到达终点！用时 " + t + " 秒，金币 " + coins + "，尝试 " + tries + " 次。点“重新开始”再来一次。"; }
+
+function step() {
+  frame++;
+  if (state === "dead") { deadT--; p.vy += P.g; p.y += p.vy; if (deadT <= 0) { const t = tries + 1; reset(true); tries = t; hud(); $("gmsg").textContent = ""; } return; }
+  if (state !== "run") return;
+  const dir = (keys.right ? 1 : 0) - (keys.left ? 1 : 0);
+  const max = keys.run ? 4.2 : 2.6;
+  const a = p.ground ? P.acc : P.acc * 0.7;
+  if (dir) {
+    if (Math.sign(p.vx) === -dir) p.vx += dir * a * 2.2; else if (Math.abs(p.vx) < max) p.vx = Math.max(-max, Math.min(max, p.vx + dir * a));
+    if (Math.abs(p.vx) > max) p.vx -= Math.sign(p.vx) * 0.15;
+    p.face = dir;
+  } else { const fr = p.ground ? P.acc * 1.1 : 0.03; p.vx = Math.abs(p.vx) <= fr ? 0 : p.vx - Math.sign(p.vx) * fr; }
+  // 跳跃
+  const coyMax = P.kind ? 6 : 0;
+  if (wasGround) coyote = coyMax; else coyote = Math.max(0, coyote - 1);
+  if (jumpBuf > 0 && (wasGround || coyote > 0)) { if (P.kind && (!wasGround || jumpBuf < 6)) { saved++; svShow(); } p.vy = -P.jump - Math.abs(p.vx) * 0.12; jumpBuf = 0; coyote = 0; p.ground = false; }
+  if (jumpBuf > 0) jumpBuf--;
+  let g = P.g;
+  if (p.vy < 0 && !keys.jump && P.varJump) g *= 2.6;
+  p.vy = Math.min(12, p.vy + g);
+  const res = move(p);
+  wasGround = p.ground;
+  if (res.bumpRow >= 0) {
+    const t = grid[res.bumpRow][res.bumpCol];
+    bumps[res.bumpCol + "," + res.bumpRow] = 8;
+    if (t === 3) { grid[res.bumpRow][res.bumpCol] = 4; coins++; score += 200; pops.push({ x: res.bumpCol * T + 16, y: res.bumpRow * T - 8, vy: -6, life: 30, txt: "+200" }); hud(); }
+  }
+  cam = Math.max(0, Math.min(LW - VW, p.x + p.w / 2 - 220));
+  // 金币
+  coinsList.forEach(c => { if (!c.got && Math.abs(c.x - (p.x + p.w / 2)) < 20 && Math.abs(c.y - (p.y + p.h / 2)) < 24) { c.got = true; coins++; score += 100; pops.push({ x: c.x, y: c.y - 10, vy: -2, life: 25, txt: "+100" }); hud(); } });
+  // 敌人
+  enemies.forEach(e => {
+    if (e.gone) return;
+    if (!e.active && e.x < cam + VW + 40) e.active = true;
+    if (!e.active) return;
+    if (e.squish > 0) { e.squish--; if (e.squish <= 0) e.gone = true; return; }
+    e.vx = e.dir * 0.7; e.vy = Math.min(12, e.vy + 0.5);
+    const r = move(e); if (r.hitWall) e.dir = -e.dir;
+    if (e.y > VH + 80) e.gone = true;
+    if (p.x < e.x + e.w && p.x + p.w > e.x && p.y < e.y + e.h && p.y + p.h > e.y) {
+      const prevBottom = p.y + p.h - p.vy;
+      if (p.vy > 0 && prevBottom <= e.y + 10) { e.squish = 25; p.vy = keys.jump ? -9 : -6; score += 100; pops.push({ x: e.x + 12, y: e.y, vy: -2, life: 25, txt: "+100" }); hud(); }
+      else if (state === "run") die();
+    }
+  });
+  pops.forEach(o => { o.y += o.vy; o.life--; if (o.vy < 0) o.vy += 0.15; });
+  pops = pops.filter(o => o.life > 0);
+  Object.keys(bumps).forEach(k => { bumps[k]--; if (bumps[k] <= 0) delete bumps[k]; });
+  if (p.y > VH + 40) die();
+  if (p.x + p.w > 46 * T + 10) win();
+  if (frame % 6 === 0) hud();
+}
+
+/* ===== 绘制 ===== */
+function ink(w) { ctx.strokeStyle = "#2b2b3a"; ctx.lineWidth = w || 2; }
+function tile(t, c, r) {
+  let x = c * T - cam, y = r * T;
+  const bk = bumps[c + "," + r]; if (bk) y -= Math.sin(bk / 8 * Math.PI) * 8;
+  if (x < -T || x > VW) return;
+  ink(2);
+  if (t === 1) { ctx.fillStyle = "#c8884a"; ctx.fillRect(x, y, T, T); ctx.strokeRect(x + 1, y + 1, T - 2, T - 2); if (r === 7) { ctx.fillStyle = "#8ed081"; ctx.fillRect(x + 1, y + 1, T - 2, 8); ctx.strokeRect(x + 1, y + 1, T - 2, 8); } }
+  else if (t === 2) { ctx.fillStyle = "#e08a5a"; ctx.fillRect(x, y, T, T); ctx.strokeRect(x + 1, y + 1, T - 2, T - 2); ctx.beginPath(); ctx.moveTo(x, y + 16); ctx.lineTo(x + T, y + 16); ctx.moveTo(x + 16, y); ctx.lineTo(x + 16, y + 16); ctx.moveTo(x + 8, y + 16); ctx.lineTo(x + 8, y + T); ctx.moveTo(x + 24, y + 16); ctx.lineTo(x + 24, y + T); ctx.stroke(); }
+  else if (t === 3 || t === 4) { ctx.fillStyle = t === 3 ? "#ffd34d" : "#b9a98a"; ctx.fillRect(x, y, T, T); ctx.strokeRect(x + 1, y + 1, T - 2, T - 2); if (t === 3) { ctx.fillStyle = "#2b2b3a"; ctx.font = "24px 'Ma Shan Zheng',sans-serif"; ctx.textAlign = "center"; ctx.fillText("?", x + 16, y + 24); } }
+  else if (t === 5 || t === 6) { ctx.fillStyle = "#7ed17f"; const pad = t === 6 ? 0 : 3; ctx.fillRect(x + pad, y, T - pad * 2, T); ctx.strokeRect(x + pad + 1, y + 1, T - pad * 2 - 2, T - 2); }
+  else if (t === 7) { ctx.fillStyle = "#d9c9a0"; ctx.fillRect(x, y, T, T); ctx.strokeRect(x + 1, y + 1, T - 2, T - 2); ctx.beginPath(); ctx.moveTo(x + 5, y + 5); ctx.lineTo(x + 27, y + 5); ctx.stroke(); }
+}
+function draw() {
+  ctx.fillStyle = "#a8dcf0"; ctx.fillRect(0, 0, VW, VH);
+  // 云
+  ctx.fillStyle = "#fff"; ink(2);
+  [[80, 50], [330, 80], [620, 45], [900, 70], [1200, 50]].forEach(a => { const x = a[0] - cam * 0.5; if (x < -80 || x > VW + 80) return; ctx.beginPath(); ctx.ellipse(x, a[1], 36, 16, 0, 0, 7); ctx.ellipse(x + 24, a[1] - 8, 22, 14, 0, 0, 7); ctx.fill(); ctx.stroke(); });
+  const c0 = Math.max(0, Math.floor(cam / T)), c1 = Math.min(NC - 1, c0 + 17);
+  for (let r = 0; r < NR; r++) for (let c = c0; c <= c1; c++) if (grid[r][c]) tile(grid[r][c], c, r);
+  // 旗杆
+  const fx = 46 * T + 14 - cam; ink(3); ctx.fillStyle = "#fff"; ctx.fillRect(fx, 1.5 * T, 4, 5.5 * T); ctx.strokeRect(fx, 1.5 * T, 4, 5.5 * T);
+  ctx.fillStyle = "#ffe58a"; ctx.beginPath(); ctx.arc(fx + 2, 1.5 * T - 4, 6, 0, 7); ctx.fill(); ctx.stroke();
+  ctx.fillStyle = "#ffb3c6"; ctx.beginPath(); ctx.moveTo(fx + 4, 1.7 * T); ctx.lineTo(fx + 30, 1.7 * T + 10); ctx.lineTo(fx + 4, 1.7 * T + 22); ctx.closePath(); ctx.fill(); ctx.stroke();
+  // 金币
+  coinsList.forEach(c => { if (c.got) return; const w = Math.abs(Math.sin(frame / 14 + c.x)) * 6 + 3; ctx.fillStyle = "#ffd34d"; ink(2); ctx.beginPath(); ctx.ellipse(c.x - cam, c.y, w, 9, 0, 0, 7); ctx.fill(); ctx.stroke(); });
+  // 敌人
+  enemies.forEach(e => {
+    if (e.gone) return; const x = e.x - cam; if (x < -40 || x > VW + 40) return;
+    ink(2.5); ctx.fillStyle = "#a5683d";
+    if (e.squish > 0) { ctx.beginPath(); ctx.ellipse(x + 12, e.y + 20, 14, 5, 0, 0, 7); ctx.fill(); ctx.stroke(); return; }
+    ctx.beginPath(); ctx.ellipse(x + 12, e.y + 11, 13, 11, 0, 0, 7); ctx.fill(); ctx.stroke();
+    ctx.fillStyle = "#fff"; ctx.fillRect(x + 6, e.y + 7, 5, 6); ctx.fillRect(x + 14, e.y + 7, 5, 6);
+    ctx.fillStyle = "#2b2b3a"; ctx.fillRect(x + 8, e.y + 9, 2, 4); ctx.fillRect(x + 15, e.y + 9, 2, 4);
+    const f = Math.floor(frame / 10) % 2; ctx.fillStyle = "#6b4226"; ctx.fillRect(x + 2 + f * 2, e.y + 19, 8, 5); ctx.fillRect(x + 14 - f * 2, e.y + 19, 8, 5);
+  });
+  // 玩家
+  if (p) {
+    const x = p.x - cam, y = p.y; ink(2.5);
+    ctx.fillStyle = "#4a7de0"; ctx.fillRect(x, y + 14, p.w, 14); ctx.strokeRect(x, y + 14, p.w, 14);
+    ctx.fillStyle = "#ffd9b0"; ctx.fillRect(x + 2, y + 5, p.w - 4, 10); ctx.strokeRect(x + 2, y + 5, p.w - 4, 10);
+    ctx.fillStyle = "#e5484d"; ctx.fillRect(x, y, p.w, 7); ctx.strokeRect(x, y, p.w, 7);
+    ctx.fillRect(x + (p.face > 0 ? 8 : -2), y + 4, 16, 4);
+    ctx.fillStyle = "#2b2b3a"; ctx.fillRect(x + (p.face > 0 ? 14 : 5), y + 8, 3, 4);
+  }
+  pops.forEach(o => { ctx.fillStyle = "#2b2b3a"; ctx.font = "18px 'Ma Shan Zheng',sans-serif"; ctx.textAlign = "center"; ctx.fillText(o.txt, o.x - cam, o.y); });
+  if (!active && state === "run") { ctx.fillStyle = "rgba(253,248,236,.75)"; ctx.fillRect(0, 100, VW, 70); ctx.fillStyle = "#2b2b3a"; ctx.font = "28px 'Ma Shan Zheng',sans-serif"; ctx.textAlign = "center"; ctx.fillText("点击画面开始（← → 移动，空格跳）", VW / 2, 145); }
+}
+let last = 0, accT = 0;
+function loop(t) {
+  const dt = Math.min(100, t - (last || t)); last = t; accT += dt;
+  while (accT >= 1000 / 60) { accT -= 1000 / 60; if (active || state !== "run") step(); }
+  draw(); requestAnimationFrame(loop);
+}
+
+/* ===== 输入 ===== */
+function setKey(k, v) { if (k === "jump" && v && !keys.jump) jumpBuf = P.kind ? 6 : 1; keys[k] = v; }
+const KM = { ArrowLeft: "left", a: "left", A: "left", ArrowRight: "right", d: "right", D: "right", ArrowUp: "jump", w: "jump", W: "jump", " ": "jump", Shift: "run", x: "run", X: "run" };
+window.addEventListener("keydown", e => {
+  const tag = (e.target.tagName || "").toLowerCase();
+  if (tag === "textarea" || (tag === "input" && e.target.type === "text")) return;
+  const k = KM[e.key]; if (!k || !active) return;
+  e.preventDefault(); if (!e.repeat) setKey(k, true);
+});
+window.addEventListener("keyup", e => { const k = KM[e.key]; if (k) setKey(k, false); });
+window.addEventListener("blur", () => { Object.keys(keys).forEach(k => keys[k] = false); });
+cv.addEventListener("pointerdown", () => { active = true; cv.focus(); $("gmsg").textContent = ""; });
+document.addEventListener("pointerdown", e => { if (!cv.contains(e.target) && !$("pad").contains(e.target)) active = false; });
+document.querySelectorAll("#pad .btn").forEach(b => {
+  const k = b.dataset.k;
+  b.addEventListener("pointerdown", e => { e.preventDefault(); active = true; $("gmsg").textContent = ""; setKey(k, true); });
+  ["pointerup", "pointerleave", "pointercancel"].forEach(ev => b.addEventListener(ev, () => setKey(k, false)));
+});
+$("restart").onclick = () => { saved = 0; svShow(); reset(true); active = true; cv.focus(); $("gmsg").textContent = ""; };
+
+/* 手感滑块 */
+function knobs() {
+  P.jump = +$("k1").value; P.g = +$("k2").value; P.acc = +$("k3").value; P.varJump = $("c1").checked; P.kind = $("c2").checked;
+  $("o1").textContent = P.jump; $("o2").textContent = P.g; $("o3").textContent = P.acc;
+  const hold = P.jump * P.jump / (2 * P.g) / 32, tap = P.varJump ? P.jump * P.jump / (2 * P.g * 2.6) / 32 : hold;
+  $("hh").textContent = hold.toFixed(1); $("hl").textContent = tap.toFixed(1);
+}
+["k1", "k2", "k3", "c1", "c2"].forEach(id => $(id).addEventListener("input", knobs));
+$("kreset").onclick = () => { $("k1").value = 11; $("k2").value = 0.5; $("k3").value = 0.3; $("c1").checked = true; $("c2").checked = true; knobs(); };
+knobs(); reset(true); requestAnimationFrame(loop);
+
+GD.mountQuiz($("quiz"), [
+  { q: "1-1 开头让玩家先面对“一只孤零零的敌人”，主要是为了？", opts: ["让关卡看起来简单", "在安全、单独的情境里让玩家自己学会基本规则", "为了省制作成本", "增加敌人数量"], a: 1, why: "先单独引入一个元素，玩家才能清楚地把“原因”和“结果”联系起来，这是安全引入。" },
+  { q: "【为什么被发明】据宫本茂的回忆，第一个敌人为什么没有用乌龟（库巴兵），而是做成了栗宝宝？", opts: ["乌龟的美术太贵", "乌龟不能一踩就解决，作为第一个敌人，对新手有点太难，需要一个“一踩就好”的敌人", "因为龟壳无法绘制", "因为玩家不喜欢乌龟"], a: 1, why: "他的说法是：最初想用乌龟，但觉得对第一次玩的人，跳上去再踢走有点难；于是做了“坏蘑菇”。第一个敌人要让玩家用最基本的动作（跳）就能解决。" },
+  { q: "【为什么被发明】手塚卓志为什么说，要“看玩家怎么玩，再调整”，而不是自己一次做对？", opts: ["因为玩家喜欢被观察", "设计者知道答案，容易把关卡做得太难，人们也很少照设计者想的方式玩，只有看新玩家实际怎么玩才能发现", "因为这样更省钱", "因为规则要求如此"], a: 1, why: "这是他自己的回忆：自己做关卡难免做得太难，而且玩家很少照你预想的方式玩。" },
+  { q: "“引入 → 练习 → 变化”中，水管逐渐变高属于？", opts: ["引入", "练习", "变化", "结局"], a: 1, why: "同一个跳跃动作，难度一格格上升，就是练习。" },
+  { q: "【为什么】水管为什么一格比一格高，而不是一上来就放最高的？", opts: ["为了省地图空间", "每一格只比刚学会的多一点，始终落在玩家够得着的范围（最近发展区）内，关卡本身起到脚手架的作用", "因为高的水管更难画", "为了让玩家死得更多"], a: 1, why: "最近发展区：独自做不到、但有支持就够得着的那一段。离得太近没东西可学，离得太远只剩挫败。" },
+  { q: "【为什么】“离开平台后短暂时间内仍可起跳”为什么会让玩家觉得操作很准？", opts: ["因为它让游戏更简单", "它把“差一点”的操作也当作成功，让反馈和意图对得上，玩家觉得“是我让它跳的”", "因为玩家看不到这个机制", "因为它减少了敌人数量"], a: 1, why: "玩家对“按键 → 结果”的因果关系很敏感；宽容判定避免“我明明按了”的挫败。" },
+  { q: "【为什么】为什么说“低成本失败”有利于学习？（按 Gee 的观点）", opts: ["因为玩家喜欢失败", "学习者可以在后果被调低的空间里冒险尝试，勇敢尝试本身就是学习；但这条主要适用于教学和新手阶段", "因为失败后可以直接通关", "没有道理"], a: 1, why: "Gee 沿用 Erikson 的“心理社会延缓期”，认为游戏让学习者在后果较轻的空间里尝试。对追求高风险刺激的游戏，要另做取舍。" },
+]);
+
+/* ===== 原理—证据 连线配对 ===== */
+mountLinkPair($("c24pair"), $("c24paircnt"),
+  ["脚手架 / 最近发展区", "安全失败（低错误成本）", "宽容与即时响应", "一次只教一件事"],
+  [
+    { t: "水管一次比一次高、坑一次比一次宽，玩家没觉得自己在被“教”，却越跳越稳。", a: 0, why: "难度被拆成小台阶，每一步都在玩家“够得着”的范围内，这正是脚手架与最近发展区的游戏版本。", hint: "关键词是“一步步加难”“够得着”。" },
+    { t: "掉进坑里后几秒就能重来，玩家毫不犹豫地再试一次。", a: 1, why: "失败的代价很低，试错就不可怕，玩家才敢尝试没把握的跳跃，学习得以发生。", hint: "关键词是“代价”。" },
+    { t: "刚走出平台边缘的一瞬间按下跳跃，仍然能跳起来，玩家觉得“我明明按准了”。", a: 2, why: "宽容的判定把“差几帧”的操作也算作成功，玩家得到的是“我的操作被准确响应”的感受。", hint: "这里在讨论“按键”和“结果”之间的关系。" },
+    { t: "按住跳跃键跳得更高，松手立刻变矮，玩家觉得角色“就是我的手的延伸”。", a: 2, why: "即时、与输入成比例的响应，让玩家强烈感到“是我造成了这个结果”。", hint: "想想：玩家感觉“是谁让它跳的”？" },
+    { t: "第一屏只有一只栗宝宝，没有水管、没有坑，玩家一眼就明白它是危险的。", a: 3, why: "同一时间只有一件新东西，玩家才能把原因和结果对上，也不会被一堆新信息压垮（还记得认知负荷吗）。", hint: "关键词是“单独”“一个”。" },
+  ]);
+</script>
+</body>
+</html>

@@ -1,0 +1,703 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>第10章 界面与新手引导</title>
+<link rel="stylesheet" href="css/style.css">
+<style>
+  .c10_bar{height:14px;border:2.5px solid var(--ink);border-radius:8px;background:#fff;overflow:hidden;margin:4px 0}
+  .c10_bar i{display:block;height:100%;background:var(--orange);width:0;transition:width .25s,background .25s}
+  .c10_sample{border:3px solid var(--ink);border-radius:10px;padding:14px;text-align:center;margin:8px 0}
+  .c10_cbox{display:flex;gap:12px;flex-wrap:wrap}
+  .c10_cbox>div{flex:1;min-width:200px;border:3px solid var(--ink);border-radius:10px;padding:8px;background:#fffdf3;text-align:center}
+  .c10_cbox.gray>div>.mk,.c10_gray{filter:grayscale(1)}
+  .c10_dotr{display:inline-block;width:28px;height:28px;border-radius:50%;vertical-align:middle;margin:4px}
+  .c10_tri{display:inline-block;width:0;height:0;border-left:16px solid transparent;border-right:16px solid transparent;border-bottom:30px solid #e5484d;vertical-align:middle;margin:4px}
+  input[type=color]{width:60px;height:34px;border:3px solid var(--ink);border-radius:8px;padding:0;background:#fff;vertical-align:middle}
+
+  /* 记忆广度 */
+  .c10_bars{margin:8px 0}
+  .c10_bars .r{display:flex;align-items:center;gap:8px;margin:3px 0;font-size:.95rem}
+  .c10_bars .r span.l{flex:none;width:9.5em}
+  .c10_bars .r .tk{flex:1;height:16px;border:2.5px solid var(--ink);border-radius:8px;background:#fff;position:relative;overflow:hidden}
+  .c10_bars .r .tk i{position:absolute;left:0;top:0;bottom:0;background:var(--orange);transition:width .4s}
+  .c10_bars .r b.v{flex:none;width:2.6em;text-align:right;background:none}
+
+  /* 似动小演示 */
+  .c10_phi{position:relative;height:90px;border:3px solid var(--ink);border-radius:10px;background:#fffdf3;overflow:hidden}
+  .c10_phi i{position:absolute;top:30px;width:30px;height:30px;border-radius:50%;background:#e5484d;border:3px solid var(--ink);animation:c10blink 1s steps(1) infinite}
+  .c10_phi i.a{left:22%}
+  .c10_phi i.b{left:70%;animation-delay:.5s}
+  @keyframes c10blink{0%{opacity:1}50%{opacity:0}100%{opacity:0}}
+  .c10_phi.fast i{animation-duration:.36s}
+  .c10_phi.fast i.b{animation-delay:.18s}
+  @media(prefers-reduced-motion:reduce){.c10_phi i{animation:none}.c10_phi i.b{opacity:.35}}
+
+  /* HUD 摆放台 */
+  .c10_stage{position:relative;width:100%;aspect-ratio:16/9;min-height:230px;border:3px solid var(--ink);border-radius:10px;overflow:hidden;touch-action:none;user-select:none;
+    background:linear-gradient(#9fd3f0 0 45%,#8bc58a 45% 100%)}
+  .c10_stage.explore{background:linear-gradient(#cfe9f7 0 40%,#a5d38f 40% 100%)}
+  .c10_stage .scene{position:absolute;left:0;right:0;top:36%;text-align:center;font-size:clamp(1.6rem,6vw,3rem);opacity:.92;pointer-events:none}
+  .c10_zone{position:absolute;left:30%;top:25%;width:40%;height:50%;border:2.5px dashed rgba(43,43,58,.55);border-radius:8px;pointer-events:none}
+  .c10_zone::after{content:"中心视野";position:absolute;left:4px;bottom:2px;font-size:.75rem;color:rgba(43,43,58,.85)}
+  .c10_el{position:absolute;background:rgba(30,30,45,.82);color:#fff;border-radius:8px;padding:2px 8px;line-height:1.35;border:2px solid #fff;border-left-width:7px;
+    cursor:grab;white-space:nowrap;font-size:clamp(10px,1.7vw,15px);transition:opacity .2s;z-index:3}
+  .c10_el:active{cursor:grabbing}
+  .c10_el.s2{opacity:.4}
+  .c10_el.s3{display:none}
+  .c10_el:focus-visible{outline:3px solid var(--yellow)}
+  .c10_el.map{width:17%;height:24%;white-space:normal;display:grid;place-items:center;text-align:center}
+  .c10_el.map.s3{display:none}
+  .c10_stage.glide .c10_el{transition:opacity .2s,left .6s,top .6s}
+  .c10_grp{position:absolute;border:2.5px dashed #ffe58a;border-radius:10px;pointer-events:none;z-index:2;background:rgba(255,229,138,.12)}
+  .c10_grp.bad{border-color:#ff6b6b;background:rgba(255,107,107,.15)}
+  .c10_grp.ok{border-color:#7ee08f;background:rgba(126,224,143,.15)}
+  .c10_row{display:flex;align-items:center;gap:4px;flex-wrap:wrap;border-bottom:1px dashed var(--line);padding:2px 0;font-size:.95rem}
+  .c10_row .nm{flex:1;min-width:100px}
+  .c10_row .chip{margin:1px;padding:0 8px;font-size:.85rem}
+  .c10_cat{display:inline-block;width:12px;height:12px;border-radius:3px;border:2px solid var(--ink);margin-right:5px;vertical-align:middle}
+  .c10_diag div{margin:3px 0;font-size:.95rem}
+  .c10_twocol{display:grid;grid-template-columns:minmax(0,3fr) minmax(0,2fr);gap:16px}.c10_twocol>div{min-width:0}
+  @media(max-width:700px){.c10_twocol{grid-template-columns:minmax(0,1fr)}}
+  .c10_defbar{height:30px;border:2.5px solid var(--ink);border-radius:10px;background:#fff;overflow:hidden;margin:4px 0;position:relative}
+  .c10_defbar i{display:block;height:100%;transition:width .3s}
+  .c10_defbar b{position:absolute;left:10px;top:2px;font-weight:400;font-size:.95rem;background:none}
+</style>
+</head>
+<body data-ch="10">
+<main class="wrap">
+  <div class="hero">
+    <div class="txt">
+      <span class="badge">第 10 章</span>
+      <h1>界面与新手引导</h1>
+      <p class="sub">好界面是“隐形”的：玩家需要时它在，不需要时它不挡路。</p>
+    </div>
+    <svg viewBox="0 0 190 150" class="rough" aria-hidden="true">
+      <rect x="15" y="20" width="160" height="105" fill="#fff" stroke="#2b2b3a" stroke-width="4" rx="8"/>
+      <rect x="25" y="30" width="50" height="14" fill="#ffb3c6" stroke="#2b2b3a" stroke-width="3"/>
+      <rect x="130" y="30" width="35" height="35" fill="#a8dcf0" stroke="#2b2b3a" stroke-width="3"/>
+      <circle cx="95" cy="80" r="10" fill="none" stroke="#2b2b3a" stroke-width="4"/>
+      <path d="M70 108 H120" stroke="#2b2b3a" stroke-width="5"/>
+    </svg>
+  </div>
+
+  <div class="goals">
+    <h3>学习目标</h3>
+    <span class="time">约 50 分钟</span>
+    <ul>
+      <li>读完你能讲清 HUD 为什么被发明、为什么不能塞太满：用“工作记忆很小”和“外在负荷”解释，并用格式塔的接近、相似、封闭、连续给界面分组。</li>
+      <li>读完你能亲手摆一套 HUD：按场景决定每个元素“常驻、弱化还是隐藏”，并读懂视觉负担、中心遮挡和分组诊断。</li>
+      <li>读完你能判断一个默认值是在“助推”还是在“操纵”，并为新手引导选出合理的默认设置。</li>
+    </ul>
+  </div>
+
+  <!-- 1 UI 的住法 -->
+  <div class="sec"><span class="n">1</span><h2><span class="tag what">是什么</span>UI 的四种“住法”：血条到底住在哪儿？</h2></div>
+  <div class="withimg">
+    <span data-illus="c10_dead"></span>
+    <div>
+      <p>你一定遇到过这种事：激战正酣，屏幕“啪”地一黑，写着“你被击倒”。你愣了一下，脑子里冒出的第一个问题是：刚才我到底还剩多少血？</p>
+      <p>血条明明一直挂在屏幕上，你就是没看。不是你不专心，是屏幕上同时有十几样东西在抢你的眼睛。界面（<span class="term" tabindex="0" data-def="User Interface，用户界面：玩家和游戏交换信息的窗口，包括画面上的信息、菜单、操作提示等。">UI</span>）的活儿，就是在“让玩家知道什么”和“别挡玩家的路”之间找平衡。</p>
+      <p>做这件事之前，先问一个看似无聊的问题：这条信息“住”在哪儿？设计者常用两个问题来分：<b>它存在于故事世界里吗？它存在于游戏的 3D 空间里吗？</b>由此得到四类。</p>
+    </div>
+  </div>
+  <div class="card">
+    <svg viewBox="0 0 700 320" width="100%" role="img" aria-label="UI 四象限：叙事内、空间、元、非叙事">
+      <g class="rough" stroke="#2b2b3a" stroke-width="4">
+        <rect x="110" y="45" width="280" height="130" fill="#b6e8a8"/>
+        <rect x="390" y="45" width="280" height="130" fill="#a8dcf0"/>
+        <rect x="110" y="175" width="280" height="130" fill="#ffe58a"/>
+        <rect x="390" y="175" width="280" height="130" fill="#ffb3c6"/>
+      </g>
+      <g font-size="18" fill="#2b2b3a" text-anchor="middle">
+        <text x="250" y="30">在故事世界里</text><text x="530" y="30">不在故事世界里</text>
+        <text x="55" y="115">在场景中</text><text x="55" y="245">在场景外</text>
+        <g font-size="24"><text x="250" y="80">叙事内 Diegetic</text><text x="530" y="80">空间 Spatial</text><text x="250" y="210">元 Meta</text><text x="530" y="210">非叙事 Non-diegetic</text></g>
+        <text x="250" y="110">角色背上的血条</text><text x="250" y="138">车里的仪表盘</text>
+        <text x="530" y="110">地面上的目标圈</text><text x="530" y="138">头顶的名字和路径箭头</text>
+        <text x="250" y="240">受伤时屏幕泛红</text><text x="250" y="268">镜头上的雨滴、裂痕</text>
+        <text x="530" y="240">血条、弹药数字</text><text x="530" y="268">小地图、菜单、技能栏</text>
+      </g>
+    </svg>
+  </div>
+  <div class="grid2">
+    <div class="card g"><h3>叙事内</h3><p>角色自己也看得见。优点：沉浸感最强。缺点：不一定清楚好读，做起来最费功夫。</p></div>
+    <div class="card p"><h3>非叙事（最常见）</h3><p>纯粹为玩家服务、贴在屏幕上的 HUD。优点：清楚、好改。缺点：容易破坏沉浸，也容易越堆越多。</p></div>
+  </div>
+  <p><span class="term" tabindex="0" data-def="Head-Up Display，平视显示：一直叠在游戏画面上的信息层，如血条、弹药、小地图。">HUD</span>指一直叠在画面上的信息层。选哪类没有对错，要看你更需要<b>清晰</b>还是更需要<b>沉浸</b>。</p>
+  <div class="eg" data-ic="🔦"><span data-illus="c10_spine"></span><div class="egt"><b>叙事内：背上的光条</b>《死亡空间》里主角背上发光的脊柱条就是血量，角色和玩家都看得见，屏幕上不需要任何数字。恐怖游戏常借这个办法维持沉浸。</div></div>
+  <div class="eg" data-ic="🔫"><span data-illus="c10_corner"></span><div class="egt"><b>非叙事：屏幕角落的数字</b>竞技射击游戏的血量和弹药贴在屏幕角落。它们不属于故事世界，但一眼读懂，胜负攸关时清晰度比沉浸更重要。</div></div>
+  <div class="eg" data-ic="🚗"><span data-illus="c10_dash"></span><div class="egt"><b>日常：仪表盘和电量条</b>汽车的仪表盘真的装在车里，对司机来说是“叙事内”的；手机顶部的电量条不是手机世界里的物体，是系统叠上去的一层，是“非叙事”的。</div></div>
+  <div class="eg bad" data-ic="🕯️"><span data-illus="c10_tiny"></span><div class="egt"><b>差一点就对：叙事内不等于好用</b>为了沉浸，把血量做成角色衣服上一个很小的指示灯。激战里镜头乱晃，玩家根本看不清。要么把它放大成更醒目的发光，要么危急时补一层屏幕泛红的元 UI。</div></div>
+  <p class="small">这套四分法常被追溯到 Fagerholt 与 Lorentzon 2009 年 Chalmers 理工大学的硕士论文《Beyond the HUD》。“叙事内”这个词借自影视，用在游戏上有人觉得并不总是合适（Jørgensen 等人对游戏声音就提过类似批评）。</p>
+
+  <!-- 2 信息层级 -->
+  <div class="sec"><span class="n">2</span><h2><span class="tag what">是什么</span>信息层级：不是所有信息都一样重要</h2></div>
+  <p>知道信息住在哪儿还不够，屏幕空间和玩家的注意力都是稀缺资源，你得决定每条信息有多抢眼。这个“抢眼程度”叫<span class="term" tabindex="0" data-def="Visual weight：一个元素在画面中有多抢眼，由大小、对比、位置、动画等因素决定。">视觉权重</span>。一个简单的三档办法是：</p>
+  <div class="grid3">
+    <div class="card y mini"><div class="ico">1</div><h3>常驻突出</h3><p>当前决策马上要用的信息，如战斗中的生命值。</p></div>
+    <div class="card b mini"><div class="ico">2</div><h3>弱化显示</h3><p>偶尔瞄一眼，如小地图。小一点、淡一点。</p></div>
+    <div class="card v mini"><div class="ico">3</div><h3>需要时才出现</h3><p>用不上就别放。弹出菜单、事件触发时才显示。</p></div>
+  </div>
+  <p>难点在于：<b>同一个元素在不同时刻，该在哪一档是不一样的</b>。下图是同一套 HUD 在三个时刻的“座次表”。</p>
+  <div class="card">
+    <svg viewBox="0 0 700 260" width="100%" role="img" aria-label="同一元素在战斗、探索、商店三个时刻的档位矩阵">
+      <g class="rough" stroke="#2b2b3a" stroke-width="3.5">
+        <rect x="170" y="62" width="160" height="50" fill="#ffe58a"/><rect x="340" y="62" width="160" height="50" fill="#e8f6fc"/><rect x="510" y="62" width="160" height="50" fill="#f1eaff"/>
+        <rect x="170" y="120" width="160" height="50" fill="#e8f6fc"/><rect x="340" y="120" width="160" height="50" fill="#ffe58a"/><rect x="510" y="120" width="160" height="50" fill="#f1eaff"/>
+        <rect x="170" y="178" width="160" height="50" fill="#f1eaff"/><rect x="340" y="178" width="160" height="50" fill="#e8f6fc"/><rect x="510" y="178" width="160" height="50" fill="#ffe58a"/>
+      </g>
+      <g font-size="20" text-anchor="middle" fill="#2b2b3a">
+        <text x="250" y="42">⚔️ 战斗中</text><text x="420" y="42">🧭 探索中</text><text x="590" y="42">🛒 商店里</text>
+        <text x="250" y="94">常驻突出</text><text x="420" y="94">弱化</text><text x="590" y="94">隐藏</text>
+        <text x="250" y="152">弱化</text><text x="420" y="152">常驻突出</text><text x="590" y="152">隐藏</text>
+        <text x="250" y="210">隐藏</text><text x="420" y="210">弱化</text><text x="590" y="210">常驻突出</text>
+      </g>
+      <g font-size="20" fill="#2b2b3a" text-anchor="end"><text x="160" y="94">❤️ 生命值</text><text x="160" y="152">🗺 小地图</text><text x="160" y="210">💰 金币</text></g>
+    </svg>
+  </div>
+  <div class="eg" data-ic="🛒"><span data-illus="c10_shop"></span><div class="egt"><b>游戏内：金币栏随场景变脸</b>战斗中金币栏收起，进商店才放大；探索时小地图变大，一进战斗就缩成角落里的淡色小图。</div></div>
+  <div class="eg" data-ic="⛽"><span data-illus="c10_fuel"></span><div class="egt"><b>日常：油量不足灯</b>汽车的“油量不足”灯平时不亮，快没油才亮，只在需要你做决定的那一刻才占用你的注意力。</div></div>
+  <div class="eg" data-ic="📱"><span data-illus="c10_phone"></span><div class="egt"><b>日常：手机状态栏</b>时间常驻显示，而“电量低于 20%”的提醒只在需要时才弹出。</div></div>
+  <div class="eg bad" data-ic="🌀"><span data-illus="c10_flood"></span><div class="egt"><b>反例：什么都常驻</b>战斗中，聊天框、成就弹窗、好友在线、天气时间全都挂着。每一项单看都“有用”，叠在一起，玩家反而漏看了真正致命的血量。</div></div>
+
+  <!-- 3 新手引导 -->
+  <div class="sec"><span class="n">3</span><h2><span class="tag what">是什么</span>新手引导：让玩家“学会”，而不是“被教”</h2></div>
+  <p>界面还有另一个麻烦：新玩家什么都不懂。<span class="term" tabindex="0" data-def="First-Time User Experience：玩家从第一次打开游戏到“懂了、想继续”的那段体验，常被视为留存的关键。">FTUE</span>（首次游玩体验）指玩家从第一次打开游戏，到“我懂了，想继续”的那几分钟。很多人就在这几分钟里决定要不要放弃，所以值得精心设计。核心做法有三条：</p>
+  <div class="grid3">
+    <div class="card g mini"><div class="ico">🖐️</div><h3>先做后说</h3><p>让玩家先动手，再用一句话点破。少用大段文字墙。</p></div>
+    <div class="card y mini"><div class="ico">🪜</div><h3><span class="term" tabindex="0" data-def="Progressive disclosure：不一次把所有功能都抛给用户，而是在需要时逐步展示。">渐进式披露</span></h3><p>一次只教一个新东西，学会了再放出下一个。</p></div>
+    <div class="card b mini"><div class="ico">📍</div><h3>情境提示</h3><p>在玩家真正需要时才提示，比如走到门前才显示“按 E 开门”。</p></div>
+  </div>
+  <div class="card">
+    <svg viewBox="0 0 700 300" width="100%" role="img" aria-label="一次性塞满教程与渐进式教学的对比曲线">
+      <g class="rough" stroke="#2b2b3a" stroke-width="4" fill="none" stroke-linecap="round">
+        <path d="M60 20 V250 H680"/>
+        <path d="M60 55 H680" stroke="#e5484d" stroke-width="5"/>
+        <path d="M60 230 H170 V195 H260 V160 H350 V125 H440 V90 H530 V55 H680" stroke="#3aa655" stroke-width="5"/>
+      </g>
+      <g font-size="18" fill="#2b2b3a">
+        <text x="100" y="45" fill="#b3303a">开场一次塞满全部操作说明（玩家容易溢出、遗忘）</text>
+        <text x="270" y="190" fill="#2b2b3a">渐进式：学会一个，再加一个</text>
+        <text x="600" y="276">时间 →</text>
+        <text x="25" y="140" text-anchor="middle" transform="rotate(-90 25 140)">同时要记住的新概念</text>
+      </g>
+    </svg>
+  </div>
+  <div class="eg" data-ic="🍄"><span data-illus="c10_goomba"></span><div class="egt"><b>先做后说：一个没有字的开场</b>《超级马力欧》1-1 关开场没有文字，第一个敌人慢慢走向你，不跳就会撞上。先让你“做”，再让你明白。</div></div>
+  <div class="eg" data-ic="🚪"><span data-illus="c10_rooms"></span><div class="egt"><b>渐进式披露：一间房一个新东西</b>设计者常称赞这种做法：前几个房间每次只引入一个新机制，学会了才叠加下一个（《Portal》常被当作这类例子）。</div></div>
+  <div class="eg" data-ic="💬"><span data-illus="c10_bubble"></span><div class="egt"><b>日常里的情境提示：App 的小气泡</b>手机 App 首次打开时，只在你第一次点到某个按钮的时候才冒出一条小气泡，而不是一上来就塞给你一份说明书。</div></div>
+  <div class="eg bad" data-ic="📚"><span data-illus="c10_wall"></span><div class="egt"><b>反例：二十页的强制教程</b>开场弹出 20 页图文教程，要求“全部看完才能开始”。玩家点跳过，之后真遇到问题又找不到入口。好的做法是<b>可跳过、可回看</b>。</div></div>
+  <div class="sticky">最好的教学，常常发生在玩家<b>没发现自己在被教</b>的时候：用关卡设计造一个只有学会了才能通过的小房间，比弹窗有效。别忘了让提示可跳过、可回看，老玩家和新玩家都该被尊重。</div>
+
+  <!-- 4 发明故事 -->
+  <div class="sec"><span class="n">4</span><h2><span class="tag origin">发明故事</span>HUD 为什么被发明？为什么偏偏要“少”？</h2></div>
+  <div class="story">
+    <h3>故事一：飞行员的“低头”问题</h3>
+    <div class="withimg rev">
+      <span data-illus="c10_lookdown"></span>
+      <div>
+        <p>想象你坐在高速飞行的战斗机里，既要盯着前方的敌机，又要读速度和高度。仪表在座舱下方，每次低头，眼睛就离开了前方。哪怕只有一两秒，局势也可能全变了。</p>
+        <p>早期的办法是把仪表排得更整齐、字做得更大。可只要仪表在“下面”，你就得低头、对焦、再抬头。问题不在仪表好不好看，而在<b>位置</b>。</p>
+        <p>于是有人换了个思路：别让眼睛去找信息，让信息来找眼睛。把关键数字<b>投到飞行员正前方的透明玻璃上</b>，抬着头就能同时看到窗外和读数。这就是“平视显示”（Head-Up Display）名字的由来：<b>抬头（head-up）就能看到</b>。它是从战斗机上把瞄准环投到玻璃上的反射式瞄准具一步步演化来的。</p>
+      </div>
+    </div>
+    <p>可新问题很快出现了：玻璃上能投的信息越来越多，飞行员的注意力和记忆却没有变多。设计者不得不决定：<b>哪些信息值得占用这块宝贵的“正前方”？</b>游戏借来了同一个名字，也借来了同一个难题。</p>
+    <div class="timeline">
+      <div class="ev hasimg"><span data-illus="c10_tl_sight"></span><div><b class="yr">二战前后</b>　战斗机上的反射式瞄准具，把瞄准环投影到前方的玻璃上。</div></div>
+      <div class="ev hasimg"><span data-illus="c10_tl_radar"></span><div><b class="yr">1942</b>　英国的雷达研究人员做了一个实验装置，把雷达图像和陀螺瞄准具的投影合到同一块挡风玻璃上。据维基百科，这个装置当时并未装上飞机，但已经具备现代 HUD 的核心特征。</div></div>
+      <div class="ev hasimg"><span data-illus="c10_tl_miller"></span><div><b class="yr">1956</b>　心理学家米勒发表《神奇的数字 7±2》：人一次能保持的信息有限，但可以用<b>组块</b>把多个小信息捏成一个，变相扩大“装得下”的内容。</div></div>
+      <div class="ev hasimg"><span data-illus="c10_tl_sweller"></span><div><b class="yr">1988</b>　斯威勒提出认知负荷理论：糟糕的呈现会白白占用有限的工作记忆。</div></div>
+      <div class="ev hasimg"><span data-illus="c10_tl_cowan"></span><div><b class="yr">2001</b>　考恩回顾大量实验，认为在排除复述和组块的情形下，容量更像是约 4 个组块。</div></div>
+    </div>
+  </div>
+  <div class="board" id="c10_wm">
+    <b>先猜，再试：你一次能记住几位数字？</b>
+    <p class="small">数字会闪现 3 秒。先凭感觉猜一个数，再测，看看你和心理学家的结论差多少。</p>
+    <label class="ctl">① 你的预测：我一次能记住 <output id="c10_gv">7</output> 位数字 <input type="range" id="c10_g" min="3" max="12" value="7"></label>
+    <label class="ctl">② 本次测试的位数 N <output id="c10_nv">6</output> <input type="range" id="c10_n" min="3" max="12" value="6"></label>
+    <div>显示方式：<button class="chip on" data-wm="0">连写</button><button class="chip" data-wm="1">每 3 位一组</button></div>
+    <div class="c10_sample" id="c10_disp" style="font-size:clamp(1.4rem,5vw,2.2rem);min-height:78px;letter-spacing:.06em">准备好了就点“开始”，数字会出现 3 秒</div>
+    <button class="btn" id="c10_go">▶ 开始</button>
+    <input type="text" id="c10_in" placeholder="数字消失后，在这里输入你记住的数字" disabled>
+    <button class="btn green" id="c10_ok" disabled>提交</button>
+    <button class="btn pink" id="c10_reset">清空记录</button>
+    <div class="msg" id="c10_t"></div>
+    <div class="c10_bars" id="c10_bars"></div>
+    <div class="small" id="c10_cmp"></div>
+  </div>
+  <div class="sticky">试试看：把同一个 N（比如 9）先用“连写”测一次，再用“每 3 位一组”测一次。同样的数字，分组后要记的“单位”少了，你多半会亲身体会到什么叫组块。一次测试波动很大，请多试几轮，这不是严格的实验。</div>
+
+  <div class="story">
+    <h3>故事二：为什么我们“看得见整体”？</h3>
+    <p>早期的心理学想把感知拆成一堆“基本感觉”（点、线、色块），再像拼积木一样加起来。可有个现象怎么也拆不开：把两个静止的灯泡轮流点亮，你看到的明明是<b>一个灯在来回跑</b>，画面里根本没有“在动的东西”。先自己看看：</p>
+    <div class="board">
+      <p>下面两个红点只是在<b>轮流亮灭</b>，从来没有哪个点移动过。你会看到什么？点“慢”和“快”各看一眼。</p>
+      <div class="c10_phi" id="c10_phi"><i class="a"></i><i class="b"></i></div>
+      <button class="btn alt" id="c10_slow">慢（1 秒一换）</button><button class="btn" id="c10_fast">快（约 0.2 秒一换）</button>
+      <div class="msg" id="c10_phit">慢的时候，你看到两个独立的灯；快的时候，多数人看到“一个点在左右跳”。</div>
+    </div>
+    <p>据常被讲述的版本，心理学家韦特海默（Max Wertheimer）1910 年前后在火车上被闪烁的灯光触动，回去用频闪装置做实验，并在 1912 年发表了关于“似动”（phi 现象）的长篇论文。（“火车上的灵感”是流传的轶事，细节有出入，能确定的是 1912 年那篇论文。）他的结论是：知觉不是零件相加，<b>大脑先抓整体结构</b>。这就是<span class="term" tabindex="0" data-def="Gestalt psychology：德语“整体”之意。主张人先感知整体结构，而不是孤立的部件。">格式塔</span>（德语“整体”）学派的起点。</p>
+    <p>对界面设计者来说，这意味着：<b>玩家不会逐个读你的 12 个图标，他们先看到的是“几块”</b>。你可以用摆放，替他们分好块。</p>
+    <div class="timeline">
+      <div class="ev hasimg"><span data-illus="c10_tl_phi"></span><div><b class="yr">1912</b>　韦特海默发表《关于运动视觉的实验研究》，描述 phi 现象。</div></div>
+      <div class="ev hasimg"><span data-illus="c10_tl_laws"></span><div><b class="yr">1923</b>　韦特海默发表关于知觉组织的论文，总结出接近、相似等分组倾向。</div></div>
+      <div class="ev hasimg"><span data-illus="c10_tl_ui"></span><div><b class="yr">今天</b>　界面设计里“把同类放近、同色同形”，就是这些倾向的应用。它们是经验性的描述，不是精确的定律。</div></div>
+    </div>
+  </div>
+
+  <!-- 5 认知负荷 -->
+  <div class="sec"><span class="n">5</span><h2><span class="tag why">为什么成立</span>为什么 HUD 不能塞太满？认知负荷与工作记忆</h2></div>
+  <p>开场弹出 12 条操作说明，你多半一条都没记住；电话号码分成 3-4-4 段，就容易记多了。这背后是同一件事：<b>人脑同时能处理的信息很少</b>。</p>
+  <div class="why-box">
+    <h3>认知负荷理论与工作记忆的上限</h3>
+    <p><span class="term" tabindex="0" data-def="Working memory：大脑暂时保存并加工信息的“工作台”，容量很小，信息不复述就会很快消失。">工作记忆</span>是我们临时保存、加工信息的地方，容量非常有限。斯威勒（John Sweller）1988 年的论文从“解题时的认知负担”出发，后来发展出<span class="term" tabindex="0" data-def="Cognitive load theory：学习和操作时占用工作记忆的负荷分为内在、外在、相关三类，总负荷超过容量时，学习与表现都会变差。">认知负荷理论</span>。后续文献常把负荷分成三类：</p>
+    <ul>
+      <li><b>内在负荷</b>：任务本身的复杂度（要同时处理多少个变量）。</li>
+      <li><b>外在负荷</b>：由<b>糟糕的呈现方式</b>带来的额外负担（杂乱的 HUD、文字墙），是设计者最该砍掉的。</li>
+      <li><b>相关负荷</b>：用于把新知识整合成“套路”（图式）的有益投入。</li>
+    </ul>
+    <p>至于容量到底多大：米勒 1956 年那篇论文的重点，是人能保持约 7±2 个<span class="term" tabindex="0" data-def="Chunk：被大脑当作一个整体来记忆的信息单位。通过熟悉的模式把多个小信息捏成一个组块，可以变相扩大容量。">组块</span>，而不是 7 个“位”，并且可以通过重新编码来扩大“装得下”的内容。考恩 2001 年回顾大量实验后提出：排除组块和复述之后，真正的容量更保守，<b>约 4 个组块</b>。两个数字之间的争论至今没有完全平息，但大家都同意：<b>很小，所以要省着用。</b></p>
+    <div class="src">出处：Sweller (1988)，Cognitive load during problem solving: Effects on learning，Cognitive Science 12(2)：257–285；Miller (1956)，The magical number seven, plus or minus two，Psychological Review 63(2)：81–97；Cowan (2001)，The magical number 4 in short-term memory，Behavioral and Brain Sciences 24(1)：87–114（<a href="https://pubmed.ncbi.nlm.nih.gov/11515286/">PubMed</a>）。三类负荷的划分来自 Sweller 等人后续的综述（如 Sweller, van Merriënboer &amp; Paas, 1998）。</div>
+  </div>
+  <div class="card">
+    <svg viewBox="0 0 700 300" width="100%" role="img" aria-label="工作记忆容量约 4 个组块：干净的 HUD 装得下，杂乱的 HUD 溢出">
+      <g class="rough" stroke="#2b2b3a" stroke-width="3.5">
+        <rect x="60" y="52" width="76" height="46" fill="#a8dcf0"/><rect x="138" y="52" width="76" height="46" fill="#a8dcf0"/><rect x="216" y="52" width="76" height="46" fill="#b6e8a8"/><rect x="294" y="52" width="76" height="46" fill="#fffdf3" stroke-dasharray="6 5"/>
+        <rect x="60" y="178" width="76" height="46" fill="#a8dcf0"/><rect x="138" y="178" width="76" height="46" fill="#a8dcf0"/><rect x="216" y="178" width="76" height="46" fill="#ffb3c6"/><rect x="294" y="178" width="76" height="46" fill="#ffb3c6"/>
+        <rect x="372" y="178" width="76" height="46" fill="#ffb3c6" stroke="#e5484d"/><rect x="450" y="178" width="76" height="46" fill="#ffb3c6" stroke="#e5484d"/>
+      </g>
+      <g font-size="18" fill="#2b2b3a" text-anchor="middle">
+        <text x="98" y="82">内在</text><text x="176" y="82">内在</text><text x="254" y="82">相关</text><text x="332" y="82">空余</text>
+        <text x="98" y="208">内在</text><text x="176" y="208">内在</text><text x="254" y="208">外在</text><text x="332" y="208">外在</text><text x="410" y="208">外在</text><text x="488" y="208">外在</text>
+      </g>
+      <g font-size="20" fill="#2b2b3a"><text x="60" y="34">干净的 HUD：装得下，还有余力思考策略</text><text x="60" y="160">杂乱的 HUD：外在负荷塞满，超出约 4 个组块的容量</text></g>
+      <path d="M372 252 V276 H526 V252" stroke="#e5484d" stroke-width="4" fill="none" class="rough"/>
+      <text x="360" y="276" font-size="18" fill="#b3303a" text-anchor="end">溢出：漏看血量</text>
+      <path d="M60 106 H370" stroke="#2b2b3a" stroke-width="3" class="rough"/><text x="380" y="112" font-size="16" fill="#3f3f50">≈ 4 个组块（示意）</text>
+    </svg>
+  </div>
+  <div class="eg" data-ic="🪣"><span data-illus="c10_bucket"></span><div class="egt"><b>游戏内：外在负荷</b>战斗界面同时亮着 12 个元素，玩家反而漏看血量。不是玩家笨，是杂乱的呈现占掉了他本可以用来思考的容量。</div></div>
+  <div class="eg" data-ic="🎓"><span data-illus="c10_dump"></span><div class="egt"><b>游戏内：教学一次讲完</b>开场一口气讲完移动、攻击、闪避、背包、合成，几乎没人记得住。拆成前五个房间各教一个，玩家都能学会。</div></div>
+  <div class="eg" data-ic="📞"><span data-illus="c10_chunk"></span><div class="egt"><b>日常：电话号码</b>13912345678 分成 139-1234-5678 就好记。同样 11 位数字，要记的“单位”从 11 个变成 3 个。</div></div>
+  <div class="eg bad" data-ic="🧑‍🎓"><span data-illus="c10_pro"></span><div class="egt"><b>差一点就对：“信息越少越好”</b>对<b>老手</b>来说，常用的十几个技能已经被肌肉记忆“打包”成了两三个组块，同一块 HUD 对他们的负荷远低于新手。所以“少”是相对玩家熟练程度而言的，新手界面更要克制。</div></div>
+
+  <!-- 6 格式塔 -->
+  <div class="sec"><span class="n">6</span><h2><span class="tag why">为什么成立</span>为什么玩家一眼就“读懂”了布局？格式塔原理</h2></div>
+  <p>既然脑容量这么小，设计者能做的，就是让十几个元素在玩家眼里<b>变成两三块</b>。幸运的是，大脑自己就爱分组：看到几个点排成一行，你不会觉得是“独立的 6 个点”，而会直接看成“一排”。</p>
+  <div class="why-box">
+    <h3>格式塔（Gestalt）知觉原则</h3>
+    <p>韦特海默、科勒、考夫卡等心理学家（格式塔学派）总结了人感知整体的一些倾向，常被引用的有：</p>
+    <ul>
+      <li><b>接近</b>：距离近的东西被看成一组。</li>
+      <li><b>相似</b>：颜色、形状相似的东西被看成一组。</li>
+      <li><b>封闭</b>：大脑会自动补全有缺口的轮廓，把它看成完整图形。</li>
+      <li><b>连续</b>：沿着平滑路线排列的东西，被看成一条线。</li>
+    </ul>
+    <div class="src">出处：Wertheimer, M. (1923). Untersuchungen zur Lehre von der Gestalt II. <i>Psychologische Forschung</i>, 4, 301–350（英文节译“Laws of organization in perceptual forms”见 Ellis 编，<i>A Source Book of Gestalt Psychology</i>, 1938；<a href="https://psychclassics.yorku.ca/Wertheimer/Forms/forms.htm">在线全文</a>）。这些“原则”更像描述性的经验规律，不是精确的定量定律；后来的学者也改写、扩充过。</div>
+  </div>
+  <div class="card">
+    <svg viewBox="0 0 700 250" width="100%" role="img" aria-label="格式塔四原则示意：接近、相似、封闭、连续">
+      <g class="rough" stroke="#2b2b3a" stroke-width="3.5">
+        <rect x="10" y="40" width="160" height="150" fill="#fffdf3"/><rect x="180" y="40" width="160" height="150" fill="#fffdf3"/><rect x="350" y="40" width="160" height="150" fill="#fffdf3"/><rect x="520" y="40" width="170" height="150" fill="#fffdf3"/>
+      </g>
+      <g fill="#2b2b3a">
+        <circle cx="30" cy="80" r="7"/><circle cx="50" cy="80" r="7"/><circle cx="70" cy="80" r="7"/><circle cx="110" cy="80" r="7"/><circle cx="130" cy="80" r="7"/><circle cx="150" cy="80" r="7"/>
+        <circle cx="30" cy="120" r="7"/><circle cx="50" cy="120" r="7"/><circle cx="70" cy="120" r="7"/><circle cx="110" cy="120" r="7"/><circle cx="130" cy="120" r="7"/><circle cx="150" cy="120" r="7"/>
+        <circle cx="30" cy="160" r="7"/><circle cx="50" cy="160" r="7"/><circle cx="70" cy="160" r="7"/><circle cx="110" cy="160" r="7"/><circle cx="130" cy="160" r="7"/><circle cx="150" cy="160" r="7"/>
+      </g>
+      <g>
+        <circle cx="205" cy="80" r="8" fill="#e5484d"/><circle cx="235" cy="80" r="8" fill="#e5484d"/><circle cx="265" cy="80" r="8" fill="#e5484d"/><circle cx="295" cy="80" r="8" fill="#e5484d"/><circle cx="320" cy="80" r="8" fill="#e5484d"/>
+        <circle cx="205" cy="110" r="8" fill="#3b82f6"/><circle cx="235" cy="110" r="8" fill="#3b82f6"/><circle cx="265" cy="110" r="8" fill="#3b82f6"/><circle cx="295" cy="110" r="8" fill="#3b82f6"/><circle cx="320" cy="110" r="8" fill="#3b82f6"/>
+        <circle cx="205" cy="140" r="8" fill="#e5484d"/><circle cx="235" cy="140" r="8" fill="#e5484d"/><circle cx="265" cy="140" r="8" fill="#e5484d"/><circle cx="295" cy="140" r="8" fill="#e5484d"/><circle cx="320" cy="140" r="8" fill="#e5484d"/>
+        <circle cx="205" cy="170" r="8" fill="#3b82f6"/><circle cx="235" cy="170" r="8" fill="#3b82f6"/><circle cx="265" cy="170" r="8" fill="#3b82f6"/><circle cx="295" cy="170" r="8" fill="#3b82f6"/><circle cx="320" cy="170" r="8" fill="#3b82f6"/>
+      </g>
+      <path d="M470 150 A42 42 0 1 1 485 112" fill="none" stroke="#2b2b3a" stroke-width="9" stroke-linecap="round" class="rough"/>
+      <g fill="#2b2b3a"><circle cx="540" cy="150" r="7"/><circle cx="563" cy="135" r="7"/><circle cx="586" cy="122" r="7"/><circle cx="609" cy="116" r="7"/><circle cx="632" cy="122" r="7"/><circle cx="655" cy="135" r="7"/><circle cx="672" cy="150" r="7"/></g>
+      <g font-size="20" fill="#2b2b3a" text-anchor="middle"><text x="90" y="30">接近：看成两组</text><text x="260" y="30">相似：看成红蓝横条</text><text x="430" y="30">封闭：补全成圆</text><text x="605" y="30">连续：看成一条弧</text></g>
+      <g font-size="17" fill="#3f3f50" text-anchor="middle"><text x="90" y="214">间距小 = 同组</text><text x="260" y="214">同色 = 同组</text><text x="430" y="214">缺口被脑补</text><text x="605" y="214">沿平滑路线</text></g>
+    </svg>
+  </div>
+  <div class="eg" data-ic="📏"><span data-illus="c10_prox"></span><div class="egt"><b>游戏内（接近）：资源一组，技能一组</b>把血、蓝、体力三个条紧挨着，技能图标另放一排，两组之间留一道空隙。玩家不读字也知道“这是资源，那是技能”。</div></div>
+  <div class="eg" data-ic="⭕"><span data-illus="c10_ring"></span><div class="egt"><b>游戏内（封闭）：冷却圆环</b>技能冷却用一个“还差一小段的圆环”表示，大脑自动补全，一眼知道“快好了”。任务路径点沿一条线排开，目光自然顺着走，那是“连续”。</div></div>
+  <div class="eg" data-ic="🛗"><span data-illus="c10_elev"></span><div class="egt"><b>日常：电梯按钮板</b>楼层、开关门、报警分成三块，靠间距而不是文字说明。手机主屏幕的“文件夹”，也是把相近的 App 圈成一个整体。</div></div>
+  <div class="eg bad" data-ic="🔳"><span data-illus="c10_grid"></span><div class="egt"><b>反例：12 个均匀排开的图标</b>间距完全均匀、颜色形状各异，没有任何分组线索。玩家只能逐个读，每个都成了一个独立组块，正好把容量吃光。</div></div>
+  <p>所以做 HUD 的时候，把<b>同类信息放近、不同类拉开</b>（接近）；同类用同色同形（相似）；冷却用不闭合的圆环（封闭）；路径点沿着一条线（连续）。这样玩家<b>无需阅读文字</b>就读懂布局，外在负荷也降下来了。后面的“HUD 摆放台”里，右侧的分组诊断检查的就是这件事。</p>
+
+  <!-- 7 默认值 -->
+  <div class="sec"><span class="n">7</span><h2><span class="tag why">为什么成立</span>为什么“默认值”这么重要？默认效应与选择架构</h2></div>
+  <p>买新手机，你有没有改过出厂的铃声？大多数人没改，哪怕改起来只要点两下。<b>人们常常接受默认选项</b>，这件事对新手引导影响很大：设置里的开关默认开着还是关着，会决定多数玩家的最终体验。</p>
+  <div class="why-box">
+    <h3>默认效应与选择架构</h3>
+    <p><span class="term" tabindex="0" data-def="Default effect：当有预设选项时，人们倾向于保持预设，哪怕可以轻松更改。原因包括惰性、认为默认是被推荐的、以及改动的心理成本。">默认效应</span>：预设选项会明显影响最终选择。Johnson 与 Goldstein 2003 年在《Science》上比较了欧洲多国的器官捐献登记：“默认同意、可选择退出”的国家，同意登记的比例远高于“默认不同意、需主动同意”的国家，常被引用的例子是奥地利接近 100% 对德国约 12%。（这是跨国比较，混杂因素很多，而且“登记同意”不等于“实际捐献”。）泰勒与桑斯坦在《助推》里提出了<span class="term" tabindex="0" data-def="Choice architecture：设计者如何安排选项的呈现方式（默认值、顺序、措辞等），这种安排本身就会影响人的选择。">选择架构</span>：<b>没有“中立”的设计</b>，因为总得有个默认值，总得有个排列顺序。</p>
+    <div class="src">出处：Johnson, E. J. &amp; Goldstein, D. (2003). Do defaults save lives? <i>Science</i>, 302(5649), 1338–1339；Thaler, R. &amp; Sunstein, C. (2008). <i>Nudge</i>（《助推》）。</div>
+  </div>
+  <div class="board">
+    <b>微实验：默认值能挪动多少人？（示意模型）</b>
+    <p class="small">假设有一部分玩家真心想开启某个功能。再假设改默认值需要一点力气，有一部分“想改的人”懒得改。拖动滑块，看两种默认设置下最终开启的比例。</p>
+    <label class="ctl">真心想开启的玩家 <output id="c10_qo">60%</output> <input type="range" id="c10_q" min="10" max="100" value="60"></label>
+    <label class="ctl">想改却懒得改的比例 <output id="c10_lo">40%</output> <input type="range" id="c10_l" min="0" max="90" value="40"></label>
+    <div class="c10_defbar"><i id="c10_don" style="background:#b6e8a8"></i><b id="c10_dont"></b></div>
+    <div class="c10_defbar"><i id="c10_doff" style="background:#ffb3c6"></i><b id="c10_dofft"></b></div>
+    <div class="msg" id="c10_defm"></div>
+    <p class="small">公式是：默认开 = q + (1−q)·惰性；默认关 = q·(1−惰性)。数字全是示意，真实比例要靠 A/B 测试得到。</p>
+  </div>
+  <div class="sticky">试试看：把“懒得改的比例”拖到 0，两根条会变成一样长，说明默认值的威力全来自惰性。再拖到 90%，看看设计者的一个选择能让多少玩家“被决定”。</div>
+  <div class="eg" data-ic="💡"><span data-illus="c10_tips"></span><div class="egt"><b>游戏内：新手提示开关</b>“自动显示新手提示”默认关闭，结果几乎没有新手看到提示。如果提示对新手有益，应该默认开启，并且让关闭它很容易。</div></div>
+  <div class="eg" data-ic="🧰"><span data-illus="c10_toolbar"></span><div class="egt"><b>日常：安装向导</b>“顺带安装的工具栏”默认勾选，很多人没取消就点了“下一步”。</div></div>
+  <div class="eg bad" data-ic="🔒"><span data-illus="c10_sub"></span><div class="egt"><b>反例（操纵）：藏起来的取消键</b>把“自动续订”默认勾选，又把取消入口藏在三层菜单后面。默认值对设计者有利、对玩家不利，还故意让退出变难，这就从“助推”滑向了暗黑模式。</div></div>
+  <p>怎么判断一个默认值是助推还是操纵？问两个问题：它是否符合<b>玩家自己的利益</b>？它是否<b>透明、容易更改</b>？两个都是，是助推；有一个不是，就要警惕了。</p>
+
+  <!-- 8 怎么用：HUD 摆放台 -->
+  <div class="sec"><span class="n">8</span><h2><span class="tag how">怎么用</span>动手玩：HUD 摆放台</h2></div>
+  <p>下面是一块游戏画面。<b>拖动</b>元素换位置，<b>点一下</b>元素在“常驻、弱化、隐藏”之间切换（也可以用右侧按钮）。旁边的诊断会实时告诉你：<b>视觉负担</b>有多重、<b>中心视野</b>被挡了多少、元素有没有按<b>格式塔</b>分好组。切换“战斗 / 探索”，看看同一套 HUD 为什么需要不同的摆法。</p>
+  <div class="board">
+    <div>场景：<button class="chip on" id="c10_s0">⚔️ 战斗中</button><button class="chip" id="c10_s1">🧭 探索中</button>
+      <span class="small">　色块 = 类别：<span class="c10_cat" style="background:#e5484d"></span>资源 <span class="c10_cat" style="background:#3b82f6"></span>导航 <span class="c10_cat" style="background:#2f9e44"></span>行动 <span class="c10_cat" style="background:#9a9a9a"></span>杂项</span></div>
+    <div class="c10_twocol">
+      <div>
+        <div class="c10_stage" id="c10_stage"><div class="scene" id="c10_scene">🧟　🧟</div><div class="c10_zone"></div></div>
+        <div class="msg">视觉负担：<span id="c10_load">0</span> <span class="small">（容量参照约 4 个组块，示意）</span></div>
+        <div class="c10_bar"><i id="c10_lbar"></i></div>
+        <div class="msg">中心视野被遮挡：<span id="c10_cov">0%</span></div>
+        <div class="c10_bar"><i id="c10_cbar" style="background:var(--pink)"></i></div>
+      </div>
+      <div>
+        <div id="c10_rows"></div>
+        <div class="c10_diag" id="c10_diag"></div>
+      </div>
+    </div>
+    <div>
+      <button class="btn green" id="c10_ref">💡 看参考摆法</button>
+      <button class="btn pink" id="c10_reset2">↺ 恢复混乱版</button>
+    </div>
+    <div class="msg" id="c10_sum"></div>
+  </div>
+  <div class="sticky">试试看：在“战斗中”把右下角的“场景匹配”调到 12 以上，同时让“视觉负担”低于 3.5、分组诊断里没有 ✘。做到时底部会出现 🎉。然后切到“探索中”，看看哪些元素该换档。</div>
+  <p class="small"><b>怎么算（示意模型）：</b>视觉负担 = 把靠得近的元素合成一个“组块”后，每组算（最显眼的权重 + 0.25×其余成员权重），常驻权重 1、弱化 0.35；中心遮挡 = 中间虚线区域被元素盖住的粗略比例（弱化按 0.4 算）；分组诊断按“同类成组、异类分开”打分。这些规则是教学简化，不是实测标准。参考摆法只是一种常见思路，<b>没有唯一答案</b>：当前这一秒的决策用到的，就该显眼；其余的让路。</p>
+
+  <!-- 9 对比度 -->
+  <div class="sec"><span class="n">9</span><h2><span class="tag how">怎么用</span>可读性：对比度与“不只靠颜色”</h2></div>
+  <p>再好的布局，字看不清也白搭。<span class="term" tabindex="0" data-def="文字色与背景色的相对亮度之比，WCAG 用它衡量可读性，数值越大越清楚。">对比度</span>是文字与背景的亮度之比。网页无障碍标准 WCAG 2.x 的 AA 级要求：普通文字至少 <b>4.5 : 1</b>，大号文字和界面图形至少 <b>3 : 1</b>。游戏常在复杂背景上叠字，更要小心。选两种颜色试试，再点“灰度视角”，看看颜色分不清时是什么样子：</p>
+  <div class="board">
+    文字色 <input type="color" id="c10_cf" value="#ffffff"> 背景色 <input type="color" id="c10_cb" value="#a0a0a0">
+    <button class="chip" data-p="#ffffff,#2b2b3a">白字深底</button>
+    <button class="chip" data-p="#9a9a9a,#a8a8a8">灰字灰底</button>
+    <button class="chip" data-p="#ffd400,#ffffff">黄字白底</button>
+    <div class="c10_sample" id="c10_smp"><span style="font-size:1.8rem">生命值 85 / 100</span><br><span style="font-size:.95rem">普通小字：按 E 键与商人交谈</span></div>
+    <div class="msg"><span id="c10_ratio">—</span>　<span id="c10_verdict"></span></div>
+    <button class="btn" id="c10_gray">切换灰度视角</button>
+    <div class="c10_cbox" id="c10_cbox">
+      <div><div class="mk"><span class="c10_dotr" style="background:#e5484d"></span><span class="c10_dotr" style="background:#3aa655"></span></div><h3>❌ 只靠颜色</h3><p class="small">红=敌，绿=友。变灰后两个圆几乎一样，分不出。</p></div>
+      <div><div class="mk"><span class="c10_tri"></span><span class="c10_dotr" style="background:#3aa655;text-align:center;line-height:28px;color:#fff;font-weight:700">✔</span></div><h3>✔ 颜色 + 形状</h3><p class="small">敌=三角，友=圆+对勾。即使没有颜色也能分清。</p></div>
+    </div>
+  </div>
+  <div class="sticky">试试看：点“灰字灰底”，让对比度低于 3；再把文字色和背景色调到至少 4.5 : 1，看提示变成“✔ 普通文字也达标”。最后点“灰度视角”，确认两种做法里只有一种在没有颜色时还分得清。</div>
+  <p>几个常见的情形：敌人血条不只用红色，还配一个“头顶的骷髅图标”；重要的声音提示（如脚步声）配一个视觉提示；地铁线路图除了颜色，还给每条线标数字。反过来，白字叠在明亮的天空背景上，截图里看起来“还行”，换到阳光下的手机屏就消失了。红绿色觉差异比较常见（常被引用的数字是男性中约 1/12，因人群而异）。灰度只是近似的模拟，但足以检验“去掉颜色后信息还在不在”。</p>
+
+  <div class="misc">
+    <h3>常见误区</h3>
+    <ul>
+      <li><b>“信息给得越全，玩家越满意”</b>：多出来的信息增加外在负荷，常常让重要信息被淹没。</li>
+      <li><b>“记忆容量就是 7±2 个数字”</b>：米勒谈的是<b>组块</b>；后来的估计（如考恩）更保守，约 4 个组块。</li>
+      <li><b>“默认值是中立的”</b>：不存在中立，设计者必须选一个，这个选择会影响结果。</li>
+      <li><b>“HUD 越少越高级”</b>：对新手和对老手的最佳密度不同；极简 HUD 也可能让新手找不到信息。</li>
+    </ul>
+  </div>
+  <div class="reflect">
+    <h3>反思与争议</h3>
+    <ul>
+      <li><b>认知负荷理论本身有争议</b>：三类负荷的划分很难在实验里清楚区分，“相关负荷”的地位在学界有过较大调整，理论仍在发展。</li>
+      <li><b>格式塔原则偏经验性</b>：它们描述的是大体趋势，不同文化、年龄、视力的玩家未必完全一致。</li>
+      <li><b>助推的效果有争议</b>：Mertens 等人 2022 年在《PNAS》上汇总的研究发现助推有一定效果，可 Maier 等人随后在同一期刊指出，校正发表偏倚后几乎看不到整体效应，不过个别助推仍可能有效。所以在你的游戏里，应该<b>用 A/B 测试自己验证</b>，而不是直接相信某个平均效应。</li>
+      <li><b>助推和操纵之间没有一条清晰的线</b>：有人认为温和的助推可以接受，也有人批评这是“家长式”干预。这涉及价值判断，请结合自己项目的玩家群体来权衡。</li>
+    </ul>
+  </div>
+
+  <div class="key">
+    <h3>本章要点</h3>
+    <ul>
+      <li>UI 按“是否在故事里、是否在空间里”分为<b>叙事内、空间、元、非叙事</b>四类，没有对错，只有清晰与沉浸之间的取舍。</li>
+      <li><b>HUD 为什么被发明</b>：飞行员不该低头找信息，于是把信息投到视线前方；游戏继承了这个办法，也继承了难题：能放的越来越多，脑容量没变。</li>
+      <li>给信息排<b>优先级</b>：当前决策用到的就显眼，其余让路或隐藏；同一元素在不同场景档位不同。</li>
+      <li><b>认知负荷</b>：工作记忆很小（保守估计约 4 个组块），要砍掉外在负荷；<b>格式塔</b>：接近、相似、封闭、连续让布局自带分组，把许多元素变成少数组块。</li>
+      <li>新手引导：<b>先做后说、渐进式披露、情境提示</b>；<b>默认效应</b>：默认值会改变大多数人的选择，要用在玩家的利益上；文字对比度普通情况至少 4.5:1，不要只靠颜色。</li>
+    </ul>
+  </div>
+  <div class="tldr">好界面是替玩家省脑力：少塞信息、用布局自带分组、把默认值设给玩家的利益。</div>
+
+  <div class="sec"><span class="n">10</span><h2><span class="tag think">练习</span>小测验</h2></div>
+  <div id="quiz"></div>
+
+  <div class="sec"><span class="n">11</span><h2><span class="tag how">你的设计</span>你的 HUD 与前三分钟</h2></div>
+  <div class="card o">
+    <p>列出你的游戏<b>玩家需要看到的信息</b>，给每条标 1（常驻）/ 2（弱化）/ 3（需要时出现），并按类别分组。再写出：你的游戏前 3 分钟，<b>每次只教玩家什么</b>？</p>
+    <textarea rows="5" data-save="ch10" placeholder="信息优先级：&#10;生命 1 ／ 小地图 2 ／ 成就 3……&#10;分组：资源（生命、体力）放左上，导航（地图、任务）放右上&#10;前三分钟教学顺序：先教移动，再教跳跃，再教……"></textarea>
+    <p class="small">✍️ 自动保存在你的浏览器里。</p>
+  </div>
+</main>
+<script src="js/illus.js"></script>
+<script src="js/illus-ch10.js"></script>
+<script src="js/common.js"></script>
+<script>
+const $ = id => document.getElementById(id);
+const rnd = n => Math.floor(Math.random() * n);
+/* ---------- 记忆广度（先猜后试） ---------- */
+(function () {
+  let seq = "", mode = 0, timer = null;
+  const best = [0, 0], tried = [0, 0];
+  function fmt(s) { return mode === 1 ? s.replace(/(\d{3})(?=\d)/g, "$1 ") : s; }
+  $("c10_g").oninput = () => ($("c10_gv").textContent = $("c10_g").value);
+  $("c10_n").oninput = () => ($("c10_nv").textContent = $("c10_n").value);
+  document.querySelectorAll("[data-wm]").forEach(b => (b.onclick = () => {
+    mode = +b.dataset.wm; document.querySelectorAll("[data-wm]").forEach(x => x.classList.toggle("on", x === b));
+  }));
+  function bars() {
+    const g = +$("c10_g").value;
+    const rows = [["你的预测", g, "#ffc078"], ["连写：你记对的最长", best[0], "#7ec8e3"], ["分组：你记对的最长", best[1], "#8fd47e"], ["米勒：约 7±2", 7, "#d8c8ff"], ["考恩：约 4 个组块", 4, "#d8c8ff"]];
+    $("c10_bars").innerHTML = rows.map(r => '<div class="r"><span class="l">' + r[0] + '</span><span class="tk"><i style="width:' + (r[1] / 12 * 100) + '%;background:' + r[2] + '"></i></span><b class="v">' + r[1] + "</b></div>").join("");
+  }
+  $("c10_g").addEventListener("input", bars);
+  $("c10_go").onclick = () => {
+    clearTimeout(timer);
+    const n = +$("c10_n").value; seq = "";
+    while (seq.length < n) seq += 1 + rnd(9);
+    $("c10_disp").textContent = fmt(seq);
+    $("c10_in").disabled = true; $("c10_ok").disabled = true; $("c10_go").disabled = true;
+    $("c10_t").textContent = "记！3 秒……";
+    timer = setTimeout(() => {
+      $("c10_disp").textContent = "？";
+      $("c10_in").disabled = false; $("c10_ok").disabled = false; $("c10_in").value = ""; $("c10_in").focus();
+      $("c10_t").textContent = "输入刚才的 " + n + " 位数字。";
+    }, 3000);
+  };
+  $("c10_ok").onclick = () => {
+    const ans = $("c10_in").value.replace(/\D/g, ""), n = seq.length;
+    let c = 0; for (let i = 0; i < n; i++) if (ans[i] === seq[i]) c++;
+    const full = ans === seq;
+    tried[mode]++;
+    if (full) best[mode] = Math.max(best[mode], n);
+    $("c10_disp").textContent = fmt(seq);
+    $("c10_t").textContent = (full ? "✔ 完全正确！" : "按位置记对 " + c + " / " + n + "。") + "（" + (mode ? "分组" : "连写") + "，" + n + " 位）";
+    $("c10_in").disabled = true; $("c10_ok").disabled = true; $("c10_go").disabled = false;
+    bars();
+    const g = +$("c10_g").value, b = Math.max(best[0], best[1]);
+    $("c10_cmp").textContent = b
+      ? "你预测 " + g + " 位，目前实测最长 " + b + " 位。" + (b > g ? "你比自己以为的强。" : b < g ? "比预期少——多数人高估自己。" : "预测很准。") + "米勒的 7±2 说的是“组块”不是“位”；单独的数字没法组块，所以记得住的位数常常比 7 少，而分组之后要记的“单位”变少了。HUD 上每个独立元素，对玩家来说就是一个“位”。"
+      : "还没有完全答对的记录，把 N 调小一点再试。";
+  };
+  $("c10_reset").onclick = () => { best[0] = best[1] = 0; tried[0] = tried[1] = 0; $("c10_t").textContent = "记录已清空。"; $("c10_cmp").textContent = ""; $("c10_disp").textContent = "准备好了就点“开始”，数字会出现 3 秒"; bars(); };
+  bars();
+})();
+
+/* ---------- 似动小演示 ---------- */
+$("c10_slow").onclick = () => { $("c10_phi").classList.remove("fast"); $("c10_phit").textContent = "慢：你看到两个灯轮流亮——两个独立的东西。"; };
+$("c10_fast").onclick = () => { $("c10_phi").classList.add("fast"); $("c10_phit").textContent = "快：多数人看到“一个点在左右跳”。其实画面里没有任何东西在动——是大脑把它整合成了一个整体（似动 / phi 现象）。"; };
+
+/* ---------- HUD 摆放台 ---------- */
+(function () {
+  const CAT = { res: ["资源", "#e5484d"], nav: ["导航", "#3b82f6"], act: ["行动", "#2f9e44"], misc: ["杂项", "#9a9a9a"] };
+  // ref: [战斗, 探索] 1常驻 2弱化 3隐藏
+  const EL = [
+    { id: "hp", nm: "生命值", t: "❤️ 生命 85/100", cat: "res", mess: [38, 14], good: [3, 4], ref: [1, 2], why: "战斗中攸关生死；探索时可弱化，受伤再突出。" },
+    { id: "ammo", nm: "弹药", t: "🔫 24 / 90", cat: "res", mess: [62, 66], good: [3, 16], ref: [1, 3], why: "战斗中随时要用；探索时不需要。" },
+    { id: "map", nm: "小地图", t: "🗺 小地图", cat: "nav", mess: [41, 36], good: [79, 4], ref: [2, 1], why: "战斗中偶尔瞄一眼；探索时是主要导航工具。" },
+    { id: "quest", nm: "任务目标", t: "📜 找到补给站", cat: "nav", mess: [8, 44], good: [73, 32], ref: [3, 1], why: "战斗中不会马上用到；探索时需要提醒方向。" },
+    { id: "skill", nm: "技能栏", t: "⚡ 技能 1 2 3", cat: "act", mess: [70, 10], good: [38, 86], ref: [1, 3], why: "战斗中要用，必须随手可得；探索时可以收起。" },
+    { id: "gold", nm: "金币", t: "💰 1,250", cat: "misc", mess: [20, 78], good: [3, 32], ref: [3, 2], why: "只在购买、拾取时才需要，其余时间会白占空间。" },
+    { id: "chat", nm: "聊天框", t: "💬 聊天……", cat: "misc", mess: [46, 52], good: [3, 76], ref: [3, 3], why: "战斗中读聊天会分心，需要时再展开。" },
+    { id: "achv", nm: "成就弹窗", t: "🏆 成就解锁！", cat: "misc", mess: [52, 24], good: [40, 4], ref: [3, 3], why: "战斗中弹出会挡视线，应延后到安全时刻。" }
+  ];
+  const stage = $("c10_stage"), rowsEl = $("c10_rows");
+  let scene = 0, drag = null;
+  const pos = {}, st = [{}, {}], nodes = {}, chips = {};
+  function reset() {
+    EL.forEach(e => { pos[e.id] = { x: e.mess[0], y: e.mess[1] }; st[0][e.id] = 1; st[1][e.id] = 1; });
+  }
+  reset();
+  EL.forEach(e => {
+    const n = document.createElement("div");
+    n.className = "c10_el" + (e.id === "map" ? " map" : "");
+    n.textContent = e.t; n.tabIndex = 0; n.dataset.id = e.id;
+    n.style.borderLeftColor = CAT[e.cat][1];
+    stage.appendChild(n); nodes[e.id] = n;
+    n.addEventListener("pointerdown", ev => {
+      n.setPointerCapture(ev.pointerId);
+      const r = stage.getBoundingClientRect();
+      drag = { id: e.id, sx: ev.clientX, sy: ev.clientY, ox: pos[e.id].x, oy: pos[e.id].y, W: r.width, H: r.height, moved: false };
+      ev.preventDefault();
+    });
+    n.addEventListener("pointermove", ev => {
+      if (!drag || drag.id !== e.id) return;
+      const dx = ev.clientX - drag.sx, dy = ev.clientY - drag.sy;
+      if (Math.hypot(dx, dy) > 5) drag.moved = true;
+      if (!drag.moved) return;
+      const mx = Math.max(0, 100 - n.offsetWidth / drag.W * 100), my = Math.max(0, 100 - n.offsetHeight / drag.H * 100);
+      pos[e.id].x = Math.min(mx, Math.max(0, drag.ox + dx / drag.W * 100));
+      pos[e.id].y = Math.min(my, Math.max(0, drag.oy + dy / drag.H * 100));
+      update();
+    });
+    const end = ev => {
+      if (drag && drag.id === e.id) {
+        if (!drag.moved) { st[scene][e.id] = st[scene][e.id] % 3 + 1; }
+        drag = null; update();
+      }
+    };
+    n.addEventListener("pointerup", end);
+    n.addEventListener("pointercancel", () => { drag = null; update(); });
+    n.addEventListener("keydown", ev => { if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); st[scene][e.id] = st[scene][e.id] % 3 + 1; update(); } });
+    // 右侧列表
+    const r = document.createElement("div");
+    r.className = "c10_row";
+    r.innerHTML = '<span class="nm"><span class="c10_cat" style="background:' + CAT[e.cat][1] + '"></span>' + e.nm + "</span>";
+    chips[e.id] = [];
+    ["常驻", "弱化", "隐藏"].forEach((lb, i) => {
+      const c = document.createElement("button");
+      c.className = "chip"; c.textContent = lb;
+      c.onclick = () => { st[scene][e.id] = i + 1; update(); };
+      r.appendChild(c); chips[e.id].push(c);
+    });
+    rowsEl.appendChild(r);
+  });
+
+  function rectOf(id) { const n = nodes[id]; return { x: n.offsetLeft, y: n.offsetTop, w: n.offsetWidth, h: n.offsetHeight }; }
+  function gap(a, b) {
+    const dx = Math.max(0, Math.max(a.x - (b.x + b.w), b.x - (a.x + a.w)));
+    const dy = Math.max(0, Math.max(a.y - (b.y + b.h), b.y - (a.y + a.h)));
+    return Math.hypot(dx, dy);
+  }
+  function overlap(a, b) {
+    const w = Math.min(a.x + a.w, b.x + b.w) - Math.max(a.x, b.x), h = Math.min(a.y + a.h, b.y + b.h) - Math.max(a.y, b.y);
+    return w > 0 && h > 0 ? w * h : 0;
+  }
+  function update() {
+    const W = stage.clientWidth, H = stage.clientHeight, S = st[scene];
+    stage.classList.toggle("explore", scene === 1);
+    EL.forEach(e => {
+      const n = nodes[e.id];
+      n.className = "c10_el" + (e.id === "map" ? " map" : "") + (S[e.id] === 2 ? " s2" : S[e.id] === 3 ? " s3" : "");
+      n.style.left = pos[e.id].x + "%"; n.style.top = pos[e.id].y + "%";
+      chips[e.id].forEach((c, i) => c.classList.toggle("on", S[e.id] === i + 1));
+    });
+    stage.querySelectorAll(".c10_grp").forEach(g => g.remove());
+    const vis = EL.filter(e => S[e.id] !== 3), w = e => (S[e.id] === 1 ? 1 : 0.35);
+    // 分组（并查集）
+    const par = {}; vis.forEach(e => (par[e.id] = e.id));
+    const find = x => (par[x] === x ? x : (par[x] = find(par[x])));
+    const R = {}; vis.forEach(e => (R[e.id] = rectOf(e.id)));
+    const thr = W * 0.045;
+    for (let i = 0; i < vis.length; i++) for (let j = i + 1; j < vis.length; j++)
+      if (gap(R[vis[i].id], R[vis[j].id]) < thr) par[find(vis[i].id)] = find(vis[j].id);
+    const groups = {}; vis.forEach(e => (groups[find(e.id)] = groups[find(e.id)] || []).push(e));
+    const G = Object.values(groups);
+    // 视觉负担
+    let load = 0;
+    G.forEach(g => { const ws = g.map(w).sort((a, b) => b - a); load += ws[0] + 0.25 * ws.slice(1).reduce((s, v) => s + v, 0); });
+    $("c10_load").textContent = load.toFixed(1) + " 组块";
+    const lb = $("c10_lbar"); lb.style.width = Math.min(100, load / 6 * 100) + "%";
+    lb.style.background = load > 4 ? "#e5484d" : load > 3 ? "var(--orange)" : "var(--green)";
+    // 中心遮挡
+    const cz = { x: W * 0.3, y: H * 0.25, w: W * 0.4, h: H * 0.5 };
+    let cov = 0; vis.forEach(e => (cov += overlap(R[e.id], cz) * (S[e.id] === 1 ? 1 : 0.4)));
+    cov = Math.min(1, cov / (cz.w * cz.h));
+    $("c10_cov").textContent = Math.round(cov * 100) + "%";
+    const cb = $("c10_cbar"); cb.style.width = cov * 100 + "%";
+    cb.style.background = cov > 0.15 ? "#e5484d" : cov > 0.06 ? "var(--orange)" : "var(--green)";
+    // 分组诊断
+    const names = g => g.map(e => e.nm).join("＋");
+    let lines = [], bad = 0, good = 0;
+    G.forEach(g => {
+      const cats = [...new Set(g.map(e => e.cat))];
+      let cls = "";
+      if (g.length >= 2) {
+        const ok = cats.length === 1;
+        ok ? good++ : bad++;
+        lines.push((ok ? "✔ " : "✘ ") + "<b>" + names(g) + "</b>：" + (ok ? "同类（" + CAT[cats[0]][0] + "）靠在一起，读成一组。" : "不同类（" + cats.map(c => CAT[c][0]).join("/") + "）挤在一起，会被误读成一组。"));
+        const bb = g.map(e => R[e.id]), x0 = Math.min(...bb.map(b => b.x)) - 5, y0 = Math.min(...bb.map(b => b.y)) - 5;
+        const x1 = Math.max(...bb.map(b => b.x + b.w)) + 5, y1 = Math.max(...bb.map(b => b.y + b.h)) + 5;
+        const d = document.createElement("div");
+        d.className = "c10_grp " + (ok ? "ok" : "bad");
+        d.style.cssText = "left:" + x0 + "px;top:" + y0 + "px;width:" + (x1 - x0) + "px;height:" + (y1 - y0) + "px";
+        stage.appendChild(d);
+      }
+    });
+    // 同类被拆散
+    Object.keys(CAT).forEach(c => {
+      const same = vis.filter(e => e.cat === c);
+      if (same.length >= 2 && new Set(same.map(e => find(e.id))).size > 1) { bad++; lines.push("✘ <b>" + CAT[c][0] + "类</b>（" + names(same) + "）被拆散在不同地方，玩家要到处找。"); }
+    });
+    // 互相遮挡
+    let ov = 0;
+    for (let i = 0; i < vis.length; i++) for (let j = i + 1; j < vis.length; j++) if (overlap(R[vis[i].id], R[vis[j].id]) > 0) ov++;
+    if (ov) { bad++; lines.push("✘ 有 " + ov + " 对元素互相遮挡。"); }
+    if (!lines.length) lines.push(vis.length ? "（还没有形成分组：靠近一点同类元素试试）" : "（HUD 全隐藏了）");
+    $("c10_diag").innerHTML = "<b>分组诊断</b>" + lines.map(l => "<div>" + l + "</div>").join("");
+    // 场景匹配
+    let diff = 0, hint = [];
+    EL.forEach(e => { const d = Math.abs(e.ref[scene] - S[e.id]); diff += d; if (d === 2) hint.push(e.nm + "（" + e.why + "）"); });
+    const match = 16 - diff;
+    $("c10_sum").innerHTML = "场景匹配 <b>" + match + " / 16</b>（该显眼的显眼、该让路的让路）；" + (hint.length ? "差得最远：" + hint.slice(0, 2).join("；") : "没有明显错位。") +
+      (load <= 3.5 && cov < 0.1 && bad === 0 && match >= 12 ? " 🎉 这套摆法在这个场景里清爽又好读！" : "");
+  }
+  function setScene(i) {
+    scene = i; $("c10_s0").classList.toggle("on", i === 0); $("c10_s1").classList.toggle("on", i === 1);
+    $("c10_scene").textContent = i === 0 ? "🧟　🧟" : "🌲　🏞　🌲";
+    update();
+  }
+  $("c10_s0").onclick = () => setScene(0);
+  $("c10_s1").onclick = () => setScene(1);
+  $("c10_reset2").onclick = () => { reset(); update(); };
+  $("c10_ref").onclick = () => {
+    stage.classList.add("glide");
+    EL.forEach(e => { pos[e.id] = { x: e.good[0], y: e.good[1] }; st[0][e.id] = e.ref[0]; st[1][e.id] = e.ref[1]; });
+    update();
+    setTimeout(() => { stage.classList.remove("glide"); update(); }, 700);
+  };
+  window.addEventListener("resize", update);
+  update();
+})();
+
+/* ---------- 对比度 ---------- */
+function lum(hex) {
+  const c = [1, 3, 5].map(i => parseInt(hex.substr(i, 2), 16) / 255).map(v => (v <= 0.04045 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4)));
+  return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2];
+}
+function contrast() {
+  const f = $("c10_cf").value, b = $("c10_cb").value;
+  const l1 = lum(f), l2 = lum(b), r = (Math.max(l1, l2) + 0.05) / (Math.min(l1, l2) + 0.05);
+  $("c10_smp").style.color = f; $("c10_smp").style.background = b;
+  $("c10_ratio").textContent = "对比度 " + r.toFixed(2) + " : 1";
+  $("c10_verdict").textContent = r >= 7 ? "✔ 优秀，几乎所有人都能读" : r >= 4.5 ? "✔ 普通文字也达标" : r >= 3 ? "⚠ 只适合大字号或图标，小字不够" : "✘ 很难阅读，必须改";
+}
+$("c10_cf").oninput = contrast; $("c10_cb").oninput = contrast;
+document.querySelectorAll("[data-p]").forEach(b => {
+  b.onclick = () => { const p = b.dataset.p.split(","); $("c10_cf").value = p[0]; $("c10_cb").value = p[1]; contrast(); };
+});
+contrast();
+$("c10_gray").onclick = () => { $("c10_cbox").classList.toggle("gray"); $("c10_smp").classList.toggle("c10_gray"); };
+/* ---------- 默认值微实验 ---------- */
+(function () {
+  function upd() {
+    const q = +$("c10_q").value / 100, l = +$("c10_l").value / 100;
+    const on = q + (1 - q) * l, off = q * (1 - l);
+    $("c10_qo").textContent = Math.round(q * 100) + "%"; $("c10_lo").textContent = Math.round(l * 100) + "%";
+    $("c10_don").style.width = on * 100 + "%"; $("c10_doff").style.width = off * 100 + "%";
+    $("c10_dont").textContent = "默认开启：最终约 " + Math.round(on * 100) + "% 开启";
+    $("c10_dofft").textContent = "默认关闭：最终约 " + Math.round(off * 100) + "% 开启";
+    $("c10_defm").textContent = "同样的玩家，只因为默认值不同，开启比例相差 " + Math.round((on - off) * 100) + " 个百分点。" + (l === 0 ? "惰性为 0，默认值不再起作用。" : "");
+  }
+  $("c10_q").oninput = upd; $("c10_l").oninput = upd; upd();
+})();
+
+GD.mountQuiz($("quiz"), [
+  { q: "受伤时屏幕边缘泛红、镜头溅血，它属于：", opts: ["叙事内", "空间 UI", "元（Meta）UI", "非叙事 HUD 的数字"], a: 2, why: "它表现的是故事里的事件，但画在屏幕上而不是场景里，所以是元 UI。" },
+  { q: "战斗中，玩家突然被“成就解锁”的大弹窗挡住视线。最好的修正是：", opts: ["把弹窗做得更大更闪", "延后到战斗结束的安全时刻再显示", "永远不显示成就", "弹窗加声音"], a: 1, why: "信息优先级要服从当前决策，非紧急信息应在不打扰时出现。" },
+  { q: "【为什么】战斗界面同时堆了 12 个常驻元素，玩家反而更容易漏看血量。用认知负荷理论解释，最主要的原因是：", opts: ["血条的颜色不对", "杂乱的呈现增加了外在负荷，挤占了玩家有限的工作记忆和注意力", "玩家不喜欢数字", "屏幕分辨率不够"], a: 1, why: "外在负荷由糟糕的呈现方式造成；总负荷超过工作记忆容量（保守估计约 4 个组块），关键信息就会被漏掉。" },
+  { q: "【为什么】把血、蓝、体力三个条紧挨着，技能图标另放一排，玩家不读字就知道哪个是资源哪个是技能。这主要利用了：", opts: ["默认效应", "格式塔的接近原则：距离近的被看成一组，把许多元素变成少数组块", "对比度标准", "渐进式披露"], a: 1, why: "分组让玩家少读几个“单位”，等于降低了外在负荷。" },
+  { q: "【为什么被发明】平视显示（HUD）最初被发明出来，是为了解决什么问题？", opts: ["让仪表更好看", "飞行员低头看仪表时视线离开前方，把关键信息投到视线前方的玻璃上就能抬头同时看", "减少飞机重量", "取代雷达"], a: 1, why: "关键洞察是“让信息来找眼睛”。游戏借用这个办法，也继承了难题：能叠加的信息越来越多，玩家的工作记忆却没变大。" },
+  { q: "设置里“自动显示新手提示”默认关闭，上线后发现看到提示的新玩家很少。最合理的解释和改进是：", opts: ["玩家不需要提示，保持原样", "默认效应：多数玩家不会主动去改默认值；若提示对新玩家有益，应改为默认开启且易于关闭", "玩家都没看设置菜单，所以应删掉设置", "应该把默认关闭的开关藏得更深"], a: 1, why: "默认值影响大多数人的最终选择。默认值应服务玩家自己的利益，并保证透明、易于更改，这是“助推”与“操纵”的分界。" }
+]);
+</script>
+</body>
+</html>

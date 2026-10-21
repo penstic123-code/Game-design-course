@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>插图图库（检查用）</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+ body{padding:16px 20px 60px;max-width:1500px;margin:0 auto}
+ h1{font-size:2rem} h2{margin:34px 0 10px;border-bottom:3px solid var(--ink);padding-bottom:4px}
+ .bar{position:sticky;top:0;background:var(--paper);padding:8px 0;z-index:5;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+ .bar input{font-size:16px;padding:6px 10px;border:2px solid var(--ink);border-radius:10px;min-width:220px}
+ .bar a{font-size:14px;margin-right:6px}
+ .g{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
+ .c{background:#fff;border:2px solid var(--line);border-radius:12px;padding:6px 8px}
+ .c svg{width:100%;height:auto;display:block}
+ .c .n{font:13px/1.4 Consolas,monospace;color:#1d4ed8;cursor:pointer;word-break:break-all}
+ .c .a{font-size:13px;line-height:1.5;color:var(--soft)}
+ .c.hide{display:none}
+</style></head><body>
+<h1>插图图库（共 <span id="cnt">0</span> 张）</h1>
+<p class="small">点图名可复制。有问题把"图名 + 哪里不对"发给我。搜索框可按图名或说明过滤。</p>
+<div class="bar"><input id="q" placeholder="搜索图名 / 说明…"><span id="nav"></span></div>
+<div id="root"></div>
+<script src="../js/illus.js"></script>
+<script>
+ const GROUPS=[]; let seen=new Set();
+ function mark(title){const keys=Object.keys(window.ILLUS).filter(k=>!seen.has(k));keys.forEach(k=>seen.add(k));GROUPS.push({title,keys});}
+ mark("通用插图库（第 1 章等）");
+</script>
+<script src="../js/illus-ch02.js"></script><script>mark("第 2 章（illus-ch02.js）");</script>
+<script src="../js/illus-ch03.js"></script><script>mark("第 3 章（illus-ch03.js）");</script>
+<script src="../js/illus-ch04.js"></script><script>mark("第 4 章（illus-ch04.js）");</script>
+<script src="../js/illus-ch05.js"></script><script>mark("第 5 章（illus-ch05.js）");</script>
+<script src="../js/illus-ch06.js"></script><script>mark("第 6 章（illus-ch06.js）");</script>
+<script src="../js/illus-ch07.js"></script><script>mark("第 7 章（illus-ch07.js）");</script>
+<script src="../js/illus-ch08.js"></script><script>mark("第 8 章（illus-ch08.js）");</script>
+<script src="../js/illus-ch09.js"></script><script>mark("第 9 章（illus-ch09.js）");</script>
+<script src="../js/illus-ch10.js"></script><script>mark("第 10 章（illus-ch10.js）");</script>
+<script src="../js/illus-ch11.js"></script><script>mark("第 11 章（illus-ch11.js）");</script>
+<script src="../js/illus-ch12.js"></script><script>mark("第 12 章（illus-ch12.js）");</script>
+<script src="../js/illus-ch13.js"></script><script>mark("第 13 章（illus-ch13.js）");</script>
+<script src="../js/illus-ch14.js"></script><script>mark("第 14 章（illus-ch14.js）");</script>
+<script src="../js/illus-ch15.js"></script><script>mark("第 15 章（illus-ch15.js）");</script>
+<script src="../js/illus-ch16.js"></script><script>mark("第 16 章（illus-ch16.js）");</script>
+<script src="../js/illus-ch17.js"></script><script>mark("第 17 章（illus-ch17.js）");</script>
+<script src="../js/illus-ch18.js"></script><script>mark("第 18 章（illus-ch18.js）");</script>
+<script src="../js/illus-ch19.js"></script><script>mark("第 19 章（illus-ch19.js）");</script>
+<script src="../js/illus-ch20.js"></script><script>mark("第 20 章（illus-ch20.js）");</script>
+<script src="../js/illus-ch21.js"></script><script>mark("第 21 章（illus-ch21.js）");</script>
+<script src="../js/illus-ch22.js"></script><script>mark("第 22 章（illus-ch22.js）");</script>
+<script src="../js/illus-ch23.js"></script><script>mark("第 23 章（illus-ch23.js）");</script>
+<script src="../js/illus-ch24.js"></script><script>mark("第 24 章（illus-ch24.js）");</script>
+<script src="../js/illus-ch25.js"></script><script>mark("第 25 章（illus-ch25.js）");</script>
+<script src="../js/illus-ch26.js"></script><script>mark("第 26 章（illus-ch26.js）");</script>
+<script src="../js/illus-ch27.js"></script><script>mark("第 27 章（illus-ch27.js）");</script>
+<script src="../js/illus-ch28.js"></script><script>mark("第 28 章（illus-ch28.js）");</script>
+<script src="../js/illus-ch29.js"></script><script>mark("第 29 章（illus-ch29.js）");</script>
+<script>
+ const root=document.getElementById("root"),nav=document.getElementById("nav");let total=0;
+ GROUPS.forEach((g,gi)=>{ if(!g.keys.length) return;
+   const h=document.createElement("h2");h.id="g"+gi;h.textContent=g.title+" · "+g.keys.length+" 张";root.appendChild(h);
+   const a=document.createElement("a");a.href="#g"+gi;a.textContent=g.title.replace(/（.*/,"").replace("通用插图库","通用");nav.appendChild(a);
+   const grid=document.createElement("div");grid.className="g";
+   g.keys.forEach(k=>{total++;const it=window.ILLUS[k];const d=document.createElement("div");d.className="c";d.dataset.s=(k+" "+it.alt).toLowerCase();
+     d.innerHTML=window.illusSvg(k)+'<div class="n" title="点击复制">'+k+'</div><div class="a">'+it.alt+'</div>';
+     d.querySelector(".n").onclick=e=>{try{navigator.clipboard.writeText(k)}catch(_){}};grid.appendChild(d);});
+   root.appendChild(grid);});
+ document.getElementById("cnt").textContent=total;
+ document.getElementById("q").oninput=e=>{const v=e.target.value.trim().toLowerCase();document.querySelectorAll(".c").forEach(c=>c.classList.toggle("hide",!!v&&!c.dataset.s.includes(v)));};
+</script></body></html>

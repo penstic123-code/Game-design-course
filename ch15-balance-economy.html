@@ -1,0 +1,768 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>第15章 平衡与经济</title>
+<link rel="stylesheet" href="css/style.css">
+<style>
+  .hb{display:flex;align-items:center;gap:8px;margin:4px 0}
+  .hb .nm{width:90px;flex:none}
+  .hb .bar{flex:1;height:26px;border:2.5px solid var(--ink);border-radius:14px 8px 14px 8px;background:#fff;overflow:hidden;position:relative}
+  .hb .bar i{display:block;height:100%;transition:width .3s}
+  .hb .bar::after{content:"";position:absolute;left:33.3%;top:0;bottom:0;border-left:3px dashed var(--ink)}
+  .hb .pc{width:60px;text-align:right;font-family:var(--hand);font-size:1.3rem}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media(max-width:700px){.two{grid-template-columns:1fr}}
+  .row2{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+  .chk{display:inline-flex;align-items:center;gap:6px;margin:6px 12px 6px 0;cursor:pointer}
+  .lamp{display:inline-block;width:20px;height:20px;border-radius:50%;border:3px solid var(--ink);vertical-align:middle;margin-right:6px;background:#ccc}
+  .lamp.ok{background:#3aa655}.lamp.hot{background:#e5484d}.lamp.dry{background:#f0b429}
+  .valve{cursor:grab;touch-action:none}
+  .valve:active{cursor:grabbing}
+  .c15fig{background:#fff;border:3px solid var(--ink);border-radius:14px 30px 14px 26px;padding:10px 12px;margin:14px 0}
+  .c15fig svg{display:block}
+  .guessrow{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+  .src a{color:inherit}
+  .c15done{background:#eaf9e4 !important}
+  .c15lab{display:flex;gap:10px;align-items:flex-end;height:90px;margin:8px 0}
+  .c15lab div{flex:1;border:2.5px solid var(--ink);border-radius:8px 8px 0 0;display:flex;align-items:flex-start;justify-content:center;padding-top:4px;font-family:var(--hand);font-size:1.1rem;transition:height .25s}
+</style>
+</head>
+<body data-ch="15">
+<main class="wrap">
+  <div class="hero">
+    <div class="txt">
+      <span class="badge">第 15 章</span>
+      <h1>平衡与经济</h1>
+      <p class="sub">做平衡，就是不停地拧旋钮；而每个旋钮背后都连着一根水管。</p>
+    </div>
+    <svg viewBox="0 0 190 150" class="rough" aria-hidden="true">
+      <path d="M95 30 V125 M40 125 H150" stroke="#2b2b3a" stroke-width="6" stroke-linecap="round"/>
+      <path d="M30 55 L160 45" stroke="#2b2b3a" stroke-width="5" stroke-linecap="round"/>
+      <path d="M30 55 l-14 38 h28z M160 45 l-14 38 h28z" fill="#ffe58a" stroke="#2b2b3a" stroke-width="4"/>
+    </svg>
+  </div>
+
+  <div class="goals">
+    <h3>学习目标</h3>
+    <ul>
+      <li>读完你能分清两种平衡思路（相克、水龙头—水桶—水槽），并说出每个游戏经济为什么非得设计“水槽”。</li>
+      <li>读完你能解释三个“怪现象”：同样的奖励为什么越拿越没感觉，数值为什么要按百分比涨，平均值为什么会骗人。</li>
+      <li>读完你能用经济水管图和兵种调平表自己调一遍数值，并说出哪里调坏了、为什么。</li>
+    </ul>
+    <span class="time">约 50 分钟</span>
+  </div>
+
+  <!-- ===================== 1 是什么：相克 ===================== -->
+  <div class="sec"><span class="n">1</span><h2><span class="tag what">是什么</span>平衡不是“一样强”</h2></div>
+  <div class="withimg">
+    <span data-illus="c15_scale"></span>
+    <div>
+      <p>假设你做了一款对战游戏，三个角色的数值有高有低。上线第一周，论坛里吵翻了：“A 太强了，削它！”于是你把三个角色的数值全改成一模一样。吵架确实停了，可几天后，几乎没人再认真选角色了。</p>
+      <p>原因不难想：选谁都一样，选择就没有意义了。平衡的意思不是“一样强”，而是<b>每个选择都有自己的用处，没有哪个永远最好</b>。</p>
+      <p>最常见的办法有两种。一种让选项互相克制，一种管住资源的进出。先看第一种。</p>
+    </div>
+  </div>
+  <p>它要解决的是一个很顽固的麻烦：只要有一个选项的数值稍微高一点，聪明的玩家就会全去选它。你把它削一点，下一个“最强”又冒出来，永远追不完。相克换了个思路：<b>不比谁大，只比对谁</b>。<span class="term" tabindex="0" data-def="A 克 B、B 克 C、C 克 A，不存在绝对最强的选项；这种关系不能‘传递’，所以叫非传递">非传递</span>的关系让“最强”这个位置根本不存在，玩家只能看对手出什么，再决定自己出什么。</p>
+  <div class="eg" data-ic="✊" data-t="剪刀石头布"><span data-illus="c15_rps"></span><div class="egt"><b>剪刀石头布</b>（日常）：谁也不是最强，所以每一局都要猜对方、骗对方。画出来是一个首尾相接的圈，圈里没有“最高点”。</div></div>
+  <div class="eg" data-ic="🐴" data-t="兵种三角"><span data-illus="c15_triangle"></span><div class="egt"><b>兵种三角</b>（游戏）：骑兵克弓手，弓手克长枪兵，长枪兵克骑兵。对手出什么兵，你就换什么兵，战前侦察才有意义。</div></div>
+  <div class="eg" data-ic="🔥" data-t="属性相克"><span data-illus="c15_elements"></span><div class="egt"><b>火、水、草的属性相克</b>（游戏）：水克火，草克水，火克草。队伍搭配成了一道题，而不是把最高的数值堆在一起。</div></div>
+  <div class="eg bad" data-ic="⚠️" data-t="平衡失败"><span data-illus="c15_clones"></span><div class="egt"><b>两种失败的“平衡”</b>：左边全员数值一样，看似公平，选择却没有意义；右边有一个角色全面最强，所有人排队选它。图里两边都不是平衡，一个缺差异，一个缺克制。</div></div>
+
+  <!-- ===================== 2 是什么：水管 ===================== -->
+  <div class="sec"><span class="n">2</span><h2><span class="tag what">是什么</span>水龙头、水桶、水槽：钱从哪来，到哪去</h2></div>
+  <p>第二种平衡管的是“东西的进出”。想想你自己的钱包：工资进来，房租和饭钱出去，剩下的躺在账户里。游戏里的金币、体力、材料也是这样。有人把它画成水管，进来的叫<span class="term" tabindex="0" data-def="经济系统里让货币或资源进入游戏的来源，如任务奖励、掉落">水龙头</span>，出去的叫<span class="term" tabindex="0" data-def="经济系统里让货币或资源离开游戏的去处，如购买、修理、税收">水槽</span>，中间蓄着的叫<span class="term" tabindex="0" data-def="玩家手里的货币或资源总量，是水龙头流入、水槽流出之后剩下的存量">水桶</span>。</p>
+  <div class="card">
+    <svg viewBox="0 0 700 240" width="100%" role="img" aria-label="水龙头流进水桶，再从水槽流出；进多于出水位上涨，出多于进水位下降">
+      <g class="rough" stroke="#2b2b3a" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M30 86 H268" stroke-width="14"/>
+        <path d="M432 156 H670" stroke-width="14"/>
+        <path d="M268 60 V190 H432 V60"/>
+      </g>
+      <rect x="272" y="124" width="156" height="62" fill="#7cc4f0"/>
+      <g font-size="17" fill="#2b2b3a" text-anchor="middle">
+        <text x="150" y="60">水龙头：任务奖励、掉落</text>
+        <text x="350" y="162" font-size="18" font-weight="700">水桶：存量</text>
+        <text x="552" y="130">水槽：修理、手续费、消耗</text>
+        <text x="350" y="222">进多于出，水位涨；出多于进，水位跌</text>
+      </g>
+    </svg>
+  </div>
+  <p>水桶的水位就是流入减流出一点点累积出来的。水龙头比水槽粗，水位一路涨；水槽比水龙头粗，水位见底。想让水位待在一个舒服的高度，两头必须大致对得上。</p>
+  <div class="eg" data-ic="💼" data-t="工资与房租"><span data-illus="c15_salary"></span><div class="egt"><b>工资与房租</b>（日常）：工资是水龙头，房租和吃饭是水槽，存款是水桶。只涨工资不涨物价，存款就越来越多；反过来则月月见底。</div></div>
+  <div class="eg" data-ic="💰" data-t="角色扮演的金币"><span data-illus="c15_gold"></span><div class="egt"><b>角色扮演游戏里的金币</b>（游戏）：打怪和任务是水龙头，修装备、买药水、交税是水槽。水槽设计得好，金币在整个游戏里都有用处。</div></div>
+  <div class="eg" data-ic="⚡" data-t="体力条"><span data-illus="c15_stamina"></span><div class="egt"><b>耐力条</b>（游戏）：自然恢复是水龙头，冲刺和攻击是水槽。恢复太快，战斗没有紧张感；恢复太慢，玩家总是“空条”。</div></div>
+  <div class="eg bad" data-ic="🌊" data-t="只开水龙头"><span data-illus="c15_flood"></span><div class="egt"><b>只开水龙头，不管水槽</b>：奖励给得很大方，却没人想过钱花到哪儿去。玩家的钱越攒越多，药水标到五位数也没人在乎，所有价格都失去意义。</div></div>
+
+  <!-- ===================== 3 发明故事 ===================== -->
+  <div class="sec"><span class="n">3</span><h2><span class="tag origin">发明故事</span>水槽为什么非有不可？</h2></div>
+  <div class="story">
+    <h3>让玩家有得赚，然后呢？</h3>
+    <p><b>问题。</b>早期做网络游戏的人最先想到的是“让玩家有得赚”：打怪掉金币，做任务给金币，听上去很慷慨。可是金币一旦能买卖东西，它就不再只是分数，而是货币，会遵守货币的规矩。</p>
+  </div>
+  <div class="timeline">
+    <div class="ev hasimg"><span data-illus="c15_d2"></span><div><b class="yr">2000 年</b>　《暗黑破坏神 II》发行。玩家社区里流传的说法是：金币很快不值钱，大家改用稀有物品（比如一枚叫 Stone of Jordan 的戒指）当通货来交易；后来复制漏洞又让这种“货币”泛滥，价格崩塌，补丁里随之加进了需要消耗这类物品的玩法，等于新开了一个水槽。</div></div>
+    <div class="ev hasimg"><span data-illus="c15_castronova"></span><div><b class="yr">2001 年</b>　经济学家爱德华·卡斯特罗诺瓦（Edward Castronova）发表工作论文，把《无尽的任务》（EverQuest）里的世界 Norrath 当作一个真实经济体来估算：他得出的人均产出介于俄罗斯和保加利亚之间。估算方法有争议，但它让人们认真对待“虚拟经济是真经济”。</div></div>
+    <div class="ev hasimg"><span data-illus="c15_sinks"></span><div><b class="yr">此后</b>　线上游戏里出现了固定的水槽：修理费、拍卖行手续费、强化与洗练的消耗、限时消耗品。设计者不再只盯着“给多少”，而是同时盯着水龙头、水槽和存量三样东西。</div></div>
+  </div>
+  <p><b>先预测，再看结果。</b>设想一个最简单的规则：钱能生钱，每天存量涨 2%；同时每天固定花掉 50。算一算，存量刚好是 2500 的时候，涨的 50 恰好等于花的 50，水位纹丝不动，这就是临界点。现在两位玩家，一个起点 2400，一个 2600，只差 8%。200 天后会怎样？</p>
+  <div class="board">
+    <div id="c15bchips"></div>
+    <div id="c15bres" style="display:none">
+      <svg viewBox="0 0 700 250" width="100%" id="c15bsvg" role="img" aria-label="两位玩家起点只差一点，最终一个枯竭一个暴涨"></svg>
+      <div class="msg" id="c15bmsg"></div>
+    </div>
+  </div>
+  <div class="story">
+    <h3>关键洞察：水槽得跟着水位走</h3>
+    <p>只要水龙头和存量挂钩，经济里就会出现一条刀锋似的临界线：略高于它越滚越大，略低于它越来越少。固定大小的水槽拦不住这种增长，因为水槽不会因为水位变高就变大。要让经济稳定，水槽必须<b>跟存量挂钩</b>：越有钱，回收越多。游戏里的拍卖行抽成、按资产比例收的税、越高级越贵的修理费，都是这个思路。</p>
+  </div>
+  <div class="src">出处：Castronova, “Virtual Worlds: A First-Hand Account of Market and Society on the Cyberian Frontier”（2001 年工作论文，SSRN）；《暗黑破坏神 II》的情况来自玩家社区与游戏维基的转述，不是官方经济报告。</div>
+
+  <!-- ===================== 4 为什么成立：反馈循环、损失厌恶 ===================== -->
+  <div class="sec"><span class="n">4</span><h2><span class="tag why">为什么成立</span>一点小差别，为什么会滚成大差别？</h2></div>
+  <div class="withimg rev">
+    <span data-illus="c15_loops"></span>
+    <div>
+      <p>刚才两位玩家的故事，背后是系统思考里最基本的一对概念。山坡上滚下来的雪球，越大越容易粘雪，于是更大，这叫<b>强化循环</b>：结果反过来推动原因。“钱越多，产出越多”就是一个强化循环。</p>
+      <p>房间里的温控器正好相反：温度一高，空调就开始降温，温度一低又停下，这叫<b>平衡循环</b>：结果反过来压住原因。“越有钱，收的税越多”是平衡循环，它把水位拉回来。</p>
+      <p>所以水管里的稳定，说穿了就是在强化循环旁边，放一个够力气的平衡循环。</p>
+    </div>
+  </div>
+  <div class="why-box">
+    <h3>存量、流量与反馈循环</h3>
+    <p>把一个系统拆成“存下来的东西（存量）”和“进出的速度（流量）”，再看哪些流量会被存量反过来影响，这是系统动力学的基本功。强化循环会让微小的差别指数式放大，平衡循环会把系统拉向某个目标值。上面的临界点就是两种力量刚好抵消的位置：存量 = 固定支出 ÷ 增长率。</p>
+    <div class="src">出处：Jay Forrester，《Industrial Dynamics》（MIT Press，1961）；Donella Meadows，《Thinking in Systems》（Chelsea Green，2008）。游戏里的水管是它们的一个教学化应用。</div>
+  </div>
+
+  <div class="withimg">
+    <span data-illus="c15_taxed"></span>
+    <div>
+      <p>水槽设计好了，还有一个问题：玩家恨它。同样是少 100 金币，系统直接扣走的“修理费”，比“这次任务少给了 100”要难受得多。你有没有发现，哪怕金币多到花不完，被强制扣钱的那一下还是会皱眉？</p>
+      <p>心理学家给这个现象起了名字：<span class="term" tabindex="0" data-def="同样大小的损失，带来的痛苦比同样大小的收益带来的快乐更强烈">损失厌恶</span>。</p>
+    </div>
+  </div>
+  <div class="why-box">
+    <h3>损失厌恶</h3>
+    <p>卡尼曼（Daniel Kahneman）和特沃斯基（Amos Tversky）在 1979 年的前景理论里提出：人对损失的敏感度高于对收益的敏感度。1992 年，他们用 25 名研究生的选择数据估计出，损失的分量中位数约是同等收益的 2.25 倍。设计上的启发是：同一个水槽，包装成“你花钱买了东西”比包装成“被扣掉了”舒服得多，所以商店、强化、抽成比“罚款”好用。</p>
+    <p>它不是没有争议。2018 年，加尔（David Gal）和拉克（Derek Rucker）撰文指出，现有证据并不支持“损失一般比收益更重”，很多被归于损失厌恶的现象，也可以用惰性等别的机制解释。比较稳妥的说法是：在“得到某物后又被拿走”这类情境里，疼痛感确实明显；2.25 这个数字则别当成常数。</p>
+    <div class="src">出处：Kahneman &amp; Tversky, “Prospect Theory: An Analysis of Decision under Risk”, <i>Econometrica</i> 47(2), 1979；Tversky &amp; Kahneman, “Advances in Prospect Theory”, <i>Journal of Risk and Uncertainty</i> 5(4), 1992；Gal &amp; Rucker, “The Loss of Loss Aversion”, <i>Journal of Consumer Psychology</i> 28(3), 2018。</div>
+  </div>
+  <div class="board">
+    <p><b>先自己测一下。</b>抛一枚公平的硬币：反面，你输 100 金币。正面，你至少要赢多少，才愿意玩？</p>
+    <label class="ctl">正面我至少要赢 <output id="c15la-v">100</output> 金币</label>
+    <input type="range" id="c15la" min="50" max="400" step="10" value="100">
+    <div class="c15lab"><div id="c15la-w" style="background:#b6e8a8;height:30px">赢</div><div id="c15la-l" style="background:#ffb3c6;height:30px">输 100</div></div>
+    <div class="msg" id="c15la-msg"></div>
+  </div>
+  <p class="small">示意：这只是一次自测，不是实验结论。</p>
+
+  <!-- ===================== 5 为什么成立：享乐适应 ===================== -->
+  <div class="sec"><span class="n">5</span><h2><span class="tag why">为什么成立</span>同样的奖励，为什么越拿越没感觉？</h2></div>
+  <div class="withimg">
+    <span data-illus="c15_treadmill"></span>
+    <div>
+      <p>第一次通关拿到 100 金币，你会欢呼；第 30 次拿到同样的 100 金币，几乎没反应。奖励一个数字都没变，变的是你的期待。</p>
+      <p>这引出一个很实际的麻烦：设计者想让玩家高兴，最顺手的办法是把奖励加大。可玩家的“基线”也跟着抬高，下一次又不够爽，于是继续加码，直到数值失控。</p>
+    </div>
+  </div>
+  <div class="why-box">
+    <h3>享乐适应</h3>
+    <p>人对反复出现的刺激会逐渐适应，把它当作新的“基线”，之后只有<b>超出基线的部分</b>才被感受为愉悦。这叫<b><span class="term" tabindex="0" data-def="反复获得同一种刺激后，感受强度逐渐下降，把它当作新的常态">享乐适应</span></b>，也常被叫作“享乐跑步机”：你跑得再快，快乐的位置却老在原地。</p>
+    <p>下面的图是一个<b>示意模型</b>：期待基线 A 每次向奖励 R 靠近 30%，体验 = R − A（不低于 0），第一次的体验定为 100%。每种奖励各有一条基线，隔一段时间不碰，基线按每个时间单位 10% 回落。</p>
+    <div class="c15fig"><svg viewBox="0 0 700 270" width="100%" id="c15hsvg" role="img" aria-label="四条曲线：不做设计时体验迅速衰减；拉大间隔或增加种类衰减变慢；自动加码保持体验但奖励要成倍增长"></svg></div>
+    <p class="small"><b style="color:#555">━ 灰：不做设计</b>　<b style="color:#1d5fc9">━ 蓝：间隔拉大到 5</b>　<b style="color:#1c7a34">━ 绿：轮流 3 种奖励</b>　<b style="color:#c4262c">┅ 红虚线：每次加码</b></p><p class="small" id="c15hcap"></p>
+    <div class="src">出处：布里克曼与坎贝尔（Brickman &amp; Campbell, 1971）提出“享乐跑步机”；布里克曼、科茨与扬诺夫-布尔曼（1978）比较彩票中奖者、事故致残者与对照组，常被引用，但样本小、没有事前基线，作者自己也称是初步研究；后续研究发现适应程度因事件而异，并不总是完全（如 Lucas, 2007 对长期残疾的追踪）。图中模型是教学简化。</div>
+  </div>
+  <p>图里三条出路都比“加码”便宜：把奖励的间隔拉开，让基线有时间回落；把奖励的种类错开，让每条基线都有休息的机会；再给奖励一个新意义，比如一个只此一件的称号。</p>
+  <div class="eg" data-ic="🍜" data-t="爱吃的菜"><span data-illus="c15_meal"></span><div class="egt"><b>爱吃的菜</b>（日常）：第一天觉得惊艳，连吃一周就腻了；隔一个月再吃，又香了。间隔让基线回落。</div></div>
+  <div class="eg" data-ic="📅" data-t="每日登录"><span data-illus="c15_daily"></span><div class="egt"><b>每日登录奖励</b>（游戏）：同一份 100 金币，第 1 天是惊喜，第 30 天变成“点一下的任务”。</div></div>
+  <div class="eg" data-ic="🟣" data-t="紫装"><span data-illus="c15_purple"></span><div class="egt"><b>开箱与新装备</b>（游戏）：新手第一件紫装让人欢呼；到后期同样品质的装备，只被当作分解材料。</div></div>
+  <div class="eg bad" data-ic="📈" data-t="一味加码"><span data-illus="c15_more"></span><div class="egt"><b>“不够爽就加大数值”</b>：奖励一次翻一倍，金币柱子越来越高，玩家的表情却没变。基线每次都跟着涨，通胀就是这样来的。</div></div>
+
+  <!-- ===================== 6 为什么成立（延伸）：百分比与指数 ===================== -->
+  <div class="sec"><span class="n">6</span><h2><span class="tag why">为什么成立</span>延伸：数值为什么要按百分比涨，又为什么会爆炸</h2></div>
+  <div class="withimg rev">
+    <span data-illus="c15_candle"></span>
+    <div>
+      <p>100 点伤害的剑换成 101 点，几乎没感觉；10 点的剑换成 11 点，会觉得“明显强了”。同样加 1，感觉相差很大。关掉灯的房间里点一支蜡烛，立刻亮了；大白天点十支，你都看不出区别。</p>
+      <p>人察觉“变了多少”，靠的是比例，不是差值。所以许多游戏把升级写成“每级 +10%”，而不是“每级 +5 点”。</p>
+    </div>
+  </div>
+  <div class="why-box">
+    <h3>韦伯—费希纳定律</h3>
+    <p>人能察觉到的最小差别，大致和原来的刺激量成比例（韦伯）；于是主观感受大致和刺激量的对数成正比（费希纳）：感受 ≈ k·ln(刺激量)。玩家感受到“强了多少”，看的是相对变化。</p>
+    <div class="c15fig"><svg viewBox="0 0 700 270" width="100%" id="c15wsvg" role="img" aria-label="线性升级与指数升级：每级的相对提升百分比"></svg></div>
+    <p class="small">图：起点 10，30 级，两条路线终点相同（都是 155）。蓝：每级固定 +5，红：每级固定 +r%。纵轴是“每一级相对上一级提升了多少 %”。线性升级的相对提升越来越小，玩家感受就越来越平。</p>
+    <p class="small">这是有影响但并非无争议的经验规律：斯蒂文斯（1957）认为幂函数更贴合很多实验；“韦伯分数”也随感官与情境而不同。</p>
+    <div class="src">出处：恩斯特·韦伯 19 世纪 30–40 年代关于重量辨别的研究；古斯塔夫·费希纳《心理物理学原理》（<i>Elemente der Psychophysik</i>，1860）；S. S. Stevens（1957）。</div>
+  </div>
+  <div class="withimg">
+    <span data-illus="c15_lily"></span>
+    <div>
+      <p>可是按比例涨，就等于指数增长。老谜题大家都听过：池塘里的睡莲每天面积翻一倍，第 30 天铺满整个池塘，那么什么时候铺满一半？答案是第 29 天。前 28 天里你几乎看不出池塘有变化，最后两天却天翻地覆。</p>
+      <p>游戏里的“经验加成按百分比叠加”“金币产出和已有建筑数成正比”都是这样的结构。一旦水龙头和存量挂钩，就会出现上一节里的临界线。</p>
+    </div>
+  </div>
+  <div class="why-box">
+    <h3>指数增长与复利</h3>
+    <p>线性增长每步加固定值；<b><span class="term" tabindex="0" data-def="每一步按当前值的固定比例增长，数量越大增得越快">指数增长</span></b>每步乘固定倍数，也就是“<b><span class="term" tabindex="0" data-def="利息再生利息：增长部分也参与下一轮增长，所以按比例累积">复利</span></b>”。增长率 r 时，翻倍所需步数约 ln2 / ln(1+r)，口诀“72 法则”：约 72 / (r%) 步。年利率 7% 的存款，约 10 年翻一番。</p>
+    <div class="c15fig"><svg viewBox="0 0 700 270" width="100%" id="c15esvg" role="img" aria-label="线性与指数增长曲线，指数在后期远远超过线性"></svg></div>
+    <p class="small" id="c15ecap"></p>
+    <p class="small">指数不是敌人：成长系统天然是指数形态。要做的是给它配上上限、衰减，或者和存量挂钩的水槽。</p>
+    <div class="src">出处：指数增长与复利是基础数学；“人口按几何级数增长而食物按算术级数增长”的对照因马尔萨斯《人口原理》（1798）而广为人知。</div>
+  </div>
+
+  <!-- ===================== 7 为什么成立（延伸）：幂律 ===================== -->
+  <div class="sec"><span class="n">7</span><h2><span class="tag why">为什么成立</span>延伸：平均值为什么会骗人？</h2></div>
+  <div class="withimg">
+    <span data-illus="c15_bar"></span>
+    <div>
+      <p>一个酒吧里有 99 个普通人和 1 位亿万富翁。算一算“平均财富”，数字高得吓人，可酒吧里没有一个普通人接近这个平均。</p>
+      <p>游戏里的消费也常常是这样：少数玩家贡献了大部分收入，多数人一分钱不花。你用“人均付费”去判断多数玩家的体验，就像用酒吧的平均财富去判断普通人。这种“少数巨大、多数很小”的分布，叫<b><span class="term" tabindex="0" data-def="大值出现得虽少，但比钟形分布多得多：少数极端大值占据总量的大头">幂律</span></b>。</p>
+    </div>
+  </div>
+  <div class="story">
+    <h3>人们是怎么发现“少数拿走大头”的？</h3>
+    <p><b>问题。</b>19 世纪末的经济学家想弄清楚，一个国家的财富是怎么分在人群里的。当时人们习惯的想象是<b>钟形曲线</b>：大多数人在中间，极富和极穷的都很少，就像身高。如果真是这样，“平均财富”就能代表大部分人。</p>
+    <p><b>先自己猜一猜。</b>把一个社会的财富从高到低排队，你觉得最富的 20% 的人大约拥有总财富的百分之几？（如果是钟形分布，大约是 35%～40%。）</p>
+    <div class="board">
+      <div class="guessrow">
+        <label class="ctl" style="flex:1;min-width:220px">我猜，最富的 20% 占 <output id="c15g-v">50</output>%</label>
+      </div>
+      <input type="range" id="c15g" min="20" max="99" step="1" value="50">
+      <button class="btn" id="c15g-go">🔓 锁定我的猜测，揭晓</button>
+      <button class="btn alt" id="c15g-undo" style="display:none">↩ 重新猜</button>
+      <div id="c15g-res" style="display:none">
+        <div class="row2" style="margin-top:8px">
+          <b>现在拖动尾指数 α，看分布怎样变：</b>
+        </div>
+        <label class="ctl">尾指数 α（越小，越集中在少数人） <output id="c15pa-v">1.16</output></label><input type="range" id="c15pa" min="1.1" max="3" step="0.02" value="1.16">
+        <div id="c15pchips"></div>
+        <button class="btn" id="c15pgen">🎲 随机抽 1000 名玩家（有运气成分）</button>
+        <svg viewBox="0 0 700 250" width="100%" id="c15psvg" role="img" aria-label="1000 名玩家按数值从大到小排列的幂律分布"></svg>
+        <div id="c15pstat"></div>
+        <div class="msg" id="c15pmsg"></div>
+      </div>
+    </div>
+    <div class="sticky" id="c15_task3">试试看：先把 α 拖到 1.16 附近，看最富 20% 占多少；再点一次“随机抽 1000 名玩家”，对比平均值和中位数差了几倍。</div>
+    <p class="small">说明：这是用<b>帕累托分布</b>生成的“1000 名虚拟玩家的消费/游戏时长”，是示意，不是某款游戏的真实数据。默认是“理想分布”（取分位数，没有随机性）；点“随机抽”会看到真实样本的波动，α 越小，波动越大。理论：前 q 比例的人占总量的 q<sup>(α−1)/α</sup>；α≈1.16 时，前 20% 约占 80%。</p>
+    <p><b>关键洞察与演化。</b>下面是比较稳妥的时间线。“80/20”这个数字在各种二手资料里说法并不一致，所以它只是口诀：实际可能是 70/30，也可能是 90/10，两个数字也不必加起来等于 100。</p>
+  </div>
+  <div class="timeline">
+    <div class="ev hasimg"><span data-illus="c15_pareto"></span><div><b class="yr">1896–1897</b>　维尔弗雷多·帕累托（Vilfredo Pareto）在《政治经济学教程》（<i>Cours d’économie politique</i>）里整理多个国家、多个时期的收入与财产统计，发现“收入越高的人越少”这一关系大致遵循<b>幂函数</b>，而不是钟形曲线。常见转述是“意大利约 80% 的土地被约 20% 的人持有”，但这个具体数字的出处在资料里并不统一。</div></div>
+    <div class="ev hasimg"><span data-illus="c15_juran"></span><div><b class="yr">1940 年前后</b>　质量管理学者约瑟夫·朱兰（Joseph Juran）受帕累托启发，提出“关键的少数与有用的多数”（vital few and useful many）来排查质量问题：少数几类缺陷造成了大部分损失，先修它们。他读到帕累托的年份，资料有 1937 与 1941 两种说法。“帕累托原理 / 二八法则”这个叫法后来才流行开。</div></div>
+    <div class="ev hasimg"><span data-illus="c15_tail"></span><div><b class="yr">2004–2006</b>　克里斯·安德森（Chris Anderson）在 2004 年的文章与 2006 年的书里，用“<b>长尾</b>”描述互联网零售里“热门很少、冷门极多”的分布，冷门加起来也是一大块生意。</div></div>
+  </div>
+  <div class="why-box">
+    <h3>幂律与长尾</h3>
+    <p>大多数个体很小，极少数个体巨大，“二八法则”是它的口诀，“<b><span class="term" tabindex="0" data-def="分布右端很长的‘尾巴’：数量少但极端大的个体，或数量多但各自很小的冷门项">长尾</span></b>”是另一种说法。帕累托分布（最小值为 1）中：均值 = α/(α−1)，中位数 = 2<sup>1/α</sup>；α 接近 1 时，样本均值极不稳定。对设计的警示是：看数据时同时看<b>平均值、中位数和分位数</b>。</p>
+    <p class="small">这是常见的经验现象，具体比例因游戏和付费模式而异；也有研究指出许多“看起来像幂律”的数据其实更接近对数正态分布。身高就不是幂律，它是钟形的，平均值就代表典型的人。</p>
+    <div class="src">出处：帕累托（1896–97）；Anderson, “The Long Tail”, <i>Wired</i>（2004）与同名著作（2006）；Clauset, Shalizi &amp; Newman, “Power-law distributions in empirical data”, <i>SIAM Review</i>（2009）。</div>
+  </div>
+
+  <!-- ===================== 8 为什么成立（延伸）：定价 ===================== -->
+  <div class="sec"><span class="n">8</span><h2><span class="tag why">为什么成立</span>延伸：定价为什么会“看起来划算”？</h2></div>
+  <div class="withimg rev">
+    <span data-illus="c15_buffet"></span>
+    <div>
+      <p>吃自助餐的时候，第一盘最香，第二盘还行，到第四盘只是“不想浪费”。同一样东西，拿到的第一份最有用，越往后越没用，经济学管它叫<b><span class="term" tabindex="0" data-def="每多得到一单位，带来的额外满足感比上一单位少">边际效用递减</span></b>。</p>
+      <p>它解释了为什么药水带三瓶很安心，带二十瓶也不会多用，也解释了为什么背包有上限反而合理。</p>
+    </div>
+  </div>
+  <div class="why-box">
+    <h3>边际效用递减</h3>
+    <div class="c15fig"><svg viewBox="0 0 700 250" width="100%" id="c15msvg" role="img" aria-label="每瓶药水的边际价值递减，价格线以下的才会买"></svg></div>
+    <p class="small" id="c15mcap"></p>
+    <p class="small">也有反例：收集成套的东西，最后一件反而最值钱，集齐才有奖励。设计者会利用这一点。</p>
+    <div class="src">出处：丹尼尔·伯努利（1738）用对数形式的效用解释圣彼得堡悖论；19 世纪 70 年代杰文斯、门格尔、瓦尔拉斯的“边际革命”使其成为经济学基础概念。</div>
+  </div>
+  <p>知道了玩家为什么买到某个数量就停，接下来是价格怎么摆。同一个 ¥68 的礼包，摆在 ¥648 的礼包旁边显得便宜，摆在 ¥6 的小包旁边显得贵。</p>
+  <div class="why-box">
+    <h3>锚定效应</h3>
+    <p>人在判断一个数值时，会被<b>先看到的数字</b>拉扯，即使那个数字和问题无关。这叫<b><span class="term" tabindex="0" data-def="判断数值时被先出现的参考数字拉向它，即使该数字并不相关">锚定效应</span></b>。商场里“原价划掉、现价 ¥899”，谈判里先开出的报价，用的都是它。</p>
+    <div class="c15fig"><svg viewBox="0 0 700 250" width="100%" role="img" aria-label="同一个 68 元礼包，摆在 648 元礼包旁显得便宜，摆在 6 元小包旁显得贵">
+      <g class="rough" stroke="#2b2b3a" stroke-width="3.5">
+        <rect x="20" y="40" width="320" height="150" rx="14" fill="#fff7cf"/><rect x="360" y="40" width="320" height="150" rx="14" fill="#e8f6fc"/>
+        <rect x="40" y="70" width="130" height="90" rx="10" fill="#ffc9c9"/><rect x="190" y="70" width="130" height="90" rx="10" fill="#b6e8a8"/>
+        <rect x="380" y="70" width="130" height="90" rx="10" fill="#ffe9a8"/><rect x="530" y="70" width="130" height="90" rx="10" fill="#b6e8a8"/>
+      </g>
+      <g font-size="18" text-anchor="middle" fill="#2b2b3a">
+        <text x="105" y="110">至尊礼包</text><text x="105" y="138" font-size="22">¥648</text><text x="255" y="110">冒险者礼包</text><text x="255" y="138" font-size="22">¥68</text>
+        <text x="445" y="110">新手小包</text><text x="445" y="138" font-size="22">¥6</text><text x="595" y="110">冒险者礼包</text><text x="595" y="138" font-size="22">¥68</text>
+        <text x="180" y="28" font-weight="700">高价锚在前：68 显得便宜</text><text x="520" y="28" font-weight="700">低价锚在前：68 显得贵</text>
+        <text x="180" y="222">同一件商品，不同的参照</text><text x="520" y="222">同一件商品，不同的参照</text>
+      </g>
+    </svg></div>
+    <p class="small">虚构一个几乎没人买的天价来抬高“划算感”，已经越过了定价技巧，变成误导。</p>
+    <div class="src">出处：特沃斯基与卡尼曼，“Judgment under Uncertainty: Heuristics and Biases”，<i>Science</i>（1974，含“幸运轮”实验）。后续研究大多支持锚定的存在，但效应大小因情境和人而异。</div>
+  </div>
+
+  <!-- ===================== 9 怎么用：水管图 ===================== -->
+  <div class="sec"><span class="n">9</span><h2><span class="tag how">怎么用</span>招牌互动：经济水管图</h2></div>
+  <p><b>拖动三个阀门</b>（或用滑块），看水桶里的“玩家金币总量”涨落；再试试开关<b>“钱生钱（通胀）”</b>和<b>“自动回收”</b>。目标：让水位停在<b>绿色健康带</b>里。</p>
+  <div class="board">
+    <svg viewBox="0 0 720 410" width="100%" id="c15pipe" role="img" aria-label="经济水管图：水龙头流入水桶，水槽与回收阀门流出">
+      <g id="c15pipes">
+        <g stroke="#2b2b3a" stroke-width="30" fill="none" stroke-linecap="round" stroke-linejoin="round" class="rough">
+          <path d="M40 70 H380 V112"/><path d="M458 262 H640 V350"/><path d="M380 296 V355 H110"/>
+        </g>
+        <g stroke="#e8f6fc" stroke-width="22" fill="none" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M40 70 H380 V112"/><path d="M458 262 H640 V350"/><path d="M380 296 V355 H110"/>
+        </g>
+        <g fill="none" stroke="#2f8fd8" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="2 16">
+          <path id="c15fl1" d="M40 70 H380 V112" stroke-width="8"/>
+          <path id="c15fl2" d="M458 262 H640 V350" stroke-width="8"/>
+          <path id="c15fl3" d="M380 296 V355 H110" stroke-width="8"/>
+        </g>
+      </g>
+      <rect x="300" y="110" width="160" height="190" fill="#fffef7" stroke="none"/>
+      <rect id="c15water" x="302" y="298" width="156" height="0" fill="#7cc4f0" style="transition:y .15s linear,height .15s linear"/>
+      <g stroke="#2b2b3a" stroke-width="3" stroke-dasharray="7 6" fill="none">
+        <line x1="296" y1="205" x2="464" y2="205"/><line x1="296" y1="297" x2="464" y2="297"/>
+      </g>
+      <g class="rough"><path d="M298 108 V302 H462 V108" fill="none" stroke="#2b2b3a" stroke-width="5" stroke-linecap="round"/></g>
+      <rect x="302" y="205" width="156" height="92" fill="#3aa655" opacity=".14"/>
+      <g font-size="16" fill="#2b2b3a">
+        <text x="470" y="204">通胀线 1500</text><text x="470" y="290">枯竭线 40</text>
+        <text x="380" y="140" text-anchor="middle" font-size="18" font-weight="700">玩家钱包总量</text>
+        <text id="c15wtxt" x="380" y="190" text-anchor="middle" font-size="26">0</text>
+        <text x="40" y="38" font-size="18" font-weight="700">💧 水龙头（每天产出）</text>
+        <text x="470" y="334" font-size="18" font-weight="700">🚰 水槽（想花）</text>
+        <text x="200" y="392" font-size="18" font-weight="700" text-anchor="middle" id="c15rtxt">♻️ 自动回收（关）</text>
+      </g>
+      <g id="c15loop" opacity=".18">
+        <path d="M300 170 C 210 170 215 95 170 82" fill="none" stroke="#e5484d" stroke-width="4" stroke-dasharray="8 6"/>
+        <path d="M170 82 l12 -2 -6 -9z" fill="#e5484d"/>
+        <text x="150" y="150" font-size="16" fill="#c4262c" text-anchor="middle">钱越多</text><text x="150" y="172" font-size="16" fill="#c4262c" text-anchor="middle">产出越多</text>
+      </g>
+      <g class="valve" id="c15v1" transform="translate(170 70)"><circle r="24" fill="#ffe58a" stroke="#2b2b3a" stroke-width="4"/><g id="c15v1w" stroke="#2b2b3a" stroke-width="5" stroke-linecap="round"><line x1="-16" y1="0" x2="16" y2="0"/><line x1="0" y1="-16" x2="0" y2="16"/></g><text id="c15v1t" y="46" text-anchor="middle" font-size="18" fill="#2b2b3a">100</text></g>
+      <g class="valve" id="c15v2" transform="translate(560 262)"><circle r="24" fill="#ffb3c6" stroke="#2b2b3a" stroke-width="4"/><g id="c15v2w" stroke="#2b2b3a" stroke-width="5" stroke-linecap="round"><line x1="-16" y1="0" x2="16" y2="0"/><line x1="0" y1="-16" x2="0" y2="16"/></g><text id="c15v2t" y="-38" text-anchor="middle" font-size="18" fill="#2b2b3a">100</text></g>
+      <g class="valve" id="c15v3" transform="translate(240 355)" opacity=".4"><circle r="24" fill="#b6e8a8" stroke="#2b2b3a" stroke-width="4"/><g id="c15v3w" stroke="#2b2b3a" stroke-width="5" stroke-linecap="round"><line x1="-16" y1="0" x2="16" y2="0"/><line x1="0" y1="-16" x2="0" y2="16"/></g><text id="c15v3t" y="-38" text-anchor="middle" font-size="18" fill="#2b2b3a">4%</text></g>
+    </svg>
+    <div class="row2">
+      <span class="lamp" id="c15lamp"></span><b id="c15state">健康</b>
+      <span class="stat">第 <b id="c15day">0</b> 天</span>
+      <span class="stat">存量 <b id="c15w">300</b></span>
+      <span class="stat">净变化 <b id="c15net">0</b>/天</span>
+    </div>
+    <div class="two">
+      <div>
+        <label class="ctl">水龙头：每天产出 <output id="c15f-v">100</output></label><input type="range" id="c15f" min="0" max="300" step="5" value="100">
+        <label class="ctl">水槽：玩家每天想花 <output id="c15s-v">100</output></label><input type="range" id="c15s" min="0" max="300" step="5" value="100">
+      </div>
+      <div>
+        <label class="chk"><input type="checkbox" id="c15inf"> 📈 钱生钱（通胀）：每天产出 += 存量 × 2%</label>
+        <label class="chk"><input type="checkbox" id="c15rec"> ♻️ 自动回收：每天收走存量的百分比</label>
+        <label class="ctl">回收比例 <output id="c15r-v">4%</output></label><input type="range" id="c15r" min="1" max="10" step="1" value="4" disabled>
+      </div>
+    </div>
+    <div style="margin-top:6px">
+      <b>一键场景：</b>
+      <button class="btn alt" data-p="ok">健康</button>
+      <button class="btn alt" data-p="flood">只开水龙头</button>
+      <button class="btn alt" data-p="dry">水槽太大</button>
+      <button class="btn alt" data-p="boom">钱生钱</button>
+      <button class="btn alt" data-p="fix">自动回收救场</button>
+    </div>
+    <button class="btn" id="c15pause">⏸ 暂停</button>
+    <button class="btn pink" id="c15reset">↺ 重置存量</button>
+    <svg viewBox="0 0 700 170" width="100%" id="c15hist" role="img" aria-label="存量随时间的变化折线" style="margin-top:6px"></svg>
+    <div class="msg" id="c15msg"></div>
+  </div>
+  <div class="sticky" id="c15_task1">试试看：打开“钱生钱”，再想办法让水位在绿色健康带里稳稳待上一阵子。提示：把“只开水龙头”和“自动回收救场”两个场景各看一遍，想想为什么后者能稳住。</div>
+  <p class="small">模型（示意）：每天 收入 = 水龙头 + [通胀]×存量×2%；实际花费 = min(手头金币, 想花)；回收 = 剩余的存量×回收比例（只在开关打开时）。“自动回收救场”会把水龙头设为 120、开回收，存量稳定在约 1000：<b>让水槽随存量增长，才是稳定的经济</b>。</p>
+
+  <!-- ===================== 10 怎么用：兵种调平 ===================== -->
+  <div class="sec"><span class="n">10</span><h2><span class="tag how">怎么用</span>辅助互动：调平三个兵种</h2></div>
+  <p>相克的三角看起来很稳，但数值一动，它就会歪。每个兵种的“基础强度”默认都是 1。把某个兵种调高，看看它的平均胜率怎么变。目标：三者都接近 <b>33%</b>（虚线）。</p>
+  <div class="board">
+    <svg viewBox="0 0 700 290" width="100%" role="img" aria-label="三角相克：骑兵克弓手，弓手克长枪兵，长枪兵克骑兵；圆圈大小随强度变化">
+      <g class="rough" stroke="#2b2b3a" stroke-width="4">
+        <circle id="c15t1" cx="350" cy="64" r="26" fill="#ffe58a"/><circle id="c15t2" cx="170" cy="196" r="26" fill="#b6e8a8"/><circle id="c15t3" cx="530" cy="196" r="26" fill="#ffb3c6"/>
+        <g fill="none" stroke-linecap="round">
+          <path d="M322 98 L214 164"/><path d="M226 214 H474"/><path d="M486 164 L378 98"/>
+        </g>
+      </g>
+      <g fill="#2b2b3a"><path d="M206 169 l14 0 -6 -10z"/><path d="M482 214 l-14 -9 v18z"/><path d="M378 96 l-6 10 14 -2z"/></g>
+      <g font-size="20" fill="#2b2b3a">
+        <text x="412" y="70">骑兵</text><text x="170" y="272" text-anchor="middle">弓手</text><text x="530" y="272" text-anchor="middle">长枪兵</text>
+        <text x="242" y="124" text-anchor="middle">克</text><text x="350" y="204" text-anchor="middle">克</text><text x="460" y="124" text-anchor="middle">克</text>
+      </g>
+    </svg>
+    <label class="ctl">🐴 骑兵强度 <output id="a1">1.0</output></label><input type="range" id="s1" min="0.5" max="2" step="0.05" value="1">
+    <label class="ctl">🏹 弓手强度 <output id="a2">1.0</output></label><input type="range" id="s2" min="0.5" max="2" step="0.05" value="1">
+    <label class="ctl">🔱 长枪兵强度 <output id="a3">1.0</output></label><input type="range" id="s3" min="0.5" max="2" step="0.05" value="1">
+    <div id="rates" style="margin-top:10px"></div>
+    <div class="msg" id="rmsg"></div>
+    <button class="btn alt" id="rreset">全部复位</button>
+  </div>
+  <div class="sticky" id="c15_task2">试试看：先把骑兵调到 1.5 左右，看另外两个兵种被连累；再只动弓手和长枪兵，把三个胜率拉回差距小于 3 个百分点。</div>
+  <p class="small">模型（示意）：被克制时胜率基准 30%，克制时 70%；强度会放大这个优势。你会发现，只调高一个兵种，另外两个都会被连累；而三个一起涨，胜率就回来了，因为相克平衡看的是相对强度。</p>
+
+  <h3>平衡的五条心法</h3>
+  <ul>
+    <li>先画关系图（谁克谁、钱从哪来到哪去），再调数字。</li>
+    <li>每次只改一两个旋钮，测一次再改，否则不知道谁起作用。</li>
+    <li>看数据时同时看平均值、中位数和分位数。</li>
+    <li>奖励要变化节奏和种类，而不是只加码。</li>
+    <li>给每个水龙头配一个会随存量增长的水槽，并把水槽包装成“买东西”，别包装成“没收”。</li>
+  </ul>
+
+  <div class="misc">
+    <h3>常见误区</h3>
+    <ul>
+      <li>“胜率 50% 就是平衡”：不一定。相克设计里每个选项胜率相同才是目标，还要看玩家实际的选择分布，以及“选择是否有意义”。</li>
+      <li>“看平均值就够了”：在幂律分布下，平均值被少数极端值拉高，中位数才代表“典型玩家”。</li>
+      <li>“奖励不够爽就加大数值”：享乐适应下，加码只能买来短暂的新鲜感，还会推高通胀。</li>
+      <li>“指数增长一定要避免”：不是。指数是成长系统的自然形态，关键是知道它在哪里越界，并配上上限、衰减或水槽。</li>
+      <li>“二八法则是定律”：不是，它只是个口诀，比例因领域而异。</li>
+    </ul>
+  </div>
+
+  <div class="reflect">
+    <h3>反思与争议</h3>
+    <p><b>享乐适应有多彻底？</b>“人总会回到原来的幸福水平”是一种影响很大的观点；后来的研究发现不同事件、不同人的适应并不相同，有些变化是长期的。图里的模型只是教学简化。</p>
+    <p><b>虚拟经济的类比有限。</b>游戏里的“货币”受设计者随时修改规则、玩家不是完全理性等因素影响，不能直接套用现实经济学的结论。卡斯特罗诺瓦的估算方法本身也有争议。</p>
+    <p><b>水槽算不算“割韭菜”？</b>把水槽包装成商品能让玩家好受些，但如果包装的目的只是让人察觉不到被扣了钱，它和“透明地扣”之间的界线在哪里？这值得你自己想想。</p>
+  </div>
+
+  <div class="key">
+    <h3>本章要点</h3>
+    <ul>
+      <li>平衡不等于“一样”，而是每个选择都有存在的价值；相克让“最强”这个位置不存在。</li>
+      <li>经济要看水龙头、水桶、水槽是否对应；强化循环会把小差别放大，所以需要随存量增长的水槽来平衡。</li>
+      <li>损失厌恶：同样的数目，被扣比没得到更疼；水槽适合包装成交换。</li>
+      <li>享乐适应：同一奖励会贬值，拉大间隔与增加种类比一味加码便宜。</li>
+      <li>玩家感受相对变化，所以用百分比加成；指数增长一旦和存量挂钩就会出现临界线。</li>
+      <li>幂律让平均值误导，要同时看中位数；“二八”只是口诀。</li>
+    </ul>
+  </div>
+  <div class="tldr">平衡不是把数字调“一样”，而是顺着人的感受调：玩家按比例感知、会适应、更怕失去，而经济里的循环与幂律分布会把一切放大。</div>
+
+  <div class="sec"><span class="n">11</span><h2><span class="tag think">练习</span>小测验</h2></div>
+  <div id="quiz"></div>
+
+  <div class="sec"><span class="n">12</span><h2><span class="tag how">你的设计</span>你的平衡与经济</h2></div>
+  <div class="card o">
+    <p>设计一个有<b>四种角色</b>的小游戏，画出谁克谁（像画一个循环），并写下你认为每个角色的“独特价值”。再写一句：你的游戏里<b>钱（或体力）的水龙头与水槽</b>分别是什么，水槽怎么包装才不让玩家反感？</p>
+    <textarea rows="5" data-save="ch15" placeholder="例：火 > 草 > 水 > 火；再加一个“光”，对所有人伤害一般，但能治疗……水龙头：任务奖励；水槽：修理费、技能升级……"></textarea>
+  </div>
+</main>
+<script src="js/illus.js"></script>
+<script src="js/illus-ch15.js"></script>
+<script src="js/common.js"></script>
+<script>
+GD.mountQuiz(document.getElementById("quiz"), [
+  { q: "【为什么被发明】早期网络游戏很快出现“通货膨胀”，设计者后来普遍加入修理费、手续费等“水槽”。主要原因是？", opts: ["为了让玩家更讨厌游戏", "只有水龙头时，金币只进不出，存量无限增长，金币失去意义；水槽把多余的金币从经济里取走", "水槽能让游戏更好看", "为了降低服务器成本"], a: 1, why: "水龙头一旦和存量挂钩还会出现临界线；与存量挂钩的水槽（如按比例的回收）才能让经济稳定。" },
+  { q: "【为什么】许多 RPG 的“伤害加成”写成“+10%”而不是“+5 点”，从玩家感受的角度主要是因为？", opts: ["百分比更好计算", "玩家不喜欢整数", "百分比一定更平衡", "人感受到的是相对变化，固定加数在数值变大后会越来越没感觉"], a: 3, why: "按韦伯—费希纳的思路，感受由相对变化决定。100→105 只有 5%，而 10→15 是 50%。百分比加成使每一级的主观提升更均匀。" },
+  { q: "【为什么】一款游戏“人均付费 30 元”，但大多数玩家一分钱没花。最合理的解释与对策是？", opts: ["数据错了", "大多数玩家都付了 30 元", "消费近似幂律分布：少数大额玩家拉高平均值，应同时看中位数、分位数、付费占比", "平均值永远代表典型玩家"], a: 2, why: "偏斜（幂律）分布下平均值远高于中位数。只看平均会误以为每个人都在为游戏付费，从而误判体验与定价。" },
+  { q: "【为什么被发明】关于“二八法则”的来历，哪种说法最稳妥？", opts: ["帕累托在自家豌豆荚上发现了精确的 80/20 定律", "帕累托在 19 世纪末整理财产与收入统计，发现“高收入者很少”大致遵循幂函数；“80/20”只是后人的口诀，比例因领域而异", "二八法则是物理学定律", "朱兰发明了幂律分布"], a: 1, why: "帕累托的贡献是发现分布形状（幂函数）；80/20 是口诀，实际可为 70/30 或 90/10；豌豆荚的故事缺乏可靠出处。朱兰是后来把它用到质量管理的人。" },
+  { q: "玩家每天都领同样的 100 金币登录奖励，一个月后几乎没人在意了。依据享乐适应，更便宜的补救办法是？", opts: ["把奖励翻倍，再翻倍", "拉大间隔、增加奖励种类、给奖励赋予新意义", "删除奖励", "把奖励改成固定每天 100.0001"], a: 1, why: "加码会抬高基线、引发通胀；间隔让基线回落，种类让每条基线都有恢复的机会。" },
+  { q: "【为什么】两个设计：A 是“修理装备被扣 100 金币”，B 是“花 100 金币买一件新斗篷”。金币流出一样多，玩家往往对 A 更反感。最贴切的解释是？", opts: ["玩家看不懂 B", "损失厌恶：失去已有东西的痛，比得到同样东西的喜悦更强烈（尽管这一效应的大小仍有争议）", "A 的价格更高", "金币在 B 里没有减少"], a: 1, why: "把水槽包装成交换，玩家得到了东西，疼痛就轻一些。但加尔与拉克（2018）提醒，“损失一般比收益更重”并没有被充分证实，具体情境才是关键。" },
+]);
+</script>
+<script>
+(function () {
+  const g = id => document.getElementById(id);
+  const chipsFor = (el, items, cur, cb) => {
+    el.innerHTML = "";
+    items.forEach(([k, t]) => {
+      const b = document.createElement("button"); b.className = "chip" + (k === cur ? " on" : ""); b.textContent = t;
+      b.onclick = () => cb(k); el.appendChild(b);
+    });
+  };
+  const axes = (h, xl, yl) => '<line x1="50" y1="' + h + '" x2="680" y2="' + h + '" stroke="#2b2b3a" stroke-width="3"/><line x1="50" y1="12" x2="50" y2="' + h + '" stroke="#2b2b3a" stroke-width="3"/>' +
+    (xl ? '<text x="680" y="' + (h + 32) + '" text-anchor="end" font-size="16">' + xl + '</text>' : "") + (yl ? '<text x="64" y="26" font-size="16" fill="#444">' + yl + '</text>' : "");
+  const poly = (pts, col, dash, w) => '<polyline fill="none" stroke="' + col + '" stroke-width="' + (w || 4) + '"' + (dash ? ' stroke-dasharray="7 6"' : "") + ' stroke-linejoin="round" points="' + pts.map(p => p[0].toFixed(1) + "," + p[1].toFixed(1)).join(" ") + '"/>';
+
+  // ================= 相克三角 =================
+  function pw(si, sj, favored) { const b = favored ? 0.7 : 0.3; const x = si * b, y = sj * (1 - b); return x / (x + y); }
+  function rates() {
+    const s = [+g("s1").value, +g("s2").value, +g("s3").value];
+    const beats = [1, 2, 0];
+    return s.map((si, i) => {
+      let total = 0.5;
+      for (let j = 0; j < 3; j++) { if (j === i) continue; total += pw(si, s[j], beats[i] === j); }
+      return total / 3;
+    });
+  }
+  const names = ["🐴 骑兵", "🏹 弓手", "🔱 长枪兵"], cols = ["#ffe58a", "#b6e8a8", "#ffb3c6"];
+  function upd1() {
+    [1, 2, 3].forEach(i => { const v = +g("s" + i).value; g("a" + i).textContent = v.toFixed(2); g("c15t" + i).setAttribute("r", (18 + (v - 0.5) / 1.5 * 22).toFixed(1)); });
+    const r = rates();
+    g("rates").innerHTML = r.map((v, i) => `<div class="hb"><span class="nm">${names[i]}</span><div class="bar"><i style="width:${v * 100}%;background:${cols[i]}"></i></div><span class="pc">${(v * 100).toFixed(1)}%</span></div>`).join("");
+    const spread = Math.max(...r) - Math.min(...r), top = r.indexOf(Math.max(...r));
+    g("rmsg").textContent = spread < 0.03 ? "✅ 很平衡！三个兵种都有存在价值。" : spread < 0.1 ? `🤔 有点偏：${names[top]} 略占优，玩家会倾向选它。` : `⚠️ 失衡！${names[top]} 太强，大家都会选它，其他兵种沦为陪衬。`;
+  }
+  ["s1", "s2", "s3"].forEach(id => (g(id).oninput = upd1));
+  g("rreset").onclick = () => { ["s1", "s2", "s3"].forEach(id => (g(id).value = 1)); upd1(); };
+  upd1();
+
+  // ================= 故事一：帕累托猜测 + 幂律实验室 =================
+  let pscale = "lin", pmode = "ideal", players = [], revealed = false;
+  g("c15g").oninput = () => (g("c15g-v").textContent = g("c15g").value);
+  function pgen() {
+    const a = +g("c15pa").value, n = 1000; players = [];
+    for (let i = 0; i < n; i++) {
+      const u = pmode === "ideal" ? (i + 0.5) / n : Math.random();
+      players.push(pmode === "ideal" ? Math.pow(u, -1 / a) : 1 / Math.pow(1 - u, 1 / a));
+    }
+    players.sort((x, y) => y - x); pdraw();
+  }
+  function pdraw() {
+    const a = +g("c15pa").value; g("c15pa-v").textContent = a.toFixed(2);
+    chipsFor(g("c15pchips"), [["lin", "纵轴：普通"], ["log", "纵轴：对数"]], pscale, k => { pscale = k; pdraw(); });
+    const n = players.length, total = players.reduce((s, v) => s + v, 0), mean = total / n, med = (players[499] + players[500]) / 2, mx = players[0];
+    const share = q => players.slice(0, Math.round(n * q)).reduce((s, v) => s + v, 0) / total;
+    const below = players.filter(v => v < mean).length / n;
+    const Y = v => pscale === "lin" ? 205 - v / mx * 190 : 205 - Math.log(v) / Math.log(mx) * 190;
+    const bw = 630 / n;
+    let h = axes(205, "玩家（按消费从高到低排列） →");
+    let d = "M50 205 ";
+    players.forEach((v, i) => { d += "L" + (50 + i * bw).toFixed(1) + " " + Y(v).toFixed(1) + " "; });
+    d += "L680 205Z";
+    h += '<path d="' + d + '" fill="#cdbdff" stroke="#2b2b3a" stroke-width="2"/>';
+    h += '<rect x="50" y="12" width="' + (630 * 0.2) + '" height="193" fill="#ffe58a" opacity=".35"/><text x="' + (50 + 63) + '" y="228" font-size="16" text-anchor="middle">最富 20%</text>';
+    h += '<line x1="50" y1="' + Y(mean) + '" x2="680" y2="' + Y(mean) + '" stroke="#e5484d" stroke-width="3" stroke-dasharray="8 5"/><text x="680" y="70" text-anchor="end" font-size="16" fill="#e5484d">红虚线：平均值 ' + mean.toFixed(2) + '</text>';
+    h += '<line x1="50" y1="' + Y(med) + '" x2="680" y2="' + Y(med) + '" stroke="#2f9e44" stroke-width="3" stroke-dasharray="8 5"/><text x="680" y="92" text-anchor="end" font-size="16" fill="#2f9e44">绿虚线：中位数 ' + med.toFixed(2) + '</text>';
+    g("c15psvg").innerHTML = h;
+    const k = (a - 1) / a, s20 = share(0.2) * 100, guess = +g("c15g").value;
+    g("c15pstat").innerHTML = '<span class="stat">最富 20% 占 <b>' + s20.toFixed(0) + '%</b>（理论 ' + (Math.pow(0.2, k) * 100).toFixed(0) + '%）</span><span class="stat">你猜的 <b>' + guess + '%</b></span><span class="stat">前 1% 占 <b>' + (share(0.01) * 100).toFixed(0) + '%</b></span><span class="stat">低于平均值的玩家 <b>' + (below * 100).toFixed(0) + '%</b></span><span class="stat">平均 / 中位数 <b>' + (mean / med).toFixed(1) + '</b></span>';
+    g("c15pmsg").textContent = "你猜 " + guess + "%；当 α = " + a.toFixed(2) + " 时，最富的 20% 占 " + s20.toFixed(0) + "%（理论 " + (Math.pow(0.2, k) * 100).toFixed(0) + "%）。" + (a < 1.3 ? "这就是常说的“二八”口诀。" : a > 2 ? "尾巴变轻了，分布更接近平均。" : "") + " 平均值是中位数的 " + (mean / med).toFixed(1) + " 倍，" + (below * 100).toFixed(0) + "% 的人在平均线以下。" + (Math.abs(s20 - Math.pow(0.2, k) * 100) > 3 ? "（样本只有 1000 人，最大值被截断，所以比理论值略低；人越多越接近理论。）" : "");
+  }
+  g("c15g-go").onclick = () => {
+    revealed = true; g("c15g-res").style.display = "block"; g("c15g-undo").style.display = "inline-block";
+    g("c15g-go").disabled = true; g("c15g").disabled = true; pgen();
+  };
+  g("c15g-undo").onclick = () => {
+    revealed = false; g("c15g-res").style.display = "none"; g("c15g-undo").style.display = "none";
+    g("c15g-go").disabled = false; g("c15g").disabled = false;
+  };
+  g("c15pa").oninput = pgen;
+  g("c15pgen").onclick = () => { pmode = "rand"; pgen(); };
+  g("c15pa").addEventListener("change", () => {});
+
+  // ================= 故事二：刀锋预测 =================
+  (function () {
+    const opts = [["a", "A　差距基本不变，都在 2500 附近"], ["b", "B　差距越拉越大：一个枯竭，一个暴涨"], ["c", "C　两人都会回到 2500"]];
+    chipsFor(g("c15bchips"), opts, null, k => {
+      g("c15bres").style.display = "block";
+      chipsFor(g("c15bchips"), opts, k, () => {});
+      const r = 0.02, S = 50, T = 200, lines = [2400, 2600].map(w0 => { const a = [w0]; for (let t = 1; t <= T; t++) a.push(Math.max(0, a[t - 1] * (1 + r) - S)); return a; });
+      const mx = Math.max(...lines[1], 3000), cap = 5000, top = Math.min(mx, cap);
+      const X = t => 50 + t / T * 630, Y = v => 205 - Math.min(v, top) / top * 190;
+      let h = axes(205, "第几天 →", "纵轴最大 " + top.toFixed(0));
+      h += '<line x1="50" y1="' + Y(2500) + '" x2="680" y2="' + Y(2500) + '" stroke="#2f9e44" stroke-width="3" stroke-dasharray="8 6"/><text x="676" y="' + (Y(2500) - 10) + '" text-anchor="end" font-size="16" fill="#1c7a34">临界值 2500</text>';
+      h += poly(lines[0].map((v, t) => [X(t), Y(v)]), "#e5484d", false, 4.5) + poly(lines[1].map((v, t) => [X(t), Y(v)]), "#3b82f6", false, 4.5);
+      h += '<text x="690" y="40" text-anchor="end" font-size="16" fill="#3b82f6">蓝：起点 2600</text><text x="690" y="60" text-anchor="end" font-size="16" fill="#e5484d">红：起点 2400</text>';
+      g("c15bsvg").innerHTML = h;
+      const zero = lines[0].findIndex((v, t) => t > 0 && v === 0);
+      g("c15bmsg").textContent = (k === "b" ? "✅ 猜对了。" : "❌ 不是这个。") + " 起点只差 8%：红线在第 " + zero + " 天见底，蓝线到第 " + T + " 天已涨到 " + Math.round(lines[1][T]) + "（图中截断）。同样的规则，起点差一点，命运截然相反——所以要给它配一个与存量挂钩的水槽。";
+    });
+  })();
+
+  // ================= 静态示意图 =================
+  function adaptSim(alpha, grow, gap, types, comp) {
+    const N = 30, beta = 0.1, A = new Array(types).fill(0), last = new Array(types).fill(0);
+    const felt = [], R = [];
+    for (let k = 0; k < N; k++) {
+      const t = k * gap, j = k % types;
+      A[j] *= Math.pow(1 - beta, t - last[j]); last[j] = t;
+      const r = comp ? 100 + A[j] : 100 * Math.pow(1 + grow, k);
+      felt.push(Math.max(0, r - A[j])); R.push(r);
+      A[j] += alpha * (r - A[j]);
+    }
+    return { felt, R };
+  }
+  (function () {
+    const base = adaptSim(0.3, 0, 1, 1, false), gap = adaptSim(0.3, 0, 5, 1, false), ty = adaptSim(0.3, 0, 1, 3, false), comp = adaptSim(0.3, 0, 1, 1, true);
+    const N = 30, X = k => 50 + k / (N - 1) * 630, Y = v => 225 - v / 110 * 205;
+    let h = axes(225, "第几次奖励 →", "体验强度 %");
+    h += '<line x1="50" y1="' + Y(100) + '" x2="680" y2="' + Y(100) + '" stroke="#bbb" stroke-width="2" stroke-dasharray="3 5"/><text x="38" y="' + (Y(100) + 5) + '" text-anchor="end" font-size="15">100</text>';
+    h += poly(base.felt.map((v, k) => [X(k), Y(v)]), "#777", false, 4) + poly(gap.felt.map((v, k) => [X(k), Y(v)]), "#3b82f6", false, 4) + poly(ty.felt.map((v, k) => [X(k), Y(v)]), "#2f9e44", false, 4) + poly(comp.felt.map((v, k) => [X(k), Y(v)]), "#e5484d", true, 4);
+    
+    g("c15hsvg").innerHTML = h;
+    const avg = a => a.slice(-10).reduce((s, v) => s + v, 0) / 10;
+    g("c15hcap").textContent = "最后 10 次平均体验：不做设计 " + avg(base.felt).toFixed(0) + "%，拉大间隔 " + avg(gap.felt).toFixed(0) + "%，3 种奖励 " + avg(ty.felt).toFixed(0) + "%。红线体验始终 100%，但第 30 次的奖励要是第 1 次的 " + (comp.R[29] / comp.R[0]).toFixed(1) + " 倍——这就是“数值通胀”。";
+  })();
+  (function () {
+    const L = 30, V0 = 10, a = 5, VL = V0 + a * (L - 1), r = Math.pow(VL / V0, 1 / (L - 1)) - 1;
+    const rel = (f) => { const o = []; let prev = f(1); for (let i = 2; i <= L; i++) { const v = f(i); o.push((v - prev) / prev * 100); prev = v; } return o; };
+    const lin = rel(i => V0 + a * (i - 1)), ex = rel(i => V0 * Math.pow(1 + r, i - 1));
+    const mx = Math.max(...lin) * 1.08, X = i => 50 + i / (L - 2) * 630, Y = v => 225 - v / mx * 205;
+    let h = axes(225, "等级 →", "每级相对提升（%）");
+    h += poly(lin.map((v, i) => [X(i), Y(v)]), "#3b82f6", false, 4.5) + poly(ex.map((v, i) => [X(i), Y(v)]), "#e5484d", false, 4.5);
+    h += '<text x="690" y="40" text-anchor="end" font-size="16" fill="#3b82f6">蓝：线性（第 2 级 +' + lin[0].toFixed(0) + '% → 第 30 级只剩 +' + lin[28].toFixed(1) + '%）</text><text x="690" y="62" text-anchor="end" font-size="16" fill="#e5484d">红：指数（每级都是 +' + (r * 100).toFixed(1) + '%）</text>';
+    g("c15wsvg").innerHTML = h;
+  })();
+  (function () {
+    const T = 30, r = 0.08, lin = [], ex = [];
+    for (let t = 0; t <= T; t++) { lin.push(1 + r * t); ex.push(Math.pow(1 + r, t)); }
+    const mx = ex[T], X = t => 50 + t / T * 630, Y = v => 225 - (v - 1) / (mx - 1) * 205;
+    let h = axes(225, "第几步 →", "起点 = 1");
+    h += poly(lin.map((v, t) => [X(t), Y(v)]), "#3b82f6", false, 4.5) + poly(ex.map((v, t) => [X(t), Y(v)]), "#e5484d", false, 4.5);
+    h += '<text x="64" y="72" font-size="16" fill="#1d5fc9">蓝：线性 每步 +8% × 起点</text><text x="64" y="48" font-size="16" fill="#c4262c">红：指数 每步 ×1.08</text>';
+    g("c15esvg").innerHTML = h;
+    g("c15ecap").textContent = "30 步后：线性 " + lin[T].toFixed(1) + "，指数 " + ex[T].toFixed(1) + "，指数是线性的 " + (ex[T] / lin[T]).toFixed(1) + " 倍；翻倍用时约 " + (Math.log(2) / Math.log(1 + r)).toFixed(1) + " 步（72 法则 ≈ " + (72 / 8).toFixed(0) + "）。前几步几乎看不出差别，后期失控。";
+  })();
+  (function () {
+    const p = 4, rho = 0.7, N = 8, v = []; for (let i = 0; i < N; i++) v.push(10 * Math.pow(rho, i));
+    const X = i => 60 + i * 78, Y = x => 185 - x / 10 * 150;
+    let h = '<line x1="50" y1="185" x2="680" y2="185" stroke="#2b2b3a" stroke-width="3"/>', n = 0;
+    v.forEach((x, i) => {
+      const buy = x >= p; if (buy) n++;
+      h += '<rect x="' + X(i) + '" y="' + Y(x) + '" width="52" height="' + (185 - Y(x)) + '" fill="' + (buy ? "#b6e8a8" : "#eee") + '" stroke="#2b2b3a" stroke-width="2.5"/><text x="' + (X(i) + 26) + '" y="232" text-anchor="middle" font-size="16">' + x.toFixed(1) + '</text><text x="' + (X(i) + 26) + '" y="208" text-anchor="middle" font-size="16">第' + (i + 1) + '瓶</text>';
+    });
+    h += '<line x1="50" y1="' + Y(p) + '" x2="680" y2="' + Y(p) + '" stroke="#e5484d" stroke-width="3.5" stroke-dasharray="8 5"/><text x="676" y="' + (Y(p) - 12) + '" text-anchor="end" font-size="16" fill="#c4262c">价格 ' + p + '</text>';
+    g("c15msvg").innerHTML = h;
+    g("c15mcap").textContent = "示意：第 1 瓶对他价值 10，之后每瓶是前一瓶的 0.7 倍；价格 4 时，价值 ≥ 价格的有 " + n + " 瓶（绿色），第 " + (n + 1) + " 瓶只值 " + v[n].toFixed(1) + "，所以他在第 " + n + " 瓶停下。想让他多买？降价，或做“越买越便宜”的捆绑。";
+  })();
+
+  // ================= 招牌：经济水管图 =================
+  (function () {
+    const R = 0.02, CAP = 3000;
+    const P = { f: 100, s: 100, inf: false, rec: false, rr: 4 };
+    const S = { W: 300, day: 0, hist: [300], run: true, inflow: 100, spend: 100, tax: 0 };
+    const svg = g("c15pipe");
+    const valves = [
+      { id: "c15v1", key: "f", min: 0, max: 300, step: 5, slider: "c15f", out: "c15f-v" },
+      { id: "c15v2", key: "s", min: 0, max: 300, step: 5, slider: "c15s", out: "c15s-v" },
+      { id: "c15v3", key: "rr", min: 1, max: 10, step: 1, slider: "c15r", out: "c15r-v" },
+    ];
+    function step() {
+      const inflow = P.f + (P.inf ? R * S.W : 0);
+      const avail = S.W + inflow;
+      const spend = Math.min(avail, P.s);
+      const tax = P.rec ? Math.min(avail - spend, P.rr / 100 * S.W) : 0;
+      S.W = Math.min(1e9, Math.max(0, avail - spend - tax));
+      S.day++; S.inflow = inflow; S.spend = spend; S.tax = tax;
+      S.hist.push(S.W); if (S.hist.length > 200) S.hist.shift();
+    }
+    const dash = { c15fl1: 0, c15fl2: 0, c15fl3: 0 };
+    function paint() {
+      // 水位
+      const hh = Math.min(S.W, CAP) / CAP * 188;
+      g("c15water").setAttribute("y", (298 - hh).toFixed(1)); g("c15water").setAttribute("height", hh.toFixed(1));
+      g("c15wtxt").textContent = S.W > 99999 ? "溢出！" : Math.round(S.W);
+      g("c15w").textContent = S.W > 99999 ? "爆表" : Math.round(S.W);
+      g("c15day").textContent = S.day;
+      const net = S.inflow - S.spend - S.tax;
+      g("c15net").textContent = (net >= 0 ? "+" : "") + Math.round(net);
+      // 阀门
+      valves.forEach(v => {
+        const frac = (P[v.key] - v.min) / (v.max - v.min);
+        g(v.id + "w").setAttribute("transform", "rotate(" + (frac * 270).toFixed(0) + ")");
+        g(v.id + "t").textContent = v.key === "rr" ? P.rr + "%" : P[v.key];
+        g(v.slider).value = P[v.key]; g(v.out).textContent = v.key === "rr" ? P.rr + "%" : P[v.key];
+      });
+      g("c15v3").setAttribute("opacity", P.rec ? "1" : ".4");
+      g("c15loop").setAttribute("opacity", P.inf ? "1" : ".18");
+      g("c15rtxt").textContent = P.rec ? "♻️ 自动回收：每天收走存量的 " + P.rr + "%" : "♻️ 自动回收（关）";
+      // 管道粗细
+      const wd = f => (3 + Math.min(1, f / 300) * 11).toFixed(1);
+      [["c15fl1", S.inflow], ["c15fl2", S.spend], ["c15fl3", S.tax]].forEach(([id, f]) => {
+        g(id).setAttribute("stroke-width", wd(f)); g(id).setAttribute("opacity", f > 0.5 ? 1 : 0.1);
+      });
+      // 状态
+      const lamp = g("c15lamp"), st = g("c15state");
+      if (S.W < 40) { lamp.className = "lamp dry"; st.textContent = "枯竭：玩家几乎没钱"; }
+      else if (S.W > 1500) { lamp.className = "lamp hot"; st.textContent = "通胀：钱多到失去意义"; }
+      else { lamp.className = "lamp ok"; st.textContent = "健康：有钱，但需要取舍"; }
+      // 历史折线
+      const n = S.hist.length, mxh = Math.max(2000, ...S.hist), top = Math.min(mxh, 20000);
+      const X = i => 50 + i / 199 * 630, Y = v => 130 - Math.min(v, top) / top * 118;
+      let h = '<line x1="50" y1="130" x2="680" y2="130" stroke="#2b2b3a" stroke-width="3"/><line x1="50" y1="8" x2="50" y2="130" stroke="#2b2b3a" stroke-width="3"/>';
+      h += '<rect x="50" y="' + Y(1500) + '" width="630" height="' + (Y(40) - Y(1500)) + '" fill="#3aa655" opacity=".14"/><line x1="50" y1="' + Y(1500) + '" x2="680" y2="' + Y(1500) + '" stroke="#e5484d" stroke-width="2" stroke-dasharray="6 5"/>';
+      h += poly(S.hist.map((v, i) => [X(i), Y(v)]), "#e5484d", false, 4);
+      h += '<text x="56" y="22" font-size="16" fill="#555">存量历史（纵轴最大 ' + Math.round(top) + '）　绿带 = 健康区</text><text x="680" y="158" text-anchor="end" font-size="16">最近 ' + n + ' 天 →</text>';
+      g("c15hist").innerHTML = h;
+      g("c15msg").textContent = S.W > 99999 ? "💥 存量已经爆表：指数增长在没有水槽的时候就是这样失控。" :
+        S.W > 1500 ? (P.inf ? "📈 “钱生钱”开着：存量越高、产出越高，越涨越快。试试打开“自动回收”。" : "📈 水龙头比水槽粗：存量一路涨。加大水槽，或减小水龙头。") :
+        S.W < 40 ? "📉 水槽把水抽干了：玩家永远没钱，想买的东西买不起。减小水槽，或加大水龙头。" :
+        (P.inf && !P.rec && net > 1 ? "⚠️ 现在看起来健康，但“钱生钱”开着，存量会继续滚大。" : "✅ 水位在健康带里。继续拧阀门，看看多大的变化会打破平衡。");
+    }
+    function setVal(key, val) { P[key] = val; paint(); }
+    // 阀门拖动
+    valves.forEach(v => {
+      const el = g(v.id); let sx = 0, sv = 0, drag = false;
+      el.addEventListener("pointerdown", e => { drag = true; sx = e.clientX; sv = P[v.key]; el.setPointerCapture(e.pointerId); if (v.key === "rr" && !P.rec) { P.rec = true; g("c15rec").checked = true; g("c15r").disabled = false; } e.preventDefault(); });
+      el.addEventListener("pointermove", e => {
+        if (!drag) return;
+        const k = 720 / svg.getBoundingClientRect().width, dx = (e.clientX - sx) * k;
+        let val = sv + dx / 150 * (v.max - v.min);
+        val = Math.round(val / v.step) * v.step; val = Math.max(v.min, Math.min(v.max, val));
+        setVal(v.key, val);
+      });
+      const end = () => { drag = false; };
+      el.addEventListener("pointerup", end); el.addEventListener("pointercancel", end);
+    });
+    g("c15f").oninput = () => setVal("f", +g("c15f").value);
+    g("c15s").oninput = () => setVal("s", +g("c15s").value);
+    g("c15r").oninput = () => setVal("rr", +g("c15r").value);
+    g("c15inf").onchange = () => { P.inf = g("c15inf").checked; paint(); };
+    g("c15rec").onchange = () => { P.rec = g("c15rec").checked; g("c15r").disabled = !P.rec; paint(); };
+    g("c15pause").onclick = () => { S.run = !S.run; g("c15pause").textContent = S.run ? "⏸ 暂停" : "▶ 继续"; };
+    g("c15reset").onclick = () => { S.W = 300; S.day = 0; S.hist = [300]; S.inflow = P.f; S.spend = P.s; S.tax = 0; paint(); };
+    const PRE = {
+      ok: { f: 100, s: 100, inf: false, rec: false, rr: 4 },
+      flood: { f: 200, s: 100, inf: false, rec: false, rr: 4 },
+      dry: { f: 100, s: 220, inf: false, rec: false, rr: 4 },
+      boom: { f: 100, s: 100, inf: true, rec: false, rr: 4 },
+      fix: { f: 120, s: 100, inf: true, rec: true, rr: 4 },
+    };
+    document.querySelectorAll("[data-p]").forEach(b => (b.onclick = () => {
+      Object.assign(P, PRE[b.dataset.p]);
+      g("c15inf").checked = P.inf; g("c15rec").checked = P.rec; g("c15r").disabled = !P.rec;
+      S.W = 300; S.day = 0; S.hist = [300]; S.inflow = P.f; S.spend = P.s; S.tax = 0; paint();
+    }));
+    setInterval(() => { if (S.run) { step(); paint(); } }, 140);
+    // 水流动画
+    (function loop() {
+      [["c15fl1", S.inflow], ["c15fl2", S.spend], ["c15fl3", S.tax]].forEach(([id, f]) => {
+        dash[id] -= Math.min(1, f / 300) * 2.2 + (f > 0.5 ? 0.3 : 0);
+        g(id).setAttribute("stroke-dashoffset", dash[id].toFixed(1));
+      });
+      requestAnimationFrame(loop);
+    })();
+    S.inflow = P.f; S.spend = P.s;
+    paint();
+  })();
+})();
+</script>
+<script>
+(function(){
+  const g=id=>document.getElementById(id);
+  const done=(el,msg)=>{ if(el.classList.contains("c15done"))return; el.classList.add("c15done"); el.insertAdjacentHTML("beforeend"," <b>✅ 完成！"+msg+"</b>"); };
+  function la(){
+    const x=+g("c15la").value; g("c15la-v").textContent=x;
+    g("c15la-w").style.height=(x/400*84+16)+"px"; g("c15la-l").style.height=(100/400*84+16)+"px";
+    g("c15la-w").textContent="赢 "+x;
+    const r=x/100; let m="你要求的赢面是输的 <b>"+r.toFixed(1)+"</b> 倍。";
+    if(r<1.3) m+="你几乎把赢和输看得一样重。";
+    else if(r<=2.6) m+="Tversky 与 Kahneman（1992）估计的中位数是 2.25，你的数字和它是同一个量级：失去的那一块，分量比得到的更重。";
+    else m+="比报告里的中位数 2.25 还要更看重损失。";
+    g("c15la-msg").innerHTML=m;
+  }
+  g("c15la").addEventListener("input",la); la();
+  let streak=0,lastDay=-1;
+  setInterval(()=>{
+    const d=+g("c15day").textContent;
+    if(d===lastDay)return; lastDay=d;
+    if(g("c15inf").checked && g("c15lamp").className.indexOf("ok")>=0 && d>0) streak++; else streak=0;
+    if(streak>=100) done(g("c15_task1"),"“钱生钱”开着，水位仍稳在绿带里。你给强化循环配上了平衡循环。");
+  },100);
+  let armed=false;
+  ["s1","s2","s3"].forEach(id=>g(id).addEventListener("input",()=>{
+    if(+g("s1").value>=1.4) armed=true;
+    if(armed && g("rmsg").textContent.indexOf("很平衡")>=0) done(g("c15_task2"),"你会发现，三个一起涨，胜率就回来了。");
+  }));
+  let rnd=false;
+  function chk(){ const a=+g("c15pa").value; if(rnd && a<=1.26) done(g("c15_task3"),"α 很小时，平均值是中位数的好几倍，多数人都在平均线以下。"); }
+  g("c15pgen").addEventListener("click",()=>{ rnd=true; chk(); });
+  g("c15pa").addEventListener("input",chk);
+})();
+</script>
+</body>
+</html>

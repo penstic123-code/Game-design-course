@@ -1,0 +1,559 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>第6章 心流与难度</title>
+<link rel="stylesheet" href="css/style.css">
+<style>
+  .c6row{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:6px 0}
+  .c6row label{font-size:.95rem;cursor:pointer}
+  .c6meter{height:26px;border:3px solid var(--ink);border-radius:14px;background:#fff;overflow:hidden;margin:6px 0}
+  .c6meter i{display:block;height:100%;width:0;background:var(--green);transition:width .25s,background .25s}
+  .c6out{margin-top:8px;padding:8px 12px;border:2px dashed var(--ink);border-radius:10px;background:var(--blue);font-size:.98rem}
+  .c6leg span{display:inline-block;margin-right:12px;font-size:.92rem}
+  .c6leg i{display:inline-block;width:14px;height:14px;border:2px solid var(--ink);vertical-align:middle;margin-right:4px}
+  .c6face{font-size:2.6rem;line-height:1;min-width:3rem;text-align:center}
+  .c6tbl{border-collapse:collapse;margin:8px 0;font-size:.95rem}
+  .c6tbl td,.c6tbl th{border:2px solid var(--ink);padding:2px 12px;text-align:center;background:#fff}
+  .c6guess{background:#fff;border:2.5px solid var(--ink);border-radius:14px 22px 14px 20px;padding:10px 14px;margin:12px 0}
+  .c6guess .res{display:none;margin-top:8px;padding:8px 12px;background:var(--blue);border:2px dashed var(--ink);border-radius:10px}
+  .c6guess .res.show{display:block}
+  .sticky.c6ok{background:#d7f5cc}
+  .c6ctl{display:flex;flex-wrap:wrap;gap:4px 18px}
+  .c6ctl>div{flex:1;min-width:200px}
+</style>
+</head>
+<body data-ch="6">
+<main class="wrap">
+  <div class="hero">
+    <div class="txt">
+      <span class="badge">第 6 章</span>
+      <h1>心流与难度</h1>
+      <p class="sub">不太难、不太简单，刚好够得着；还有，玩家到底记住了什么。</p>
+    </div>
+    <svg viewBox="0 0 190 150" class="rough" aria-hidden="true">
+      <path d="M10 130 Q60 130 100 80 T180 20" fill="none" stroke="#2b2b3a" stroke-width="5"/>
+      <path d="M10 130 Q60 120 100 70 T180 10 L180 40 Q130 60 100 100 T10 145Z" fill="#b6e8a8" opacity=".6"/>
+      <circle cx="100" cy="76" r="11" fill="#ffe58a" stroke="#2b2b3a" stroke-width="4"/>
+    </svg>
+  </div>
+
+  <div class="goals">
+    <h3>学习目标</h3>
+    <span class="time">约 40 分钟</span>
+    <ul>
+      <li>读完你能说出心流需要的三个条件，并判断一个游戏时刻缺的是哪一个。</li>
+      <li>读完你能解释“脚手架”为什么要随技能逐步撤除，并为新手设计一套提示的撤除节奏。</li>
+      <li>读完你能用“峰终定律”安排一个关卡的高光与收尾，也知道它管得了什么、管不了什么。</li>
+    </ul>
+  </div>
+
+  <!-- 1 是什么：心流通道 -->
+  <div class="sec"><span class="n">1</span><h2><span class="tag what">是什么</span>心流通道：为什么三个小时像三分钟</h2></div>
+  <div class="withimg">
+    <span data-illus="c06_rapt"></span>
+    <div>
+      <p>你大概有过这样的晚上：本来只想再玩一关，抬头一看，窗外天都黑了。晚饭凉了你没发觉，手机响了你也没听见，三个小时像是三分钟。</p>
+      <p>这种全神贯注、忘了时间的状态，心理学上叫<span class="term" tabindex="0" data-def="Flow：全神贯注、忘记时间、行动与意识合一的最佳体验状态。">心流</span>。它出现的条件听起来很朴素：眼前的事要有点难，但难度刚好是你够得着的那种。</p>
+      <p>想象一条通道。横轴是你的技能，纵轴是事情的挑战。挑战远高于技能，你会慌；挑战远低于技能，你会困；两者差不多的时候，你才在通道里。这种状态叫<span class="term" tabindex="0" data-def="挑战-技能平衡：任务难度与当前能力大致相当，略有拉伸。">挑战—技能平衡</span>。</p>
+    </div>
+  </div>
+  <p>下面这张图就是通道。拖动圆点，或者拉两个滑块，看你的位置在哪一块。</p>
+  <div class="board">
+    <svg viewBox="-16 -4 476 330" width="100%" style="max-width:560px;display:block;margin:auto" id="flowsvg" role="img" aria-label="技能为横轴、挑战为纵轴的心流通道图：左上是焦虑区，右下是无聊区，中间斜带是心流区">
+      <rect x="40" y="10" width="400" height="270" fill="#fffef7" stroke="#2b2b3a" stroke-width="3"/>
+      <polygon points="40,280 40,231 368,10 440,10 440,59 112,280" fill="#b6e8a8" opacity=".8"/>
+      <polygon points="40,10 40,231 368,10" fill="#ffc9c9" opacity=".7"/>
+      <polygon points="112,280 440,59 440,280" fill="#a8dcf0" opacity=".7"/>
+      <g font-size="22" fill="#2b2b3a" text-anchor="middle">
+        <text x="110" y="60">焦虑 😰</text><text x="370" y="240">无聊 😴</text>
+        <text x="260" y="140" transform="rotate(-33 260 140)">心流 🌊</text>
+        <text x="240" y="308">技能 →</text><text x="22" y="150" transform="rotate(-90 22 150)">挑战 →</text>
+      </g>
+      <circle id="dot" cx="240" cy="140" r="13" fill="#ffe58a" stroke="#2b2b3a" stroke-width="4" style="cursor:grab;touch-action:none"/>
+    </svg>
+    <label class="ctl">技能 <output id="o1">50</output></label><input type="range" id="skill" min="0" max="100" value="50">
+    <label class="ctl">挑战 <output id="o2">58</output></label><input type="range" id="chal" min="0" max="100" value="58">
+    <div class="msg" id="state"></div>
+  </div>
+  <div class="sticky" id="c6t1">试试看：先把圆点拖进左上的焦虑区，再拖到右下的无聊区，最后回到绿色通道。三个区域都去过一次，这里会打钩。</div>
+  <p>有一点容易被忽略：玩家的技能一直在涨。昨天刚好的难度，今天就偏简单了，所以挑战也得跟着往上走，否则圆点会沿着水平方向慢慢滑进“无聊”。</p>
+
+  <div class="eg" data-ic="🧩"><span data-illus="c06_tetrisflow"></span><div class="egt"><b>俄罗斯方块</b>：方块下落的速度随等级一点点加快，你的手也在悄悄练熟。每一级都比上一级难一点，却总能勉强接住，于是很多人玩着玩着就忘了时间。</div></div>
+  <div class="eg" data-ic="🧗"><span data-illus="c06_climb"></span><div class="egt"><b>攀岩</b>：好的路线像一串刚好够得着的把手，下一个要踮脚、伸直手臂，但不是要飞过去。路线选对了，人一整天都停不下来；选了远超自己的，手臂一抖，脑子里只剩“怎么下去”。</div></div>
+  <div class="eg bad" data-ic="😴"><span data-illus="c06_bored"></span><div class="egt"><b>高手被塞进新手村</b>：挑战远低于技能，他不会生气，只会犯困。很多游戏的“难度选项”，就是不想让高手在这里睡着。</div></div>
+  <div class="eg bad" data-ic="🌫️"><span data-illus="c06_lost"></span><div class="egt"><b>难度刚好，却没人告诉你去哪</b>：这是最“差一点就对”的一种。圆点在通道里，可开放世界里满地乱转，半小时后你关了游戏。心流需要的不只是难度刚好。</div></div>
+
+  <!-- 2 发明故事：心流 -->
+  <div class="sec"><span class="n">2</span><h2><span class="tag origin">发明故事</span>一群不为钱也停不下来的人</h2></div>
+  <div class="story">
+    <h3>画家为什么不吃饭</h3>
+    <p>上世纪六十年代，芝加哥有位年轻的心理学家米哈里·契克森米哈（Mihaly Csikszentmihalyi）在做博士研究，观察一群艺术系的学生画画。他看到一件当时的心理学不太好解释的事：这些人一画就是几个钟头，一直画到忘了吃饭、忘了累。没有人给他们发工资，也没有人在催。</p>
+    <p>那时心理学里的主流是行为主义，说法很干脆：人做事是为了奖励，不是钱就是分数。可这些画家的奖励在哪儿？画布还没画完，什么奖励都还没来。</p>
+    <p>他和同事带着这个疑问，去问了棋手、攀岩者、跳舞的人，还有外科医生。先别往下看，<b>猜猜</b>他们被问到“做这件事时，最享受的是哪一刻”，多半会怎么回答。</p>
+    <div class="c6guess" id="c6g1">
+      <div class="c6row">
+        <button class="chip" data-g="0">赢的时候，拿到奖励的时候</button>
+        <button class="chip" data-g="1">事情有点难、全神贯注、忘了时间的时候</button>
+        <button class="chip" data-g="2">放松下来、什么都不用做的时候</button>
+      </div>
+      <div class="res" id="c6g1r"></div>
+    </div>
+  </div>
+  <div class="timeline">
+    <div class="ev hasimg"><span data-illus="c06_artist"></span><div><b class="yr">1960 年代</b>　契克森米哈在芝加哥观察艺术系学生。让他困惑的是，这些人沉浸得那么深，起因却不是外面给的东西，好像只是画画这件事本身把他们吸住了。</div></div>
+    <div class="ev hasimg"><span data-illus="c06_interviews"></span><div><b class="yr">1970 年代</b>　他的团队把访谈范围扩到棋手、攀岩者、自由舞者和外科医生，问他们最享受的时刻。不同的人，说的几乎是同一件事，其中好几个人用了同一个比喻：像被一股水流带着走。“flow”这个词就是这样来的。</div></div>
+    <div class="ev hasimg"><span data-illus="c06_book"></span><div><b class="yr">1975、1990</b>　1975 年，他出版了《Beyond Boredom and Anxiety》（《超越无聊与焦虑》）。书名已经交代了核心：沉浸的人要同时躲开两个坑，无聊和焦虑。1990 年的《Flow: The Psychology of Optimal Experience》把这套想法带给了大众读者。</div></div>
+    <div class="ev hasimg"><span data-illus="c06_designer"></span><div><b class="yr">今天</b>　游戏设计师读到这些，会发现这几乎就是自己每天在解的题：玩家技能一直在变，怎样让难度跟着变，把人留在通道里？</div></div>
+  </div>
+
+  <!-- 3 为什么：心流条件 -->
+  <div class="sec"><span class="n">3</span><h2><span class="tag why">为什么成立</span>难度刚好就够了吗</h2></div>
+  <p>画出通道很容易，难的是追问：只要难度刚好，就一定沉浸吗？前面那个满地乱转的开放世界已经给了一个反例。再想想另一种情况：每走一步都要转圈等十秒才知道结果，难度再合适，你也很难沉进去。</p>
+  <div class="why-box">
+    <h3>心流的三个条件</h3>
+    <p>契克森米哈把心流者的体验归纳成八九个特征。游戏设计里最常被引用的，是其中被他称作“条件”的三个：<b>清晰的目标</b>（你随时知道现在要做什么）、<b>即时的反馈</b>（你随时知道做得怎么样）、<b>挑战与技能的平衡</b>。全神贯注、忘记时间，这些是条件满足之后的<b>结果</b>。</p>
+    <svg viewBox="0 -12 700 282" width="100%" role="img" aria-label="关系图：清晰的目标、即时的反馈、挑战与技能平衡三个条件一起指向心流，心流带来全神贯注和忘记时间两个结果">
+      <g class="rough" stroke="#2b2b3a" stroke-width="3.5" fill="none" stroke-linecap="round">
+        <rect x="14" y="16" width="210" height="62" rx="12" fill="#fff7cf"/>
+        <rect x="14" y="104" width="210" height="62" rx="12" fill="#e8f6fc"/>
+        <rect x="14" y="192" width="210" height="62" rx="12" fill="#ffe9ef"/>
+        <ellipse cx="370" cy="135" rx="82" ry="48" fill="#b6e8a8"/>
+        <rect x="506" y="46" width="180" height="62" rx="12" fill="#fff"/>
+        <rect x="506" y="162" width="180" height="62" rx="12" fill="#fff"/>
+        <path d="M226 48 L292 112 M226 135 H286 M226 222 L292 160"/><path d="M450 120 L502 84 M450 150 L502 190"/>
+        <path d="M280 104 l12 8 -14 2 M276 130 l12 5 -12 6 M284 152 l10 6 -14 -2"/><path d="M490 78 l12 6 -14 2 M488 180 l14 8 -16 -2"/>
+      </g>
+      <g font-size="20" text-anchor="middle" fill="#2b2b3a">
+        <text x="119" y="54">清晰的目标</text><text x="119" y="142">即时的反馈</text><text x="119" y="230">挑战与技能平衡</text>
+        <text x="370" y="142" font-size="24">心流</text>
+        <text x="596" y="84">全神贯注</text><text x="596" y="200">忘记时间</text>
+        <text x="119" y="10" font-size="16">三个条件</text><text x="596" y="30" font-size="16">结果</text>
+      </g>
+    </svg>
+    <p class="small" style="margin-top:4px">“三个条件”是游戏设计里常见的简化概括，不是原书的完整列表。后来也有研究者把心流改造成专门评估游戏的模型，比如 GameFlow。</p>
+    <div class="src">出处：Mihaly Csikszentmihalyi，《Beyond Boredom and Anxiety》（1975）、《Flow: The Psychology of Optimal Experience》（1990）。</div>
+  </div>
+  <p>下面是一个小实验。注意它的“沉浸度”是本书自拟的示意公式：每缺一个条件就乘一个折扣，数字不是任何实测值，只用来体会“三个条件是相乘，不是相加”。补上一项，其余的短板照样拖后腿。</p>
+  <div class="board">
+    <b>心流条件检查器（示意模型）</b>
+    <div class="c6row">
+      <label><input type="checkbox" id="c6goal" checked> 目标清晰</label>
+      <label><input type="checkbox" id="c6fb" checked> 反馈即时</label>
+    </div>
+    <label class="ctl">挑战 − 技能（负 = 太简单，正 = 太难）<output id="c6bo">0</output></label>
+    <input type="range" id="c6bal" min="-50" max="50" value="0">
+    <div class="c6row">
+      <button class="chip" data-p="tetris">例：俄罗斯方块</button>
+      <button class="chip" data-p="fog">例：不知道目标的迷宫</button>
+      <button class="chip" data-p="slow">例：每步结算要等 10 秒</button>
+      <button class="chip" data-p="boss">例：新手遇到超难 Boss</button>
+    </div>
+    <div class="c6meter"><i id="c6bar"></i></div>
+    <div class="c6out" id="c6ans"></div>
+  </div>
+  <div class="sticky" id="c6t2">试试看：点“不知道目标的迷宫”，再把滑块拉到最合适的位置（接近 0）。看看沉浸度最多能到多少，这就是“只缺一个条件”的代价。</div>
+
+  <!-- 4 怎么用：难度曲线 -->
+  <div class="sec"><span class="n">4</span><h2><span class="tag how">怎么用</span>难度曲线调教台：你来设计一路上的难度</h2></div>
+  <p>把时间摊开，通道就变成一条随技能向上的绿色带子。玩家从新手走到熟练，难度曲线能不能一直待在带子里，决定了他会不会中途离开。先选三种常见设计看看，再点“我来调”自己动手。</p>
+  <div class="board">
+    <button class="btn" data-c="wall">🧱 一路陡升</button>
+    <button class="btn alt" data-c="flat">➖ 一直平缓</button>
+    <button class="btn pink" data-c="wave">🌊 波浪上升</button>
+    <button class="btn green" data-c="mine">🎛️ 我来调</button>
+    <div class="c6ctl" id="c6mine" style="display:none">
+      <div><label class="ctl">开头的难度 <output id="c6ao">20</output></label><input type="range" id="c6a" min="0" max="100" value="20"></div>
+      <div><label class="ctl">结尾的难度 <output id="c6bo2">50</output></label><input type="range" id="c6b" min="0" max="100" value="50"></div>
+      <div><label class="ctl">起伏幅度 <output id="c6po">0</output></label><input type="range" id="c6p" min="0" max="25" value="0"></div>
+    </div>
+    <svg viewBox="-14 0 574 290" width="100%" id="curve" style="margin-top:6px" role="img" aria-label="难度曲线图：绿色带子是随技能增长的心流通道，红色线段表示焦虑，蓝色线段表示无聊，绿线表示心流">
+      <rect x="40" y="10" width="500" height="240" fill="#fffef7" stroke="#2b2b3a" stroke-width="3"/>
+      <path id="band" fill="#b6e8a8" opacity=".75"/>
+      <g id="segs" fill="none" stroke-width="6" stroke-linecap="round"></g>
+      <text x="290" y="274" text-anchor="middle" font-size="20">游戏进程 →</text>
+      <text x="22" y="130" transform="rotate(-90 22 130)" text-anchor="middle" font-size="20">难度 →</text>
+    </svg>
+    <div class="msg" id="curvemsg">选一种曲线 👆</div>
+  </div>
+  <div class="sticky" id="c6t3">试试看：点“我来调”，让整条曲线待在绿色通道里的时间达到 85% 以上。想想这条曲线应该从哪儿起步、往哪儿走。</div>
+  <p>你多半发现了：最稳妥的曲线并不是一条“越来越难”的直线，而是紧贴着技能成长的那条线，再加一点起伏。起伏让玩家在放松段里把新学的东西练熟，下一波加压才接得住。</p>
+
+  <!-- 5 是什么：ZPD -->
+  <div class="sec"><span class="n">5</span><h2><span class="tag what">是什么</span>最近发展区与脚手架：提示该给多少</h2></div>
+  <div class="withimg rev">
+    <span data-illus="c06_zpdband"></span>
+    <div>
+      <p>做过教学关的设计师几乎都踩过同一个坑：提示给少了，新手卡在第二关就走了；给多了，玩家变成了“按提示点按钮”的机器，一到没提示的第十关就懵了。</p>
+      <p>提示到底该给多少？教育心理学家早就在想这个问题。苏联心理学家维果茨基给出一个很好用的说法：一件事，要么你<b>独自就能做</b>，要么<b>有人帮一把才能做</b>，要么<b>怎么帮也做不了</b>。真正的学习，发生在中间那一段。</p>
+      <p>这一段叫<span class="term" tabindex="0" data-def="Zone of Proximal Development：学习者独自能完成的水平，与在他人帮助下能完成的水平之间的区间。">最近发展区</span>。在这一段里给的临时支持，叫<span class="term" tabindex="0" data-def="scaffolding：在学习者需要时提供的临时性支持，随着能力增长而逐步撤除。">脚手架</span>，就像盖楼搭的架子，楼稳了就拆。</p>
+    </div>
+  </div>
+  <div class="card">
+    <h3>🧱 三段式：独自能做、有人帮能做、做不到</h3>
+    <svg viewBox="0 0 700 264" width="100%" role="img" aria-label="任务难度由低到高分三段：独自能做、有人帮一把能做（最近发展区，脚手架搭在这里）、现在还做不到；技能增长后整体向右移动">
+      <g class="rough" stroke="#2b2b3a" stroke-width="3.5" stroke-linejoin="round" stroke-linecap="round">
+        <rect x="30" y="70" width="210" height="64" fill="#b6e8a8"/>
+        <rect x="240" y="70" width="230" height="64" fill="#ffe58a"/>
+        <rect x="470" y="70" width="200" height="64" fill="#ffb3c6"/>
+        <path d="M244 150 v10 H466 v-10" fill="none"/><path d="M355 160 v12" fill="none"/>
+        <path d="M120 218 H580" fill="none"/><path d="M566 206 L582 218 L566 230" fill="none"/>
+      </g>
+      <g font-size="21" text-anchor="middle" fill="#2b2b3a">
+        <text x="135" y="109">独自能做</text><text x="355" y="109">有人帮一把能做</text><text x="570" y="109">现在还做不到</text>
+        <text x="355" y="196">最近发展区：脚手架只搭在这一段</text>
+        <text x="30" y="52" text-anchor="start">任务难度 →</text>
+        <text x="350" y="244" font-size="18">技能练熟后，三段整体向右挪</text>
+      </g>
+    </svg>
+    <p class="small">黄色那一段就是最近发展区。技能一涨，它整体往右挪，所以脚手架也必须跟着挪、最后拆掉。</p>
+  </div>
+  <div class="eg" data-ic="🚲"><span data-illus="c06_bike"></span><div class="egt"><b>学骑自行车</b>：大人先扶着车座跑，孩子歪歪扭扭，看着快倒了才用力扶一下。过几天，手只轻轻搭着，再过几天，孩子自己回头一看，后面早没人了。</div></div>
+  <div class="eg" data-ic="🎮"><span data-illus="c06_tutorial"></span><div class="egt"><b>教学关</b>：第一次，粗大的箭头直接指给你看；第二次，只剩一个小图标；第三次，什么都没有，你自己来。提示是一格格撤掉的，玩家几乎没察觉。</div></div>
+  <div class="eg bad" data-ic="🩹"><span data-illus="c06_fullhint"></span><div class="egt"><b>提示永远满格</b>：第 30 关了，箭头还在每一屏闪。玩家永远不需要自己想，也就永远学不会。这不是在帮他，是在替他玩。</div></div>
+
+  <!-- 6 发明故事：ZPD -->
+  <div class="sec"><span class="n">6</span><h2><span class="tag origin">发明故事</span>两个分数一样的孩子</h2></div>
+  <div class="story">
+    <h3>智力测验漏掉了什么</h3>
+    <p>二十世纪初，学校里流行用智力测验给孩子打分：把孩子关进一间屋子，让他独自答题，看能答到几岁的水平。维果茨基（Lev Vygotsky，1896–1934）觉得这里有个漏洞：它只量了孩子“现在”会什么，没量他“马上就能学会”什么。</p>
+    <p>他举过一个例子：两个孩子测下来都是八岁的水平。接着，他给两人出更难的题，并在旁边稍稍点拨。猜猜看，能被带到多高？</p>
+    <div class="c6guess" id="c6g2">
+      <label class="ctl">你猜：更有潜力的那个孩子，被点拨之后，能做几岁的题？ <output id="c6g2o">10</output> 岁</label>
+      <input type="range" id="c6g2s" min="8" max="14" step="1" value="10">
+      <button class="btn" id="c6g2b">揭晓</button>
+      <div class="res" id="c6g2r"></div>
+    </div>
+  </div>
+  <div class="timeline">
+    <div class="ev hasimg"><span data-illus="c06_twokids"></span><div><b class="yr">1930 年代</b>　维果茨基写道：两个孩子独自答题都是八岁水平，但给点拨后，一个能做十二岁的题，另一个只能到九岁。独自答题的分数相同，真正的潜力却差了很多。他把“独自能做的”和“有帮助能做的”之间的差距，叫作最近发展区。（这是他自己的举例，不是一项对照实验。）</div></div>
+    <div class="ev hasimg"><span data-illus="c06_pyramid"></span><div><b class="yr">1976</b>　伍德（David Wood）、布鲁纳（Jerome Bruner）和罗斯（Gail Ross）研究了辅导者怎样带三到五岁的孩子搭积木金字塔：把任务拆小，指出关键的地方，做一遍示范，孩子能自己做时就退开。他们把这种临时的、会撤掉的帮助叫作“脚手架”。</div></div>
+    <div class="ev hasimg"><span data-illus="c06_hintdial"></span><div><b class="yr">今天</b>　教学关、辅助瞄准、简单模式、渐隐的提示，本质上都是一个旋钮：从“满”慢慢拧到“无”。难点只有一个，该拧多快。</div></div>
+  </div>
+
+  <!-- 7 为什么：ZPD 模拟 -->
+  <div class="sec"><span class="n">7</span><h2><span class="tag why">为什么成立</span>脚手架为什么必须撤</h2></div>
+  <div class="why-box">
+    <h3>最近发展区与脚手架</h3>
+    <p>维果茨基的核心判断是：学习不是在“已经会”的地方发生，也不是在“根本不会”的地方发生，而是在“伸手才够得着”的地方发生。脚手架把原本够不着的任务，暂时变成够得着的；等你独自能做了，它就该撤，不然就会一直停在“有帮助才行”的状态。</p>
+    <p>下面的<b>示意模型</b>把这个想法写成最简单的规则：学习者技能的增长速度，取决于“有提示时的有效难度”比当前技能高出多少。高出 12 点左右最容易学，太接近（太容易）或太远（太难）都学得很慢。它只是一个简化假设，用来对比三种提示策略。</p>
+    <div class="src">出处：Lev Vygotsky，《Mind in Society》（1978，英文文集）；David Wood、Jerome Bruner、Gail Ross，“The role of tutoring in problem solving”，《Journal of Child Psychology and Psychiatry》17(2)：89–100（1976）。这是教育学里影响很大的理论，而不是已在游戏里被直接检验过的定律；下方的数值模型是本书自拟的示意，不是实验结果。</div>
+  </div>
+  <div class="board">
+    <label class="ctl">初始提示强度（0 = 无提示，100% = 几乎直接告诉你做法）<output id="c6ho">80</output></label>
+    <input type="range" id="c6h" min="0" max="100" value="80">
+    <svg id="c6sc" viewBox="0 0 560 292" width="100%" role="img" aria-label="三种提示策略下学习者技能随练习变化的曲线"></svg>
+    <div class="c6leg">
+      <span><i style="background:#e5484d"></i>A 提示一直满格</span>
+      <span><i style="background:#3b8fd0"></i>B 10 步后突然撤光</span>
+      <span><i style="background:#2b9a4a"></i>C 随技能增长逐步撤除</span>
+    </div>
+    <div class="c6out" id="c6scr"></div>
+  </div>
+  <div class="sticky" id="c6t4">试试看：把滑块调到让策略 C（绿线）能在 70 步以内达到目标 80，同时留意红线和蓝线停在哪儿。再把滑块拉得很低，看看连 C 也起步困难的原因。</div>
+  <p class="small">任务难度固定为 80，学习者起点 20，练习 100 步。红线停住，是因为提示把有效难度“钉”在了低处，技能一追上就没有再往上够的目标；蓝线撤得太猛，难度一下子超出了能力。提示的起点也要够，否则连起步都难。</p>
+
+  <!-- 8 是什么 + 发明故事：峰终 -->
+  <div class="sec"><span class="n">8</span><h2><span class="tag origin">发明故事</span>你记住的，不是你经历的</h2></div>
+  <div class="withimg">
+    <span data-illus="c06_remember"></span>
+    <div>
+      <p>有这么一种经历：一个关卡中间都很好玩，可最后一下莫名其妙地死掉了，于是你对朋友说“这关烂透了”。可明明前面十分钟你都笑着。</p>
+      <p>你是在撒谎吗？不是。你的记忆在评分，而记忆评分用的是另一套算法。心理学家卡尼曼（Daniel Kahneman）和同事注意到：人回顾一段经历时，打的分往往不是把每一刻加起来，而是抓住几个片段。</p>
+    </div>
+  </div>
+  <div class="story">
+    <h3>多受 30 秒罪，反而更愿意再来一次</h3>
+    <p>要验证这件事，研究者想了个有点残酷的办法：让人把手泡进冷水里。第一次，把手泡进约 14 度的冷水 60 秒。第二次，同样泡 60 秒，然后再多泡 30 秒，这最后 30 秒里水温被悄悄调高了大约一度，仍然不舒服，但没那么冷了。</p>
+    <p>两次都结束后，让你再选一次重来。<b>先猜</b>，你会选哪一次？</p>
+    <div class="c6guess" id="c6g3">
+      <div class="c6row">
+        <button class="chip" data-g="0">重来第一次（60 秒）</button>
+        <button class="chip" data-g="1">重来第二次（60 秒 + 多 30 秒略暖）</button>
+      </div>
+      <div class="res" id="c6g3r"></div>
+    </div>
+  </div>
+  <div class="timeline">
+    <div class="ev hasimg"><span data-illus="c06_coldwater"></span><div><b class="yr">1993</b>　卡尼曼、弗雷德里克森（Barbara Fredrickson）、施赖伯（Charles Schreiber）和雷德尔迈尔（Donald Redelmeier）做了上面的冷水实验。结果是大多数人选了总共多受了 30 秒罪的那一次。多出来的那段虽然也不舒服，却比前面好受，最后留在记忆里的感觉更好。</div></div>
+    <div class="ev hasimg"><span data-illus="c06_clinic"></span><div><b class="yr">1996、2003</b>　实验室里的结果会不会只是巧合？雷德尔迈尔和卡尼曼去了医院，在做结肠镜检查的病人身上做了同样的观察，发现病人对整个检查的评价，主要跟最疼的那一刻和结束时的感受有关，跟检查多长关系不大。2003 年，他们对 682 名病人做了随机试验：一半人的检查在最后多拖了一小段轻微不适的时间。多受了罪的这组，事后反而觉得整个检查没那么糟。</div></div>
+    <div class="ev hasimg"><span data-illus="c06_designerend"></span><div><b class="yr">后来</b>　这类发现被人们通俗地叫作“峰终定律”。对设计者来说，它给了一个具体抓手：不用把每一秒都做到最好，但最强的那一刻和最后的收尾必须出彩。</div></div>
+  </div>
+  <div class="eg" data-ic="👑"><span data-illus="c06_boss"></span><div class="egt"><b>打倒最终头目</b>：头目倒下，屏幕炸开彩带，音乐拉满。哪怕前半段有些拖沓，玩家走出这一关时，带走的是这一刻。</div></div>
+  <div class="eg" data-ic="🍰"><span data-illus="c06_dessert"></span><div class="egt"><b>一顿饭</b>：前面的菜很一般，最后上来一块好吃的蛋糕，回家路上你多半会说“今天吃得不错”。餐厅把甜点留到最后，不是巧合。</div></div>
+  <div class="eg bad" data-ic="💥"><span data-illus="c06_oneshot"></span><div class="egt"><b>最后一秒被秒杀</b>：折线一路向上，最后垂直掉下去。整个关卡的评价被这一下拉走了。要补救的是结尾，不是把前面的好玩段落砍掉。</div></div>
+
+  <!-- 9 为什么：峰终 实验 -->
+  <div class="sec"><span class="n">9</span><h2><span class="tag why">为什么成立</span>峰终定律：记忆为什么偏心</h2></div>
+  <div class="why-box">
+    <h3>峰终定律（Peak–End rule）</h3>
+    <p>卡尼曼的看法是：我们其实有两个“自己”。一个在经历当下，感受每一刻；另一个在事后回顾，给整段经历打一个分，决定要不要再来一次。<span class="term" tabindex="0" data-def="回顾性评价：事后回忆一段经历时给出的整体评分，不等于当下每一刻体验的加总。">回顾性评价</span>往往更接近<b>体验最强烈的一刻（峰）</b>与<b>结束时的感受（终）</b>的平均，而对<b>持续了多久</b>相对不敏感，这叫<span class="term" tabindex="0" data-def="时长忽略：回顾性评价对经历持续的长短不太敏感。">时长忽略</span>。</p>
+    <svg viewBox="0 0 700 302" width="100%" role="img" aria-label="一条关卡体验折线：中段有最高点（峰），结尾下滑；虚线分别标出全程平均和峰终平均，峰终平均明显低于全程平均">
+      <g class="rough" fill="none" stroke="#2b2b3a" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="60" y="30" width="580" height="210" fill="#fffef7"/>
+        <polyline points="60,100 124,80 189,80 253,60 318,60 382,80 447,80 511,100 576,140 640,180" stroke-width="5"/>
+        <path d="M60 96 H640" stroke-dasharray="8 6" stroke-width="2.5"/><path d="M60 120 H640" stroke-dasharray="2 6" stroke-width="3"/>
+        <circle cx="253" cy="60" r="9" fill="#ffe58a"/><circle cx="640" cy="180" r="9" fill="#ffb3c6"/>
+      </g>
+      <g font-size="18" fill="#2b2b3a">
+        <text x="253" y="48" text-anchor="middle">峰：最强烈的一刻</text>
+        <text x="620" y="214" text-anchor="end">终：结尾的感受</text>
+        <text x="60" y="262">○ 体验折线（愉快程度，越高越好）</text>
+        <text x="60" y="284" font-size="17">虚线 = 全程平均（7.2）　点线 = 峰终平均（6.0）</text>
+        <text x="640" y="262" text-anchor="end">时间 →</text>
+      </g>
+    </svg>
+    <p>需要分清的一点：这是关于<b>记忆评价</b>的发现，不等于“当时每一刻的体验”。从经历的总量看，更长的好时光仍然更多；只是人在回忆、在决定“要不要再玩一次”的时候，更依赖峰与终。后续研究里这套效应的强弱因情境而异。</p>
+    <div class="src">出处：Kahneman、Fredrickson、Schreiber、Redelmeier，“When more pain is preferred to less: Adding a better end”，《Psychological Science》4(6)（1993）；Redelmeier 与 Kahneman，《Pain》66(1)：3–8（1996）；Redelmeier、Katz、Kahneman，“Memories of colonoscopy: a randomized trial”，《Pain》104：187–194（2003）。“峰终定律”是后人对这类发现的通俗命名。</div>
+  </div>
+  <div class="board">
+    <b>小实验：先“体验”，再评价</b>
+    <p class="small">下面两段是两个关卡的“愉快程度”（0–10）随时间变化的播放，每段约 7 秒。先分别点“体验 A”“体验 B”看它们依次播放，然后选你觉得整体更好的。</p>
+    <div class="c6row">
+      <button class="btn alt" id="c6pa">▶ 体验 A</button><button class="btn pink" id="c6pb">▶ 体验 B</button>
+      <div class="c6face" id="c6fc">🙂</div>
+    </div>
+    <div class="c6meter"><i id="c6pbar" style="background:var(--yellow)"></i></div>
+    <div class="msg" id="c6ptxt" style="font-size:1.05rem;font-family:var(--body)">两段都体验完才能评价。</div>
+    <div class="c6row">
+      <button class="btn" id="c6ca" disabled>A 更好</button><button class="btn" id="c6cb" disabled>B 更好</button>
+    </div>
+    <div class="c6out" id="c6pres" style="display:none"></div>
+  </div>
+  <div class="sticky" id="c6t5">试试看：两段都体验完，做出选择。选完后看看你的选择和“峰终平均”一致，还是和“全程平均”一致。</div>
+
+  <div class="misc">
+    <h3>常见误区</h3>
+    <ul>
+      <li><b>“难度越高越沉浸”。</b>不对：挑战远超技能是焦虑；沉浸来自“匹配”，还得有目标和反馈。</li>
+      <li><b>“提示越多越友好”。</b>提示一直满格会让学习停滞；好的提示会随技能撤除，或者交给玩家自己选。</li>
+      <li><b>“只要结尾好，中间随便”。</b>峰终定律描述的是记忆评价，不是说过程不重要。过程太差，玩家当场就走了，根本等不到结尾。</li>
+      <li><b>“心流就是好事”。</b>心流只说明“很投入”，并不等于“对你有益”。让人停不下来的设计，同样靠它。</li>
+    </ul>
+  </div>
+
+  <div class="reflect">
+    <h3>反思与争议</h3>
+    <p>心流研究依赖受访者对自己状态的报告，测量并不容易，“挑战—技能”图也不适用于所有人和所有活动。有人批评 GameFlow 这类游戏模型把复杂体验过度简化了。</p>
+    <p>游戏设计师 Raph Koster 在《A Theory of Fun for Game Design》（2004）里提出另一种解释：游戏的乐趣，很大程度上是大脑在学习新模式时的反馈，一旦完全掌握，游戏就成了“已解决的问题”，不再有趣。这是他的一种观点，它能解释“玩熟了会腻”，却不一定能解释社交的乐趣、感官的乐趣。</p>
+    <p>“脚手架”来自教育领域，而玩家不总想被“教”：过度的手把手引导会破坏探索的乐趣，怎么平衡是设计上的取舍。想一想：你玩过的游戏里，哪个“结尾”让你改变了对整个游戏的看法？这是峰终定律，还是别的原因？</p>
+  </div>
+
+  <div class="key">
+    <h3>本章要点</h3>
+    <ul>
+      <li><b>心流 = 挑战与技能匹配</b>，再加上清晰的目标和即时的反馈，缺哪一个沉浸感都会打折。</li>
+      <li>契克森米哈从“不为奖励也停不下来的人”身上发现了心流；玩家技能一直在涨，所以<b>难度要跟着涨</b>。</li>
+      <li>好的难度曲线紧贴技能成长，并带有起伏：加压、释放、再加压。</li>
+      <li>最近发展区是“有人帮一把才能做”的那一段；<b>脚手架</b>只搭在这一段，并随技能增长逐步撤除。</li>
+      <li>玩家评价关卡时，<b>峰值和结尾</b>占很大权重；但这是对记忆的发现，不能拿来替过程偷懒。</li>
+    </ul>
+  </div>
+  <div class="tldr">让玩家一直站在“刚好够得着”的位置：难度略高于技能、有目标有反馈、提示逐步撤掉，并把最强的一刻和结尾做好。</div>
+
+  <div class="sec"><span class="n">10</span><h2><span class="tag think">练习</span>小测验</h2></div>
+  <div id="quiz"></div>
+
+  <div class="sec"><span class="n">11</span><h2><span class="tag how">你的设计</span>把难度和提示安排一遍</h2></div>
+  <div class="card o">
+    <p>想一个你玩过的游戏，回忆它的<b>最难时刻</b>和<b>最放松时刻</b>。游戏是怎么安排这两者的？它有哪些“提示”，后来是怎么撤掉的？关卡的<b>结尾</b>留给你什么印象？</p>
+    <textarea rows="5" data-save="ch6" placeholder="例：《超级马力欧》——每个世界末尾是 Boss（最紧张），随后是奖励关/安全的下一个世界开头……"></textarea>
+    <p class="small">✍️ 自动保存在你的浏览器里。</p>
+  </div>
+</main>
+<script src="js/illus.js"></script>
+<script src="js/illus-ch06.js"></script>
+<script src="js/common.js"></script>
+<script>
+(function () {
+  const g = id => document.getElementById(id);
+  const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+  const done = (id, msg) => { const e = g(id); if (!e || e.classList.contains("c6ok")) return; e.classList.add("c6ok"); e.innerHTML += " ✅ <b>" + msg + "</b>"; };
+
+  // ===== 1) 心流通道 =====
+  const dot = g("dot"), seen = {};
+  function place() {
+    const s = +g("skill").value, c = +g("chal").value;
+    g("o1").textContent = Math.round(s); g("o2").textContent = Math.round(c);
+    dot.setAttribute("cx", 40 + s / 100 * 400); dot.setAttribute("cy", 280 - c / 100 * 270);
+    const d = c - s; let t, k;
+    if (d > 18) { t = "😰 焦虑：挑战远大于你的技能。要么降低难度，要么给玩家教学和成长的机会。"; k = "a"; }
+    else if (d < -18) { t = "😴 无聊：挑战太简单。加点新挑战。"; k = "b"; }
+    else { t = "🌊 心流！挑战和技能刚好匹配，玩家最沉浸。"; k = "f"; }
+    g("state").textContent = t; seen[k] = 1;
+    if (seen.a && seen.b && seen.f && g("c6t1")) done("c6t1", "三个区域都去过了。");
+  }
+  g("skill").oninput = place; g("chal").oninput = place;
+  let drag = false; const fsvg = g("flowsvg");
+  function move(e) {
+    const r = fsvg.getBoundingClientRect();
+    const x = (e.clientX - r.left) / r.width * 476 - 16, y = (e.clientY - r.top) / r.height * 330 - 4;
+    g("skill").value = clamp((x - 40) / 4, 0, 100); g("chal").value = clamp((280 - y) / 2.7, 0, 100); place();
+  }
+  dot.addEventListener("pointerdown", e => { drag = true; dot.setPointerCapture(e.pointerId); });
+  dot.addEventListener("pointermove", e => drag && move(e));
+  dot.addEventListener("pointerup", () => (drag = false));
+  place(); seen.a = seen.b = seen.f = 0;
+
+  // ===== 先猜后揭晓（通用） =====
+  const guessChips = (boxId, resId, texts) => {
+    const box = g(boxId), res = g(resId);
+    box.querySelectorAll("[data-g]").forEach(b => b.onclick = () => {
+      box.querySelectorAll("[data-g]").forEach(x => x.classList.toggle("on", x === b));
+      res.innerHTML = texts[+b.dataset.g]; res.classList.add("show");
+    });
+  };
+  guessChips("c6g1", "c6g1r", [
+    "很多人其实不这么说。奖励当然让人高兴，但被问到“最享受的那一刻”，他们讲的往往不是赢。",
+    "<b>多数人说的是这个。</b>事情有点难、自己正好够得着、全神贯注，连时间都忘了；有人说像被一股水流带着走。这就是后来所说的心流。",
+    "休息当然舒服，但那种舒服很淡，没有人把它描述成“最好的体验”。他们说的最好时刻，反而是在专注做一件有点难的事的时候。"
+  ]);
+  guessChips("c6g3", "c6g3r", [
+    "你选了短的那次。实验里是少数派。",
+    "<b>你选了多数人选的那个。</b>多数人选了更长的一次：那次总共多受了 30 秒罪，可结尾没那么冷。人们评价痛苦经历时，更看重最后一刻的感受，而不是总共受了多久。"
+  ]);
+  g("c6g2s").oninput = () => (g("c6g2o").textContent = g("c6g2s").value);
+  g("c6g2b").onclick = () => {
+    const v = +g("c6g2s").value, r = g("c6g2r"); r.classList.add("show");
+    r.innerHTML = "你猜 <b>" + v + " 岁</b>。维果茨基的例子里是：一个孩子能做<b>十二岁</b>的题，另一个只到<b>九岁</b>。独自答题分数一样，被带一带之后差了三岁。这个差距，才是智力测验没量到的部分。";
+  };
+
+  // ===== 2) 条件检查器 =====
+  function immersion() {
+    const goal = g("c6goal").checked, fb = g("c6fb").checked, d = +g("c6bal").value;
+    const G = goal ? 1 : 0.45, F = fb ? 1 : 0.5, B = Math.exp(-Math.pow(d / 22, 2));
+    return { v: 100 * G * F * B, goal, fb, d };
+  }
+  function flowUpdate() {
+    const r = immersion(); g("c6bo").textContent = r.d;
+    const bar = g("c6bar"); bar.style.width = r.v.toFixed(0) + "%";
+    bar.style.background = r.v > 70 ? "var(--green)" : r.v > 35 ? "var(--yellow)" : "#ffc9c9";
+    const miss = [];
+    if (!r.goal) miss.push("目标不清晰（玩家不知道该干什么）");
+    if (!r.fb) miss.push("反馈太慢（玩家不知道做得好不好）");
+    if (r.d > 12) miss.push("挑战明显高于技能（焦虑）");
+    if (r.d < -12) miss.push("挑战明显低于技能（无聊）");
+    g("c6ans").innerHTML = "示意沉浸度：<b>" + r.v.toFixed(0) + "</b> / 100。" + (miss.length ? "短板：" + miss.join("；") + "。" : "三个条件都基本满足。");
+    if (!r.goal && Math.abs(r.d) <= 3) done("c6t2", "目标不清晰时，难度调得再准，沉浸度也只有 " + r.v.toFixed(0) + "。");
+  }
+  ["c6goal", "c6fb", "c6bal"].forEach(id => g(id).addEventListener("input", flowUpdate));
+  const PRESET = { tetris: [1, 1, 2], fog: [0, 1, 0], slow: [1, 0, 0], boss: [1, 1, 45] };
+  document.querySelectorAll("[data-p]").forEach(b => b.onclick = () => {
+    const p = PRESET[b.dataset.p]; g("c6goal").checked = !!p[0]; g("c6fb").checked = !!p[1]; g("c6bal").value = p[2]; flowUpdate();
+  });
+  flowUpdate();
+
+  // ===== 3) 难度曲线 =====
+  const X = t => 40 + t * 500, Yy = v => 250 - v * 240;
+  const skill = t => 0.12 + 0.72 * Math.pow(t, 0.9);
+  const curves = {
+    wall: t => 0.1 + 0.9 * Math.pow(t, 0.35),
+    flat: t => 0.3 + 0.05 * t,
+    wave: t => skill(t) + 0.12 * Math.sin(t * 6 * Math.PI) - 0.02 + 0.06,
+    mine: t => +g("c6a").value / 100 + (+g("c6b").value - +g("c6a").value) / 100 * t + +g("c6p").value / 100 * Math.sin(t * 6 * Math.PI),
+  };
+  (function band() {
+    let top = "", bot = [];
+    for (let i = 0; i <= 50; i++) { const t = i / 50; top += (i ? "L" : "M") + X(t) + " " + Yy(skill(t) + 0.15); bot.push(X(t) + " " + Yy(skill(t) - 0.15)); }
+    g("band").setAttribute("d", top + "L" + bot.reverse().join("L") + "Z");
+  })();
+  let curMode = null;
+  function show(k) {
+    curMode = k; g("c6mine").style.display = k === "mine" ? "flex" : "none";
+    const f = curves[k], seg = g("segs"); seg.innerHTML = ""; let inN = 0; const N = 100;
+    for (let i = 0; i < N; i++) {
+      const t0 = i / N, t1 = (i + 1) / N, v = (f(t0) + f(t1)) / 2, s = skill((t0 + t1) / 2);
+      const col = v > s + 0.15 ? "#e5484d" : v < s - 0.15 ? "#3b8fd0" : "#2b9a4a";
+      if (col === "#2b9a4a") inN++;
+      const l = document.createElementNS("http://www.w3.org/2000/svg", "line");
+      l.setAttribute("x1", X(t0)); l.setAttribute("y1", Yy(clamp(f(t0), 0, 1)));
+      l.setAttribute("x2", X(t1)); l.setAttribute("y2", Yy(clamp(f(t1), 0, 1))); l.setAttribute("stroke", col);
+      seg.appendChild(l);
+    }
+    const names = { wall: "陡升", flat: "平缓", wave: "波浪", mine: "你调的" };
+    const adv = { wall: "红色 = 焦虑区：玩家很快被甩开，容易放弃。", flat: "蓝色 = 无聊区：玩家后半段觉得没有挑战。", wave: "曲线围绕通道上下波动，既有压力也有喘息，整体仍在成长。", mine: inN >= 85 ? "漂亮，几乎全程都在通道里。" : "红色是焦虑，蓝色是无聊。试着让曲线从偏低处起步，并随技能一路向上。" };
+    g("curvemsg").innerHTML = "「" + names[k] + "」：约 <b>" + inN + "%</b> 的时间在心流通道（绿线）。" + adv[k];
+    if (k === "mine" && inN >= 85) done("c6t3", "你调出了 " + inN + "% 的心流时间。");
+  }
+  document.querySelectorAll("[data-c]").forEach(b => (b.onclick = () => show(b.dataset.c)));
+  [["c6a", "c6ao"], ["c6b", "c6bo2"], ["c6p", "c6po"]].forEach(([s, o]) => g(s).addEventListener("input", () => { g(o).textContent = g(s).value; show("mine"); }));
+
+  // ===== 4) 脚手架模拟 =====
+  const D = 80, S0 = 20, STEPS = 100, HM = 60;
+  const lf = gap => Math.exp(-Math.pow((gap - 12) / 14, 2));
+  function simulate(kind, h0) {
+    let s = S0; const out = [s];
+    for (let t = 0; t < STEPS; t++) {
+      let h;
+      if (kind === "A") h = h0; else if (kind === "B") h = t < 10 ? h0 : 0; else h = clamp((D - s - 12) / HM, 0, h0);
+      s = Math.min(100, s + lf((D - h * HM) - s)); out.push(s);
+    }
+    return out;
+  }
+  const SX = t => 50 + t / STEPS * 490, SY = v => 250 - v / 100 * 235;
+  function scUpdate() {
+    const h0 = +g("c6h").value / 100; g("c6ho").textContent = Math.round(h0 * 100);
+    const cfg = [["A", "#e5484d"], ["B", "#3b8fd0"], ["C", "#2b9a4a"]];
+    let s = '<rect x="50" y="15" width="490" height="235" fill="#fffef7" stroke="#2b2b3a" stroke-width="3"/>' +
+      '<line x1="50" x2="540" y1="' + SY(D) + '" y2="' + SY(D) + '" stroke="#2b2b3a" stroke-width="2.5" stroke-dasharray="6 6"/>' +
+      '<text x="58" y="' + (SY(D) - 11) + '" font-size="15">目标 80</text>' +
+      '<text x="295" y="276" text-anchor="middle" font-size="18">练习次数 →</text>' +
+      '<text x="24" y="135" transform="rotate(-90 24 135)" text-anchor="middle" font-size="18">独立技能 →</text>';
+    const res = [];
+    cfg.forEach(([k, col]) => {
+      const a = simulate(k, h0);
+      s += '<polyline fill="none" stroke="' + col + '" stroke-width="5" stroke-linejoin="round" points="' + a.map((v, i) => SX(i).toFixed(1) + "," + SY(v).toFixed(1)).join(" ") + '"/>';
+      res.push({ k, end: a[STEPS], reach: a.findIndex(v => v >= D - 0.5) });
+    });
+    g("c6sc").innerHTML = s;
+    const f = r => "技能 <b>" + r.end.toFixed(0) + "</b>，" + (r.reach >= 0 ? "第 <b>" + r.reach + "</b> 步达到目标" : "<b>未达到目标</b>");
+    const [A, B, C] = res;
+    g("c6scr").innerHTML = "A（一直满提示）：" + f(A) + "<br>B（突然撤光）：" + f(B) + "<br>C（逐步撤除）：" + f(C);
+    if (C.reach >= 0 && C.reach <= 70) done("c6t4", "C 在第 " + C.reach + " 步达标，而 A 停在 " + A.end.toFixed(0) + "。");
+  }
+  g("c6h").addEventListener("input", scUpdate); scUpdate();
+
+  // ===== 5) 峰终实验 =====
+  const CA = [7, 8, 8, 9, 9, 8, 8, 7, 5, 3], CB = [5, 6, 6, 5, 6, 6, 7, 8, 9, 9];
+  const seenAB = { A: false, B: false }; let playing = false;
+  const face = v => v >= 8 ? "😄" : v >= 6 ? "🙂" : v >= 4 ? "😐" : "🙁";
+  function play(key, arr) {
+    if (playing) return; playing = true; g("c6pa").disabled = g("c6pb").disabled = true;
+    g("c6ptxt").textContent = "体验 " + key + " 播放中……"; let i = 0;
+    const tick = () => {
+      if (i >= arr.length) {
+        playing = false; seenAB[key] = true; g("c6pa").disabled = g("c6pb").disabled = false;
+        g("c6ptxt").textContent = "体验 " + key + " 结束。" + (seenAB.A && seenAB.B ? "现在选一个你觉得整体更好的。" : "再去体验另一段。");
+        if (seenAB.A && seenAB.B) g("c6ca").disabled = g("c6cb").disabled = false; return;
+      }
+      g("c6pbar").style.width = arr[i] * 10 + "%"; g("c6fc").textContent = face(arr[i]); i++; setTimeout(tick, 700);
+    };
+    tick();
+  }
+  g("c6pa").onclick = () => play("A", CA); g("c6pb").onclick = () => play("B", CB);
+  const avg = a => a.reduce((x, y) => x + y, 0) / a.length;
+  function reveal(choice) {
+    const stat = a => ({ mean: avg(a), peak: Math.max(...a), end: a[a.length - 1], pe: (Math.max(...a) + a[a.length - 1]) / 2 });
+    const sa = stat(CA), sb = stat(CB);
+    const row = (n, s) => "<tr><th>" + n + "</th><td>" + s.mean.toFixed(1) + "</td><td>" + s.peak + "</td><td>" + s.end + "</td><td><b>" + s.pe.toFixed(1) + "</b></td></tr>";
+    const el = g("c6pres"); el.style.display = "block";
+    el.innerHTML = "你选了 <b>" + choice + "</b>。<table class='c6tbl'><tr><th></th><th>全程平均</th><th>峰值</th><th>结尾</th><th>峰终平均</th></tr>" + row("A", sa) + row("B", sb) + "</table>" +
+      "全程平均 A 更高（体验的“总量”A 更多），峰终平均 B 更高。选 B，说明你的评价和峰终定律描述的倾向一致；选 A 也很正常，这只是一个小例子，不是证明。<br>" +
+      "<span class='small'>用在设计上：把最强的高光和最后的收束做好，避免以挫败或拖沓收尾；但这是对<b>回顾评价</b>的发现，不等于每一刻的当下体验。</span>";
+    done("c6t5", choice === "B" ? "你选了峰终平均更高的 B。" : "你选了全程平均更高的 A。");
+  }
+  g("c6ca").onclick = () => reveal("A"); g("c6cb").onclick = () => reveal("B");
+
+  GD.mountQuiz(g("quiz"), [
+    { q: "玩家技能很高，游戏却一直给很简单的关卡。玩家最可能感到：", opts: ["焦虑", "心流", "无聊", "兴奋"], a: 2, why: "挑战远低于技能，就是无聊。" },
+    { q: "为什么推荐“波浪式”上升，而不是一路陡升的难度曲线？", opts: ["因为实现更简单", "给玩家喘息、消化新技能的时间，下一波才接得住", "为了增加游戏时长", "因为玩家怕难"], a: 1, why: "放松段让新学会的东西变熟练，技能涨了，下一波加压才不会把人压垮。" },
+    { q: "【为什么】在“脚手架”模拟里，提示一直保持满格（策略 A），学习者技能却停滞不前。最合理的解释是：", opts: ["提示太少了", "有提示时任务对他来说太容易，缺少需要自己伸手去够的拉伸，技能就不再增长", "学习者不聪明", "提示让游戏变难了"], a: 1, why: "学习最快发生在“略高于独立技能”的区间。提示一直满格，等于一直待在“太容易”的位置；脚手架的意义在于随技能增长逐步撤除。" },
+    { q: "【为什么】一个关卡中途很精彩，但最后用一次无法躲避的“秒杀”结束。依据峰终定律，更值得做的改动是：", opts: ["把关卡再加长一倍", "把结尾改成有成就感的收束，并保住最高光时刻的质量", "删掉所有高光时刻让节奏平稳", "不用改，玩家只看整体平均"], a: 1, why: "回顾评价往往更依赖峰值和结尾。但它描述的是记忆评价，不能因此忽视过程，也不意味着“结尾好就能弥补一切”。" },
+    { q: "【为什么被发明】契克森米哈为什么要提出“心流”这个概念？", opts: ["为了给游戏难度定标准", "他发现有人不为奖励也沉浸其中，当时的“人做事为了奖励”解释不了", "因为他想证明玩游戏有益", "因为攀岩者要求"], a: 1, why: "他观察画家、棋手、攀岩者时发现，让人投入的是事情本身，不是外在奖励，于是去问他们“最好的时刻是什么”，归纳出了心流。" },
+    { q: "【为什么被发明】维果茨基为什么要提出“最近发展区”？", opts: ["为了反对所有考试", "智力测验只量孩子独自能做什么，却量不出在帮助下他还能走多远，两个分数相同的孩子潜力可能差很多", "为了证明提示越多越好", "为了设计教学关"], a: 1, why: "他的例子里，两个独自答题同为八岁水平的孩子，获得点拨后一个到十二岁、一个到九岁。真正的学习空间在“独自”和“有帮助”之间。" },
+  ]);
+})();
+</script>
+</body>
+</html>

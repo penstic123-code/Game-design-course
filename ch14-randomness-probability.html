@@ -1,0 +1,662 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>第14章 随机性与概率</title>
+<link rel="stylesheet" href="css/style.css">
+<style>
+  .tbl{width:100%;border-collapse:collapse;margin:8px 0;font-size:.95rem}
+  .tbl th,.tbl td{border:2px solid var(--ink);padding:4px 8px;text-align:center}
+  .tbl th{background:var(--yellow)}
+  .flips b{font-family:var(--hand);font-size:1.3rem}
+  .iq{background:#fff;border:2.5px solid var(--ink);border-radius:14px 22px 14px 20px;padding:10px 14px;margin:10px 0}
+  .iq .qt{font-weight:700;margin-bottom:4px}
+  .iq .res{display:none;margin-top:8px;padding:8px 12px;background:var(--blue);border:2px dashed var(--ink);border-radius:10px;font-size:.95rem}
+  .iq .res.show{display:block}
+  .iq .tagb{font-size:.85rem;color:var(--soft)}
+  .gapbar{height:14px;border:2px solid var(--ink);border-radius:8px;background:#fff;position:relative;margin:6px 0}
+  .gapbar i{position:absolute;top:-4px;width:6px;height:20px;border:2px solid var(--ink);border-radius:3px;transform:translateX(-3px)}
+  .gapbar i.g{background:#ffb3c6}.gapbar i.t{background:#8fd3f4}
+  .c14guess{background:#fff;border:2.5px solid var(--ink);border-radius:14px 22px 14px 20px;padding:10px 14px;margin:12px 0}
+  .c14guess .res{display:none;margin-top:8px;padding:8px 12px;background:var(--blue);border:2px dashed var(--ink);border-radius:10px}
+  .c14guess .res.show{display:block}
+  .sticky.c14ok{background:#d7f5cc}
+</style>
+</head>
+<body data-ch="14">
+<main class="wrap">
+  <div class="hero">
+    <div class="txt">
+      <span class="badge">第 14 章</span>
+      <h1>随机性与概率</h1>
+      <p class="sub">随机是调味料：放对了惊喜连连，放多了全是运气。</p>
+    </div>
+    <svg viewBox="0 0 190 150" class="rough" aria-hidden="true">
+      <g stroke="#2b2b3a" stroke-width="5" stroke-linejoin="round" stroke-linecap="round">
+        <rect x="25" y="45" width="70" height="70" rx="12" fill="#ffe58a" transform="rotate(-10 60 80)"/>
+        <rect x="100" y="40" width="64" height="64" rx="12" fill="#ffb3c6" transform="rotate(12 132 72)"/>
+      </g>
+      <g fill="#2b2b3a"><circle cx="45" cy="65" r="6"/><circle cx="75" cy="95" r="6"/><circle cx="60" cy="80" r="6"/>
+        <circle cx="120" cy="58" r="6"/><circle cx="145" cy="58" r="6"/><circle cx="120" cy="86" r="6"/><circle cx="145" cy="86" r="6"/></g>
+    </svg>
+  </div>
+
+  <div class="goals">
+    <h3>学习目标</h3>
+    <span class="time">约 40 分钟</span>
+    <ul>
+      <li>读完你能区分输入随机与输出随机，并用期望值给随机奖励定价。</li>
+      <li>读完你能解释为什么人的概率直觉常常出错（赌徒谬误、小样本、基础率忽视），以及保底和洗牌袋为什么被发明出来。</li>
+      <li>读完你能说出多颗骰子相加为何呈钟形、标准差如何随骰子数变化，并据此决定一个随机量该拆成几次、还是合成一次。</li>
+    </ul>
+  </div>
+
+  <!-- 1 -->
+  <div class="sec"><span class="n">1</span><h2><span class="tag what">是什么</span>随机放在哪里？</h2></div>
+  <div class="withimg">
+    <span data-illus="c14_inout"></span>
+    <div>
+      <p>同样是“看运气”，有的随机让你觉得刺激，有的却让你想摔手柄。差别往往不在概率多大，而在<b>随机发生在你做决定之前，还是之后</b>。</p>
+      <p>俄罗斯方块里，下一块是什么是随机的，但你先看到它，再决定放哪儿，聪明才智仍然管用。“命中率 75%”的一刀就不一样了：你已经做完了决定，剩下的只能等骰子。</p>
+    </div>
+  </div>
+  <div class="grid2">
+    <div class="card y"><h3>🎴 <span class="term" tabindex="0" data-def="随机发生在玩家决策之前，先随机出‘题目’，玩家再设法求解">输入随机</span></h3><p>先随机出“题目”，玩家再想办法解。例：俄罗斯方块下一块是什么、卡牌游戏起手抽到哪几张、地图怎么生成。玩家的<b>决策仍然决定结果</b>，随机只是让每局不同。</p></div>
+    <div class="card p"><h3>🎯 <span class="term" tabindex="0" data-def="随机发生在玩家决策之后，用来判定结果（命中、暴击、掉落）">输出随机</span></h3><p>玩家做完决定后，再随机“判定结果”。例：命中率 75% 的攻击、暴击、开宝箱。玩家能影响<b>概率</b>，但<b>结果不受控</b>，所以刺激，也容易让人觉得“被坑”。</p></div>
+  </div>
+  <div class="card">
+    <svg viewBox="0 0 700 228" width="100%" role="img" aria-label="时间线：先出现输入随机，再玩家决策，再出现输出随机，最后得到结果">
+      <g class="rough" stroke="#2b2b3a" stroke-width="4" fill="none" stroke-linecap="round">
+        <path d="M30 178 H660"/><path d="M650 166 L664 178 L650 190"/>
+        <rect x="20" y="62" width="200" height="96" rx="14" fill="#fff7cf"/>
+        <rect x="250" y="62" width="200" height="96" rx="14" fill="#e8f6fc"/>
+        <rect x="480" y="62" width="200" height="96" rx="14" fill="#ffe9ef"/>
+      </g>
+      <g font-size="20" text-anchor="middle" fill="#2b2b3a">
+        <text x="120" y="98" font-weight="700">输入随机</text><text x="120" y="126">出牌/出块/生成地图</text>
+        <text x="350" y="98" font-weight="700">玩家决策</text><text x="350" y="126">想办法、做选择</text>
+        <text x="580" y="98" font-weight="700">输出随机</text><text x="580" y="126">命中？暴击？掉落？</text>
+        <text x="120" y="40">玩家看到“题目”</text><text x="350" y="40">玩家的技术</text><text x="580" y="40">结果落地</text>
+        <text x="345" y="212">输入随机让玩家“有得想”，输出随机让玩家“靠运气”</text>
+      </g>
+    </svg>
+  </div>
+  <div class="eg" data-ic="🧩"><span data-illus="c14_next"></span><div class="egt"><b>俄罗斯方块的下一块预览</b>：每一块是什么是随机的，但你在落下手里这块之前就看到了下一块。你的判断仍然决定成败，随机只是不断给你出新题。</div></div>
+  <div class="eg" data-ic="⚔️"><span data-illus="c14_hit75"></span><div class="egt"><b>命中率 75% 的攻击</b>：选哪个目标、用什么技能，是你的决定；砍中还是砍空，等骰子说了算。四次里有一次落空，很正常，也很刺激。</div></div>
+  <div class="eg bad" data-ic="😡"><span data-illus="c14_miss95"></span><div class="egt"><b>显示 95%，却 MISS 了</b>：这是输出随机最容易翻车的地方。玩家会觉得“被骗了”，其实二十次里本来就有一次落空，可人对“几乎肯定”的失败特别不能容忍。</div></div>
+  <div class="sticky">经验法则：想让玩家觉得“我赢是因为我聪明”，多用<b>输入随机</b>；想要紧张刺激的爆发时刻，可以加一点<b>输出随机</b>，但别让它主宰胜负。</div>
+
+  <!-- 2 发明故事 -->
+  <div class="sec"><span class="n">2</span><h2><span class="tag origin">发明故事</span>一局被打断的赌局</h2></div>
+  <div class="story">
+    <h3>赌注该怎么分，才算公平？</h3>
+    <p>十七世纪的法国，赌桌是社交场。有个爱赌的骑士梅雷（Chevalier de Méré，本名安托万·贡博）遇到一个烦心事，于是跑去请教数学家帕斯卡。</p>
+    <p>情形是这样：A 和 B 各押 50 金币，约定谁先赢 3 局，谁拿走全部 100 金币。打到 A 领先 2 比 1 的时候，赌局被迫中断，再也没法继续。这 100 金币该怎么分，才算公平？</p>
+    <p>这个问题当时已经困扰了人们快二百年，没人给出让双方都服气的答案。<b>先自己猜一猜</b>，A 应该分到多少？</p>
+    <div class="c14guess" id="c14g1">
+      <label class="ctl">你觉得 A 该分到 <output id="c14g1o">70</output> 金币（B 分到其余）</label>
+      <input type="range" id="c14g1s" min="50" max="100" step="1" value="70">
+      <button class="btn" id="c14g1b">揭晓</button>
+      <div class="res" id="c14g1r"></div>
+    </div>
+    <svg viewBox="0 0 700 290" width="100%" role="img" aria-label="决策树：A 以 2 比 1 领先，下一局 A 赢（概率二分之一）A 拿全部；下一局 B 赢（二分之一）后打成 2 比 2，再下一局 A、B 各四分之一；所以 A 赢的总概率是四分之三">
+      <g class="rough" stroke="#2b2b3a" stroke-width="3.5" fill="none" stroke-linecap="round">
+        <rect x="14" y="100" width="150" height="64" rx="12" fill="#fff7cf"/>
+        <rect x="260" y="30" width="150" height="56" rx="12" fill="#e8f6fc"/>
+        <rect x="260" y="176" width="150" height="66" rx="12" fill="#e8f6fc"/>
+        <rect x="520" y="14" width="170" height="60" rx="12" fill="#b6e8a8"/>
+        <rect x="520" y="110" width="170" height="60" rx="12" fill="#b6e8a8"/>
+        <rect x="520" y="196" width="170" height="60" rx="12" fill="#ffb3c6"/>
+        <path d="M166 120 L258 66 M166 146 L258 196 M412 58 H518 M412 196 L518 150 M412 214 L518 226"/>
+      </g>
+      <g font-size="18" text-anchor="middle" fill="#2b2b3a">
+        <text x="89" y="128">现在 A 2 : 1 B</text><text x="89" y="152">先赢 3 局拿全部</text>
+        <text x="335" y="64">下一局 A 赢</text><text x="335" y="210">下一局 B 赢</text><text x="335" y="230" font-size="16">（2 : 2）</text>
+        <text x="605" y="40">A 拿走全部</text><text x="605" y="62">概率 1/2</text>
+        <text x="605" y="136">再下局 A 赢</text><text x="605" y="158">概率 1/4</text>
+        <text x="605" y="222">再下局 B 赢</text><text x="605" y="244">概率 1/4</text>
+        <text x="188" y="84" font-size="16">1/2</text><text x="188" y="198" font-size="16">1/2</text>
+        <text x="350" y="278" font-size="18">A 最终赢的概率 = 1/2 + 1/4 = 3/4，所以 A 该分 75</text>
+      </g>
+    </svg>
+  </div>
+  <div class="timeline">
+    <div class="ev hasimg"><span data-illus="c14_pacioli"></span><div><b class="yr">1494</b>　意大利的帕乔利（Luca Pacioli）在一本数学书里最早讨论了这个问题，答案是按已赢的局数分：2 比 1，A 拿三分之二。听上去合理，可它有个漏洞：如果 A 已经赢了 1 局、B 一局没赢，这样分，A 岂不是拿走全部，哪怕 B 还有机会翻盘？</div></div>
+    <div class="ev hasimg"><span data-illus="c14_pascal"></span><div><b class="yr">1654</b>　帕斯卡和费马通过一系列书信讨论这道题。他们的转折是：不要回头看谁赢过几局，要往前看，<b>把接下来所有可能的结局列出来，各按概率算一遍</b>。费马用组合数来数，帕斯卡用逐步倒推来算，得到同样的答案：A 75，B 25。历史学家常把这些通信当作概率论的起点。</div></div>
+    <div class="ev hasimg"><span data-illus="c14_huygens"></span><div><b class="yr">1657</b>　荷兰的惠更斯（Christiaan Huygens）听说了这场通信，写成《论赌博中的计算》，第一次系统整理了这套算法。“期望”这个概念也在书里成形：你预期会得到的，是各种结局按概率加权后的平均。</div></div>
+    <div class="ev hasimg"><span data-illus="c14_bernoulli"></span><div><b class="yr">1713</b>　雅各布·伯努利的《猜度术》（Ars Conjectandi，他去世后出版）证明了：同一件事重复得足够多，实际的平均会越来越贴近理论值。这就是大数定律，也说明了为什么期望值可以拿来给随机奖励定价。</div></div>
+  </div>
+  <p>你可以亲手验证“75”：下面让电脑把这个中断的赌局，从 2 比 1 开始重新打一万次。</p>
+  <div class="board">
+    <button class="btn" id="c14sim1">🎲 从 2:1 重打 10000 次</button>
+    <div class="msg" id="c14sim1m">点上面的按钮，看 A 最终赢了多少次。</div>
+  </div>
+  <div class="sticky" id="c14t1">试试看：先在上面的滑块里选一个你觉得公平的分法并揭晓，再点“重打 10000 次”，看 A 赢的比例是否贴近 75%。</div>
+
+  <!-- 3 期望值 -->
+  <div class="sec"><span class="n">3</span><h2><span class="tag what">是什么</span>期望值：怎么给随机定价</h2></div>
+  <p>帕斯卡和费马算的那个东西，现在就叫<b><span class="term" tabindex="0" data-def="每种结果的概率乘以其数值再求和，即重复很多次后的长期平均">期望值</span>（EV）</b>：每种结果的<b>概率 × 数值</b>，再加起来。它回答的是：如果重复很多很多次，平均每次是多少。</p>
+  <div class="grid2">
+    <div class="card g"><h3>例：开宝箱</h3><p>10% 得 50 金币，30% 得 10 金币，60% 得 0。<br>EV = 0.1×50 + 0.3×10 + 0.6×0 = <b>8 金币</b>。</p></div>
+    <div class="card b"><h3>例：一颗六面骰</h3><p>EV = (1+2+3+4+5+6)/6 = <b>3.5</b>。<br>你永远掷不出 3.5，但掷很多次平均就会靠近它。</p></div>
+  </div>
+  <p>设计上最常用的就是“定价”：如果“暴击 20% 概率伤害 ×2”，平均伤害提升就是 1 + 0.2 = <b>1.2 倍</b>，数值策划就能把它和“固定加 20% 伤害”放在同一把秤上比较。</p>
+  <div class="eg" data-ic="📦"><span data-illus="c14_chest"></span><div class="egt"><b>开宝箱</b>：三种结果各有概率，一算期望是 8 金币。设计师据此决定宝箱该多贵、值不值得开。</div></div>
+  <div class="eg" data-ic="🎟️"><span data-illus="c14_lottery"></span><div class="egt"><b>买彩票</b>：每张彩票的期望值，是把所有奖项按概率加权后的平均。彩票发行方要赚钱，所以平均下来返还的钱，一定比你花的少。你买的是做梦的机会，不是回报。</div></div>
+  <div class="eg bad" data-ic="⚖️"><span data-illus="c14_samemean"></span><div class="egt"><b>期望相同，感受却不同</b>：一个宝箱“每次稳定给 8”，另一个“十次里只有一次给 80”，期望都是 8。前者踏实，后者要么狂喜、要么空手。期望值只管平均，管不了体验。这就需要下面的<b>方差</b>。</div></div>
+
+  <!-- 4 骰子模拟 -->
+  <div class="sec"><span class="n">4</span><h2><span class="tag how">怎么用</span>骰子分布模拟器</h2></div>
+  <p><b><span class="term" tabindex="0" data-def="各结果与平均值之差的平方的平均，衡量结果有多分散">方差</span></b>（及其平方根<b><span class="term" tabindex="0" data-def="方差的平方根，与结果同单位，常用来表示‘典型偏离多少’">标准差</span></b>）描述结果“散”的程度。平均一样，方差大的玩法更像赌博，偶尔狂喜、偶尔崩溃；方差小的更像技巧游戏，结果稳定可预期。</p>
+  <p>骰子是看清这件事的最好工具。<b>1d12</b>（掷一颗 12 面骰）每个数一样可能；<b>2d6</b>（掷两颗 6 面骰相加）大多落在中间，呈钟形。选一种，投很多次，看红点（理论值）和柱子（你投出来的）差多少。</p>
+  <div class="board">
+    <div id="dchips"></div>
+    <div id="nchips"></div>
+    <button class="btn" id="roll">🎲 投！</button>
+    <button class="btn alt" id="dclear">清空</button>
+    <svg viewBox="0 0 700 282" width="100%" style="margin-top:8px" id="dsvg" role="img" aria-label="骰子点数直方图"></svg>
+    <div id="dstat"></div>
+    <div class="msg" id="dmsg"></div>
+  </div>
+  <div class="sticky" id="c14t2">试试看：先选 1d12 投 1000 次以上，再换成 2d6 投 1000 次以上，比较两张图的形状。哪一个的两端更少见？</div>
+  <p class="small">柱子是你模拟出的频率，红点是理论概率。投得少时柱子很“毛躁”，投得多才贴近理论。2d6 点数 7 的理论概率 = 6/36 ≈ 16.7%，1d12 每个点数都是 1/12 ≈ 8.3%。</p>
+
+  <!-- 5 CLT -->
+  <div class="sec"><span class="n">5</span><h2><span class="tag why">为什么成立</span>多颗骰子相加，为什么就变成钟形？</h2></div>
+  <p>2d6 比 1d12 更“集中”，这不是骰子的特例，而是一个普遍规律：<b>把许多独立的小随机量加起来，总和的形状趋近钟形</b>。直觉很好懂：想让总和特别大，需要<b>每一颗都同时很大</b>，这种“恰好全部凑齐”的组合越来越少；而“有大有小、互相抵消”的组合却多得多。</p>
+  <p>下面把骰子数从 1 拖到 20。图里是<b>精确算出</b>的理论分布（不是随机模拟），红线是同均值、同标准差的正态曲线。</p>
+  <div class="board">
+    <label class="ctl">六面骰的数量 n <output id="cn">2</output></label><input type="range" id="clt" min="1" max="20" step="1" value="2">
+    <div id="cview"></div>
+    <svg viewBox="0 0 700 282" width="100%" id="csvg" role="img" aria-label="n 颗六面骰之和的分布及正态曲线"></svg>
+    <div id="cstat"></div>
+    <button class="btn alt" id="csamp">🎲 再投 5000 次验证</button>
+    <div class="msg" id="cmsg"></div>
+  </div>
+  <div class="sticky" id="c14t3">试试看：把 n 拖到 16，再切到“平均点数”视图。看看平均点数的标准差，是单颗骰子的几分之几。</div>
+  <div class="why-box">
+    <h3>中心极限定理（CLT）</h3>
+    <p>一颗六面骰：平均 3.5，方差 35/12 ≈ 2.917，标准差 ≈ 1.708。n 颗独立骰子之和：平均 3.5n，<b>方差相加</b>为 35n/12，所以标准差 = 1.708×<b>√n</b>。n=4 时标准差是单颗的 2 倍，n=16 时是 4 倍。可总和本身约是 n 倍大，所以<b>相对波动按 1/√n 缩小</b>；平均点数的标准差是 1.708/√n，越投越窄。</p>
+    <p>在条件合适时（各项<b>独立</b>、方差有限，且没有哪一项主宰总和），许多随机量之和的分布会越来越像正态分布。游戏联系：暴击这类“每次 20% 触发”的小随机，打一场长战斗会平均掉；一次性的大宝箱不会。要让玩家“多数时候感觉稳定、偶尔有惊喜”，就把大随机拆成很多次小随机；要刺激的“一把定胜负”，就合并成一次大随机。多局制能让强者更稳地赢，原理也在这里。</p>
+    <div class="src">出处：概率论的经典结果。早期对二项分布的正态近似常归功于棣莫弗与拉普拉斯，其后由李雅普诺夫、林德伯格等人严格化。</div>
+  </div>
+
+  <!-- 6 直觉陷阱 -->
+  <div class="sec"><span class="n">6</span><h2><span class="tag what">是什么</span>概率直觉的陷阱：该轮到红了吧？</h2></div>
+  <div class="withimg rev">
+    <span data-illus="c14_roulette"></span>
+    <div>
+      <p>1913 年 8 月 18 日，摩纳哥蒙特卡洛赌场的一张轮盘赌桌上，小球连续 26 次落进黑格。赌客们看着计分牌上一长串黑，越看越觉得“再黑下去就不科学了，这回该出红了”，于是纷纷把筹码压到红色上。</p>
+      <p>据说，这一晚赌场赚得盆满钵满。轮盘没有记忆，每一次都是独立的：这一次落进黑还是红，跟之前出了几次黑毫无关系。这个错误后来被叫作<span class="term" tabindex="0" data-def="误以为独立事件会‘补偿’之前的结果，如连出正面后觉得该出反面了">赌徒谬误</span>，也叫“蒙特卡洛谬误”。</p>
+    </div>
+  </div>
+  <div class="grid2">
+    <div class="card o"><h3>🪙 赌徒谬误</h3><p>“连续出了 5 次正面，下次该是反面了！”错。<b>独立事件</b>没有记忆，下一次仍然是各 50%。随机不会“补偿”你。</p></div>
+    <div class="card v"><h3>🔬 小样本会骗人</h3><p>投 10 次，出现 70% 正面一点也不稀奇；投 1000 次才会稳定在 50% 附近。玩家一生只玩几十次，所以他们经历的永远是“毛躁的小样本”。</p></div>
+  </div>
+  <div class="board flips">
+    <p>亲手看看：每组抛一枚公平硬币。</p>
+    <button class="btn" id="flip">🪙 抛一组</button>
+    <div id="flipout" style="margin-top:8px"></div>
+  </div>
+  <p>可是为什么人会犯这种错？光说“人笨”解释不了。不如亲自答几道题试试。</p>
+
+  <!-- 7 启发式 -->
+  <div class="sec"><span class="n">7</span><h2><span class="tag why">为什么成立</span>人类的概率直觉为何总出错？</h2></div>
+  <p>先做个小实验：<b>别算，凭感觉答</b>。下面 6 道题都和游戏里的随机有关。每题先给出直觉答案，点“揭晓”后会看到精确计算，以及你的直觉与真值差了多少。</p>
+  <div class="board" id="iq"></div>
+  <div class="msg" id="iqsum"></div>
+  <div class="sticky" id="c14t4">试试看：6 道题都揭晓。数数你的直觉接近真值的有几题，再想想哪几题你被“看起来”的感觉带跑了。</div>
+  <div class="why-box">
+    <h3>启发式：大脑的“省力算法”</h3>
+    <p>我们没法每次都做精确计算，大脑用<b>捷径</b>快速估计。多数时候够用，但在概率题上会系统性地偏。心理学家把这些捷径叫作<b><span class="term" tabindex="0" data-def="人在不确定情况下做判断时使用的经验捷径；快但会有系统性偏差">启发式</span></b>。</p>
+    <ul>
+      <li><b><span class="term" tabindex="0" data-def="按‘像不像’来判断概率：越像典型样子，就越觉得可能">代表性启发式</span></b>：HTHTTH“看起来更随机”，所以觉得它更可能；HHHHHH“看起来不像随机”，所以觉得不可能。其实只要硬币公平，任何指定的 6 次序列概率都是 (1/2)<sup>6</sup> = 1/64。赌徒谬误和对<b>小样本</b>的过度信任都来自这里（特沃斯基与卡尼曼 1971 年称之为“小数定律”：人们以为小样本也该像整体一样均匀）。同源的还有忽视<b>基础比例</b>（第 4 题，<span class="term" tabindex="0" data-def="判断时只看‘证据像不像’，忽略事先就存在的比例（基础率）">基础率忽视</span>）。</li>
+      <li><b><span class="term" tabindex="0" data-def="按‘能想起多少例子’来判断频率：越容易回想起来，就越觉得常见">可得性启发式</span></b>：论坛里满是晒“十连双金”的截图，因为没出的人不发帖，于是你高估了它的常见程度。</li>
+      <li><b>对小概率累积的误判</b>：“每次只有 1.5%，十次应该没问题”（第 2 题）、“0.5% 掉落，刷 200 次就有一半把握”（第 5 题）、生日问题里人们严重低估“有一对撞上”的概率（第 6 题）。</li>
+    </ul>
+    <p>设计含义：玩家不是在算概率，而是在<b>感受</b>概率。所以“显示的概率”与“玩家感受到的概率”之间总有落差，这也是保底、洗牌袋这类“按感受调整”的机制存在的原因。</p>
+    <div class="src">出处：特沃斯基与卡尼曼，“Belief in the law of small numbers”，《Psychological Bulletin》76(2)（1971）；“Judgment under uncertainty: Heuristics and biases”，《Science》185（1974）；基础率忽视见卡尼曼与特沃斯基，“On the psychology of prediction”，《Psychological Review》80（1973）。科普读物：卡尼曼《思考，快与慢》（2011）。</div>
+  </div>
+  <div class="eg" data-ic="🕵️"><span data-illus="c14_cheat"></span><div class="egt"><b>反作弊系统的“冤案”</b>：第 4 题的画面。真作弊者只占 1%，系统再准，也会把一批清白的人圈进来，被圈出的人里大部分是无辜的。把“1000 个人里有几个”说出来，比说“95%”好理解得多。</div></div>
+  <div class="eg" data-ic="📢"><span data-illus="c14_forum"></span><div class="egt"><b>论坛里的“欧皇”</b>：晒图的都是出货的人，没出的人不会发帖。你只看到成功的样本，于是高估了“出货”的常见程度。</div></div>
+  <div class="eg bad" data-ic="🃏"><span data-illus="c14_deckmem"></span><div class="egt"><b>“差一点就对”：不放回的抽牌</b>：一副牌里已经抽走了三张 A，剩下的牌里 A 就少了，下一张是 A 的概率真的变了。这里“有记忆”是对的。赌徒谬误只适用于<b>每次独立</b>的情形（硬币、骰子、轮盘）。</div></div>
+  <p>人们对这些捷径的看法有分歧。格尔德·格伦泽尔（Gerd Gigerenzer）等人认为，这些捷径在真实环境里往往很“聪明”，而且用<b>频数格式</b>（“1000 人里有几个”）来表述，人的表现会好很多（Gigerenzer 与 Hoffrage，1995）。两种说法都有实验支持。对设计者来说，结论相同：别指望玩家会正确地算概率。</p>
+
+  <!-- 8 发明故事 保底 -->
+  <div class="sec"><span class="n">8</span><h2><span class="tag origin">发明故事</span>被运气坑了一百抽的人</h2></div>
+  <div class="withimg">
+    <span data-illus="c14_unlucky"></span>
+    <div>
+      <p>电脑里的“随机数”是算法算出来的，叫<span class="term" tabindex="0" data-def="由确定性算法产生、统计上看起来随机的数列">伪随机</span>，对游戏来说足够用。设计师真正的麻烦不在“随机够不够真”，而在<b>纯随机有时太残酷</b>。</p>
+      <p>想想一个爆率 1% 的道具。很多玩家的直觉是“抽 100 次，总该出一个了吧”。先猜一猜：抽满 100 次，有多少人还是一无所获？</p>
+    </div>
+  </div>
+  <div class="c14guess" id="c14g2">
+    <label class="ctl">你猜：抽满 100 次后一个都没抽中的人占 <output id="c14g2o">10</output>%</label>
+    <input type="range" id="c14g2s" min="0" max="100" step="1" value="10">
+    <button class="btn" id="c14g2b">揭晓</button>
+    <div class="res" id="c14g2r"></div>
+  </div>
+  <p>这些人会弃游，会骂街，会在论坛里写长帖。设计师发现，光靠“概率是公平的”说服不了他们，于是想了几种办法，把“最倒霉的人”托住：</p>
+  <div class="timeline">
+    <div class="ev hasimg"><span data-illus="c14_drought"></span><div><b class="yr">早期</b>　很多早期游戏就是纯随机：每一次独立地掷骰子。俄罗斯方块里，这意味着可能一连几十块都等不到那根长条，玩家就觉得“这游戏跟我过不去”。</div></div>
+    <div class="ev hasimg"><span data-illus="c14_bag7"></span><div><b class="yr">后来</b>　现代的俄罗斯方块指南里，出块用了“<span class="term" tabindex="0" data-def="把有限个结果洗乱后依次取出，取完再洗；保证每一袋内的比例固定">洗牌袋</span>”：七种方块放进一只袋子，洗乱后一块块取，取空了再装一袋。这样每七块里每种恰好出现一次，两根长条之间最多隔 12 块。</div></div>
+    <div class="ev hasimg"><span data-illus="c14_prd"></span><div><b class="yr">另一条路</b>　Dota 2 里，暴击这类效果用“伪随机分布”：每次没触发，下一次的触发概率就抬高一点，触发后归零。以 20% 的暴击为例，按其公开的常数 C ≈ 0.0557 计算，第 n 次的概率是 5.57%×n，长期平均仍然是 20%，但最多只会连续 17 次不触发。</div></div>
+  </div>
+
+  <!-- 9 保底 -->
+  <div class="sec"><span class="n">9</span><h2><span class="tag what">是什么</span>保底与洗牌袋</h2></div>
+  <div class="grid3">
+    <div class="card b mini"><div class="ico">🎰</div><h3>纯随机</h3><p>每次独立地按概率判定。简单，但可能极端倒霉。</p></div>
+    <div class="card y mini"><div class="ico">🛡️</div><h3><span class="term" tabindex="0" data-def="连续未中达到上限后必定触发的机制，用来截断‘最倒霉’的尾巴">保底</span>（Pity）</h3><p>连续未中达到上限，下一次必中。砍掉了“最倒霉”的尾巴。</p></div>
+    <div class="card g mini"><div class="ico">🎒</div><h3>洗牌袋</h3><p>把 100 个结果（含 1 个中奖）洗乱，一个个抽出，抽空再洗。保证每个袋子里恰好 1 次。</p></div>
+  </div>
+  <div class="eg" data-ic="🂡"><span data-illus="c14_deckdeal"></span><div class="egt"><b>一副扑克牌</b>：洗好以后一张张发，发完整副，每张恰好出现一次。洗牌袋就是这个办法，把“每个结果出现的次数”提前锁死，只让顺序随机。</div></div>
+  <div class="eg" data-ic="🎁"><span data-illus="c14_pity90"></span><div class="egt"><b>抽卡的 90 抽保底</b>：不少手游公开写明“连续 90 次未出最高稀有度，必出”（具体数字因游戏而异）。运气再差的人，最多也就是 90 抽，不会无底洞。</div></div>
+  <div class="eg bad" data-ic="🎒"><span data-illus="c14_bagsmall"></span><div class="egt"><b>“差一点就对”：袋子太小</b>：如果袋子里只有两张签，一张中一张空，玩家拿到“中”之后就能断定下一张必空。袋子越小，玩家越能预测，惊喜就没了。袋子大小，是在“防倒霉”和“留悬念”之间取舍。</div></div>
+  <p>再看一个小实验：纯 20% 暴击，和上面那种“越没触发越容易触发”的方式，在一万次攻击里，最长会连续多少次不触发？</p>
+  <div class="board">
+    <button class="btn" id="c14prd">⚔️ 连砍 10 万刀</button>
+    <div class="msg" id="c14prdm">点上面的按钮。</div>
+  </div>
+
+  <!-- 10 保底模拟 -->
+  <div class="sec"><span class="n">10</span><h2><span class="tag how">怎么用</span>爆率 1% 的三种设计</h2></div>
+  <p>基础爆率 1%。500 位玩家每人连续抽到 20 次“中奖”，我们统计<b>相邻两次中奖之间隔了多少抽</b>。调整保底上限，对比三种方案。</p>
+  <div class="board">
+    <label class="ctl">保底上限（连续未中多少抽后必中） <output id="capv">90</output></label><input type="range" id="cap" min="20" max="150" step="5" value="90">
+    <button class="btn" id="psim">🚀 开始模拟</button>
+    <svg viewBox="0 0 700 294" width="100%" style="margin-top:8px" id="psvg" role="img" aria-label="三种方案的间隔分布折线图"></svg>
+    <div id="ptbl"></div>
+    <div class="msg" id="pmsg"></div>
+  </div>
+  <div class="sticky" id="c14t5">试试看：把保底上限调到 50 以下并模拟，让“最长一次”不超过 50 抽，同时观察平均间隔掉到了多少。保底越低，运气的故事还剩多少？</div>
+  <p class="small">横轴：两次中奖之间的抽数（每 20 抽一格，最后一格为 300 以上）。纵轴：占比。看红线（纯随机）的尾巴——总有人要抽到 300 抽以上。保底把尾巴切断，洗牌袋则把分布挤得更均匀。注意：保底和洗牌袋<b>平均也变好了</b>（保底降低了平均间隔），所以真实设计要同时调基础概率，别把“平均成本”悄悄改了。还记得核心循环里讲过的“预测误差”吗？保底只截断最糟的尾巴，不让每一次都变成必得，这样惊喜还在。</p>
+
+  <div class="misc">
+    <h3>常见误区</h3>
+    <ul>
+      <li>“1% 爆率抽 100 次必出”：错，约 63.4% 的人至少出一次，另有约 36.6% 一无所获。</li>
+      <li>“期望值一样，体验就一样”：错。期望值只管平均，方差决定了你的真实感受。</li>
+      <li>“洗牌袋和保底是作弊，不再是随机”：它们依旧是随机，只是各次不再独立，这是有意的设计取舍。</li>
+      <li>“抽牌也是独立事件，所以连续抽到同一张牌说明‘有鬼’”：不放回的抽牌是有记忆的；放回的才独立。分清再下判断。</li>
+      <li>“中心极限定理说什么都会变成钟形”：不对，要求独立、方差有限、没有哪一项占主导。</li>
+    </ul>
+  </div>
+
+  <div class="reflect">
+    <h3>反思与争议</h3>
+    <ul>
+      <li><b>启发式一定是“错误”吗？</b>卡尼曼与特沃斯基强调它造成的系统性偏差，格伦泽尔等人则强调它在真实环境里的合理性。这是学界的不同观点，两种说法都有实验支持。</li>
+      <li>保底和洗牌袋让玩家更舒服，但玩家也可能学会“算保底”：在拿到保底之前不再继续玩、拿到之后转身就走。这是设计者要权衡的。</li>
+      <li>利用玩家的概率误判去提高付费，比如只显示“最高概率”、不显示综合概率，是否正当？这是一个设计伦理问题，值得你自己想一想。</li>
+    </ul>
+  </div>
+
+  <div class="key">
+    <h3>本章要点</h3>
+    <ul>
+      <li><b>输入随机</b>发生在决策之前，增加变化；<b>输出随机</b>发生在决策之后，增加紧张但削弱掌控感。</li>
+      <li><b>期望值 = 概率 × 数值之和</b>，诞生于“被打断的赌局怎么分钱”；它用来给随机奖励定价，但不描述单局体验。</li>
+      <li><b>独立事件没有记忆</b>（赌徒谬误），而玩家经历的是<b>小样本</b>，会出现很极端的运气。</li>
+      <li>多颗骰子相加会形成<b>钟形曲线</b>，标准差按 √n 增长，平均值的波动按 1/√n 缩小；大随机拆成多次小随机，体验更稳。</li>
+      <li>人靠<b>启发式</b>估计概率，容易受“像不像”“能想起多少”影响：玩家感受到的概率 ≠ 真实概率。</li>
+      <li>用<b>保底、洗牌袋</b>切掉“最倒霉”的尾巴，同时要留意它们对平均值和惊喜的影响。</li>
+    </ul>
+  </div>
+  <div class="tldr">随机不是越“真”越好，而是要配合人的直觉：知道人会误判概率，再用期望值定价、用保底和拆分来管住极端。</div>
+
+  <div class="sec"><span class="n">11</span><h2><span class="tag think">练习</span>小测验</h2></div>
+  <div id="quiz"></div>
+
+  <div class="sec"><span class="n">12</span><h2><span class="tag how">你的设计</span>给一个机制配上随机</h2></div>
+  <div class="card o">
+    <p>为你的游戏选一个“带随机”的机制（掉落、命中、抽牌、出块……）。写下：它是输入随机还是输出随机？概率是多少？你要不要加保底或洗牌袋，为什么？</p>
+    <textarea rows="5" data-save="ch14" placeholder="例：宝箱掉落稀有道具 5%，连续 30 个箱子没出就必出，因为……"></textarea>
+    <p class="small">✍️ 自动保存在你的浏览器里。</p>
+  </div>
+</main>
+<script src="js/illus.js"></script>
+<script src="js/illus-ch14.js"></script>
+<script src="js/common.js"></script>
+<script>
+window.c14done = function (id, msg) { const e = document.getElementById(id); if (!e || e.classList.contains("c14ok")) return; e.classList.add("c14ok"); e.innerHTML += " ✅ <b>" + msg + "</b>"; };
+const $ = id => document.getElementById(id);
+const NS = "http://www.w3.org/2000/svg";
+
+// ---------- 骰子分布模拟器
+const SPECS = { "1d6": [1, 6], "1d12": [1, 12], "2d6": [2, 6], "3d4": [3, 4], "3d6": [3, 6] };
+let spec = "2d6", nRoll = 1000, counts = {}, total = 0;
+function theory(n, s) {
+  let d = { 0: 1 };
+  for (let i = 0; i < n; i++) {
+    const nd = {};
+    for (const k in d) for (let f = 1; f <= s; f++) nd[+k + f] = (nd[+k + f] || 0) + d[k];
+    d = nd;
+  }
+  const all = Math.pow(s, n), out = {};
+  for (const k in d) out[k] = d[k] / all;
+  return out;
+}
+function chips(el, items, cur, cb) {
+  el.innerHTML = "";
+  items.forEach(it => {
+    const b = document.createElement("button");
+    b.className = "chip" + (it[0] === cur ? " on" : "");
+    b.textContent = it[1];
+    b.onclick = () => cb(it[0]);
+    el.appendChild(b);
+  });
+}
+function drawChips() {
+  chips($("dchips"), Object.keys(SPECS).map(k => [k, k]), spec, k => { spec = k; counts = {}; total = 0; drawChips(); drawDice(); });
+  chips($("nchips"), [[10, "投 10 次"], [100, "投 100 次"], [1000, "投 1000 次"], [10000, "投 10000 次"]], nRoll, n => { nRoll = n; drawChips(); });
+}
+function drawDice() {
+  const [n, s] = SPECS[spec], th = theory(n, s);
+  const lo = n, hi = n * s, len = hi - lo + 1, W = 620, x0 = 50, bw = W / len;
+  const freq = {}; let mx = 0;
+  for (let v = lo; v <= hi; v++) { freq[v] = total ? (counts[v] || 0) / total : 0; mx = Math.max(mx, freq[v], th[v]); }
+  mx = Math.max(mx * 1.15, 0.05);
+  const Y = p => 220 - p / mx * 200;
+  let h = '<line x1="50" y1="220" x2="680" y2="220" stroke="#2b2b3a" stroke-width="3"/>';
+  for (let v = lo; v <= hi; v++) {
+    const x = x0 + (v - lo) * bw;
+    h += `<rect x="${x + 3}" y="${Y(freq[v])}" width="${bw - 6}" height="${220 - Y(freq[v])}" fill="#8fd3f4" stroke="#2b2b3a" stroke-width="2.5"/>`;
+    h += `<circle cx="${x + bw / 2}" cy="${Y(th[v])}" r="6" fill="#e5484d" stroke="#2b2b3a" stroke-width="2"/>`;
+    h += `<text x="${x + bw / 2}" y="244" text-anchor="middle" font-size="16">${v}</text>`;
+  }
+  h += `<text x="46" y="26" text-anchor="end" font-size="16">${(mx * 100).toFixed(0)}%</text><text x="40" y="220" text-anchor="end" font-size="16">0</text>`;
+  h += `<text x="665" y="266" text-anchor="end" font-size="16">点数 →（● 理论，柱 模拟）</text>`;
+  $("dsvg").innerHTML = h;
+  let mean = 0, mTh = 0, vTh = 0;
+  for (let v = lo; v <= hi; v++) { mean += v * freq[v]; mTh += v * th[v]; }
+  for (let v = lo; v <= hi; v++) vTh += th[v] * (v - mTh) * (v - mTh);
+  $("dstat").innerHTML = `<span class="stat">已投 <b>${total}</b></span><span class="stat">理论平均 <b>${mTh.toFixed(2)}</b></span><span class="stat">模拟平均 <b>${total ? mean.toFixed(2) : "-"}</b></span><span class="stat">理论标准差 <b>${Math.sqrt(vTh).toFixed(2)}</b></span>`;
+  $("dmsg").textContent = !total ? "选好骰子和次数，点“投！”" : total < 50 ? "样本太少，柱子很毛躁，多投几次。" : n > 1 ? "看，两端很少、中间最多：这就是钟形曲线。" : "每个点数都差不多高：均匀分布，极端值和中间值一样常见。";
+}
+$("roll").onclick = () => {
+  const [n, s] = SPECS[spec];
+  for (let i = 0; i < nRoll; i++) {
+    let sum = 0; for (let j = 0; j < n; j++) sum += 1 + Math.floor(Math.random() * s);
+    counts[sum] = (counts[sum] || 0) + 1;
+  }
+  total += nRoll; drawDice();
+};
+$("dclear").onclick = () => { counts = {}; total = 0; drawDice(); };
+drawChips(); drawDice();
+
+// ---------- 抛硬币小样本
+$("flip").onclick = () => {
+  const row = (n, label) => {
+    const out = [];
+    for (let g = 0; g < 5; g++) { let h = 0; for (let i = 0; i < n; i++) if (Math.random() < 0.5) h++; out.push(Math.round(h / n * 100) + "%"); }
+    return `<p>${label}：正面比例 ${out.map(x => "<b>" + x + "</b>").join("　")}</p>`;
+  };
+  $("flipout").innerHTML = row(10, "5 组 × 每组抛 10 次") + row(1000, "5 组 × 每组抛 1000 次");
+};
+
+// ---------- 保底模拟
+function gapsPure(p, hits) {
+  const g = []; let c = 0;
+  while (g.length < hits) { c++; if (Math.random() < p) { g.push(c); c = 0; } }
+  return g;
+}
+function gapsPity(p, cap, hits) {
+  const g = []; let c = 0;
+  while (g.length < hits) { c++; if (c >= cap || Math.random() < p) { g.push(c); c = 0; } }
+  return g;
+}
+function gapsBag(size, hits) {
+  const g = []; let bag = [], i = 0, c = 0;
+  const refill = () => {
+    bag = new Array(size).fill(false); bag[0] = true;
+    for (let k = size - 1; k > 0; k--) { const j = Math.floor(Math.random() * (k + 1)); const t = bag[k]; bag[k] = bag[j]; bag[j] = t; }
+    i = 0;
+  };
+  refill();
+  while (g.length < hits) {
+    if (i >= size) refill();
+    c++;
+    if (bag[i++]) { g.push(c); c = 0; }
+  }
+  return g;
+}
+function pct(sorted, q) { return sorted[Math.min(sorted.length - 1, Math.floor(q * sorted.length))]; }
+$("cap").oninput = () => ($("capv").textContent = $("cap").value);
+function psim() {
+  const cap = +$("cap").value, P = 0.01, players = 500, hits = 20;
+  const res = { pure: [], pity: [], bag: [] };
+  for (let i = 0; i < players; i++) {
+    res.pure.push(...gapsPure(P, hits));
+    res.pity.push(...gapsPity(P, cap, hits));
+    res.bag.push(...gapsBag(100, hits));
+  }
+  const defs = [["pure", "纯随机", "#e5484d"], ["pity", "保底", "#2f9e44"], ["bag", "洗牌袋", "#3b82f6"]];
+  const B = 16, hist = {};
+  let mx = 0;
+  defs.forEach(([k]) => {
+    const h = new Array(B).fill(0);
+    res[k].forEach(v => h[Math.min(B - 1, Math.floor((v - 1) / 20))]++);
+    hist[k] = h.map(x => x / res[k].length);
+    mx = Math.max(mx, ...hist[k]);
+  });
+  mx *= 1.15;
+  const X = i => 50 + (i + 0.5) * (620 / B), Y = p => 230 - p / mx * 205;
+  let h = '<line x1="50" y1="230" x2="680" y2="230" stroke="#2b2b3a" stroke-width="3"/>';
+  for (let i = 0; i < B; i += 3) h += `<text x="${50 + i * 620 / B}" y="254" text-anchor="start" font-size="16">${i * 20}</text>`;
+  h += `<text x="46" y="30" text-anchor="end" font-size="16">${(mx * 100).toFixed(0)}%</text><text x="38" y="228" text-anchor="end" font-size="16">0</text>`;
+  defs.forEach(([k, , col]) => {
+    h += `<polyline fill="none" stroke="${col}" stroke-width="4" stroke-linejoin="round" points="${hist[k].map((p, i) => X(i) + "," + Y(p)).join(" ")}"/>`;
+  });
+  defs.forEach(([, nm, col], i) => { h += `<rect x="${440 + i * 0}" y="${14 + i * 24}" width="18" height="14" fill="${col}" stroke="#2b2b3a" stroke-width="2"/><text x="466" y="${27 + i * 24}" font-size="16">${nm}</text>`; });
+  h += `<text x="670" y="276" text-anchor="end" font-size="16">两次中奖间隔的抽数 →</text>`;
+  $("psvg").innerHTML = h;
+  let rows = "<table class='tbl'><tr><th>方案</th><th>平均间隔</th><th>最倒霉 1% 至少</th><th>最长一次</th></tr>";
+  const st = {};
+  defs.forEach(([k, nm]) => {
+    const a = res[k].slice().sort((x, y) => x - y), m = a.reduce((s, v) => s + v, 0) / a.length;
+    st[k] = { m, p99: pct(a, 0.99), max: a[a.length - 1] };
+    rows += `<tr><td>${nm}</td><td>${m.toFixed(1)}</td><td>${st[k].p99}</td><td>${st[k].max}</td></tr>`;
+  });
+  $("ptbl").innerHTML = rows + "</table>";
+  $("pmsg").textContent = `纯随机最长一次要抽 ${st.pure.max} 次；保底把上限压到 ${st.pity.max}；洗牌袋最多 ${st.bag.max}（最倒霉是上一袋最前、下一袋最后）。`;
+}
+$("psim").onclick = psim;
+psim();
+
+GD.mountQuiz($("quiz"), [
+  { q: "公平硬币已经连续 5 次正面，第 6 次出正面的概率是？", opts: ["小于 50%（该轮到反面了）", "大于 50%（手气正旺）", "仍是 50%", "无法判断"], a: 2, why: "每次抛硬币是独立事件，硬币没有记忆。认为“该补偿了”就是赌徒谬误。" },
+  { q: "开箱：20% 得 10 金币，80% 得 0 金币。平均每个箱子得多少金币？", opts: ["10", "5", "2", "8"], a: 2, why: "EV = 0.2×10 + 0.8×0 = 2。期望值是“概率×数值”之和。" },
+  { q: "【为什么】单抽 SSR 概率 1.5%，十连一个都没出，为什么并不奇怪？", opts: ["因为游戏暗改了概率", "十连没出的概率是 0.985<sup>10</sup> ≈ 86%，大多数十连本来就没有 SSR", "因为 1.5% 其实表示十连必出一个", "因为抽卡每次都有记忆会补偿"], a: 1, why: "每次不中概率 98.5%，十次都不中就是 0.985 的 10 次方 ≈ 86%。直觉把“每次很小”误当成“十次也很小”，这是对小概率累积的典型误判。" },
+  { q: "【为什么】把 16 颗骰子的和与 1 颗骰子比较，和的标准差大约是单颗的几倍？<b>平均点数</b>的标准差又是单颗的几分之几？", opts: ["16 倍；1/16", "4 倍；1/4", "4 倍；4 倍", "不变；不变"], a: 1, why: "独立随机量相加时方差相加，标准差按 √n 增长：√16 = 4 倍。平均点数 = 和 ÷ 16，所以标准差是 4/16 = 1/4。这就是“多次判定让结果更稳”的数学原因。" },
+  { q: "【为什么被发明】帕斯卡和费马为什么要发明“把所有可能的结局按概率加权”的算法？", opts: ["为了让赌场赚更多钱", "为了回答“被打断的赌局，赌注怎么分才公平”：按已赢局数分有漏洞，必须往前看所有可能的结局", "为了证明骰子是公平的", "为了设计抽卡概率"], a: 1, why: "问题在于赌局没打完。他们的洞察是：不看已经发生了什么，而是算每一方“还有多大机会赢”，这个“机会加权平均”就是期望的雏形。" },
+  { q: "【为什么被发明】“洗牌袋”这个机制为什么会出现？", opts: ["为了让随机数更“真”", "纯随机下总有人极端倒霉（比如很久等不到长条），洗牌袋把每一袋内各结果的出现次数锁死，砍掉倒霉的尾巴", "为了增加游戏容量", "为了让概率变成 100%"], a: 1, why: "设计师的痛点不是“随机不够真”，而是纯随机有时太残酷。洗牌袋让顺序随机、次数确定，既留悬念又托住最倒霉的人。" },
+]);
+(function () {
+  const g = id => document.getElementById(id);
+
+  // ---------- 概率直觉测验
+  const qs = [
+    { t: "代表性启发式", q: "连抛 6 次公平硬币：序列 HHHHHH（全正面）和 HTHTTH，哪个更可能出现？", kind: "choice",
+      opts: ["HHHHHH 更可能", "HTHTTH 更可能", "一样可能"], ans: 2,
+      calc: () => "两者概率都是 (1/2)^6 = 1/64 ≈ " + (100 / 64).toFixed(2) + "%。“看起来更随机”不等于“概率更大”：具体到某一个序列，概率完全一样。" },
+    { t: "小概率累积", q: "单抽 SSR 概率 1.5%。十连抽里<b>一个 SSR 都没有</b>的概率大约是多少？", kind: "num", min: 0, max: 100, step: 1, unit: "%",
+      val: () => Math.pow(0.985, 10) * 100,
+      calc: v => "每次不中 0.985，十次都不中 = 0.985^10 ≈ " + v.toFixed(1) + "%。也就是说约 " + (100 - v).toFixed(1) + "% 的十连才有 SSR。" },
+    { t: "小样本定律", q: "抛 10 次公平硬币，正面次数落在 4~6 次（即 40%~60%）之间的概率大约是多少？", kind: "num", min: 0, max: 100, step: 1, unit: "%",
+      val: () => (210 + 252 + 210) / 1024 * 100,
+      calc: v => "C(10,4)+C(10,5)+C(10,6) = 210+252+210 = 672，672/1024 ≈ " + v.toFixed(1) + "%。样本小，“看起来很偏”的结果其实不稀奇，约三分之一的 10 次抛掷会落在这个范围外。" },
+    { t: "基础率忽视", q: "反作弊系统：真作弊者有 95% 被抓到，清白玩家有 5% 被误判。玩家里只有 1% 在作弊。<b>一个被系统判为“作弊”的人，真是作弊者</b>的概率大约是多少？", kind: "num", min: 0, max: 100, step: 1, unit: "%",
+      val: () => 0.01 * 0.95 / (0.01 * 0.95 + 0.99 * 0.05) * 100,
+      calc: v => "1000 人里：10 个作弊者抓到 9.5 个；990 个清白者误判 49.5 个。被判作弊的共 59 人，其中真作弊 9.5 人，比例 = 9.5/59 ≈ " + v.toFixed(1) + "%。基础比例太低，准确率 95% 的系统也会冤枉很多人。" },
+    { t: "“1/p 次”误区", q: "某稀有掉落每次 0.5%。至少要刷多少次，才有一半（≥50%）的把握至少掉落一次？", kind: "num", min: 0, max: 400, step: 5, unit: " 次",
+      val: () => Math.ceil(Math.log(0.5) / Math.log(1 - 0.005)),
+      calc: v => "要 1 − 0.995^n ≥ 0.5，n ≥ ln0.5 / ln0.995 ≈ " + (Math.log(0.5) / Math.log(0.995)).toFixed(1) + "，即 " + v + " 次。直觉“期望 1/0.5% = 200 次”是平均等待次数，不是“有一半把握”的次数。" },
+    { t: "生日问题", q: "23 个人的房间里，<b>至少有两个人同一天生日</b>的概率大约是多少？（忽略闰年）", kind: "num", min: 0, max: 100, step: 1, unit: "%",
+      val: () => { let p = 1; for (let i = 0; i < 23; i++) p *= (365 - i) / 365; return (1 - p) * 100; },
+      calc: v => "先算“全都不同”：365/365 × 364/365 × … × 343/365，再用 1 减去，得 ≈ " + v.toFixed(1) + "%。人们按“23/365”直觉估成个位数，是因为忽略了 23 个人之间有 253 对组合。同理，“随机掉落里出现重复”远比直觉更常见。" },
+  ];
+  const state = qs.map(() => ({ guess: null, done: false, gap: null }));
+  const iq = g("iq");
+  qs.forEach((it, i) => {
+    const d = document.createElement("div"); d.className = "iq";
+    d.innerHTML = '<div class="qt">' + (i + 1) + ". " + it.q + ' <span class="tagb">（' + it.t + "）</span></div>";
+    const res = document.createElement("div"); res.className = "res";
+    const reveal = document.createElement("button"); reveal.className = "btn"; reveal.textContent = "揭晓";
+    if (it.kind === "choice") {
+      const row = document.createElement("div");
+      it.opts.forEach((o, oi) => {
+        const b = document.createElement("button"); b.className = "chip"; b.textContent = o;
+        b.onclick = () => { if (state[i].done) return; state[i].guess = oi; row.querySelectorAll(".chip").forEach((x, xi) => x.classList.toggle("on", xi === oi)); };
+        row.appendChild(b);
+      });
+      d.appendChild(row);
+      reveal.onclick = () => {
+        if (state[i].guess === null || state[i].done) { if (state[i].guess === null) res.textContent = "先选一个答案再揭晓。", res.classList.add("show"); return; }
+        state[i].done = true; state[i].gap = state[i].guess === it.ans ? 0 : 1;
+        res.innerHTML = "<b>你选的：" + it.opts[state[i].guess] + "。正确：" + it.opts[it.ans] + "。</b><br>" + it.calc() + (state[i].guess === it.ans ? "<br>直觉答对了！" : "");
+        res.classList.add("show"); summary();
+      };
+    } else {
+      const lab = document.createElement("label"); lab.className = "ctl";
+      lab.innerHTML = "你的直觉：<output>" + Math.round((it.min + it.max) / 2) + "</output>" + it.unit;
+      const r = document.createElement("input"); r.type = "range"; r.min = it.min; r.max = it.max; r.step = it.step; r.value = Math.round((it.min + it.max) / 2 / it.step) * it.step;
+      lab.querySelector("output").textContent = r.value;
+      r.oninput = () => { if (!state[i].done) { lab.querySelector("output").textContent = r.value; state[i].guess = +r.value; } };
+      state[i].guess = +r.value;
+      d.appendChild(lab); d.appendChild(r);
+      reveal.onclick = () => {
+        if (state[i].done) return;
+        state[i].done = true; r.disabled = true;
+        const v = it.val(), gv = state[i].guess;
+        state[i].gap = Math.abs(gv - v) / (it.max - it.min);
+        const pos = x => Math.max(0, Math.min(100, (x - it.min) / (it.max - it.min) * 100));
+        res.innerHTML = '<b>你猜 ' + gv + it.unit + '，精确值 ' + (it.unit === "%" ? v.toFixed(1) : v) + it.unit + '，相差 ' + Math.abs(gv - v).toFixed(it.unit === "%" ? 1 : 0) + it.unit + '。</b>' +
+          '<div class="gapbar"><i class="g" style="left:' + pos(gv) + '%"></i><i class="t" style="left:' + pos(v) + '%"></i></div><span class="tagb">粉：你的直觉　蓝：精确值</span><br>' + it.calc(v);
+        res.classList.add("show"); summary();
+      };
+    }
+    d.appendChild(reveal); d.appendChild(res); iq.appendChild(d);
+  });
+  function summary() {
+    const done = state.filter(s => s.done);
+    if (!done.length) return;
+    const close = done.filter(s => s.gap <= 0.1).length;
+    g("iqsum").textContent = "已揭晓 " + done.length + "/" + qs.length + " 题，其中直觉接近真值（误差不超过量程 10%）的有 " + close + " 题。" + (done.length === qs.length ? " 全部做完：如果你有好几题偏得很远，说明凭直觉定概率很不可靠，设计时要靠计算与模拟。" : "");
+  }
+
+  // ---------- 中心极限定理
+  let cview = "sum";
+  const SIDES = 6, MU1 = 3.5, VAR1 = 35 / 12;
+  function pmf(n) {
+    let cur = [1];
+    for (let i = 0; i < n; i++) {
+      const nx = new Array(cur.length + SIDES).fill(0);
+      for (let k = 0; k < cur.length; k++) for (let f = 1; f <= SIDES; f++) nx[k + f] += cur[k] / SIDES;
+      cur = nx;
+    }
+    return cur;                                            // cur[s] = P(和 = s)
+  }
+  function cviewChips() {
+    const el = g("cview"); el.innerHTML = "";
+    [["sum", "看“点数之和”"], ["avg", "看“平均点数（和÷n）”"]].forEach(([k, t]) => {
+      const b = document.createElement("button"); b.className = "chip" + (k === cview ? " on" : ""); b.textContent = t;
+      b.onclick = () => { cview = k; cviewChips(); cdraw(); }; el.appendChild(b);
+    });
+  }
+  function cdraw() {
+    const n = +g("clt").value; g("cn").textContent = n;
+    const p = pmf(n), mu = MU1 * n, sd = Math.sqrt(VAR1 * n);
+    const lo = n, hi = n * SIDES;
+    const avg = cview === "avg";
+    const xmin = avg ? 1 : lo, xmax = avg ? 6 : hi;
+    const X = s => 50 + ((avg ? s / n : s) - xmin) / (xmax - xmin) * 620;
+    // 密度（每单位 x 的概率密度），平均视图要乘 n 才能和直方图高度可比；这里统一画“概率/单位x”
+    const scale = avg ? n : 1;
+    let mx = 0;
+    for (let s = lo; s <= hi; s++) mx = Math.max(mx, p[s] * scale);
+    const nrm = x => Math.exp(-0.5 * ((x - mu) / sd) ** 2) / (sd * Math.sqrt(2 * Math.PI)) * scale;
+    for (let s = lo; s <= hi; s += 0.25) mx = Math.max(mx, nrm(s));
+    mx *= 1.12;
+    const Y = v => 215 - v / mx * 195;
+    const slot = (avg ? 620 / 5 / n : 620 / (hi - lo + 1));
+    let h = '<line x1="50" y1="215" x2="680" y2="215" stroke="#2b2b3a" stroke-width="3"/>';
+    for (let s = lo; s <= hi; s++) {
+      const x = X(s), v = p[s] * scale;
+      h += '<rect x="' + (x - slot / 2 + 0.6).toFixed(1) + '" y="' + Y(v).toFixed(1) + '" width="' + Math.max(1, slot - 1.2).toFixed(1) + '" height="' + (215 - Y(v)).toFixed(1) + '" fill="#8fd3f4" stroke="#2b2b3a" stroke-width="1"/>';
+    }
+    let pts = [];
+    for (let s = lo - 0.5; s <= hi + 0.5; s += 0.25) pts.push(X(s).toFixed(1) + "," + Y(nrm(s)).toFixed(1));
+    h += '<polyline fill="none" stroke="#e5484d" stroke-width="3.5" points="' + pts.join(" ") + '"/>';
+    // 平均 ±1 标准差
+    const a = X(mu - sd), b = X(mu + sd);
+    h += '<line x1="' + a + '" y1="246" x2="' + b + '" y2="246" stroke="#2b2b3a" stroke-width="4"/><line x1="' + a + '" y1="240" x2="' + a + '" y2="252" stroke="#2b2b3a" stroke-width="3"/><line x1="' + b + '" y1="240" x2="' + b + '" y2="252" stroke="#2b2b3a" stroke-width="3"/>';
+    h += '<text x="' + ((a + b) / 2) + '" y="272" text-anchor="middle" font-size="16">平均 ±1 个标准差</text>';
+    // 刻度
+    const ticks = avg ? [1, 2, 3, 4, 5, 6] : [lo, Math.round(mu), hi];
+    ticks.forEach(t => { h += '<text x="' + X(avg ? t * n : t) + '" y="233" text-anchor="middle" font-size="14" fill="#555">' + t + '</text>'; });
+    h += '<text x="50" y="23" font-size="15" fill="#555">' + (avg ? "平均点数 1 → 6，越来越窄" : "点数之和 " + lo + " → " + hi) + '</text>';
+    g("csvg").innerHTML = h;
+    const sdShow = avg ? sd / n : sd, sd1 = avg ? Math.sqrt(VAR1) : Math.sqrt(VAR1);
+    g("cstat").innerHTML = '<span class="stat">' + (avg ? "平均点数的均值" : "和的均值") + ' <b>' + (avg ? MU1.toFixed(2) : mu.toFixed(1)) + '</b></span>' +
+      '<span class="stat">标准差 <b>' + sdShow.toFixed(3) + '</b></span>' +
+      '<span class="stat">相对 n=1 的倍数 <b>' + (sdShow / sd1).toFixed(3) + '</b>（' + (avg ? "1/√n" : "√n") + ' = ' + (avg ? (1 / Math.sqrt(n)).toFixed(3) : Math.sqrt(n).toFixed(3)) + '）</span>' +
+      '<span class="stat">单颗标准差 <b>' + sd1.toFixed(3) + '</b></span>';
+    g("cmsg").textContent = n === 1 ? "n=1：每个点数一样高（均匀）。往右拖，看形状怎么变。" : n === 2 ? "2d6 已经有点像钟形了：标准差 " + sd.toFixed(2) + "，正好是第 3 节里的 2.42。" : n < 4 ? "钟形正在成形。" : "红线（正态曲线）几乎贴住柱子顶端：n 越大越贴。";
+  }
+  g("clt").oninput = cdraw;
+  g("csamp").onclick = () => {
+    const n = +g("clt").value, N = 5000; let s1 = 0, s2 = 0;
+    for (let i = 0; i < N; i++) { let t = 0; for (let j = 0; j < n; j++) t += 1 + Math.floor(Math.random() * 6); s1 += t; s2 += t * t; }
+    const m = s1 / N, sdv = Math.sqrt(s2 / N - m * m);
+    g("cmsg").textContent = "投了 " + N + " 次（n=" + n + "）：样本均值 " + m.toFixed(2) + "（理论 " + (3.5 * n).toFixed(1) + "），样本标准差 " + sdv.toFixed(2) + "（理论 " + Math.sqrt(VAR1 * n).toFixed(2) + "）。";
+  };
+  cviewChips(); cdraw();
+
+})();
+</script>
+<script>
+(function () {
+  const g = id => document.getElementById(id);
+  const done = (id, m) => window.c14done(id, m);
+  // 被打断的赌局
+  g("c14g1s").oninput = () => (g("c14g1o").textContent = g("c14g1s").value);
+  g("c14g1b").onclick = () => {
+    const v = +g("c14g1s").value, r = g("c14g1r"); r.classList.add("show");
+    r.innerHTML = "你猜 A 分 <b>" + v + "</b>。最早的答案（帕乔利）按已赢局数 2:1，A 拿约 <b>67</b>。帕斯卡和费马的答案是 <b>75</b>：往前看，A 只要再赢一局就拿全部，B 必须连赢两局才行，B 的机会只有 1/2×1/2 = 1/4，所以 B 该分 25。" + (Math.abs(v - 75) <= 3 ? " 你猜得很接近！" : "");
+  };
+  g("c14sim1").onclick = () => {
+    let a = 0; const N = 10000;
+    for (let i = 0; i < N; i++) { let A = 2, B = 1; while (A < 3 && B < 3) { if (Math.random() < 0.5) A++; else B++; } if (A === 3) a++; }
+    g("c14sim1m").innerHTML = "重打 " + N + " 次：A 赢了 <b>" + a + "</b> 次，占 <b>" + (a / N * 100).toFixed(1) + "%</b>，理论值 75%。所以 100 金币里 A 分 75 才公平。";
+    if (Math.abs(a / N - 0.75) < 0.03) done("c14t1", "模拟值贴近 75%。");
+  };
+  // 骰子试试看
+  const seenD = {};
+  g("roll").addEventListener("click", () => { if (typeof total !== "undefined" && total >= 1000) { seenD[spec] = 1; if (seenD["1d12"] && seenD["2d6"]) done("c14t2", "1d12 是平的，2d6 是钟形，两端更少见。"); } });
+  g("c14g2s").oninput = () => (g("c14g2o").textContent = g("c14g2s").value);
+  g("c14g2b").onclick = () => {
+    const v = +g("c14g2s").value, r = g("c14g2r"); r.classList.add("show");
+    r.innerHTML = "你猜 <b>" + v + "%</b>。真实值：0.99<sup>100</sup> ≈ <b>36.6%</b>。也就是说抽满 100 次，约 63.4% 的人至少出一次，还有约三分之一一无所获。“期望要抽 100 次”和“抽满 100 次必出”是两回事。";
+  };
+  // PRD 微互动
+  g("c14prd").onclick = () => {
+    const N = 100000, C = 0.0557;
+    let run = 0, best = 0; for (let i = 0; i < N; i++) { if (Math.random() < 0.2) run = 0; else { run++; if (run > best) best = run; } }
+    let n = 0, bestP = 0, hits = 0; for (let i = 0; i < N; i++) { n++; if (Math.random() < Math.min(1, C * n)) { n = 0; hits++; } else if (n > bestP) bestP = n; }
+    g("c14prdm").innerHTML = "纯随机 20%：这 10 万刀里，最长一次连续 <b>" + best + "</b> 刀没暴击。<br>递增概率（C=0.0557）：最长连续 <b>" + bestP + "</b> 刀没触发，暴击率约 " + (hits / N * 100).toFixed(1) + "%。两者平均一样，倒霉的尾巴不一样。";
+  };
+  // 保底试试看
+  g("psim").addEventListener("click", () => { const t = g("ptbl").querySelectorAll("tr"); if (t.length >= 3) { const mx = +t[2].children[3].textContent; if (+g("cap").value <= 50 && mx <= 50) done("c14t5", "保底把最长一次压到了 " + mx + " 抽。"); } });
+  // 直觉题全部揭晓
+  const iqt = setInterval(() => { if (g("iqsum") && /已揭晓 6\/6/.test(g("iqsum").textContent)) { clearInterval(iqt); done("c14t4", "6 题全部揭晓。"); } }, 500);
+  // CLT 试试看
+  const ck = () => { if (+g("clt").value === 16 && /平均点数的均值/.test(g("cstat").textContent)) done("c14t3", "平均点数的标准差是单颗的 1/4。"); };
+  g("clt").addEventListener("input", ck); g("cview").addEventListener("click", () => setTimeout(ck, 0));
+})();
+</script>
+</body>
+</html>

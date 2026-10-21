@@ -1,0 +1,584 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>第28章 实战一：纸面原型工作坊</title>
+<link rel="stylesheet" href="css/style.css">
+<style>
+  .field{margin:10px 0}
+  .field label{font-family:var(--hand);font-size:1.3rem;display:block}
+  .row{display:flex;flex-wrap:wrap;gap:12px}
+  .row>div{flex:1;min-width:150px}
+  select,input[type=number]{font:inherit;border:3px solid var(--ink);border-radius:10px 18px 12px 16px;padding:6px 10px;background:#fffef7;width:100%}
+  pre.out{white-space:pre-wrap;font-family:var(--body);font-size:1rem;line-height:1.7;margin:0;background:#fffef7;border:2.5px dashed var(--ink);border-radius:12px;padding:10px 14px}
+  #sheet{display:grid;gap:0;margin:10px 0;background:#fff}
+  #sheet.cards{grid-template-columns:repeat(3,1fr)}
+  #sheet.dice{grid-template-columns:repeat(3,1fr)}
+  .cell{border:2px dashed var(--ink);min-height:190px;padding:8px 10px;display:flex;flex-direction:column;gap:6px;background:#fff;transition:background .15s,outline-color .15s}
+  #sheet.dice .cell{min-height:130px}
+  .cell.hit{background:#ffe58a;outline:4px solid var(--ink);outline-offset:-4px}
+  .cell .ct{font-family:var(--hand);font-size:1.25rem;border-bottom:2px solid var(--ink);min-height:1.6em;outline:none}
+  .cell .cb{flex:1;font-size:.95rem;line-height:1.5;outline:none;min-height:3em;white-space:pre-wrap}
+  .cell .ct:focus,.cell .cb:focus{background:#fff7cf}
+  .cell .ct:empty::before{content:"卡名";color:#bbb}
+  .cell .cb:empty::before{content:"点这里写效果 / 数值";color:#bbb}
+  .cell .face{font-family:var(--hand);font-size:1.3rem}
+  .rec{display:flex;gap:10px;align-items:flex-start;border:2.5px solid var(--ink);border-radius:12px 20px 12px 18px;padding:6px 12px;margin:8px 0;background:#fff}
+  .rec .x{margin-left:auto;flex:none}
+  .bar{display:flex;align-items:center;gap:8px;margin:4px 0}
+  .bar .b{height:18px;background:var(--orange);border:2px solid var(--ink);border-radius:8px;min-width:4px}
+  #c28hand{min-height:120px;display:flex;align-items:center;justify-content:center;margin:8px 0}
+  .c28card{width:200px;min-height:130px;border:3px solid var(--ink);border-radius:14px;background:#fff;padding:8px 12px;box-shadow:4px 5px 0 var(--ink);animation:c28flip .45s}
+  .c28card h4{margin:0 0 4px;font-family:var(--hand);font-size:1.4rem;font-weight:400;border-bottom:2px solid var(--ink)}
+  @keyframes c28flip{0%{transform:rotateY(90deg) scale(.8)}100%{transform:rotateY(0) scale(1)}}
+  .c28b{display:flex;align-items:center;gap:8px;margin:3px 0}
+  .c28b i{display:block;height:16px;background:var(--blue);border:2px solid var(--ink);border-radius:6px;min-width:2px}
+  #c28used{height:22px;border:3px solid var(--ink);border-radius:10px;background:#fff;overflow:hidden;margin:6px 0}
+  #c28used i{display:block;height:100%;width:0;background:var(--orange);transition:width .3s}
+  @media(max-width:700px){#sheet.cards,#sheet.dice{grid-template-columns:repeat(2,1fr)}}
+  @media print{
+    @page{margin:10mm}
+    body *{visibility:hidden}
+    body{background:#fff!important}
+    #sheet,#sheet *{visibility:visible}
+    #sheet{position:absolute;left:0;top:0;width:100%}
+    #sheet.cards,#sheet.dice{grid-template-columns:repeat(3,1fr)!important}
+    .cell{min-height:80mm;break-inside:avoid}
+    .cell.hit{background:#fff!important;outline:none}
+    #sheet.dice .cell{min-height:50mm}
+    .cell .ct:empty::before,.cell .cb:empty::before{content:""}
+  }
+</style>
+</head>
+<body data-ch="28">
+<main class="wrap">
+  <div class="hero">
+    <div class="txt">
+      <span class="badge">第 28 章 · 实战</span>
+      <h1>纸面原型工作坊</h1>
+      <p class="sub">一张纸、一颗骰子、几张卡片，今晚就能玩上自己的游戏。</p>
+    </div>
+    <svg viewBox="0 0 190 150" class="rough" aria-hidden="true">
+      <rect x="20" y="40" width="80" height="80" fill="#fff" stroke="#2b2b3a" stroke-width="4" transform="rotate(-5 60 80)"/>
+      <path d="M47 40v80M73 40v80M20 67h80M20 93h80" stroke="#2b2b3a" stroke-width="3" transform="rotate(-5 60 80)"/>
+      <rect x="115" y="60" width="50" height="50" rx="10" fill="#ffe58a" stroke="#2b2b3a" stroke-width="4" transform="rotate(12 140 85)"/>
+      <circle cx="130" cy="75" r="4" fill="#2b2b3a"/><circle cx="150" cy="95" r="4" fill="#2b2b3a"/><circle cx="140" cy="85" r="4" fill="#2b2b3a"/>
+    </svg>
+  </div>
+
+  <div class="goals"><span class="time">⏱ 约 60 分钟（含动手）</span><h3>学习目标</h3><ul><li>读完你能说清纸面原型是怎么来的、解决什么问题，并用 6 步流程做出一个今晚就能玩的纸面原型</li><li>读完你能用组件清单、卡牌 / 骰面模板和试玩记录表，把“我觉得”变成“我记录到”</li><li>读完你能解释纸面原型为什么有效（包括玩耍的进化功能和“知识的诅咒”），也知道它验证不了什么</li></ul></div>
+
+  <div class="sec"><span class="n">1</span><h2><span class="tag what">是什么</span>先别写代码：六步走完一圈</h2></div>
+  <div class="withimg">
+    <span data-illus="c28_pretty"></span>
+    <div>
+      <p>设想你有个点子：在 5×5 的地图上，玩家躲着猫抢奶酪。周五晚上你兴冲冲地开工，花三个晚上给 30 张卡画了精美的插图，还拿去过塑。</p>
+      <p>周日约朋友来玩。第一局还没结束，朋友就问：“这张卡抽到之后，到底能不能立刻用？”你愣住了，因为规则里根本没写。抽卡的规则不成立，而 30 张漂亮的卡已经印好了。</p>
+      <p>三个晚上的画功，一分钟就被一个问题否掉了。要是当初用铅笔在便利贴上写卡名，你撕掉重写只要十秒钟。这就是<span class="term" tabindex="0" data-def="用纸、卡片、骰子、棋子等最简单的材料，做出能当场试玩的游戏版本；不写代码，不画精美美术。">纸面原型</span>要解决的事：<b>最快地知道“这个玩法有没有意思”</b>。</p>
+    </div>
+  </div>
+  <p>它的做法并不神秘，六步走完一圈，改完再来：</p>
+  <div class="card">
+    <svg viewBox="0 0 760 360" width="100%" role="img" aria-label="纸面原型六步流程：选主题与一句话玩法，列组件，写一页规则，自己独玩，找人试玩并记录，修改后回到第四步再玩一圈">
+      <g class="rough" stroke="#2b2b3a" stroke-width="4">
+        <rect x="20" y="20" width="210" height="84" rx="18" fill="#ffe58a"/>
+        <rect x="280" y="20" width="210" height="84" rx="18" fill="#a8dcf0"/>
+        <rect x="540" y="20" width="210" height="84" rx="18" fill="#ffb3c6"/>
+        <rect x="540" y="200" width="210" height="84" rx="18" fill="#b6e8a8"/>
+        <rect x="280" y="200" width="210" height="84" rx="18" fill="#d8c8ff"/>
+        <rect x="20" y="200" width="210" height="84" rx="18" fill="#ffc078"/>
+        <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M240 62H270"/><path d="M500 62H530"/>
+          <path d="M645 114V190"/>
+          <path d="M530 242H500"/><path d="M270 242H240"/>
+          <path d="M125 294V316H645V294" stroke-dasharray="8 8"/>
+        </g>
+      </g>
+      <g font-size="21" text-anchor="middle">
+        <text x="125" y="54">① 选主题</text><text x="125" y="84">一句话玩法</text>
+        <text x="385" y="54">② 列出组件</text><text x="385" y="84">棋盘、卡、骰子</text>
+        <text x="645" y="54">③ 写 1 页规则</text><text x="645" y="84">3 分钟能讲完</text>
+        <text x="645" y="234">④ 自己独玩</text><text x="645" y="264">一人扮演所有人</text>
+        <text x="385" y="234">⑤ 找人试玩</text><text x="385" y="264">闭嘴，只记录</text>
+        <text x="125" y="234">⑥ 修改</text><text x="125" y="264">一次只改一处</text>
+        <text x="385" y="346" font-size="18">改完回到 ④，再玩一圈</text>
+      </g>
+    </svg>
+  </div>
+  <div class="grid3">
+    <div class="card y mini"><div class="ico">🎯</div><h3>一句话玩法</h3><p>“在 5×5 的地图上，躲开对手抢先拿到 3 块奶酪。”说不清，就是还没想清。</p></div>
+    <div class="card b mini"><div class="ico">🧑‍🎮</div><h3>先自己玩</h3><p>独玩就能抓出不少漏洞：规则互相矛盾，或者某一步走不下去。</p></div>
+    <div class="card p mini"><div class="ico">📝</div><h3>记下来才算数</h3><p>记忆会美化<span class="term" tabindex="0" data-def="让真实的玩家（而不是设计者自己）玩你的原型，并观察、记录。">试玩</span>。用表格记录，才看得出反复出现的问题。</p></div>
+  </div>
+
+  <div class="sec"><span class="n">2</span><h2><span class="tag what">是什么</span>保真度：糙到“刚好能回答问题”</h2></div>
+  <p>“纸”只是材料之一，真正的标尺叫<span class="term" tabindex="0" data-def="原型和最终成品有多像：越像成品保真度越高，做起来越贵，改起来也越难。">保真度</span>。越像成品，能验证的东西越多，可每改一次也越贵。下面这张图把这个交换摆开了：</p>
+  <div class="card">
+    <svg viewBox="0 0 760 330" width="100%" role="img" aria-label="柱状示意图：纸片、表格、灰盒数字版、精美成品，改一次的时间依次从几分钟增长到几天">
+      <g class="rough" stroke="#2b2b3a" stroke-width="4">
+        <path d="M30 250H740" fill="none"/>
+        <rect x="60" y="220" width="130" height="30" fill="#ffe58a"/>
+        <rect x="235" y="180" width="130" height="70" fill="#a8dcf0"/>
+        <rect x="410" y="130" width="130" height="120" fill="#ffb3c6"/>
+        <rect x="585" y="70" width="130" height="180" fill="#b6e8a8"/>
+      </g>
+      <g font-size="19" text-anchor="middle">
+        <text x="125" y="208">几分钟</text><text x="300" y="168">几十分钟</text><text x="475" y="118">几小时起</text><text x="650" y="58">几天起</text>
+        <text x="125" y="282">📄 纸片</text><text x="300" y="282">📊 表格</text><text x="475" y="282">🟦 灰盒数字版</text><text x="650" y="282">✨ 精美成品</text>
+        <text x="40" y="26" text-anchor="start" font-size="18">改一次要多久（示意，不是实测）</text>
+        <text x="125" y="306" font-size="15">验规则、选择</text><text x="300" y="306" font-size="15">算数值、经济</text><text x="475" y="306" font-size="15">验手感、节奏</text><text x="650" y="306" font-size="15">验画面、氛围</text>
+      </g>
+    </svg>
+  </div>
+  <p>所以口诀是：<b>先用最低的、刚好能回答你问题的那一档</b>。想知道规则成不成立，纸就够；想知道跳起来爽不爽，就得往右走。下面五个例子，前三个是对的用法，后两个是错位：</p>
+  <div class="eg" data-ic="🃏"><span data-illus="c28_magic"></span><div class="egt"><b>《万智牌》的 Alpha 试玩版</b>：Richard Garfield 最早的试玩版只有 120 张牌，随机分给两位玩家。牌是手工做的，设计在后面几轮试玩里一步步改。要验证的是“抽牌对打好不好玩”，纸牌足够了。</div></div>
+  <div class="eg" data-ic="🎭"><span data-illus="c28_armello"></span><div class="egt"><b>《Armello》的纸面迭代</b>：团队在访谈里说，他们先用纸面原型迭代了大约八个月，由两位“主持人”在幕后手动处理隐藏规则，像是在模拟电脑。电脑版要写的东西，人脑先顶着。</div></div>
+  <div class="eg" data-ic="🛋️"><span data-illus="c28_sofa"></span><div class="egt"><b>装修时的纸板沙发</b>：把纸板剪成沙发的大小，摆进平面图里，看过道还剩多宽。不合适就挪一下，一分钱不花。道理和游戏原型一样。</div></div>
+  <div class="eg bad" data-ic="🎨"><span data-illus="c28_pretty"></span><div class="egt"><b>反例：先画精美卡面</b>（假想）：花了三个晚上给 30 张卡画插图、过塑，第一次试玩才发现抽卡规则不成立。图全白画，还舍不得改规则。纸面原型应该糙到“撕了不心疼”。</div></div>
+  <div class="eg bad" data-ic="🦘"><span data-illus="c28_jump"></span><div class="egt"><b>反例：用纸验证跳跃手感</b>：纸上没有实时的手眼配合，“跳得爽不爽”这种问题，纸回答不了，要尽快做出能运行的数字原型。工具选错，再糙也没用。</div></div>
+  <p class="src">来源：<a href="https://magic.wizards.com/en/news/making-magic/creation-magic-gathering-2013-03-12" target="_blank" rel="noopener">Garfield 自述</a>；<a href="https://gamecloud.net.au/features/interviews/paxaus-2015-interview-with-armello-developer-jason-bakker" target="_blank" rel="noopener">Armello 开发者访谈</a>。</p>
+
+  <div class="sec"><span class="n">3</span><h2><span class="tag origin">发明故事</span>为什么人们开始“先用纸”？</h2></div>
+  <p>先自己体验一下它要解决的麻烦。<b>你有 6 小时验证一个新游戏，每一步都要花时间。</b>点按钮花时间，看你能完成几轮“改规则 → 试玩”。（耗时是示意数字，用来对比量级，不是实测。）</p>
+  <div class="card b no-print">
+    <div id="c28used"><i></i></div>
+    <div class="msg" id="c28bmsg">预算 6 小时，已用 0 小时。</div>
+    <button class="btn" data-a="paper">✂️ 纸上改规则并试玩一轮（0.5 小时）</button>
+    <button class="btn alt" data-a="code">💻 写代码改规则并试玩一轮（3 小时）</button>
+    <button class="btn pink" data-a="art">🎨 先把卡面画精美（2 小时）</button>
+    <button class="btn green" id="c28breset">↺ 重来</button>
+    <div>
+      <span class="stat">试玩轮数 <b id="c28r">0</b></span>
+      <span class="stat">好看度 <b id="c28v">0</b></span>
+      <span class="stat">发现的规则问题 <b id="c28q">0</b></span>
+    </div>
+    <p class="small">想想：同样的 6 小时，把时间都花在哪里，你对“这个玩法行不行”知道得最多？（“发现的规则问题”按每轮试玩发现 1 个计，也是示意。）</p>
+  </div>
+  <div class="sticky no-print" id="c28t0">试试看：只点“纸上改规则”，把 6 小时用完，数一数你试玩了几轮。再重来一次，混着点“写代码”和“画卡面”，对比轮数。<b id="c28t0ok"></b></div>
+
+  <div class="story">
+    <h3>从桌游桌到手机界面，同一个烦恼</h3>
+    <div class="withimg rev">
+      <span data-illus="c28_sixhrs"></span>
+      <div>
+        <p><b>问题：</b>做出一个能运行的游戏或软件很贵，而你最想回答的两个问题——“规则好不好玩”“人们看不看得懂界面”——在做出来之前根本没法回答。做完才发现不对，改动的代价最大。</p>
+        <p><b>来源一：桌游本来就是纸、卡、骰。</b>设计桌游的人天然用手工原型。Garfield 回忆，《万智牌》1991 年的 Alpha 版是 120 张牌；之后设计经历了 Alpha、Beta、Gamma 等几套试玩牌，朋友们的试玩不断推动修改。比如 Gamma 版里，许多生物的费用被调高，能永久抢走对手生物的牌被拿掉。游戏在 1993 年正式发售。</p>
+        <p><b>来源二：软件界面的“低保真原型”。</b>1994 年 4 月，Marc Rettig 在《Communications of the ACM》上发表《Prototyping for Tiny Fingers》，介绍用纸做界面原型，让真实用户拿去试用（他称为 lo-fi 原型）。据摘要，文章还建议测试时分配角色：迎接者、主持人、扮演“计算机”的人，以及做记录的观察者。2003 年，Carolyn Snyder 出版了专著《Paper Prototyping》，把这套做法系统化。</p>
+      </div>
+    </div>
+    <p><b>一个流传很广的实物版本：</b>据报道，Palm 的 Jeff Hawkins 曾把一块木头削成预想中掌上设备的尺寸，揣在衬衫口袋里，拿笔“假装”在上面记事，体会拿着它的感觉；Donna Dubinsky 回忆说，他会在会议里这样假装做笔记。他带了多久，不同来源说法不一（一周到数月不等）。计算机历史博物馆（CHM）收藏了一件约 1995 年的 Palm 原型。</p>
+    <p><b>关键洞察：</b>要验证的是<b>想法</b>，不是<b>制作水平</b>。把一切不影响“规则与选择”的东西拿掉，改一条规则只要一支笔、一分钟，有限的时间就能换成更多轮试玩。数字游戏团队后来也借用了这一点，比如前面提到的 Armello。</p>
+    <div class="card">
+      <svg viewBox="0 0 760 290" width="100%" role="img" aria-label="演化图：桌游的手工原型传统和软件界面的低保真原型两条线，汇合成数字游戏团队也先用纸试玩的做法">
+        <g class="rough" stroke="#2b2b3a" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="15" y="20" width="300" height="84" rx="16" fill="#ffe58a"/><rect x="15" y="150" width="300" height="84" rx="16" fill="#a8dcf0"/>
+          <rect x="440" y="80" width="305" height="84" rx="16" fill="#b6e8a8"/>
+          <path d="M325 62Q390 62 436 112"/><path d="M325 192Q390 192 436 132"/>
+        </g>
+        <g font-size="19" text-anchor="middle">
+          <text x="165" y="54">桌游：本来就是纸、卡、骰</text><text x="165" y="84" font-size="17">例：万智牌 Alpha（1991）</text>
+          <text x="165" y="184">软件界面：做完才发现看不懂</text><text x="165" y="214" font-size="17">例：lo-fi 原型（1994）</text>
+          <text x="592" y="114">数字游戏团队也先用纸试</text><text x="592" y="144" font-size="17">例：Armello 的纸面迭代</text>
+          <text x="380" y="272" font-size="17">共同的问题：做出来再改，太贵</text>
+        </g>
+      </svg>
+    </div>
+    <div class="timeline">
+      <div class="ev hasimg"><span data-illus="c28_t1991"></span><div><b class="yr">1991</b>　Garfield 的《万智牌》Alpha 手工试玩版：剪出来的牌，之后几轮试玩一版版地改。</div></div>
+      <div class="ev hasimg"><span data-illus="c28_t1993"></span><div><b class="yr">1993</b>　《万智牌》正式发售，试玩版变成了商品。</div></div>
+      <div class="ev hasimg"><span data-illus="c28_rettig"></span><div><b class="yr">1994 年 4 月</b>　Rettig 在 CACM 发表《Prototyping for Tiny Fingers》：用户点纸上的界面，有人扮演“电脑”换页。</div></div>
+      <div class="ev hasimg"><span data-illus="c28_palm"></span><div><b class="yr">1990 年代中期</b>　Palm 木块原型的故事：先假装它是掌上电脑（CHM 藏有约 1995 年的原型）。</div></div>
+      <div class="ev hasimg"><span data-illus="c28_book"></span><div><b class="yr">2003</b>　Snyder 的《Paper Prototyping》出版，把做法整理成方法。</div></div>
+    </div>
+    <p class="src">来源：Garfield，<a href="https://magic.wizards.com/en/news/making-magic/creation-magic-gathering-2013-03-12" target="_blank" rel="noopener">The Creation of Magic: The Gathering</a>；Rettig，CACM 37(4)，1994，<a href="https://dx.doi.org/10.1145/175276.175288" target="_blank" rel="noopener">DOI 10.1145/175276.175288</a>（我读到的是摘要与二手总结，角色细节来自 <a href="https://acawiki.org/Prototyping_for_Tiny_Fingers" target="_blank" rel="noopener">AcaWiki 摘要</a>）；<a href="https://www.oreilly.com/library/view/paper-prototyping/9781558608702" target="_blank" rel="noopener">Snyder 书目页</a>；Hawkins 木块：<a href="https://www.redhat.com/en/command-line-heroes/season-4/smarter-phones" target="_blank" rel="noopener">Red Hat Command Line Heroes</a> 与 <a href="https://computerhistory.org/collections/catalog/102716262" target="_blank" rel="noopener">CHM 藏品页</a>（属行业轶事，各来源细节不完全一致）。</p>
+  </div>
+
+  <div class="sec"><span class="n">4</span><h2><span class="tag why">为什么成立</span>为什么“糙”的原型反而好用？</h2></div>
+  <div class="why-box"><h3>糙，让改动便宜，也让评价落在规则上</h3>
+    <ul>
+      <li><b>低成本试错：</b>纸可以撕、可以涂、可以重写，改一版几乎不花钱，人就更敢大改，也更舍得推翻。这和“做一版、试玩、再改”的迭代逻辑一脉相承。</li>
+      <li><b>物理触感降低表达门槛：</b>不会编程、不会画画的人也能做；卡牌拿在手里，棋子能直接移动，别人看一眼就能参与，也能当场提议“要不要这样改”。</li>
+      <li><b>注意力集中在规则而非美术：</b>当原型明显是草稿，试玩者的评价自然落在“规则清不清楚、好不好玩”上，而不是颜色好不好看；设计者自己也更不会为精美的外观而舍不得改。这是<span class="term" tabindex="0" data-def="只有基本结构和功能、外观粗糙的早期原型，用来先验证想法本身。">低保真原型</span>的常见思路。</li>
+    </ul>
+    <p>边界：纸适合验证规则与选择，验证不了操作手感、画面表现、实时节奏，这些得在数字原型里试。</p>
+    <p class="src">原理出处：Rettig（1994）与 Snyder（2003）代表的低保真原型做法，以及<span class="term" tabindex="0" data-def="把“做出一版 → 试玩 → 修改”重复多轮。">迭代</span>思路。“糙原型让反馈集中在设计本身”是这个领域的常见主张，没有找到量化的实验数据，所以不引用数字。</p></div>
+
+  <div class="sec"><span class="n">5</span><h2><span class="tag why">为什么成立</span>两条更底层的道理：玩耍与“知识的诅咒”</h2></div>
+  <div class="withimg">
+    <span data-illus="c28_rehearse"></span>
+    <div>
+      <p>还记得小猫扑毛线球、幼狮互相摔打吗？玩耍看起来浪费力气，生物学家却一直想弄明白它图什么。</p>
+      <p>Špinka、Newberry 和 Bekoff 在 2001 年提出一个很有影响的假说：<b>玩耍是在“训练应对意外”</b>。动物在玩的时候会故意让自己失控——幼狮翻身露出肚皮，追的和逃的互换角色——这样就能在没有后果的环境里，反复练习从突然失控中恢复。</p>
+      <p>纸面原型是设计者的“玩耍”。你在没有后果的桌面上，故意把规则放到会出岔子的地方，让它摔几跤。摔在纸上不疼，摔在发售后很疼。</p>
+    </div>
+  </div>
+  <div class="why-box"><h3>原理一：玩耍是“训练应对意外”</h3>
+    <p>前面讲过玩耍的“练习说”，这是它的升级版：不是练习某个固定技能，而是练习<b>应付没料到的事</b>。纸面原型的价值正好在这里：你不知道试玩者会做出什么事，原型让这个意外发生在便宜的地方。</p>
+    <p>争议：这是一个有影响的假说，不是定论。后来的综述指出，它推出的许多具体预测还没被充分检验；玩耍也很可能不止一种功能（前面谈到的“说不太通的玩耍”就是一个提醒）。</p>
+    <p class="src">原理出处：Špinka, M., Newberry, R. C., &amp; Bekoff, M. (2001). Mammalian play: training for the unexpected. <i>Quarterly Review of Biology</i>, 76(2), 141–168. <a href="https://pubmed.ncbi.nlm.nih.gov/11409050/" target="_blank" rel="noopener">PubMed</a></p></div>
+
+  <div class="withimg rev">
+    <span data-illus="c28_curse"></span>
+    <div>
+      <p>另一个麻烦在你自己身上：为什么“自己觉得好玩”不算数？因为你太懂这个游戏了。你读规则时，脑子里自动补全了所有没写的东西。</p>
+      <p>这件事在实验里有个经典版本。1990 年，Stanford 的研究生 Elizabeth Newton 让一些人“敲桌子”敲出一首大家都熟悉的歌的节奏，另一些人来猜。敲的人事先估计，大约一半的人能猜出；结果 120 首里只有 3 首被猜中，约 2.5%。</p>
+      <p>敲的人耳朵里响着整首歌，听的人却只听到一串咚咚声。设计者和试玩者之间就隔着这样一道沟。</p>
+    </div>
+  </div>
+  <div class="why-box"><h3>原理二：知识的诅咒，所以必须让别人来玩</h3>
+    <p>这类现象有个名字，叫<span class="term" tabindex="0" data-def="知识的诅咒：一旦你知道了某件事，就很难想象不知道它的人是什么感受，会高估别人理解你的程度。">知识的诅咒</span>。它不是你不够用心，而是知道之后很难“忘掉”。因此规则“一页写完、三分钟讲完”的检验方法，不是你自己读一遍，而是让一个不知情的人读一遍。</p>
+    <p>说明：数字来自 Newton 的博士论文研究，经《Made to Stick》（Heath 兄弟，2007）广为流传；它是一个样本不大的演示实验，用来说明方向，不必当作精确的比例。</p>
+    <p><b>亲手验证（5 分钟）：</b>找一个朋友，你在桌上敲三首大家都熟的歌的节奏，让他猜。敲之前先写下你预计他能猜中几首，再对比结果。然后用同样的方式检验你的游戏：不给他看任何东西，只用口头讲规则，数他漏听了几条。</p>
+    <p class="src">出处：Newton, E. (1990), Stanford 博士论文；转述见 Heath, C. &amp; Heath, D., <i>Made to Stick</i> (2007)。“curse of knowledge”一词最早见于 Camerer, Loewenstein &amp; Weber (1989)。</p></div>
+
+  <div class="sec"><span class="n">6</span><h2><span class="tag how">怎么用</span>你的纸面原型工作台</h2></div>
+  <p>三件工具：<b>① 组件清单</b>（准备什么）→ <b>② 卡牌 / 骰面台</b>（招牌：直接写、抽、掷）→ <b>③ 试玩记录表</b>（试完记什么）。数据都存在这台设备上。</p>
+
+  <h3>① 组件清单与规则模板（辅助）</h3>
+  <p>写下你的想法，勾选需要的组件，点生成，得到一份<b>打印用清单 + 一页规则模板</b>。</p>
+  <div class="board">
+    <div class="field"><label>🎮 游戏名称</label><input type="text" id="g_name" data-save="ch20name" placeholder="例：奶酪大逃亡"></div>
+    <div class="field"><label>🎯 一句话玩法</label><input type="text" id="g_pitch" data-save="ch20pitch" placeholder="例：在 5×5 地图上躲开猫，先拿到 3 块奶酪的人获胜"></div>
+    <div class="row">
+      <div class="field"><label>👥 人数</label><select id="g_players"><option>1</option><option selected>2</option><option>3</option><option>4</option><option>5-6</option></select></div>
+      <div class="field"><label>⏱️ 预计一局</label><select id="g_time"><option>5</option><option selected>10</option><option>15</option><option>20</option><option>30</option></select></div>
+    </div>
+    <div class="field"><label>🧩 需要哪些组件？（点选）</label><div id="g_chips"></div></div>
+    <button class="btn" id="g_gen">✨ 生成清单与规则模板</button>
+  </div>
+  <div class="card y" id="g_card" style="display:none">
+    <h3 id="g_title"></h3>
+    <pre class="out" id="g_out"></pre>
+    <button class="btn alt" id="g_copy">📋 复制文字</button>
+  </div>
+  <div class="sticky no-print" id="c28t1">试试看：写下游戏名和一句话玩法，点“生成”，让页面替你列出清单。<b id="c28t1ok"></b></div>
+
+  <h3>② 卡牌 / 骰面台（招牌）</h3>
+  <p>点任意格子直接打字，写好后<b>马上抽牌、掷骰</b>，看看它在手里“玩起来”的样子：卡牌台能抽牌（抽完再洗），骰面台能掷骰并统计每个面出现的次数，这就是概率。点“打印”只会输出下面这张表（剪下来就是卡牌；骰面可以贴在空白骰子或小纸块上）。</p>
+  <div class="no-print">
+    <button class="btn" id="m_cards">🃏 卡牌 3×3（9 张）</button>
+    <button class="btn alt" id="m_dice">🎲 骰面 6 格</button>
+    <button class="btn pink" id="m_print">🖨️ 打印这张表</button>
+    <button class="btn green" id="m_clear">🧹 清空当前表</button>
+  </div>
+  <div id="sheet" class="cards"></div>
+  <div class="card y no-print">
+    <button class="btn" id="m_play">🃏 抽一张</button>
+    <button class="btn alt" id="m_shuffle">🔀 洗牌</button>
+    <span class="stat" id="m_left"></span>
+    <div id="c28hand" aria-live="polite"></div>
+    <div id="c28tally"></div>
+    <div class="msg" id="c28pmsg">先在上面的格子里写几张卡，再抽牌试试。</div>
+  </div>
+  <div class="sticky no-print" id="c28t2">试试看：写满 3 张牌（或 3 个骰面），抽牌 / 掷骰至少 3 次，留意哪一张读起来最别扭。<b id="c28t2ok"></b></div>
+  <p class="small">提示：骰子不一定是 1~6 点。可以让 6 个面分别代表“前进 / 抽卡 / 攻击 / 防御 / 空白 / 双倍”，一颗骰子就变成了一个小系统。这里的<span class="term" tabindex="0" data-def="某件事发生的可能性大小，例如公平六面骰每个面出现的概率约为 1/6。">概率</span>，掷几十次就能亲眼看到。</p>
+
+  <h3>③ 试玩记录表（辅助）</h3>
+  <p>每试玩一局，就填一条。多记几条，页面会告诉你<b>哪个问题出现最多</b>，先修它。</p>
+  <div class="board">
+    <div class="row">
+      <div class="field"><label>⏱️ 这一局用了几分钟</label><input type="number" id="r_min" min="1" max="240" value="10"></div>
+    </div>
+    <div class="field"><label>🧱 卡住 / 困惑的地方（可多选）</label><div id="r_tags"></div></div>
+    <div class="field"><label>😂 笑点或兴奋点（玩家哪里笑了、喊了？）</label><input type="text" id="r_fun" placeholder="例：有人抽到了“交换位置”，全场尖叫"></div>
+    <button class="btn" id="r_add">＋ 添加这一局</button>
+    <button class="btn green" id="r_demo">🧪 填入示例数据</button>
+    <button class="btn pink" id="r_reset">清空记录</button>
+  </div>
+  <div id="r_list"></div>
+  <div class="card b" id="r_sum"></div>
+  <div class="sticky no-print" id="c28t3">试试看：添加（或用示例数据凑满）3 局记录，看“问题出现次数”里谁排第一。<b id="c28t3ok"></b></div>
+
+  <div class="misc">
+    <h3>常见误区</h3>
+    <ul>
+      <li><b>“原型要好看”</b>：好看会分散注意力，也让你舍不得改。先把规则和选择做对。</li>
+      <li><b>“一开始就做完整游戏”</b>：先做最小可玩的一局。规则一页写不下，说明太复杂。</li>
+      <li><b>“自己觉得好玩就够了”</b>：你最了解规则，所以看不到新手的卡点（知识的诅咒）。要找别人试。</li>
+      <li><b>“一次改很多处，进步更快”</b>：改太多就不知道是哪一处起了作用。</li>
+      <li><b>“纸面原型能验证所有事”</b>：手感和实时节奏它验证不了。</li>
+    </ul>
+  </div>
+
+  <div class="reflect">
+    <h3>想一想</h3>
+    <p><b>在你的原型里，你最舍不得改的是哪一部分？为什么？</b>如果试玩者说它不好玩，你会先怀疑规则，还是先怀疑试玩者？</p>
+    <textarea rows="3" data-save="ch24reflect" placeholder="例：我最舍不得那张‘大招卡’，但三个人都说它太强了……"></textarea>
+    <p class="small">一个有争议的问题：低保真一定比高保真更能得到“诚实的反馈”吗？有的研究者和从业者认为纸原型让测试者更敢批评，也有人认为过于粗糙会让测试者难以想象真实体验。这取决于你要验证什么。</p>
+  </div>
+
+  <div class="key">
+    <h3>要点</h3>
+    <ul>
+      <li>原型是为了<b>学习</b>，越糙越好：纸、骰子、便利贴就够了；糙的好处是改得起、评价落在规则上。</li>
+      <li>纸面原型来自桌游的手工做法和软件界面的 lo-fi 原型：把时间换成更多轮试玩。</li>
+      <li>玩耍是在安全环境里练习应对意外（Špinka 等，2001），纸面原型让设计的“意外”发生在便宜的地方。</li>
+      <li>你被“知识的诅咒”困住，所以要先自己独玩，再找不知情的人；试玩时闭嘴，只看、只记，一次只改一处。</li>
+    </ul>
+  </div>
+  <div class="tldr">纸面原型用最低的成本，把设计的“摔跤”提前到不疼的地方；它不好看，所以才好用。</div>
+
+  <div class="sec"><span class="n">7</span><h2><span class="tag think">练习</span>练习</h2></div>
+  <div id="quiz"></div>
+
+  <div class="sec"><span class="n">8</span><h2><span class="tag think">你的设计</span>你的成果</h2></div>
+  <p>这里是根据你上面的试玩记录生成的<b>试玩总结</b>。点“保存”会存在这台设备上，下次打开还在。</p>
+  <div class="card g">
+    <h3>📊 我的试玩总结</h3>
+    <pre class="out" id="s_out">（还没有记录，先在上面添加几局吧。）</pre>
+    <div class="field"><label>🔧 下一版我只改这一件事：</label><input type="text" id="s_next" data-save="ch20next" placeholder="例：把抽卡改成每回合固定 2 张"></div>
+    <button class="btn" id="s_save">💾 保存总结</button>
+    <button class="btn alt" id="s_copy">📋 复制</button>
+    <div class="small" id="s_saved"></div>
+  </div>
+
+  <div class="sticky no-print">把你的原型打印出来，今晚找一个人玩。<b>第一版不好玩是正常的，记录下为什么，就是进步。</b></div>
+</main>
+<script src="js/illus.js"></script>
+<script src="js/illus-ch28.js"></script>
+<script src="js/common.js"></script>
+<script>
+const $ = id => document.getElementById(id);
+const mark = (id, m) => { const e = $(id + "ok"); if (e) e.textContent = m ? " ✅ " + m : ""; };
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const load = (k, d) => { try { const v = JSON.parse(GD.store.get(k)); return v == null ? d : v; } catch (e) { return d; } };
+const save = (k, v) => GD.store.set(k, JSON.stringify(v));
+function copyText(text, btn) {
+  const done = () => { const o = btn.dataset.o || btn.textContent; btn.dataset.o = o; btn.textContent = "✔ 已复制"; setTimeout(() => (btn.textContent = o), 1500); };
+  const fallback = () => {
+    const ta = document.createElement("textarea"); ta.value = text; ta.style.position = "fixed"; ta.style.opacity = "0";
+    document.body.appendChild(ta); ta.select();
+    try { document.execCommand("copy"); done(); } catch (e) { btn.textContent = "请手动选中复制"; }
+    ta.remove();
+  };
+  if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done, fallback); else fallback();
+}
+
+/* ---------- 发明故事互动：6 小时预算 ---------- */
+(function () {
+  const COST = { paper: 0.5, code: 3, art: 2 };
+  let used, rounds, vis, found;
+  function upd(msg) {
+    $("c28used").firstChild.style.width = Math.min(100, used / 6 * 100) + "%";
+    $("c28r").textContent = rounds; $("c28v").textContent = vis; $("c28q").textContent = found;
+    $("c28bmsg").textContent = msg || ("预算 6 小时，已用 " + used + " 小时。");
+    document.querySelectorAll("[data-a]").forEach(b => (b.disabled = used + COST[b.dataset.a] > 6 + 1e-9));
+    mark("c28t0", used >= 5.5 && vis === 0 && rounds >= 11 ? "做到了：全用纸跑了 " + rounds + " 轮。同样的时间，写代码只够 2 轮。" : "");
+  }
+  function reset() { used = 0; rounds = 0; vis = 0; found = 0; upd("预算 6 小时，已用 0 小时。点按钮花时间。"); }
+  document.querySelectorAll("[data-a]").forEach(b => (b.onclick = () => {
+    const a = b.dataset.a; used += COST[a];
+    if (a === "art") { vis++; upd("卡面更好看了……但对“规则行不行”没有多知道一点。已用 " + used + " 小时。"); return; }
+    rounds++; found++;
+    let m = "完成第 " + rounds + " 轮试玩，发现一个规则问题。已用 " + used + " 小时。";
+    if (used >= 5.5) m = "6 小时基本用完：你一共试玩了 " + rounds + " 轮，好看度 " + vis + "。全用纸能试 12 轮，全写代码只能试 2 轮（示意）。";
+    upd(m);
+  }));
+  $("c28breset").onclick = reset; reset();
+})();
+
+/* ---------- ① 组件清单生成器 ---------- */
+const COMPS = [
+  { id: "board", name: "🗺️ 棋盘/地图", line: "棋盘：一张 A4 白纸，用尺子画 5×5 格（每格约 3 厘米），格内可手写地形或编号", rule: "地图上有哪些特殊格？（陷阱/奖励/起点/终点）" },
+  { id: "cards", name: "🃏 卡牌", line: "卡牌：9~18 张（剪成名片大小的纸片，可用上一节的模板），背面朝上叠成牌堆", rule: "每回合抽几张？手牌上限几张？牌用完怎么办？" },
+  { id: "dice", name: "🎲 骰子", line: "骰子：1~2 颗六面骰（没有就用手机随机数，或做一颗自制骰面）", rule: "什么时候掷骰？结果如何影响行动？（运气成分有多大？）" },
+  { id: "token", name: "♟️ 标记物/棋子", line: "标记物：每人 1 个棋子 + 若干筹码（硬币、纽扣、橡皮擦都可以）", rule: "标记物代表什么？（位置/生命/资源）怎么得到、怎么失去？" },
+  { id: "score", name: "📋 计分纸", line: "计分纸：一张纸 + 笔，每人一列", rule: "怎么得分？达到多少分获胜？" },
+  { id: "timer", name: "⏲️ 计时器", line: "计时器：手机计时，限定每回合 30 秒或整局时长", rule: "计时结束时发生什么？" },
+  { id: "note", name: "📌 便利贴", line: "便利贴：若干，用来盖住/标注状态（如“被冻结”）", rule: "有哪些需要临时标注的状态？持续几回合？" },
+];
+const picked = new Set(load("gdc-ch20-comps", ["board", "dice", "token"]));
+function drawChips() {
+  $("g_chips").innerHTML = COMPS.map(c => `<button type="button" class="chip${picked.has(c.id) ? " on" : ""}" data-id="${c.id}">${c.name}</button>`).join("");
+  $("g_chips").querySelectorAll(".chip").forEach(b => (b.onclick = () => {
+    const id = b.dataset.id; picked.has(id) ? picked.delete(id) : picked.add(id);
+    save("gdc-ch20-comps", [...picked]); b.classList.toggle("on");
+  }));
+}
+drawChips();
+function buildGen() {
+  const name = $("g_name").value.trim() || "（未命名游戏）";
+  const pitch = $("g_pitch").value.trim() || "（用一句话写：玩家在什么场景里，做什么，怎样算赢）";
+  const list = COMPS.filter(c => picked.has(c.id));
+  const items = list.length ? list.map(c => "☐ " + c.line).join("\n") : "☐ （还没选组件——纯口头/纯纸笔游戏也可以！）";
+  const extra = list.map(c => "　· " + c.rule).join("\n");
+  return `《${name}》\n一句话玩法：${pitch}\n人数：${$("g_players").value} 人　预计一局：${$("g_time").value} 分钟\n\n—— 打印 / 准备清单 ——\n${items}\n\n—— 一页规则模板 ——\n1. 目标：玩家要达成什么？（一句话）\n2. 准备：谁先手？每人起始拥有什么？\n3. 回合流程：（用 2~4 个动词写一个回合，例：抽卡 → 掷骰 → 移动 → 结算）\n4. 胜利 / 失败条件：\n5. 需要在规则里写清的细节：\n${extra || "　· （选择组件后这里会给出提示）"}\n6. 特殊情况：（平局？卡牌用完？走不动？）\n7. 我还不确定的地方：（试玩时重点观察它）`;
+}
+$("g_gen").onclick = () => {
+  $("g_title").textContent = "📄 " + ($("g_name").value.trim() || "我的游戏") + " · 清单与规则模板";
+  $("g_out").textContent = buildGen(); $("g_card").style.display = "block"; $("g_card").scrollIntoView({ behavior: "smooth" });
+  mark("c28t1", $("g_name").value.trim() && $("g_pitch").value.trim() ? "清单有了。打印出来，就可以开始剪纸了。" : "");
+};
+$("g_copy").onclick = () => copyText($("g_out").textContent, $("g_copy"));
+
+/* ---------- ② 卡牌 / 骰面台 ---------- */
+let mode = load("gdc-ch20-mode", "cards"); if (mode !== "cards" && mode !== "dice") mode = "cards";
+const sheetData = load("gdc-ch20-sheet", {});
+if (!Array.isArray(sheetData.cards)) sheetData.cards = [];
+if (!Array.isArray(sheetData.dice)) sheetData.dice = [];
+let draws = 0;
+function chkCards() { const f = mode === "cards" ? filledCards().length : (sheetData.dice || []).filter(s => s && s.trim()).length; mark("c28t2", f >= 3 && draws >= 3 ? "做到了：" + f + " 张 / 面，抽掷 " + draws + " 次。读起来别扭的那张，就是下一版要改的。" : ""); }
+let deck = [], tally = [0, 0, 0, 0, 0, 0], rolling = false;
+function filledCards() { const r = []; for (let i = 0; i < 9; i++) { const d = sheetData.cards[i]; if (d && (d[0].trim() || d[1].trim())) r.push(i); } return r; }
+function shuffleDeck() { deck = filledCards(); for (let i = deck.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [deck[i], deck[j]] = [deck[j], deck[i]]; } updLeft(); }
+function updLeft() { $("m_left").textContent = mode === "cards" ? "牌堆剩 " + deck.length + " 张" : "已掷 " + tally.reduce((a, b) => a + b, 0) + " 次"; }
+function drawTally() {
+  if (mode !== "dice") { $("c28tally").innerHTML = ""; return; }
+  const max = Math.max(1, ...tally);
+  $("c28tally").innerHTML = tally.map((n, i) => `<div class="c28b"><span style="width:4.5em;flex:none">第 ${i + 1} 面</span><i style="width:${Math.round(n / max * 60)}%"></i><b>${n}</b></div>`).join("");
+}
+function renderSheet() {
+  const s = $("sheet"); s.className = mode; s.innerHTML = "";
+  const n = mode === "cards" ? 9 : 6;
+  for (let i = 0; i < n; i++) {
+    const cell = document.createElement("div"); cell.className = "cell";
+    if (mode === "cards") {
+      const d = sheetData.cards[i] || ["", ""];
+      cell.innerHTML = `<div class="ct" contenteditable="true"></div><div class="cb" contenteditable="true"></div>`;
+      const [t, b] = cell.children; t.textContent = d[0]; b.textContent = d[1];
+      const upd = () => { sheetData.cards[i] = [t.textContent, b.textContent]; save("gdc-ch20-sheet", sheetData); };
+      t.oninput = upd; b.oninput = upd;
+    } else {
+      cell.innerHTML = `<div class="face">第 ${i + 1} 面</div><div class="cb" contenteditable="true"></div>`;
+      const b = cell.children[1]; b.textContent = sheetData.dice[i] || "";
+      b.oninput = () => { sheetData.dice[i] = b.textContent; save("gdc-ch20-sheet", sheetData); };
+    }
+    s.appendChild(cell);
+  }
+  $("m_cards").style.outline = mode === "cards" ? "3px solid var(--ink)" : "none";
+  $("m_dice").style.outline = mode === "dice" ? "3px solid var(--ink)" : "none";
+  $("m_play").textContent = mode === "cards" ? "🃏 抽一张" : "🎲 掷骰";
+  $("m_shuffle").style.display = mode === "cards" ? "" : "none";
+  $("c28hand").innerHTML = "";
+  $("c28pmsg").textContent = mode === "cards" ? "先在上面的格子里写几张卡，再抽牌试试。" : "给 6 个面写上效果，再掷骰试试。掷多次，看看每个面出现的次数。";
+  if (mode === "cards") shuffleDeck(); else updLeft();
+  drawTally();
+}
+$("m_cards").onclick = () => { mode = "cards"; save("gdc-ch20-mode", mode); renderSheet(); };
+$("m_dice").onclick = () => { mode = "dice"; save("gdc-ch20-mode", mode); renderSheet(); };
+$("m_print").onclick = () => window.print();
+$("m_clear").onclick = () => { sheetData[mode] = []; save("gdc-ch20-sheet", sheetData); renderSheet(); };
+$("m_shuffle").onclick = () => { shuffleDeck(); $("c28hand").innerHTML = ""; $("c28pmsg").textContent = "已洗牌：" + deck.length + " 张可抽。"; };
+$("m_play").onclick = () => {
+  draws++; setTimeout(chkCards, 800);
+  if (mode === "cards") {
+    if (!deck.length) { shuffleDeck(); if (!deck.length) { $("c28pmsg").textContent = "还没有写好的卡：先在上面的格子里写几张。"; return; } $("c28pmsg").textContent = "牌堆抽完了，已自动重洗。"; }
+    const i = deck.pop(), d = sheetData.cards[i];
+    $("c28hand").innerHTML = `<div class="c28card"><h4>${esc(d[0] || "（无名）")}</h4><div>${esc(d[1])}</div></div>`;
+    document.querySelectorAll("#sheet .cell").forEach((c, k) => c.classList.toggle("hit", k === i));
+    $("c28pmsg").textContent = "你抽到了第 " + (i + 1) + " 格的牌。这张牌在手里读起来顺不顺？效果清楚吗？"; updLeft();
+  } else {
+    if (rolling) return; rolling = true;
+    const cells = document.querySelectorAll("#sheet .cell"); let t = 0;
+    const iv = setInterval(() => {
+      cells.forEach((c, k) => c.classList.toggle("hit", k === t % 6)); t++;
+      if (t > 10) {
+        clearInterval(iv); const f = Math.floor(Math.random() * 6);
+        cells.forEach((c, k) => c.classList.toggle("hit", k === f));
+        tally[f]++; rolling = false;
+        $("c28hand").innerHTML = `<div class="c28card"><h4>第 ${f + 1} 面</h4><div>${esc(sheetData.dice[f] || "（这一面还没写）")}</div></div>`;
+        $("c28pmsg").textContent = "掷出第 " + (f + 1) + " 面。想想：这一面出现的频率对吗？"; updLeft(); drawTally();
+      }
+    }, 70);
+  }
+};
+renderSheet();
+
+/* ---------- ③ 试玩记录表 ---------- */
+const TAGS = [
+  { t: "规则没看懂", adv: "把规则缩成 1 页，加一个“示范回合”例子；试玩前用 3 句话讲完目标。" },
+  { t: "不知道目标", adv: "把“怎样赢”写在最显眼的位置，并让玩家在开局先复述一遍。" },
+  { t: "等待别人太久", adv: "缩短回合：限时 30 秒，或让其他玩家在别人回合也有事可做（如响应、投票）。" },
+  { t: "运气太重", adv: "让玩家在掷骰前后有选择：例如可重掷一次、或掷骰后分配点数。" },
+  { t: "没什么可选", adv: "每回合至少给 2 个各有代价的选项，检查有没有“永远最优”的那一个。" },
+  { t: "总是同一最优解", adv: "给最优解加代价或让对手能克制它；一次只调一个数值。" },
+  { t: "太容易/无聊", adv: "增加风险或时间压力，或给领先者更高的门槛。" },
+  { t: "太难/挫败", adv: "降低起始难度，加入追赶机制或更明确的反馈，先保证新手能完成一局。" },
+  { t: "其他", adv: "把具体情况写进备注，下次试玩重点观察。" },
+];
+let log = load("gdc-ch20-log", []); if (!Array.isArray(log)) log = [];
+let curTags = new Set();
+function drawTags() {
+  $("r_tags").innerHTML = TAGS.map(x => `<button type="button" class="chip${curTags.has(x.t) ? " on" : ""}" data-t="${esc(x.t)}">${esc(x.t)}</button>`).join("");
+  $("r_tags").querySelectorAll(".chip").forEach(b => (b.onclick = () => { const t = b.dataset.t; curTags.has(t) ? curTags.delete(t) : curTags.add(t); b.classList.toggle("on"); }));
+}
+drawTags();
+function summaryText() {
+  if (!log.length) return "（还没有记录，先在上面添加几局吧。）";
+  const n = log.length, mins = log.map(r => r.min);
+  const avg = mins.reduce((a, b) => a + b, 0) / n;
+  const cnt = {}; log.forEach(r => r.tags.forEach(t => (cnt[t] = (cnt[t] || 0) + 1)));
+  const rank = TAGS.map(x => ({ t: x.t, c: cnt[x.t] || 0, adv: x.adv })).filter(x => x.c > 0).sort((a, b) => b.c - a.c);
+  const fun = log.map(r => r.fun).filter(Boolean);
+  let s = `共试玩 ${n} 局，平均每局 ${avg.toFixed(1)} 分钟（最短 ${Math.min(...mins)}，最长 ${Math.max(...mins)}）。\n`;
+  if (avg < 3) s += "一局平均不到 3 分钟：太短了，玩家可能还没体会到策略就结束了。\n";
+  else if (avg > 30) s += "一局平均超过 30 分钟：对第一版原型偏长，考虑减少回合数或降低胜利门槛。\n";
+  s += "\n【最常见的问题】\n";
+  if (!rank.length) s += "没有记录到卡住的地方，很好！但也要确认是不是观察得够仔细。\n";
+  else rank.slice(0, 3).forEach((x, i) => (s += `${i + 1}. ${x.t}：${x.c}/${n} 局出现\n`));
+  s += "\n【笑点 / 亮点】\n" + (fun.length ? fun.map(f => "· " + f).join("\n") : "还没有记录到笑点——这本身就是个信号：玩家有没有投入？") + "\n";
+  s += "\n【下一步建议】\n";
+  if (rank.length) {
+    s += `先解决「${rank[0].t}」：${rank[0].adv}\n`;
+    if (n < 3) s += "（样本只有 " + n + " 局，建议再多试几局，再决定改什么。）\n";
+    else if (rank[0].c === 1) s += "（目前每个问题都只出现一次，可能是个别现象，再试几局确认。）\n";
+  } else s += "保留现在的玩法，换不同的人试玩，观察新玩家是否同样顺利。\n";
+  s += "记住：一次只改一处，改完再试玩一局对比。";
+  return s;
+}
+function drawLog() {
+  $("r_list").innerHTML = log.map((r, i) => `<div class="rec"><div><b>第 ${i + 1} 局</b>　${r.min} 分钟<br><span class="small">卡住：${r.tags.length ? esc(r.tags.join("、")) : "无"}${r.fun ? "　笑点：" + esc(r.fun) : ""}</span></div><button class="chip x" data-i="${i}">删除</button></div>`).join("");
+  $("r_list").querySelectorAll(".x").forEach(b => (b.onclick = () => { log.splice(+b.dataset.i, 1); save("gdc-ch20-log", log); drawLog(); }));
+  const cnt = {}; log.forEach(r => r.tags.forEach(t => (cnt[t] = (cnt[t] || 0) + 1)));
+  const rank = Object.keys(cnt).sort((a, b) => cnt[b] - cnt[a]);
+  const max = rank.length ? cnt[rank[0]] : 1;
+  $("r_sum").innerHTML = "<h3>📈 问题出现次数</h3>" + (rank.length ? rank.map(t => `<div class="bar"><span style="width:8.5em;flex:none">${esc(t)}</span><span class="b" style="width:${Math.round(cnt[t] / max * 55)}%"></span><b>${cnt[t]}</b></div>`).join("") : "<p class='small'>还没有“卡住”记录。</p>");
+  $("s_out").textContent = summaryText();
+  mark("c28t3", log.length >= 3 ? "做到了：" + log.length + " 局记录。看上面的柱状条，最长的那条就是下一步要修的。" : "");
+}
+$("r_add").onclick = () => {
+  const m = Math.max(1, Math.min(240, parseFloat($("r_min").value) || 0));
+  if (!m) return;
+  log.push({ min: m, tags: [...curTags], fun: $("r_fun").value.trim() });
+  save("gdc-ch20-log", log); curTags = new Set(); $("r_fun").value = ""; drawTags(); drawLog();
+};
+$("r_demo").onclick = () => {
+  log = [
+    { min: 12, tags: ["规则没看懂", "运气太重"], fun: "抽到“交换位置”，全场尖叫" },
+    { min: 9, tags: ["规则没看懂", "等待别人太久"], fun: "" },
+    { min: 14, tags: ["规则没看懂"], fun: "最后一格反超获胜" },
+  ];
+  save("gdc-ch20-log", log); drawLog();
+};
+$("r_reset").onclick = () => { log = []; save("gdc-ch20-log", log); drawLog(); };
+drawLog();
+
+/* ---------- 成果 ---------- */
+function fullSummary() {
+  const nx = $("s_next").value.trim();
+  const nm = $("g_name").value.trim();
+  return (nm ? `《${nm}》` : "我的原型") + " 试玩总结\n\n" + summaryText() + (nx ? "\n\n下一版只改：" + nx : "");
+}
+function showSaved() {
+  const sv = load("gdc-ch20-summary", null);
+  $("s_saved").textContent = sv ? "上次保存：" + sv.date + "（共 " + sv.n + " 局记录）" : "";
+}
+$("s_save").onclick = () => {
+  save("gdc-ch20-summary", { date: new Date().toLocaleString(), n: log.length, text: fullSummary() });
+  showSaved(); $("s_save").textContent = "✔ 已保存"; setTimeout(() => ($("s_save").textContent = "💾 保存总结"), 1500);
+};
+$("s_copy").onclick = () => copyText(fullSummary(), $("s_copy"));
+showSaved();
+
+GD.mountQuiz($("quiz"), [
+  { q: "（为什么）Špinka 等人（2001）提出玩耍是“训练应对意外”。这对纸面原型有什么启发？", opts: ["玩耍越认真，原型越精美", "在没有后果的地方让规则“摔跤”，比在发售后摔跤便宜得多", "原型只能由孩子来做", "玩耍已经被证明是唯一功能"], a: 1, why: "玩耍让动物在安全环境里练习应对失控。纸面原型也是这样：把设计的意外提前到改起来几乎不花钱的地方。这是一个有影响的假说，并非定论。" },
+  { q: "（为什么被发明）人们为什么会想到在做数字版之前先用纸做原型？", opts: ["因为纸比电脑好玩", "因为“规则好不好玩、界面看不看得懂”在做出来之前无法回答，而做完再改代价最大；纸能把改一次的成本降到最低，换来更多轮试玩", "因为法律要求", "因为设计师不会写代码"], a: 1, why: "桌游设计和软件界面的 lo-fi 原型（Rettig，1994）都是这个动机：把有限的时间换成更多轮检验。" },
+  { q: "（为什么）为什么设计者“自己觉得规则很清楚”不能算数？", opts: ["因为设计者不诚实", "因为知道规则之后很难想象不知道的人的感受（知识的诅咒），就像敲歌的人以为别人听得出", "因为设计者的记性差", "因为规则越清楚越无聊"], a: 1, why: "Newton 的敲歌实验里，敲的人预计一半能被猜中，实际只有约 2.5%。所以要让不知情的人来试。" },
+  { q: "5 次试玩里，有 4 次“规则没看懂”，1 次“运气太重”。下一步应先：", opts: ["降低运气成分", "先把规则写清楚、加示范例子", "增加更多卡牌", "换一个朋友测试"], a: 1, why: "按出现次数排序：最常见的问题影响最大，先解决它。并且一次只改一处，才知道改动是否有效。" },
+  { q: "（为什么）纸面原型为什么要刻意“糙”，而不是一开始就做漂亮的美术？", opts: ["因为设计师不会画画", "糙的原型改起来便宜，也让试玩者和自己把注意力放在规则与玩法上", "因为美术对游戏完全不重要", "因为老师要求"], a: 1, why: "原型的目的是学习。外观越精致，越舍不得改，评价也越容易落在颜色而不是玩法上；美术可以等规则站稳后再做。" },
+  { q: "下面哪种情况最不适合只用纸面原型来验证？", opts: ["一个卡牌游戏的出牌费用是否平衡", "一个格斗游戏的出招“手感”是否爽快", "一个桌游的回合流程是否太慢", "一个棋类游戏的规则是否清楚"], a: 1, why: "手感依赖实时的手眼配合，纸验证不了，需要数字原型。" },
+]);
+</script>
+</body>
+</html>

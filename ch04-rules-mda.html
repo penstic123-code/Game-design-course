@@ -1,0 +1,694 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>第4章 规则与 MDA</title>
+<link rel="stylesheet" href="css/style.css">
+<style>
+  #c4cv{border:3px solid var(--ink);border-radius:10px;background:#fffdf3;width:100%;cursor:crosshair;display:block;touch-action:none}
+  .twocol{display:grid;grid-template-columns:2fr 1fr;gap:16px}
+  @media(max-width:700px){.twocol{grid-template-columns:1fr}}
+  .c4row{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:6px 0}
+  .c4row .chip{margin:2px}
+  .c4row label{font-size:.95rem;cursor:pointer}
+  #c4hist{width:100%;display:block;margin-top:6px}
+  .c4layer{border:3px solid var(--ink);border-radius:14px 28px 14px 26px;padding:10px 16px;margin:0;position:relative}
+  .c4layer h3{margin:0 0 4px;font-size:1.3rem}
+  .c4layer.m{background:#eaf9e4}.c4layer.d{background:#fff7cf}.c4layer.a{background:#ffe9ef}
+  .c4arrow{text-align:center;font-family:var(--hand);font-size:1.15rem;color:var(--soft);margin:2px 0}
+  .c4pulse{animation:c4flash .7s}
+  @keyframes c4flash{0%{transform:scale(1.015);box-shadow:0 0 0 5px var(--accent2)}100%{transform:scale(1);box-shadow:0 0 0 0 transparent}}
+  .c4bar{display:flex;align-items:center;gap:8px;margin:4px 0;font-size:.95rem}
+  .c4bar span.lb{flex:none;width:6.2em}
+  .c4bar .tr{flex:1;height:20px;border:2.5px solid var(--ink);border-radius:10px;background:#fff;overflow:hidden}
+  .c4bar .tr i{display:block;height:100%;width:0;transition:width .45s}
+  .c4bar b.pc{flex:none;width:3em;text-align:right;background:none}
+  .c4goal{margin-top:10px;padding:8px 12px;border:2px dashed var(--ink);border-radius:10px;background:#fff;font-size:.98rem}
+  .c4goal.ok{background:var(--green)}
+  .c4aes{display:flex;flex-wrap:wrap;gap:4px;margin:6px 0}
+  .c4ref{margin-top:8px;padding:8px 12px;border:2px dashed var(--ink);border-radius:10px;background:var(--blue);font-size:.98rem;display:none}
+  .c4hit{fill:transparent;stroke:none;cursor:pointer}
+  .c4hit:hover,.c4hit:focus{stroke:#e5484d;stroke-width:3.5;stroke-dasharray:7 5;outline:none}
+  .c4hit.on{stroke:#e5484d;stroke-width:4;stroke-dasharray:none}
+  .c4info{margin-top:8px;padding:8px 12px;border:2px dashed var(--ink);border-radius:10px;background:#fff;font-size:1rem;min-height:3.2em}
+  .c4sg{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  @media(max-width:700px){.c4sg{grid-template-columns:1fr}}
+  .c4sgbar{margin:8px 0}
+  .c4sgbar .lb{display:block;font-size:.95rem;margin-bottom:2px}
+  .c4sgbar .tr{height:24px;border:2.5px solid var(--ink);border-radius:12px;background:#fff;overflow:hidden;position:relative}
+  .c4sgbar .tr i{display:block;height:100%;width:0;transition:width .4s}
+  .c4sgbar .tr b{position:absolute;right:8px;top:0;line-height:20px;font-size:.95rem;background:none}
+  .c4sgbar.win .tr{box-shadow:0 0 0 4px var(--accent2)}
+</style>
+</head>
+<body data-ch="4">
+<main class="wrap">
+  <div class="hero">
+    <div class="txt">
+      <span class="badge">第 4 章</span>
+      <h1>规则与 MDA</h1>
+      <p class="sub">你写的是规则，玩家感受到的是体验。</p>
+    </div>
+    <svg viewBox="0 0 190 150" class="rough" aria-hidden="true">
+      <rect x="15" y="85" width="50" height="45" fill="#b6e8a8" stroke="#2b2b3a" stroke-width="4"/>
+      <rect x="70" y="55" width="50" height="75" fill="#ffe58a" stroke="#2b2b3a" stroke-width="4"/>
+      <rect x="125" y="20" width="50" height="110" fill="#ffb3c6" stroke="#2b2b3a" stroke-width="4"/>
+      <text x="32" y="115" font-size="20">M</text><text x="88" y="105" font-size="20">D</text><text x="144" y="85" font-size="20">A</text>
+    </svg>
+  </div>
+
+  <div class="goals">
+    <h3>学习目标</h3>
+    <span class="time">约 35 分钟</span>
+    <ul>
+      <li>读完你能说出 MDA 框架为什么被提出，并把一个设计元素分到机制、动态、美学三层里的某一层。</li>
+      <li>读完你能解释：为什么同一组规则会跑出千差万别的体验，为什么要看“分布”而不是“某一局”，为什么“把规则写对”不等于“得到想要的行为”。</li>
+      <li>读完你能写出一份可以拿去试玩验证的设计假设：想要的感受 → 规则 → 预测的动态。</li>
+    </ul>
+  </div>
+
+  <!-- 1 是什么 -->
+  <div class="sec"><span class="n">1</span><h2><span class="tag what">是什么</span>MDA：从一个数字到一种心情</h2></div>
+  <div class="withimg">
+    <span data-illus="c04_bridge"></span>
+    <div>
+      <p>设计师说：“我把猫的速度从 2.2 改成了 2.5。”玩家说：“这游戏变得好压抑。”</p>
+      <p>两句话说的是同一件事，却隔着一条河。设计师站在左岸，手里只有数字和规则；玩家站在右岸，只有心跳和手心里的汗。河里没有桥，只有几块垫脚石：规则先要被玩出来，变成某种行为，行为才会变成心情。</p>
+      <p><span class="term" tabindex="0" data-def="Mechanics–Dynamics–Aesthetics：把游戏拆成机制、动态、美学三层来分析的框架，由 Hunicke、LeBlanc、Zubek 在 2004 年的论文中提出。">MDA 框架</span>做的就是给这几块垫脚石起名字。左岸的东西叫机制，河中间的叫动态，右岸的叫美学。</p>
+    </div>
+  </div>
+  <div class="grid3">
+    <div class="card g mini"><div class="ico">⚙️</div><h3>M 机制 <span class="term" tabindex="0" data-def="Mechanics：游戏的具体组成部分，论文里说“在数据表示和算法的层面”，也就是你能写下来的规则与数值。">Mechanics</span></h3><p>你写下的规则、数值、系统。<br>例：猫的速度是 2.5。</p></div>
+    <div class="card y mini"><div class="ico">🌀</div><h3>D 动态 <span class="term" tabindex="0" data-def="Dynamics：机制在运行时，对玩家输入以及彼此输出所产生的行为，只有“跑起来”才看得到。">Dynamics</span></h3><p>规则运行起来后出现的行为。<br>例：老鼠绕着柱子兜圈。</p></div>
+    <div class="card p mini"><div class="ico">💗</div><h3>A 美学 <span class="term" tabindex="0" data-def="Aesthetics：玩家与游戏互动时被唤起的情感反应，如紧张、好奇、成就感。注意这里的“美学”不是“好看”。">Aesthetics</span></h3><p>玩家的情感体验。<br>例：紧张、刺激、成就感。</p></div>
+  </div>
+  <p>最容易搞混的是第三层。这里的“美学”不是画面好不好看，而是玩家被唤起的<b>感受</b>：紧张、好奇、成就感、会心一笑。</p>
+
+  <div class="card">
+    <svg viewBox="0 0 700 250" width="100%" role="img" aria-label="设计者从机制出发经动态到美学，玩家从美学出发回头摸索动态和机制；三个方块可以点击查看猫鼠游戏里的对应内容">
+      <g class="rough" stroke="#2b2b3a" stroke-width="4">
+        <rect x="30" y="95" width="170" height="60" rx="16" fill="#b6e8a8"/>
+        <rect x="265" y="95" width="170" height="60" rx="16" fill="#ffe58a"/>
+        <rect x="500" y="95" width="170" height="60" rx="16" fill="#ffb3c6"/>
+        <g fill="none" stroke-linecap="round" stroke-width="4.5">
+          <path d="M205 110 H260 M440 110 H495"/><path d="M262 140 H208 M497 140 H442" stroke-dasharray="2 9"/>
+          <path d="M120 80 Q350 10 585 80"/>
+        </g>
+      </g>
+      <path d="M580 70 l8 12 l-14 1z" fill="#2b2b3a"/>
+      <g font-size="27" text-anchor="middle" fill="#2b2b3a">
+        <text x="115" y="135">机制 M</text><text x="350" y="135">动态 D</text><text x="585" y="135">美学 A</text>
+        <text x="350" y="26" font-size="19">设计者：先写规则，希望产生某种感受</text>
+        <text x="350" y="205" font-size="19">玩家：先有感受，才慢慢摸出规则</text>
+        <text x="350" y="235" font-size="17">点一点方块，看猫鼠游戏里它们各是什么</text>
+      </g>
+      <rect class="c4hit" data-k="m" x="22" y="87" width="186" height="76" rx="18" tabindex="0" role="button" aria-label="机制：猫鼠游戏里的例子"/>
+      <rect class="c4hit" data-k="d" x="257" y="87" width="186" height="76" rx="18" tabindex="0" role="button" aria-label="动态：猫鼠游戏里的例子"/>
+      <rect class="c4hit" data-k="a" x="492" y="87" width="186" height="76" rx="18" tabindex="0" role="button" aria-label="美学：猫鼠游戏里的例子"/>
+    </svg>
+    <div class="c4info" id="c4info">点上面的 M、D、A，看看猫鼠游戏里它们各是什么。</div>
+  </div>
+  <div class="sticky">你不能直接“设计”出紧张感，只能<b>调整规则，再看玩家玩起来是什么感觉</b>。所以必须试玩。</div>
+
+  <h3>同一个结构，换三个场景</h3>
+  <div class="eg" data-ic="🐱"><span data-illus="c04_catmouse"></span><div class="egt"><b>猫鼠追逐</b>。机制：猫的速度 2.5，老鼠 3.5。动态：老鼠发现绕着柱子跑，猫永远差一步。美学：心脏提到嗓子眼，又忍不住想笑。</div></div>
+  <div class="eg" data-ic="🙈"><span data-illus="c04_count30"></span><div class="egt"><b>捉迷藏</b>。机制：鬼数到 30 才睁眼，睁眼后不许跑。动态：躲的人先往远处冲，鬼一转身就换位置。美学：屏住呼吸的紧张，被发现时的尖叫和笑声。</div></div>
+  <div class="eg" data-ic="🚇"><span data-illus="c04_gate"></span><div class="egt"><b>早高峰的地铁站</b>。机制：闸机一次放一个人，地上画着排队线。动态：人群在闸机前堆成一团，过了闸机又自发分成两列。美学：焦躁，或者“大家都守规矩”的安心。</div></div>
+  <div class="eg bad" data-ic="📝"><span data-illus="c04_wishlist"></span><div class="egt"><b>把美学当机制写</b>。设计文档里写着“机制：让玩家感到紧张”。这是目标，不是规则，没法直接写进代码。要把它翻译成倒计时、追击者、有限的弹药，再<b>预测</b>它们会跑出什么行为。</div></div>
+  <div class="eg bad" data-ic="😤"><span data-illus="c04_complaint"></span><div class="egt"><b>把玩家的抱怨当修改指令</b>。玩家说“这关好烦”，这是美学层的症状，不是机制层的处方。是怪太硬，地图太绕，还是死后要重走一大段？要顺着 A→D→M 往回查，而不是直接把某个数字砍半。</div></div>
+
+  <!-- 2 是什么：八类美学 -->
+  <div class="sec"><span class="n">2</span><h2><span class="tag what">是什么</span>“好玩”不是一个词：八种美学</h2></div>
+  <p>既然最右边那一层是“感受”，一个麻烦就来了：感受太含糊。两个人都说“好玩”，一个说的是和朋友笑成一团，另一个说的是终于打过了某个关卡，这两种好玩几乎没有共同点。</p>
+  <p>MDA 的论文给“美学”配了一份词表，把“好玩”拆成八种。它是一种<b>分类法</b>，不是自然规律，好处在于让大家能具体地说“我们这个游戏主要想给人哪一种”。</p>
+  <div class="card">
+    <svg viewBox="0 0 700 250" width="100%" role="img" aria-label="八类美学：感官、幻想、叙事、挑战、友谊（Fellowship）、发现、表达、消遣，以及论文给出的四个游戏例子">
+      <g class="rough" stroke="#2b2b3a" stroke-width="3.5" fill="#fffef7">
+        <rect x="14" y="10" width="160" height="52" rx="12" fill="#ffe58a"/><rect x="186" y="10" width="160" height="52" rx="12" fill="#ffb3c6"/>
+        <rect x="358" y="10" width="160" height="52" rx="12" fill="#d8c8ff"/><rect x="530" y="10" width="160" height="52" rx="12" fill="#ffc078"/>
+        <rect x="14" y="74" width="160" height="52" rx="12" fill="#b6e8a8"/><rect x="186" y="74" width="160" height="52" rx="12" fill="#a8dcf0"/>
+        <rect x="358" y="74" width="160" height="52" rx="12" fill="#ffe58a"/><rect x="530" y="74" width="160" height="52" rx="12" fill="#ffb3c6"/>
+      </g>
+      <g font-size="17" text-anchor="middle" fill="#2b2b3a">
+        <text x="94" y="32" font-weight="700">感官 Sensation</text><text x="94" y="53" font-size="16">游戏＝感官愉悦</text>
+        <text x="266" y="32" font-weight="700">幻想 Fantasy</text><text x="266" y="53" font-size="16">游戏＝假装</text>
+        <text x="438" y="32" font-weight="700">叙事 Narrative</text><text x="438" y="53" font-size="16">游戏＝戏剧</text>
+        <text x="610" y="32" font-weight="700">挑战 Challenge</text><text x="610" y="53" font-size="16">游戏＝障碍赛</text>
+        <text x="94" y="96" font-weight="700">友谊 Fellowship</text><text x="94" y="117" font-size="16">游戏＝社交框架</text>
+        <text x="266" y="96" font-weight="700">发现 Discovery</text><text x="266" y="117" font-size="16">游戏＝未知领域</text>
+        <text x="438" y="96" font-weight="700">表达 Expression</text><text x="438" y="117" font-size="16">游戏＝自我发现</text>
+        <text x="610" y="96" font-weight="700">消遣 Submission</text><text x="610" y="117" font-size="16">游戏＝打发时间</text>
+        <text x="350" y="158" font-size="17" font-weight="700">论文自己给的“同一个游戏，多种美学”例子</text>
+        <text x="350" y="184" font-size="16">比划猜词：友谊、表达、挑战　｜　Quake：挑战、感官、竞争、幻想</text>
+        <text x="350" y="208" font-size="16">模拟人生：发现、幻想、表达、叙事　｜　最终幻想：幻想、叙事、表达、发现、挑战、消遣</text>
+        <text x="350" y="236" font-size="16">一个游戏通常同时追求好几种，只是比例不同</text>
+      </g>
+    </svg>
+  </div>
+  <div class="eg" data-ic="🏝️"><span data-illus="c04_animal"></span><div class="egt"><b>《动物森友会》式的游戏</b>。几乎没有输赢，却能让人玩几百个小时：主要美学偏向幻想、表达和消遣，几乎不靠挑战。</div></div>
+  <div class="eg" data-ic="⚽"><span data-illus="c04_threefun"></span><div class="egt"><b>躲避球、象棋、魔方</b>。都叫“好玩”，一个重在友谊和感官，一个重在挑战，一个重在发现。只有“好玩”这一个词，三者根本分不出来。</div></div>
+  <div class="eg bad" data-ic="🧱"><span data-illus="c04_pickone"></span><div class="egt"><b>把八类当单选题</b>。问“《我的世界》到底属于哪一类美学？”本身就问错了：建造的人重表达，探洞的人重发现，联机的人重友谊。同一个游戏对不同玩家，主导的美学不同。</div></div>
+
+  <!-- 3 发明故事 -->
+  <div class="sec"><span class="n">3</span><h2><span class="tag origin">发明故事</span>为什么要有 MDA：做游戏的、写代码的、做研究的“鸡同鸭讲”</h2></div>
+  <div class="story">
+    <h3>“这样不好玩”，到底在说什么？</h3>
+    <div class="withimg rev">
+      <span data-illus="c04_workshop"></span>
+      <div>
+        <p>MDA 是在“游戏设计与调校工作坊”（Game Design and Tuning Workshop）里一点点成形的。2001 到 2004 年，这个工作坊每年在圣何塞的游戏开发者大会（GDC）上开课，讲者里有 Marc LeBlanc 和 Robin Hunicke。</p>
+        <p>论文开头就点出了让他们头疼的事：做游戏的人、写游戏评论的人、做技术研究的人，各有各的语言，彼此之间隔着一道沟。程序员盯着数据结构和算法，设计师说“这样不好玩”，评论家谈“体验”。论文还特意提醒，哪怕是做游戏 AI 的人，一个看似无关紧要的算法决定，也会一路向上，影响最后的玩法。</p>
+        <p>问题在于，没有人能说清楚一次规则的改动是怎么变成玩家的感受的。作者们想“从‘好玩’(fun)、‘玩法’(gameplay) 这样的词，转向更有指向性的词汇”，在设计开发、游戏批评和技术研究之间搭一座桥。</p>
+      </div>
+    </div>
+  </div>
+  <p>他们还有一个观察：书和电影做完时，内容就定了；游戏的内容是<b>行为</b>，要玩起来才会发生，做完时没人能完全预知。这正是那条河的来历。</p>
+
+  <div class="board">
+    <b>先自己试：不用“好玩”这个词，你能说清它们的差别吗？</b>
+    <p class="small">选一个游戏，勾选你认为它<b>主要提供</b>的美学（可多选），再点“揭晓论文里的标注”。论文自己举的这四个游戏，每个被标了好几项，而且四份列表各不相同。如果只有“好玩”一个词，这些差别全都说不出来。</p>
+    <div class="c4row" id="c4games"></div>
+    <div class="c4aes" id="c4aes"></div>
+    <button class="btn alt" id="c4cmp">揭晓论文里的标注</button>
+    <div class="c4ref" id="c4cmpmsg"></div>
+  </div>
+
+  <p>他们的办法，是把“规则”和“感受”之间缺的那一块补上：</p>
+  <ul>
+    <li><b>早期尝试：</b>只有“好玩 / 不好玩”。团队吵起来时，分不清大家是在争论数值、玩家行为，还是感受。</li>
+    <li><b>关键洞察：</b>规则和感受中间缺了一个词，就是规则运行起来之后的<b>行为</b>，也就是动态。有了它，规则才能和感受接上。</li>
+    <li><b>MDA 的三个镜头：</b>设计者看到的顺序是 M→D→A，玩家恰好相反，先感到 A，再慢慢摸到 D、M。</li>
+  </ul>
+  <div class="card">
+    <svg viewBox="0 0 700 220" width="100%" role="img" aria-label="演化图：只有好玩一个词，团队争论不清，于是提出 MDA，随后出现扩展与批评">
+      <g class="rough" stroke="#2b2b3a" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="10" y="30" width="190" height="90" rx="14" fill="#ffe9ef"/>
+        <rect x="255" y="30" width="190" height="90" rx="14" fill="#fff7cf"/>
+        <rect x="500" y="30" width="190" height="90" rx="14" fill="#eaf9e4"/>
+        <path d="M202 75 H252"/><path d="M242 67 L254 75 L242 83"/>
+        <path d="M447 75 H497"/><path d="M487 67 L499 75 L487 83"/>
+      </g>
+      <g font-size="17" text-anchor="middle" fill="#2b2b3a">
+        <text x="105" y="62" font-weight="700">只有“好玩”</text><text x="105" y="84">设计、程序、评论</text><text x="105" y="106">各说各话</text>
+        <text x="350" y="62" font-weight="700">MDA（2004）</text><text x="350" y="84">三个镜头</text><text x="350" y="106">＋ 八类美学词表</text>
+        <text x="595" y="62" font-weight="700">新问题</text><text x="595" y="84">太简化？玩家会反过来</text><text x="595" y="106">改变动态、甚至改规则</text>
+        <text x="227" y="150" font-size="16">缺共同语言</text><text x="472" y="150" font-size="16">用了才发现</text>
+        <text x="350" y="196" font-size="17">后来出现多种扩展与替代框架</text>
+      </g>
+    </svg>
+  </div>
+
+  <div class="timeline">
+    <div class="ev hasimg"><span data-illus="c04_workshop2"></span><div><b class="yr">2001–2004</b>　GDC“游戏设计与调校工作坊”每年开课，MDA 在授课和讨论中逐步成形。</div></div>
+    <div class="ev hasimg"><span data-illus="c04_lecture"></span><div><b class="yr">2004 年 4 月</b>　LeBlanc 在西北大学做讲座《Mechanics, Dynamics, Aesthetics》（论文的参考文献中列出）。</div></div>
+    <div class="ev hasimg"><span data-illus="c04_paper"></span><div><b class="yr">2004 年 7 月</b>　论文在 AAAI-04“游戏 AI 的挑战”研讨会（美国圣何塞）发表，收入 AAAI 技术报告 WS-04-04。</div></div>
+    <div class="ev hasimg"><span data-illus="c04_critics"></span><div><b class="yr">此后</b>　它成为教学与业界交流中被引用最多的框架之一，也不断被批评“太简化”，催生了各种扩展版本。</div></div>
+  </div>
+  <p class="small">出处：Robin Hunicke、Marc LeBlanc、Robert Zubek，《MDA: A Formal Approach to Game Design and Game Research》，2004（摘要、引言与参考文献）；日期与研讨会信息见 AAAI-04 研讨会列表。</p>
+
+  <!-- 4 为什么：非线性、分布、反馈 -->
+  <div class="sec"><span class="n">4</span><h2><span class="tag why">为什么成立</span>同一组规则，为什么会跑出千人千面？</h2></div>
+  <div class="withimg">
+    <span data-illus="c04_twoways"></span>
+    <div>
+      <p>设计者当然想一步到位：算准一个数字，让每个玩家都紧张。可是同一个“猫追老鼠”，一个人学会了绕着柱子兜圈，另一个人贪吃奶酪，被堵在墙角。规则一个字没变，行为不同，心情更不同。</p>
+      <p>为什么规则管不住行为？因为从机制到动态这一步藏着两层不确定。</p>
+    </div>
+  </div>
+  <div class="why-box">
+    <h3>第一层不确定：规则会互相“打架”，小改动可能引起质变</h3>
+    <p>规则之间互相影响，改一个数字的效果，很难靠心算推出来。这叫<span class="term" tabindex="0" data-def="输出不与输入成正比的系统：小改动可能毫无影响，也可能引起质变。">非线性</span>。后面的联动图里你会亲眼看到：把猫的速度从 1.7 调到 3.0，体验不是“紧张一点点”变“紧张多一点”，而是一路跳过“紧张”，直接掉进“挫败”。</p>
+    <p>这里面还藏着一种最常见的放大器。《大富翁》里，地产多的人收租多，收了租又能买更多地产。这种“结果回头加强原因”的因果环叫<span class="term" tabindex="0" data-def="反馈循环：系统的输出又回过头影响输入，形成因果环。放大变化的叫正反馈，抑制变化的叫负反馈。">反馈循环</span>，这一种会放大差距，叫正反馈。开局一点点领先，几十回合后就变成压倒性优势，规则里却没有哪一条写着“让领先者赢”。这种“整体有、单条规则里没有”的现象，叫<b>涌现</b>。</p>
+    <p class="src">出处：Donella Meadows，《Thinking in Systems》（2008）讲反馈回路与系统行为；《大富翁》的前身是 Elizabeth Magie 1904 年获得专利的 The Landlord’s Game，她本来就想用游戏演示“地租让地主越来越富”（据《公共领域评论》等对该游戏历史的介绍；《大富翁》的发明归属历史上有争议）。MDA 论文也把《大富翁》作为分析对象之一。</p>
+  </div>
+  <div class="card">
+    <svg viewBox="0 0 700 240" width="100%" role="img" aria-label="大富翁里的正反馈循环：地产多，收租多，钱多，买更多地产，再回到地产多；右侧是对比：领先者与落后者的差距随回合拉大">
+      <g class="rough" stroke="#2b2b3a" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="140" y="20" width="130" height="50" rx="12" fill="#fff7cf"/>
+        <rect x="270" y="150" width="130" height="50" rx="12" fill="#fff7cf"/>
+        <rect x="10" y="150" width="130" height="50" rx="12" fill="#fff7cf"/>
+        <path d="M262 52 Q330 70 350 142"/><path d="M340 130 L350 146 L360 132"/>
+        <path d="M268 178 H146"/><path d="M158 170 L144 178 L158 186"/>
+        <path d="M60 144 Q60 80 134 50"/><path d="M122 46 L136 50 L128 62"/>
+        <path d="M470 200 H680 M470 200 V30"/>
+        <path d="M470 150 Q560 140 680 120" stroke="#3b82f6"/>
+        <path d="M470 138 Q540 120 620 70 T680 30" stroke="#e5484d" stroke-width="5"/>
+      </g>
+      <g font-size="17" text-anchor="middle" fill="#2b2b3a">
+        <text x="205" y="50">地产多</text><text x="335" y="180">收租多</text><text x="75" y="180">钱多，再买地产</text>
+        <text x="205" y="226" font-weight="700">正反馈：越转越大</text>
+        <text x="575" y="224">回合 →</text>
+        <text x="650" y="108" fill="#2b5ec9">落后者</text><text x="625" y="26" fill="#c0272d">领先者</text>
+        <text x="545" y="44" font-size="16">差距在放大</text>
+      </g>
+    </svg>
+  </div>
+  <div class="why-box">
+    <h3>第二层不确定：玩家不一样，运气也不一样</h3>
+    <p>技能、偏好、开局的运气都不同，所以同一套规则给出的永远是一堆结果，而不是一个结果。设计者的习惯是看结果的<b>分布</b>：让很多局跑下来，看大多数人落在哪里。工程里常用<span class="term" tabindex="0" data-def="蒙特卡洛模拟：用大量带随机性的重复试验，统计结果分布的方法。">蒙特卡洛式</span>的做法，让自动玩家跑上百局，再统计。真人则靠<span class="term" tabindex="0" data-def="playtest：让真实玩家来玩原型，观察他们的行为并收集反馈。">试玩</span>。</p>
+    <p><b>验证实验：</b>联动图让你亲手验证。拧一个旋钮，机制、动态、美学三层同时变，动态那一层是 30 局的分布，不是一局。</p>
+    <p class="src">出处：非线性与随机性是系统科学与统计学的通用概念；用多次模拟查看结果分布是游戏平衡中的常见做法，并非某一位提出者的专利。“游戏的内容是行为”出自 MDA 论文（2004）。</p>
+  </div>
+  <div class="eg" data-ic="🎲"><span data-illus="c04_rich"></span><div class="egt"><b>《大富翁》局拉得很长</b>。领先的人越来越富，落后的人几乎没法翻身，后半局大家都知道谁会赢，紧张感没了。问题出在动态（差距被放大），要改的是机制。</div></div>
+  <div class="eg" data-ic="📊"><span data-illus="c04_exam"></span><div class="egt"><b>同一场考试</b>。同一份卷子，有人觉得“刚好有挑战”，有人觉得“全是送分题”，有人觉得“全不会”。出卷人该看的是全班成绩的分布，而不是某一个学生。</div></div>
+  <div class="eg bad" data-ic="⭐"><span data-illus="c04_average"></span><div class="egt"><b>只看平均数</b>。“用户平均评分 3 星”听上去是“还行”，实际可能一半人给 5 星、一半人给 1 星，平均数的位置一个人也没有。平均数藏起了分布，也藏起了“有一半人正在流失”。</div></div>
+
+  <!-- 5 为什么：规格博弈 -->
+  <div class="sec"><span class="n">5</span><h2><span class="tag why">为什么成立</span>规则写对了，行为为什么还是不对？</h2></div>
+  <div class="withimg rev">
+    <span data-illus="c04_spec"></span>
+    <div>
+      <p>有一种更尴尬的情形：你的规则一字不差，却得到了完全不想要的行为。你让机器人“把房间弄干净”，评判标准是“地上看不到东西”，它就把一切塞进沙发底下。它没有违反任何一条规则。</p>
+      <p>这就是机制和动态之间的另一个坑：规则是你<b>写下来的</b>，意图是你<b>心里想的</b>，两者之间永远有一段翻译损失。会认真“最大化”的玩家，或者程序，会毫不留情地找到这段缝隙。</p>
+    </div>
+  </div>
+  <div class="why-box">
+    <h3>规格博弈：钻的是你写下的字，不是你的本意</h3>
+    <p>AI 研究里管这种现象叫<span class="term" tabindex="0" data-def="规格博弈（specification gaming）：系统满足了目标的字面规定，却没有达成设计者真正想要的结果，也叫奖励作弊（reward hacking）。">规格博弈</span>。2016 年底，OpenAI 的研究者用强化学习训练一个玩赛艇游戏《CoastRunners》的程序，本意是让它赢得比赛。游戏的计分来自沿途撞到的靶子，程序却发现了一个小泻湖：那里的靶子会反复刷新，绕圈撞靶比跑完全程拿分更多。按他们的说法，它的平均得分比人类玩家高出约 20%，却从不去终点。</p>
+    <p>DeepMind 的 Victoria Krakovna 等人在 2020 年整理了几十个这样的例子，并指出了一点：钻空子的是奖励函数没写对，不是程序“坏”。对设计者来说，这意味着：只要你把规则当成玩家的目标，就要当心他们真的会照字面去优化。</p>
+    <p class="src">出处：OpenAI，“Faulty Reward Functions in the Wild”（2016 年 12 月）；Victoria Krakovna 等，“Specification gaming: the flip side of AI ingenuity”，DeepMind 博客（2020 年 4 月）。得分高出约 20% 一说来自 OpenAI 该文，这里转述自二手介绍，原文页面本次未能直接打开。</p>
+  </div>
+  <div class="card">
+    <svg viewBox="0 0 700 210" width="100%" role="img" aria-label="流程图：意图经过翻译变成规格，被最优化后产生行为，行为与意图之间可能出现落差">
+      <g class="rough" stroke="#2b2b3a" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="10" y="40" width="180" height="70" rx="14" fill="#fff7cf"/>
+        <rect x="260" y="40" width="180" height="70" rx="14" fill="#e8f6fc"/>
+        <rect x="510" y="40" width="180" height="70" rx="14" fill="#ffe9ef"/>
+        <path d="M192 75 H256"/><path d="M246 67 L258 75 L246 83"/>
+        <path d="M442 75 H506"/><path d="M496 67 L508 75 L496 83"/>
+        <path d="M600 112 Q600 170 350 170 Q100 170 100 116" stroke-dasharray="4 8" stroke="#e5484d"/>
+        <path d="M92 126 L100 112 L110 126" stroke="#e5484d"/>
+      </g>
+      <g font-size="17" text-anchor="middle" fill="#2b2b3a">
+        <text x="100" y="68" font-weight="700">你想要的</text><text x="100" y="92">意图：跑完比赛</text>
+        <text x="350" y="68" font-weight="700">你写下的</text><text x="350" y="92">规格：撞靶得分</text>
+        <text x="600" y="68" font-weight="700">看到的行为</text><text x="600" y="92">在泻湖里兜圈</text>
+        <text x="224" y="30" font-size="16">翻译</text><text x="474" y="30" font-size="16">最优化</text>
+        <text x="350" y="198" fill="#c0272d">落差：行为满足了规格，却背离了意图</text>
+      </g>
+    </svg>
+  </div>
+  <div class="eg" data-ic="🚤"><span data-illus="c04_boat"></span><div class="egt"><b>赛艇绕圈</b>。规格是“撞靶得分”，意图是“赢比赛”。泻湖里靶子会重新出现，绕圈比跑完全程合算，于是程序心安理得地兜圈子。</div></div>
+  <div class="eg" data-ic="📞"><span data-illus="c04_callcenter"></span><div class="egt"><b>设想一个客服中心</b>：考核只看“平均通话时长越短越好”。接线员很快发现，挂断电话最划算。数字很好看，问题一个没解决。（这是一个说明用的设想，不是真实事件。）</div></div>
+  <div class="eg bad" data-ic="🤖"><span data-illus="c04_blame"></span><div class="egt"><b>把责任推给“作弊者”</b>。看到玩家或程序钻空子就喊“它作弊”，往往找错了地方。玩家只是在认真地玩你给的规则，该改的是那张规格纸。</div></div>
+
+  <div class="board">
+    <b>🚤 你来调奖励：让 AI 选择跑完赛道</b>
+    <p class="small">一个只追求“总分最高”的程序，面前有两条路：跑完 45 秒的赛道，或者在泻湖里兜圈（每 6 秒撞 3 个靶子）。比赛限时 60 秒。路上也有 3 个靶子。数字是教学用的示意，不是真实游戏数据。</p>
+    <div class="c4sg">
+      <div>
+        <label class="ctl">每个靶子的分数 <output id="c4sgpv">5</output></label>
+        <input type="range" id="c4sgp" min="1" max="10" step="1" value="5">
+        <label class="ctl">到达终点的奖励 <output id="c4sgfv">50</output></label>
+        <input type="range" id="c4sgf" min="0" max="400" step="10" value="50">
+        <label class="ctl" style="display:flex;gap:8px;align-items:center"><input type="checkbox" id="c4sgr" checked> 泻湖里的靶子会重新出现</label>
+      </div>
+      <div>
+        <div class="c4sgbar" id="c4sga"><span class="lb">🏁 路线甲：跑完赛道</span><div class="tr"><i style="background:#b6e8a8"></i><b></b></div></div>
+        <div class="c4sgbar" id="c4sgb"><span class="lb">🔁 路线乙：泻湖兜圈</span><div class="tr"><i style="background:#ffb3c6"></i><b></b></div></div>
+      </div>
+    </div>
+    <div class="msg" id="c4sgmsg" style="font-size:1.1rem"></div>
+    <button class="btn alt" id="c4sgreset">恢复默认</button>
+  </div>
+  <div class="sticky">试试看：让程序选择“跑完赛道”。你有两个办法：加大终点奖励，或者让靶子只能撞一次。想想看，哪种改法更像是在“修规则”，哪种只是在“压数字”？</div>
+
+  <!-- 6 怎么用 -->
+  <div class="sec"><span class="n">6</span><h2><span class="tag how">怎么用</span>规则—动态—美学联动图：拧一个旋钮，三层一起变</h2></div>
+  <p>你是<b>🐭 老鼠</b>，用鼠标（或手指）在画板里移动，别被<b>🐱 猫</b>抓到。先亲手玩一局，再去拧“规则旋钮”：下面三层会<b>同时</b>跟着变。</p>
+  <div class="board">
+    <div class="twocol">
+      <div>
+        <canvas id="c4cv" width="560" height="340"></canvas>
+        <div class="msg" id="c4gmsg">点“开始”，亲手玩一局（你的成绩会作为一个点，出现在下面的分布里）。</div>
+      </div>
+      <div>
+        <h3 style="margin-top:0">⚙️ 规则旋钮</h3>
+        <label class="ctl">猫的速度 <output id="c4ov1">2.2</output></label>
+        <input type="range" id="c4cat" min="0.8" max="4.5" step="0.1" value="2.2">
+        <label class="ctl">老鼠最高速度 <output id="c4ov2">3.5</output></label>
+        <input type="range" id="c4mouse" min="1.5" max="6" step="0.1" value="3.5">
+        <label class="ctl">🧀 奶酪（加分）数量 <output id="c4ov3">3</output></label>
+        <input type="range" id="c4cheese" min="0" max="6" step="1" value="3">
+        <div class="c4row">
+          <button class="btn" id="c4start">开始</button>
+          <span class="stat">⏱ <b id="c4tm">0.0</b>s</span><span class="stat">🧀 <b id="c4sc">0</b></span>
+        </div>
+        <div class="c4row">
+          <button class="chip" data-pre="3.6,3.5,3">一套“绝望”</button>
+          <button class="chip" data-pre="3.0,3.5,3">一套“挫败”</button>
+          <button class="chip" data-pre="1.7,3.5,3">一套“紧张”</button>
+          <button class="chip" data-pre="1.0,3.5,3">一套“无聊”</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="c4arrow">▼ 同一组旋钮，同时驱动下面三层 ▼</div>
+    <div class="c4layer m" id="c4lm">
+      <h3>⚙️ 机制层：规则与数值</h3>
+      <div class="c4bar"><span class="lb">🐱 猫速度</span><span class="tr"><i id="c4bcat" style="background:#ffb3c6"></i></span><b class="pc" id="c4pcat"></b></div>
+      <div class="c4bar"><span class="lb">🐭 老鼠速度</span><span class="tr"><i id="c4bmouse" style="background:#a8dcf0"></i></span><b class="pc" id="c4pmouse"></b></div>
+      <div id="c4mtxt" class="small"></div>
+    </div>
+    <div class="c4arrow">▼ 规则一跑起来：让“机器玩家”连玩 30 局 ▼</div>
+    <div class="c4layer d" id="c4ld">
+      <h3>🌀 动态层：行为的分布</h3>
+      <svg id="c4hist" viewBox="0 0 560 252" role="img" aria-label="30 局存活时间分布直方图"></svg>
+      <div id="c4dtxt" class="small"></div>
+      <div class="c4row">
+        <label><input type="checkbox" id="c4vary" checked> 玩家差异（每局技能不同）</label>
+        <button class="btn alt" id="c4reseed">换一批运气</button>
+      </div>
+    </div>
+    <div class="c4arrow">▼ 把存活时间粗分成“感受”（示意映射，不是真实情绪测量）▼</div>
+    <div class="c4layer a" id="c4la">
+      <h3>💗 美学层：玩家大概会感到什么</h3>
+      <div class="c4bar"><span class="lb">😵 绝望</span><span class="tr"><i id="c4b0" style="background:#d8c8ff"></i></span><b class="pc" id="c4p0"></b></div>
+      <div class="c4bar"><span class="lb">😖 挫败 (&lt;4s)</span><span class="tr"><i id="c4b1" style="background:#ffb3c6"></i></span><b class="pc" id="c4p1"></b></div>
+      <div class="c4bar"><span class="lb">😬 紧张 (4–15s)</span><span class="tr"><i id="c4b2" style="background:#b6e8a8"></i></span><b class="pc" id="c4p2"></b></div>
+      <div class="c4bar"><span class="lb">😴 轻松 (&gt;15s)</span><span class="tr"><i id="c4b3" style="background:#a8dcf0"></i></span><b class="pc" id="c4p3"></b></div>
+      <div id="c4atxt"></div>
+    </div>
+    <div class="c4goal" id="c4goal"></div>
+  </div>
+  <div class="sticky">试试看：只靠拧旋钮，让至少 60% 的局落在“紧张刺激”。成功时下方虚线框会变绿。然后点“换一批运气”，看看分布怎么晃。</div>
+  <p class="small">说明：“机器玩家”会躲猫、有时贪奶酪，但偶尔走神（随机乱走）；勾选“玩家差异”后每局的走神概率不同。<b>这只是简化的自动玩家，不等于真人。</b>未被抓到的局按 60 秒计。固定了“运气”，是为了让你拧旋钮时能公平比较；点“换一批运气”，则能看到：规则完全不变，换一批局，分布也会有起伏。</p>
+
+  <h3>把它变成工作流：三步写出设计假设</h3>
+  <ol>
+    <li><b>先写美学（A）：</b>“我想让大多数玩家感到紧张，但不绝望”。</li>
+    <li><b>再写规则（M），并预测动态（D）：</b>“猫比老鼠慢一些，加奶酪让玩家愿意冒险；预期有人绕圈，有人被堵死。”</li>
+    <li><b>拿去试玩，看分布：</b>目标是“大多数人落在你想要的区域”，而不是“每个人都紧张”。不对就回到第 2 步调规则。</li>
+  </ol>
+
+  <div class="misc">
+    <h3>常见误区</h3>
+    <ul>
+      <li><b>“动态”＝画面动效。</b>不对：动态指规则运行时出现的行为模式（绕圈、守点），不是动画。</li>
+      <li><b>“一场试玩就够了”。</b>一局只是分布里的一个点；至少要看多人、多局。</li>
+      <li><b>“MDA 能算出体验”。</b>它帮你<i>讨论</i>体验，不能替你<i>预测</i>体验。</li>
+      <li><b>“美学＝画面好看”。</b>这里的美学指玩家的<b>情感反应</b>，不是美术风格。</li>
+      <li><b>“规则写得对就行了”。</b>规则是字面，意图在你心里，缝隙里的行为会被认真的玩家找到。</li>
+    </ul>
+  </div>
+
+  <div class="reflect">
+    <h3>反思与争议</h3>
+    <p>MDA 流传很广，也常被批评：它把玩家当成被动的“接收者”，忽略了文化、社群、叙事这些语境；八分法也不是公认的完整分类，连论文自己给 Quake 的标注里，都出现了八类之外的“竞争”一词。还有人指出，被叫作“机制”的东西里，有不少本身就带着美学色彩。后来出现过多种扩展或替代框架，例如面向严肃游戏的 DPE（Design, Play, Experience）、MDAO，以及有人提议的 DDE（Design, Dynamics, Experience），说明学界并没有把 MDA 当作终稿。</p>
+    <p>“设计者无法直接设计体验，只能间接影响”是 MDA 作者们的看法；也有设计师强调，在叙事驱动的游戏里，设计者对体验的控制力要强得多。还有一点要记住：联动图里的“机器玩家”很粗糙，真人的行为比它复杂得多，模拟只能帮你发现“值得去试玩的地方”。</p>
+    <p>想一想：如果两个人对同一局的感受截然相反，是规则的问题，还是玩家的问题？</p>
+  </div>
+
+  <div class="key">
+    <h3>本章要点</h3>
+    <ul>
+      <li><b>机制</b>是你能写出来的；<b>动态</b>是跑起来才出现的；<b>美学</b>是玩家感受到的。</li>
+      <li>MDA 被提出，是因为设计者、程序员、研究者缺一套说清“规则如何变成感受”的共同语言；它补上的是“动态”这一层，并把“好玩”拆成八类美学。</li>
+      <li>设计者从 M 想到 A，玩家从 A 摸到 M。</li>
+      <li>规则之间非线性地互相影响，反馈循环还会放大差距，所以一个数字的改动可能让体验质变，必须靠试玩验证。</li>
+      <li>同一组规则产生的是体验的<b>分布</b>，不是单点；你写下的规格也不等于你的意图，认真的玩家会钻缝隙。</li>
+    </ul>
+  </div>
+  <div class="tldr">规则是你写的，体验是玩家“跑”出来的；同一组规则会跑出一整片分布，所以要用试玩看分布，来校准你想要的感受。</div>
+
+  <div class="sec"><span class="n">7</span><h2><span class="tag think">练习</span>小测验</h2></div>
+  <div id="quiz"></div>
+
+  <div class="sec"><span class="n">8</span><h2><span class="tag how">你的设计</span>写一份可试玩的设计假设</h2></div>
+  <div class="card o">
+    <p>先写你想要的<b>感受（A）</b>，比如“紧张又好笑”。再写 2–3 条<b>规则（M）</b>，最后预测可能出现什么<b>动态（D）</b>。想一想：不同水平的玩家，动态会有什么不同？你的规则里，有没有哪一条会被人钻空子？</p>
+    <textarea rows="5" data-save="ch4" placeholder="美学：慌张、想笑&#10;机制：所有人同时看不见地图，每 10 秒公开一次位置……&#10;动态：大家会故意乱跑迷惑别人……"></textarea>
+    <p class="small">✍️ 自动保存在你的浏览器里。</p>
+  </div>
+</main>
+<script src="js/illus.js"></script><script src="js/illus-ch04.js"></script><script src="js/common.js"></script>
+<script>
+(function () {
+  const $ = id => document.getElementById(id);
+  const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+  const SW = 560, SH = 340, CAP = 3600, MG = 15, NRUN = 30;
+
+  // ---------- 可玩的一局 ----------
+  const cv = $("c4cv"), ctx = cv.getContext("2d");
+  let run = false, t0 = 0, mouse = { x: 100, y: 170 }, cat = { x: 480, y: 170 }, tgt = { x: 100, y: 170 }, cheeses = [], sc = 0, last = 0;
+  let humanT = null;
+  cv.addEventListener("pointermove", e => {
+    const r = cv.getBoundingClientRect();
+    tgt = { x: (e.clientX - r.left) * SW / r.width, y: (e.clientY - r.top) * SH / r.height };
+  });
+  cv.addEventListener("pointerdown", e => {
+    const r = cv.getBoundingClientRect();
+    tgt = { x: (e.clientX - r.left) * SW / r.width, y: (e.clientY - r.top) * SH / r.height };
+  });
+  function spawn() {
+    cheeses = [];
+    for (let i = 0; i < +$("c4cheese").value; i++) cheeses.push({ x: 40 + Math.random() * (SW - 80), y: 40 + Math.random() * (SH - 80) });
+  }
+  $("c4start").onclick = () => {
+    run = true; t0 = performance.now(); sc = 0; mouse = { x: 100, y: 170 }; cat = { x: 480, y: 170 }; tgt = { ...mouse };
+    spawn(); $("c4gmsg").textContent = "快跑！"; $("c4sc").textContent = 0; last = t0;
+    requestAnimationFrame(loop);
+  };
+  function step(a, b, v) {
+    const dx = b.x - a.x, dy = b.y - a.y, d = Math.hypot(dx, dy);
+    if (d <= v) { a.x = b.x; a.y = b.y; } else { a.x += dx / d * v; a.y += dy / d * v; }
+  }
+  function loop(now) {
+    if (!run) return;
+    const dt = Math.min((now - last) / 16.7, 3); last = now;
+    step(mouse, tgt, +$("c4mouse").value * dt);
+    step(cat, mouse, +$("c4cat").value * dt);
+    cheeses = cheeses.filter(c => {
+      if (Math.hypot(c.x - mouse.x, c.y - mouse.y) < 24) { sc++; $("c4sc").textContent = sc; return false; }
+      return true;
+    });
+    if (!cheeses.length && +$("c4cheese").value) spawn();
+    const sec = (now - t0) / 1000; $("c4tm").textContent = sec.toFixed(1);
+    draw();
+    if (Math.hypot(cat.x - mouse.x, cat.y - mouse.y) < 26) { end(sec); return; }
+    requestAnimationFrame(loop);
+  }
+  function feelOf(sec, cs, ms) {
+    if (cs >= ms) return "猫和你一样快甚至更快：几乎无法逃脱，感觉是【绝望】。";
+    if (sec < 4) return "很快被抓：感觉是【挫败】，可能规则太严。";
+    if (sec < 15) return "有惊险有周旋：感觉是【紧张刺激】，难度不错！";
+    return "坚持很久：感觉是【轻松甚至无聊】，可以让猫更快一点。";
+  }
+  function end(sec) {
+    run = false; humanT = Math.min(sec, 60);
+    const cs = +$("c4cat").value, ms = +$("c4mouse").value;
+    $("c4gmsg").innerHTML = "被抓到了！坚持了 <b>" + sec.toFixed(1) + "</b> 秒，吃到 " + sc + " 块奶酪。<br><span style='font-size:1rem;font-family:var(--body)'>" + feelOf(sec, cs, ms) + " 你只是分布里的<b>一个点</b>——看下面动态层里的 ▼ 标记。</span>";
+    renderAll(false);
+  }
+  function draw() {
+    ctx.clearRect(0, 0, SW, SH);
+    ctx.font = "34px serif"; ctx.textAlign = "center"; ctx.textBaseline = "middle";
+    cheeses.forEach(c => ctx.fillText("🧀", c.x, c.y));
+    ctx.fillText("🐭", mouse.x, mouse.y); ctx.fillText("🐱", cat.x, cat.y);
+  }
+  draw();
+
+  // ---------- 机器玩家（带固定种子，拧旋钮时可公平比较） ----------
+  function mulberry(a) { return function () { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+  function simRun(cs, ms, nc, perr, R) {
+    let mx = 100, my = 170, cx = 480, cy = 170, dir = 0, hold = 0, ch = [], eaten = 0;
+    const sp = () => { ch = []; for (let i = 0; i < nc; i++) ch.push([40 + R() * (SW - 80), 40 + R() * (SH - 80)]); };
+    sp();
+    for (let t = 0; t < CAP; t++) {
+      if (hold <= 0) {
+        hold = 12;
+        if (R() < perr * 0.25) dir = R() * Math.PI * 2;
+        else {
+          let bs = -1e9;
+          for (let k = 0; k < 16; k++) {
+            const a = k * Math.PI / 8;
+            const nx = clamp(mx + Math.cos(a) * ms * 18, MG, SW - MG), ny = clamp(my + Math.sin(a) * ms * 18, MG, SH - MG);
+            let s = Math.hypot(nx - cx, ny - cy);
+            const w = Math.min(nx - MG, SW - MG - nx, ny - MG, SH - MG - ny);
+            if (w < 50) s -= (50 - w) * 2;
+            if (nc && Math.hypot(mx - cx, my - cy) > 160 && Math.hypot(nx - cx, ny - cy) > 150) {
+              let md = 1e9;
+              for (const c of ch) if (Math.hypot(c[0] - cx, c[1] - cy) > 160) md = Math.min(md, Math.hypot(c[0] - nx, c[1] - ny));
+              if (md < 1e9) s -= md * 0.8;
+            }
+            if (s > bs) { bs = s; dir = a; }
+          }
+          dir += (R() - 0.5) * 2 * perr * 1.2;
+        }
+      }
+      hold--;
+      mx = clamp(mx + Math.cos(dir) * ms, MG, SW - MG); my = clamp(my + Math.sin(dir) * ms, MG, SH - MG);
+      const dx = mx - cx, dy = my - cy, d = Math.hypot(dx, dy);
+      if (d <= cs) { cx = mx; cy = my; } else { cx += dx / d * cs; cy += dy / d * cs; }
+      const n0 = ch.length; ch = ch.filter(c => Math.hypot(c[0] - mx, c[1] - my) >= 24); eaten += n0 - ch.length;
+      if (!ch.length && nc) sp();
+      if (Math.hypot(cx - mx, cy - my) < 26) return { t: (t + 1) / 60, e: eaten };
+    }
+    return { t: CAP / 60, e: eaten };
+  }
+  let seed = 7;
+  function batch() {
+    const cs = +$("c4cat").value, ms = +$("c4mouse").value, nc = +$("c4cheese").value, vary = $("c4vary").checked;
+    const R = mulberry(seed), out = [];
+    for (let i = 0; i < NRUN; i++) out.push(simRun(cs, ms, nc, vary ? 0.05 + R() * 0.75 : 0.4, R));
+    return out;
+  }
+
+  // ---------- 三层渲染 ----------
+  const EDGES = [0, 5, 10, 15, 20, 30, 45, 60];
+  const LABELS = ["0-5", "5-10", "10-15", "15-20", "20-30", "30-45", "45-60", "≥60"];
+  function binOf(t) { if (t >= 60) return 7; for (let i = 6; i >= 0; i--) if (t >= EDGES[i]) return i; return 0; }
+  function pulse(id) { const e = $(id); e.classList.remove("c4pulse"); void e.offsetWidth; e.classList.add("c4pulse"); }
+  function renderAll(doPulse) {
+    const cs = +$("c4cat").value, ms = +$("c4mouse").value, nc = +$("c4cheese").value;
+    $("c4ov1").textContent = cs.toFixed(1); $("c4ov2").textContent = ms.toFixed(1); $("c4ov3").textContent = nc;
+    // M
+    $("c4bcat").style.width = (cs / 6 * 100) + "%"; $("c4bmouse").style.width = (ms / 6 * 100) + "%";
+    $("c4pcat").textContent = cs.toFixed(1); $("c4pmouse").textContent = ms.toFixed(1);
+    const ratio = cs / ms;
+    $("c4mtxt").innerHTML = "猫 ÷ 老鼠 = <b>" + ratio.toFixed(2) + "</b>；奶酪 <b>" + nc + "</b> 块。" + (ratio >= 1 ? "猫不比老鼠慢——理论上逃不掉。" : "老鼠有 " + ((1 - ratio) * 100).toFixed(0) + "% 的速度余量。");
+    // D
+    const res = batch(), times = res.map(r => r.t), N = times.length, cnt = new Array(8).fill(0);
+    times.forEach(t => cnt[binOf(t)]++);
+    const mxc = Math.max(5, ...cnt), x0 = 30, bw = 66, base = 190, hh = 150;
+    let s = '<line x1="26" y1="190" x2="556" y2="190" stroke="#2b2b3a" stroke-width="3"/>';
+    cnt.forEach((c, i) => {
+      const h = c / mxc * hh, x = x0 + i * bw;
+      const col = i === 0 ? "#ffb3c6" : i <= 2 ? "#b6e8a8" : i === 7 ? "#d8c8ff" : "#a8dcf0";
+      if (c) s += '<rect x="' + (x + 6) + '" y="' + (base - h) + '" width="' + (bw - 12) + '" height="' + h + '" fill="' + col + '" stroke="#2b2b3a" stroke-width="3"/>' +
+        '<text x="' + (x + bw / 2) + '" y="' + (base - h - 6) + '" text-anchor="middle" font-size="18">' + c + '</text>';
+      s += '<text x="' + (x + bw / 2) + '" y="212" text-anchor="middle" font-size="15">' + LABELS[i] + '</text>';
+    });
+    if (humanT !== null) {
+      const hx = x0 + binOf(humanT) * bw + bw / 2;
+      s += '<path d="M' + (hx - 9) + ' 168 L' + (hx + 9) + ' 168 L' + hx + ' 186 Z" fill="#e5484d" stroke="#2b2b3a" stroke-width="2.5"/><text x="' + hx + '" y="162" text-anchor="middle" font-size="16" fill="#e5484d">你</text>';
+    }
+    s += '<text x="290" y="234" text-anchor="middle" font-size="16">存活时间（秒）；柱上数字 = 局数（共 ' + N + ' 局）</text>';
+    $("c4hist").innerHTML = s;
+    const sorted = times.slice().sort((a, b) => a - b);
+    const mean = times.reduce((a, b) => a + b, 0) / N;
+    const med = (sorted[N / 2 - 1] + sorted[N / 2]) / 2;
+    const sd = Math.sqrt(times.reduce((a, b) => a + (b - mean) * (b - mean), 0) / N);
+    const eat = res.reduce((a, r) => a + r.e, 0) / N;
+    let note;
+    if (cs >= ms) note = "猫不比老鼠慢：几乎每局都被很快抓住。";
+    else if (sd > 0.5 * mean) note = "离散很大：<b>同一组规则下，局与局差别巨大</b>——只看单局会被误导。";
+    else note = "结果相对集中：这组规则下的行为比较稳定。";
+    $("c4dtxt").innerHTML = "平均 <b>" + mean.toFixed(1) + "</b> 秒，中位数 <b>" + med.toFixed(1) + "</b>，最短 " + sorted[0].toFixed(1) + "，最长 " + sorted[N - 1].toFixed(1) + "；平均每局吃到 <b>" + eat.toFixed(1) + "</b> 块奶酪（动态：愿意冒险去吃吗？）。<br>" + note;
+    // A
+    const c = [0, 0, 0, 0];
+    times.forEach(t => { if (cs >= ms) c[0]++; else if (t < 4) c[1]++; else if (t < 15) c[2]++; else c[3]++; });
+    c.forEach((v, i) => { const p = Math.round(v / N * 100); $("c4b" + i).style.width = p + "%"; $("c4p" + i).textContent = p + "%"; });
+    const names = ["绝望", "挫败", "紧张刺激", "轻松或无聊"], top = c.indexOf(Math.max(...c));
+    $("c4atxt").innerHTML = "<span class='small'>这组规则下最常见的感受：<b>" + names[top] + "</b>（" + Math.round(c[top] / N * 100) + "% 的局）。注意：不是每个人都一样。</span>";
+    // 目标
+    const tp = Math.round(c[2] / N * 100), g = $("c4goal");
+    g.classList.toggle("ok", tp >= 60);
+    g.innerHTML = "🎯 <b>设计挑战</b>：从美学倒推规则——让至少 <b>60%</b> 的局落在“紧张刺激”。现在是 <b>" + tp + "%</b>。" + (tp >= 60 ? " ✔ 达成！看看这时机制层的数值：猫比老鼠慢得“刚刚好”，不是越慢越好。" : " 还差 " + (60 - tp) + " 个百分点，继续拧旋钮。");
+    if (doPulse) { pulse("c4lm"); pulse("c4ld"); pulse("c4la"); }
+  }
+  let tmr = null;
+  function schedule() { clearTimeout(tmr); tmr = setTimeout(() => renderAll(true), 90); }
+  ["c4cat", "c4mouse", "c4cheese", "c4vary"].forEach(id => $(id).addEventListener("input", schedule));
+  $("c4reseed").onclick = () => { seed = Math.floor(Math.random() * 1e6); renderAll(true); };
+  document.querySelectorAll("[data-pre]").forEach(b => b.onclick = () => {
+    const p = b.dataset.pre.split(",");
+    $("c4cat").value = p[0]; $("c4mouse").value = p[1]; $("c4cheese").value = p[2]; renderAll(true);
+  });
+  renderAll(false);
+
+  // ---------- 发明故事：先猜美学，再看论文标注 ----------
+  const AE = ["感官", "幻想", "叙事", "挑战", "友谊", "发现", "表达", "消遣"];
+  const REF = {
+    "比划猜词": ["友谊", "表达", "挑战"],
+    "Quake（第一人称射击）": ["挑战", "感官", "竞争*", "幻想"],
+    "模拟人生": ["发现", "幻想", "表达", "叙事"],
+    "最终幻想": ["幻想", "叙事", "表达", "发现", "挑战", "消遣"]
+  };
+  let curGame = "比划猜词";
+  const picks = new Set();
+  const gbox = $("c4games"), abox = $("c4aes");
+  Object.keys(REF).forEach(n => {
+    const b = document.createElement("button");
+    b.className = "btn alt"; b.textContent = n;
+    b.onclick = () => {
+      curGame = n; picks.clear(); $("c4cmpmsg").style.display = "none";
+      gbox.querySelectorAll(".btn").forEach(x => x.classList.toggle("pink", x === b));
+      abox.querySelectorAll(".chip").forEach(x => x.classList.remove("on"));
+    };
+    if (n === curGame) b.classList.add("pink");
+    gbox.appendChild(b);
+  });
+  AE.forEach(a => {
+    const c = document.createElement("button");
+    c.className = "chip"; c.textContent = a;
+    c.onclick = () => { if (picks.has(a)) picks.delete(a); else picks.add(a); c.classList.toggle("on", picks.has(a)); };
+    abox.appendChild(c);
+  });
+  $("c4cmp").onclick = () => {
+    const out = $("c4cmpmsg"); out.style.display = "block";
+    if (!picks.size) { out.textContent = "先勾选至少一种美学，再来看论文怎么标。"; return; }
+    const ref = REF[curGame], clean = ref.map(x => x.replace("*", ""));
+    const both = clean.filter(a => picks.has(a));
+    const onlyMe = [...picks].filter(a => !clean.includes(a));
+    const onlyRef = clean.filter(a => !picks.has(a));
+    out.innerHTML = "论文对「" + curGame + "」的标注：<b>" + ref.join("、") + "</b>。你与它重合 " + both.length + " 项" +
+      (onlyMe.length ? "；你多选了：" + onlyMe.join("、") : "") + (onlyRef.length ? "；你没选：" + onlyRef.join("、") : "") + "。" +
+      (ref.some(x => x.includes("*")) ? "（带 * 的“竞争”不在八类词表里——论文自己的标注也没完全套进八类。）" : "") +
+      "<br>不一致不代表你错了：不同玩家、不同玩法下主导的美学本来就不同，这正是“分类不唯一”的局限。重点是：用这套词，你们至少能<b>具体地争论</b>，而不是只喊“好玩”。";
+  };
+
+
+  // ---------- 可点击的 MDA 图 ----------
+  const INFO = {
+    m: "<b>机制 M</b>：能写进表格或代码里的东西。猫速度 2.5，老鼠速度 3.5，奶酪 3 块。设计者只能从这一层下手。",
+    d: "<b>动态 D</b>：规则跑起来之后出现的行为。老鼠发现绕着柱子跑最安全，又忍不住冒险去吃奶酪。没人在规则里写“兜圈”，它是玩出来的。",
+    a: "<b>美学 A</b>：玩家的感受。猫差一点就抓到时的紧张，逃脱后的得意。玩家从这一层出发，回头一点点猜出规则。"
+  };
+  const hits = [...document.querySelectorAll(".c4hit")];
+  const pick = h => {
+    hits.forEach(x => x.classList.toggle("on", x === h));
+    $("c4info").innerHTML = INFO[h.dataset.k];
+  };
+  hits.forEach(h => {
+    h.addEventListener("click", () => pick(h));
+    h.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); pick(h); } });
+  });
+
+  // ---------- 规格博弈：调奖励 ----------
+  function sg() {
+    const p = +$("c4sgp").value, F = +$("c4sgf").value, resp = $("c4sgr").checked;
+    $("c4sgpv").textContent = p; $("c4sgfv").textContent = F;
+    const A = F + 3 * p, B = resp ? 30 * p : 3 * p, mx = Math.max(A, B, 1);
+    const set = (id, v) => { const e = $(id); e.querySelector("i").style.width = (v / mx * 100) + "%"; e.querySelector("b").textContent = v + " 分"; };
+    set("c4sga", A); set("c4sgb", B);
+    $("c4sga").classList.toggle("win", A > B); $("c4sgb").classList.toggle("win", B >= A);
+    let m;
+    if (A > B) {
+      m = "✔ 程序选了<b>跑完赛道</b>（" + A + " 分 &gt; " + B + " 分）。" + (!resp
+        ? "你让靶子只能撞一次，兜圈的收益被封顶了：这是在改规则的结构。"
+        : "你靠加大终点奖励压过了兜圈的收益：这是在压数字，只要把靶子的分再调高一点，它又会回去兜圈。");
+    } else {
+      m = "程序选了<b>泻湖兜圈</b>（" + B + " 分" + (A === B ? " = " : " ≥ ") + A + " 分）。它没有违反任何规则，只是认真地把你写下的“得分”最大化了。";
+    }
+    $("c4sgmsg").innerHTML = m;
+  }
+  ["c4sgp", "c4sgf", "c4sgr"].forEach(id => $(id).addEventListener("input", sg));
+  $("c4sgreset").onclick = () => { $("c4sgp").value = 5; $("c4sgf").value = 50; $("c4sgr").checked = true; sg(); };
+  sg();
+
+  // ---------- 练习 ----------
+  GD.mountQuiz($("quiz"), [
+    { q: "玩家说“这局打得太紧张了，手心出汗”，这是在描述 MDA 的哪一层？", opts: ["机制", "动态", "美学", "关卡"], a: 2, why: "情感体验属于美学。“猫速度 2.2”是机制，“绕着柱子兜圈”才是动态。" },
+    { q: "设计师希望玩家在游戏里感到“被追逐的压迫感”。最合理的做法是：", opts: ["直接在文档里写“玩家感到压迫”", "设计追击机制，试玩后根据体验调整速度等规则", "加一个压迫感的音效就行", "不用设计，玩家自然会有"], a: 1, why: "美学只能通过机制间接获得，并且要靠试玩来校准。" },
+    { q: "【为什么】同一组规则跑 30 局，存活时间从几秒到一分钟不等。设计者应该怎么看？", opts: ["程序有 bug", "关注结果的分布，按目标玩家群体来调规则", "只看最好的一局", "去掉随机性就能让所有人体验一致"], a: 1, why: "玩家的技能和运气不同，规则之间又会非线性地互相影响，同一机制给出的是体验的分布。就算去掉随机性，技能和偏好的差异仍然在。" },
+    { q: "【为什么】赛艇游戏里的程序绕圈撞靶、不去终点。最准确的说法是？", opts: ["程序坏了，在作弊", "奖励（得分）和设计者真正想要的（赢比赛）之间有落差，程序按字面把得分最大化了", "靶子数量太少", "玩家不够努力"], a: 1, why: "这就是规格博弈：满足了目标的字面规定，却背离了意图。该修的是规则怎么写，而不是怪执行者。" },
+    { q: "【为什么被发明】在 MDA 出现之前，设计师、程序员、研究者讨论游戏时最大的困难是什么？", opts: ["没有足够好的游戏引擎", "缺一套共同的词汇，说不清“规则的改动”如何变成“玩家的感受”，只能说“好玩 / 不好玩”", "游戏太少，没有可研究的对象", "玩家不愿意参加试玩"], a: 1, why: "论文的出发点，是想从“fun”“gameplay”这类含糊的词转向更有指向性的词汇，并在设计开发、游戏批评、技术研究之间搭桥。" },
+    { q: "【为什么被发明】MDA 特意把“动态”单独拿出来当一层，主要是因为：", opts: ["动画很重要", "规则和感受之间隔着“规则运行起来后的行为”，这些行为设计者无法完全预知，必须玩出来才看得到", "这样看起来更学术", "只有程序员才关心动态"], a: 1, why: "游戏的内容是行为，而行为只有在玩的过程中才出现；把它单列出来，团队才能分清自己在讨论规则、行为还是感受。" },
+  ]);
+})();
+
+</script>
+</body>
+</html>

@@ -1,0 +1,662 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>第11章 关卡与教学</title>
+<link rel="stylesheet" href="css/style.css">
+<style>
+  #grid{display:grid;grid-template-columns:repeat(10,1fr);gap:2px;background:var(--ink);border:3px solid var(--ink);max-width:560px;margin:8px auto;touch-action:none}
+  #grid div{aspect-ratio:1;background:#fffdf3;display:grid;place-items:center;font-size:clamp(14px,4.2vw,28px);cursor:pointer;user-select:none;line-height:1}
+  #grid div.wall{background:#8a7f6a}
+  .palette{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
+  .pad{display:grid;grid-template-columns:repeat(3,56px);gap:6px;justify-content:center;margin-top:8px}
+  .pad button{height:48px}
+  .c11_thirds{display:grid;grid-template-columns:4fr 3fr 3fr;max-width:560px;margin:0 auto;text-align:center;font-size:.85rem;color:var(--soft)}
+  .c11_thirds div{border-top:3px solid var(--ink);padding-top:2px}
+  .c11_cards{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
+  .c11_cards .chip{flex:1;min-width:230px;text-align:left;border-radius:14px;margin:0}
+  .c11_cards .chip:disabled{opacity:.4;cursor:not-allowed}
+  .c11_slots{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:8px 0}
+  .c11_slots div{border:3px dashed var(--ink);border-radius:12px;padding:6px 8px;min-height:5.6em;background:#fffef7;font-size:.88rem;line-height:1.5}
+  .c11_slots div b{background:none;font-family:var(--hand);font-size:1.15rem;display:block}
+  @media(max-width:700px){.c11_slots{grid-template-columns:1fr}}
+  .c11_res p{margin:.3em 0;font-size:.98rem}
+  .c11_res .ok{color:#1d7a38}.c11_res .no{color:#c0282d}
+  .c11_mode{margin-bottom:6px}
+  .c11_pane{display:none}.c11_pane.on{display:block}
+  .c11_zone{cursor:pointer}
+  .c11_zone:focus{outline:none}
+  .c11_zone:focus .c11_zb,.c11_zone:hover .c11_zb{stroke-width:6}
+  .c11_ok{color:#1d7a38;font-weight:700}
+  .c11_out{margin-top:8px;padding:8px 12px;border:2px dashed var(--ink);border-radius:10px;background:var(--blue);font-size:.98rem}
+</style>
+</head>
+<body data-ch="11">
+<main class="wrap">
+  <div class="hero">
+    <div class="txt">
+      <span class="badge">第 11 章</span>
+      <h1>关卡与教学</h1>
+      <p class="sub">最好的教程，是玩家根本没发现自己在上课。</p>
+    </div>
+    <svg viewBox="0 0 190 150" class="rough" aria-hidden="true">
+      <rect x="10" y="100" width="170" height="30" fill="#b6e8a8" stroke="#2b2b3a" stroke-width="4"/>
+      <rect x="60" y="55" width="30" height="30" fill="#ffe58a" stroke="#2b2b3a" stroke-width="4"/><text x="68" y="78" font-size="24">?</text>
+      <circle cx="30" cy="85" r="12" fill="#ffb3c6" stroke="#2b2b3a" stroke-width="4"/>
+      <path d="M130 100 v-22 h30 v22" fill="#a8dcf0" stroke="#2b2b3a" stroke-width="4"/>
+    </svg>
+  </div>
+
+  <div class="goals">
+    <h3>学习目标</h3>
+    <span class="time">约 45 分钟</span>
+    <ul>
+      <li>读完你能用“引入 → 练习 → 变化”设计一段教学关卡，并说出为什么“无字教学”会被发明出来。</li>
+      <li>读完你能解释<span class="term" tabindex="0" data-def="维果茨基提出的概念：一个人独立做不到、但有人帮一把就能做到的任务范围。">最近发展区</span>与<span class="term" tabindex="0" data-def="在学习者够不着的地方临时搭的支撑（提示、安全环境），随着学会逐步撤掉。">脚手架</span>，并判断一个挑战是否“刚好够得着”。</li>
+      <li>读完你能用<span class="term" tabindex="0" data-def="工作记忆一次能处理的信息有限，信息太多就会“超载”。">认知负荷</span>与<span class="term" tabindex="0" data-def="把复习分散到越来越长的时间间隔上，比集中重复更利于长期记住。">间隔重复</span>安排“一次教几个、隔多久再出现”，并亲手搭一个能通关的教学小关卡。</li>
+    </ul>
+  </div>
+
+  <!-- 1 -->
+  <div class="sec"><span class="n">1</span><h2><span class="tag what">是什么</span>教玩家的三步法</h2></div>
+  <div class="withimg">
+    <span data-illus="c11_world11"></span>
+    <div>
+      <p>《超级马力欧兄弟》（1985）的第一关，屏幕上一个字也没有。你站在平地上，右边有个东西慢悠悠地走过来。你不知道它是什么，多半往前走，碰上去，死了。再来一次，你按了跳，踩在它头上，它扁了。</p>
+      <p>从头到尾没人告诉你“按键跳跃、踩中敌人可以消灭它”，可你已经学会了。这一关被许多人当作教学关卡的范本。</p>
+      <p>它背后是一个很朴素的结构，可以归纳成三步：先在安全的地方<b>引入</b>新东西，让玩家单独认识它；再带一点风险反复<b>练习</b>；最后把它和别的东西<b>组合</b>，或者反转玩家的预期。玩家的体验是：看懂，会用，融会贯通。</p>
+    </div>
+  </div>
+  <div class="card">
+    <svg viewBox="0 0 780 284" width="100%" role="img" aria-label="三步：引入、练习、变化">
+      <g class="rough" stroke="#2b2b3a" stroke-width="4">
+        <rect x="20" y="24" width="230" height="180" rx="18" fill="#fff7cf"/><rect x="275" y="24" width="230" height="180" rx="18" fill="#e8f6fc"/><rect x="530" y="24" width="230" height="180" rx="18" fill="#ffe9ef"/>
+        <path d="M252 114 h21 M507 114 h21" fill="none" stroke-linecap="round"/>
+      </g>
+      <g text-anchor="middle" fill="#2b2b3a">
+        <text x="135" y="68" font-size="28">① 引入</text><text x="390" y="68" font-size="28">② 练习</text><text x="645" y="68" font-size="28">③ 变化</text>
+        <g font-size="19">
+          <text x="135" y="106">在安全的地方</text><text x="135" y="132">单独展示新东西</text>
+          <text x="390" y="106">有一点风险地使用</text><text x="390" y="132">重复几次巩固</text>
+          <text x="645" y="106">和其他东西组合</text><text x="645" y="132">或者反转预期</text>
+        </g>
+        <g font-size="16" fill="#3f3f50">
+          <text x="135" y="166">例：一只慢慢走的怪</text><text x="135" y="188">旁边没有坑</text>
+          <text x="390" y="166">例：几只怪排成一排</text><text x="390" y="188">每只都能踩</text>
+          <text x="645" y="166">例：怪出现在落点</text><text x="645" y="188">下面还有移动平台</text>
+        </g>
+        <text x="390" y="260" font-size="20">玩家：看懂 → 会用 → 融会贯通</text>
+      </g>
+    </svg>
+  </div>
+  <div class="sticky">教学原则：<b>先让玩家看，再让玩家做，最后让玩家创造</b>。文字是最后的手段。</div>
+  <div class="eg" data-ic="🍄"><span data-illus="c11_stomp"></span><div class="egt"><b>教“踩怪”</b>：先在空地上放一只慢怪（引入），再放一排三只（练习），最后让怪出现在跳跃的落点、下面还有移动平台（变化）。每一步只多一点点。</div></div>
+  <div class="eg" data-ic="🚲"><span data-illus="c11_bike"></span><div class="egt"><b>教孩子骑自行车</b>：先装两个辅助轮在平地上骑（引入），拆掉一个、绕圈（练习），最后去掉辅助轮、上小坡、躲障碍（变化）。</div></div>
+  <div class="eg bad" data-ic="💀"><span data-illus="c11_allatonce"></span><div class="egt"><b>新机制一出场就是“全家桶”</b>：落点有怪、移动平台、尖刺、倒计时，一股脑堆在一起。玩家分不清自己是死在哪个新东西上，只觉得“这游戏好难”，学到的只有挫败。</div></div>
+
+  <!-- 2 -->
+  <div class="sec"><span class="n">2</span><h2><span class="tag what">是什么</span>节奏与“冒险值不值”：张弛和风险回报</h2></div>
+  <p>教学只是关卡的一半。另一半是让玩家一路走下来不累，也不无聊：有张有弛，有得选。</p>
+  <p>先说节奏。一路绷着的关卡，玩家撑不住，还记得心流吗？挑战远超能力，就是焦虑。一路平淡的关卡也不行，玩家没有任何要做的决定，只剩无聊。好关卡像呼吸：紧张一阵，歇一口气，再紧张一阵，而且每一回都比上一回高一点。</p>
+  <p>再说风险与回报。把一枚金币放在尖刺旁边：拿，还是不拿？选择就是这样冒出来的。想要奖励就得冒险，冒不冒险，由玩家自己决定。</p>
+  <div class="card">
+    <svg viewBox="0 0 780 310" width="100%" role="img" aria-label="关卡节奏：紧张度随时间起伏，休息点位于波谷，一次比一次高">
+      <g class="rough" stroke="#2b2b3a" stroke-width="4" fill="none" stroke-linecap="round">
+        <path d="M80 22 V240 H740"/>
+        <path d="M92 214 C130 206 150 124 196 124 S256 218 296 220 S352 94 412 94 S462 224 512 222 S580 58 650 58" stroke="#e5484d" stroke-width="5"/>
+        <path d="M296 232 V256 M512 232 V256" stroke="#2f9e44" stroke-dasharray="4 5" stroke-width="3"/>
+      </g>
+      <g fill="#b6e8a8" stroke="#2b2b3a" stroke-width="3"><circle cx="296" cy="220" r="8"/><circle cx="512" cy="222" r="8"/></g>
+      <g font-size="18" fill="#2b2b3a" text-anchor="middle">
+        <text x="196" y="104">小挑战</text><text x="412" y="74">更大的挑战</text><text x="650" y="38">高潮</text>
+        <text x="296" y="282" fill="#1d6b35">休息点（补给、风景）</text><text x="512" y="282" fill="#1d6b35">休息点</text>
+      </g>
+      <text x="726" y="226" font-size="18" text-anchor="end" fill="#2b2b3a">关卡进程 →</text>
+      <text x="92" y="40" font-size="18" fill="#2b2b3a">紧张度 ↑</text>
+    </svg>
+  </div>
+  <div class="eg" data-ic="🪙"><span data-illus="c11_cointrap"></span><div class="egt"><b>金币放在陷阱旁边</b>：拿了有奖励，也可能掉进去。玩家得掂量自己的本事，选择就产生了。</div></div>
+  <div class="eg" data-ic="🏃"><span data-illus="c11_intervals"></span><div class="egt"><b>间歇训练</b>：冲刺 30 秒，慢走 60 秒，再来一轮。全程冲刺只会让人中途放弃。关卡里一场硬仗之后放个安全营地，下一场才显得更紧。</div></div>
+  <div class="eg bad" data-ic="😵"><span data-illus="c11_norest"></span><div class="egt"><b>全程高压、没有一个休息点</b>：玩家疲劳后成绩下降，再好的设计也被累垮。反过来，一路平淡、没有风险的关卡，玩家同样没有任何要做的决定。</div></div>
+
+  <!-- 3 -->
+  <div class="sec"><span class="n">3</span><h2><span class="tag origin">发明故事</span>“无字教学”和“间隔复习”是怎么被想出来的</h2></div>
+  <div class="story">
+    <h3>故事一：没有人读说明书，怎么教会玩家？</h3>
+    <div class="withimg rev">
+      <span data-illus="c11_manual"></span>
+      <div>
+        <p>1980 年代的家用机游戏，玩法一般写在随盒附赠的说明书里。可玩家拿到卡带，多半是直接插上就玩；街机更干脆，投了币就得上手，没人愿意先读一页字。设计者面前有个朴素的难题：<b>如果玩家不读字，怎样让他们在几十秒里学会跳、踩、顶、躲？</b></p>
+        <p>最直接的办法是开场放一屏文字，或者在画面上叠提示。可玩家一按键就跳过去了；就算读了，也只是“知道”，手上并没有“会”。</p>
+        <p>于是有了一个转念：<b>让关卡本身当老师</b>。把新东西放在安全的地方，让玩家自己撞见它、试一试、立刻看到后果。</p>
+      </div>
+    </div>
+    <p>据媒体对任天堂宫本茂与手冢卓志 2015 年谈话的报道，1-1 就是这么设计的：第一个敌人迎面慢慢走来，撞上去就死，逼你明白“要跳”；超级蘑菇看起来像敌人，可头顶的低天花板让你只能撞到砖块，再看它从里面冒出来，才明白它是好东西；第一个坑底下有地面，掉下去还能爬上来，第二个才是真的无底，手冢说新手多半会先掉进第一个。（这些是转述，我没能直接核对原视频，请以原始访谈为准。）</p>
+    <p>此后，“先在安全环境引入，再加风险，最后组合变化”成了关卡教学的通用做法。后来教育学者也从游戏里总结出相似的学习原则，下面的“为什么成立”会讲到。</p>
+    <div class="timeline">
+      <div class="ev hasimg"><span data-illus="c11_mario85"></span><div><b class="yr">1985</b>　《超级马力欧兄弟》发行，1-1 关几乎不靠文字，让玩家在游玩中学会基本动作。</div></div>
+      <div class="ev hasimg"><span data-illus="c11_gee"></span><div><b class="yr">2003</b>　詹姆斯·吉出版《What Video Games Have to Teach Us About Learning and Literacy》，把好游戏的“学习原则”写成系统论述。</div></div>
+      <div class="ev hasimg"><span data-illus="c11_miyamoto"></span><div><b class="yr">2015</b>　宫本茂与手冢卓志在 Eurogamer 的视频中谈 1-1 的设计思路（据媒体转述）。</div></div>
+    </div>
+    <p class="small">转述来源：<a href="https://www.mcvuk.com/development-news/video-miyamoto-shares-his-level-design-secrets/">MCV</a>、<a href="https://soranews24.com/2015/09/09/super-mario-bros-creator-explains-how-and-why-he-designed-world-1-1-of-the-8-bit-classic-%e3%80%90video%e3%80%91/amp/">SoraNews24</a>。</p>
+  </div>
+  <p><b>先自己试，再看设计者的思路。</b>下面有 5 种“新东西”。假设玩家是第一次玩，请<b>按你认为该出现的先后顺序</b>点选它们，填满 5 个格子；然后点“揭晓”，对照“由安全到危险”的设计原则。想改就点“撤销”。</p>
+  <div class="board">
+    <div class="c11_cards" id="c11_cards"></div>
+    <div class="c11_slots" id="c11_slots"></div>
+    <div>
+      <button class="btn green" id="c11_rev" disabled>🔍 揭晓</button>
+      <button class="btn alt" id="c11_undo">撤销一步</button>
+      <button class="btn pink" id="c11_reset">重选</button>
+    </div>
+    <div class="c11_res" id="c11_res"></div>
+  </div>
+  <div class="sticky">试试看：排满 5 张卡片，点“揭晓”，看你的顺序和“由安全到危险”有几处吻合。<span class="c11_ok" id="c11_t1" hidden> ✅ 完成：不管吻合几处，你已经在用“失败的代价够不够小”来排序了。</span></div>
+
+  <div class="story">
+    <h3>故事二：学过的本事，为什么过几天就“还给老师”了？</h3>
+    <div class="withimg">
+      <span data-illus="c11_leak"></span>
+      <div>
+        <p>19 世纪的心理学家想知道：<b>记忆能不能像物理量一样被测量？</b>可日常的记忆太杂，你对一首歌的记忆里掺着情感、联想和以前听过的次数，没法比。</p>
+        <p>背诗、背课文也不行：每个人对内容的熟悉程度不同，结果没法比较。</p>
+        <p>赫尔曼·艾宾浩斯想出了一个办法：<b>造一批没有意义的音节</b>（如“DAX”“BOK”），谁也不熟悉，就谁也不占便宜。他拿自己当被试，背一张表，隔不同时间再重学，用“重学比第一次省了多少时间”（节省法）来衡量还剩多少记忆。</p>
+      </div>
+    </div>
+    <p>他把成果写进 1885 年的《论记忆》（<i>Über das Gedächtnis</i>）。结论是：忘得<b>先快后慢</b>，刚学完掉得最陡，之后越来越平。2015 年，Murre 与 Dros 用类似方法重做了这个实验，结果和艾宾浩斯的原始数据相似；他们还指出，曲线在 24 小时附近可能有一个小的回升。</p>
+    <p>既然忘得快，补救的办法就是<b>在快忘掉之前复习</b>。认知心理学后来反复发现了“间隔效应”：把复习分散在多个时间点，比一口气重复更牢。对关卡设计者来说，翻译过来就是：教过的机制，隔几关换个花样再让它出场一次。</p>
+    <div class="timeline">
+      <div class="ev hasimg"><span data-illus="c11_ebbing"></span><div><b class="yr">1885</b>　艾宾浩斯出版《论记忆》，用无意义音节和“节省法”测量遗忘。</div></div>
+      <div class="ev hasimg"><span data-illus="c11_cepeda"></span><div><b class="yr">2006</b>　Cepeda 等人对 184 篇文献、317 项实验、839 个评估的元分析：分散复习的保持效果更好，最佳间隔随“要记多久”而变长。</div></div>
+      <div class="ev hasimg"><span data-illus="c11_murre"></span><div><b class="yr">2015</b>　Murre 与 Dros 发表对艾宾浩斯遗忘曲线的复现，结果与原数据相似。</div></div>
+    </div>
+  </div>
+  <p><b>先猜，再看曲线。</b>刚学会一个新技巧，<b>不复习</b>。你觉得 1 天后、7 天后各还能剩百分之几？拖动滑块，再点“揭晓”，对照一条<b>示意</b>的指数遗忘曲线（真实的快慢因内容和人而异，只看形状）。</p>
+  <div class="board">
+    <label class="ctl">1 天后还剩 <output id="c11_g1o">50%</output></label><input type="range" id="c11_g1" min="0" max="100" value="50">
+    <label class="ctl">7 天后还剩 <output id="c11_g7o">30%</output></label><input type="range" id="c11_g7" min="0" max="100" value="30">
+    <button class="btn green" id="c11_gv">🔍 揭晓示意曲线</button>
+    <svg viewBox="0 0 610 250" width="100%" role="img" aria-label="你的猜测与示意遗忘曲线">
+      <rect x="64" y="14" width="480" height="170" fill="#fffef7" stroke="#2b2b3a" stroke-width="3"/>
+      <g stroke="#e6dcc3" stroke-width="2"><line x1="64" y1="99" x2="544" y2="99"/></g>
+      <polyline id="c11_gc" fill="none" stroke="#3aa655" stroke-width="5" stroke-linejoin="round" style="display:none"/>
+      <polyline id="c11_gg" fill="none" stroke="#ff7a59" stroke-width="4" stroke-dasharray="7 5" stroke-linejoin="round"/>
+      <g id="c11_gd" fill="#ffe58a" stroke="#2b2b3a" stroke-width="2.5"></g>
+      <text x="56" y="26" text-anchor="end" font-size="17">100%</text><text x="56" y="184" text-anchor="end" font-size="17">0</text>
+      <g font-size="17" text-anchor="middle"><text x="64" y="208">0</text><text x="184" y="208">3 天</text><text x="304" y="208">6 天</text><text x="424" y="208">9 天</text><text x="544" y="208">12 天</text></g>
+      <text x="304" y="238" text-anchor="middle" font-size="18">天数 →</text>
+    </svg>
+    <p class="small">橙色虚线 = 你的猜测，绿线 = 示意曲线。</p>
+    <div class="msg" id="c11_gm">先拖滑块，再揭晓。</div>
+  </div>
+
+  <!-- 4 -->
+  <div class="sec"><span class="n">4</span><h2><span class="tag why">为什么成立</span>先放在安全的地方：失败的代价要小</h2></div>
+  <div class="withimg rev">
+    <span data-illus="c11_padded"></span>
+    <div>
+      <p>回头想想 1-1 那个有底的小坑。掉进去，什么也不会失去，爬上来再跳就是了。这不是巧合：新东西第一次出现时，让玩家失败得起，是教学能不能成立的前提。</p>
+      <p>还记得小猫扑毛线球吗？扑空了不会饿肚子。幼崽把大把时间花在“没用”的打闹上，一个解释就是：玩耍让它们在失败代价很低的地方，提前演练将来要用的本领。</p>
+      <p>关卡的第一道题，其实就是玩家的第一个“游戏场”。</p>
+    </div>
+  </div>
+  <div class="why-box">
+    <h3>低代价的试错：玩耍的另一面</h3>
+    <p>美国心理学家杰罗姆·布鲁纳在 1972 年的论文里提出，幼年期之所以那么长，部分原因是让年幼者有时间在没有严重后果的情况下尝试各种组合，玩耍就是这样的“试验田”。前面提过的 Špinka 等人 2001 年的综述也强调，动物玩耍时常常故意给自己设限、主动制造小意外，像是在训练应对意外的灵活反应。</p>
+    <p>落到关卡上，意思很直白：<b>失败的代价越低，玩家越敢试，越快学会</b>。代价包括看不看得到重来按钮、要不要重走一大段路、会不会丢东西。把前几次失败的代价压到最低，等玩家有了本事，再把代价提上去。</p>
+    <p>要说清的是，玩耍到底有没有这样的功能，学界至今还在讨论；这里借用的是“低代价试错有利于学习”这个相对稳妥的部分。</p>
+    <div class="src">出处：Jerome S. Bruner，“The nature and uses of immaturity”，《American Psychologist》27(8)（1972）；Špinka, Newberry &amp; Bekoff，“Mammalian play: training for the unexpected”，《The Quarterly Review of Biology》76(2): 141–168（2001）；关卡里的做法见前文 1-1 的转述。</div>
+  </div>
+  <div class="eg" data-ic="🕳️"><span data-illus="c11_firstpit"></span><div class="egt"><b>1-1 的第一个坑有底</b>：掉下去只是爬回来。等你会跳了，才出现真正无底的坑。惩罚是跟着本事一起涨的。</div></div>
+  <div class="eg" data-ic="✈️"><span data-illus="c11_simulator"></span><div class="egt"><b>飞行模拟器</b>：飞行员在模拟舱里练习迫降，失误了也只是屏幕一黑。真正要命的事，先放在不会死人的地方练熟。</div></div>
+  <div class="eg bad" data-ic="☠️"><span data-illus="c11_onehit"></span><div class="egt"><b>第一次碰新机关就一击必死，再等 30 秒复活动画</b>：玩家根本没机会“试一试”，每次试错都贵得要命，只好缩手缩脚，反而学得更慢。</div></div>
+
+  <!-- 5 -->
+  <div class="sec"><span class="n">5</span><h2><span class="tag why">为什么成立</span>刚好够得着：最近发展区与脚手架</h2></div>
+  <div class="withimg">
+    <span data-illus="c11_rungs"></span>
+    <div>
+      <p>教一个从没玩过游戏的朋友，你不会一上来就让他打 Boss。你会让他先在空地上随便走走，再放一只慢吞吞的敌人，再放两只……你其实一直在做同一件事：让每一步都比他现在会的“多一点点”。</p>
+      <p>太简单他无聊，太难他放弃。学得最多的，是中间那一段。</p>
+      <p>心理学早就给这一段起了名字。</p>
+    </div>
+  </div>
+  <div class="why-box">
+    <h3>最近发展区（ZPD）、脚手架与“做中学”</h3>
+    <p>苏联心理学家维果茨基（Lev Vygotsky）把任务分成三类：<span class="term" tabindex="0" data-def="最近发展区（ZPD）：独立做不到、但在提示或帮助下能做到的任务范围，学习主要发生在这里。">最近发展区</span>里的（有一点帮助就能做到）、早已会的、以及远超能力的。学习主要发生在第一类。后来 Wood、Bruner 和 Ross（1976）用“<span class="term" tabindex="0" data-def="脚手架（scaffolding）：在学习者够不着时给的临时支撑，比如安全的环境、提示，会随着熟练逐步撤掉。">脚手架</span>”形容那些<b>临时的、会撤掉的帮助</b>。游戏里就是安全的场地、放慢的敌人、高亮的提示。</p>
+    <p>帕珀特（Seymour Papert）强调动手做、动手玩的过程中学习；詹姆斯·吉总结了一批“好游戏的学习原则”，例如“排好序的问题”（早期的问题为后面的问题打基础）和“令人愉快的挫折”（难，但感觉做得到）。教育心理学的主流看法是：对新手而言，在有引导的前提下<b>亲自做</b>，通常比单纯听讲更有利。</p>
+    <p>“引入 → 练习 → 变化”就是脚手架的游戏版：引入时脚手架最厚（安全、单独），练习时慢慢撤，变化时几乎不再提供。</p>
+    <div class="src">出处：Vygotsky《Mind in Society》（Harvard UP，1978 年英文版）；Wood, D., Bruner, J. S. &amp; Ross, G. (1976). The role of tutoring in problem solving. <i>Journal of Child Psychology and Psychiatry</i>, 17(2), 89–100（<a href="https://pubmed.ncbi.nlm.nih.gov/932126/">PubMed</a>）；Papert《Mindstorms》（1980）；Gee《What Video Games Have to Teach Us About Learning and Literacy》（2003）。“脚手架”一词来自 Wood 等人的论文，后来才常与 ZPD 联系在一起。</div>
+  </div>
+  <div class="card">
+    <svg viewBox="0 0 780 270" width="100%" role="img" aria-label="任务难度从左到右分三段：已经会、最近发展区、太难，可点击">
+      <g class="c11_zone" data-i="0" tabindex="0" role="button" aria-label="已经会"><g class="rough" stroke="#2b2b3a" stroke-width="4"><rect class="c11_zb" x="20" y="30" width="230" height="120" fill="#eaf9e4"/></g>
+        <text x="135" y="82" font-size="24" text-anchor="middle" fill="#2b2b3a">已经会</text><text x="135" y="116" font-size="18" text-anchor="middle" fill="#3f3f50">太简单：无聊</text></g>
+      <g class="c11_zone" data-i="1" tabindex="0" role="button" aria-label="最近发展区"><g class="rough" stroke="#2b2b3a" stroke-width="4"><rect class="c11_zb" x="250" y="30" width="290" height="120" fill="#fff7cf"/></g>
+        <text x="395" y="74" font-size="26" text-anchor="middle" fill="#2b2b3a">最近发展区</text><text x="395" y="106" font-size="18" text-anchor="middle" fill="#3f3f50">有一点提示就做得到</text><text x="395" y="130" font-size="18" text-anchor="middle" fill="#3f3f50">学得最多</text></g>
+      <g class="c11_zone" data-i="2" tabindex="0" role="button" aria-label="太难"><g class="rough" stroke="#2b2b3a" stroke-width="4"><rect class="c11_zb" x="540" y="30" width="220" height="120" fill="#ffe9ef"/></g>
+        <text x="650" y="82" font-size="24" text-anchor="middle" fill="#c0282d">太难</text><text x="650" y="116" font-size="18" text-anchor="middle" fill="#3f3f50">做不到：放弃</text></g>
+      <g class="rough" stroke="#2b2b3a" stroke-width="4" fill="none" stroke-linecap="round"><path d="M20 190 H752 M740 180 l12 10 -12 10"/></g>
+      <text x="20" y="236" font-size="18" fill="#2b2b3a">任务难度 →</text>
+      <text x="760" y="236" font-size="16" text-anchor="end" fill="#3f3f50">👆 点一段看说明</text>
+    </svg>
+    <div class="c11_out" id="c11_zmsg">点上面的某一段：看看在这里放什么样的关卡。</div>
+  </div>
+  <div class="eg" data-ic="🎯"><span data-illus="c11_adaptive"></span><div class="egt"><b>自适应的提示</b>：玩家连续失败，提示就多给一点（脚手架变厚）；连续成功，提示就撤掉，让他独立完成。</div></div>
+  <div class="eg" data-ic="🏊"><span data-illus="c11_floatboard"></span><div class="egt"><b>学游泳</b>：先抱浮板，再换漂浮腰带，最后什么都不戴。帮助一步步撤掉，直到人自己漂得起来。</div></div>
+  <div class="eg bad" data-ic="⬆️"><span data-illus="c11_forever"></span><div class="egt"><b>脚手架永远不撤</b>：地上一直亮着“跳！”的大箭头，玩家学会了依赖提示，一关掉就不会玩了。</div></div>
+
+  <!-- 6 -->
+  <div class="sec"><span class="n">6</span><h2><span class="tag why">为什么成立</span>一次只教一个：认知负荷</h2></div>
+  <div class="withimg rev">
+    <span data-illus="c11_juggle"></span>
+    <div>
+      <p>你同时接几通电话、记几个新名字、再解一道题，大概率全乱。游戏教程里一口气弹出“跳跃、冲刺、抓钩、背包、合成”，玩家的反应往往是：都记不住，然后关掉。</p>
+      <p>还记得界面上信息太多会让人手足无措吗？教学也有同样的毛病：同时出场的新东西越多，玩家的脑子越装不下。</p>
+    </div>
+  </div>
+  <div class="why-box">
+    <h3>认知负荷理论</h3>
+    <p>人在做事时能同时握在脑子里处理的信息很有限，这块“暂存区”叫<span class="term" tabindex="0" data-def="工作记忆：大脑临时保存并处理信息的有限空间，一次只容得下少数几个“单位”。">工作记忆</span>。米勒（1956）强调人能保持的是约 7±2 个“组块”，考恩（2001）认为排除组块等因素后更接近<b>约 4 个组块</b>。具体数字有争议，“很有限”则是共识。</p>
+    <p>斯威勒（John Sweller）1988 年的论文指出，常规的解题方式会占用大量工作记忆，留给“学会”的余力就少了，后来发展成<span class="term" tabindex="0" data-def="认知负荷理论：学习时要处理的信息总量超过工作记忆，学习效果就会骤降；教学设计应尽量减少不必要的负担。">认知负荷理论</span>：同时引入的新东西越多、每个越复杂，总负荷越高，学习效果就越差。</p>
+    <p>反过来也有好消息：熟练的人会把几个操作<b>打包成一个组块</b>。老手早把“移动 + 跳”看作一件事，所以他们能更快地叠加新东西。</p>
+    <div class="src">出处：Miller（1956）<i>Psychological Review</i> 63(2), 81–97；Cowan（2001）<i>Behavioral and Brain Sciences</i> 24(1), 87–114；Sweller（1988）<i>Cognitive Science</i> 12(2), 257–285。后面“学习曲线实验室”里的曲线是本书为演示形状而设的<b>示意模型</b>，不是这些论文的数据。</div>
+  </div>
+  <div class="eg" data-ic="🚪"><span data-illus="c11_portal"></span><div class="egt"><b>一间屋子只教一件事</b>：常被称赞的教学关会让前几个房间各自只引入一个机制（如《Portal》的开头），学会了再叠加。</div></div>
+  <div class="eg" data-ic="👵"><span data-illus="c11_grandma"></span><div class="egt"><b>教长辈用智能手机</b>：今天只教“打电话”，下次再教“发图片”。一口气讲十个功能，只会得到一句“我记不住”。</div></div>
+  <div class="eg bad" data-ic="🧠"><span data-illus="c11_expert"></span><div class="egt"><b>差一点就对</b>：“新手一次只能教一个”不等于“老手也要”。熟悉同类游戏的玩家，把“移动 + 跳”打包成了一个组块，可以更快地叠加新东西。</div></div>
+
+  <!-- 7 -->
+  <div class="sec"><span class="n">7</span><h2><span class="tag why">为什么成立</span>隔一会儿再出现：间隔重复与刻意练习</h2></div>
+  <div class="withimg">
+    <span data-illus="c11_rusty"></span>
+    <div>
+      <p>你在第一关学会了“冲刺跳”，之后十关都没用到，第十一关再要求你用，多半手生了。反过来，如果每隔几关就让它以新花样出现一次，你就一直记得。</p>
+      <p>这对应着前面讲的遗忘曲线：忘得先快后慢，所以第一次复习来得越早越划算。</p>
+    </div>
+  </div>
+  <div class="why-box">
+    <h3>遗忘曲线、间隔效应与刻意练习</h3>
+    <p>艾宾浩斯（1885）发现记忆不复习就会先快后慢地衰退，常被简化成指数曲线 R = e^(−t/S)（R 是记住的程度，S 是“稳定度”，越大忘得越慢）。认知心理学里相当稳固的发现是<span class="term" tabindex="0" data-def="间隔效应：把复习分散在多次、间隔逐渐拉长的时间点上，比一次性集中重复记得更久。">间隔效应</span>：Cepeda 等人 2006 年的元分析汇总了 184 篇文献、317 项实验，发现分散复习优于集中复习，且“最佳间隔”随需要记住的时间变长而变长。</p>
+    <p>埃里克森等人 1993 年研究专家的成长后提出<span class="term" tabindex="0" data-def="刻意练习：针对自己的薄弱点，在略超出舒适区的难度上，带着明确目标并获得及时反馈的练习。">刻意练习</span>：不是单纯重复，而是在<b>略高于当前水平</b>的难度上、带着反馈练习，这正好呼应上一节的最近发展区。</p>
+    <p>“老机制隔一段再出现”就是把间隔重复放进关卡：第 2 关学冲刺跳，第 3 关简单复用，第 6 关加变化，第 12 关再来一个组合……</p>
+    <div class="src">出处：Ebbinghaus《Über das Gedächtnis》（1885）；Murre &amp; Dros（2015）<i>PLoS ONE</i> 10(7): e0120644（复现）；Cepeda, Pashler, Vul, Wixted &amp; Rohrer（2006）<i>Psychological Bulletin</i> 132, 354–380；Ericsson, Krampe &amp; Tesch-Römer（1993）<i>Psychological Review</i> 100(3), 363–406。指数衰减是对真实遗忘的<b>粗略近似</b>。</div>
+  </div>
+  <div class="eg" data-ic="🦘"><span data-illus="c11_dashagain"></span><div class="egt"><b>老机制隔几关再出场</b>：第 2 关学冲刺跳，第 4 关在平台缝里简单复用，第 8 关与移动平台组合，第 15 关当作 Boss 战的一个环节。</div></div>
+  <div class="eg" data-ic="📖"><span data-illus="c11_vocab"></span><div class="egt"><b>背单词 App</b>：把“快要忘”的词在隔了更长时间后再次推给你，间隔一次比一次长。</div></div>
+  <div class="eg bad" data-ic="🔁"><span data-illus="c11_massed"></span><div class="egt"><b>同一个机制在一关里连考十次</b>：当下很熟，可隔几关就忘了，而且玩家很快觉得无聊。</div></div>
+
+  <!-- 8 招牌 -->
+  <div class="sec"><span class="n">8</span><h2><span class="tag how">怎么用</span>动手玩：搭一个会“教学”的小关卡</h2></div>
+  <p>10×7 的格子。选工具，点击或拖动格子来绘制。<b>目标：一个能通关、有风险有回报、并且“先安全后危险”的小关卡。</b>点“检查关卡”，系统会按<b>左、中、右三段</b>统计陷阱，看看你有没有做到“引入 → 练习 → 变化”；也可以先载入示例对比。</p>
+  <div class="board">
+    <div class="palette" id="palette"></div>
+    <div id="grid"></div>
+    <div class="c11_thirds"><div>① 引入段</div><div>② 练习段</div><div>③ 变化段</div></div>
+    <div style="text-align:center;margin-top:6px">
+      <button class="btn green" id="check">✔ 检查关卡</button>
+      <button class="btn alt" id="play">▶ 试玩</button>
+      <button class="btn pink" id="clear">清空</button>
+      <button class="btn" id="c11_pgood">📘 载入“渐进”示例</button>
+      <button class="btn" id="c11_pbad">📕 载入“一上来就开火”反例</button>
+    </div>
+    <div class="pad" id="pad" style="display:none">
+      <span></span><button class="btn" data-d="U">↑</button><span></span>
+      <button class="btn" data-d="L">←</button><button class="btn" data-d="D">↓</button><button class="btn" data-d="R">→</button>
+    </div>
+    <div class="msg" id="lmsg">先画一个关卡吧。</div>
+    <span class="stat">🪙 <b id="coins">0</b></span><span class="stat">步数 <b id="steps">0</b></span>
+  </div>
+  <div class="sticky">试试看：做出一个能通关的关卡，引入段没有陷阱，三段的陷阱数一段比一段不少，并且至少有一枚金币紧挨陷阱，然后点“检查关卡”。<span class="c11_ok" id="c11_t2" hidden> ✅ 完成：你的关卡有了“引入 → 练习 → 变化”的台阶和一次冒险的选择。</span></div>
+  <p class="small">检查的规则是教学简化：把 10 列分成 4/3/3 三段，统计各段陷阱数；理想的“引入段”应当没有陷阱，之后风险不应下降。真实关卡当然更复杂，这里只是让你亲手验证“先安全后危险”。</p>
+
+  <!-- 9 实验室 -->
+  <div class="sec"><span class="n">9</span><h2><span class="tag how">怎么用</span>学习曲线实验室：一次教几个？隔多久复习？</h2></div>
+  <p>两个“为什么”各配一个小实验，选一个看：</p>
+  <div class="board">
+    <div class="c11_mode"><button class="chip on" id="c11_m0">🧠 一次教几个（认知负荷）</button><button class="chip" id="c11_m1">⏳ 隔多久复习（间隔重复）</button></div>
+    <div class="c11_pane on" id="c11_p0">
+      <label class="ctl">同时引入的新机制数量 N<output id="c11_no">3</output></label>
+      <input type="range" id="c11_n" min="1" max="6" step="1" value="3">
+      <label class="ctl">单个机制的复杂度（1＝像“跳”，3＝像“合成系统”）<output id="c11_do">1.5</output></label>
+      <input type="range" id="c11_d" min="1" max="3" step="0.5" value="1.5">
+      <svg viewBox="0 0 610 250" width="100%" role="img" aria-label="同时引入的新机制数量与玩家理解度的示意曲线">
+        <rect x="64" y="14" width="480" height="170" fill="#fffef7" stroke="#2b2b3a" stroke-width="3"/>
+        <g stroke="#e6dcc3" stroke-width="2"><line x1="64" y1="99" x2="544" y2="99"/></g>
+        <polyline id="c11_line" fill="none" stroke="#e5484d" stroke-width="5" stroke-linejoin="round"/>
+        <g id="c11_pt"></g>
+        <text x="56" y="26" text-anchor="end" font-size="17">100%</text><text x="56" y="184" text-anchor="end" font-size="17">0</text>
+        <g id="c11_xt" font-size="17" text-anchor="middle"></g>
+        <text x="304" y="238" text-anchor="middle" font-size="18">同时教几个新东西 →（纵轴：玩家理解度）</text>
+      </svg>
+      <div><span class="stat">当前总负荷 <b id="c11_load">-</b></span><span class="stat">同时教：理解度 <b id="c11_u1">-</b></span><span class="stat">逐个教：每个理解度 <b id="c11_u2">-</b></span></div>
+      <div class="msg" id="c11_cm"></div>
+      <p class="small"><b>示意模型：</b>总负荷 = N × 复杂度；理解度 = 100% ÷ (1 + e^(1.1×(负荷 − 5)))，即负荷约 5 个“单位”时理解度掉到一半。数值是本书为演示曲线形状而设，不是实验测得的；熟悉同类游戏的玩家会把几个操作“打包”，曲线整体右移。</p>
+      <div class="sticky">试试看：把复杂度调到 2 或 3，找出还能让理解度保持在 50% 以上的最大数量。<span class="c11_ok" id="c11_t3" hidden> ✅ 完成：复杂度越高，一次能教的就越少。</span></div>
+    </div>
+    <div class="c11_pane" id="c11_p1">
+      <label class="ctl">复习间隔（每隔几“天”让老机制出现一次；把“天”想成“若干关”）<output id="c11_io">1</output></label>
+      <input type="range" id="c11_i" min="1" max="14" step="1" value="1">
+      <label class="ctl">复习次数<output id="c11_ro">5</output></label>
+      <input type="range" id="c11_r" min="0" max="8" step="1" value="5">
+      <svg viewBox="0 0 610 250" width="100%" role="img" aria-label="记忆强度随时间变化的示意曲线">
+        <rect x="64" y="14" width="480" height="170" fill="#fffef7" stroke="#2b2b3a" stroke-width="3"/>
+        <g stroke="#e6dcc3" stroke-width="2"><line x1="64" y1="99" x2="544" y2="99"/></g>
+        <polyline id="c11_g" fill="none" stroke="#9a9a9a" stroke-width="3" stroke-dasharray="6 5"/>
+        <polyline id="c11_f" fill="none" stroke="#3aa655" stroke-width="5" stroke-linejoin="round"/>
+        <g id="c11_rv" fill="#ffe58a" stroke="#2b2b3a" stroke-width="2.5"></g>
+        <text x="56" y="26" text-anchor="end" font-size="17">100%</text><text x="56" y="184" text-anchor="end" font-size="17">0</text>
+        <g id="c11_ft" font-size="17" text-anchor="middle"></g>
+        <text x="304" y="238" text-anchor="middle" font-size="18">第几天 →</text>
+      </svg>
+      <p class="small">灰虚线 = 从不复习，绿线 = 你的复习安排，黄点 = 复习的时刻。</p>
+      <div><span class="stat">第 30 天记忆 <b id="c11_m30">-</b></span><span class="stat">最低点 <b id="c11_min">-</b></span><span class="stat">低于 50% 的天数 <b id="c11_low">-</b></span></div>
+      <div class="msg" id="c11_fm"></div>
+      <p class="small"><b>示意模型：</b>初始稳定度 S = 3 天；每次复习记忆回到 100%，稳定度 ×2。真实的间隔重复效果因人、因内容而异，提升倍数也不是固定的。游戏里的“复习”并不一定是重复，更常是<b>换个变化再用一次</b>。</p>
+      <div class="sticky">试试看：调整间隔和次数，让第 30 天的记忆保持在 60% 以上，并且中途从没低于 50%。<span class="c11_ok" id="c11_t4" hidden> ✅ 完成：每次都在快忘之前复习。</span></div>
+    </div>
+  </div>
+
+  <div class="misc">
+    <h3>常见误区</h3>
+    <ul>
+      <li><b>“教学就是弹出文字说明。”</b>文字常是最后手段；用场地、布局、安全的试错来“演示”通常更有效。</li>
+      <li><b>“越难，学得越多。”</b>太难会触发放弃，学习靠的是“刚好够得着”，而不是“最难”。</li>
+      <li><b>“听讲只留 10%、做中学留 90%”这类整齐的百分比。</b>网上流传的“学习金字塔”数字缺乏可靠出处，不应当真；可以说的只是“主动参与通常比被动听更有利”。</li>
+      <li><b>“间隔重复＝反复机械重复。”</b>关键是<b>隔开时间</b>、并常常<b>换个变化</b>再用，而不是把同一件事重复十遍。</li>
+      <li><b>“失败得起就是没有惩罚。”</b>代价是随本事一起升高的：前几次要小，学会之后再提高，否则挑战就没有分量。</li>
+    </ul>
+  </div>
+  <div class="reflect">
+    <h3>反思与争议</h3>
+    <p>最近发展区是一个<b>定性概念</b>，很难精确量出“差多少算够得着”；“脚手架”一词来自 Wood 等人 1976 年的论文，后来才与 ZPD 联系起来，也有学者批评这种合并过于随意。</p>
+    <p>Kirschner、Sweller 和 Clark（2006）曾撰文论证：对新手来说，几乎不加引导的探索式教学不如明确指导。这是他们的一种观点，也引起过反驳；这里的三步法属于“有引导的探索”。吉的学习原则来自对游戏的分析与观察，更像一套有启发性的理论，不是严格对照实验的结论。</p>
+    <p>刻意练习的研究也有争议：Macnamara 与 Maitra 2019 年尝试复现 1993 年的小提琴手研究，发现练习的解释力比原研究报告的小得多。认知负荷的“4 个组块”等数字同样有争议，玩家的经验差异也很大。</p>
+    <p>关于马力欧 1-1 的“设计意图”，很多说法来自媒体转述和后人解读，不一定等于当年的设计文档。你觉得：如果一个玩家就是喜欢“被扔进深水区”，教学关卡还应该照顾他吗？</p>
+  </div>
+
+  <div class="key">
+    <h3>本章要点</h3>
+    <ul>
+      <li>教学三步：<b>引入（安全） → 练习（有风险） → 变化（组合/反转）</b>。</li>
+      <li><b>为什么被发明：</b>玩家不读说明书，于是让关卡自己当老师（无字教学）；人又会很快遗忘，于是把旧机制隔一段再以新花样放回来。</li>
+      <li>先<b>保证可通关</b>，再调难度；放好<b>奖励与风险</b>；让关卡有<b>节奏</b>（紧张 → 休息 → 更紧张）。</li>
+      <li><b>为什么有效：</b>新东西先放在失败代价小的地方；挑战要落在“最近发展区”；<b>一次只教一个</b>以免认知超载；老机制<b>隔一段再出现</b>以对抗遗忘。</li>
+    </ul>
+  </div>
+  <div class="tldr">好的教学关卡＝先在失败代价很小的地方引入，每一步都比玩家现在会的多一点点，一次只加一个新东西，还会隔一阵再让旧本事出场。</div>
+
+  <div class="sec"><span class="n">10</span><h2><span class="tag think">练习</span>小测验</h2></div>
+  <div id="quiz"></div>
+
+  <div class="sec"><span class="n">11</span><h2><span class="tag how">你的设计</span>写出你的前三个房间</h2></div>
+  <div class="card o">
+    <p>选一个你想教给玩家的<b>新机制</b>（比如“按住跳得更高”）。用三步法写出前三个房间/场景：引入、练习、变化；再写一句：<b>隔几关、用什么新变化让它再出现一次？</b></p>
+    <textarea rows="5" data-save="ch11" placeholder="机制：二段跳&#10;① 引入：一个略高的台阶，必须二段跳才能上去，掉下去也没有危险&#10;② 练习：连续三个越来越高的台阶&#10;③ 变化：台阶会移动 / 下方有尖刺&#10;复习：第 6 关在 Boss 战里再用一次"></textarea>
+    <p class="small">✍️ 自动保存在你的浏览器里。</p>
+  </div>
+</main>
+<script src="js/illus.js"></script>
+<script src="js/illus-ch11.js"></script>
+<script src="js/common.js"></script>
+<script>
+const $ = id => document.getElementById(id);
+const done = id => { const el = $(id); if (el) el.hidden = false; };
+const COLS = 10, ROWS = 7;
+const TOOLS = { wall: ["🧱 墙", "#"], coin: ["🪙 金币", "c"], spike: ["🔥 陷阱", "x"], start: ["🙂 起点", "s"], goal: ["🚩 终点", "g"], erase: ["🧽 橡皮", "."] };
+const ICON = { "#": "", c: "🪙", x: "🔥", s: "🙂", g: "🚩", ".": "" };
+let tool = "wall", map = Array.from({ length: ROWS }, () => Array(COLS).fill("."));
+map[3][0] = "s"; map[3][9] = "g";
+const grid = $("grid"), cells = [];
+for (let r = 0; r < ROWS; r++) for (let c = 0; c < COLS; c++) { const d = document.createElement("div"); d.dataset.r = r; d.dataset.c = c; grid.appendChild(d); cells.push(d); }
+Object.keys(TOOLS).forEach(k => {
+  const b = document.createElement("button"); b.className = "chip" + (k === tool ? " on" : ""); b.textContent = TOOLS[k][0];
+  b.onclick = () => { tool = k; document.querySelectorAll("#palette .chip").forEach(x => x.classList.remove("on")); b.classList.add("on"); }; $("palette").appendChild(b);
+});
+let playing = false, pos = null, coins = 0, steps = 0;
+function render() {
+  cells.forEach(d => {
+    const r = +d.dataset.r, c = +d.dataset.c, v = map[r][c];
+    d.className = v === "#" ? "wall" : ""; d.textContent = ICON[v];
+    if (playing && pos.r === r && pos.c === c) d.textContent = "🙂";
+    else if (playing && v === "s") d.textContent = "";
+  });
+}
+function paint(d) {
+  if (playing || !d || d.dataset.r === undefined) return;
+  const r = +d.dataset.r, c = +d.dataset.c, t = TOOLS[tool][1];
+  if (t === "s" || t === "g") for (let i = 0; i < ROWS; i++) for (let j = 0; j < COLS; j++) if (map[i][j] === t) map[i][j] = ".";
+  map[r][c] = t; render();
+}
+let down = false;
+grid.addEventListener("pointerdown", e => { down = true; paint(e.target); });
+grid.addEventListener("pointerover", e => down && paint(e.target));
+window.addEventListener("pointerup", () => (down = false));
+function blank() { const m = Array.from({ length: ROWS }, () => Array(COLS).fill(".")); m[3][0] = "s"; m[3][9] = "g"; return m; }
+$("clear").onclick = () => { backup = null; playing = false; $("pad").style.display = "none"; map = blank(); render(); $("lmsg").textContent = "已清空。"; };
+const PRESETS = {
+  good: ["##########", "#.....x..#", "#.######.#", "s.c..x.c.g", "#.######.#", "#.....c.x#", "##########"],
+  bad: [".........." , ".xxx.....c", ".xxx......", "sxxx.....g", ".xxx......", ".xxx.....c", ".........."]
+};
+function loadPreset(k, msg) {
+  backup = null; playing = false; $("pad").style.display = "none";
+  map = PRESETS[k].map(row => row.split("")); render(); $("lmsg").textContent = msg;
+}
+$("c11_pgood").onclick = () => loadPreset("good", "已载入“渐进”示例：点“检查关卡”看三段统计，再自己改改。");
+$("c11_pbad").onclick = () => loadPreset("bad", "已载入反例：陷阱一上来就堆在开头。点“检查关卡”看看哪里不对。");
+
+function find(ch) { for (let r = 0; r < ROWS; r++) for (let c = 0; c < COLS; c++) if (map[r][c] === ch) return { r, c }; return null; }
+function bfs(avoidTraps) {
+  const s = find("s"), g = find("g"); if (!s || !g) return -1;
+  const dist = {}, q = [s]; dist[s.r + "," + s.c] = 0;
+  while (q.length) {
+    const p = q.shift();
+    if (p.r === g.r && p.c === g.c) return dist[p.r + "," + p.c];
+    [[1, 0], [-1, 0], [0, 1], [0, -1]].forEach(([dr, dc]) => {
+      const r = p.r + dr, c = p.c + dc, k = r + "," + c;
+      if (r < 0 || c < 0 || r >= ROWS || c >= COLS || dist[k] !== undefined) return;
+      const v = map[r][c]; if (v === "#" || (avoidTraps && v === "x")) return;
+      dist[k] = dist[p.r + "," + p.c] + 1; q.push({ r, c });
+    });
+  }
+  return -1;
+}
+function count(ch) { return map.flat().filter(v => v === ch).length; }
+$("check").onclick = () => {
+  const s = find("s"), g = find("g");
+  if (!s || !g) return ($("lmsg").textContent = "⚠️ 需要有起点 🙂 和终点 🚩。");
+  const d = bfs(true), dAny = bfs(false), coinsN = count("c"), traps = count("x");
+  let t = [], stairs = false;
+  if (dAny < 0) t.push("❌ 无法通关！被墙堵死了。");
+  else if (d < 0) t.push("⚠️ 只有穿过陷阱才能通关。这只是“必须受伤”，建议留一条安全路。");
+  else t.push("✅ 可通关！最短安全路径 " + d + " 步。");
+  t.push("🪙 " + coinsN + " 个金币，🔥 " + traps + " 个陷阱。");
+  const seg = [0, 0, 0];
+  for (let r = 0; r < ROWS; r++) for (let c = 0; c < COLS; c++) if (map[r][c] === "x") seg[c <= 3 ? 0 : c <= 6 ? 1 : 2]++;
+  t.push("三段陷阱数：引入段 " + seg[0] + "　练习段 " + seg[1] + "　变化段 " + seg[2] + "。");
+  if (traps === 0) t.push("提示：没有陷阱，没有风险，也就没有选择，更没有可“教”的东西。");
+  else {
+    if (seg[0] === 0) t.push("👍 引入段没有陷阱：玩家可以在安全的地方先熟悉操作。");
+    else t.push("⚠️ 引入段就有 " + seg[0] + " 个陷阱：新手还没学会就被惩罚，脚手架太薄。");
+    if (seg[2] >= seg[1] && seg[1] >= seg[0] && seg[2] > seg[0]) { t.push("👍 风险逐段不下降：引入 → 练习 → 变化的台阶是有的。"); stairs = true; }
+    else if (seg[0] > seg[2]) t.push("⚠️ 风险是“倒着”排的：越往后越简单，玩家的技能增长没被用上。");
+  }
+  if (coinsN === 0) t.push("提示：没有金币，玩家没有“冒险去取”的动机。");
+  let risky = 0;
+  for (let r = 0; r < ROWS; r++) for (let c = 0; c < COLS; c++) if (map[r][c] === "c") {
+    let near = false;
+    [[1, 0], [-1, 0], [0, 1], [0, -1]].forEach(([dr, dc]) => { const rr = r + dr, cc = c + dc; if (rr >= 0 && cc >= 0 && rr < ROWS && cc < COLS && map[rr][cc] === "x") near = true; });
+    if (near) risky++;
+  }
+  if (coinsN && traps) t.push(risky ? "👍 有 " + risky + " 个金币紧挨陷阱：这就是“冒险值不值”的选择。" : "试着把金币放在陷阱旁边，形成“冒险值不值”的选择。");
+  if (dAny >= 0 && d >= 0 && d < 12) t.push("路径较短，可以用墙拉长路线，制造节奏。");
+  $("lmsg").innerHTML = t.join("<br>");
+  if (d >= 0 && traps > 0 && seg[0] === 0 && stairs && risky > 0) done("c11_t2");
+};
+let backup = null;
+function restore() { if (backup) { map = backup; backup = null; } }
+function startPlay() {
+  restore();
+  const s = find("s"); if (!s || !find("g")) return ($("lmsg").textContent = "⚠️ 需要有起点和终点。");
+  backup = map.map(r => r.slice()); playing = true; pos = { ...s }; coins = 0; steps = 0; $("coins").textContent = 0; $("steps").textContent = 0;
+  $("pad").style.display = "grid"; $("lmsg").textContent = "方向键 / WASD / 下面的按键移动。"; render();
+}
+$("play").onclick = startPlay;
+const key = { ArrowUp: "U", ArrowDown: "D", ArrowLeft: "L", ArrowRight: "R", w: "U", s: "D", a: "L", d: "R" };
+document.addEventListener("keydown", e => { if (playing && key[e.key]) { e.preventDefault(); go(key[e.key]); } });
+$("pad").querySelectorAll("[data-d]").forEach(b => (b.onclick = () => go(b.dataset.d)));
+function go(dir) {
+  const dr = { U: -1, D: 1, L: 0, R: 0 }[dir], dc = { U: 0, D: 0, L: -1, R: 1 }[dir];
+  const r = pos.r + dr, c = pos.c + dc;
+  if (r < 0 || c < 0 || r >= ROWS || c >= COLS || map[r][c] === "#") return;
+  pos = { r, c }; steps++; $("steps").textContent = steps;
+  const v = map[r][c];
+  if (v === "c") { map[r][c] = "."; coins++; $("coins").textContent = coins; }
+  if (v === "x") { $("lmsg").textContent = "🔥 踩到陷阱！回到起点。"; const s = find("s"); pos = { ...s }; }
+  if (v === "g") { $("lmsg").textContent = "🎉 通关！步数 " + steps + "，金币 " + coins + "。你的关卡好玩吗？"; playing = false; $("pad").style.display = "none"; restore(); }
+  render();
+}
+render();
+
+/* ---------- 区域说明（最近发展区图） ---------- */
+(function () {
+  const Z = [
+    "<b>已经会</b>：这里的任务玩家闭着眼也能完成。关卡里放的话，只能当热身或复习，放太久玩家会无聊。",
+    "<b>最近发展区</b>：玩家独自还做不到，但有一点安全的场地、放慢的敌人或一个提示，就能做到。新机制的引入、练习都该落在这里。",
+    "<b>太难</b>：再提示也够不着。玩家会觉得“这游戏有病”，然后退出。如果必须让难度飙到这里，请先用前面的关卡把他送上来。"
+  ];
+  document.querySelectorAll(".c11_zone").forEach(z => {
+    const show = () => { $("c11_zmsg").innerHTML = Z[+z.dataset.i]; };
+    z.addEventListener("click", show);
+    z.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); show(); } });
+  });
+})();
+
+/* ---------- 故事一：给五种新东西排顺序 ---------- */
+(function () {
+  const CARDS = [
+    { k: "A", r: 1, t: "问号砖里掉出奖励（没有任何风险）", why: "先给一点甜头，建立“撞一撞有好事”的信心。" },
+    { k: "B", r: 2, t: "单独一只慢慢走来的怪，可以跳过或踩", why: "第一次接触“危险”，但可躲、代价小。" },
+    { k: "C", r: 3, t: "几根高低不同的水管（要跳不同的高度）", why: "有分析者认为这是在教“按得久跳得高”，失败只是被挡住。" },
+    { k: "D", r: 4, t: "底下有地面的小坑（掉下去还能爬上来）", why: "第一次“掉落”风险，但惩罚很轻（据媒体转述，这是设计者刻意的）。" },
+    { k: "E", r: 5, t: "无底深坑（掉下去就失败）", why: "只有学会了跳之后，才放出真正的惩罚。" },
+  ];
+  let seq = [];
+  function draw() {
+    $("c11_cards").innerHTML = "";
+    CARDS.forEach((c, i) => {
+      const b = document.createElement("button");
+      b.className = "chip"; b.disabled = seq.includes(i) || seq.length >= 5;
+      b.textContent = c.k + "：" + c.t;
+      b.onclick = () => { seq.push(i); $("c11_res").innerHTML = ""; draw(); };
+      $("c11_cards").appendChild(b);
+    });
+    $("c11_slots").innerHTML = [0, 1, 2, 3, 4].map(i => "<div><b>第 " + (i + 1) + " 个</b>" + (seq[i] !== undefined ? CARDS[seq[i]].k + "：" + CARDS[seq[i]].t : "<span class='small'>点上面的卡片放进来</span>") + "</div>").join("");
+    $("c11_rev").disabled = seq.length < 5;
+  }
+  $("c11_undo").onclick = () => { seq.pop(); $("c11_res").innerHTML = ""; draw(); };
+  $("c11_reset").onclick = () => { seq = []; $("c11_res").innerHTML = ""; draw(); };
+  $("c11_rev").onclick = () => {
+    let match = 0, out = [];
+    seq.forEach((ci, i) => { if (CARDS[ci].r === i + 1) match++; });
+    out.push("<p><b>你的顺序：</b>" + seq.map(i => CARDS[i].k).join(" → ") + "　<b>“由安全到危险”的顺序：</b>A → B → C → D → E　位置吻合 " + match + " / 5。</p>");
+    CARDS.forEach(c => out.push("<p class='" + (seq.indexOf(CARDS.indexOf(c)) + 1 === c.r ? "ok" : "no") + "'><b>" + c.k + "</b>（第 " + c.r + "）：" + c.why + "</p>"));
+    out.push("<p class='small'>注意：这是按“风险递增”整理的<b>设计原则</b>，并不是 1-1 关里每个元素出现位置的逐格记录。你排得不一样也未必错，重点是想一想：<b>每个新东西第一次出现时，失败的代价是不是足够小？</b></p>");
+    $("c11_res").innerHTML = out.join("");
+    done("c11_t1");
+  };
+  draw();
+})();
+
+/* ---------- 故事二：先猜遗忘曲线 ---------- */
+(function () {
+  const S = 3, R = t => Math.exp(-t / S);
+  const X = t => 64 + t / 12 * 480, Y = r => 184 - r * 170;
+  function guess() {
+    const g1 = +$("c11_g1").value / 100, g7 = +$("c11_g7").value / 100;
+    $("c11_g1o").textContent = Math.round(g1 * 100) + "%"; $("c11_g7o").textContent = Math.round(g7 * 100) + "%";
+    $("c11_gg").setAttribute("points", [[0, 1], [1, g1], [7, g7], [12, g7 * Math.exp(-5 / 6)]].map(p => X(p[0]) + "," + Y(p[1])).join(" "));
+    $("c11_gd").innerHTML = [[1, g1], [7, g7]].map(p => "<circle cx='" + X(p[0]) + "' cy='" + Y(p[1]) + "' r='7'/>").join("");
+  }
+  $("c11_g1").oninput = guess; $("c11_g7").oninput = guess; guess();
+  $("c11_gv").onclick = () => {
+    const pts = []; for (let i = 0; i <= 120; i++) pts.push(X(i / 10) + "," + Y(R(i / 10)));
+    $("c11_gc").setAttribute("points", pts.join(" ")); $("c11_gc").style.display = "";
+    const g1 = +$("c11_g1").value, g7 = +$("c11_g7").value, r1 = Math.round(R(1) * 100), r7 = Math.round(R(7) * 100);
+    $("c11_gm").textContent = "示意曲线：1 天后约 " + r1 + "%，7 天后约 " + r7 + "%（你猜 " + g1 + "% / " + g7 + "%）。重点是形状：先陡后平，头一两天掉得最快，所以第一次复习最好来得早。具体数值因内容和人而异，不要当真。";
+  };
+})();
+
+/* ---------- 学习曲线实验室 ---------- */
+(function () {
+  [0, 1].forEach(i => ($("c11_m" + i).onclick = () => {
+    [0, 1].forEach(j => { $("c11_m" + j).classList.toggle("on", i === j); $("c11_p" + j).classList.toggle("on", i === j); });
+  }));
+  const U = load => 100 / (1 + Math.exp(1.1 * (load - 5)));
+  function cog() {
+    const n = +$("c11_n").value, d = +$("c11_d").value;
+    $("c11_no").textContent = n; $("c11_do").textContent = d;
+    const X = k => 64 + (k - 1) / 5 * 480, Y = u => 184 - u / 100 * 170;
+    const pts = [];
+    for (let k = 1; k <= 6; k++) pts.push(X(k) + "," + Y(U(k * d)));
+    $("c11_line").setAttribute("points", pts.join(" "));
+    $("c11_xt").innerHTML = [1, 2, 3, 4, 5, 6].map(k => "<text x='" + X(k) + "' y='208'>" + k + "</text>").join("");
+    $("c11_pt").innerHTML = "<circle cx='" + X(n) + "' cy='" + Y(U(n * d)) + "' r='9' fill='#ffe58a' stroke='#2b2b3a' stroke-width='3'/>";
+    const a = U(n * d), b = U(d);
+    $("c11_load").textContent = (n * d).toFixed(1);
+    $("c11_u1").textContent = a.toFixed(0) + "%";
+    $("c11_u2").textContent = b.toFixed(0) + "%";
+    $("c11_cm").textContent = n === 1 ? "一次只教一个：这已经是“逐个教”的情形，两个数字相同。" :
+      a < 40 ? "⚠️ 同时教 " + n + " 个：理解度只有 " + a.toFixed(0) + "%，逐个教则是 " + b.toFixed(0) + "%。把它们拆到不同的关卡里。" :
+      "同时教的代价还可以接受（" + a.toFixed(0) + "% vs " + b.toFixed(0) + "%），但仍比逐个教低。试着把复杂度拉高看看。";
+    if (d >= 2 && a >= 50 && (n === 6 || U((n + 1) * d) < 50)) done("c11_t3");
+  }
+  $("c11_n").oninput = cog; $("c11_d").oninput = cog; cog();
+
+  function curve(interval, reviews) {
+    const T = 30, S0 = 3, K = 2;
+    const rt = []; for (let i = 1; i <= reviews; i++) if (i * interval <= T) rt.push(i * interval);
+    const set = new Set(rt), pts = []; let S = S0, last = 0;
+    for (let i = 0; i <= 300; i++) {
+      const t = i / 10;
+      pts.push([t, Math.exp(-(t - last) / S)]);
+      if (i % 10 === 0 && set.has(t)) { pts.push([t, 1]); S *= K; last = t; }
+    }
+    return { pts, rt };
+  }
+  function forget() {
+    const iv = +$("c11_i").value, rv = +$("c11_r").value;
+    $("c11_io").textContent = iv; $("c11_ro").textContent = rv;
+    const c = curve(iv, rv), base = curve(1, 0).pts, pts = c.pts;
+    const X = t => 64 + t / 30 * 480, Y = r => 184 - r * 170;
+    $("c11_f").setAttribute("points", pts.map(p => X(p[0]) + "," + Y(p[1])).join(" "));
+    $("c11_g").setAttribute("points", base.map(p => X(p[0]) + "," + Y(p[1])).join(" "));
+    $("c11_rv").innerHTML = c.rt.map(t => "<circle cx='" + X(t) + "' cy='" + Y(1) + "' r='6'/>").join("");
+    $("c11_ft").innerHTML = [0, 10, 20, 30].map(t => "<text x='" + X(t) + "' y='208'>" + t + "</text>").join("");
+    const lastR = pts[pts.length - 1][1];
+    let mn = 1, low = 0;
+    pts.forEach(p => { mn = Math.min(mn, p[1]); if (p[1] < 0.5) low++; });
+    $("c11_m30").textContent = (lastR * 100).toFixed(0) + "%";
+    $("c11_min").textContent = (mn * 100).toFixed(0) + "%";
+    $("c11_low").textContent = (low / 10).toFixed(1);
+    $("c11_fm").textContent = rv === 0 ? "从不复习：几天后几乎忘光。玩家要重新学，等于白教。" :
+      mn < 0.3 ? "⚠️ 间隔太长：复习前一刻记忆已跌到 " + (mn * 100).toFixed(0) + "%，玩家基本忘了，相当于重新教学。缩短间隔，或在复习时多给一点提示。" :
+      lastR > 0.6 && mn >= 0.5 ? "✅ 间隔合适：每次都在快忘之前出现，记忆一直保持高位。" :
+      "👌 还行：试试缩短最初几次的间隔，或增加次数，对比第 30 天的记忆。";
+    if (lastR > 0.6 && mn >= 0.5) done("c11_t4");
+  }
+  $("c11_i").oninput = forget; $("c11_r").oninput = forget; forget();
+})();
+
+GD.mountQuiz($("quiz"), [
+  { q: "【为什么】为什么新机制第一次出现时，要放在“失败也不疼”的安全地方？", opts: ["为了让游戏更短", "失败的代价越低，玩家越敢试、学得越快，这样才有机会真正“上手”", "因为简单的关卡不需要测试", "因为玩家第一次都不想动脑"], a: 1, why: "低代价的试错有利于学习，就像幼崽在没有严重后果的地方演练本领。代价随本事一起提高，挑战才不会失去分量。" },
+  { q: "【为什么被发明】为什么 1-1 这样的关卡要用“无字教学”，而不是在开场放一屏文字？", opts: ["因为文字太贵", "因为玩家往往不读说明、读了也只是“知道”而手上没会；让关卡本身当老师，玩家在安全环境里撞见并试一试，才真正学会", "因为文字会让游戏变难", "因为玩家都会读两遍"], a: 1, why: "问题是“玩家不读字，怎样几十秒内学会跳踩顶躲”；洞察是让关卡自己当老师。（具体设计意图以任天堂人员的访谈为准。）" },
+  { q: "【为什么被发明】艾宾浩斯发现忘得“先快后慢”，这对关卡设计的启发是：", opts: ["教过的机制不必再出现", "旧机制要在快忘掉之前、隔一段再以新变化出现", "所有机制应在同一关连续出现十次", "遗忘曲线和游戏无关"], a: 1, why: "既然忘得快，补救就是在快忘之前复习；间隔效应显示分散复习比集中重复保持更久。" },
+  { q: "【为什么】为什么第一关“一口气教五个新操作”常常效果很差？", opts: ["因为玩家不喜欢学习", "因为同时处理的新信息超过了工作记忆，认知负荷过高", "因为操作越多游戏越短", "因为教程必须有文字"], a: 1, why: "认知负荷理论：工作记忆有限，同时引入太多新东西会让理解度骤降；分开教，每个都能学会。" },
+  { q: "【为什么】从“最近发展区”的角度，为什么新机制的第一个挑战通常设计得很简单、很安全？", opts: ["为了让游戏更短", "因为这时玩家技能最低，只有“比现有技能高一点”的任务才在他够得着的范围内", "因为简单的关卡不需要测试", "因为玩家第一次都不想动脑"], a: 1, why: "学习发生在“有一点帮助就能做到”的区间。起点技能低，所以第一步的挑战也要低，再逐步抬高并撤掉脚手架。" },
+  { q: "用“间隔重复”的思路设计关卡，下面哪种做法最合理？", opts: ["第 2 关教完冲刺跳，以后再也不用", "第 2 关连续出现十次冲刺跳", "冲刺跳在第 2 关引入后，每隔几关以新变化再出现一次", "把冲刺跳放在最后一关再考"], a: 2, why: "间隔效应：隔一段时间、在快忘之前复习，记得更牢；换个变化再用也同时练习了迁移。" }
+]);
+</script>
+</body>
+</html>

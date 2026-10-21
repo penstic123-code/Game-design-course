@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>复习闪卡</title>
+<link rel="stylesheet" href="css/style.css">
+<style>
+  #stage{perspective:900px;margin:14px auto;max-width:520px}
+  #card{position:relative;height:260px;cursor:pointer;transform-style:preserve-3d;transition:transform .5s}
+  #card.flip{transform:rotateY(180deg)}
+  .face{position:absolute;inset:0;backface-visibility:hidden;border:4px solid var(--ink);border-radius:18px 40px 18px 36px;box-shadow:6px 7px 0 var(--ink);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:18px;text-align:center}
+  .front{background:var(--yellow)}
+  .back{background:#fff;transform:rotateY(180deg)}
+  .front h2{margin:0;font-size:2.2rem}
+  .back p{font-size:1.1rem;margin:4px 0}
+  .rate{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:10px 0}
+  .box{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:10px 0}
+  .box .stat b{font-size:1.2rem}
+</style>
+</head>
+<body data-ch="0">
+<main class="wrap">
+  <div class="hero"><div class="txt"><span class="badge">间隔重复</span><h1>复习闪卡</h1><p class="sub">先回忆，再翻面。答对的卡片会隔得越来越久才再出现（莱特纳盒子法）。</p></div></div>
+  <div class="box" id="box"></div>
+  <div id="stage"><div id="card"><div class="face front"><h2 id="ft"></h2><p class="small">先在心里回答，再点卡片翻面</p></div><div class="face back"><p id="bd"></p><p class="small" id="bc"></p></div></div></div>
+  <div class="rate" id="rate" style="display:none">
+    <button class="btn pink" data-r="0">😵 不记得</button><button class="btn" data-r="1">🤔 模糊</button><button class="btn green" data-r="2">😎 记得</button>
+  </div>
+  <div class="msg" id="msg" style="text-align:center"></div>
+  <div style="text-align:center"><a href="glossary.html"><span class="btn alt">📖 术语表</span></a> <a href="index.html"><span class="btn">目录</span></a> <button class="btn pink" id="reset">重置进度</button></div>
+</main>
+<script src="js/common.js"></script>
+<script src="js/glossary-data.js"></script>
+<script>
+const T = window.GLOSSARY || [], KEY = "gdc-cards";
+let st = {}; try { st = JSON.parse(GD.store.get(KEY) || "{}"); } catch (e) {}
+const INTERVAL = [0, 1, 3, 7];                    // 各盒子的复习间隔（天）；盒 0 = 新卡/错题，当次反复
+const DAY = 864e5, now = () => Date.now();
+const save = () => GD.store.set(KEY, JSON.stringify(st));
+function due() { return T.filter(e => { const s = st[e.t]; return !s || s.due <= now(); }); }
+let cur = null;
+function pick() {
+  const d = due();
+  document.getElementById("box").innerHTML = [0, 1, 2, 3].map(b => `<span class="stat">盒${b} <b>${T.filter(e => (st[e.t] ? st[e.t].b : 0) === b).length}</b></span>`).join("") + `<span class="stat">今日待复习 <b>${d.length}</b></span>`;
+  if (!d.length) { cur = null; document.getElementById("ft").textContent = "🎉 今天没有要复习的了"; document.getElementById("card").classList.remove("flip"); document.getElementById("rate").style.display = "none"; return; }
+  // 优先错题（低盒子），其次随机
+  d.sort((a, b) => ((st[a.t] ? st[a.t].b : 0) - (st[b.t] ? st[b.t].b : 0)) || Math.random() - .5);
+  cur = d[0]; document.getElementById("card").classList.remove("flip"); document.getElementById("rate").style.display = "none";
+  document.getElementById("ft").textContent = cur.t; document.getElementById("bd").textContent = cur.d;
+  document.getElementById("bc").innerHTML = "出自 " + cur.chs.map(c => `<a href="${GD.CH[c - 1][1]}">第${c}章</a>`).join("、");
+}
+document.getElementById("card").onclick = () => { if (!cur) return; document.getElementById("card").classList.add("flip"); document.getElementById("rate").style.display = "flex"; };
+document.querySelectorAll("#rate button").forEach(b => (b.onclick = () => {
+  const r = +b.dataset.r, s = st[cur.t] || { b: 0 };
+  s.b = r === 2 ? Math.min(3, s.b + 1) : r === 1 ? s.b : 0;
+  s.due = now() + (r === 0 ? 0.01 : INTERVAL[s.b] * DAY || 0.02 * DAY);
+  st[cur.t] = s; save();
+  document.getElementById("msg").textContent = r === 2 ? "✔ 升到盒" + s.b + "，下次约 " + (INTERVAL[s.b] || 0) + " 天后" : r === 1 ? "再巩固一下" : "没关系，马上再来一次";
+  pick();
+}));
+document.getElementById("reset").onclick = () => { if (confirm("清空闪卡进度？")) { st = {}; save(); pick(); } };
+pick();
+</script>
+</body>
+</html>

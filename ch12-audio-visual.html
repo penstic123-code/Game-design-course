@@ -1,0 +1,863 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>第12章 声音与视觉</title>
+<link rel="stylesheet" href="css/style.css">
+<style>
+  .row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:6px 0}
+  .c12-two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:700px){.c12-two{grid-template-columns:1fr}}
+  .c12-stage{position:relative;height:230px;border:3px solid var(--ink);border-radius:12px;background:#fffef7;display:grid;place-items:center;overflow:hidden;transition:background .1s}
+  .c12-stage.flash{background:#fff3b0}
+  #c12_obj{will-change:transform,opacity;display:grid;place-items:center}
+  .c12-bar{height:16px;border:2.5px solid var(--ink);border-radius:10px;background:#fff;overflow:hidden;margin:2px 0 8px}
+  .c12-bar i{display:block;height:100%;width:0;transition:width .25s}
+  .c12-bar.r i{background:var(--green)}.c12-bar.d i{background:#ff9d9d}
+  .c12-note{font-size:.95rem;margin:2px 0}
+  .c12-warn{background:#ffe9ef;border:2.5px solid var(--ink);border-radius:10px;padding:6px 12px;margin:8px 0}
+  .c12-steps{display:grid;grid-template-columns:repeat(8,1fr);gap:4px;margin:8px 0}
+  .c12-steps span{height:30px;border:2.5px solid var(--ink);border-radius:6px;background:#fff;display:grid;place-items:center;font-size:.8rem}
+  .c12-steps span.on{background:var(--yellow)}
+  .c12-steps span.bar{border-width:4px 2.5px 2.5px 4px}
+  .c12-hide{display:none}
+  .c12-chars{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+  @media(max-width:600px){.c12-chars{grid-template-columns:repeat(3,1fr)}}
+  .c12-chars div{background:#fff;border:2.5px solid var(--ink);border-radius:10px;text-align:center;font-size:.9rem;padding:4px}
+  .c12-chars svg{width:100%;height:auto;display:block}
+  #c12_big{width:150px;height:150px;display:block;margin:6px auto;border:3px solid var(--ink);border-radius:12px;background:#fffef7}
+  #c12_rt{height:120px;border:3px solid var(--ink);border-radius:12px;display:grid;place-items:center;font-family:var(--hand);font-size:1.5rem;cursor:pointer;user-select:none;background:#fff;touch-action:manipulation;text-align:center;padding:6px}
+  #c12_rt.wait{background:#ffe9a8}#c12_rt.go{background:var(--green)}
+  .c12-lane{position:relative;height:40px;border:2.5px solid var(--ink);border-radius:10px;background:#fff;margin:6px 0}
+  .c12-lab{font-size:.95rem;margin-top:8px}
+  .c12-lane i{position:absolute;left:4px;top:6px;width:24px;height:24px;border-radius:50%;background:var(--yellow);border:2.5px solid var(--ink)}
+  #c12_gs{display:block;width:100%;max-width:340px;margin:6px auto;background:#fffef7;border:3px solid var(--ink);border-radius:12px}
+</style>
+</head>
+<body data-ch="12">
+<main class="wrap">
+  <div class="hero">
+    <div class="txt">
+      <span class="badge">第 12 章</span>
+      <h1>声音与视觉</h1>
+      <p class="sub">把游戏静音、再把它涂成纯黑剪影，看看还剩下什么。</p>
+    </div>
+    <svg viewBox="0 0 190 150" class="rough" aria-hidden="true">
+      <g stroke="#2b2b3a" stroke-width="5" stroke-linejoin="round" stroke-linecap="round">
+        <path d="M20 60 h22 l28 -24 v78 l-28 -24 h-22z" fill="#ffe58a"/>
+        <path d="M86 54 q14 21 0 42" fill="none"/><path d="M100 40 q26 35 0 70" fill="none"/>
+        <polygon points="150,26 164,56 140,50" fill="#ffb3c6"/>
+        <circle cx="150" cy="96" r="18" fill="#8fd3f4"/>
+        <rect x="132" y="118" width="36" height="22" fill="#b6e8a8"/>
+      </g>
+    </svg>
+  </div>
+
+  <div class="goals">
+    <h3>学习目标</h3>
+    <ul>
+      <li>读完你能说出声音在游戏里的<b>四种功能</b>，并用“包络、音高、时长”设计一个让人一听就懂的音效。</li>
+      <li>读完你能解释<b>自适应音乐</b>为什么会被发明，并分辨“横向切换”和“纵向分层”。</li>
+      <li>读完你能用色彩、形状、<b>剪影</b>和<b>缓动</b>检查一个画面是不是“一眼看懂、手感对”，并说出夸张和分组为什么能抓住注意力。</li>
+    </ul>
+    <span class="time">约 45 分钟</span>
+  </div>
+
+  <div class="sec"><span class="n">1</span><h2><span class="tag what">是什么</span>声音不是背景，是第二块屏幕</h2></div>
+  <div class="withimg">
+    <span data-illus="c12_mute"></span>
+    <div>
+      <p>先做个小实验：在手机上玩一款你熟悉的小游戏，这次<b>关掉声音</b>。你会发现自己变钝了：不知道有没有吃到金币，不知道背后有没有人，连“刚才那下打中了没”都拿不准。</p>
+      <p>声音并不只是“好听”，它一直在悄悄替你传递信息。既然画面已经很忙了，为什么还要再开一条通道？因为眼睛只能看向一个方向，耳朵却能同时接收四面八方的消息，还不占用视线。</p>
+      <p>游戏里的声音大致承担<b>四种功能</b>，这是业内常用的一种分法：</p>
+    </div>
+  </div>
+  <div class="card">
+    <svg viewBox="0 0 700 320" width="100%" role="img" aria-label="声音的四种功能：反馈、信息、情绪、空间。">
+      <g class="rough" stroke="#2b2b3a" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <ellipse cx="350" cy="160" rx="70" ry="42" fill="#ffe58a"/>
+        <rect x="20" y="20" width="240" height="96" rx="14" fill="#fff7cf"/>
+        <rect x="440" y="20" width="240" height="96" rx="14" fill="#e8f6fc"/>
+        <rect x="20" y="204" width="240" height="96" rx="14" fill="#eaf9e4"/>
+        <rect x="440" y="204" width="240" height="96" rx="14" fill="#ffe9ef"/>
+        <path d="M284 138 L262 112"/><path d="M416 138 L438 112"/><path d="M284 182 L262 208"/><path d="M416 182 L438 208"/>
+      </g>
+      <g font-size="17" text-anchor="middle" fill="#2b2b3a">
+        <text x="350" y="167" font-weight="700" font-size="22">声音</text>
+        <text x="140" y="50" font-weight="700">① 反馈：我做了什么</text><text x="140" y="78">“叮”＝吃到金币</text><text x="140" y="102">“咚”＝被打中</text>
+        <text x="560" y="50" font-weight="700">② 信息：发生了什么</text><text x="560" y="78">警报＝血量危险</text><text x="560" y="102">脚步声＝有人靠近</text>
+        <text x="140" y="234" font-weight="700">③ 情绪：此刻该怎么感觉</text><text x="140" y="262">阴沉低音＝不安</text><text x="140" y="286">凯旋铜管＝胜利</text>
+        <text x="560" y="234" font-weight="700">④ 空间：东西在哪</text><text x="560" y="262">左耳响＝敌人在左</text><text x="560" y="286">混响大＝这是山洞</text>
+      </g>
+    </svg>
+  </div>
+  <div class="eg" data-ic="🪙"><span data-illus="c12_coin"></span><div class="egt"><b>反馈</b>：《超级马力欧》吃金币的“叮”。短、亮、几乎不会听错。聊手感的时候说过，声音往往占了手感的一半。</div></div>
+  <div class="eg" data-ic="🎧"><span data-illus="c12_foot"></span><div class="egt"><b>信息</b>：很多射击游戏里，听脚步声就知道敌人在楼上还是楼下，甚至在墙的哪一边。你根本没看见他，却已经知道往哪躲。</div></div>
+  <div class="eg" data-ic="🍳"><span data-illus="c12_daily"></span><div class="egt"><b>日常生活</b>：微波炉“叮”一声是反馈，救护车警笛是信息，电影里的小提琴颤音是情绪，闭着眼也能听出有人从左边走来是空间。你早就是个熟练的“听众设计师”了。</div></div>
+  <div class="eg bad" data-ic="🔊"><span data-illus="c12_loud"></span><div class="egt"><b>反例：什么都响</b>。每次点按钮都放一段 3 秒长的华丽音效，第一次很酷，第十次很烦，第五十次想静音。声音变成了噪声，玩家会“听觉疲劳”，真正重要的那一声反而被淹没。</div></div>
+
+  <div class="sec"><span class="n">2</span><h2><span class="tag what">是什么</span>音效设计的几条原则与“包络”</h2></div>
+  <p>设计音效，其实是在调几个旋钮。最关键的是<span class="term" tabindex="0" data-def="声音的响度随时间变化的轮廓，常用 ADSR 四段描述：起音 Attack、衰减 Decay、保持 Sustain、释放 Release。">包络</span>（envelope），也就是“这个声音怎么起、怎么落”。同一个音高，起得快还是慢，听起来完全是两种东西：</p>
+  <div class="card">
+    <svg viewBox="0 0 700 290" width="100%" role="img" aria-label="ADSR 包络图：音量先快速升到峰值（起音），降到保持水平（衰减），保持一段时间，最后降到零（释放）。">
+      <g class="rough" stroke="#2b2b3a" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M60 30 V220 H660"/>
+        <path d="M70 220 L170 60 L260 110 H460 L600 220" stroke="#e5484d" stroke-width="5"/>
+      </g>
+      <g stroke="#4b4b5e" stroke-width="2" stroke-dasharray="6 6"><line x1="170" y1="60" x2="170" y2="220"/><line x1="260" y1="110" x2="260" y2="220"/><line x1="460" y1="110" x2="460" y2="220"/></g>
+      <g font-size="17" text-anchor="middle" fill="#2b2b3a">
+        <text x="120" y="250">A 起音</text><text x="215" y="250">D 衰减</text><text x="360" y="250">S 保持</text><text x="530" y="250">R 释放</text>
+        <text x="110" y="34">音量</text><text x="630" y="250" text-anchor="end">时间 →</text>
+        <text x="360" y="86">S 是一个“水平”，不是一段时间</text>
+      </g>
+    </svg>
+  </div>
+  <p>起音极短、没有保持，是拨弦、敲击、金币那种<b>脆</b>；起音慢、释放长，是弦乐铺底、魔法吟唱那种<b>柔</b>。这套四段描述来自合成器，早期家用机的声音芯片就直接给你 ADSR 旋钮。</p>
+  <div class="board">
+    <div class="row">
+      <button class="btn" id="c12_pl1">▶ 听“脆”：起音 2 毫秒</button>
+      <button class="btn alt" id="c12_pl2">▶ 听“柔”：起音 300 毫秒</button>
+      <label class="ctl" style="margin:0"><input type="checkbox" class="c12-mute"> 静音</label>
+    </div>
+    <div class="msg" id="c12_plmsg">两个音的音高一样，只改了包络。先点哪个都行。</div>
+  </div>
+  <div class="sticky">试试看：两个都听一遍，然后闭上眼想一想，哪一个更像“拾取金币”，哪一个更像“施法蓄力”？</div>
+  <p>再加上几条设计经验，它们是业内常见做法，不是定律：</p>
+  <div class="grid3">
+    <div class="card y mini"><div class="ico">🎚️</div><h3>分层</h3><p>一个“爆炸”常由低频冲击、中频爆裂、高频碎片叠成。每层各管一段频率，才不糊。</p></div>
+    <div class="card b mini"><div class="ico">👂</div><h3>可辨识</h3><p>重要的声音在频率、音色或节奏上要和别的拉开距离。“受击”和“拾取”绝不能听着像。</p></div>
+    <div class="card g mini"><div class="ico">⏱️</div><h3>短促</h3><p>高频出现的反馈音多在零点几秒内结束。短，才不会盖住下一个。</p></div>
+    <div class="card p mini"><div class="ico">📈</div><h3>音高随强度变化</h3><p>连击数越高，拾取音每次升一个半音，玩家“听见”自己在爬坡。</p></div>
+    <div class="card o mini"><div class="ico">🔀</div><h3>变化</h3><p>同一个脚步声每次略微改变音高，或轮流用几段录音，避免“机关枪式”重复。</p></div>
+    <div class="card v mini"><div class="ico">🙉</div><h3>留出空档</h3><p>什么都响的画面等于什么都听不清。给重要的声音让路，常见做法叫“闪避”（ducking）。</p></div>
+  </div>
+
+  <div class="sec"><span class="n">3</span><h2><span class="tag what">是什么</span>音乐：循环、切换与沉默</h2></div>
+  <p>音乐有个先天难题：<b>玩家的时间是不确定的</b>。电影的配乐按时间轴写好就行；游戏里你不知道玩家会在这个房间待 5 秒还是 5 分钟，也不知道战斗会在哪一拍打响。常见的应对有三种：</p>
+  <ul>
+    <li><b>循环</b>：一段音乐首尾相接反复播放。最简单，难点是别让接缝和重复被人察觉。</li>
+    <li><span class="term" tabindex="0" data-def="按游戏状态在不同音乐片段之间切换，通常等到小节线或乐句结尾再切，以免突兀。">横向切换</span>：状态变了（探索到战斗），换一段音乐，并对准节拍或小节线切入。</li>
+    <li><span class="term" tabindex="0" data-def="同一首音乐拆成多个同步的声部（鼓、低音、旋律、紧张层），按游戏强度逐层开关。">纵向分层</span>：同一首曲子分成几条同步的轨道（鼓、低音、旋律……），危险升高就“推”进来一层，不换曲子。</li>
+  </ul>
+  <div class="card">
+    <svg viewBox="0 0 700 320" width="100%" role="img" aria-label="左：横向切换，探索乐段在小节线处换成战斗乐段。右：纵向分层，同一首曲子叠加鼓与低音层。">
+      <g class="rough" stroke="#2b2b3a" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="14" y="70" width="156" height="50" rx="8" fill="#e8f6fc"/><rect x="170" y="70" width="156" height="50" rx="8" fill="#ffe9ef"/>
+        <path d="M170 48 V142" stroke="#e5484d"/><path d="M60 196 H300"/><path d="M285 186 L300 196 L285 206"/>
+        <rect x="390" y="64" width="290" height="40" rx="8" fill="#e8f6fc"/>
+        <rect x="390" y="112" width="290" height="40" rx="8" fill="#fff7cf" stroke-dasharray="2 9"/>
+        <rect x="530" y="112" width="150" height="40" rx="8" fill="#fff7cf"/>
+        <rect x="610" y="160" width="70" height="40" rx="8" fill="#ffe9ef"/>
+      </g>
+      <g font-size="17" text-anchor="middle" fill="#2b2b3a">
+        <text x="170" y="28" font-weight="700">横向：换段</text><text x="92" y="101">探索</text><text x="248" y="101">战斗</text>
+        <text x="170" y="170" fill="#b3261e">小节线</text><text x="170" y="236">干净，但改变不能“即时”</text>
+        <text x="535" y="28" font-weight="700">纵向：加层</text><text x="535" y="89">旋律（一直在）</text><text x="605" y="137">低音层</text><text x="645" y="185" font-size="16">鼓</text>
+        <text x="535" y="236">即时、不断流，但曲子要为此写</text>
+        <text x="350" y="298" font-weight="700">两种常结合使用</text>
+      </g>
+    </svg>
+  </div>
+  <p>最后一个常被低估的工具是<b>沉默</b>。一直在响的东西会被大脑过滤掉；Boss 出场前音乐突然收掉，只剩呼吸声，紧张感反而最大。把“静”当成一个有意设计的“音色”，而不是空白。</p>
+  <div class="eg" data-ic="🍃"><span data-illus="c12_quiet"></span><div class="egt"><b>沉默当奖励</b>：一些解谜、探索游戏的大段区域只有风声和水声，音乐留到你发现关键物时才进入，于是音乐本身成了“你做对了”的信号。</div></div>
+  <div class="eg" data-ic="🎬"><span data-illus="c12_horror"></span><div class="egt"><b>日常：恐怖片</b>。真正吓人的往往不是尖叫的弦乐，而是音乐<b>停</b>的那一秒：你一直在听的东西忽然消失，身体先于脑子进入戒备。</div></div>
+  <div class="eg bad" data-ic="🔁"><span data-illus="c12_loop"></span><div class="egt"><b>反例：忘了人会待很久</b>。一段 90 秒的循环音乐，在同一个关卡里放了 40 分钟，每次都从头开始，还和脚步节奏打架。玩家十有八九会去设置里关音乐。</div></div>
+
+  <div class="sec"><span class="n">4</span><h2><span class="tag what">是什么</span>视觉（上）：色彩与形状语言</h2></div>
+  <p>视觉设计的第一个任务不是“好看”，而是<b>让玩家在 0.5 秒内分清：这是什么、能不能碰、该先看哪里</b>。最有力的两个工具是颜色和形状。</p>
+  <h3>色彩：色相、对比与饱和度</h3>
+  <p>色相常带来联想：红是危险和生命值、绿是安全和治疗、蓝是冷静和魔法、黄是注意和金币、紫是稀有。但这些联想<b>随文化与游戏类型而变</b>，更可靠的用法是：<b>在一个游戏内部保持一致</b>，让玩家一次学会。</p>
+  <div class="card">
+    <svg viewBox="0 0 700 280" width="100%" role="img" aria-label="颜色与常见功能联想：红色危险、橙黄奖励、绿色安全、蓝色魔法冷静、紫色稀有。下方提醒不要只靠颜色。">
+      <g class="rough" stroke="#2b2b3a" stroke-width="4" stroke-linejoin="round">
+        <rect x="14" y="20" width="124" height="90" rx="10" fill="#e5484d"/>
+        <rect x="150" y="20" width="124" height="90" rx="10" fill="#f6b73c"/>
+        <rect x="286" y="20" width="124" height="90" rx="10" fill="#4cb85e"/>
+        <rect x="422" y="20" width="124" height="90" rx="10" fill="#4a8fe0"/>
+        <rect x="558" y="20" width="128" height="90" rx="10" fill="#9c6ad8"/>
+      </g>
+      <g font-size="17" text-anchor="middle" fill="#2b2b3a">
+        <text x="76" y="144" font-weight="700">红</text><text x="76" y="170">危险·伤害</text>
+        <text x="212" y="144" font-weight="700">橙黄</text><text x="212" y="170">奖励·注意</text>
+        <text x="348" y="144" font-weight="700">绿</text><text x="348" y="170">安全·治疗</text>
+        <text x="484" y="144" font-weight="700">蓝</text><text x="484" y="170">冷静·魔法</text>
+        <text x="622" y="144" font-weight="700">紫</text><text x="622" y="170">稀有·神秘</text>
+        <text x="350" y="228" font-weight="700">这是游戏界常见的联想，不是自然定律；</text>
+        <text x="350" y="256">更别<tspan font-weight="700">只靠颜色</tspan>传递信息，有一部分玩家分不清红和绿。</text>
+      </g>
+    </svg>
+  </div>
+  <p>两个常用手段：<b>对比</b>，想让玩家看到的东西，在明度、饱和度或色相上和背景拉开；<b>饱和度是有限预算</b>，整个画面都高饱和，就没有重点，所以让背景低饱和，把高饱和色留给“可交互、重要”的东西。</p>
+  <h3>形状语言</h3>
+  <p>心理学里有个著名的实验：给人看一个圆润的图形和一个尖锐的图形，问哪个叫“bouba”、哪个叫“kiki”，绝大多数人都会说圆的是 bouba。设计师沿用了这种“形状有性格”的直觉：</p>
+  <div class="card">
+    <svg viewBox="0 0 700 270" width="100%" role="img" aria-label="形状语言对比：圆形联想友好安全，方形联想稳固可靠，三角形联想尖锐有威胁。">
+      <g class="rough" stroke="#2b2b3a" stroke-width="4" stroke-linejoin="round">
+        <circle cx="110" cy="80" r="55" fill="#a8dcf0"/>
+        <rect x="290" y="28" width="104" height="104" rx="4" fill="#ffe58a"/>
+        <polygon points="590,24 650,136 530,136" fill="#ffb3c6"/>
+      </g>
+      <g font-size="17" text-anchor="middle" fill="#2b2b3a">
+        <text x="110" y="172" font-weight="700">圆</text><text x="110" y="198">友好·安全·柔软</text><text x="110" y="224">例：吉祥物、治疗物</text>
+        <text x="342" y="172" font-weight="700">方</text><text x="342" y="198">稳定·坚固·可靠</text><text x="342" y="224">例：建筑、坦克型角色</text>
+        <text x="590" y="172" font-weight="700">三角</text><text x="590" y="198">尖锐·动态·威胁</text><text x="590" y="224">例：反派、尖刺陷阱</text>
+      </g>
+    </svg>
+  </div>
+  <p class="small">这是设计经验加上一点心理学支持。《超级马力欧》里有圆滚滚却很危险的敌人，也有尖尖的可爱角色，打破预期有时正是笑点。</p>
+  <div class="eg" data-ic="👾"><span data-illus="c12_enemy"></span><div class="egt"><b>圆与尖</b>：很多游戏的敌人用尖角、不对称的轮廓，主角偏圆润、比例亲和。玩家还没读懂任何文字，就已经知道该靠近谁、躲着谁。</div></div>
+  <div class="eg" data-ic="🚸"><span data-illus="c12_signs"></span><div class="egt"><b>日常：道路标志</b>。三角形是警告，圆形是命令或禁止，方形是提示信息。形状本身就是一套编码，司机远远瞥一眼，不用读字。</div></div>
+  <div class="eg bad" data-ic="🔴"><span data-illus="c12_redclash"></span><div class="egt"><b>反例：红色身兼两职</b>。可拾取的好东西是红色，而红色同时代表敌人的攻击范围。玩家只能靠文字去记，而不是“看一眼就知道”。</div></div>
+
+  <div class="sec"><span class="n">5</span><h2><span class="tag what">是什么</span>视觉（下）：层级、剪影与动效</h2></div>
+  <div class="withimg rev">
+    <span data-illus="c12_sil"></span>
+    <div>
+      <p><span class="term" tabindex="0" data-def="画面中各元素被注意到的先后顺序，由大小、对比、颜色、位置、运动等控制。">视觉层级</span>决定玩家先看哪里：玩家自己最先，其次是威胁和目标，再是可交互物，最后才是背景。有个土办法检验：<b>眯起眼睛</b>，或者把画面模糊、去色，还能看出重点吗？</p>
+      <p>角色设计里有个同类测试，叫<span class="term" tabindex="0" data-def="把角色涂成纯色剪影后，仍能一眼认出是谁、在做什么。">剪影可读性</span>。把角色涂成纯黑，如果还能认出是谁，轮廓就算设计成功了。快节奏的战斗里，玩家根本没时间看清衣服的花纹，只能靠轮廓认人。</p>
+      <p>反过来，一排角色如果只是颜色不同、轮廓一模一样，涂黑后就成了五个黑团，这时候再好看的配色也救不了。</p>
+    </div>
+  </div>
+  <h3>动效：动作为什么要“有表情”</h3>
+  <p>同样是方块从 A 移到 B，匀速平移像机器，先加速后减速像有重量的东西。这背后是动画师总结的原则，其中和游戏最相关的是：</p>
+  <ul>
+    <li><span class="term" tabindex="0" data-def="动画十二原则之一：动作之前的反向小动作，如跳之前先蹲，用于提示玩家和积蓄力量感。">预备</span>（anticipation）：跳之前先蹲一下。它也给了玩家一个“要来了”的信号。</li>
+    <li><span class="term" tabindex="0" data-def="物体在运动中被压扁或拉长以表现重量与弹性，同时保持总体积大致不变。">挤压与拉伸</span>（squash &amp; stretch）：起跳时拉长，落地时压扁，体积保持不变，物体就“有分量”。</li>
+    <li><span class="term" tabindex="0" data-def="动作速度随时间变化的方式，如缓入（慢→快）、缓出（快→慢）、回弹（过冲再回落）。">缓动</span>（easing / slow in &amp; slow out）：开始和结束时慢一点，中间快。弹窗用“缓出”最舒服，带一点“回弹”会显得有弹性。</li>
+  </ul>
+  <div class="card">
+    <svg viewBox="0 0 700 270" width="100%" role="img" aria-label="五条缓动曲线：线性、缓入、缓出、缓入缓出、回弹（过冲）。横轴是时间，纵轴是位置。">
+      <g class="rough" stroke="#2b2b3a" stroke-width="4" fill="none" stroke-linecap="round">
+        <g transform="translate(30,40)"><path d="M0 0 V110 H100" stroke-width="2.5"/><path d="M0 110 L100 0" stroke="#e5484d"/></g>
+        <g transform="translate(160,40)"><path d="M0 0 V110 H100" stroke-width="2.5"/><path d="M0 110 C42 110 100 0 100 0" stroke="#e5484d"/></g>
+        <g transform="translate(290,40)"><path d="M0 0 V110 H100" stroke-width="2.5"/><path d="M0 110 C0 110 58 0 100 0" stroke="#e5484d"/></g>
+        <g transform="translate(420,40)"><path d="M0 0 V110 H100" stroke-width="2.5"/><path d="M0 110 C42 110 58 0 100 0" stroke="#e5484d"/></g>
+        <g transform="translate(550,40)"><path d="M0 0 V110 H100" stroke-width="2.5"/><path d="M0 110 C34 110 64 -16 100 6 C112 -4 100 0 100 0" stroke="#e5484d"/><line x1="0" y1="0" x2="100" y2="0" stroke="#4b4b5e" stroke-dasharray="5 5" stroke-width="2"/></g>
+      </g>
+      <g font-size="17" text-anchor="middle" fill="#2b2b3a">
+        <text x="80" y="206">线性</text><text x="210" y="206">缓入</text><text x="340" y="206">缓出</text><text x="470" y="206">缓入缓出</text><text x="600" y="206">回弹</text>
+        <text x="80" y="236" font-size="16">机械</text><text x="210" y="236" font-size="16">像加速</text><text x="340" y="236" font-size="16">像刹车</text><text x="470" y="236" font-size="16">自然</text><text x="600" y="236" font-size="16">有弹性</text>
+      </g>
+    </svg>
+  </div>
+  <div class="eg" data-ic="🦘"><span data-illus="c12_landing"></span><div class="egt"><b>挤压与拉伸</b>：很多横版动作游戏里，角色起跳被拉长，落地时轻微下蹲、扬起灰尘。你不用看数值，就知道“落地了”，还觉得这个角色有点分量。</div></div>
+  <div class="eg" data-ic="📱"><span data-illus="c12_popup"></span><div class="egt"><b>日常：弹窗和电梯门</b>。手机里弹窗“弹”出来比“啪”地出现更友好；电梯门起步缓、中间快、停时缓。都是缓动，只是你从没留意。</div></div>
+  <div class="eg bad" data-ic="🩸"><span data-illus="c12_hpbar"></span><div class="egt"><b>反例：匀速掉血</b>。血条从满格以恒定速度掉到 0，每次受击都像“掉进电子表格”。给它加一小段延迟和回弹，同样的数字立刻有了冲击力。</div></div>
+  <h3>风格、一致性与性能的取舍</h3>
+  <p>美术风格没有“最好”，只有“最合适”。像素风、低多边形、手绘、写实，各有成本：<b>写实</b>要大量素材与性能，<b>风格化</b>可以用很少的资源达到统一感。<b>一致性</b>比精细度重要：一套统一的线条、色板和比例，比几件顶级素材混着用更像“一个世界”。独立开发者常从“限制”开始，限定色板（比如 16 色）、限定分辨率，限制本身就是风格。</p>
+
+  <div class="sec"><span class="n">6</span><h2><span class="tag origin">发明故事</span>限制催生风格：从 3 个声部到“会呼吸”的音乐</h2></div>
+  <div class="story">
+    <h3>问题一：你只有三个“嘴巴”，玩家却随时可能打断你</h3>
+    <p>1980 年代初的家用电脑与游戏机，声音芯片是<b>一块固定的硬件，不是一个播放器</b>。它只有寥寥几个声部，每个声部同一时刻只能发一个音。你要在这几个声部里同时塞下旋律、低音、节奏，还要留一个给音效。再叠加另一个难题：游戏不是电影，<b>玩家决定什么时候发生什么</b>。</p>
+    <p>现在你先当一回设计师。下面的小乐器正在循环播放“探索”音乐，想象战斗突然爆发：<b>你会怎么让音乐跟上？</b>三种做法都点一遍，听听区别（点击后才会出声）。</p>
+    <div class="board">
+      <div class="row">
+        <button class="btn" id="c12_mgo">▶ 开始探索音乐</button>
+        <label class="ctl" style="margin:0"><input type="checkbox" class="c12-mute"> 静音</label>
+      </div>
+      <div class="c12-steps" id="c12_steps"></div>
+      <div class="row">
+        <button class="btn pink" data-mm="hard">⚔ 进战斗：硬切</button>
+        <button class="btn alt" data-mm="bar">⚔ 进战斗：等到小节线</button>
+        <button class="btn green" data-mm="layer">⚔ 进战斗：叠加鼓与低音</button>
+        <button class="btn" data-mm="back">🕊 回到探索</button>
+      </div>
+      <div class="msg" id="c12_mmsg">先点“开始”，再在任意时刻点“进战斗”。每个按钮多按几次、在不同时机试试。</div>
+    </div>
+    <div class="sticky" id="c12_mtry">试试看：三种“进战斗”的办法各用一次（每次用完点“回到探索”再换下一种），并留意哪一种让你觉得“音乐在听我说话”。</div>
+    <button class="btn alt" id="c12_reveal">我试完了，看看当年怎么做</button>
+    <div id="c12_hist" class="c12-hide">
+      <p>你刚才听到的差别，就是历史上程序员和作曲家撞上的墙。<b>硬切</b>会在半句话中间把乐句掐断，调性还可能打架；<b>等到小节线</b>干净，但你会慢半拍；<b>叠加层</b>即时又不断流，前提是这首曲子从一开始就按“可拆开”来写。</p>
+      <p>先有的是硬件上的限制，音乐人想出的第一招是把限制变成风格：把旋律、低音、鼓点精打细算地分给那几个声部。可是当游戏变得越来越长、越来越不可预测，光会“写得巧”就不够了，音乐得学会<b>跟着游戏走</b>。</p>
+      <div class="timeline">
+        <div class="ev hasimg"><span data-illus="c12_tl_sid"></span><div><b class="yr">1981–1982</b>　MOS Technology 的 Bob Yannes 带领小团队设计 SID 声音芯片（6581），装入 Commodore 64。它有 <b>3 个声部</b>，每个声部有三角、锯齿、可变脉冲宽度、噪声四种波形和独立的 ADSR 包络，还有可编程滤波器。据说它原本想做更多声部，时间压力下才把单个振荡器复制了三份。</div></div>
+        <div class="ev hasimg"><span data-illus="c12_tl_nes"></span><div><b class="yr">1980 年代</b>　红白机类主机的 Ricoh 2A03 有 5 个声道：2 个脉冲波、1 个三角波、1 个噪声、1 个 DPCM 采样通道。音乐人只能在这几个“嘴巴”里分配旋律、低音和鼓点，这种限制逐渐成了一种辨识度很高的“芯片音乐”风格。</div></div>
+        <div class="ev hasimg"><span data-illus="c12_tl_imuse"></span><div><b class="yr">1991</b>　LucasArts 的作曲家迈克尔·兰德（Michael Land）与彼得·麦康奈尔（Peter McConnell）因为不满当时的音频系统，做出 <b>iMUSE</b>（Interactive Music Streaming Engine）。它让音乐能随屏幕上的动作无缝过渡，首次用于《猴岛小英雄2》（Monkey Island 2）。他们之后也为此申请了专利（US 5,315,057）。</div></div>
+        <div class="ev hasimg"><span data-illus="c12_tl_mw"></span><div><b class="yr">之后</b>　横向切换、纵向分层成为通用工具，Wwise、FMOD 等音频中间件把“按游戏参数控制音乐”做成标配：设计师推一根“紧张度”的推子，鼓和低音就自己进来。</div></div>
+      </div>
+      <p><b>关键洞察</b>：<b>音乐不再是一条录好的时间线，而是一个对游戏状态作出反应的系统</b>。限制没有消失，只是从“几个声部”变成了“如何同步与过渡”。</p>
+      <p class="src">来源：Wikipedia 对 iMUSE、MOS 6581 的条目，及其引用的 Land/McConnell 访谈；专利日期各来源说法略有出入，这里只给专利号。红白机声道来自 Ricoh 2A03 条目。</p>
+    </div>
+  </div>
+
+  <div class="story">
+    <h3>问题二：纸上画出来的东西，怎样才看起来“有重量”？</h3>
+    <p>动画师面对的是另一种限制：每一格都得亲手画，而观众只要觉得“假”，就不会相信画里的东西是活的。一个小球从高处落下、弹起，如果每格移动的距离一样，它看起来就像一枚在轨道上滑的纽扣。</p>
+    <p>先别看答案。下面三个小球同时出发，走完同样的距离，只是速度变化的方式不同。<b>哪一个最像一个有重量的球？</b>凭直觉选，然后再揭晓。</p>
+    <div class="board">
+      <div class="row"><button class="btn" id="c12_ezgo">▶ 同时出发</button><button class="btn alt" id="c12_ezrev">我选好了，揭晓</button></div>
+      <div class="c12-lab">A 匀速</div><div class="c12-lane"><i id="c12_ea"></i></div>
+      <div class="c12-lab">B 先慢后快（缓入）</div><div class="c12-lane"><i id="c12_eb"></i></div>
+      <div class="c12-lab">C 先快后慢，到头有点回弹</div><div class="c12-lane"><i id="c12_ec"></i></div>
+      <div class="msg" id="c12_ezmsg">点“同时出发”，可以多看几遍。</div>
+    </div>
+    <div class="sticky">试试看：每个选项看三遍，再说出你为什么选它。然后想一想，你每天用的手机弹窗是 A、B、C 里的哪一种。</div>
+    <div id="c12_ezans" class="c12-hide">
+      <p>很多人会觉得 C 最自然，B 像在加速下坠，A 像机器。迪士尼的动画师们在制作长片的过程中，逐渐发现了让动作“有生命”的这类经验：落下时越来越快，落地时压扁，弹起时拉长，到顶点时慢一点。</p>
+      <div class="timeline">
+        <div class="ev hasimg"><span data-illus="c12_tl_disney"></span><div><b class="yr">1930 年代起</b>　迪士尼的动画师们在制作长片的过程中，逐渐总结出让动作“有生命”的一套经验（预备、挤压拉伸、缓入缓出……），后来被整理成“十二原则”。</div></div>
+        <div class="ev hasimg"><span data-illus="c12_tl_book"></span><div><b class="yr">1981</b>　弗兰克·托马斯（Frank Thomas）与奥利·约翰斯顿（Ollie Johnston）出版《The Illusion of Life: Disney Animation》，系统写下这十二条，其中最看重的一条是“挤压与拉伸”。后来游戏和 UI 动效设计都在借用。</div></div>
+      </div>
+      <p>关键洞察：观众感受到的“重量”和“生命”，不在每一格画得多精细，而在<b>速度怎样变化</b>。游戏里的跳跃、受击、弹窗，今天都在重复这个发现。</p>
+      <p class="src">来源：Wikipedia “Twelve basic principles of animation”及托马斯与约翰斯顿 1981 年原书信息。</p>
+    </div>
+  </div>
+
+  <div class="sec"><span class="n">7</span><h2><span class="tag why">为什么成立</span>为什么夸张的东西更抓人：超常刺激</h2></div>
+  <p>前面说了很多“设计经验”：尖的像威胁，红的像危险，落地要压扁。有没有更底层的原因？有一条来自动物行为学的线索，很多设计师都会提到它。</p>
+  <div class="withimg">
+    <span data-illus="c12_gull"></span>
+    <div>
+      <p>银鸥的雏鸟一孵出来就会啄父母嘴尖上的红点，父母于是把吃的吐出来喂它。荷兰动物学家尼可拉斯·丁伯根（Niko Tinbergen）想知道：雏鸟到底是被“鸟嘴”吸引，还是被“红点”吸引？</p>
+      <p>他和同事佩尔迪克（Perdeck）做了一批模型。结果很怪：一根简单的红色细棒，上面画三道白环，比一个逼真的鸥头模型引来的啄击还多。真东西不是最吸引的，<b>把关键特征夸张到过头的东西</b>反而更强。丁伯根把这种东西叫“超常刺激”。</p>
+      <p>这就是漫画、吉祥物和游戏特效在做的事：把大眼睛画得更大，把金币爆得更满，把受击的那一帧停得更久。夸张的不是全部，而是<b>那个让你认出它的特征</b>。</p>
+    </div>
+  </div>
+  <div class="why-box">
+    <h3>超常刺激（supernormal stimulus）</h3>
+    <p>原理：生物对某些关键特征的反应，可以被一个比自然物“更夸张”的模型激发得更强。设计里的对应是“放大你想让玩家感知的那一个特征”，而不是把一切都画得更像真的。</p>
+    <svg viewBox="0 0 700 270" width="100%" role="img" aria-label="示意图：横轴是刺激的夸张程度，纵轴是反应强度，曲线向右上方升高；自然的鸥嘴在中间，夸张的红棒在更右、更高的位置。">
+      <g class="rough" stroke="#2b2b3a" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M70 30 V200 H660"/>
+        <path d="M80 190 C220 180 360 120 600 46" stroke="#e5484d" stroke-width="5"/>
+        <circle cx="270" cy="162" r="9" fill="#ffe58a"/><circle cx="560" cy="62" r="9" fill="#ffb3c6"/>
+      </g>
+      <g stroke="#4b4b5e" stroke-width="2" stroke-dasharray="6 6"><line x1="270" y1="171" x2="270" y2="200"/><line x1="560" y1="71" x2="560" y2="200"/></g>
+      <g font-size="17" text-anchor="middle" fill="#2b2b3a">
+        <text x="270" y="232">自然的鸥嘴</text><text x="560" y="232">夸张过头的红棒</text>
+        <text x="130" y="34">反应强度</text><text x="620" y="258" text-anchor="end">刺激的夸张程度 →</text>
+        <text x="430" y="176">（示意：趋势，不是实测曲线）</text>
+      </g>
+    </svg>
+    <p class="src">出处：Tinbergen &amp; Perdeck (1950)，《On the stimulus situation releasing the begging response in the newly hatched herring gull chick》，<i>Behaviour</i> 3: 1–39；Deirdre Barrett，《Supernormal Stimuli》（2010）。争议：John Whitfield 2009 年在 <i>Nature</i> 上指出，这组经典实验的数据并不像教科书讲的那么干净，红点是否确是最强刺激仍有疑问；“超常刺激”在设计里是一个好用的比喻，不是定律。</p>
+  </div>
+
+  <div class="sec"><span class="n">8</span><h2><span class="tag why">为什么成立</span>为什么眼睛会自己“分组”：格式塔</h2></div>
+  <div class="withimg rev">
+    <span data-illus="c12_gestalt"></span>
+    <div>
+      <p>视觉层级为什么管用？因为你的大脑从不是把画面当成一堆像素在读，它会<b>自动把东西归成一伙</b>。靠得近的点是一组，长得像的点是一组，朝同一个方向动的点是一组。</p>
+      <p>20 世纪初，德国心理学家马克斯·韦特海默（Max Wertheimer）把这些规律整理出来，开启了“格式塔”学派。游戏界面里的血条、技能栏、小地图能让人一眼“看成一块”，靠的就是这个：<b>把相关的东西靠近、做成同一种样子</b>。</p>
+    </div>
+  </div>
+  <div class="board">
+    <div class="row" id="c12_gb">
+      <button class="chip on" data-g="even">均匀排列</button><button class="chip" data-g="rows">横向靠近</button><button class="chip" data-g="cols">纵向靠近</button>
+      <button class="chip" data-g="sim">按颜色（相似）</button><button class="chip" data-g="clash">冲突：颜色分行，距离分列</button>
+    </div>
+    <svg id="c12_gs" viewBox="0 0 300 300" role="img" aria-label="8×8 圆点阵列，随选项显示为均匀、成行、成列，或者颜色与距离相互冲突"></svg>
+    <div class="msg" id="c12_gmsg">点上面的按钮，看同一批点怎样被你的眼睛“分成组”。</div>
+  </div>
+  <div class="sticky" id="c12_gtry">试试看：五个按钮都点一遍。最后一个“冲突”里，颜色和距离在抢着分组，你的眼睛先听谁的？</div>
+  <div class="why-box">
+    <h3>格式塔分组（接近、相似）</h3>
+    <p>原理：知觉有自己的组织规律，接近的东西倾向被看成一组，相似的东西倾向被看成一组。设计里用它来决定“哪些东西该放在一起”，不必再画框线。</p>
+    <p class="src">出处：Wertheimer (1923)，《Untersuchungen zur Lehre von der Gestalt II》，<i>Psychologische Forschung</i> 4: 301–350。对于究竟有几条规律，后来的研究者说法不一，也有人认为接近、共同命运等都是“相似”的特例。</p>
+  </div>
+
+  <div class="sec"><span class="n">9</span><h2><span class="tag why">为什么成立</span>耳朵更快？形状有性格？（以及怎么验证）</h2></div>
+  <p>下面再看两条常被引用的说法，看看研究到底撑到哪一步。</p>
+  <div class="why-box">
+    <h3>1）听觉反应比视觉快：要小心地说</h3>
+    <p>常见说法：“人对声音的反应比对画面快。”有一些简单反应时间研究支持这一点：Shelton 与 Kumar（2010，<i>Neuroscience &amp; Medicine</i>）只有 14 名被试，测得视觉平均约 331 ms、听觉约 284 ms，差约 47 ms；后来的文献常引用“听觉大约快 20–40 ms”。</p>
+    <p class="src">要点：样本很小，差距是“几十毫秒”量级，且是<b>简单反应</b>（看到或听到就按键）。别推成“声音比画面重要”。游戏里的结论是：<b>需要最快反馈的事件，同时配声音和画面</b>，两者不一致会很难受。</p>
+  </div>
+  <div class="why-box">
+    <h3>2）圆与尖：bouba/kiki</h3>
+    <p>沃尔夫冈·柯勒（Köhler，1929）用“takete / baluba”让人给图形配词，倾向把尖的图形配 takete。2001 年拉玛钱德兰与哈伯德（Ramachandran &amp; Hubbard）用“bouba/kiki”重做，美国大学生与说泰米尔语的印度人里约 95–98% 把圆的叫 bouba。2022 年一项约 900 人、25 种语言的研究也发现跨语言的倾向，但强度因语言而异。</p>
+    <p class="src">这说明“形状和声音”的联想有跨文化的一部分，但并非每个人、每种语言都一样。设计里用它，是“借一个常见直觉”，不是“证明”。</p>
+  </div>
+  <p><b>亲手验证一下：</b>下面是个反应时间小测试。选“看”或“听”，点准备，等刺激出现再点大块区域。注意：浏览器的音频输出本身有延迟，网页上的差值未必能复现研究结果。这恰恰是“别轻信一个数字”的好例子。</p>
+  <div class="board">
+    <div class="row">
+      <button class="chip on" data-rm="v">看（变绿）</button><button class="chip" data-rm="a">听（嘟声）</button>
+      <label class="ctl" style="margin:0"><input type="checkbox" class="c12-mute"> 静音</label>
+    </div>
+    <div id="c12_rt" role="button" tabindex="0">点这里开始</div>
+    <div id="c12_rstat"></div>
+  </div>
+  <div class="sticky" id="c12_rtry">试试看：“看”和“听”各测 5 次，比较两个平均值。你的差距和论文里的 47 ms 接近吗？</div>
+
+  <div class="sec"><span class="n">10</span><h2><span class="tag how">怎么用</span>感官调音台：自己设计“一次拾取”</h2></div>
+  <p>设想一个事件：玩家碰到一件东西。调下面的旋钮，设计它的<b>声音加画面</b>。点“触发”看到并听到，换预设（奖励、危险、升级、中性）对比。下面会给出“这样给人什么感觉”的读数，它是经验规则，不是定律，标为示意。</p>
+  <div class="board">
+    <div class="row">
+      <button class="btn" data-mp="reward">💎 奖励</button><button class="btn pink" data-mp="danger">💥 危险</button>
+      <button class="btn green" data-mp="level">⭐ 升级</button><button class="btn alt" data-mp="neutral">🖱️ 中性</button>
+      <label class="ctl" style="margin:0 0 0 auto"><input type="checkbox" class="c12-mute"> 静音</label>
+    </div>
+    <div class="c12-two">
+      <div>
+        <h3>声音</h3>
+        <div class="row" id="c12_wave"><button class="chip" data-w="sine">正弦</button><button class="chip on" data-w="square">方波</button><button class="chip" data-w="sawtooth">锯齿</button><button class="chip" data-w="triangle">三角</button></div>
+        <label class="ctl">音高 <output id="c12_nv"></output></label><input type="range" id="c12_note" min="36" max="96" value="76">
+        <label class="ctl">音高滑动（半音）<output id="c12_sv"></output></label><input type="range" id="c12_slide" min="-12" max="12" value="12">
+        <label class="ctl">时长 <output id="c12_dv"></output></label><input type="range" id="c12_dur" min="60" max="1000" step="10" value="180">
+        <label class="ctl">起音 A <output id="c12_av"></output></label><input type="range" id="c12_att" min="1" max="300" value="2">
+        <label class="ctl">释放 R <output id="c12_rv"></output></label><input type="range" id="c12_rel" min="5" max="600" value="60">
+        <label class="ctl">音量 <output id="c12_vv"></output></label><input type="range" id="c12_vol" min="0" max="100" value="45">
+      </div>
+      <div>
+        <h3>画面</h3>
+        <div class="c12-stage" id="c12_stage"><div id="c12_obj"></div></div>
+        <label class="ctl">色相 <output id="c12_hv"></output></label><input type="range" id="c12_hue" min="0" max="360" value="48">
+        <label class="ctl">大小 <output id="c12_zv"></output></label><input type="range" id="c12_size" min="30" max="140" value="80">
+        <div class="row" id="c12_shape"><button class="chip" data-s="circle">圆</button><button class="chip" data-s="square">方</button><button class="chip" data-s="tri">三角</button><button class="chip on" data-s="star">星</button><button class="chip" data-s="diamond">菱形</button></div>
+        <div class="row" id="c12_motion"><button class="chip on" data-m="pop">弹出</button><button class="chip" data-m="shake">抖动</button><button class="chip" data-m="rise">上浮</button><button class="chip" data-m="flash">闪光</button></div>
+        <div class="row" id="c12_ease"><button class="chip" data-e="linear">线性</button><button class="chip" data-e="out">缓出</button><button class="chip on" data-e="back">回弹</button></div>
+      </div>
+    </div>
+    <div class="row">
+      <button class="btn" id="c12_fire">▶ 触发</button>
+      <button class="btn alt" id="c12_combo">🔥 连击 ×6（每次升一个半音）</button>
+    </div>
+    <div class="c12-note">奖励感</div><div class="c12-bar r"><i id="c12_br"></i></div>
+    <div class="c12-note">危险感</div><div class="c12-bar d"><i id="c12_bd"></i></div>
+    <div id="c12_fb" class="small"></div>
+    <div id="c12_warn"></div>
+  </div>
+  <div class="sticky" id="c12_task">试试看：先点“奖励”，把它改造成一个让人一听一看就觉得“危险”的事件（提示：音高、滑音方向、形状、色相、动效都要往同一个方向走）。成功了这里会出现 ✔。再试一次：只改声音不改画面，看看“音画不一致”的提示什么时候出现。</div>
+
+  <h3>辅助互动：剪影测试</h3>
+  <p>下面是 5 个角色。点“切换”把颜色和细节拿掉，猜猜是谁；再点“换成同一轮廓”，看看一套只靠颜色区分的角色会怎样。</p>
+  <div class="board">
+    <div class="row"><button class="btn" id="c12_sil">切换：彩色 / 剪影</button><button class="btn alt" id="c12_bad">换成同一轮廓（反例）</button></div>
+    <div class="c12-chars" id="c12_chars"></div>
+    <hr style="border:0;border-top:2px dashed var(--line);margin:12px 0">
+    <div class="row"><button class="btn green" id="c12_next">🎲 出一题（只显示剪影）</button><span class="stat">答对 <b id="c12_sc">0</b> / <b id="c12_tot">0</b></span></div>
+    <svg id="c12_big" viewBox="0 0 100 100" aria-label="剪影测验"></svg>
+    <div class="row" id="c12_ans" style="justify-content:center"></div>
+    <div class="msg" id="c12_smsg">点“出一题”。</div>
+  </div>
+  <div class="sticky">试试看：先用“同一轮廓”答 5 题，再换回“各自的轮廓”答 5 题，比较两次的正确率。每满 5 题这里会给你一个小结。</div>
+
+  <div class="misc">
+    <h3>常见误区</h3>
+    <ul>
+      <li><b>“音效越响越华丽越好”</b>：最常见的结果是听觉疲劳和音量大战。好的混音是<b>有取舍</b>的，重要的响，次要的退。</li>
+      <li><b>“颜色有固定意义”</b>：红不一定危险、绿不一定安全，在你游戏的规则里它们才有意义。<b>一致性</b>比“约定俗成”更重要。</li>
+      <li><b>“画面越精细越好”</b>：玩家需要的是<b>看得清</b>。细节太多反而淹没重点，也吃性能。</li>
+      <li><b>“听觉比视觉快，所以声音更重要”</b>：差距是几十毫秒、实验样本小，不能推出“更重要”。</li>
+      <li><b>“音乐就是背景”</b>：它也在传达状态和情绪；而且有些玩家会静音游玩，比如在公共场所，或者听不到声音，所以<b>关键信息不能只靠声音</b>。</li>
+    </ul>
+  </div>
+
+  <div class="reflect">
+    <h3>反思与争议</h3>
+    <p><b>文化与个体。</b>颜色联想高度依赖文化与语境：红色在许多东亚语境里是喜庆，在许多西方游戏里是危险。形状联想（bouba/kiki）有跨语言的趋势，但也有强度差异。把它们当<b>起点</b>，不要当<b>结论</b>。</p>
+    <p><b>风格与可读性的冲突。</b>很酷的“暗调、低对比”画面可能让弱视玩家看不清；必须开着音乐才能玩的游戏对听障玩家不友好。好的声画设计要给玩家<b>可调节的选项</b>：音量分轨、字幕、色盲模式、减少动态。</p>
+    <p><b>“好听”与“好用”未必一致。</b>最好听的音乐可能反而分散注意，比如解谜游戏里的旋律抢了思考的空间。这里没有标准答案，要靠真人试玩去验证。</p>
+    <p><b>可能改变你的看法。</b>设计不是“把声画做漂亮”，而是<b>把规则翻译成感官信号</b>：让玩家不读说明书也能“听见规则、看见规则”。</p>
+  </div>
+
+  <div class="key">
+    <h3>本章要点</h3>
+    <ul>
+      <li>声音有四种功能：<b>反馈、信息、情绪、空间</b>；音效靠<b>包络、音高、时长、音色</b>来设计，要短、可辨、有层次、避免疲劳。</li>
+      <li>音乐的难题是玩家时间不确定：<b>循环、横向切换、纵向分层</b>；iMUSE 一类系统让音乐成为“对游戏状态做出反应”的系统；<b>沉默</b>也是工具。</li>
+      <li>视觉先服务<b>可读性</b>：色彩（一致、对比、别只靠色）、形状语言、层级、<b>剪影测试</b>。</li>
+      <li>动效借用动画十二原则：<b>预备、挤压拉伸、缓动</b>，决定“手感”与“分量”。</li>
+      <li>底层有两个线索：<b>超常刺激</b>（夸张关键特征）和<b>格式塔分组</b>（接近、相似）；研究给的是“倾向”不是定律。<b>音画一致</b>比任何单一技巧都重要。</li>
+    </ul>
+  </div>
+  <div class="tldr">声音和画面是游戏把规则翻译成感官信号的语言：要短、要清、要一致，并永远别让一个通道独自背负全部信息。</div>
+
+  <div class="sec"><span class="n">11</span><h2>练习</h2></div>
+  <div id="quiz"></div>
+
+  <div class="sec"><span class="n">12</span><h2>你的设计 / 你的思考</h2></div>
+  <div class="card o">
+    <p>选一个你设计过（或想设计）的游戏事件，例如“被击中”“升级”“发现宝箱”。用一句话写下它的<b>声音</b>（音高、音色、时长、包络）与<b>画面</b>（颜色、形状、动效）。静音后它还能被看懂吗？剪影后它还能被认出吗？</p>
+    <textarea rows="6" data-save="ch12" placeholder="例：受击——低音锯齿波，180ms，下滑；画面红色三角碎片向外抖动。静音后依然看得懂：因为……"></textarea>
+  </div>
+</main>
+<script src="js/illus.js"></script><script src="js/illus-ch12.js"></script>
+<script src="js/common.js"></script>
+<script>
+const $ = id => document.getElementById(id);
+const $$ = s => Array.from(document.querySelectorAll(s));
+
+// ================= 共用 WebAudio（用户点击后才创建；统一静音） =================
+const AU = (function () {
+  let ctx = null, master = null, muted = false, noiseBuf = null;
+  function get() {
+    if (!ctx) {
+      const C = window.AudioContext || window.webkitAudioContext;
+      if (!C) return null;
+      try { ctx = new C(); } catch (e) { return null; }
+      master = ctx.createGain(); master.gain.value = muted ? 0 : 1; master.connect(ctx.destination);
+      noiseBuf = ctx.createBuffer(1, ctx.sampleRate * 0.2, ctx.sampleRate);
+      const d = noiseBuf.getChannelData(0);
+      for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+    }
+    if (ctx.state === "suspended") ctx.resume();
+    return ctx;
+  }
+  function setMute(m) {
+    muted = m;
+    if (master) master.gain.value = m ? 0 : 1;
+    $$(".c12-mute").forEach(c => c.checked = m);
+  }
+  $$(".c12-mute").forEach(c => c.addEventListener("change", () => setMute(c.checked)));
+  // 一个带包络的音
+  function tone(o) {
+    const c = get(); if (!c) return;
+    const t = (o.t || c.currentTime) + 0.005;
+    const dur = o.dur, att = Math.min(o.att, dur * 0.5), rel = Math.min(o.rel, dur - att);
+    const osc = c.createOscillator(), g = c.createGain();
+    osc.type = o.type || "sine";
+    osc.frequency.setValueAtTime(o.f, t);
+    if (o.slide) osc.frequency.exponentialRampToValueAtTime(o.f * Math.pow(2, o.slide / 12), t + dur);
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.linearRampToValueAtTime(o.vol, t + att);
+    g.gain.setValueAtTime(o.vol, t + dur - rel);
+    g.gain.linearRampToValueAtTime(0.0001, t + dur);
+    osc.connect(g); g.connect(master);
+    osc.start(t); osc.stop(t + dur + 0.02);
+  }
+  function noise(t, dur, vol, hp) {
+    const c = get(); if (!c) return;
+    const s = c.createBufferSource(); s.buffer = noiseBuf;
+    const f = c.createBiquadFilter(); f.type = "highpass"; f.frequency.value = hp || 6000;
+    const g = c.createGain(); g.gain.setValueAtTime(vol, t); g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    s.connect(f); f.connect(g); g.connect(master); s.start(t); s.stop(t + dur + 0.02);
+  }
+  return { get, tone, noise, setMute, now: () => ctx ? ctx.currentTime : 0 };
+})();
+
+// ================= 发明故事互动：音乐切换 =================
+(function () {
+  const STEP_MS = 250, N = 8;
+  const base = [261.6, 329.6, 392, 329.6, 261.6, 329.6, 392, 493.9];     // C 大调，探索
+  const bat = [185.0, 220.0, 277.2, 220.0, 185.0, 220.0, 277.2, 329.6]; // 升F小，战斗（与C有冲突）
+  let timer = null, step = 0, battle = false, style = "hard", pending = null, pressed = 0; const tried = new Set();
+  const st = $("c12_steps");
+  for (let i = 0; i < N; i++) { const s = document.createElement("span"); s.textContent = i + 1; if (i === 0) s.className = "bar"; st.appendChild(s); }
+  const cells = Array.from(st.children);
+  const say = m => $("c12_mmsg").textContent = m;
+  function show(i) { cells.forEach((c, k) => c.classList.toggle("on", k === i)); }
+
+  function tick() {
+    const c = AU.get(); if (!c) return;
+    if (pending && ((pending === "bar" && step % N === 0) || (pending === "layer" && step % 2 === 0))) {
+      const waited = ((performance.now() - pressed) / 1000).toFixed(1);
+      battle = true; style = pending;
+      say(pending === "bar" ? `等了 ${waited} 秒，在小节线干净地换成战斗乐段。安全，但“反应慢半拍”。` : `${waited} 秒内加入了鼓和低音，旋律没有断。即时又不断流。`);
+      pending = null;
+    }
+    const i = step % N, t = c.currentTime + 0.02;
+    show(i);
+    if (!battle) {
+      AU.tone({ f: base[i], t, dur: 0.22, att: 0.01, rel: 0.1, vol: 0.12, type: "triangle" });
+    } else if (style === "layer") {
+      AU.tone({ f: base[i], t, dur: 0.22, att: 0.01, rel: 0.1, vol: 0.12, type: "triangle" });
+      if (i % 4 === 0) { AU.tone({ f: 98, t, dur: 0.45, att: 0.01, rel: 0.2, vol: 0.2, type: "sine" }); AU.tone({ f: 140, t, dur: 0.12, att: 0.002, rel: 0.1, vol: 0.2, type: "sine", slide: -20 }); }
+      AU.noise(t, 0.06, 0.12, 7000);
+    } else {
+      AU.tone({ f: bat[i], t, dur: 0.2, att: 0.005, rel: 0.08, vol: 0.09, type: "square" });
+      if (i % 2 === 0) AU.tone({ f: 140, t, dur: 0.12, att: 0.002, rel: 0.1, vol: 0.2, type: "sine", slide: -20 });
+    }
+    step++;
+  }
+  function start() { AU.get(); timer = setInterval(tick, STEP_MS); $("c12_mgo").textContent = "⏹ 停止"; say("探索音乐循环中。现在随时点“进战斗”。"); }
+  function stop() { clearInterval(timer); timer = null; step = 0; battle = false; pending = null; show(-1); $("c12_mgo").textContent = "▶ 开始探索音乐"; say("已停止。"); }
+  $("c12_mgo").onclick = () => timer ? stop() : start();
+  $$("[data-mm]").forEach(b => b.onclick = () => {
+    const k = b.dataset.mm;
+    if (!timer) { say("先点“开始探索音乐”。"); return; }
+    if (k === "back") { battle = false; pending = null; say("回到探索乐段。"); return; }
+    if (battle) { say("已经在战斗中，先“回到探索”再试另一种。"); return; }
+    tried.add(k);
+    if (tried.size === 3) { const m = $("c12_mtry"); m.textContent = "✔ 三种办法都试过了。哪一种最像“音乐在听你说话”？点下面的按钮看当年的人怎么做。"; m.style.background = "#eaf9e4"; }
+    if (k === "hard") {
+      const at = step % N;
+      battle = true; style = "hard"; pending = null; step = 0;
+      say(`在第 ${at + 1} 步（共 ${N} 步）硬切。乐句被拦腰截断，而且调性与前面冲突，听着“突兀”。`);
+    } else { pending = k; pressed = performance.now(); say(k === "bar" ? "等待小节线……" : "等待下一拍……"); }
+  });
+  $("c12_reveal").onclick = () => { $("c12_hist").classList.remove("c12-hide"); $("c12_reveal").style.display = "none"; };
+  window.addEventListener("pagehide", () => { if (timer) stop(); });
+})();
+
+
+// ================= 微互动：包络试听 =================
+(function () {
+  const say = m => $("c12_plmsg").textContent = m;
+  $("c12_pl1").onclick = () => { AU.get(); AU.tone({ f: 988, dur: 0.3, att: 0.002, rel: 0.12, vol: 0.25, type: "square" }); say("起音 2 毫秒：像敲了一下，脆，适合金币。"); };
+  $("c12_pl2").onclick = () => { AU.get(); AU.tone({ f: 988, dur: 1.2, att: 0.3, rel: 0.5, vol: 0.25, type: "triangle" }); say("起音 300 毫秒：声音是慢慢“长”出来的，像蓄力或吟唱。"); };
+})();
+
+// ================= 先猜后揭晓：三种速度 =================
+(function () {
+  const reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const E = { c12_ea: "linear", c12_eb: "cubic-bezier(.55,0,1,.45)", c12_ec: "cubic-bezier(.2,1.4,.5,1)" };
+  function go() {
+    Object.keys(E).forEach(id => {
+      const el = $(id), d = el.parentNode.clientWidth - 40;
+      if (reduce) { el.style.transform = "translateX(" + d + "px)"; return; }
+      el.animate([{ transform: "translateX(0)" }, { transform: "translateX(" + d + "px)" }], { duration: 1300, easing: E[id], fill: "forwards" });
+    });
+    $("c12_ezmsg").textContent = "再看一遍：它们走的路程和时间完全相同，只有速度的变化不同。";
+  }
+  $("c12_ezgo").onclick = go;
+  $("c12_ezrev").onclick = () => { $("c12_ezans").classList.remove("c12-hide"); $("c12_ezrev").style.display = "none"; };
+})();
+
+// ================= 微互动：格式塔分组 =================
+(function () {
+  const seen = new Set();
+  const MSG = {
+    even: "均匀排列：没有线索，你的眼睛一时不知该怎么分。",
+    rows: "横向靠近：每一行自己“连”成了一条线。",
+    cols: "纵向靠近：同样的点，这回成了一列一列。",
+    sim: "按颜色：位置不变，红黄相间的点自动归成两种颜色的行。",
+    clash: "冲突：颜色把点分成行，距离把点分成列。多数人会先看到哪一种？这说明规律之间也有强弱。"
+  };
+  function draw(k) {
+    const X = { even: c => c * 32, rows: c => c * 22, cols: c => c * 34, sim: c => c * 32, clash: c => (c % 2) * 22 + Math.floor(c / 2) * 54 };
+    const Yf = { even: r => r * 32, rows: r => r * 36, cols: r => r * 22, sim: r => r * 32, clash: r => r * 32 };
+    const w = X[k](7), hh = Yf[k](7), ox = (300 - w) / 2, oy = (300 - hh) / 2;
+    let h = "";
+    for (let r = 0; r < 8; r++) for (let c = 0; c < 8; c++) {
+      const col = (k === "sim" || k === "clash") ? (r % 2 ? "#f6b73c" : "#4a8fe0") : "#4a8fe0";
+      h += '<circle cx="' + (ox + X[k](c)) + '" cy="' + (oy + Yf[k](r)) + '" r="8" fill="' + col + '" stroke="#2b2b3a" stroke-width="2.5"/>';
+    }
+    $("c12_gs").innerHTML = h;
+  }
+  document.querySelectorAll("#c12_gb .chip").forEach(b => b.onclick = () => {
+    const k = b.dataset.g;
+    document.querySelectorAll("#c12_gb .chip").forEach(x => x.classList.toggle("on", x === b));
+    draw(k); $("c12_gmsg").textContent = MSG[k]; seen.add(k);
+    if (seen.size === 5) { const t = $("c12_gtry"); t.textContent = "✔ 五种都看过了。你的眼睛没有“选择”分组，是分组自己发生了：这就是知觉的组织规律。"; t.style.background = "#eaf9e4"; }
+  });
+  draw("even");
+})();
+
+// ================= 反应时间测试 =================
+(function () {
+  let mode = "v", state = "idle", t0 = 0, to = null;
+  const res = { v: [], a: [] };
+  const box = $("c12_rt");
+  function stat() {
+    const f = a => a.length ? Math.round(a.reduce((x, y) => x + y, 0) / a.length) + " ms（" + a.length + " 次）" : "—";
+    $("c12_rstat").innerHTML = `<span class="stat">看 <b>${f(res.v)}</b></span><span class="stat">听 <b>${f(res.a)}</b></span>`;
+    if (res.v.length >= 5 && res.a.length >= 5) {
+      const m = a => a.reduce((x, y) => x + y, 0) / a.length, d = Math.round(m(res.v) - m(res.a));
+      const t = $("c12_rtry"); t.style.background = "#eaf9e4";
+      t.textContent = "✔ 各测满 5 次：看比听" + (d > 0 ? "慢" : "快") + " " + Math.abs(d) + " ms。论文里是约 47 ms。你的数字和它接近吗？5 次的样本很小，这正是不能轻信单个数字的原因。";
+    }
+  }
+  $$("[data-rm]").forEach(b => b.onclick = () => {
+    mode = b.dataset.rm; $$("[data-rm]").forEach(x => x.classList.toggle("on", x === b));
+    reset(); box.textContent = "点这里开始（" + (mode === "v" ? "看" : "听") + "）";
+  });
+  function reset() { clearTimeout(to); state = "idle"; box.className = ""; }
+  function act() {
+    if (state === "idle") {
+      if (mode === "a") AU.get();
+      state = "wait"; box.className = "wait"; box.textContent = "等待……（出现信号再点）";
+      to = setTimeout(() => {
+        state = "go"; t0 = performance.now();
+        if (mode === "v") { box.className = "go"; box.textContent = "现在！"; }
+        else { box.textContent = "（听！）"; AU.tone({ f: 880, dur: 0.25, att: 0.005, rel: 0.05, vol: 0.3, type: "sine" }); }
+      }, 1000 + Math.random() * 2000);
+    } else if (state === "wait") {
+      reset(); box.textContent = "太早了！点这里重来";
+    } else if (state === "go") {
+      const rt = Math.round(performance.now() - t0);
+      res[mode].push(rt); reset(); box.textContent = rt + " ms。再点一次重测"; stat();
+    }
+  }
+  box.addEventListener("pointerdown", e => { e.preventDefault(); act(); });
+  box.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); act(); } });
+  stat();
+})();
+
+// ================= 招牌互动：感官调音台 =================
+(function () {
+  const S = { wave: "square", shape: "star", motion: "pop", ease: "back" };
+  const NAMES = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
+  const hz = n => 440 * Math.pow(2, (n - 69) / 12);
+  const EASE = { linear: "linear", out: "cubic-bezier(0,0,.58,1)", back: "cubic-bezier(.34,1.56,.64,1)" };
+  const V = id => +$(id).value;
+  const reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  function shapeSvg(sz, hue) {
+    const fill = `hsl(${hue},78%,60%)`, a = `fill="${fill}" stroke="#2b2b3a" stroke-width="5" stroke-linejoin="round"`;
+    const p = {
+      circle: `<circle cx="50" cy="50" r="42" ${a}/>`,
+      square: `<rect x="10" y="10" width="80" height="80" rx="4" ${a}/>`,
+      tri: `<polygon points="50,8 94,88 6,88" ${a}/>`,
+      diamond: `<polygon points="50,4 94,50 50,96 6,50" ${a}/>`,
+      star: `<polygon points="50,4 62,36 96,38 69,58 79,92 50,72 21,92 31,58 4,38 38,36" ${a}/>`
+    }[S.shape];
+    return `<svg viewBox="0 0 100 100" width="${sz}" height="${sz}">${p}</svg>`;
+  }
+  function label() {
+    const n = V("c12_note");
+    $("c12_nv").textContent = NAMES[n % 12] + (Math.floor(n / 12) - 1) + "（" + Math.round(hz(n)) + " Hz）";
+    $("c12_sv").textContent = (V("c12_slide") > 0 ? "+" : "") + V("c12_slide");
+    $("c12_dv").textContent = V("c12_dur") + " ms"; $("c12_av").textContent = V("c12_att") + " ms";
+    $("c12_rv").textContent = V("c12_rel") + " ms"; $("c12_vv").textContent = V("c12_vol");
+    $("c12_hv").textContent = V("c12_hue") + "°"; $("c12_zv").textContent = V("c12_size");
+  }
+  function render() { $("c12_obj").innerHTML = shapeSvg(V("c12_size"), V("c12_hue")); }
+
+  function analyze() {
+    const n = V("c12_note"), sl = V("c12_slide"), du = V("c12_dur"), at = V("c12_att"), h = V("c12_hue");
+    const w = S.wave, sh = S.shape, mo = S.motion;
+    const warm = (h >= 25 && h <= 70), red = (h <= 15 || h >= 345), green = (h >= 90 && h <= 160), cold = (h >= 190 && h <= 260);
+    // 声音
+    let aR = 0, aD = 0; const lines = [];
+    if (n >= 72) { aR += 1.5; lines.push("音高偏高：明亮、轻快，像“好消息”。"); } else if (n <= 52) { aD += 1.5; lines.push("音高很低：沉重、压迫，像“有东西来了”。"); } else lines.push("音高居中：不偏不倚。");
+    if (sl >= 3) { aR += 2; lines.push("向上滑音：像“升起/获得”。"); } else if (sl <= -3) { aD += 2; lines.push("向下滑音：像“坠落/失去/受伤”。"); }
+    if (w === "sawtooth") { aD += 1; lines.push("锯齿波：粗糙、嗡嗡的，偏“攻击性”。"); } else if (w === "square") { aD += 0.3; aR += 0.5; lines.push("方波：典型的 8 位游戏味道，中性偏“电子”。"); } else lines.push((w === "sine" ? "正弦波：圆润、干净、柔和。" : "三角波：柔和，比正弦稍有“木”味。"));
+    if (du <= 300) { aR += 1; lines.push("很短（≤300 ms）：适合高频反馈，不易疲劳。"); } else if (du >= 600) { aD += 0.5; lines.push("较长（≥600 ms）：更有“分量”，但多次重复容易烦。"); }
+    if (at <= 20) lines.push("起音很快：“脆”、有冲击，像敲击。"); else if (at >= 120) lines.push("起音很慢：像“渐入”，不太像一次性的反馈。");
+    // 画面
+    let vR = 0, vD = 0;
+    if (warm || green) vR += 1.5; if (red) vD += 2; if (cold) { vR += 0.3; lines.push("冷色：偏冷静/魔法/中性，不太像“奖励”也不太像“危险”。"); }
+    if (sh === "star" || sh === "diamond") vR += 1; if (sh === "tri") vD += 1; if (sh === "circle") vR += 0.5;
+    if (mo === "pop" || mo === "rise") vR += 1; if (mo === "shake") vD += 1.5;
+    const pct = x => Math.max(0, Math.min(100, Math.round(x / 6 * 100)));
+    const R = aR + vR, D = aD + vD;
+    $("c12_br").style.width = pct(R) + "%"; $("c12_bd").style.width = pct(D) + "%";
+    lines.push(`画面：色相 ${h}° ${red ? "（红：危险联想）" : warm ? "（暖黄：奖励联想）" : green ? "（绿：安全/治疗联想）" : cold ? "（冷色）" : ""}；形状${{ circle: "圆", square: "方", tri: "三角", star: "星", diamond: "菱形" }[sh]}；动效${{ pop: "弹出", shake: "抖动", rise: "上浮", flash: "闪光" }[mo]}。`);
+    $("c12_fb").innerHTML = lines.map(x => "· " + x).join("<br>") + "<br><i>示意：这些是设计经验规则，不是定律。</i>";
+    let w2 = "";
+    const aS = aR - aD, vS = vR - vD;
+    if ((aS >= 2 && vS <= -1.5) || (aS <= -2 && vS >= 1.5)) w2 = `<div class="c12-warn"><b>音画不一致</b>：声音在说“${aS > 0 ? "好事" : "坏事"}”，画面在说“${vS > 0 ? "好事" : "坏事"}”。玩家会困惑。把两边调到同一个方向。</div>`;
+    else if (Math.abs(R - D) < 1.2) w2 = `<div class="c12-note">整体偏<b>中性</b>：适合菜单点击、普通提示。</div>`;
+    else w2 = `<div class="c12-note">整体读作<b>${R > D ? "奖励/好事" : "危险/坏事"}</b>，声音与画面方向一致。</div>`;
+    $("c12_warn").innerHTML = w2;
+    const mism = w2.indexOf("音画不一致") >= 0;
+    const tk = $("c12_task");
+    if (D - R >= 2.5 && !mism) { tk.textContent = "✔ 完成：声音和画面都在说“危险”，方向一致。再试一次：只改声音不改画面，看“音画不一致”什么时候出现。"; tk.style.background = "#eaf9e4"; }
+    else if (mism) { tk.style.background = ""; }
+  }
+
+  function fireVisual() {
+    const o = $("c12_obj"), stg = $("c12_stage"), du = Math.max(350, V("c12_dur") + 150), ea = EASE[S.ease];
+    let kf;
+    if (reduce) kf = [{ opacity: 0 }, { opacity: 1 }];
+    else if (S.motion === "pop") kf = [{ transform: "scale(0.1)" }, { transform: "scale(1)" }];
+    else if (S.motion === "shake") kf = [{ transform: "translateX(0)" }, { transform: "translateX(-14px)" }, { transform: "translateX(14px)" }, { transform: "translateX(-10px)" }, { transform: "translateX(8px)" }, { transform: "translateX(0)" }];
+    else if (S.motion === "rise") kf = [{ transform: "translateY(30px) scale(.8)", opacity: 0.2 }, { transform: "translateY(-10px) scale(1)", opacity: 1, offset: 0.6 }, { transform: "translateY(-50px) scale(1)", opacity: 0 }];
+    else kf = [{ filter: "brightness(3)", transform: "scale(1.25)" }, { filter: "brightness(1)", transform: "scale(1)" }];
+    o.animate(kf, { duration: du, easing: S.motion === "shake" ? "linear" : ea });
+    if (S.motion === "flash" && !reduce) { stg.classList.add("flash"); setTimeout(() => stg.classList.remove("flash"), 120); }
+  }
+  function fireSound(extra) {
+    AU.get();
+    AU.tone({ f: hz(V("c12_note") + (extra || 0)), dur: V("c12_dur") / 1000, att: V("c12_att") / 1000, rel: V("c12_rel") / 1000, vol: V("c12_vol") / 100 * 0.35, type: S.wave, slide: V("c12_slide") });
+  }
+  function fire(extra) { fireSound(extra); fireVisual(); }
+  function refresh() { label(); render(); analyze(); }
+
+  function chips(box, key, attr) {
+    $$("#" + box + " .chip").forEach(b => b.onclick = () => {
+      S[key] = b.dataset[attr]; $$("#" + box + " .chip").forEach(x => x.classList.toggle("on", x === b)); refresh();
+    });
+  }
+  chips("c12_wave", "wave", "w"); chips("c12_shape", "shape", "s"); chips("c12_motion", "motion", "m"); chips("c12_ease", "ease", "e");
+  ["c12_note", "c12_slide", "c12_dur", "c12_att", "c12_rel", "c12_vol", "c12_hue", "c12_size"].forEach(id => $(id).addEventListener("input", refresh));
+  $("c12_fire").onclick = () => fire(0);
+  $("c12_combo").onclick = () => { for (let i = 0; i < 6; i++) setTimeout(() => fire(i), i * 130); };
+
+  const PRE = {
+    reward: { w: "square", note: 76, slide: 12, dur: 180, att: 2, rel: 60, vol: 45, hue: 48, size: 80, s: "star", m: "pop", e: "back" },
+    danger: { w: "sawtooth", note: 40, slide: -7, dur: 380, att: 3, rel: 200, vol: 55, hue: 2, size: 90, s: "tri", m: "shake", e: "linear" },
+    level: { w: "triangle", note: 72, slide: 12, dur: 700, att: 30, rel: 300, vol: 50, hue: 285, size: 110, s: "star", m: "rise", e: "out" },
+    neutral: { w: "sine", note: 64, slide: 0, dur: 90, att: 3, rel: 40, vol: 35, hue: 210, size: 50, s: "circle", m: "pop", e: "out" }
+  };
+  function apply(p) {
+    S.wave = p.w; S.shape = p.s; S.motion = p.m; S.ease = p.e;
+    $("c12_note").value = p.note; $("c12_slide").value = p.slide; $("c12_dur").value = p.dur; $("c12_att").value = p.att;
+    $("c12_rel").value = p.rel; $("c12_vol").value = p.vol; $("c12_hue").value = p.hue; $("c12_size").value = p.size;
+    [["c12_wave", "w", p.w], ["c12_shape", "s", p.s], ["c12_motion", "m", p.m], ["c12_ease", "e", p.e]].forEach(([b, a, v]) =>
+      $$("#" + b + " .chip").forEach(x => x.classList.toggle("on", x.dataset[a] === v)));
+    refresh();
+  }
+  $$("[data-mp]").forEach(b => b.onclick = () => { apply(PRE[b.dataset.mp]); fire(0); });
+  apply(PRE.reward);
+})();
+
+// ================= 辅助互动：剪影测试 =================
+(function () {
+  const INK = "#2b2b3a";
+  const chars = [
+    { name: "骑士", f: (s) => { const c = (col) => s ? "#111" : col, k = s ? "#111" : INK; return `
+      <g stroke="${k}" stroke-width="3" stroke-linejoin="round" fill="${c('#9aa7b8')}">
+      <rect x="40" y="76" width="8" height="18"/><rect x="52" y="76" width="8" height="18"/><rect x="38" y="46" width="24" height="32" rx="4"/>
+      <circle cx="50" cy="34" r="11"/><path d="M50 23 q-4 -12 6 -14 q-2 8 2 12z" fill="${c('#e5484d')}"/>
+      <rect x="70" y="12" width="6" height="52" fill="${c('#dfe6ee')}"/><rect x="63" y="52" width="20" height="5" fill="${c('#f6b73c')}"/>
+      <path d="M12 46 h22 v18 q0 12 -11 16 q-11 -4 -11 -16z" fill="${c('#e5484d')}"/></g>`; } },
+    { name: "法师", f: (s) => { const c = (col) => s ? "#111" : col, k = s ? "#111" : INK; return `
+      <g stroke="${k}" stroke-width="3" stroke-linejoin="round" fill="${c('#9c6ad8')}">
+      <polygon points="50,52 26,94 74,94"/><circle cx="50" cy="44" r="8" fill="${c('#ffd9b3')}"/>
+      <polygon points="50,2 35,34 65,34"/><rect x="29" y="32" width="42" height="6" rx="3"/>
+      <rect x="78" y="14" width="4" height="80" fill="${c('#8a5a2b')}"/><circle cx="80" cy="12" r="7" fill="${c('#4a8fe0')}"/></g>`; } },
+    { name: "史莱姆", f: (s) => { const c = (col) => s ? "#111" : col, k = s ? "#111" : INK; return `
+      <g stroke="${k}" stroke-width="3" stroke-linejoin="round">
+      <path d="M12 92 Q8 54 50 44 Q92 54 88 92 Z" fill="${c('#4cb85e')}"/><path d="M50 22 q-7 11 0 16 q7 -5 0 -16z" fill="${c('#4cb85e')}"/>
+      ${s ? "" : '<circle cx="38" cy="68" r="5" fill="#fff"/><circle cx="62" cy="68" r="5" fill="#fff"/>'}</g>`; } },
+    { name: "弓手", f: (s) => { const c = (col) => s ? "#111" : col, k = s ? "#111" : INK; return `
+      <g stroke="${k}" stroke-width="3" stroke-linejoin="round" stroke-linecap="round" fill="${c('#4a8fe0')}">
+      <rect x="37" y="76" width="8" height="18"/><rect x="50" y="76" width="8" height="18"/><rect x="36" y="40" width="22" height="38" rx="5"/>
+      <circle cx="47" cy="27" r="10" fill="${c('#ffd9b3')}"/><path d="M34 28 q13 -22 26 0z" fill="${c('#2f6d3c')}"/>
+      <path d="M72 10 Q98 52 72 94" fill="none" stroke="${s ? '#111' : '#8a5a2b'}" stroke-width="5"/>
+      <line x1="72" y1="10" x2="72" y2="94" stroke-width="2"/><line x1="40" y1="54" x2="92" y2="54" stroke-width="3"/></g>`; } },
+    { name: "机器人", f: (s) => { const c = (col) => s ? "#111" : col, k = s ? "#111" : INK; return `
+      <g stroke="${k}" stroke-width="3" stroke-linejoin="round" fill="${c('#b0b8c4')}">
+      <rect x="34" y="80" width="10" height="14"/><rect x="56" y="80" width="10" height="14"/><rect x="26" y="50" width="48" height="32"/>
+      <rect x="12" y="52" width="12" height="28"/><rect x="76" y="52" width="12" height="28"/>
+      <rect x="32" y="22" width="36" height="26"/><line x1="50" y1="22" x2="50" y2="8"/><circle cx="50" cy="7" r="4" fill="${c('#e5484d')}"/>
+      ${s ? "" : '<rect x="38" y="30" width="8" height="8" fill="#4a8fe0"/><rect x="54" y="30" width="8" height="8" fill="#4a8fe0"/>'}</g>`; } }
+  ];
+  const cols = ["#9aa7b8", "#9c6ad8", "#4cb85e", "#4a8fe0", "#f6b73c"];
+  const person = (s, i) => { const col = s ? "#111" : cols[i], k = s ? "#111" : INK; return `
+    <g stroke="${k}" stroke-width="3" stroke-linejoin="round" fill="${col}"><rect x="38" y="76" width="9" height="18"/><rect x="53" y="76" width="9" height="18"/>
+    <rect x="34" y="42" width="32" height="36" rx="6"/><circle cx="50" cy="28" r="13"/></g>`; };
+  let sil = false, bad = false, cur = -1, sc = 0, tot = 0, answered = true, round = 0, rk = 0;
+  const draw = (i, s) => bad ? person(s, i) : chars[i].f(s);
+  function grid() {
+    $("c12_chars").innerHTML = chars.map((c, i) => `<div><svg viewBox="0 0 100 100">${draw(i, sil)}</svg>${sil ? "?" : c.name}</div>`).join("");
+  }
+  $("c12_sil").onclick = () => { sil = !sil; grid(); };
+  $("c12_bad").onclick = () => {
+    bad = !bad; $("c12_bad").textContent = bad ? "换回各自的轮廓" : "换成同一轮廓（反例）";
+    grid();
+    $("c12_smsg").textContent = bad ? "现在 5 个角色只有颜色不同。切到剪影再出题——还能认出来吗？" : "各有各的轮廓：即使全黑也能区分。";
+  };
+  function ask() {
+    cur = Math.floor(Math.random() * chars.length); answered = false;
+    $("c12_big").innerHTML = draw(cur, true);
+    $("c12_ans").innerHTML = chars.map((c, i) => `<button class="btn alt" data-a="${i}" style="font-size:1rem">${c.name}</button>`).join("");
+    $$("#c12_ans [data-a]").forEach(b => b.onclick = () => {
+      if (answered) return; answered = true; tot++;
+      const ok = +b.dataset.a === cur; if (ok) { sc++; rk++; } round++;
+      $("c12_sc").textContent = sc; $("c12_tot").textContent = tot;
+      $("c12_big").innerHTML = draw(cur, false);
+      $("c12_smsg").textContent = ok ? "✔ 答对了：" + chars[cur].name + "。" + (bad ? "（运气成分很大：轮廓一样，只能蒙）" : "轮廓够独特。")
+        : "✘ 其实是" + chars[cur].name + "。" + (bad ? "同一轮廓的角色，剪影下根本没法区分，这就是设计问题。" : "再看一遍它的轮廓特征。");
+      if (round === 5) { $("c12_smsg").textContent += " 小结：这 5 题（" + (bad ? "同一轮廓" : "各有轮廓") + "）答对 " + rk + " 题。换一种轮廓再答 5 题对比。"; round = 0; rk = 0; }
+    });
+    $("c12_smsg").textContent = "这是谁？";
+  }
+  $("c12_next").onclick = ask;
+  grid();
+})();
+
+GD.mountQuiz($("quiz"), [
+  { q: "为什么“拾取金币”的音效通常很短、很亮、起音很快？", opts: ["因为短音效更省存储空间", "因为它每分钟会出现很多次：短才不盖住别的声音、不易疲劳；亮而脆才能一听就辨认", "因为玩家喜欢高音", "因为这是游戏界的法律"], a: 1, why: "高频出现的反馈音要“短、可辨、不疲劳”。起音快让它像一次清脆的敲击，一听就知道是什么事件。" },
+  { q: "iMUSE 为什么会被发明出来？", opts: ["为了让音乐占用更少磁盘空间", "因为玩家的行动时间不确定，预先录好的音乐无法随屏幕上的动作无缝过渡", "因为早期声卡太贵", "为了取代作曲家"], a: 1, why: "游戏里不知道玩家何时进入战斗，传统线性配乐无法即时、平滑地跟上。iMUSE 让音乐成为对游戏状态作出反应的系统（Land 与 McConnell，LucasArts，1991 年首用于《猴岛小英雄2》）。" },
+  { q: "“纵向分层”和“横向切换”最本质的区别是？", opts: ["纵向用更多乐器", "横向是换一段音乐（通常在小节线），纵向是同一首曲子逐层开关声部", "横向更贵", "没有区别"], a: 1, why: "横向＝在不同乐段间切换，需对齐节拍；纵向＝同一首曲子的多条同步轨道，按强度加减，所以反应即时、不断流。" },
+  { q: "把角色涂成纯黑剪影后，几个角色看起来一样。这说明什么？", opts: ["剪影测试没意义", "它们的轮廓不够独特，玩家在快节奏下可能认错，应改轮廓而不是只改颜色", "应该让角色更小", "应该加更多细节"], a: 1, why: "剪影可读性测的是轮廓的辨识度。轮廓靠剪影分得开，颜色和细节再来加分；如果只靠颜色区分，色觉缺陷玩家和快速扫视时都会吃亏。" },
+  { q: "为什么不能只用颜色（比如只用红/绿）区分重要信息？", opts: ["红绿不好看", "因为有一部分玩家（例如约 8% 的男性有红绿色觉缺陷）分不清，且在强光/小屏幕下颜色更难辨；应该配合形状、图标、声音等冗余编码", "因为颜色太贵", "因为玩家不喜欢红色"], a: 1, why: "颜色应作为冗余信号之一，而不是唯一信号。8% 是常被引用的数字，不同人群有差别。" },
+  { q: "（为什么）丁伯根的海鸥实验里，一根画了白环的红色长棒为什么能比逼真的鸥头模型引来更多啄击？这对设计有什么启发？", opts: ["因为红色棒子更便宜", "关键特征被夸张到过头时，反应可能比自然物更强（超常刺激），所以设计常放大“让人认出它的那个特征”", "因为雏鸟认不出真鸥头", "因为所有动物都喜欢长棒"], a: 1, why: "Tinbergen 与 Perdeck（1950）的模型实验是超常刺激的经典例子；Whitfield（2009）也提醒原始数据并不像教科书讲的那么干净，所以把它当启发，而不是定律。" }
+]);
+</script>
+</body>
+</html>

@@ -1,0 +1,712 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>第7章 反馈与手感</title>
+<link rel="stylesheet" href="css/style.css">
+<style>
+  #arena{position:relative;height:320px;border:3px solid var(--ink);border-radius:14px;background:#fffdf3;overflow:hidden;user-select:none;touch-action:manipulation}
+  #c7world{position:absolute;inset:0;display:grid;place-items:center}
+  #target{font-size:6rem;cursor:pointer;line-height:1;display:inline-block;position:relative;z-index:2}
+  .part{position:absolute;pointer-events:none;font-size:1.5rem;z-index:3}
+  .dmg{position:absolute;pointer-events:none;font-family:var(--hand);font-size:2.2rem;color:#e5484d;text-shadow:2px 2px 0 #fff;z-index:4;white-space:nowrap}
+  .c7ring{position:absolute;pointer-events:none;border:4px solid #7a5af8;border-radius:50%;width:40px;height:40px;margin:-20px 0 0 -20px;z-index:1}
+  .c7flash{position:absolute;inset:0;background:#fff;opacity:0;pointer-events:none;z-index:5}
+  .c7badge{position:absolute;left:50%;top:10px;transform:translateX(-50%);font-family:var(--hand);font-size:1.3rem;background:var(--ink);color:#fff;padding:0 14px;border-radius:14px;z-index:6;display:none}
+  .c7shadow{position:absolute;left:50%;bottom:58px;width:110px;height:16px;margin-left:-55px;border-radius:50%;background:rgba(0,0,0,.14);z-index:0}
+  .c7tg{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+  .c7row{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:6px 0}
+  .c7row label{font-size:.95rem;cursor:pointer}
+  .c7out{margin-top:8px;padding:8px 12px;border:2px dashed var(--ink);border-radius:10px;background:var(--blue);font-size:.98rem}
+  .c7stage{height:120px;border:3px solid var(--ink);border-radius:12px;background:#fffdf3;display:grid;place-items:center;overflow:hidden;user-select:none;position:relative}
+  #c7fx,#c7coin,#c7acoin{font-size:3.4rem;line-height:1;display:inline-block}
+  .c7lane{position:relative;height:56px;border:2.5px solid var(--ink);border-radius:10px;background:#fffdf3;margin:6px 0;overflow:hidden}
+  .c7lane .sq{position:absolute;left:0;top:5px;width:44px;height:44px;border:3px solid var(--ink);border-radius:10px}
+  .c7lane .lab{position:absolute;right:8px;top:12px;font-family:var(--hand);font-size:1.1rem;color:var(--soft)}
+  .c7lane .goal{position:absolute;right:52px;top:0;bottom:0;border-left:2.5px dashed var(--ink);opacity:.4}
+  .c7meter{height:20px;border:2.5px solid var(--ink);border-radius:10px;background:#fff;overflow:hidden;margin:6px 0}
+  .c7meter i{display:block;height:100%;width:0;background:linear-gradient(90deg,#b6e8a8,#ffe58a,#ffb3c6);transition:width .35s}
+  .c7seg{cursor:pointer}
+  .c7seg:focus{outline:none}
+  .c7seg:focus .c7segbox,.c7seg:hover .c7segbox{stroke-width:6}
+  .c7rt{display:grid;place-items:center;height:110px;border:3px solid var(--ink);border-radius:12px;background:var(--yellow);font-family:var(--hand);font-size:1.5rem;cursor:pointer;user-select:none;touch-action:manipulation;text-align:center;padding:0 10px}
+  .c7rt.wait{background:#ffb3c6}
+  .c7rt.go{background:#8be08b}
+  .c7ok{color:#1d7a38;font-weight:700}
+</style>
+</head>
+<body data-ch="7">
+<main class="wrap">
+  <div class="hero">
+    <div class="txt">
+      <span class="badge">第 7 章</span>
+      <h1>反馈与手感</h1>
+      <p class="sub">同样的规则，为什么有的游戏“好打”，有的像纸片？</p>
+    </div>
+    <svg viewBox="0 0 190 150" class="rough" aria-hidden="true">
+      <circle cx="95" cy="80" r="34" fill="#ffe58a" stroke="#2b2b3a" stroke-width="4"/>
+      <path d="M95 22v16M95 122v16M37 80h16M137 80h16M54 39l11 11M125 110l11 11M136 39l-11 11M54 121l11-11" stroke="#2b2b3a" stroke-width="5" stroke-linecap="round"/>
+    </svg>
+  </div>
+
+  <div class="goals">
+    <h3>学习目标</h3>
+    <span class="time">约 40 分钟</span>
+    <ul>
+      <li>读完你能说出“手感”和“果汁”各指什么，并解释为什么开发者得专门发明这两个词。</li>
+      <li>读完你能解释反馈为什么要快，以及“约 100 毫秒”为什么只是经验值，不是铁律。</li>
+      <li>读完你能区分三种缓动，按倍数而不是等量去设计效果的强度档位，并解释同一个特效重复多次后为什么会变淡、怎么救。</li>
+    </ul>
+  </div>
+
+  <!-- ===== 1 是什么 ===== -->
+  <div class="sec"><span class="n">1</span><h2><span class="tag what">是什么</span>手感：对每个动作的“夸张回应”</h2></div>
+  <div class="withimg">
+    <span data-illus="c07_anatomy"></span>
+    <div>
+      <p>想象两个打砖块。球、挡板、砖块，规则一个字不差。你玩第一个，像在翻幻灯片：球碰到砖块，砖块消失，数字加一，完了。玩第二个，球一碰砖块就“啪”地弹开，砖块先抖一下再碎成几片，挡板接球时还被压扁了一点点。</p>
+      <p>你说不上哪里好，只觉得第二个“有劲”。这种有劲，业内叫<span class="term" tabindex="0" data-def="手感（game feel）：玩家操作与游戏回应之间那种好不好打、跟不跟手的主观触感。">手感</span>。其中那些不改规则、只靠即时又夸张的回应让操作变爽的小效果，有个很形象的名字：<span class="term" tabindex="0" data-def="Juice（果汁）：不改变规则、只靠即时、夸张的反馈（动画、声音、粒子等）让操作更爽的小效果。">Juice</span>，果汁。</p>
+      <p>说到底就是一句话：玩家做了一个动作，游戏要回应，而且回应要<b>够快、够明显、够有分量</b>。没有这个回应，按钮就只是个切换开关。</p>
+    </div>
+  </div>
+  <div class="card">
+    <svg viewBox="0 0 700 236" width="100%" role="img" aria-label="没有反馈的方块和有反馈的方块对比：左边按下后方块毫无变化，右边按下后方块变形、冒粒子、发出声音">
+      <g class="rough" stroke="#2b2b3a" stroke-width="4">
+        <rect x="60" y="80" width="80" height="80" fill="#ddd"/>
+        <path d="M190 120 H270" fill="none"/>
+        <path d="M270 120 l-14 -9 v18z" fill="#2b2b3a"/>
+        <rect x="320" y="80" width="80" height="80" fill="#ddd"/>
+        <path d="M450 120 H510" fill="none"/><path d="M510 120 l-14 -9 v18z" fill="#2b2b3a"/>
+        <rect x="548" y="66" width="96" height="96" fill="#ffe58a" transform="rotate(-8 596 114)"/>
+        <g fill="none" stroke-linecap="round"><path d="M662 52 l12 -12 M672 100 h18 M654 150 l12 12 M528 52 l-8 -14"/></g>
+      </g>
+      <g font-size="22" text-anchor="middle" fill="#2b2b3a"><text x="100" y="48">按下</text><text x="360" y="48">按下</text><text x="230" y="102">啪</text><text x="480" y="100">啪！！</text></g>
+      <g font-size="18" text-anchor="middle" fill="#2b2b3a">
+        <text x="150" y="224">没有反馈：像个切换开关</text><text x="520" y="224">有反馈：变形、粒子、声音</text>
+      </g>
+    </svg>
+  </div>
+  <div class="eg" data-ic="🪙"><span data-illus="c07_coinchain"></span><div class="egt"><b>连续吃金币</b>：“叮”的音调一次比一次高，角色轻轻一跳，你立刻知道自己正在连续得分。规则没变，只是回应多说了一句话。</div></div>
+  <div class="eg" data-ic="🛗"><span data-illus="c07_elevator"></span><div class="egt"><b>电梯按钮的灯</b>：按下去灯亮了，你就放心站着等；灯不亮，你会忍不住再按一次。那一次多余的按键，就是缺反馈的症状。</div></div>
+  <div class="eg bad" data-ic="💥"><span data-illus="c07_latefire"></span><div class="egt"><b>爆炸很炫，但晚了半秒</b>：按下开火键，过了半秒大爆炸才出来。画面再华丽，操作也还是“软”的。<b>果汁救不了迟钝。</b></div></div>
+
+  <!-- ===== 2 是什么：一击的时间线 ===== -->
+  <div class="sec"><span class="n">2</span><h2><span class="tag what">是什么</span>一次“命中”，被拆成四小段</h2></div>
+  <p>把一次命中放慢看，它其实是一条很短的时间线：先是玩家要被“确认”，接着常常有一瞬间的停顿，然后是挤压和回弹，最后是余震和淡出。每一段干的事不一样，出问题的地方也不一样。点点下面的图，看每一段在做什么。</p>
+  <div class="card">
+    <svg viewBox="0 0 700 290" width="100%" role="img" aria-label="一次打击的反馈时间线，可点击：确认、顿帧、挤压回弹、余震淡出四段">
+      <text x="350" y="30" font-size="20" text-anchor="middle" fill="#2b2b3a">一次“命中”的时间线（示意，时长因游戏而异）</text>
+      <g class="c7seg" data-i="0" tabindex="0" role="button" aria-label="确认段"><g class="rough" stroke="#2b2b3a" stroke-width="3.5"><rect class="c7segbox" x="30" y="56" width="130" height="90" fill="#b6e8a8"/></g><text x="95" y="96" font-size="19" text-anchor="middle" fill="#2b2b3a">确认</text><text x="95" y="126" font-size="16" text-anchor="middle" fill="#2b2b3a">约 100ms 内</text></g>
+      <g class="c7seg" data-i="1" tabindex="0" role="button" aria-label="顿帧段"><g class="rough" stroke="#2b2b3a" stroke-width="3.5"><rect class="c7segbox" x="160" y="56" width="90" height="90" fill="#ffb3c6"/></g><text x="205" y="96" font-size="19" text-anchor="middle" fill="#2b2b3a">顿帧</text><text x="205" y="126" font-size="16" text-anchor="middle" fill="#2b2b3a">几十 ms</text></g>
+      <g class="c7seg" data-i="2" tabindex="0" role="button" aria-label="挤压回弹段"><g class="rough" stroke="#2b2b3a" stroke-width="3.5"><rect class="c7segbox" x="250" y="56" width="200" height="90" fill="#ffe58a"/></g><text x="350" y="96" font-size="19" text-anchor="middle" fill="#2b2b3a">挤压 → 回弹</text><text x="350" y="126" font-size="16" text-anchor="middle" fill="#2b2b3a">缓动 · 过冲</text></g>
+      <g class="c7seg" data-i="3" tabindex="0" role="button" aria-label="余震淡出段"><g class="rough" stroke="#2b2b3a" stroke-width="3.5"><rect class="c7segbox" x="450" y="56" width="220" height="90" fill="#a8dcf0"/></g><text x="560" y="96" font-size="19" text-anchor="middle" fill="#2b2b3a">余震 · 淡出</text><text x="560" y="126" font-size="16" text-anchor="middle" fill="#2b2b3a">粒子、飘字、声音尾音</text></g>
+      <g class="rough" stroke="#2b2b3a" stroke-width="3.5" fill="none" stroke-linecap="round"><path d="M30 190 H670"/><path d="M30 178 v24"/><path d="M160 180 v20"/></g>
+      <text x="30" y="228" font-size="17" fill="#2b2b3a">按下 t = 0</text>
+      <text x="670" y="228" font-size="17" text-anchor="end" fill="#2b2b3a">时间 →</text>
+      <text x="350" y="268" font-size="17" text-anchor="middle" fill="#2b2b3a">👆 点任意一段，下面会解释它为什么在这儿</text>
+    </svg>
+    <div class="c7out" id="c7segmsg">先点“确认”：玩家按下按钮后，第一件要发生的事。</div>
+  </div>
+
+  <!-- ===== 3 发明故事 ===== -->
+  <div class="sec"><span class="n">3</span><h2><span class="tag origin">发明故事</span>为什么要给“手感”起个名字？</h2></div>
+  <div class="story">
+    <h3>两个规则一样的游戏，玩起来天差地别</h3>
+    <div class="withimg rev">
+      <span data-illus="c07_twobreak"></span>
+      <div>
+        <p>想象你是个小团队的开发者，你和朋友各做了一个打砖块，规则一模一样。他那个版本却明显更好玩。你问他：“你到底改了什么？”他挠挠头：“就是……更爽？”</p>
+        <p>这个问题在很长时间里都没有好答案。“爽”被当成一种玄学：要么留给最后上色的美术和音效去补，要么等玩家抱怨“软”“飘”“没劲”才发现出了问题。没有共同的词，就没法排查，更没法教给新人。</p>
+        <p>转机来自一个朴素的想法：手感可以<b>拆开、命名、一项一项叠上去再测</b>。动画行业早就这么干过，人机交互行业也积累了“多久算即时”的经验数字，游戏开发者要做的，是把这两条线接起来。</p>
+      </div>
+    </div>
+    <div class="timeline">
+      <div class="ev hasimg"><span data-illus="c07_disney"></span><div><b class="yr">1930 年代起</b>　迪士尼的动画师摸索出“挤压与拉伸”：球落地时压扁，弹起时拉长，物体立刻显得有重量、有弹性。1981 年，Frank Thomas 与 Ollie Johnston 在《The Illusion of Life》里把这些手法总结成 12 条原则。</div></div>
+      <div class="ev hasimg"><span data-illus="c07_response"></span><div><b class="yr">1968 / 1993</b>　Robert B. Miller 在 1968 年讨论人和计算机对话时该多快回应；Jakob Nielsen 1993 年在《Usability Engineering》里把这类经验总结成 0.1 秒、1 秒、10 秒三个界限。</div></div>
+      <div class="ev hasimg"><span data-illus="c07_swinkbook"></span><div><b class="yr">2008</b>　Steve Swink 出版《Game Feel: A Game Designer's Guide to Virtual Sensation》（Morgan Kaufmann；有的书目标成 2009 年）。书里把手感拆成输入、响应、情境、润色、隐喻、规则六个方面来分析，游戏界第一次有了一套系统的词汇。</div></div>
+      <div class="ev hasimg"><span data-illus="c07_juiceit"></span><div><b class="yr">2012</b>　Martin Jonasson 与 Petri Purho 在 GDC Europe 上做了演讲《Juice it or lose it》：拿一个打砖块克隆，现场一项项叠上缓动、挤压拉伸、震屏、粒子和音效，规则一动不动，体验却完全不同。据报道，更早的版本同年 5 月在 Nordic Game Jam 上讲过。</div></div>
+      <div class="ev hasimg"><span data-illus="c07_shake"></span><div><b class="yr">2013 年前后</b>　Vlambeer 的 Jan Willem Nijman 做了《The Art of Screenshake》，把“屏幕震动”这类细节讲成一份可以照着做的清单：每加一项都让游戏更有冲劲。（具体的演讲场合我没能核实。）</div></div>
+    </div>
+    <p>这些东西合起来，“手感”和“果汁”才从一句黑话变成可以讨论的工具。顺带一提，“juice”这个词在这些演讲之前就在开发者圈子里流传了，最早出处我没查到，这里不下结论。</p>
+  </div>
+  <div class="board">
+    <b>先自己试，再看历史上的做法</b>
+    <p class="small">这枚金币被拾取时，目前<b>什么也不会发生</b>。请你用下面的旋钮，先把它调到你觉得“有手感”，点几次“拾取”感受一下；满意了再点“对照 2012 年的做法”。</p>
+    <label class="ctl">弹跳（挤压+回弹） <output id="c7o_bo">0</output></label><input type="range" id="c7o_b" min="0" max="100" value="0">
+    <label class="ctl">粒子数量 <output id="c7o_po">0</output></label><input type="range" id="c7o_p" min="0" max="24" value="0">
+    <label class="ctl">屏幕震动 <output id="c7o_so">0</output></label><input type="range" id="c7o_s" min="0" max="12" value="0">
+    <label class="ctl">音效（0 = 无，其余 = 音调随连击升高的力度） <output id="c7o_ao">0</output></label><input type="range" id="c7o_a" min="0" max="10" value="0">
+    <div class="c7stage" id="c7o_stage" style="height:150px"><span id="c7coin">🪙</span></div>
+    <div class="c7row"><button class="btn" id="c7o_go">🪙 拾取</button><button class="btn green" id="c7o_cmp">对照 2012 年的做法</button><button class="btn pink" id="c7o_reset">全部归零</button></div>
+    <div class="c7out" id="c7o_out">先拖拖旋钮、点几次拾取。你会发现：规则一个字没改，感觉却不同。</div>
+  </div>
+  <div class="sticky">试试看：让四个旋钮都大于 0，但没有一个超过一半，然后点“对照”。<span class="c7ok" id="c7t1" hidden> ✅ 完成：每一项都有一点，叠起来就有了生气。</span></div>
+
+  <!-- ===== 4 为什么：快 ===== -->
+  <div class="sec"><span class="n">4</span><h2><span class="tag why">为什么成立</span>反馈为什么要快：因果感和感知时间窗</h2></div>
+  <div class="withimg">
+    <span data-illus="c07_lightswitch"></span>
+    <div>
+      <p>你按下开关，灯亮了。你从来不会怀疑“刚才那下是不是我按的”。可要是灯过了半秒才亮，你多半会下意识再按一次，甚至怀疑是不是坏了。</p>
+      <p>游戏里的“按键 → 反应”是同一回事。反馈一旦拖得太久，玩家就不再觉得“是我让它发生的”，操作也就“软”了。那到底多快才算快？</p>
+    </div>
+  </div>
+  <div class="why-box">
+    <h3>人的大脑会把“我做的”和“它发生的”绑在一起，但只在一个很窄的时间窗里</h3>
+    <p>比利时心理学家 Albert Michotte 在 20 世纪中叶做过一组经典实验：屏幕上一个方块撞向另一个，后者立刻动起来，人们会看成“前一个把它撞飞了”；如果后者晚一点才动，这种“撞”的印象就消失了，变成两个各动各的东西。因果感需要两件事贴得很近。</p>
+    <p>2002 年，Patrick Haggard 等人发现了一个相关的现象：当按键是你<b>主动</b>做的，你会觉得按键和随后的声音靠得比实际更近，这叫“意向绑定”。换句话说，“是我做的”这个感觉本身会把动作和结果拉到一起。（它的解释和测量方式学界仍有争论。）</p>
+    <p>人机交互里流传最广的数字来自 Miller（1968）和 Nielsen（1993）：约 0.1 秒以内，人觉得是“即时”的；约 1 秒以内，思路不会被打断；到 10 秒左右，注意力就接近极限了。广播行业给口型同步定的 ITU-R BT.1359 建议书，也给出过类似量级的数字：声音比画面早约 45 毫秒、或晚约 125 毫秒，观众就开始察觉（数字来自对该建议书的二手介绍，我没有核对原文，它是依据新闻播报的画面测的）。</p>
+    <p>这里有个有意思的点。大规模测量显示，成年人对一个突然出现的光点做出按键反应，平均要花 230 毫秒出头。你根本来不及在 100 毫秒内“反应”，却能察觉到自己的动作和结果之间差了 100 毫秒。可见快不快，比的不是你的反应速度，而是大脑有没有把“我做的”和“它发生的”接上。</p>
+    <p><b>100 毫秒是常见的经验值，不是物理定律</b>。节奏游戏和格斗游戏对几十毫秒的差别就很敏感，点一个菜单则宽容得多；屏幕、声音、输入设备的延迟还会一层层叠加。</p>
+    <div class="src">出处：Albert Michotte，《La perception de la causalité》（1946；英译本《The Perception of Causality》，1963）；Haggard, Clark &amp; Kalogeras，“Voluntary action and conscious awareness”，《Nature Neuroscience》5: 382–385（2002）；Miller，AFIPS Fall Joint Computer Conference（1968）；Nielsen，《Usability Engineering》（1993，这些数字也被批评并非来自严格实验）；Woods 等，“Factors influencing the latency of simple reaction time”，《Frontiers in Human Neuroscience》（2015），1469 名 18–65 岁成人，视觉简单反应时平均约 231 ms（扣除设备延迟后约 213 ms）。</div>
+  </div>
+  <div class="board">
+    <b>小实验一：你的反应时间</b>
+    <p class="small">点方块开始。等它变绿，立刻点一下。测满 5 次，看看你的平均数，再想想：你的反应时间比“100 毫秒”慢多少？（浏览器本身有几十毫秒以内的额外延迟，结果只作参考。）</p>
+    <div class="c7rt" id="c7rt_box" tabindex="0" role="button">点这里开始</div>
+    <div class="c7out" id="c7rt_msg">还没有数据。</div>
+  </div>
+  <div class="board">
+    <b>小实验二：测一测你的“迟钝分界线”</b>
+    <p class="small">点“点我”，木桩会在设定的延迟之后弹一下、响一声，然后你选“有手感”或“迟钝”。勾选“盲测”则每次随机延迟，投票后才揭晓。测 6 次以上、两种感受都选到，就会估计出你的分界。</p>
+    <label class="ctl">反馈延迟 <output id="c7do">100</output> ms</label>
+    <input type="range" id="c7d" min="0" max="600" step="10" value="100">
+    <div class="c7row"><label><input type="checkbox" id="c7blind"> 盲测（随机延迟，投票后才揭晓）</label></div>
+    <div class="c7stage"><span id="c7fx">🪵</span></div>
+    <div class="c7row">
+      <button class="btn" id="c7btn">👊 点我</button>
+      <button class="btn green" id="c7good" disabled>有手感</button>
+      <button class="btn pink" id="c7bad" disabled>迟钝</button>
+      <button class="btn alt" id="c7vreset">清空记录</button>
+      <span class="stat">已记录 <b id="c7n">0</b></span>
+    </div>
+    <div class="msg" id="c7msg" style="font-size:1.05rem;font-family:var(--body)">先点一下“点我”。</div>
+    <svg id="c7sc" viewBox="0 0 580 148" width="100%" role="img" aria-label="不同延迟下你的判断散点图"></svg>
+    <div class="c7out" id="c7est">还没有足够的数据。绿点 = 有手感，红点 = 迟钝。</div>
+  </div>
+  <div class="sticky">试试看：测满 6 次、两种感受都选到，得出你自己的“迟钝分界线”，再和 100 ms 比一比。<span class="c7ok" id="c7t2" hidden> ✅ 完成：你得到了自己的分界线。</span></div>
+  <div class="eg" data-ic="🥁"><span data-illus="c07_rhythm"></span><div class="egt"><b>节奏游戏里声音慢半拍</b>：画面里音符已经落到判定线，声音却晚了一点才响。你会觉得“我按歪了”，其实是设备延迟在冤枉你。</div></div>
+  <div class="eg" data-ic="🖱️"><span data-illus="c07_triplesubmit"></span><div class="egt"><b>网页按钮点了没反应</b>：你连点三次，结果提交了三张订单。反馈没跟上，人就用“再按一次”去补。</div></div>
+  <div class="eg bad" data-ic="🧮"><span data-illus="c07_batched"></span><div class="egt"><b>为了省性能，把反馈攒到最后</b>：把每次命中的反馈都放到下一帧甚至更晚集中处理。数据一点没错，可玩家感觉到的是“我打中了吗？”。快不是可选项。</div></div>
+
+  <!-- ===== 5 为什么：缓动 ===== -->
+  <div class="sec"><span class="n">5</span><h2><span class="tag why">为什么成立</span>预测加工与缓动：为什么“夸张一点”反而更对劲</h2></div>
+  <div class="withimg rev">
+    <span data-illus="c07_cup"></span>
+    <div>
+      <p>你拿起一个以为装满了水的杯子，结果它是空的，手会“飘”一下，感觉怪怪的。你的手事先就为一杯水准备好了力气，现实和准备对不上，这个落差让你心里一惊。</p>
+      <p>反过来，东西的反应如果和你的意图吻合，再带上一点“用力过猛”的味道，你会觉得自己在<b>掌控</b>它。那个推一下就“嗖”地冲出去、又稳稳停住的东西，手感就是好。</p>
+      <p>认知科学里有一类理论，可以借来解释这件事。</p>
+    </div>
+  </div>
+  <div class="why-box">
+    <h3>大脑一直在预测，缓动函数是把“预期”画成曲线的工具</h3>
+    <p><span class="term" tabindex="0" data-def="预测加工：认知科学中的一类理论，认为大脑不断预测感官输入，并用预测误差来更新自己。">预测加工</span>（预测编码）认为，大脑并不是被动接收感官信号，而是不断<b>预测</b>下一刻会感觉到什么，再用“预测误差”修正自己。它和核心循环里讲的预测误差是同一家族的想法。借来解释手感：回应和你的动作意图吻合，你觉得“它听我的”；再多一点夸张，结果比预期稍微“有劲”一点，常常更让人觉得有分量。</p>
+    <p>要让这份夸张可控，就用<span class="term" tabindex="0" data-def="缓动函数（easing）：规定一个量随时间变化的速度曲线，如先快后慢、冲过头再回弹。">缓动函数</span>：它决定一个动作的速度怎么随时间变化。<b>线性</b>是匀速，像机器；<b>缓出</b>起步就快、快到位时减速；<b>过冲回弹</b>（<span class="term" tabindex="0" data-def="过冲（overshoot）：位置越过目标值再回弹，常用来表现弹性和冲击。">overshoot</span>）会冲过目标再弹回来。动画师说的<span class="term" tabindex="0" data-def="挤压与拉伸（squash and stretch）：让物体在受力时压扁、运动时拉长，表现重量与弹性，是传统动画的基本原则之一。">挤压与拉伸</span>，其实是同一种思路。</p>
+    <p>预测加工是认知科学里有影响力、但仍有争议的框架；“夸张等于掌控感”是游戏设计者借来的类比和经验，不是被严格证明的定理。</p>
+    <div class="src">出处：预测编码相关研究常提到 Rao &amp; Ballard（1999）、Karl Friston，Andy Clark（2013）做过综述；缓动方程广泛用于动画和交互，常追溯到 Robert Penner 整理的一套公式；挤压与拉伸见 Thomas &amp; Johnston（1981）。</div>
+  </div>
+  <div class="board">
+    <b>小实验：同一个动作，三种缓动</b>
+    <p class="small">三个方块都从左边运动到右边虚线处。点“同时发动”看全景，或单独发动某一条并读说明。你也可以调时长和回弹幅度，下面的曲线图会同步变化。</p>
+    <label class="ctl">动作时长 <output id="c7duro">400</output> ms</label>
+    <input type="range" id="c7dur" min="150" max="900" step="10" value="400">
+    <label class="ctl">过冲幅度（只影响第三条） <output id="c7oso">1.7</output></label>
+    <input type="range" id="c7os" min="0.5" max="3" step="0.1" value="1.7">
+    <div class="c7lane"><div class="sq" id="c7sq_lin" style="background:#a8dcf0"></div><span class="goal"></span><span class="lab">线性</span></div>
+    <div class="c7lane"><div class="sq" id="c7sq_out" style="background:#b6e8a8"></div><span class="goal"></span><span class="lab">缓出</span></div>
+    <div class="c7lane"><div class="sq" id="c7sq_back" style="background:#ffb3c6"></div><span class="goal"></span><span class="lab">过冲回弹</span></div>
+    <div class="c7row"><button class="btn" id="c7go">▶ 同时发动</button><button class="btn alt" data-k="lin">只发动线性</button><button class="btn alt" data-k="out">只发动缓出</button><button class="btn alt" data-k="back">只发动过冲</button></div>
+    <svg id="c7cv" viewBox="0 0 610 240" width="100%" role="img" aria-label="三种缓动函数曲线"></svg>
+    <div class="c7out" id="c7pickmsg">点一个“只发动”看解释。没有标准答案，取决于你想表达什么。</div>
+  </div>
+  <div class="sticky">试试看：三种缓动各单独发动一次，然后说说哪一条最先到位、哪一条最后才稳住。<span class="c7ok" id="c7t3" hidden> ✅ 完成：三条都看过了。缓出最先到位，过冲回弹最后才稳住。</span></div>
+  <div class="eg" data-ic="📋"><span data-illus="c07_menu"></span><div class="egt"><b>菜单用“缓出”滑进来</b>：一开始就动，到位时轻轻停住，既干脆又不生硬。每一帧挪的距离越来越短，就是缓出。</div></div>
+  <div class="eg" data-ic="🚪"><span data-illus="c07_cabinet"></span><div class="egt"><b>带缓冲器的柜门</b>：先快后慢地合上，不会“砰”一声撞停。你的手对这两种回应的预期完全不同，前一种让人觉得柜子是好东西。</div></div>
+  <div class="eg bad" data-ic="📶"><span data-illus="c07_progressbar"></span><div class="egt"><b>进度条用“过冲回弹”</b>：它先冲过 100% 再退回来，玩家会以为出错了。需要精确、均匀的东西，线性反而最好。</div></div>
+
+  <!-- ===== 6 为什么：比例 ===== -->
+  <div class="sec"><span class="n">6</span><h2><span class="tag why">为什么成立</span>感知的非线性：为什么特效强度要按比例设计</h2></div>
+  <div class="withimg">
+    <span data-illus="c07_candle"></span>
+    <div>
+      <p>在漆黑的房间里点亮一支蜡烛，你立刻察觉；在正午的太阳下再点一支，什么变化也没有。两次都是“多了一支蜡烛的亮度”，感受却天差地别。</p>
+      <p>这件事对做特效的人很要紧。你把震屏幅度从 2 像素调到 4 像素，玩家一眼看出变强了；从 20 调到 22，同样多了 2 像素，几乎没人看得出。</p>
+      <p>原因是人对变化的敏感，取决于变化占原来强度的<b>比例</b>。</p>
+    </div>
+  </div>
+  <div class="why-box">
+    <h3>韦伯—费希纳定律（简版）</h3>
+    <p>19 世纪，德国生理学家 Ernst Weber 测量人能察觉的<b>最小变化</b>（<span class="term" tabindex="0" data-def="最小可觉差（JND）：刚好能被察觉的最小刺激变化量。">最小可觉差</span>），发现它大致与原来的刺激强度<b>成正比</b>。这就是<span class="term" tabindex="0" data-def="韦伯定律：ΔI / I ≈ 常数，需要的变化量与原强度成比例（在中等强度附近近似成立）。">韦伯定律</span>：ΔI / I ≈ 常数。Gustav Fechner 在 1860 年进一步提出，感受到的强度大致与刺激强度的<b>对数</b>成正比。</p>
+    <p>对设计的启示是：特效、音量、震动的“档位”应当按<b>倍数</b>递增，而不是每档加一个固定量。从 2 到 4 是翻倍，一眼可见；从 20 到 22 只多了 10%，常常看不出来。</p>
+    <p>它只是近似：在很弱或很强的刺激处会偏离；S. S. Stevens 在 1957 年也提出用幂函数描述感受，不少人认为更合适。两者都是“解释”，不是让你照抄的公式。</p>
+    <div class="src">出处：Ernst Weber（19 世纪的感觉研究）；Gustav Fechner，《Elemente der Psychophysik》（1860）；S. S. Stevens，“On the psychophysical law”，《Psychological Review》64: 153–181（1957）。</div>
+  </div>
+  <div class="card">
+    <svg viewBox="0 0 700 316" width="100%" role="img" aria-label="震动幅度的两种档位：左边等量递增 2、4、6、8 像素，后几档难分辨；右边倍数递增 2、4、8、16 像素，一眼分清">
+      <g class="rough" stroke="#2b2b3a" stroke-width="3.5">
+        <path d="M40 240 H320" fill="none"/><path d="M390 240 H670" fill="none"/>
+        <rect x="60" y="224" width="40" height="16" fill="#ffb3c6"/><rect x="120" y="208" width="40" height="32" fill="#ffb3c6"/><rect x="180" y="192" width="40" height="48" fill="#ffb3c6"/><rect x="240" y="176" width="40" height="64" fill="#ffb3c6"/>
+        <rect x="410" y="224" width="40" height="16" fill="#b6e8a8"/><rect x="470" y="208" width="40" height="32" fill="#b6e8a8"/><rect x="530" y="176" width="40" height="64" fill="#b6e8a8"/><rect x="590" y="112" width="40" height="128" fill="#b6e8a8"/>
+      </g>
+      <g font-size="18" fill="#2b2b3a" text-anchor="middle">
+        <text x="180" y="34" font-size="20">等量递增：2、4、6、8 px</text><text x="530" y="34" font-size="20">倍数递增：2、4、8、16 px</text>
+        <text x="180" y="62" font-size="16">后几档只差 33%、25%，难分辨</text><text x="530" y="62" font-size="16">每档是上一档的 2 倍，一眼分清</text>
+        <text x="80" y="264">2</text><text x="140" y="264">4</text><text x="200" y="264">6</text><text x="260" y="264">8</text>
+        <text x="430" y="264">2</text><text x="490" y="264">4</text><text x="550" y="264">8</text><text x="610" y="264">16</text>
+        <text x="180" y="292">小 → 大（四档）</text><text x="530" y="292">小 → 大（四档）</text>
+      </g>
+    </svg>
+  </div>
+  <div class="eg" data-ic="📳"><span data-illus="c07_shake3"></span><div class="egt"><b>震屏分三档</b>：普攻震 2 像素，重击 8，暴击 16。玩家不用看提示，一震就知道发生了哪种事件。</div></div>
+  <div class="eg" data-ic="📱"><span data-illus="c07_brightness"></span><div class="egt"><b>手机亮度滑块</b>：从 5% 调到 10% 差别巨大，从 85% 调到 90% 几乎无感。音量设置按分贝而不是线性分刻度，也是同一个道理。</div></div>
+  <div class="eg bad" data-ic="🔢"><span data-illus="c07_fontgrow"></span><div class="egt"><b>伤害数字每档大两号</b>：20 号、22 号、24 号，没人分得出。大招看起来和普攻没区别。</div></div>
+
+  <!-- ===== 7 为什么：享乐适应 ===== -->
+  <div class="sec"><span class="n">7</span><h2><span class="tag why">为什么成立</span>享乐适应：为什么同一个特效，捡到第一百次就不香了</h2></div>
+  <div class="withimg rev">
+    <span data-illus="c07_fadecoin"></span>
+    <div>
+      <p>你还记得第一次捡到金币时那一声“叮”吗？现在再想想第一百次。声音一模一样，画面一模一样，可你已经没有任何感觉了。</p>
+      <p>这对手感设计是个麻烦。你辛辛苦苦做了一套漂亮的反馈，玩家玩半小时就对它“免疫”了。你再往上加码，只会陷入一场越来越贵的军备竞赛。</p>
+      <p>这不是你的反馈做得不好，而是人的神经系统天生就这样。</p>
+    </div>
+  </div>
+  <div class="why-box">
+    <h3>习惯化与享乐适应：重复的刺激会变淡，基准线会搬家</h3>
+    <p>最底层的是<b>习惯化</b>：对反复出现、又没有后果的刺激，神经反应会越来越弱。1966 年，Richard Thompson 与 William Spencer 把这类现象系统总结为一组规律，其中包括“刺激越是反复，反应越弱”，以及“换一个新刺激，反应就会回来”。</p>
+    <p>再往上是心理层面的<span class="term" tabindex="0" data-def="享乐适应：人对反复出现的快乐（或痛苦）会逐渐适应，感受回落到接近原来的基准线，也叫“享乐跑步机”。">享乐适应</span>。1971 年，Philip Brickman 和 Donald Campbell 提出“享乐跑步机”的比喻：我们跑得再快，快乐的基准线也跟着往前挪。1978 年 Brickman 等人对伊利诺伊州彩票得主和事故致残者做了调查，发现几个月后两组人的幸福感都向对照组靠拢，这成了最常被引用的证据。</p>
+    <p>可这个结论后来被修正了。Richard Lucas 2007 年利用德国和英国的大规模追踪数据指出，对失业、致残这类重大事件，适应往往并不彻底。所以别把它当成“人什么都能习惯”的铁律；更稳妥的说法是：<b>重复的小刺激，肯定会变淡</b>。</p>
+    <p>对设计者的启示是：别靠加码硬撑。给反馈<b>留变化</b>（音高、火花的样子每次略有不同）、让大事件比小事件大得多（上一节的倍数档位）、让玩家偶尔歇一下，爽感才会回来。</p>
+    <div class="src">出处：Thompson &amp; Spencer，“Habituation: A model phenomenon for the study of neuronal substrates of behavior”，《Psychological Review》73(1): 16–43（1966）；Brickman &amp; Campbell，“Hedonic relativism and planning the good society”，载 M. H. Appley 编《Adaptation-level theory》，Academic Press（1971）：287–302；Brickman, Coates &amp; Janoff-Bulman，“Lottery winners and accident victims: Is happiness relative?”，《Journal of Personality and Social Psychology》36(8): 917–927（1978，样本很小）；Lucas，“Adaptation and the set-point model of subjective well-being”，《Current Directions in Psychological Science》16: 75–79（2007）。</div>
+  </div>
+  <div class="board">
+    <b>小实验：连续拾取，看爽度怎么掉</b>
+    <p class="small">连续点“拾取”，看下面“爽度”怎么变。然后勾上“加变化”，每次音高和火花都略有不同，再继续点。“歇一会儿”会让你的感觉恢复。<b>这是演示用的示意模型，不是实验数据。</b></p>
+    <div class="c7stage" style="height:110px"><span id="c7acoin">🪙</span></div>
+    <div class="c7row"><button class="btn" id="c7a_go">🪙 拾取</button><label><input type="checkbox" id="c7a_var"> 加变化（每次略有不同）</label><button class="btn alt" id="c7a_rest">☕ 歇一会儿</button><button class="btn pink" id="c7a_reset">重来</button><span class="stat">拾取 <b id="c7a_n">0</b> 次</span><span class="stat">当前爽度 <b id="c7a_v">–</b></span></div>
+    <svg id="c7a_sv" viewBox="0 0 580 144" width="100%" role="img" aria-label="每次拾取的爽度柱状图"></svg>
+    <div class="c7out" id="c7a_msg">点“拾取”开始。</div>
+  </div>
+  <div class="sticky">试试看：先不加变化，连点到爽度掉到 20% 以下；再勾上“加变化”，让爽度回到 60% 以上。<span class="c7ok" id="c7t4" hidden> ✅ 完成：留变化，比一味加码管用。</span></div>
+  <div class="eg" data-ic="📱"><span data-illus="c07_newphone"></span><div class="egt"><b>新手机的兴奋</b>：第一天爱不释手，第一百天随手划着。手机没变，你的基准线变了。</div></div>
+  <div class="eg" data-ic="🎼"><span data-illus="c07_varied"></span><div class="egt"><b>每次略有不同的拾取</b>：音高在一个范围内随机浮动，火花的形状也换着来。大脑每次都当它是个“新刺激”。</div></div>
+  <div class="eg bad" data-ic="🌋"><span data-illus="c07_samefx"></span><div class="egt"><b>每一下都是大招</b>：为了持续刺激，每次命中都放最大号特效。结果屏幕被淹没，真正的重击反而看不出来。</div></div>
+
+  <!-- ===== 8 怎么用 招牌 ===== -->
+  <div class="sec"><span class="n">8</span><h2><span class="tag how">怎么用</span>动手玩：给木桩加果汁</h2></div>
+  <p>点击木桩打它。先<b>关掉所有效果</b>打几下，再<b>逐个打开</b>开关，看下面的说明和“果汁指数”的变化。每个开关都做得很夸张，方便你看清它到底在干什么。</p>
+  <div class="board">
+    <div class="c7tg" id="toggles"></div>
+    <div class="c7row"><label><input type="checkbox" id="c7red"> 减弱动态（模拟无障碍选项：震动、闪白减弱或关闭）</label></div>
+    <div id="arena">
+      <div id="c7world"><span class="c7shadow" id="c7shadow"></span><span id="target">🪵</span></div>
+      <div class="c7flash" id="c7flash"></div>
+      <div class="c7badge" id="c7badge">⏸ 顿帧</div>
+    </div>
+    <div class="c7meter"><i id="c7mi"></i></div>
+    <div class="c7row"><span class="stat">命中 <b id="hits">0</b></span><span class="stat">连击 <b id="c7combo">0</b></span><span class="stat">果汁指数 <b id="c7ji">0/8</b></span>
+      <button class="btn alt" id="allon">全开！</button><button class="btn pink" id="alloff">全关</button><button class="btn green" id="c7rnd">随机一组</button></div>
+    <div class="c7out" id="c7cap">现在全部关闭：点木桩，只有“命中”数字在变，像个切换开关。</div>
+  </div>
+  <div class="sticky">试试看：打开至少 5 种效果（记得开“飘字”），连续点木桩，打出第 5 下的暴击。<span class="c7ok" id="c7t5" hidden> ✅ 完成：多层反馈叠在一起，暴击比普通命中更醒目。</span></div>
+  <div class="grid3">
+    <div class="card y mini"><div class="ico">🔊</div><h3>声音</h3><p>最便宜、最有效的反馈。</p></div>
+    <div class="card b mini"><div class="ico">📳</div><h3>震动 / 顿帧</h3><p>让打击有“重量”。<span class="term" tabindex="0" data-def="顿帧（hit stop）：命中瞬间让画面或角色极短暂停顿，强化撞击的分量感。">顿帧</span>：命中时停几十毫秒。</p></div>
+    <div class="card p mini"><div class="ico">✨</div><h3>粒子 / 飘字</h3><p>把结果“视觉化”，爽。</p></div>
+  </div>
+
+  <div class="misc">
+    <h3>常见误区</h3>
+    <ul>
+      <li><b>“特效越多手感越好。”</b>不对：过量会遮挡信息、造成不适；重点是即时、有分量、与事件重要性成比例。</li>
+      <li><b>“手感只是美术和音效的事。”</b>输入延迟、帧率、判定宽容度、动作的缓动曲线同样关键。</li>
+      <li><b>“100 毫秒是铁律。”</b>它是常见的经验阈值，随任务、设备和玩家而异。</li>
+      <li><b>“缓动只是让动画好看。”</b>它直接改变动作给人的重量感和反应速度的感觉。</li>
+      <li><b>“特效不够就加码。”</b>重复的刺激本来就会变淡，加码只会更贵；留变化、拉开档位更有效。</li>
+      <li><b>“先做完内容，最后再加果汁。”</b>手感是“玩起来”的基础，晚加往往要改动大量代码与数值；很多团队在原型阶段就先把它做对。</li>
+    </ul>
+  </div>
+
+  <div class="reflect">
+    <h3>反思与争议</h3>
+    <p>“反馈要快”也有边界：为了表现重量，顿帧恰恰是<b>故意让画面慢一点点</b>；一些游戏会刻意用延迟来制造紧张或蓄力感。所以更准确的说法是：<b>玩家的操作要被即时确认，之后的表现节奏可以设计</b>。</p>
+    <p>预测加工的解释是设计者借来的类比；韦伯—费希纳定律只在中等强度附近近似成立；享乐适应的研究也在被修正。这些都是帮你想问题的解释，不是照抄的公式。</p>
+    <p>另外，高强度的震动与闪光可能让部分玩家不适，所以要给“减弱动态”之类的选项。你玩过的游戏里，有没有“特效很华丽，却一点也不爽”的时刻？缺的是什么？</p>
+  </div>
+
+  <div class="key">
+    <h3>本章要点</h3>
+    <ul>
+      <li>手感来自<b>即时、明显、夸张</b>的反馈：声音、动画、震动、粒子、数字。</li>
+      <li>“手感”“果汁”这些词，是为了让一种说不清的差别<b>可以命名、拆开、逐项测试</b>而出现的。</li>
+      <li>反馈要<b>快</b>：约 100 毫秒是常见经验阈值，动作和结果间隔越长，因果感越弱。</li>
+      <li>缓动函数决定动作的“分量”：线性像机器，缓出更干脆，过冲回弹更有弹性。</li>
+      <li>反馈要和事件的重要性成比例：<b>小动作小反馈，大事件大反馈</b>，档位按倍数拉开。</li>
+      <li>同一个刺激重复多次会变淡：靠<b>留变化</b>和<b>拉开档位</b>来救，不靠无限加码；别过度，也要提供“减弱动态”。</li>
+    </ul>
+  </div>
+  <div class="tldr">手感 = 够快的因果，加上被缓动“夸张”过的回应，再加上按比例拉开、还会留变化的强度档位。</div>
+
+  <div class="sec"><span class="n">9</span><h2><span class="tag think">练习</span>小测验</h2></div>
+  <div id="quiz"></div>
+
+  <div class="sec"><span class="n">10</span><h2><span class="tag how">你的设计</span>给“收集金币”做一套反馈</h2></div>
+  <div class="card o">
+    <p>想象一个最简单的动作：“收集一枚金币”。写下 4 种不同的反馈（视觉 / 声音 / 动作 / 数字），再想想：收集到第 100 枚时，怎样不让它变得无聊？</p>
+    <textarea rows="5" data-save="ch7" placeholder="例：金币被吸向角色并发出“叮”，音调随连续收集一格格升高；角色轻轻跳一下；计数器弹一下……"></textarea>
+    <p class="small">✍️ 自动保存在你的浏览器里。</p>
+  </div>
+</main>
+<script src="js/illus.js"></script>
+<script src="js/illus-ch07.js"></script>
+<script src="js/common.js"></script>
+<script>
+const $ = id => document.getElementById(id);
+GD.mountQuiz($("quiz"), [
+  { q: "“顿帧”（命中瞬间画面短暂停顿）主要是为了：", opts: ["节省性能", "让打击更有重量感", "增加难度", "提示玩家暂停"], a: 1, why: "停顿让大脑“看清”撞击，产生力量感。它是故意让画面慢几十毫秒，操作的确认依然是即时的。" },
+  { q: "反馈强度和事件重要性的关系，下面哪种设计更合理？", opts: ["越大越好", "成比例：大事件夸张，小事件轻微，档位按倍数拉开", "所有事件一样", "每档固定加一点"], a: 1, why: "人对变化的敏感取决于比例（韦伯定律的近似）。如果每件事都狂闪，玩家反而分不清什么重要。" },
+  { q: "【为什么】点击后 0.4 秒才出现反馈，玩家觉得“软、不跟手”。最合理的解释是：", opts: ["0.4 秒太短，玩家没注意到", "动作与结果的间隔变长，削弱了“是我造成了它”的因果感", "延迟越长越有重量感", "只有联网游戏才会有这种感受"], a: 1, why: "大脑会把“我做的”和“它发生的”绑在一起，但只在很窄的时间窗里。约 100 毫秒是常见经验阈值，具体因任务而异。" },
+  { q: "【为什么】成年人的平均简单反应时间约 230 毫秒，为什么我们仍能察觉 100 毫秒的反馈延迟？", opts: ["其实察觉不到，那是错觉", "察觉延迟靠的是把自己的动作和结果对上号，不是在比谁“反应”得快", "因为反应时间是测错了", "因为延迟越小声音越大"], a: 1, why: "反应时间衡量的是看到刺激后做出动作要多久；察觉延迟衡量的是动作与结果之间的间隔是否对得上，二者是两回事。" },
+  { q: "【为什么被发明】两个规则完全相同的“打砖块”，一个明显更好玩。当时的开发者缺的是什么，促使“手感/果汁”这类说法出现？", opts: ["更多关卡", "一套能命名、拆开并逐项叠加测试这种“软性差异”的共同语言和方法", "更高的画面分辨率", "更复杂的规则"], a: 1, why: "没有词汇就没法讨论、排查和教学；Swink 的《Game Feel》和 2012 年的《Juice it or lose it》，把“说不清的爽”变成了可以逐项试验的清单。" },
+  { q: "【为什么】玩家捡了一百次金币，同一个“叮”声和同一团火花已经没有感觉了。更有效的做法是：", opts: ["把音量和火花越调越大", "让每次的音高、火花略有不同，并让大事件的档位远大于小事件", "取消所有反馈", "只在第一次给反馈"], a: 1, why: "重复的刺激会习惯化、变淡；换新刺激反应会回来。加码很贵，留变化与拉开档位更省。" },
+]);
+</script>
+<script>
+(function () {
+  const g = id => document.getElementById(id);
+  const reduceOn = () => g("c7red").checked;
+  const done = id => { const el = g(id); if (el) el.hidden = false; };
+  let actx = null;
+  function ensureAudio() { try { actx = actx || new (window.AudioContext || window.webkitAudioContext)(); if (actx.state === "suspended") actx.resume(); } catch (e) {} }
+  function beep(f, vol) {
+    try {
+      if (!actx) ensureAudio();
+      if (!actx) return;
+      const o = actx.createOscillator(), gn = actx.createGain(), t = actx.currentTime;
+      o.type = "square"; o.frequency.setValueAtTime(f, t); o.frequency.exponentialRampToValueAtTime(f / 2, t + .12);
+      gn.gain.setValueAtTime(vol || .1, t); gn.gain.exponentialRampToValueAtTime(.001, t + .15);
+      o.connect(gn); gn.connect(actx.destination); o.start(); o.stop(t + .16);
+    } catch (e) {}
+  }
+  const SQUASH = [{ transform: "scale(1,1)" }, { transform: "scale(1.45,.55) rotate(-8deg)" }, { transform: "scale(.8,1.3) rotate(4deg)" }, { transform: "scale(1.1,.92)" }, { transform: "scale(1,1)" }];
+
+  /* ============ 时间线：点哪段讲哪段 ============ */
+  const SEG = [
+    "<b>确认（约 100 毫秒内）</b>：玩家按下的瞬间，必须有一点东西告诉他“收到了”：一声响、一个小动作、一点亮光都行。这一段最怕慢，晚了因果感就断了。",
+    "<b>顿帧（几十毫秒）</b>：命中时让画面停一小会儿，像把“砰”这一下按在原地。它故意慢一点，是为了让大脑看清这一击，所以显得重。",
+    "<b>挤压 → 回弹</b>：物体被压扁，再弹回来，用缓动和过冲把“受力”画出来。这一段决定了东西看起来是软的还是硬的、轻的还是重的。",
+    "<b>余震 · 淡出</b>：粒子飘散、数字上浮、声音留一点尾巴。别拖泥带水：结束得干脆，下一次操作才不被前一次的特效挡住。"
+  ];
+  document.querySelectorAll(".c7seg").forEach(s => {
+    const show = () => { g("c7segmsg").innerHTML = SEG[+s.dataset.i]; };
+    s.addEventListener("click", show);
+    s.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); show(); } });
+  });
+
+  /* ============ 0) 发明故事：先自己调，再对照 ============ */
+  let oCombo = 0, oLast = 0;
+  const oSl = { b: g("c7o_b"), p: g("c7o_p"), s: g("c7o_s"), a: g("c7o_a") };
+  const oOut = { b: g("c7o_bo"), p: g("c7o_po"), s: g("c7o_so"), a: g("c7o_ao") };
+  Object.keys(oSl).forEach(k => oSl[k].addEventListener("input", () => (oOut[k].textContent = oSl[k].value)));
+  g("c7o_go").onclick = () => {
+    ensureAudio();
+    const st = g("c7o_stage"), coin = g("c7coin"), now = performance.now();
+    oCombo = now - oLast < 900 ? oCombo + 1 : 0; oLast = now;
+    const b = +oSl.b.value, p = +oSl.p.value, s = +oSl.s.value, a = +oSl.a.value;
+    if (b > 0) {
+      const k = b / 100;
+      coin.animate([{ transform: "translateY(0) scale(1)" }, { transform: "translateY(" + (-50 * k) + "px) scale(" + (1 - .2 * k) + "," + (1 + .35 * k) + ")" },
+        { transform: "translateY(0) scale(" + (1 + .4 * k) + "," + (1 - .4 * k) + ")" }, { transform: "translateY(" + (-12 * k) + "px) scale(1,1)" }, { transform: "translateY(0) scale(1)" }], 100 + 380 * k);
+    }
+    if (s > 0) st.animate([{ transform: "translate(0,0)" }, { transform: "translate(" + (-s) + "px," + (s * .6) + "px)" }, { transform: "translate(" + s + "px," + (-s * .6) + "px)" }, { transform: "translate(" + (-s * .5) + "px,0)" }, { transform: "translate(0,0)" }], 240);
+    for (let i = 0; i < p; i++) {
+      const e = document.createElement("span"); e.textContent = "✨"; e.style.cssText = "position:absolute;left:50%;top:50%;pointer-events:none;font-size:1.3rem";
+      st.appendChild(e);
+      const an = Math.random() * 6.28, d = 40 + Math.random() * 60;
+      e.animate([{ transform: "translate(0,0) scale(1)", opacity: 1 }, { transform: "translate(" + Math.cos(an) * d + "px," + Math.sin(an) * d + "px) scale(.3)", opacity: 0 }], 550).onfinish = () => e.remove();
+    }
+    if (a > 0) beep(380 + Math.min(oCombo, 8) * 50 * (a / 5), .03 + a * .012);
+    const n = (b > 0) + (p > 0) + (s > 0) + (a > 0);
+    g("c7o_out").textContent = n === 0 ? "什么也没发生：这就是只有规则、没有反馈的版本。" : "你现在叠加了 " + n + " 类反馈。继续调，或者点“对照”。";
+  };
+  g("c7o_reset").onclick = () => { Object.keys(oSl).forEach(k => { oSl[k].value = 0; oOut[k].textContent = 0; }); g("c7o_out").textContent = "全部归零：回到“什么也不会发生”的金币。"; };
+  g("c7o_cmp").onclick = () => {
+    const v = { "弹跳": +oSl.b.value, "粒子": +oSl.p.value, "震动": +oSl.s.value, "音效": +oSl.a.value };
+    const zeros = Object.keys(v).filter(k => !v[k]);
+    const maxed = +oSl.b.value >= 100 && +oSl.p.value >= 24 && +oSl.s.value >= 12 && +oSl.a.value >= 10;
+    const half = +oSl.b.value <= 50 && +oSl.p.value <= 12 && +oSl.s.value <= 6 && +oSl.a.value <= 5;
+    let h = "<b>历史上的做法：</b>2012 年《Juice it or lose it》的演示，是把缓动、挤压拉伸、震屏、粒子、音效这几类东西，<b>一项项、每次只加一点</b>，叠在同一个没改规则的打砖块上，每加一项就停下来看变化。关键不是某一项多强，而是<b>每个事件都有回应，而且强度和事件重要性成比例</b>。<br>";
+    if (zeros.length === 4) h += "你现在四项全是 0：这正是演讲开头那个“死板版本”。";
+    else if (maxed) h += "你把四项都拉满了。拾取一枚小金币就这么大阵仗，等到“大事件”发生时，你就没有更夸张的档位可用了，这就是为什么要按比例留出余地。";
+    else if (zeros.length) h += "你有 " + zeros.join("、") + " 保持为 0。没问题，但试试把它们各开一点点，看看整体感觉有没有从“有回应”变成“有分量”。";
+    else h += "四类你都用了一点，思路和那场演示接近：每类都不极端，叠加起来就有了生气。";
+    g("c7o_out").innerHTML = h;
+    if (!zeros.length && half) done("c7t1");
+  };
+
+  /* ============ 1) 反应时间 ============ */
+  (function () {
+    const box = g("c7rt_box"), res = [];
+    let st = 0, t0 = 0, tm = 0;
+    const act = () => {
+      if (st === 0) {
+        st = 1; box.className = "c7rt wait"; box.textContent = "等它变绿……别急";
+        tm = setTimeout(() => { st = 2; t0 = performance.now(); box.className = "c7rt go"; box.textContent = "现在点！"; }, 1000 + Math.random() * 2000);
+      } else if (st === 1) {
+        clearTimeout(tm); st = 0; box.className = "c7rt"; box.textContent = "点早了。再点一下重新开始";
+      } else {
+        const d = Math.round(performance.now() - t0); res.push(d); st = 0;
+        box.className = "c7rt"; box.textContent = d + " ms。点一下再来";
+        const avg = Math.round(res.reduce((a, b) => a + b, 0) / res.length);
+        g("c7rt_msg").innerHTML = "第 " + res.length + " 次：" + d + " ms；平均 " + avg + " ms。" + (res.length >= 5 ? "<br>测满 5 次啦。研究里成年人的平均大约是 230 ms 出头。你要靠“反应”赶上 100 ms 是不可能的，可你照样能感觉到 100 ms 的延迟，这就是因果感的功劳。" : "");
+      }
+    };
+    box.addEventListener("pointerdown", e => { e.preventDefault(); act(); });
+    box.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); act(); } });
+  })();
+
+  /* ============ 2) 延迟判定 ============ */
+  const votes = []; let pending = null, timer = 0, tok = 0;
+  g("c7d").addEventListener("input", () => (g("c7do").textContent = g("c7d").value));
+  function setVote(on) { g("c7good").disabled = g("c7bad").disabled = !on; }
+  function fx() { beep(420, .1); g("c7fx").animate(SQUASH.slice(0, 4).concat([{ transform: "scale(1,1)" }]), 260); }
+  g("c7btn").onclick = () => {
+    ensureAudio();
+    const blind = g("c7blind").checked;
+    const d = blind ? Math.floor(Math.random() * 61) * 10 : +g("c7d").value;
+    const my = ++tok, t0 = performance.now();
+    pending = null; setVote(false); clearTimeout(timer);
+    const fire = () => {
+      if (my !== tok) return;
+      const real = performance.now() - t0;
+      pending = { d: real };
+      fx(); setVote(true);
+      g("c7msg").textContent = blind ? "感觉如何？" : "实际延迟约 " + Math.round(real) + " ms。感觉如何？";
+    };
+    if (d <= 0) fire(); else timer = setTimeout(fire, d);
+  };
+  function estimate() {
+    const nb = votes.filter(v => !v.good).length, ng = votes.length - nb;
+    if (votes.length < 6 || !nb || !ng) return null;
+    let best = 1e9, ts = [];
+    for (let t = 0; t <= 620; t += 5) {
+      let e = 0;
+      for (const v of votes) { if (!v.good && v.d < t) e++; if (v.good && v.d >= t) e++; }
+      if (e < best) { best = e; ts = [t]; } else if (e === best) ts.push(t);
+    }
+    return { t: ts[Math.floor(ts.length / 2)], err: best };
+  }
+  function drawVotes() {
+    const X = d => 40 + Math.min(d, 600) / 600 * 500;
+    let s = '<rect x="40" y="34" width="500" height="76" fill="#fffef7" stroke="#2b2b3a" stroke-width="3"/>' +
+      '<line x1="' + X(100) + '" x2="' + X(100) + '" y1="34" y2="110" stroke="#2b2b3a" stroke-width="2" stroke-dasharray="5 5"/>' +
+      '<text x="' + (X(100) + 4) + '" y="24" font-size="19">100 ms 经验线</text>';
+    [0, 100, 200, 300, 400, 500, 600].forEach(v => { s += '<text x="' + X(v) + '" y="138" text-anchor="middle" font-size="18">' + v + '</text>'; });
+    votes.forEach((v, i) => {
+      s += '<circle cx="' + X(v.d).toFixed(1) + '" cy="' + (52 + (i % 4) * 16) + '" r="6" fill="' + (v.good ? "#b6e8a8" : "#ffb3c6") + '" stroke="#2b2b3a" stroke-width="2.5"/>';
+    });
+    const e = estimate();
+    if (e) s += '<line x1="' + X(e.t) + '" x2="' + X(e.t) + '" y1="34" y2="110" stroke="#e5484d" stroke-width="3"/>';
+    g("c7sc").innerHTML = s;
+    g("c7n").textContent = votes.length;
+    if (!e) g("c7est").textContent = votes.length < 6 ? "再多测几次（至少 6 次，且两种感受都选到）。绿点 = 有手感，红点 = 迟钝。" : "需要两种感受都选到，才能估出分界。试试更大或更小的延迟。";
+    else {
+      done("c7t2");
+      if (e.t <= 0) g("c7est").textContent = "你几乎对所有延迟都觉得迟钝。";
+      else if (e.t > 600) g("c7est").textContent = "你对测试范围内的延迟都觉得有手感。";
+      else g("c7est").innerHTML = "你的“迟钝分界线”大约在 <b>" + e.t + " ms</b>（红线；" + votes.length + " 次投票里有 " + e.err + " 次与这条线不符）。和常说的约 100 ms 经验阈值相比，你更" + (e.t > 130 ? "宽容" : e.t < 70 ? "敏感" : "接近") + "。这只是粗略的个人估计，会受设备和注意力影响。";
+    }
+  }
+  function vote(good) {
+    if (!pending) return;
+    votes.push({ d: pending.d, good });
+    g("c7msg").textContent = "已记录（延迟约 " + Math.round(pending.d) + " ms，你的判断：" + (good ? "有手感" : "迟钝") + "）。可以继续点“点我”。";
+    pending = null; setVote(false); drawVotes();
+  }
+  g("c7good").onclick = () => vote(true);
+  g("c7bad").onclick = () => vote(false);
+  g("c7vreset").onclick = () => { votes.length = 0; pending = null; setVote(false); g("c7msg").textContent = "已清空，重新开始。"; drawVotes(); };
+  drawVotes();
+
+  /* ============ 3) 缓动 ============ */
+  const EAS = {
+    lin: { n: "线性", col: "#3b8fd0", f: t => t },
+    out: { n: "缓出", col: "#2b9a4a", f: t => 1 - Math.pow(1 - t, 3) },
+    back: { n: "过冲回弹", col: "#e5484d", f: t => { const c1 = +g("c7os").value, c3 = c1 + 1; return 1 + c3 * Math.pow(t - 1, 3) + c1 * Math.pow(t - 1, 2); } }
+  };
+  const KEYS = ["lin", "out", "back"], tried = new Set();
+  const PX = t => 64 + t * 476, PY = v => 205 - v / 1.3 * 175;
+  let raf = 0;
+  function plot(tcur, act) {
+    let s = '<rect x="64" y="30" width="476" height="175" fill="#fffef7" stroke="#2b2b3a" stroke-width="3"/>' +
+      '<line x1="64" x2="540" y1="' + PY(1) + '" y2="' + PY(1) + '" stroke="#2b2b3a" stroke-width="2" stroke-dasharray="6 6"/>' +
+      '<text x="550" y="' + (PY(1) + 5) + '" font-size="15">目标</text>' +
+      '<text x="302" y="228" text-anchor="middle" font-size="16">时间 →</text>' +
+      '<text x="26" y="118" transform="rotate(-90 26 118)" text-anchor="middle" font-size="16">位置 →</text>';
+    KEYS.forEach(k => {
+      const pts = []; for (let i = 0; i <= 60; i++) { const t = i / 60; pts.push(PX(t).toFixed(1) + "," + PY(EAS[k].f(t)).toFixed(1)); }
+      s += '<polyline fill="none" stroke="' + EAS[k].col + '" stroke-width="4" points="' + pts.join(" ") + '"/>';
+      if (tcur !== null && (!act || act.includes(k))) s += '<circle cx="' + PX(tcur).toFixed(1) + '" cy="' + PY(EAS[k].f(tcur)).toFixed(1) + '" r="7" fill="' + EAS[k].col + '" stroke="#2b2b3a" stroke-width="2.5"/>';
+    });
+    g("c7cv").innerHTML = s;
+  }
+  function setPos(k, v) {
+    const sq = g("c7sq_" + k), lane = sq.parentNode;
+    sq.style.transform = "translateX(" + (v * (lane.clientWidth - 98)) + "px)";
+  }
+  function launch(act) {
+    cancelAnimationFrame(raf);
+    const dur = +g("c7dur").value, t0 = performance.now();
+    const frame = now => {
+      const t = Math.min(1, Math.max(0, (now - t0) / dur));
+      KEYS.forEach(k => setPos(k, (!act || act.includes(k)) ? EAS[k].f(t) : 0));
+      plot(t, act);
+      if (t < 1) raf = requestAnimationFrame(frame);
+    };
+    frame(t0);
+    raf = requestAnimationFrame(frame);
+  }
+  g("c7go").onclick = () => { launch(null); g("c7pickmsg").textContent = "三条同时出发：注意缓出最先“到位”，过冲回弹最后才稳住。"; };
+  const PICK = {
+    lin: "<b>线性</b>：匀速，像机器。适合进度条、计时条这类需要“均匀、精确”的场合；用在打击上常显得没力气，因为现实中的力总伴随加速和减速。",
+    out: "<b>缓出</b>：起步就很快（立刻响应），结尾慢慢收住。大多数界面动画和角色移动用它，干脆而不生硬。",
+    back: "<b>过冲回弹</b>：冲过目标再弹回，把“冲击”和“弹性”夸张出来，卡通感强，适合挤压拉伸、道具弹出。幅度过大会显得飘。"
+  };
+  document.querySelectorAll("[data-k]").forEach(b => b.addEventListener("click", () => {
+    launch([b.dataset.k]);
+    g("c7pickmsg").innerHTML = PICK[b.dataset.k] + "<br><span class='small'>没有绝对的“最好”：要传达机械感、干脆还是弹性，取决于这个动作想表达的物理感。</span>";
+    tried.add(b.dataset.k); if (tried.size === 3) done("c7t3");
+  }));
+  g("c7dur").addEventListener("input", () => { g("c7duro").textContent = g("c7dur").value; });
+  g("c7os").addEventListener("input", () => { g("c7oso").textContent = g("c7os").value; plot(null); });
+  KEYS.forEach(k => setPos(k, 0));
+  plot(null);
+  window.addEventListener("resize", () => KEYS.forEach(k => setPos(k, 0)));
+
+  /* ============ 4) 享乐适应（示意模型） ============ */
+  (function () {
+    let n = 0, low = false; const ser = [];
+    function draw() {
+      let s = '<line x1="66" y1="14" x2="66" y2="104" stroke="#2b2b3a" stroke-width="2.5"/><line x1="66" y1="104" x2="552" y2="104" stroke="#2b2b3a" stroke-width="2.5"/>' +
+        '<text x="58" y="26" text-anchor="end" font-size="19">100%</text><text x="58" y="106" text-anchor="end" font-size="19">0</text>' +
+        '<text x="309" y="134" text-anchor="middle" font-size="19">每一次拾取 →</text>';
+      const last = ser.slice(-24);
+      last.forEach((v, i) => { const h = Math.max(2, v.f * 86); s += '<rect x="' + (76 + i * 19.5).toFixed(1) + '" y="' + (104 - h).toFixed(1) + '" width="16" height="' + h.toFixed(1) + '" fill="' + (v.v ? "#a8dcf0" : "#ffb3c6") + '" stroke="#2b2b3a" stroke-width="2"/>'; });
+      g("c7a_sv").innerHTML = s;
+    }
+    function pick() {
+      ensureAudio();
+      const v = g("c7a_var").checked;
+      const f = v ? .6 + .4 * Math.random() : Math.max(.06, Math.exp(-n / 6));
+      n++; ser.push({ f, v });
+      g("c7a_n").textContent = n; g("c7a_v").textContent = Math.round(f * 100) + "%";
+      const c = g("c7acoin"), k = .25 + f * 1.2;
+      c.animate([{ transform: "scale(1)" }, { transform: "scale(" + (1 + .5 * k) + "," + (1 - .35 * k) + ")" }, { transform: "scale(1)" }], 100 + 260 * f);
+      const st = c.parentNode, cnt = Math.round(f * 10);
+      for (let i = 0; i < cnt; i++) {
+        const e = document.createElement("span"); e.textContent = v ? ["✨", "⭐", "💫", "🌟"][Math.floor(Math.random() * 4)] : "✨";
+        e.style.cssText = "position:absolute;left:50%;top:50%;pointer-events:none;font-size:" + (.8 + f * .8) + "rem"; st.appendChild(e);
+        const an = Math.random() * 6.28, d = 20 + f * 60 * Math.random() + 20;
+        e.animate([{ transform: "translate(0,0) scale(1)", opacity: 1 }, { transform: "translate(" + Math.cos(an) * d + "px," + Math.sin(an) * d + "px) scale(.3)", opacity: 0 }], 500).onfinish = () => e.remove();
+      }
+      beep(v ? 360 + Math.random() * 420 : 520, .02 + f * .1);
+      if (!v && f < .2) low = true;
+      let m = "第 " + n + " 次，爽度 " + Math.round(f * 100) + "%。";
+      if (!v) m += f < .2 ? "已经快没感觉了：同样的刺激，大脑当它是背景噪音。现在勾上“加变化”再点。" : "同一个刺激在重复，爽度在往下掉。";
+      else m += "有变化，大脑每次都当它是个新刺激，爽度一直在高位。";
+      g("c7a_msg").textContent = m;
+      if (v && low && f >= .6) done("c7t4");
+      draw();
+    }
+    g("c7a_go").onclick = pick;
+    g("c7a_rest").onclick = () => { n = 0; g("c7a_n").textContent = 0; g("c7a_msg").textContent = "歇了一会儿，基准线回来了：再点的话，又会像第一次那样新鲜。"; };
+    g("c7a_reset").onclick = () => { n = 0; low = false; ser.length = 0; g("c7a_n").textContent = 0; g("c7a_v").textContent = "–"; g("c7a_msg").textContent = "已重来。"; draw(); };
+    draw();
+  })();
+
+  /* ============ 5) 招牌：木桩加果汁 ============ */
+  const FX = { sound: "🔊 音效", shake: "📳 屏幕震动", squash: "🍞 挤压变形", part: "✨ 粒子", text: "💥 飘字", stop: "⏸ 顿帧", flash: "⚡ 闪白", knock: "🌀 击退回弹" };
+  const DESC = {
+    sound: "<b>音效</b>：命中时“叮”一声，连击时音调逐步升高；紫色圆环是把声音“画”出来的示意。耳朵是最快的反馈通道。",
+    shake: "<b>屏幕震动</b>：整个场景抖一下。力度大，但别每次都用，留给重击。",
+    squash: "<b>挤压变形</b>：木桩被压扁再弹回，脚下阴影也跟着变。把“受力”画出来，是动画里最古老的办法之一。",
+    part: "<b>粒子</b>：碎屑四散。把“命中”这件事变成能看见的物质。",
+    text: "<b>飘字</b>：伤害数字弹出；第 5 下起变成大号暴击。数字把结果量化，让玩家知道“打得怎么样”。",
+    stop: "<b>顿帧</b>：命中瞬间，木桩被钉在被压扁的姿态上，其它效果延后一小会儿再爆开。停顿本身就是力量感。",
+    flash: "<b>闪白</b>：整个木桩瞬间过曝变白，立刻告诉玩家“这一下打中了”。很便宜，但闪光要克制。",
+    knock: "<b>击退回弹</b>：木桩被推开，再用过冲弹回原位。位移配合缓动，让它像有质量。"
+  };
+  const on = {}; Object.keys(FX).forEach(k => (on[k] = false));
+  const tg = g("toggles");
+  function syncMeter() {
+    const n = Object.keys(on).filter(k => on[k]).length;
+    g("c7mi").style.width = (n / 8 * 100) + "%";
+    g("c7ji").textContent = n + "/8";
+    return n;
+  }
+  function capNow(n, lastKey) {
+    let h = lastKey ? DESC[lastKey] + "<br>" : "";
+    h += n === 0 ? "现在全部关闭：点木桩，只有“命中”数字在变，像个切换开关。"
+      : n <= 2 ? "有一点回应了，但还是比较“干”。"
+      : n <= 5 ? "开始有手感了：每次命中都有明确的“事件感”。"
+      : "很“多汁”！注意：事件越频繁，越要给每种效果留出余地，否则大事件会被淹没，玩家也会很快对它免疫。";
+    g("c7cap").innerHTML = h;
+  }
+  Object.keys(FX).forEach(k => {
+    const b = document.createElement("button"); b.className = "chip"; b.textContent = FX[k]; b.dataset.k = k;
+    b.onclick = () => { on[k] = !on[k]; b.classList.toggle("on", on[k]); if (on[k] && k === "sound") ensureAudio(); capNow(syncMeter(), on[k] ? k : null); };
+    tg.appendChild(b);
+  });
+  function setAll(v) { Object.keys(on).forEach(k => (on[k] = v)); tg.querySelectorAll(".chip").forEach(c => c.classList.toggle("on", v)); if (v) ensureAudio(); capNow(syncMeter(), null); }
+  g("allon").onclick = () => setAll(true); g("alloff").onclick = () => setAll(false);
+  g("c7rnd").onclick = () => { Object.keys(on).forEach(k => (on[k] = Math.random() < .5)); tg.querySelectorAll(".chip").forEach(c => c.classList.toggle("on", on[c.dataset.k])); ensureAudio(); capNow(syncMeter(), null); };
+
+  let n = 0, combo = 0, lastHit = 0;
+  const arena = g("arena"), world = g("c7world"), target = g("target");
+  target.onpointerdown = e => {
+    const nowT = performance.now(); combo = nowT - lastHit < 700 ? combo + 1 : 0; lastHit = nowT;
+    g("hits").textContent = ++n; g("c7combo").textContent = combo + 1;
+    const r = arena.getBoundingClientRect(), tr = target.getBoundingClientRect();
+    const cx = tr.left - r.left + tr.width / 2, cy = tr.top - r.top + tr.height / 2;
+    const dir = e.clientX < tr.left + tr.width / 2 ? 1 : -1;
+    const red = reduceOn(), crit = (combo + 1) % 5 === 0;
+    if (crit && on.text && Object.keys(on).filter(k => on[k]).length >= 5) done("c7t5");
+    const run = () => {
+      if (on.sound) {
+        beep(300 + Math.min(combo, 8) * 60, .12);
+        for (let i = 0; i < 3; i++) {
+          const ring = document.createElement("span"); ring.className = "c7ring"; ring.style.left = cx + "px"; ring.style.top = cy + "px"; arena.appendChild(ring);
+          ring.animate([{ transform: "scale(.5)", opacity: .9 }, { transform: "scale(" + (4 + i * 1.5) + ")", opacity: 0 }], { duration: 500 + i * 120, delay: i * 90, fill: "backwards" }).onfinish = () => ring.remove();
+        }
+        const nt = document.createElement("span"); nt.className = "part"; nt.textContent = "♪"; nt.style.left = cx + 50 + "px"; nt.style.top = cy - 30 + "px"; arena.appendChild(nt);
+        nt.animate([{ transform: "translateY(0)", opacity: 1 }, { transform: "translateY(-50px)", opacity: 0 }], 600).onfinish = () => nt.remove();
+      }
+      if (on.shake) { const m = red ? 3 : 18; world.animate([{ transform: "translate(0,0)" }, { transform: "translate(" + -m + "px," + m * .6 + "px)" }, { transform: "translate(" + m * .9 + "px," + -m * .7 + "px)" }, { transform: "translate(" + -m * .5 + "px," + m * .4 + "px)" }, { transform: "translate(" + m * .3 + "px,0)" }, { transform: "translate(0,0)" }], red ? 160 : 300); }
+      if (on.squash) { target.animate(SQUASH, 340); g("c7shadow").animate([{ transform: "scaleX(1)" }, { transform: "scaleX(1.5)" }, { transform: "scaleX(.9)" }, { transform: "scaleX(1)" }], 340); }
+      if (on.flash && !red) { g("c7flash").animate([{ opacity: .85 }, { opacity: 0 }], 160); target.animate([{ filter: "brightness(4) saturate(0)" }, { filter: "none" }], 200); }
+      if (on.knock) { const d = 55 * dir; target.animate([{ transform: "translateX(0)" }, { transform: "translateX(" + d + "px)", offset: .3 }, { transform: "translateX(" + (-d * .25) + "px)", offset: .65 }, { transform: "translateX(0)" }], { duration: 520, easing: "cubic-bezier(.3,1.4,.6,1)" }); }
+      if (on.part) for (let i = 0; i < 16; i++) {
+        const p = document.createElement("span"); p.className = "part"; p.textContent = ["✨", "⭐", "💥", "🪵"][i % 4];
+        p.style.left = cx + "px"; p.style.top = cy + "px"; arena.appendChild(p);
+        const a = Math.random() * Math.PI * 2, d = 60 + Math.random() * 100, dx = Math.cos(a) * d, dy = Math.sin(a) * d;
+        p.animate([{ transform: "translate(0,0) scale(1.2)", opacity: 1 }, { transform: "translate(" + dx + "px," + (dy - 25) + "px) scale(1)", opacity: 1, offset: .5 }, { transform: "translate(" + dx * 1.2 + "px," + (dy + 45) + "px) scale(.3)", opacity: 0 }], 750).onfinish = () => p.remove();
+      }
+      if (on.text) {
+        const t = document.createElement("span"); t.className = "dmg"; t.textContent = (crit ? "暴击！" : combo ? combo + 1 + "连击 " : "") + (10 + Math.floor(Math.random() * 20)) * (crit ? 3 : 1);
+        t.style.left = cx - 30 + "px"; t.style.top = cy - 70 + "px"; if (crit) t.style.fontSize = "3.2rem"; arena.appendChild(t);
+        t.animate([{ transform: "translateY(0) scale(.5)", opacity: 1 }, { transform: "translateY(-40px) scale(" + (crit ? 1.5 : 1.2) + ")", opacity: 1, offset: .3 }, { transform: "translateY(-80px) scale(1)", opacity: 0 }], 900).onfinish = () => t.remove();
+      }
+    };
+    if (on.stop) {
+      const badge = g("c7badge"); badge.style.display = "block";
+      target.style.transform = "scale(1.35,.7)"; arena.style.background = "#e8e8f0";
+      setTimeout(() => { target.style.transform = ""; arena.style.background = ""; badge.style.display = "none"; run(); }, red ? 40 : 110);
+    } else run();
+  };
+  syncMeter();
+})();
+</script>
+</body>
+</html>

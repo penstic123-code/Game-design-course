@@ -1,0 +1,632 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>第21章 伦理与商业化</title>
+<link rel="stylesheet" href="css/style.css">
+<style>
+  .judge{min-height:5.5em}
+  .jbtns{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+  .jbtns .btn{flex:1;min-width:110px;margin:0}
+  .jres{display:none;margin-top:8px;padding:8px 12px;border:2px dashed var(--ink);border-radius:10px;background:var(--blue);font-size:.98rem}
+  .jres.show{display:block}
+  .jres.good{background:var(--green)}
+  .jres.bad{background:#ffc9c9}
+  .c21strip{font-family:monospace;font-size:.95rem;letter-spacing:1px;word-break:break-all;min-height:1.6em;background:#fff;border:2px solid var(--ink);border-radius:8px;padding:2px 8px;margin:6px 0}
+  .c21strip .h{color:#1d7a38;font-weight:700}.c21strip .m{color:#6b6b78}
+  .c21fc{background:#fff;border:3px solid var(--ink);border-radius:14px;padding:10px 14px;margin:12px 0}
+  .c21fc .copy{font-size:1.05rem;margin:.3em 0;padding:6px 10px;background:#fffef7;border-left:5px solid var(--orange)}
+  .c21fc label{display:inline-block;margin-right:14px;font-size:.95rem}
+  .c21fc .vd{display:none;margin-top:8px;padding:8px 12px;border:2px dashed var(--ink);border-radius:10px;font-size:.95rem;background:var(--blue)}
+  .c21fc .vd.show{display:block}.c21fc .vd.good{background:var(--green)}.c21fc .vd.bad{background:#ffc9c9}
+  .c21chk{margin:6px 0}.c21chk label{display:block;padding:4px 8px;border-radius:8px;cursor:pointer}
+  .c21chk label:hover{background:#fff7cf}
+  .c21chk h4{margin:.8em 0 .1em;font-family:var(--hand);font-size:1.25rem;font-weight:400}
+  .c21bar{height:22px;border:2.5px solid var(--ink);border-radius:10px;background:#fff;overflow:hidden;margin:6px 0}
+  .c21bar span{display:block;height:100%;background:var(--green);transition:width .2s}
+  .c21opts{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
+  .c21try{transition:background .3s}
+  .c21form{background:#fff;border:3px solid var(--ink);border-radius:14px;padding:10px 14px;margin:10px 0}
+</style>
+</head>
+<body data-ch="21">
+<main class="wrap">
+  <div class="hero">
+    <div class="txt">
+      <span class="badge">第 21 章</span>
+      <h1>伦理与商业化</h1>
+      <p class="sub">游戏要赚钱，但不该靠玩家的弱点赚钱。</p>
+    </div>
+    <svg viewBox="0 0 190 150" class="rough" aria-hidden="true">
+      <circle cx="95" cy="75" r="48" fill="#ffe58a" stroke="#2b2b3a" stroke-width="5"/>
+      <path d="M95 50 V100 M80 62 q15 -12 30 0 q-30 18 0 36 q-15 6 -30 -6" fill="none" stroke="#2b2b3a" stroke-width="5" stroke-linecap="round"/>
+    </svg>
+  </div>
+
+  <div class="goals">
+    <h3>学习目标</h3>
+    <ul>
+      <li>读完你能区分四种商业模式，说出每一种怎样反过来塑造游戏设计，并看懂留存曲线说明了什么。</li>
+      <li>读完你能讲清免费加内购为什么会出现，以及可变奖励、超常刺激、损失厌恶和默认选项为什么让人更想买、更难停。</li>
+      <li>读完你能用“透明、可选、可退出、保护弱势用户”的清单检查付费设计，并分清正当营销和操纵。</li>
+    </ul>
+    <span class="time">约 45 分钟</span>
+  </div>
+
+  <div class="sec"><span class="n">1</span><h2><span class="tag what">是什么</span>谁来付钱？四种商业模式</h2></div>
+  <p>你有没有过这样的经历：明明已经不太想玩了，却因为屏幕上那个“连续登录 12 天”，半夜爬起来点了一下？这一点点不情愿，不是你意志力差，是有人在设计里放了东西。要弄懂那是什么，得先知道钱从哪里来，因为<b>收钱的方式会反过来塑造游戏本身</b>。</p>
+  <div class="grid2">
+    <div class="card y"><h3>💳 买断</h3><p>玩家一次性付费。设计要让玩家在<b>买之前</b>相信，<b>买之后</b>满意。体验可以完整收束，不必刻意拖长。</p></div>
+    <div class="card b"><h3>📅 订阅</h3><p>按月或按年付费，玩家要持续觉得“值”。设计倾向于<b>稳定更新内容</b>，让人不想取消。</p></div>
+    <div class="card g"><h3>🆓 免费 + 内购</h3><p>先免费下载，再让一部分玩家花钱（外观、便利、内容包）。用户基数大，但设计要<b>同时服务付费和不付费的人</b>。</p></div>
+    <div class="card p"><h3>📺 广告</h3><p>靠展示广告赚钱，看的人越多越久越好。广告会<b>打断体验</b>，所以常见做法是让玩家<b>自愿观看</b>来换奖励。</p></div>
+  </div>
+  <p>现实中常常混合使用，比如“买断 + 付费扩展包”，或“免费 + 内购 + 可选广告”。下面五个例子，能看出每种模式把设计往哪个方向推。</p>
+  <div class="eg" data-ic="💳"><span data-illus="c21_buyout"></span><div class="egt"><b>买断的独立游戏</b>：玩家在商店页看视频、读评价，决定买不买。设计者的压力在“买之前让人相信”，游戏可以在通关时漂亮地收尾，不必为了拉长时长而灌水。</div></div>
+  <div class="eg" data-ic="📅"><span data-illus="c21_m_sub"></span><div class="egt"><b>按月订阅的在线世界</b>：玩家每个月都在重新决定“还值不值”，所以设计者要一直更新内容、维护社区。付费的理由是“这个世界一直开着”。</div></div>
+  <div class="eg" data-ic="🆓"><span data-illus="c21_f2p"></span><div class="egt"><b>免费 + 内购</b>：人人都能进来，少数人付费养着所有人的服务器。设计者要同时照顾付费的和不付费的，不付费的人也是气氛的一部分。</div></div>
+  <div class="eg" data-ic="📺"><span data-illus="c21_ads"></span><div class="egt"><b>自愿看广告换奖励</b>：玩家死了，可以选择看 15 秒广告复活。广告变成玩家的一个选项，而不是强塞进来的打断。</div></div>
+  <div class="eg bad" data-ic="⚔️"><span data-illus="c21_p2w"></span><div class="egt"><b>反例：付费直接决定胜负</b>：免费 + 内购本身没问题，坏的是买来的数值直接碾压不付费的人，让他们成了“陪练”。免费玩家变成了付费玩家的体验道具，缺的是“公平地竞争”这根柱子。</div></div>
+
+  <div class="sec"><span class="n">2</span><h2><span class="tag what">是什么</span>留存：玩家还回来吗？</h2></div>
+  <p>不管用哪种模式，团队都得回答一个问题：玩家第一次进来之后，还会回来吗？这个问题的答案叫<b><span class="term" tabindex="0" data-def="留存率（retention）：第一次进游戏的玩家中，过了 N 天还会回来的比例。">留存</span></b>，通常看三个节点：</p>
+  <div class="grid3">
+    <div class="card y mini"><div class="ico">1️⃣</div><h3>次日留存</h3><p>第 1 天来过的人里，第 2 天又回来的比例。反映<b>第一印象和新手引导</b>。</p></div>
+    <div class="card p mini"><div class="ico">7️⃣</div><h3>7 日留存</h3><p>反映<b>有没有形成习惯</b>：有足够的目标和变化吗？</p></div>
+    <div class="card b mini"><div class="ico">3️⃣0️⃣</div><h3>30 日留存</h3><p>反映<b>长期价值</b>：内容深度、社交、成长系统。</p></div>
+  </div>
+  <div class="card">
+    <svg viewBox="0 0 700 270" width="100%" role="img" aria-label="典型留存曲线：前几天急剧下降，之后趋于平缓">
+      <g class="rough" stroke="#2b2b3a" stroke-width="4" fill="none" stroke-linecap="round">
+        <path d="M70 20 V220 H660"/>
+        <path d="M70 30 C90 130 120 150 170 168 C260 190 400 200 650 206" stroke="#e5484d" stroke-width="5"/>
+      </g>
+      <g font-size="18" fill="#2b2b3a">
+        <text x="62" y="30" text-anchor="end">100%</text><text x="62" y="224" text-anchor="end">0</text>
+        <text x="110" y="244" text-anchor="middle">次日</text><text x="200" y="244" text-anchor="middle">7 日</text><text x="560" y="244" text-anchor="middle">30 日</text>
+        <text x="330" y="110">前几天掉得最猛 → 先救“第一印象”</text>
+        <text x="330" y="150">之后趋于平缓 → 留下的是真爱粉</text>
+      </g>
+      <g fill="#ffe58a" stroke="#2b2b3a" stroke-width="3"><circle cx="110" cy="130" r="9"/><circle cx="200" cy="175" r="9"/><circle cx="560" cy="203" r="9"/></g>
+    </svg>
+    <p class="small">这是一张<b>示意图</b>：大多数游戏的曲线都是“先陡降、后趋平”的形状，具体数值因游戏类型和渠道而异。</p>
+  </div>
+  <div class="eg" data-ic="1️⃣"><span data-illus="c21_onboard"></span><div class="egt"><b>新手引导决定次日</b>：第一天顺利走完教程、拿到第一个小成就的人，明天更愿意回来。次日留存主要在这一关被决定。</div></div>
+  <div class="eg" data-ic="🏋️"><span data-illus="c21_gym"></span><div class="egt"><b>日常里的留存：健身房年卡</b>：办卡的那一刻像是“转化成功”，真正的留存是后面三十天你来了几次。办了卡不等于常去，下载了游戏也不等于常玩。</div></div>
+  <div class="eg bad" data-ic="🔥"><span data-illus="c21_streak"></span><div class="egt"><b>反例：靠断签惩罚撑起的留存</b>：为了不让 12 天的连续登录清零，你半夜爬起来点一下。留存数字是好看了，可你不是“想玩”，而是“怕丢”。这种留存撑不久，下面会看到它怎样伤害信任。</div></div>
+
+  <div class="sec"><span class="n">3</span><h2><span class="tag what">是什么</span>变现与体验的张力</h2></div>
+  <p>做免费游戏的人常面对一个现实：要赚钱，就得让玩家愿意付费。可花钱的理由如果来自“不舒服”，长期会赔掉玩家的信任。可以用一条光谱来判断自己站在哪里：</p>
+  <div class="card">
+    <svg viewBox="0 0 700 220" width="100%" role="img" aria-label="从卖选择到卖痛苦的光谱">
+      <g class="rough" stroke="#2b2b3a" stroke-width="4">
+        <rect x="30" y="80" width="200" height="50" fill="#b6e8a8"/><rect x="230" y="80" width="240" height="50" fill="#ffe58a"/><rect x="470" y="80" width="200" height="50" fill="#ffb3c6"/>
+      </g>
+      <g font-size="19" fill="#2b2b3a" text-anchor="middle">
+        <text x="130" y="112">卖选择 / 乐趣</text><text x="350" y="112">灰色地带</text><text x="570" y="112">卖痛苦 / 焦虑</text>
+        <text x="130" y="55">外观、内容扩展包</text><text x="350" y="55">便利、加速、随机奖励</text><text x="570" y="55">制造麻烦再卖解药</text>
+        <text x="130" y="165">玩家自愿，价格明确</text><text x="350" y="165">看细节：概率？频率？对象？</text><text x="570" y="165">利用恐惧、冲动、沉迷</text>
+        <text x="350" y="205">← 更健康　　　　　　　　　更不合适 →</text>
+      </g>
+    </svg>
+  </div>
+  <div class="sticky">一个简单的自检问题：<b>如果玩家完全看清了我在做什么，他还会觉得公平吗？</b> 如果答案是“不会”，就该重新设计。</div>
+
+  <div class="sec"><span class="n">4</span><h2><span class="tag what">是什么</span>黑暗模式：把玩家往“本不想做的事”上推</h2></div>
+  <p><b><span class="term" tabindex="0" data-def="Dark patterns：通过界面或机制诱导用户做出本不想做的事的设计。">黑暗模式</span></b>（dark patterns）这个词，是英国用户体验设计师 Harry Brignull 在 2010 年提出来的，用来描述那些通过界面或机制，诱导人做出本不想做的事（多花钱、多花时间、订阅出不来）的设计。认识它们，是为了自己不用，也为了在当玩家时能认出来。</p>
+  <div class="grid2">
+    <div class="card o"><h3>⏰ FOMO（错失恐惧）</h3><p><span class="term" tabindex="0" data-def="Fear of missing out：担心错过限时机会而急着行动的心理。">FOMO</span>：限时、限量，“再不买就没了”。真稀缺是正当信息；<b>虚假倒计时</b>就是欺骗了。</p></div>
+    <div class="card p"><h3>😨 损失框架</h3><p>“断签就清零”“你的连胜要没了”，把“不做”描述成“失去”，利用的是人对损失更敏感这一点。</p></div>
+    <div class="card y"><h3>⚓ 沉没成本</h3><p>“你已经投入了这么多……”这是<span class="term" tabindex="0" data-def="已经付出且无法收回的投入；理性决策应只看未来的得失，但人们常被它牵着走。">沉没成本</span>效应：为了不浪费前面的付出继续付出，哪怕已经不开心。</p></div>
+    <div class="card b"><h3>♾️ 没有停止点</h3><p>没有自然的结束点，玩家得<b>主动做决定</b>才能停下，而不是被设计成“这一段结束了”。</p></div>
+  </div>
+  <p>这些手法有个共同的毛病：它们一旦被当成“提高数字的办法”，就会自我强化。下图是一个很典型的循环。</p>
+  <div class="card">
+    <svg viewBox="0 0 700 300" width="100%" role="img" aria-label="压力指标循环：加断签惩罚和限时压力，短期留存数字变好，玩家被逼着来所以满意度和信任下降，自然留住的人变少，于是数字更要靠压力撑，再回到加压力">
+      <defs><marker id="c21ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10z" fill="#2b2b3a"/></marker></defs>
+      <g class="rough" stroke="#2b2b3a" stroke-width="3.5" fill="none" stroke-linecap="round">
+        <rect x="20" y="24" width="250" height="80" rx="12" fill="#ffe58a"/><rect x="430" y="24" width="250" height="80" rx="12" fill="#b6e8a8"/>
+        <rect x="430" y="170" width="250" height="80" rx="12" fill="#ffc9c9"/><rect x="20" y="170" width="250" height="80" rx="12" fill="#ffb3c6"/>
+      </g>
+      <g stroke="#2b2b3a" stroke-width="3.5" fill="none" marker-end="url(#c21ah)">
+        <path d="M274 64 H426"/><path d="M555 108 V166"/><path d="M426 210 H274"/><path d="M145 166 V108"/>
+      </g>
+      <g font-size="20" text-anchor="middle" fill="#2b2b3a">
+        <text x="145" y="60">加断签惩罚、</text><text x="145" y="86">限时压力</text>
+        <text x="555" y="60">短期留存数字</text><text x="555" y="86">变好</text>
+        <text x="555" y="206">玩家被逼着来</text><text x="555" y="232">满意度、信任下降</text>
+        <text x="145" y="206">自然留下的人变少</text><text x="145" y="232">数字更靠压力撑</text>
+        <text x="350" y="148" font-size="19" font-weight="700">短期好看，长期伤信任</text>
+        <text x="350" y="284" font-size="18">这是一个会自己转起来的正反馈</text>
+      </g>
+    </svg>
+  </div>
+  <div class="eg" data-ic="⏳"><span data-illus="c21_fakeclock"></span><div class="egt"><b>FOMO：重置的倒计时</b>：礼包页挂着“23:59:59”，可是每天零点重置，同一个礼包明天又来。紧迫感是伪造的，玩家是被骗着快速决定的。</div></div>
+  <div class="eg" data-ic="🌀"><span data-illus="c21_maze"></span><div class="egt"><b>订阅容易、退订难</b>：订阅只要一步，退订却要连过“确定？”“真的？”“再想想”几道关。进来的门和出去的门不一样宽，这是在消耗玩家的耐心，而不是争取他的同意。</div></div>
+  <div class="eg" data-ic="⚓"><span data-illus="c21_sunk"></span><div class="egt"><b>沉没成本：“都玩了 30 小时了”</b>：这 30 小时已经回不来了，是否继续应该只看后面的 30 小时值不值得。可“不玩就白费了”会让人继续，哪怕他并不快乐。</div></div>
+  <div class="eg bad" data-ic="🛍️"><span data-illus="c21_honest"></span><div class="egt"><b>反例：明码标价的外观</b>：三件外观各有价格，不买也能完整玩。玩家看得清、可以不买、也没有被推着决定。同样是“卖东西”，它缺的恰好是黑暗模式里的欺骗与强迫。</div></div>
+
+  <div class="sec"><span class="n">5</span><h2><span class="tag what">是什么</span>设计伦理的底线，以及现实里已经发生的事</h2></div>
+  <div class="grid3">
+    <div class="card g mini"><div class="ico">🧒</div><h3>保护未成年人</h3><p>消费限额、家长控制、付款二次确认、防沉迷提示。</p></div>
+    <div class="card y mini"><div class="ico">🔍</div><h3>透明概率</h3><p>随机付费奖励要<b>公开概率</b>和保底规则。</p></div>
+    <div class="card p mini"><div class="ico">🧘</div><h3>不制造焦虑</h3><p>不用虚假倒计时、羞辱式文案、惩罚式打卡来逼玩家。允许玩家放心离开。</p></div>
+  </div>
+  <p>此外：取消订阅要和订阅一样容易；价格和内容写清楚；付费不应让不付费的玩家变成“陪练”。这不只是君子协定，各地监管也在往这个方向走，而且变化很快。下面是几件已经发生的事（法规各地不同，请以当地现行规定为准）：</p>
+  <ul>
+    <li><b>中国</b>：自 2017 年 5 月 1 日起，网络游戏运营方要公布抽取类随机道具的概率；2021 年 8 月，国家新闻出版署规定，向未成年人提供网络游戏服务只限周五、周六、周日和法定节假日的 20 时至 21 时，共 1 小时。</li>
+    <li><b>比利时</b>：2018 年 4 月，博彩委员会认定《FIFA 18》《反恐精英：全球攻势》《守望先锋》里的战利品箱违反赌博法；《星球大战：前线 II》经 EA 调整后未被认定。</li>
+    <li><b>美国</b>：2022 年 12 月，联邦贸易委员会与 Epic Games 达成和解，其中 2.45 亿美元用于退款。指控包括用黑暗模式诱导玩家（含儿童）误购，比如让一次误触就扣费的按钮布局（命令于 2023 年 3 月最终确定）。2025 年 1 月，该委员会又就《原神》的开发商 Cognosphere 提出 2000 万美元的和解：指控其误导玩家抽卡概率、虚拟货币购买流程令人困惑，并要求不得在未经家长同意时向 16 岁以下的人出售战利品箱。对方表示不同意部分指控，但同意和解。</li>
+  </ul>
+  <div class="src">出处：Harry Brignull 注册 darkpatterns.org 并提出该词，2010 年 7 月（见 deceptive.design 作者介绍）；中国：文化部关于公布随机抽取类道具概率的规定（2017 年 5 月 1 日起施行），国家新闻出版署 2021 年 8 月 30 日《关于进一步严格管理 切实防止未成年人沉迷网络游戏的通知》（新华社同日报道）；比利时博彩委员会 2018 年 4 月调查结果（媒体报道）；FTC 新闻稿 2022 年 12 月（Epic Games）、2025 年 1 月 17 日（Cognosphere）。</div>
+
+  <div class="sec"><span class="n">6</span><h2><span class="tag origin">发明故事</span>游戏是怎么学会“免费”收钱的？</h2></div>
+  <div class="story">
+    <h3>每一种收费方式，都是为了解决上一种留下的麻烦</h3>
+    <p>回头看这段历史，有一条很清楚的线：每一次新的收费方式出现，都是因为旧的有一个没法忍的毛病。街机一次一个硬币，付费的理由再明白不过；可一搬到家里，玩家要一次买下整盒游戏，买之前却没法先试玩，买到不好玩的只能认倒霉。</p>
+    <p>于是出现了第一个办法：让玩家先玩。后来世界越开越大，服务器每个月都要钱，一次性买断跟不上持续的成本，又换成了按月订阅。再后来手机来了，下载一个游戏要先付钱的门槛太高，“免费下载，里面再卖”成了新办法。每一步都解决了一个旧问题，也带来了一个新问题。</p>
+  </div>
+  <div class="card">
+    <h3>🤔 先猜，再揭晓</h3>
+    <p>你要卖一款没人听说过的新游戏，玩家买之前没法试玩。你会怎么收钱？</p>
+    <div class="c21opts" id="c21_guess"></div>
+    <div class="msg" id="c21_gmsg"></div>
+  </div>
+  <div class="timeline">
+    <div class="ev hasimg"><span data-illus="c21_arcade"></span><div><b class="yr">街机时代</b>　一个硬币玩一次，付费和乐趣直接挂钩，谁都明白。可它是按次收费的，搬进客厅就行不通了：家用游戏要一次买下整盒，却没法在买之前确认好不好玩。</div></div>
+    <div class="ev hasimg"><span data-illus="c21_shareware"></span><div><b class="yr">1993</b>　id Software 在 12 月把《毁灭战士》的第一章（九关）作为共享软件免费放出，可以随便拷贝，后面两章邮购。关键洞察：<b>让玩家先玩到，再决定付不付钱</b>。它传播得极快，据说一上传就把大学的服务器挤爆了。</div></div>
+    <div class="ev hasimg"><span data-illus="c21_server"></span><div><b class="yr">2004</b>　《魔兽世界》11 月上线，按月订阅（当时月卡约 14.99 美元，整盒游戏建议零售价 49.99 美元，含一个月）。在线世界要一直开着，成本也是持续的，所以收费也变成持续的。这又带来新问题：玩家每个月都在重新决定“值不值”，设计者不得不一直拿内容留人。</div></div>
+    <div class="ev hasimg"><span data-illus="c21_iap"></span><div><b class="yr">2009</b>　10 月，苹果允许免费应用也使用应用内购买。之前只有付费应用能卖内购，开发者只好另做一个免费的“Lite 版”。从此“免费下载，进去再卖”成了手机游戏的主流办法，也带来了新的压力：只有一部分人会付费，团队就要想办法让更多人掏钱。</div></div>
+    <div class="ev hasimg"><span data-illus="c21_kompu"></span><div><b class="yr">2012</b>　日本的社交游戏里流行一种“集齐一套才能兑大奖”的抽奖（俗称 kompu gacha）：随机抽卡，最后一张迟迟不来。投诉明显增加，消费者厅表示这种做法可能违法，六家大公司随后宣布取消这种玩法。随机付费第一次被监管盯上。</div></div>
+    <div class="ev hasimg"><span data-illus="c21_odds"></span><div><b class="yr">2017—2018</b>　2017 年 5 月 1 日起，中国要求公布随机道具概率；2018 年 4 月比利时认定部分游戏的战利品箱违反赌博法。从“好不好玩”到“公不公平”，规则开始写进法规。</div></div>
+  </div>
+  <div class="src">出处：《毁灭战士》共享软件发行与 1993 年 12 月 10 日上传：Doom 的相关历史（DoomWiki、Wikipedia “Doom (1993 video game)”）；《魔兽世界》的价格与上线日期：暴雪 2004 年 11 月 4 日新闻稿及当时报道；苹果 2009 年 10 月 15 日向开发者发出的邮件（TechCrunch、Macworld 报道）；日本 kompu gacha 事件：2012 年 5 月的行业与媒体报道（The Next Web 等）。各国监管细节见上一节出处。</div>
+
+  <div class="sec"><span class="n">7</span><h2><span class="tag why">为什么成立</span>为什么“说不准什么时候中”让人更难停？强化程序</h2></div>
+  <div class="withimg">
+    <span data-illus="c21_skinner"></span>
+    <div>
+      <p>先问一个别扭的问题：为什么有些游戏让人明明想关掉，却还想“再来一次”？心理学家早就在实验箱里观察过类似的东西。</p>
+      <p>斯金纳（B. F. Skinner）和合作者让动物按杠杆领食物，再改变“什么时候给奖励”的规则：每按 N 次必给一次，叫<b>固定比率</b>；平均每 N 次给一次，可具体是哪一次说不准，叫<b>可变比率</b>。两种规则都能让动物一直按，可后者通常更稳定，奖励停掉之后消退得也更慢。</p>
+      <p>你多半能想到，游戏里的随机掉落、抽卡长得和这个很像。</p>
+    </div>
+  </div>
+  <div class="why-box">
+    <h3>强化程序：谁掌握了原理，谁就掌握了力量</h3>
+    <p>还记得多巴胺吗？Schultz、Dayan 和 Montague 在 1997 年的论文里总结，灵长类的多巴胺神经元编码的像是“预测误差”：比预期更好的结果，响应最强。可变奖励让每一次都“说不准”，每一次拉动都带着一份预测误差，这是对为什么它难停的一种常见解释。直接证据主要来自动物和受控实验，具体到某个玩家怎么了，不能直接下结论。</p>
+    <p>要紧的是责任。知道“怎样让行为更持久”，就意味着有能力<b>塑造玩家的行为</b>。能力本身没有对错，但至少有三件事要分清：①<b>能做 ≠ 该做</b>：把它用来让战斗更有惊喜，和用来让人掏钱停不下来，是两回事。②<b>和真钱绑定要加倍小心</b>：随机奖励加付费，已经是赌博的形状，需要公开概率、设消费上限。③<b>看对象</b>：同样的机制，对成年人和对未成年人、对容易冲动的人，影响不同。</p>
+    <div class="src">出处：Skinner《The Behavior of Organisms》（1938）；Ferster &amp; Skinner《Schedules of Reinforcement》（1957）；Schultz, Dayan &amp; Montague, “A Neural Substrate of Prediction and Reward”, Science 275 (1997)；老虎机的设计研究见 Natasha Dow Schüll《Addiction by Design》（2012）。动物实验的结论不能直接等同于对人的影响，这里是借其思路讨论设计责任。</div>
+  </div>
+  <div class="board">
+    <p><b>实验：两台“老虎机”，平均出奖频率相同。</b>机器 A <b>每 5 次必出奖</b>；机器 B <b>每次有 20% 概率出奖</b>（平均也是每 5 次一次）。各拉一阵，留意“连续空拉”的次数，再把花费换算成真钱。</p>
+    <label class="ctl">每拉一次的花费（元）<output id="c21po">6</output></label>
+    <input type="range" id="c21p" min="1" max="30" step="1" value="6">
+    <div class="grid2">
+      <div class="card y">
+        <h3>机器 A：固定比率</h3>
+        <div class="c21strip" id="c21sa"></div>
+        <span class="stat">拉了 <b id="c21na">0</b></span><span class="stat">出奖 <b id="c21ha">0</b></span><span class="stat">最长连空 <b id="c21la">0</b></span>
+        <div><button class="btn" id="c21ba">🎰 拉一次</button></div>
+      </div>
+      <div class="card p">
+        <h3>机器 B：可变比率</h3>
+        <div class="c21strip" id="c21sb"></div>
+        <span class="stat">拉了 <b id="c21nb">0</b></span><span class="stat">出奖 <b id="c21hb">0</b></span><span class="stat">最长连空 <b id="c21lb">0</b></span>
+        <div><button class="btn pink" id="c21bb">🎰 拉一次</button></div>
+      </div>
+    </div>
+    <button class="btn alt" id="c21auto">⏩ 各自动拉 100 次</button>
+    <button class="btn green" id="c21rst">重置</button>
+    <div class="msg" id="c21msg" style="font-size:1.05rem;font-family:var(--body)">拉几次试试。</div>
+  </div>
+  <div class="sticky c21try" id="c21_tm">试试看：点“各自动拉 100 次”，比较两台机器的最长连空，再把“每拉一次的花费”拖到 30，看这个空窗值多少钱。</div>
+
+  <div class="sec"><span class="n">8</span><h2><span class="tag why">为什么成立</span>比自然更诱人：超常刺激</h2></div>
+  <div class="withimg rev">
+    <span data-illus="c21_gullegg"></span>
+    <div>
+      <p>垃圾食品比水果更甜、更油，吃起来“更带劲”，可它给身体的好处并没有更多。我们的欲望是在自然环境里演化出来的，遇到被放大的人造刺激，会被拉得比“真正有好处”更远。</p>
+      <p>动物行为学家廷伯根（Niko Tinbergen）和同事在海鸟身上看到过这件事。银鸥的雏鸟会啄父母喙上的红点来讨食，而一根带白色细环的红色小棒，招来的啄食比一个逼真的鸟头模型还多。给鸟看假蛋，它们也常常更爱去孵比自己的蛋更大、颜色更艳的那一枚。</p>
+      <p>他把这个现象叫作<b>超常刺激</b>：人造的、强度超过自然范围的刺激，吸引力可能超过真实的东西。</p>
+    </div>
+  </div>
+  <div class="why-box">
+    <h3>超常刺激（supernormal stimulus）</h3>
+    <p><b>联系游戏：</b>有人用这个类比来讨论游戏、短视频和加工食品：不断放大的画面、音效、奖励弹窗和数字膨胀，是否让“想要”跑到了“满足”前面？注意这只是类比，不是定论：它不等于“游戏 = 上瘾”，大多数人玩游戏并无问题。它只提醒设计者：<b>加大刺激强度很容易，但“更刺激”不等于“更让人满足”</b>。</p>
+    <div class="src">出处：廷伯根《本能的研究》（The Study of Instinct，1951）、《银鸥的世界》（The Herring Gull’s World，1953）；将此概念推广到人类行为的科普论述见 Deirdre Barrett《Supernormal Stimuli》（2010），属于类比性应用，学界并非全盘接受。廷伯根与洛伦茨当年用来解释这些现象的“先天释放机制”，今天已不被广泛接受，但观察到的现象本身仍站得住。相关但不同的理论还有 Berridge 与 Robinson 对“想要”和“喜欢”的区分（1990 年代起）。</div>
+  </div>
+  <div class="board">
+    <label class="ctl">刺激强度（0 ＝ 没有，100 ＝ 最强的人造刺激）<output id="c21xo">30</output></label>
+    <input type="range" id="c21x" min="0" max="100" step="1" value="30">
+    <label class="ctl">自然范围的上限（现实中能遇到的最强刺激在哪里）<output id="c21to">40</output></label>
+    <input type="range" id="c21t" min="30" max="80" step="1" value="40">
+    <svg viewBox="0 0 560 240" width="100%" role="img" aria-label="刺激强度与满足度、吸引力的概念图">
+      <rect x="50" y="10" width="490" height="180" fill="#fffef7" stroke="#2b2b3a" stroke-width="3"/>
+      <rect id="c21nat" x="50" y="10" width="100" height="180" fill="#b6e8a8" fill-opacity=".35"/>
+      <polyline id="c21sat" fill="none" stroke="#3aa655" stroke-width="5" stroke-linejoin="round"/>
+      <polyline id="c21att" fill="none" stroke="#e5484d" stroke-width="5" stroke-linejoin="round"/>
+      <line id="c21cur" x1="0" y1="10" x2="0" y2="190" stroke="#2b2b3a" stroke-width="3" stroke-dasharray="5 4"/>
+      <text id="c21ymax" x="38" y="24" text-anchor="end" font-size="16">100</text><text x="38" y="194" text-anchor="end" font-size="16">0</text>
+      <text x="295" y="228" text-anchor="middle" font-size="16">刺激强度 →（绿＝满足度，红＝吸引力，浅绿区＝自然范围）</text>
+    </svg>
+    <div>
+      <span class="stat">满足度 <b id="c21sv">-</b></span><span class="stat">吸引力 <b id="c21av">-</b></span><span class="stat">差距（吸引力 − 满足度） <b id="c21gv">-</b></span><span class="stat">再加 10 点强度：多得的满足 <b id="c21ds">-</b></span>
+    </div>
+    <div class="msg" id="c21sm" style="font-size:1.05rem;font-family:var(--body)"></div>
+  </div>
+  <p class="small"><b>概念示意图，不是测量数据：</b>满足度 = 100 × (1 − e^(−3x/T))，随强度增加而<b>边际递减</b>（T 为自然上限）；吸引力 = 100 × x/T，随强度<b>一直上升</b>（以自然上限处为 100 作参照）。纵轴数值只用来比较形状。</p>
+  <div class="sticky c21try" id="c21_ts">试试看：把自然范围上限放在 40，把刺激强度拖出自然范围，找到一个位置，让“再加 10 点强度，多得的满足”不到 1，而吸引力还在涨。</div>
+
+  <div class="sec"><span class="n">9</span><h2><span class="tag why">为什么成立</span>怕失去比想得到更有力：损失厌恶、稀缺与默认选项</h2></div>
+  <div class="withimg">
+    <span data-illus="c21_lossframe"></span>
+    <div>
+      <p>捡到 100 元很开心，丢了 100 元却很难受，而且难受得更久。促销文案最爱做的，就是把同一件商品换个说法：不说“你会得到什么”，而说“你会失去什么”，或者“只剩最后几个”。</p>
+      <p>这背后有一个有名的发现。卡尼曼与特沃斯基的前景理论（1979）指出，人对得失的感受是相对于一个参照点的，而同样大小的损失，常比收益更让人在意，这叫<b><span class="term" tabindex="0" data-def="同样大小的损失，带来的痛苦通常大于得到的快乐。">损失厌恶</span></b>。</p>
+      <p>还有一条常见的说服原则叫<span class="term" tabindex="0" data-def="稀缺原则：东西越少、越难得、越限时，人们往往越觉得它有价值，越急着得到。">稀缺</span>：越难得的东西，越显得有价值。</p>
+    </div>
+  </div>
+  <div class="card">
+    <svg viewBox="0 0 700 300" width="100%" role="img" aria-label="前景理论价值函数示意图：横轴是得失，纵轴是主观感受；损失一侧的曲线比收益一侧更陡">
+      <g class="rough" stroke="#2b2b3a" stroke-width="3.5" fill="none" stroke-linecap="round">
+        <path d="M60 150 H650"/><path d="M350 16 V290"/>
+        <polyline id="c21_pv" stroke="#e5484d" stroke-width="5" stroke-linejoin="round"/>
+      </g>
+      <g font-size="17" fill="#2b2b3a">
+        <text x="640" y="176" text-anchor="end">收益 →</text><text x="64" y="176">← 损失</text>
+        <text x="358" y="30">主观感受</text>
+        <text x="64" y="46">损失一侧更陡：</text><text x="64" y="68">丢 100 的痛，大于捡 100 的喜</text>
+      </g>
+    </svg>
+    <p class="small">示意曲线：形状借用 Tversky 与 Kahneman（1992）估计的参数（指数约 0.88，损失权重约 2.25，据报道该估计来自 25 名研究生的选择）。这个倍数在不同研究里差别很大。</p>
+  </div>
+  <div class="why-box">
+    <h3>损失厌恶、稀缺与“界线在哪里”</h3>
+    <p>这些原理本身<b>不是邪恶的</b>：真实的限时活动、真实的稀有物品，是正当的信息。越线的往往是下面几点：<b>信息是否属实</b>（假倒计时、假库存）、<b>玩家能否无惩罚地放弃</b>（“不买就清零”算不算强迫）、<b>是否利用了玩家的弱点</b>（情绪低点、未成年人）。</p>
+    <p>还有一个不显眼但威力很大的东西：<b>默认选项</b>。Johnson 与 Goldstein 在 2003 年的《科学》论文里比较了欧洲各国的器官捐献制度：默认“不捐”、需要主动选择加入的国家（如德国，约 12%），同意捐献的登记比例远低于默认“捐”、需要主动退出的国家（如奥地利，约 99.98%）。注意这是登记同意的比例，不等于实际捐献率。多数人不会去改默认值，所以<b>谁来设默认值，谁就在替大家做决定</b>。Thaler 与 Sunstein 在《助推》（2008）里把用默认值引导人做对自己好的事称作“助推”；同样的手法，用在默认勾上“自动续费”上，就成了黑暗模式。</p>
+    <div class="src">出处：Kahneman &amp; Tversky, “Prospect Theory”（Econometrica, 1979）；Tversky &amp; Kahneman（1992，累积前景理论）；Cialdini《Influence》（1984，中文常译《影响力》）；Johnson &amp; Goldstein, “Do Defaults Save Lives?”, Science 302 (2003)；Thaler &amp; Sunstein《Nudge》（2008）。近年也有研究者质疑损失厌恶的普遍程度，例如 Gal 与 Rucker（2018）认为现有证据并不支持“损失普遍比收益更重”，所以“损失约等于收益的 2 倍”不应被当成定律。</div>
+  </div>
+  <div class="board">
+    <p>同一件商品，三种促销文案。先点“可接受”或“操纵”给出你的判断，再切换下面的两个条件，看规则怎么给出结论。</p>
+    <div id="c21fcs"></div>
+    <p class="small"><b>本书使用的判断规则（一种立场，现实中有争议）：</b>信息必须属实；且玩家不买或错过时不会受到惩罚（不会因此失去已投入的进度）。两条都满足，才算“可接受”；否则就是在利用框架操纵。</p>
+  </div>
+  <div class="board c21form">
+    <b>默认值小实验：</b>你正在结账，买一个 6 元的礼包。
+    <div style="margin:8px 0"><label class="chk" style="display:inline-flex;gap:6px"><input type="checkbox" id="c21dchk"> 同时开通“月卡自动续费”（每月 30 元，随时可取消）</label></div>
+    <div class="small">切换下面两种页面设计，看看“谁在替你做决定”。</div>
+    <button class="chip on" id="c21dA">默认勾选</button><button class="chip" id="c21dB">默认不勾选</button>
+    <div class="msg" id="c21dmsg"></div>
+  </div>
+
+  <div class="sec"><span class="n">10</span><h2><span class="tag how">怎么用</span>两个试验台：留存旋钮与“是不是黑暗模式”</h2></div>
+  <p>前面是原理，现在上手。第一个试验台：调整下面四个旋钮，看 30 天留存曲线和“玩家满意度”怎样变化。留意最后一个旋钮：它能让数字更好看，却让玩家更难受。</p>
+  <div class="board">
+    <label class="ctl">首日体验（新手引导是否顺畅有趣）<output id="o1">50</output></label><input type="range" id="q" min="0" max="100" value="50">
+    <label class="ctl">每日奖励 / 日常目标<output id="o2">50</output></label><input type="range" id="r" min="0" max="100" value="50">
+    <label class="ctl">社交（好友、公会、合作）<output id="o3">30</output></label><input type="range" id="s" min="0" max="100" value="30">
+    <label class="ctl">断签惩罚（不登录就清零、扣东西）<output id="o4">0</output></label><input type="range" id="p" min="0" max="100" value="0">
+    <svg viewBox="0 0 560 260" width="100%" style="margin-top:8px" role="img" aria-label="30天留存曲线">
+      <rect x="50" y="10" width="490" height="200" fill="#fffef7" stroke="#2b2b3a" stroke-width="3"/>
+      
+      <polyline id="rline" fill="none" stroke="#e5484d" stroke-width="5" stroke-linejoin="round"/>
+      <g id="rdots" fill="#ffe58a" stroke="#2b2b3a" stroke-width="3"></g>
+      <g id="rtexts" font-size="17" fill="#2b2b3a"></g>
+      <text x="40" y="26" text-anchor="end" font-size="16">100%</text><text x="40" y="214" text-anchor="end" font-size="16">0</text>
+      <text x="295" y="250" text-anchor="middle" font-size="18">第几天 →</text>
+    </svg>
+    <div>
+      <span class="stat">次日 <b id="d1">-</b></span><span class="stat">7 日 <b id="d7">-</b></span><span class="stat">30 日 <b id="d30">-</b></span><span class="stat">玩家满意度 <b id="sat">-</b></span>
+    </div>
+    <div class="msg" id="rmsgs"></div>
+  </div>
+  <p class="small"><b>说明：</b>这是本书自拟的<b>示意公式</b>，仅用来体会“哪些因素影响哪个节点”，不代表任何真实游戏或行业数据。大意：首日体验主要决定次日留存的高度；每日奖励和社交主要托起长期的“底部”并减缓流失；断签惩罚会让曲线好看一些，但满意度被它拉低。</p>
+  <div class="sticky c21try" id="c21_tr">试试看：不用断签惩罚（保持 0），把 30 日留存拉到 15% 以上，同时让玩家满意度不低于 60。</div>
+
+  <p>第二个试验台：下面有 8 个设计。请判断它们是<b>健康</b>、<b>可疑</b>（要看细节）还是<b>不合适</b>，点选后会揭晓理由。这些判断体现的是本书的立场，现实中也有争议，重点是理解理由。</p>
+  <div class="board">
+    <div class="small" id="jprog"></div>
+    <div class="judge" id="jtext"></div>
+    <div class="jbtns" id="jbtns">
+      <button class="btn green" data-v="0">✅ 健康</button>
+      <button class="btn" data-v="1">🤔 可疑</button>
+      <button class="btn pink" data-v="2">🚫 不合适</button>
+    </div>
+    <div class="jres" id="jres"></div>
+    <button class="btn alt" id="jnext" style="display:none">下一个 →</button>
+  </div>
+  <div class="sticky c21try" id="c21_tj">试试看：判完全部 8 个，并至少和本书的判断一致 6 个。不一致的，读读理由，想想是哪个细节改变了结论。</div>
+
+  <div class="sec"><span class="n">11</span><h2><span class="tag how">怎么用</span>设计者的自查清单</h2></div>
+  <p>把上面的原理变成动作：对着你想的游戏（或正在做的游戏）逐条打勾。每一条都是“<b>我能不能坦然地让玩家看到</b>”的版本。打勾状态会保存在你的浏览器里。</p>
+  <div class="board">
+    <label class="ctl" for="c21name">你的游戏叫什么？</label>
+    <input type="text" id="c21name" data-save="ch21-name" placeholder="例：《星球便利店》">
+    <div class="c21chk" id="c21chk"></div>
+    <div class="c21bar"><span id="c21fill" style="width:0"></span></div>
+    <div class="msg" id="c21cr" style="font-size:1.05rem;font-family:var(--body)"></div>
+  </div>
+  <p class="small">这份清单是本书整理的实用自检，不是法律条文，也不保证合规；各地对概率公示、未成年人消费、订阅取消等有不同法规，请查当地规定。</p>
+
+  <div class="key">
+    <h3>本章要点</h3>
+    <ul>
+      <li>四种常见商业模式：<b>买断、订阅、免费+内购、广告</b>；赚钱方式会<b>反过来塑造设计</b>。</li>
+      <li><b>留存</b>看次日、7 日、30 日：次日看<b>第一印象</b>，7 日看<b>习惯</b>，30 日看<b>长期价值</b>；靠断签惩罚撑起来的留存很脆弱。</li>
+      <li>收费方式一路演变，每一步都在解决上一步的毛病：先试玩（共享软件）、按月订阅、免费加内购，直到随机付费引来监管。</li>
+      <li><b>黑暗模式</b>：假倒计时、退订迷宫、沉没成本、损失框架、没有停止点。认识它们是为了避免滥用。</li>
+      <li>为什么有效：<b>可变奖励</b>更持久、<b>超常刺激</b>让“想要”跑在“满足”前面、<b>损失厌恶与稀缺</b>让人怕失去、<b>默认选项</b>悄悄替人做决定。<b>有效不等于该用</b>：看是否真实、可放弃、是否针对弱势。</li>
+      <li>伦理底线：<b>保护未成年人、透明概率、不制造焦虑</b>；自检：玩家完全知情时，还会觉得公平吗？</li>
+    </ul>
+  </div>
+  <div class="tldr">心理学让我们知道怎样“让人更想要”；伦理要求我们只在真实、可选、玩家能放心离开的前提下这样做。</div>
+
+  <div class="misc">
+    <h3>常见误区</h3>
+    <ul>
+      <li><b>“超常刺激＝游戏会让人上瘾。”</b>这只是一个类比：多数玩家玩游戏没有问题；它提醒的是“刺激越强不等于越满足”。</li>
+      <li><b>“公开了概率就没有问题了。”</b>透明只是底线之一；还要看消费上限、未成年人保护，以及保底之外会不会诱导过度消费。</li>
+      <li><b>“只要玩家愿意付钱，就是自愿的。”</b>如果意愿是由假倒计时、惩罚性清零或情绪低点的推送制造出来的，“自愿”就打了折扣。</li>
+      <li><b>“限时、稀缺本身就是坏的。”</b>真实的限时活动和稀有物品是正当的；越线的是造假和强迫。</li>
+    </ul>
+  </div>
+
+  <div class="reflect">
+    <h3>反思与争议</h3>
+    <p>① 动物的强化实验和超常刺激研究，推广到人类玩家只是类比。世界卫生组织在 2019 年把“游戏障碍”列入第十一版国际疾病分类（2022 年 1 月 1 日生效），但游戏行业组织表示反对，批评者认为证据还不够。不同国家的态度也不同。② “界线”本身也有争议：有人（常见于部分业界从业者）认为玩家是成年人，应自己负责；也有人强调商家掌握更多信息和心理学工具，责任更大——这是两种不同的立场，本书倾向后者，但并非定论。③ 商业现实也是真的：团队要活下去，免费游戏需要收入，伦理设计不是“不赚钱”，而是“不靠玩家的弱点赚钱”。④ 损失厌恶的强度近年有研究者质疑。你觉得：当一个机制“有效”但让玩家事后后悔，它算成功吗？</p>
+  </div>
+
+  <div class="sec"><span class="n">12</span><h2><span class="tag think">反思</span>练习</h2></div>
+  <div id="quiz"></div>
+
+  <div class="sec"><span class="n">13</span><h2><span class="tag how">怎么用</span>你的设计</h2></div>
+  <div class="card o">
+    <p>为你的游戏选一种商业模式，写出：(1) <b>玩家为什么愿意付钱</b>；(2) 你<b>明确不会做</b>的三件事（比如“不做虚假倒计时”）。</p>
+    <textarea rows="5" data-save="ch21" placeholder="例：买断制，因为……；我不会做：①……②……③……"></textarea>
+  </div>
+</main>
+<script src="js/illus.js"></script><script src="js/illus-ch21.js"></script><script src="js/common.js"></script>
+<script>
+const $ = id => document.getElementById(id);
+function tryDone(id, text) {
+  const el = $(id); if (!el || el.dataset.done) return;
+  el.dataset.done = "1"; el.style.background = "#eaf9e4";
+  el.innerHTML = "✅ <b>任务完成！</b>" + text;
+}
+
+// ---------- 先猜后揭晓：怎么卖一款没人听说过的游戏
+(function () {
+  const OPT = [
+    ["先收钱，玩家想玩就得先买", "这是家用游戏盒装时代的默认做法。风险全压在玩家身上：买到不好玩的只能认倒霉，口碑一旦不好，没人敢买新游戏。"],
+    ["把一部分免费发出去，玩得满意再付费买剩下的", "这是 1993 年《毁灭战士》用的办法：第一章免费随便拷贝，后面章节邮购。玩家先尝到好处再掏钱，传播也靠玩家替你分发。它解决了“买前没法试”，只是要求游戏能被切成一块一块卖。"],
+    ["整个游戏免费，里面再卖东西", "这是 2009 年以后手机游戏的主流办法。它把门槛降到零，却产生了新问题：只有一部分人会付费，于是每一个付费点都要“说服”人，设计开始同时被乐趣和转化两个目标拉扯。"],
+  ];
+  const box = $("c21_guess");
+  OPT.forEach(([t, why]) => {
+    const b = document.createElement("button"); b.className = "chip"; b.textContent = t;
+    b.onclick = () => {
+      [...box.children].forEach(x => x.classList.remove("on")); b.classList.add("on");
+      $("c21_gmsg").innerHTML = "<b>历史上三种办法都出现过。</b>你选的这一种：" + why + "<br><span class='small'>点另外两个，看它们各自解决了什么、留下了什么新麻烦。</span>";
+    };
+    box.appendChild(b);
+  });
+})();
+
+// ---------- 前景理论价值函数（示意）
+(function () {
+  const a = 0.88, lam = 2.25, pts = [];
+  for (let x = -100; x <= 100; x += 4) {
+    const v = x >= 0 ? Math.pow(x, a) : -lam * Math.pow(-x, a);
+    pts.push((350 + x * 2.7) + "," + (150 - v * 1.05));
+  }
+  $("c21_pv").setAttribute("points", pts.join(" "));
+})();
+
+// ---------- 留存曲线（示意公式）
+function retention(q, r, s, p) {
+  const R1 = 0.2 + 0.3 * q;
+  const L = 0.02 + 0.05 * r + 0.10 * s;
+  const a = Math.max(0.15, 0.8 - 0.3 * r - 0.2 * s - 0.15 * p);
+  const arr = [1];
+  for (let d = 1; d <= 30; d++) arr.push(L + (R1 - L) * Math.pow(d, -a));
+  const sat = Math.max(0, Math.min(100, 30 + 45 * q + 10 * s + 5 * r - 50 * p));
+  return { arr, sat };
+}
+function updR() {
+  const v = id => +$(id).value / 100;
+  ["q", "r", "s", "p"].forEach((id, i) => ($("o" + (i + 1)).textContent = $(id).value));
+  const { arr, sat } = retention(v("q"), v("r"), v("s"), v("p"));
+  const X = d => 50 + d / 30 * 490, Y = val => 210 - val * 200;
+  $("rline").setAttribute("points", arr.map((val, d) => X(d) + "," + Y(val)).join(" "));
+  const marks = [1, 7, 30];
+  $("rdots").innerHTML = marks.map(d => `<circle cx="${X(d)}" cy="${Y(arr[d])}" r="7"/>`).join("");
+  $("rtexts").innerHTML = marks.map(d => `<text x="${X(d) - (d === 30 ? 10 : -12)}" y="${Y(arr[d]) - 22}" text-anchor="${d === 30 ? "end" : "start"}">${d === 30 ? "30日" : d === 7 ? "7日" : "次日"} ${(arr[d] * 100).toFixed(0)}%</text>`).join("") +
+    [0, 10, 20, 30].map(d => `<text x="${X(d)}" y="230" text-anchor="middle" font-size="16">${d}</text>`).join("");
+  $("d1").textContent = (arr[1] * 100).toFixed(0) + "%";
+  $("d7").textContent = (arr[7] * 100).toFixed(0) + "%";
+  $("d30").textContent = (arr[30] * 100).toFixed(0) + "%";
+  $("sat").textContent = sat.toFixed(0);
+  const p = v("p");
+  $("rmsgs").textContent = p > 0.5 && sat < 40 ? "⚠️ 曲线好看了一点，但玩家是“被逼着来”的，满意度很低——这种留存很脆弱，也伤信任。" :
+    v("q") < 0.3 ? "😬 次日留存很低：多数人在第一天就走了，先修新手体验和第一印象。" :
+    arr[30] < 0.08 ? "🌱 玩家慢慢流失，试试增加社交和有意义的日常目标。" : "✅ 靠体验、目标和社交留住玩家，满意度和留存一起上升。";
+  if (p === 0 && arr[30] >= 0.15 && sat >= 60) tryDone("c21_tr", "30 日留存 " + (arr[30] * 100).toFixed(0) + "%，满意度 " + sat.toFixed(0) + "，一点压力手段都没用：靠的是首日体验、日常目标和社交。（示意公式，不代表真实数据）");
+}
+["q", "r", "s", "p"].forEach(id => ($(id).oninput = updR));
+updR();
+
+// ---------- 判断题卡
+const CARDS = [
+  { t: "一款买断制游戏，推出“新增剧情章节”的付费扩展包，商店页写明内容和价格，不购买也不影响本体。", a: 0, why: "玩家知情、自愿，买的是真实的新内容。" },
+  { t: "限时礼包页面有“23:59:59 倒计时”，但每天都会重置并再次出现同样的礼包。", a: 2, why: "虚假的紧迫感（伪造 FOMO）：用谎言逼玩家快点决定，属于不合适的做法。" },
+  { t: "抽卡界面清楚列出各稀有度的出现概率和保底规则，并提供消费上限设置。", a: 0, why: "公开概率与可控的消费，是随机付费的基本底线。仍需注意未成年人保护。" },
+  { t: "连续登录奖励：断签一天，进度从第 1 天重新开始，最后几天的奖励包含稀有道具。", a: 1, why: "利用损失厌恶制造“不上线就亏”的压力。如果只是轻量的小福利、可补签，问题不大；惩罚越重越接近黑暗模式。" },
+  { t: "玩家连输几局后，弹窗说“买道具轻松过关”，同时悄悄把下一关调得更难。", a: 2, why: "故意制造挫折再贩卖解药，是在操纵玩家的情绪，属于不合适的设计。" },
+  { t: "付费只能买角色外观，对数值和胜负没有任何影响，所有外观在商店中明码标价。", a: 0, why: "卖的是表达和喜好，不破坏公平，也不制造焦虑。" },
+  { t: "通关后自动开始下一轮，且界面隐藏了游戏时长，也没有任何“休息一下”的停止点。", a: 1, why: "无停止点会让玩家难以自然收手。是否可疑，取决于有没有休息提醒、能不能轻松退出。" },
+  { t: "订阅只需一步，但取消订阅要翻过好几层菜单，还要先回答一堆挽留问题。", a: 2, why: "“进来容易、出去难”会损害玩家的自主权。取消订阅应该和订阅一样简单。" },
+];
+const JN = ["✅ 健康", "🤔 可疑", "🚫 不合适"];
+let ji = 0, jscore = 0;
+function showCard() {
+  $("jres").className = "jres"; $("jnext").style.display = "none";
+  $("jbtns").querySelectorAll("button").forEach(b => (b.disabled = false));
+  if (ji >= CARDS.length) {
+    $("jprog").textContent = "完成";
+    $("jtext").innerHTML = `<b>全部看完！</b>你和本书的判断一致 ${jscore} / ${CARDS.length} 题。记住：重点不在对错，而在理由。`;
+    $("jbtns").style.display = "none";
+    $("jnext").style.display = "inline-block"; $("jnext").textContent = "再玩一遍";
+    if (jscore >= 6) tryDone("c21_tj", "你和本书一致 " + jscore + " / 8。");
+    return;
+  }
+  $("jbtns").style.display = "flex";
+  $("jprog").textContent = "第 " + (ji + 1) + " / " + CARDS.length + " 个";
+  $("jtext").textContent = CARDS[ji].t;
+}
+$("jbtns").querySelectorAll("button").forEach(b => (b.onclick = () => {
+  const v = +b.dataset.v, c = CARDS[ji], ok = v === c.a;
+  if (ok) jscore++;
+  $("jres").className = "jres show " + (ok ? "good" : "bad");
+  $("jres").innerHTML = (ok ? "👍 与本书判断一致：" : "本书的判断是 <b>" + JN[c.a] + "</b>。") + (ok ? JN[c.a] + "。" : "") + "<br>" + c.why;
+  $("jbtns").querySelectorAll("button").forEach(x => (x.disabled = true));
+  $("jnext").style.display = "inline-block"; $("jnext").textContent = ji === CARDS.length - 1 ? "看结果" : "下一个 →";
+}));
+$("jnext").onclick = () => {
+  if (ji >= CARDS.length) { ji = 0; jscore = 0; } else ji++;
+  showCard();
+};
+showCard();
+
+(function () {
+  // ===== 两台老虎机
+  const M = { a: { n: 0, h: 0, cur: 0, mx: 0, strip: [] }, b: { n: 0, h: 0, cur: 0, mx: 0, strip: [] } };
+  function pull(k) {
+    const m = M[k]; m.n++;
+    const hit = k === "a" ? m.n % 5 === 0 : Math.random() < 0.2;
+    if (hit) { m.h++; m.cur = 0; } else { m.cur++; m.mx = Math.max(m.mx, m.cur); }
+    m.strip.push(hit); if (m.strip.length > 60) m.strip.shift();
+  }
+  function drawM() {
+    ["a", "b"].forEach(k => {
+      const m = M[k];
+      $("c21n" + k).textContent = m.n; $("c21h" + k).textContent = m.h; $("c21l" + k).textContent = m.mx;
+      $("c21s" + k).innerHTML = m.strip.map(x => x ? "<span class='h'>●</span>" : "<span class='m'>○</span>").join("") || "<span class='small'>还没拉过</span>";
+    });
+    const price = +$("c21p").value; $("c21po").textContent = price;
+    if (M.a.n < 20 || M.b.n < 20) { $("c21msg").textContent = "各拉至少 20 次，再比较“最长连空”。（也可以点“各自动拉 100 次”。）"; return; }
+    $("c21msg").innerHTML = "机器 A 最长连空 <b>" + M.a.mx + "</b> 次（≈ ¥" + M.a.mx * price + "）；机器 B 最长连空 <b>" + M.b.mx + "</b> 次（≈ ¥" + M.b.mx * price + "）。两台的平均出奖率相近，但 B 的空窗更长、命中也更难预料。" + (M.b.mx > M.a.mx ? "如果每次都要花钱，玩家在“下一次说不定就中了”的期待里，可能在空窗中花掉不少钱——这就是需要概率公示、保底和消费上限的原因。" : "这次 B 运气好，空窗没比 A 长；多重置几次，通常能看到 B 偶尔出现很长的空窗。");
+    if (M.a.n >= 100 && M.b.n >= 100) tryDone("c21_tm", "A 最长连空 " + M.a.mx + " 次，B 最长连空 " + M.b.mx + " 次；按每次 ¥" + price + " 算，B 的最长空窗要花 ¥" + M.b.mx * price + "，A 只要 ¥" + M.a.mx * price + "。（A 的空窗永远不会超过 4 次。）");
+  }
+  $("c21ba").onclick = () => { pull("a"); drawM(); };
+  $("c21bb").onclick = () => { pull("b"); drawM(); };
+  $("c21auto").onclick = () => { for (let i = 0; i < 100; i++) { pull("a"); pull("b"); } drawM(); };
+  $("c21rst").onclick = () => { ["a", "b"].forEach(k => (M[k] = { n: 0, h: 0, cur: 0, mx: 0, strip: [] })); drawM(); };
+  $("c21p").oninput = drawM; drawM();
+
+  // ===== 超常刺激概念图
+  function drawS() {
+    const x = +$("c21x").value, T = +$("c21t").value;
+    $("c21xo").textContent = x; $("c21to").textContent = T;
+    const S = v => 100 * (1 - Math.exp(-3 * v / T)), A = v => 100 * v / T;
+    const ymax = Math.max(110, A(100));
+    const X = v => 50 + v / 100 * 490, Y = r => 190 - r / ymax * 180;
+    const sp = [], ap = [];
+    for (let v = 0; v <= 100; v += 2) { sp.push(X(v) + "," + Y(S(v))); ap.push(X(v) + "," + Y(A(v))); }
+    $("c21sat").setAttribute("points", sp.join(" ")); $("c21att").setAttribute("points", ap.join(" "));
+    $("c21nat").setAttribute("width", X(T) - 50);
+    $("c21cur").setAttribute("x1", X(x)); $("c21cur").setAttribute("x2", X(x));
+    $("c21ymax").textContent = Math.round(ymax);
+    const s = S(x), a = A(x), ds = S(Math.min(100, x + 10)) - s;
+    $("c21sv").textContent = s.toFixed(0); $("c21av").textContent = a.toFixed(0); $("c21gv").textContent = (a - s).toFixed(0); $("c21ds").textContent = "+" + ds.toFixed(1);
+    $("c21sm").textContent = x <= T ? "在自然范围内：满足度和吸引力大致同步，“想要”和“得到”是匹配的。" :
+      a - s > 50 ? "⚠️ 远超自然范围：再加刺激，满足度几乎不涨（每 +10 强度只多 " + ds.toFixed(1) + "），吸引力却越拉越高。“想要”跑到了“得到”前面。（概念示意）" :
+      "刚越过自然范围：满足已经接近饱和，吸引力还在上升。";
+    if (x > T && ds < 1 && x < 100) tryDone("c21_ts", "强度 " + x + "、自然上限 " + T + "：再加 10 点强度只多得 " + ds.toFixed(2) + " 点满足，吸引力却已经到了 " + a.toFixed(0) + "。（概念示意）");
+  }
+  $("c21x").oninput = drawS; $("c21t").oninput = drawS; drawS();
+
+  // ===== 默认值小实验
+  (function () {
+    let mode = "A";
+    function d() {
+      $("c21dA").classList.toggle("on", mode === "A"); $("c21dB").classList.toggle("on", mode === "B");
+      $("c21dchk").checked = mode === "A";
+      $("c21dmsg").innerHTML = mode === "A"
+        ? "默认勾选：不动手就是同意。一个只想买 6 元礼包的人，如果没留意，每月会被多扣 30 元。这里设默认值的人，替你做了决定，并且对自己有利。"
+        : "默认不勾选：想要自动续费的人得自己勾上。同样的选项，决定权回到了玩家手里。可以放心地问一句：这个默认值，对玩家有利，还是对商家有利？";
+    }
+    $("c21dA").onclick = () => { mode = "A"; d(); }; $("c21dB").onclick = () => { mode = "B"; d(); };
+    $("c21dchk").onchange = () => { $("c21dmsg").textContent = "你手动改了勾选。默认值之所以威力大，是因为大多数人不会去改它。"; };
+    d();
+  })();
+
+  // ===== 三种促销文案
+  const FC = [
+    { name: "获得框架", copy: "购买月卡：30 天内每天登录领 60 钻石，共 1800 钻石，比单买便宜约 40%。", truth: true, free: true },
+    { name: "损失框架", copy: "你的 12 天连续登录即将清零！现在花 6 元「补签」，保住全部进度和稀有奖励。", truth: true, free: false },
+    { name: "稀缺框架", copy: "限定皮肤本周日 24:00 永久下架，此后不再返场。", truth: true, free: true },
+  ];
+  function verdict(c) {
+    const reasons = [];
+    if (!c.truth) reasons.push("信息不属实（如倒计时每天重置、“最后一次”反复出现）＝欺骗，任何框架都越线。");
+    if (!c.free) reasons.push("玩家如果不买就要受惩罚（失去已投入的进度），他是被“怕失去”推着走，不是自由选择。");
+    return { ok: reasons.length === 0, why: reasons.length ? reasons.join("<br>") : "信息真实，且玩家错过不会受到惩罚：只是把真实的价值或期限讲清楚，可接受。" };
+  }
+  function drawF() {
+    const box = $("c21fcs");
+    box.innerHTML = FC.map((c, i) => {
+      const v = verdict(c), lab = c.label;
+      let vd = "";
+      if (lab !== undefined) {
+        const same = (lab === 0) === v.ok;
+        vd = "<div class='vd show " + (same ? "good" : "bad") + "'>" + (same ? "👍 与规则一致：" : "与规则不一致：") + "按当前条件应判为 <b>" + (v.ok ? "可接受" : "操纵") + "</b>。<br>" + v.why + "</div>";
+      }
+      return "<div class='c21fc'><b>" + "ABC"[i] + " · " + c.name + "</b><div class='copy'>" + c.copy + "</div>" +
+        "<label><input type='checkbox' data-i='" + i + "' data-f='truth'" + (c.truth ? " checked" : "") + "> 信息属实</label>" +
+        "<label><input type='checkbox' data-i='" + i + "' data-f='free'" + (c.free ? " checked" : "") + "> 玩家可以无惩罚地放弃/错过</label><br>" +
+        "<button class='chip " + (lab === 0 ? "on" : "") + "' data-i='" + i + "' data-l='0'>✅ 可接受</button><button class='chip " + (lab === 1 ? "on" : "") + "' data-i='" + i + "' data-l='1'>🚫 操纵</button>" + vd + "</div>";
+    }).join("");
+    box.querySelectorAll("input[type=checkbox]").forEach(cb => (cb.onchange = () => { FC[+cb.dataset.i][cb.dataset.f] = cb.checked; drawF(); }));
+    box.querySelectorAll("button[data-l]").forEach(b => (b.onclick = () => { FC[+b.dataset.i].label = +b.dataset.l; drawF(); }));
+  }
+  drawF();
+
+  // ===== 自查清单
+  const GROUPS = [
+    ["🔍 透明", ["价格、概率、保底规则在购买前就清楚展示", "促销里的倒计时、库存、期限都是真实的"]],
+    ["🎚 可选", ["不付费也能完整体验核心乐趣；付费不是为了买“解药”", "没有“不上线就清零/惩罚”的机制，或可以轻松补救"]],
+    ["🚪 可退出", ["有自然的停止点或休息提醒；取消订阅和订阅一样容易", "玩家能看到并设置自己的消费与时长"]],
+    ["🛡 未成年与弱势用户", ["有消费限额、家长控制、二次确认，默认设置对未成年更保守", "不在玩家情绪低点（刚输、刚受挫）推送付费，不专门针对容易冲动的人"]],
+  ];
+  const ITEMS = []; GROUPS.forEach(g => g[1].forEach(t => ITEMS.push(t)));
+  let ck = ITEMS.map(() => false);
+  try { const sv = JSON.parse(GD.store.get("gdc-ch21-check") || "null"); if (Array.isArray(sv) && sv.length === ITEMS.length) ck = sv.map(Boolean); } catch (e) {}
+  function drawC() {
+    let idx = 0;
+    $("c21chk").innerHTML = GROUPS.map(g => "<h4>" + g[0] + "</h4>" + g[1].map(t => { const i = idx++; return "<label><input type='checkbox' data-i='" + i + "'" + (ck[i] ? " checked" : "") + "> " + t + "</label>"; }).join("")).join("");
+    $("c21chk").querySelectorAll("input").forEach(cb => (cb.onchange = () => { ck[+cb.dataset.i] = cb.checked; GD.store.set("gdc-ch21-check", JSON.stringify(ck)); scoreC(); }));
+    scoreC();
+  }
+  function scoreC() {
+    const n = ck.filter(Boolean).length, nm = ($("c21name").value || "你的游戏").trim() || "你的游戏";
+    $("c21fill").style.width = (n / ITEMS.length * 100) + "%";
+    $("c21fill").style.background = n >= 7 ? "#b6e8a8" : n >= 4 ? "#ffe58a" : "#ffb3c6";
+    const todo = ITEMS.filter((_, i) => !ck[i]);
+    $("c21cr").innerHTML = nm + "：<b>" + n + " / " + ITEMS.length + "</b>。" + (n === ITEMS.length ? "全部做到了——这是一份很好的起点，但仍请随玩家反馈持续检查。" : n >= 4 ? "有基础，下面几条值得补：<br>• " + todo.join("<br>• ") : "还有不少风险点，建议优先补：<br>• " + todo.join("<br>• "));
+  }
+  $("c21name").addEventListener("input", scoreC);
+  drawC();
+})();
+
+GD.mountQuiz($("quiz"), [
+  { q: "“次日留存 40%”的意思是：", opts: ["40% 的玩家玩了一整天", "第 1 天来过的玩家里，有 40% 在第 2 天又回来了", "游戏有 40% 的内容是免费的", "40% 的玩家付费了"], a: 1, why: "留存衡量玩家过几天是否还会回来，次日留存主要反映第一印象和新手体验。" },
+  { q: "【为什么】为什么“断签一天，连续奖励全部清零”这种设计会让人焦虑，甚至半夜爬起来登录？", opts: ["因为奖励本身特别值钱", "因为人对失去往往比对得到更敏感，同样的东西，丢掉的痛苦大于得到的快乐", "因为人天生喜欢每天登录", "因为清零之后游戏会变得更难"], a: 1, why: "这是损失厌恶（前景理论）。“你的连胜要没了”把不做描述成失去，所以比“登录可得奖励”更有推动力。它的强度因人因情境而异，近年也有研究者质疑它的普遍程度。" },
+  { q: "【为什么】两台老虎机平均出奖频率相同，为什么“每次 20% 概率出奖”的机器通常比“每 5 次必出奖”的机器更让人难停？", opts: ["因为它出奖更多", "因为命中时间说不准，每一次都像“下一次也许就中”，行为更持久、奖励停掉后消退也更慢", "因为它的画面更好看", "因为固定比率的奖励更少"], a: 1, why: "斯金纳等人发现可变比率强化比固定比率更稳定、更耐消退。它与真钱绑定就有了赌博的形状，所以需要概率公示和消费上限。" },
+  { q: "【为什么被发明】为什么 1993 年《毁灭战士》要把第一章免费发出去，而不是像普通盒装游戏那样先收钱？", opts: ["因为免费的游戏不用做得好", "因为玩家买之前没法试玩，先让他们玩到、觉得好再付费，既降低了风险也靠玩家帮忙传播", "因为那时没有人愿意付费", "因为法律要求必须免费"], a: 1, why: "共享软件是针对“买前不能试”这个毛病发明的办法：玩家先尝到好处再买剩下的章节。后来的订阅和免费加内购，也都是为了解决前一种方式留下的麻烦。" },
+  { q: "为什么说“超常刺激”可以帮设计者反思，却不能直接推出“游戏会让人上瘾”？", opts: ["因为廷伯根研究的是人类玩家", "因为它来自对鸟类等动物的研究，用到人类只是类比，说明的是“刺激越强不等于越满足”，不是对任何个人的诊断", "因为超常刺激在游戏里不存在", "因为所有游戏的刺激强度都一样"], a: 1, why: "类比能启发设计，但不能替代对人类的直接证据；大多数玩家并不会因此成瘾。" },
+  { q: "“限时优惠”什么时候从正当营销变成操纵？", opts: ["只要带倒计时就是操纵", "信息不属实（如倒计时每天重置），或者玩家错过会受到惩罚、被强迫时", "只要打折就是操纵", "只要商品是外观就是操纵"], a: 1, why: "稀缺和损失框架本身不是问题；造假和强迫才是。判断要看信息是否真实、玩家能否无惩罚地放弃。" },
+]);
+</script>
+</body>
+</html>

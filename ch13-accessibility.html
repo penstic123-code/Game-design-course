@@ -1,0 +1,652 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>第13章 可访问性</title>
+<link rel="stylesheet" href="css/style.css">
+<style>
+  main p,main li,main .src{overflow-wrap:anywhere}
+  .row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:6px 0}
+  #c13_scene{width:100%;display:block;border:3px solid var(--ink);border-radius:10px;background:#222}
+  .c13_chips{display:flex;flex-wrap:wrap;gap:4px;margin:6px 0}
+  .c13_chips .chip{margin:2px}
+  .c13_opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:2px 12px;margin:6px 0}
+  .c13_opts label{font-size:1rem;cursor:pointer}
+  .c13_diag{list-style:none;padding:0;margin:8px 0}
+  .c13_diag li{border:2.5px solid var(--ink);border-radius:10px;padding:6px 10px;margin:6px 0;background:#fff;font-size:.98rem}
+  .c13_diag li.ok{background:#eaf9e4}.c13_diag li.warn{background:#fff7cf}.c13_diag li.lost{background:#ffe9ef}
+  @keyframes c13p{0%,100%{opacity:1}50%{opacity:.15}}
+  .c13_pulse{animation:c13p 1s infinite}
+  .c13_kbd{margin:8px 0}
+  .c13_krow{display:flex;gap:3px;margin:3px 0}
+  .c13_key{flex:1 1 0;min-width:0;height:44px;border:2.5px solid var(--ink);border-radius:8px;background:#fff;font:inherit;font-size:.85rem;padding:0;cursor:pointer;position:relative;line-height:1.1}
+  .c13_key.space{flex:6}.c13_key.wide{flex:1.6}
+  .c13_key small{display:block;font-size:.72rem;color:#b3261e;font-weight:700;min-height:1em}
+  .c13_key.L{background:#e8f6fc}.c13_key.R{background:#fff7cf}.c13_key.B{background:#eaf9e4}
+  .c13_key.dim{opacity:.35}
+  .c13_key.conf{outline:3px solid #e5484d}
+  .c13_acts{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:6px;margin:8px 0}
+  .c13_act{font:inherit;font-size:.95rem;border:2.5px solid var(--ink);border-radius:10px;background:#fff;padding:4px 8px;cursor:pointer;text-align:left}
+  .c13_act.sel{background:var(--yellow)}
+  .c13_act.bad{border-color:#e5484d;background:#ffe9ef}
+  .c13_cswatch{border:3px solid var(--ink);border-radius:10px;padding:14px;margin:8px 0}
+  .c13_guess label{display:block;border:2.5px solid var(--ink);border-radius:10px;padding:6px 10px;margin:6px 0;background:#fff;cursor:pointer}
+  .c13_guess label.hit{background:#eaf9e4}.c13_guess label.miss{background:#fff7cf}.c13_guess label.no{background:#f4f4f4}
+  .c13_guess label small{display:block;color:#555}
+  .c13_cin{display:flex;flex-wrap:wrap;gap:14px;align-items:center;margin:6px 0}
+  .c13_cin input[type=color]{width:56px;height:40px;border:3px solid var(--ink);border-radius:8px;padding:0;background:#fff}
+</style>
+</head>
+<body data-ch="13">
+<main class="wrap">
+  <div class="hero">
+    <div class="txt">
+      <span class="badge">第 13 章</span>
+      <h1>可访问性</h1>
+      <p class="sub">不是“为少数人加个选项”，而是让更多人能走进你的游戏。</p>
+    </div>
+    <svg viewBox="0 0 190 150" class="rough" aria-hidden="true">
+      <g stroke="#2b2b3a" stroke-width="5" stroke-linejoin="round" stroke-linecap="round">
+        <path d="M20 115 H80 L120 85 H170" fill="none"/>
+        <circle cx="55" cy="55" r="22" fill="#ffe58a"/>
+        <path d="M45 55 h20 M55 45 v20" fill="none"/>
+        <rect x="110" y="35" width="50" height="34" rx="6" fill="#8fd3f4"/>
+        <path d="M118 50 h34 M118 58 h22" fill="none"/>
+      </g>
+    </svg>
+  </div>
+
+  <div class="goals">
+    <h3>学习目标</h3>
+    <ul>
+      <li>读完你能区分<b>永久、暂时、情境</b>三类障碍，并说明为什么“可访问性”不只关乎少数人。</li>
+      <li>读完你能解释<b>路缘石效应</b>与<b>多通道冗余</b>，并用 WCAG 的对比度与闪光阈值检查一个界面。</li>
+      <li>读完你能亲手排查一个游戏界面里“只靠颜色/声音/长按”传达的信息，并给出修复办法。</li>
+    </ul>
+    <span class="time">约 40 分钟</span>
+  </div>
+
+  <div class="sec"><span class="n">1</span><h2><span class="tag what">是什么</span>障碍不是“一种人”，而是“一种不匹配”</h2></div>
+  <div class="withimg">
+    <span data-illus="c13_stairs"></span>
+    <div>
+  <p>先做个小实验：用一只手玩一款需要双手的动作游戏，比如左手握着咖啡，右手操作。没几分钟，你会发现很多游戏默认你有“两只手、全部手指灵活、看得清、听得到、反应够快”。</p>
+  <p><span class="term" tabindex="0" data-def="让尽可能多的人能够使用一件产品、一个界面或一个环境，不论他们的身体、感官、认知条件或所处情境如何。在游戏里，指让更多玩家能进入、理解并玩下去。">可访问性</span>（accessibility，常缩写 a11y）问的是：<b>你的设计对谁关上了门？</b>这里的“障碍”并不是某个人身上的标签，而是<b>人与设计之间的不匹配</b>。同一个人在不同时刻，会遇到不同的不匹配。</p>
+  <p>这个看法有个名字，叫障碍的<b>社会模型</b>：英国的残障者组织 UPIAS 在 1976 年的小册子《残障的基本原则》里就这样主张，迈克·奥利弗（Mike Oliver）1983 年的《Social Work with Disabled People》把它带给了更多专业人士。它把问题从“这个人哪里不行”挪到了“这个设计对谁关了门”。</p>
+    </div>
+  </div>
+  <p>常见的分法是三类，这套“永久、暂时、情境”的框架常被归到微软的包容性设计工具包（Kat Holmes 主持）：</p>
+  <div class="grid3">
+    <div class="card y mini"><div class="ico">♾️</div><h3>永久</h3><p>长期存在：盲或低视力、失聪或重听、只有一只手或手臂、阅读障碍。</p></div>
+    <div class="card b mini"><div class="ico">⏳</div><h3>暂时</h3><p>会好起来：手臂骨折打石膏、眼科检查后瞳孔放大、中耳炎、熬夜后注意力涣散。</p></div>
+    <div class="card g mini"><div class="ico">📍</div><h3>情境</h3><p>环境造成：阳光下看不清屏幕、地铁里不能外放、抱着孩子只能单手、被人随时打断。</p></div>
+  </div>
+  <p>再配合“哪种能力受限”，常把障碍分成四大类：<b>视觉、听觉、运动（含精细操作与耐力）、认知</b>（含阅读、记忆、注意、处理速度）。下图把两个维度放在一起：</p>
+  <div class="card">
+    <svg viewBox="0 0 700 300" width="100%" role="img" aria-label="矩阵：行是永久、暂时、情境三类障碍，列是视觉、听觉、运动、认知四类能力，格子里是例子。同一种“单手”既可能是永久的，也可能是暂时的或情境的。">
+      <g class="rough" stroke="#2b2b3a" stroke-width="3.5" fill="none" stroke-linejoin="round" stroke-linecap="round">
+        <rect x="90" y="10" width="150" height="44" fill="#ffe58a"/><rect x="240" y="10" width="150" height="44" fill="#ffe58a"/>
+        <rect x="390" y="10" width="150" height="44" fill="#ffe58a"/><rect x="540" y="10" width="150" height="44" fill="#ffe58a"/>
+        <rect x="10" y="54" width="80" height="76" fill="#fff7cf"/><rect x="10" y="130" width="80" height="76" fill="#e8f6fc"/><rect x="10" y="206" width="80" height="76" fill="#eaf9e4"/>
+        <rect x="90" y="54" width="150" height="76" fill="#fff"/><rect x="240" y="54" width="150" height="76" fill="#fff"/><rect x="390" y="54" width="150" height="76" fill="#fff"/><rect x="540" y="54" width="150" height="76" fill="#fff"/>
+        <rect x="90" y="130" width="150" height="76" fill="#fff"/><rect x="240" y="130" width="150" height="76" fill="#fff"/><rect x="390" y="130" width="150" height="76" fill="#fff"/><rect x="540" y="130" width="150" height="76" fill="#fff"/>
+        <rect x="90" y="206" width="150" height="76" fill="#fff"/><rect x="240" y="206" width="150" height="76" fill="#fff"/><rect x="390" y="206" width="150" height="76" fill="#fff"/><rect x="540" y="206" width="150" height="76" fill="#fff"/>
+      </g>
+      <g font-size="16" text-anchor="middle" fill="#2b2b3a">
+        <text x="165" y="38" font-weight="700">视觉</text><text x="315" y="38" font-weight="700">听觉</text><text x="465" y="38" font-weight="700">运动</text><text x="615" y="38" font-weight="700">认知</text>
+        <text x="50" y="98" font-weight="700">永久</text><text x="50" y="174" font-weight="700">暂时</text><text x="50" y="250" font-weight="700">情境</text>
+        <text x="165" y="96">低视力 / 盲</text><text x="315" y="96">失聪 / 重听</text><text x="465" y="96">单手 / 截肢</text><text x="615" y="96">阅读障碍</text>
+        <text x="165" y="172">眼部术后</text><text x="315" y="172">耳炎 / 耳塞</text><text x="465" y="172">手臂骨折</text><text x="615" y="172">脑震荡恢复</text>
+        <text x="165" y="248">强光下看屏</text><text x="315" y="248">嘈杂地铁</text><text x="465" y="248">抱着孩子</text><text x="615" y="248">随时被打断</text>
+      </g>
+    </svg>
+  </div>
+  <p class="small">同一列竖着读：<b>需要的解决办法常常相同</b>。字幕既帮到失聪的玩家，也帮到地铁里静音的玩家；单手可用的按键布局，既帮到只有一只手的人，也帮到手臂骨折的人和正抱着孩子的人。</p>
+
+  <div class="eg" data-ic="♾️"><span data-illus="c13_onehand"></span><div class="egt"><b>永久：</b>一位玩家天生只有一只手。对他来说，“同时按住方向键、跳跃、冲刺和攻击”不是难度，而是物理上的墙：不管他多想玩，手指的数量就摆在那里。</div></div>
+  <div class="eg" data-ic="⏳"><span data-illus="c13_cast"></span><div class="egt"><b>暂时：</b>你的右手打着石膏三周。你还是想玩，却发现游戏只允许 WASD 加鼠标。三周以后你好了，那堵墙对别人却一直在。</div></div>
+  <div class="eg" data-ic="📍"><span data-illus="c13_night"></span><div class="egt"><b>情境：</b>你在深夜的卧室里玩，孩子刚睡着，不敢开声音。如果关键提示全靠声音，你就“暂时失聪”了。你没有任何障碍，只是环境替你制造了一个。</div></div>
+  <div class="eg bad" data-ic="🎨"><span data-illus="c13_cbmode"></span><div class="egt"><b>反例（差一点就对）：</b>“我们有色盲模式”，可是模式里只是把红绿换成了更鲜艳的红绿。看似做了，实际上没有解决“只靠颜色区分”这个根本问题，下面的障碍模拟器里你可以亲手测。</div></div>
+
+  <div class="sec"><span class="n">2</span><h2><span class="tag what">是什么</span>游戏里的常见做法，与“多通道冗余”</h2></div>
+  <p>游戏比一般软件更苛刻：它同时要求<b>感知、判断、操作、时间压力</b>。所以游戏界常用一套选项来“放宽”每一个环节。按四大类整理：</p>
+  <div class="grid2">
+    <div class="card y"><h3>👁 视觉</h3><ul>
+      <li>色盲模式，或更好：<b>形状/图案/文字</b>也能区分</li>
+      <li>文字缩放、粗体、可调字幕大小与背景</li>
+      <li>高对比度模式、可调 HUD 透明度与大小</li>
+      <li>屏幕阅读/语音导航、音频提示（给盲人和低视力玩家）</li></ul></div>
+    <div class="card b"><h3>👂 听觉</h3><ul>
+      <li>字幕，含<b>说话人标注</b>与关键音效描述（如“[脚步声·左后方]”）</li>
+      <li>各声道音量分开调（对白/音乐/音效）</li>
+      <li>声音的视觉化提示（方向指示、受击边缘）</li>
+      <li>手柄震动作为触觉替代</li></ul></div>
+    <div class="card g"><h3>✋ 运动</h3><ul>
+      <li><b>可重映射按键</b>，支持单手布局</li>
+      <li>按住改为切换，连打改为按住</li>
+      <li>自动瞄准、辅助瞄准、简化的快速事件</li>
+      <li>随时暂停与存档，计时放宽或关闭</li></ul></div>
+    <div class="card p"><h3>🧠 认知</h3><ul>
+      <li>难度与辅助选项可<b>随时</b>调（不惩罚选择）</li>
+      <li>任务/目标提示、可回看的教程</li>
+      <li>减少动态、闪光与屏幕晃动；可关的镜头摇晃</li>
+      <li>清晰一致的图标与术语</li></ul></div>
+  </div>
+  <p>这些选项背后有一个共同原则：<span class="term" tabindex="0" data-def="同一条重要信息通过两路或更多感官/表达方式同时传达（例如颜色+形状+文字，声音+画面+震动），任何一路缺失，信息仍然到达。">多通道冗余</span>——重要信息不要只走一条路。</p>
+  <div class="card">
+    <svg viewBox="0 0 700 270" width="100%" role="img" aria-label="流程图：事件“敌人从左后方接近”同时通过画面边缘箭头、立体声脚步声、手柄左侧震动三条通道传出，不同的玩家至少能接收到其中一路。">
+      <g class="rough" stroke="#2b2b3a" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="10" y="95" width="150" height="70" rx="12" fill="#ffe9ef"/>
+        <rect x="260" y="15" width="200" height="60" rx="12" fill="#e8f6fc"/>
+        <rect x="260" y="105" width="200" height="60" rx="12" fill="#e8f6fc"/>
+        <rect x="260" y="195" width="200" height="60" rx="12" fill="#e8f6fc"/>
+        <rect x="560" y="95" width="130" height="70" rx="12" fill="#eaf9e4"/>
+        <path d="M160 120 L258 50"/><path d="M160 130 H258"/><path d="M160 142 L258 222"/>
+        <path d="M250 42 L260 49 L248 58"/><path d="M248 122 L260 130 L248 138"/><path d="M248 214 L260 222 L247 230"/>
+        <path d="M460 45 L558 115"/><path d="M460 135 H558"/><path d="M460 225 L558 150"/>
+        <path d="M548 106 L558 115 L545 120"/><path d="M548 126 L558 135 L548 144"/><path d="M546 142 L558 149 L550 160"/>
+      </g>
+      <g font-size="17" text-anchor="middle" fill="#2b2b3a">
+        <text x="85" y="125">事件：</text><text x="85" y="148">敌人在左后方</text>
+        <text x="360" y="42">画面：左侧边缘箭头</text><text x="360" y="62" font-size="16">（听不到的人用）</text>
+        <text x="360" y="132">声音：左声道脚步声</text><text x="360" y="152" font-size="16">（看不清的人用）</text>
+        <text x="360" y="222">触觉：左侧震动</text><text x="360" y="242" font-size="16">（都可用）</text>
+        <text x="625" y="125">每位玩家</text><text x="625" y="148">至少收到一路</text>
+      </g>
+    </svg>
+  </div>
+  <p class="small">注意“冗余”不是“重复啰嗦”。它的代价通常很小（多画一个箭头），但换来的是：任何一路因为障碍、环境或设备而失效时，游戏仍然能玩。</p>
+  <div class="eg" data-ic="🎮"><span data-illus="c13_redundant"></span><div class="egt"><b>游戏：</b>敌人从左后方接近，屏幕左边缘出现箭头，耳机里是左声道的脚步声，手柄左侧轻轻震动。听不到的人看箭头，看不清的人听声音，两样都不方便的人还有震动。</div></div>
+  <div class="eg" data-ic="🚦"><span data-illus="c13_signal"></span><div class="egt"><b>日常：</b>人行横道的信号灯，绿灯小人亮起时同时发出滴滴声。看不见的人听声音过马路，听不见的人看灯，戴着耳机的人也不会错过。</div></div>
+  <div class="eg bad" data-ic="🩸"><span data-illus="c13_hponly"></span><div class="egt"><b>反例：</b>低血量只用“屏幕边缘闪红光”提示。红绿色觉不同的玩家可能分不清，开了“减少动态”的玩家根本看不到闪烁，这条唯一的通道一断，警告就彻底消失了。</div></div>
+
+  <div class="sec"><span class="n">3</span><h2><span class="tag origin">发明故事</span>它们是怎么被“发明”出来的</h2></div>
+  <div class="story">
+    <h3>故事一：一道路缘石，挡住了一群人</h3>
+    <p>想象你坐轮椅，要从家去街角的商店。路很平，直到路口——人行道和马路之间有一道十几厘米高的<b>路缘石</b>。对走路的人这几乎不存在，对轮椅使用者它是一堵墙。你只能绕很远，或者请人抬。</p>
+    <p>先别往下读。如果你是城市的设计者，只能用最便宜的办法解决这个问题，你会怎么做？下面是一道“先猜后揭晓”：你觉得<b>修了缓坡（路缘石坡道）之后，哪些人会因此受益</b>？</p>
+    <div class="c13_guess" id="c13_guess">
+      <label><input type="checkbox" value="wc"> 轮椅使用者</label>
+      <label><input type="checkbox" value="st"> 推婴儿车的家长</label>
+      <label><input type="checkbox" value="lg"> 拖行李箱的旅客</label>
+      <label><input type="checkbox" value="cart"> 推手推车送货的人</label>
+      <label><input type="checkbox" value="skate"> 骑自行车、滑滑板的人</label>
+      <label><input type="checkbox" value="old"> 腿脚不便、拄拐的老人</label>
+      <label><input type="checkbox" value="blind"> 使用盲杖的视障者</label>
+      <label><input type="checkbox" value="idle"> 站在路边等人的路人</label>
+    </div>
+    <div class="row"><button class="btn" id="c13_reveal">揭晓</button><button class="btn alt" id="c13_greset">重猜</button></div>
+    <div class="msg" id="c13_gmsg">先勾选你的预测，再点“揭晓”。</div>
+    <div class="sticky">试试看：先勾出你认为会受益的人，再点“揭晓”，数一数你漏猜了几类，想想为什么会漏。</div>
+
+    <h4>历史上发生了什么</h4>
+    <div class="timeline">
+      <div class="ev hasimg"><span data-illus="c13_tl_kala"></span><div><b class="yr">二战后</b>　美国密歇根州卡拉马祖（Kalamazoo）的一位退伍军人说服市政府，在市中心四个街角把人行道切出坡道。这是常被提到的早期尝试，但它没有扩散成全国性的做法。</div></div>
+      <div class="ev hasimg"><span data-illus="c13_tl_ed"></span><div><b class="yr">1960s</b>　埃德·罗伯茨（Ed Roberts）是小儿麻痹症幸存者，靠铁肺维生。1962 年加州大学伯克利分校起初拒收他，后来他入学，住在校内医院的房间里。他和其他残障学生组成“滚轮四人组”（Rolling Quads），开始争取残障者的公民权利。</div></div>
+      <div class="ev hasimg"><span data-illus="c13_tl_berk"></span><div><b class="yr">1971</b>　9 月 28 日，伯克利市议会一致通过政策，在 15 个指定街角立即修建路缘石坡道。这被视为较早的、成规模的路缘石坡道项目。</div></div>
+      <div class="ev hasimg"><span data-illus="c13_tl_ada"></span><div><b class="yr">1977–1990</b>　残障者抗议与占领联邦大楼、要求落实保护条款；1990 年美国《残疾人法案》（ADA）签署，要求公共场所、交通与就业方面的无障碍。</div></div>
+      <div class="ev hasimg"><span data-illus="c13_tl_blackwell"></span><div><b class="yr">2017</b>　安吉拉·格洛弗·布莱克韦尔（Angela Glover Blackwell）在《斯坦福社会创新评论》发表《路缘石效应》（<i>The Curb-Cut Effect</i>），把“为最边缘的人做的设计，最终惠及所有人”这一观察推广开来。</div></div>
+    </div>
+    <p>关键洞察是：<b>障碍不在人身上，在环境里；改环境，比让每个人自己“克服”便宜得多，而且惠及更多人。</b>这也是“通用设计”（universal design）的核心。</p>
+    <p class="src">出处：99% Invisible《Curb Cuts》一集（99percentinvisible.org/episode/curb-cuts/，卡拉马祖与伯克利的时间线）；Blackwell (2017), <i>Stanford Social Innovation Review</i>。不同来源对“最早的路缘石坡道在哪里”的说法有出入，上面采用保守表述。</p>
+  </div>
+
+  <div class="story">
+    <h3>故事二：字幕为什么要“可开关”</h3>
+    <p>聋人和重听的观众看电视，只有画面，没有听到的内容。最直接的办法是把字幕<b>烧进</b>画面——这叫开放式字幕（open captions）。但这样所有观众都看到字幕，商业电视台担心不需要的人嫌烦、把观众赶走。问题于是变成：<b>能不能只对需要的人显示？</b></p>
+    <div class="timeline">
+      <div class="ev hasimg"><span data-illus="c13_tl_french"></span><div><b class="yr">1972</b>　美国公共电视台 PBS 的《法国大厨》（<i>The French Chef</i>）开始定期播出开放式字幕。</div></div>
+      <div class="ev hasimg"><span data-illus="c13_tl_nci"></span><div><b class="yr">1979</b>　美国成立国家字幕协会（National Captioning Institute），目标之一是争取商业电视网的配合。</div></div>
+      <div class="ev hasimg"><span data-illus="c13_tl_cc"></span><div><b class="yr">1980-03-16</b>　美国首批定期的<b>隐藏式字幕</b>（closed captions）节目播出：字幕信号藏在电视信号里，需要解码器才显示——想看的人开，不想看的人关。</div></div>
+      <div class="ev hasimg"><span data-illus="c13_tl_decoder"></span><div><b class="yr">1990 年的《电视解码器电路法》</b>　要求 13 英寸及以上的模拟电视机内置解码功能，自 1993 年 7 月 1 日起执行。解码器从“要另外买的设备”变成“每台电视都有”。</div></div>
+    </div>
+    <p>后来字幕被大量<b>没有听障</b>的人使用：嘈杂的酒吧、安静的图书馆、学外语、深夜不想吵醒家人。游戏里的字幕也是同一个故事：<b>“可开关”</b>让需要的人用上，同时不打扰其他人。</p>
+    <p class="src">出处：Wikipedia《Closed captioning》条目对上述日期的整理；该条目对法案通过日期与法案名称年份的表述略有出入，这里只取其要求（13 英寸及以上、1993 年 7 月 1 日）。</p>
+  </div>
+
+  <div class="story">
+    <h3>故事三：游戏界如何开始认真对待它</h3>
+    <div class="timeline">
+      <div class="ev hasimg"><span data-illus="c13_tl_able"></span><div><b class="yr">2004</b>　马克·巴莱特（Mark Barlet）创立 AbleGamers，起因是他的好友因多发性硬化症逐渐无法操作鼠标，却仍想玩游戏。这个非营利组织后来致力于评估玩家需求、提供设备和咨询。</div></div>
+      <div class="ev hasimg"><span data-illus="c13_tl_gag"></span><div><b class="yr">2012</b>　《游戏可访问性指南》（Game Accessibility Guidelines）发布（Game Informer 在 2012 年 9 月报道）。它由一组工作室、专家与学者合作编写，按<b>影响面、影响深度、实现成本</b>把建议分为基础、中级、高级三档，让开发者知道从哪里下手。</div></div>
+      <div class="ev hasimg"><span data-illus="c13_tl_xac"></span><div><b class="yr">2018</b>　微软于 5 月公布 Xbox 自适应手柄（Xbox Adaptive Controller），9 月 4 日上市。它的思路是：不替玩家选好操作方式，而是提供大按钮与大量接口，让玩家接上自己的外设搭出适合自己的“手柄”。</div></div>
+      <div class="ev hasimg"><span data-illus="c13_tl_tlou"></span><div><b class="yr">2020</b>　《最后生还者 第二章》（<i>The Last of Us Part II</i>）发售时提供 60 多项无障碍设置，并包含面向盲人和低视力玩家的功能；开发团队很早就请盲人顾问布兰登·科尔（Brandon Cole）参与咨询。它成为业界讨论“大作也能做到多深”的一个常被引用的例子。</div></div>
+    </div>
+    <p>这条线索共同指向：<b>无障碍不是事后补丁，而是越早问“这个设计对谁关了门”，成本越低。</b>另外，微软也提供自己的 Xbox Accessibility Guidelines（learn.microsoft.com/gaming/accessibility），把类似检查项整理成可对照的清单。</p>
+    <p class="src">出处：AbleGamers 官网“Mark Barlet”页（ablegamers.org/mark-barlet/）；Game Informer, 2012-09-04《Game Accessibility Guidelines Published》与 gameaccessibilityguidelines.com 站点说明；Microsoft Xbox News 2018-09-04；Naughty Dog / PlayStation Blog 2020-06 关于 TLOU2 无障碍功能的文章。这里不评价“谁最好”，只记录这些节点。</p>
+  </div>
+
+  <div class="sec"><span class="n">4</span><h2><span class="tag why">为什么成立</span>通用设计、对比度、闪光与色觉</h2></div>
+  <h3>① 为少数人做的设计，常让所有人受益</h3>
+  <p>这就是<span class="term" tabindex="0" data-def="路缘石坡道为轮椅使用者而设，却让推婴儿车、拖行李箱、骑车的人同样受益。泛指：为最受限的人做的设计，往往让所有人都更方便。">路缘石效应</span>。它背后的工程思路叫<span class="term" tabindex="0" data-def="从一开始就让产品能被尽可能多的人使用，而不是做完再给特殊群体打补丁。">通用设计</span>：</p>
+  <div class="card">
+    <svg viewBox="0 0 700 230" width="100%" role="img" aria-label="示意图：一个路缘石坡道在中间，周围分别指向轮椅、婴儿车、行李箱、手推车，说明为一类人做的设计同时服务其他人。">
+      <g class="rough" stroke="#2b2b3a" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M20 150 H250 L330 190 H500 L680 190"/>
+        <path d="M250 150 L330 190" stroke-width="6"/>
+        <rect x="260" y="20" width="180" height="56" rx="12" fill="#eaf9e4"/>
+        <rect x="20" y="20" width="150" height="48" rx="12" fill="#fff7cf"/><rect x="530" y="20" width="150" height="48" rx="12" fill="#e8f6fc"/>
+        <rect x="20" y="95" width="150" height="48" rx="12" fill="#ffe9ef"/><rect x="530" y="95" width="150" height="48" rx="12" fill="#f1eaff"/>
+        <path d="M170 45 L258 50"/><path d="M530 45 L442 50"/>      </g>
+      <g font-size="17" text-anchor="middle" fill="#2b2b3a">
+        <text x="350" y="44" font-weight="700">一个设计：缓坡</text><text x="350" y="64" font-size="16">（为轮椅而做）</text>
+        <text x="95" y="50">轮椅使用者</text><text x="605" y="50">推婴儿车的家长</text>
+        <text x="95" y="125">拖行李箱的旅客</text><text x="605" y="125">推手推车的人</text>
+        <text x="350" y="218">原本为“少数人”设计，实际服务了“很多人”</text>
+      </g>
+    </svg>
+  </div>
+  <p>游戏里的对应：<b>字幕</b>（静音环境用）、<b>可重映射按键</b>（左撇子、不同键盘布局、单手都用）、<b>文字缩放</b>（小屏手机、掌机、远距离大电视）、<b>暂停与自动存档</b>（任何被打断的人）。</p>
+  <div class="eg" data-ic="🛤️"><span data-illus="c13_curb"></span><div class="egt"><b>路缘石坡道：</b>为轮椅做的缓坡，推婴儿车、拖行李箱的人走起来同样顺，连送货的手推车也沾了光。</div></div>
+  <div class="eg" data-ic="💬"><span data-illus="c13_caption"></span><div class="egt"><b>字幕：</b>为听障者做的字幕，在嘈杂的酒吧里、安静的图书馆里、学外语的人那里，都成了每天在用的功能。</div></div>
+  <div class="eg bad" data-ic="🦯"><span data-illus="c13_tactile"></span><div class="egt"><b>差一点就对：</b>缓坡把路缘的“边”抹平了，拿盲杖的人反而少了一条判断路边的线索。后来人们在坡道口加上带小圆点的触感地砖才补上。设计要和受影响的人一起检验，不能想当然。</div></div>
+
+  <h3>② 对比度：把“看得清”变成可计算的数字</h3>
+  <p>W3C 的《网页内容无障碍指南》（<span class="term" tabindex="0" data-def="Web Content Accessibility Guidelines，万维网联盟（W3C）发布的无障碍标准，被许多法规和行业指南引用；虽为网页而设，但其中的对比度、闪光阈值常被游戏界面借用。">WCAG</span>）规定：AA 级要求<b>普通文字</b>与背景的<span class="term" tabindex="0" data-def="两个颜色相对亮度的比值，(较亮+0.05)/(较暗+0.05)，范围 1:1（无差别）到 21:1（黑白）。">对比度</span>至少 <b>4.5:1</b>；<b>大号文字</b>（至少 18 磅，或 14 磅加粗，约 24px / 18.5px）至少 <b>3:1</b>。阈值是下限：算出 4.499 不算达标。</p>
+  <div class="card">
+    <svg viewBox="0 0 700 190" width="100%" role="img" aria-label="对比度刻度：从 1:1 到 21:1，标出 3:1（大字）、4.5:1（正文 AA）、7:1（AAA）。">
+      <defs><linearGradient id="c13_gr" x1="0" x2="1"><stop offset="0" stop-color="#f6f6f0"/><stop offset="1" stop-color="#111"/></linearGradient></defs>
+      <rect class="rough" x="40" y="70" width="620" height="40" fill="url(#c13_gr)" stroke="#2b2b3a" stroke-width="3.5"/>
+      <g stroke="#2b2b3a" stroke-width="3.5" stroke-linecap="round">
+        <path d="M40 112 V128"/><path d="M256 112 V128"/><path d="M336 112 V150"/><path d="M423 112 V128"/><path d="M660 112 V128"/>
+      </g>
+      <g font-size="16" fill="#2b2b3a" text-anchor="middle">
+        <text x="48" y="150">1:1 无差别</text>
+        <text x="256" y="150">3:1 大字/图标</text>
+        <text x="336" y="176" font-weight="700">4.5:1 正文（AA）</text>
+        <text x="445" y="150">7:1 AAA</text>
+        <text x="640" y="150">21:1 黑白</text>
+        <text x="350" y="40">不达标 ←  → 达标（刻度按对数画）</text>
+      </g>
+    </svg>
+  </div>
+  <p>互动：自己试试，选两个颜色，看比值与是否达标。试一下游戏里常见的“灰字配深色底”“黄字配白底”。</p>
+  <div class="board">
+    <div class="c13_cin">
+      <label>文字色 <input type="color" id="c13_fg" value="#8d8d7f"></label>
+      <label>背景色 <input type="color" id="c13_bg" value="#a8a794"></label>
+      <button class="btn alt" data-cpre="#8d8d7f,#a8a794">游戏里的灰提示</button>
+      <button class="btn alt" data-cpre="#ffd400,#ffffff">黄字白底</button>
+      <button class="btn alt" data-cpre="#ffffff,#1f2a3a">白字深蓝</button>
+    </div>
+    <div class="c13_cswatch" id="c13_sw"><span style="font-size:1rem">普通文字：Press E to open the chest</span><br><span style="font-size:1.5rem;font-weight:700">大号粗体：按 E 打开宝箱</span></div>
+    <div id="c13_cstat"></div>
+    <div class="row"><button class="btn green" id="c13_fix">把文字色调到刚好达标（4.5:1）</button></div>
+    <div class="msg" id="c13_cmsg"></div>
+  </div>
+  <div class="sticky" id="c13_ctask">试试看：点“游戏里的灰提示”，它几乎看不清。自己调颜色，或点“调到刚好达标”，把它救到 4.5:1，成功时这里会出现 ✔。</div>
+  <div class="why-box">
+    <h3>出自谁、什么观点</h3>
+    <p><b>对比度公式</b>来自 W3C 的 WCAG（这里采用 2.1 的规定）：先把 sRGB 的每个通道转成线性值，再按 0.2126R+0.7152G+0.0722B 算相对亮度，对比度 = (较亮 + 0.05) ÷ (较暗 + 0.05)。这个数值是一个<b>起点</b>，不能代替真人测试：字体粗细、抗锯齿、屏幕亮度和用户的视力都会影响实际可读性。</p>
+    <p class="src">出处：W3C《Understanding SC 1.4.3: Contrast (Minimum)》，www.w3.org/WAI/WCAG21/Understanding/contrast-minimum.html。游戏界面中的非文字元素（如血条边框）常参照 3:1 的做法。</p>
+  </div>
+
+  <h3>③ 闪光：别让画面伤到人</h3>
+  <p>少数人对闪烁画面敏感，可能诱发<span class="term" tabindex="0" data-def="对特定闪烁或图案敏感而诱发癫痫发作。有此类病史的人对高亮度、快速交替、大面积的闪光尤其敏感。">光敏性癫痫</span>发作。WCAG 2.3.1（A 级）的底线是：<b>任何一秒内，一般闪光不超过 3 次，红色闪光不超过 3 次</b>；或闪光区域足够小（该标准按“10 度视野内 0.006 球面度”这样的面积来界定）。这里的“一般闪光”指相对亮度出现一对相反变化、幅度达到最大亮度的至少 10%，且较暗一侧低于 0.80。</p>
+  <p>游戏设计者的含义：<b>爆炸白屏、频闪特效、快速切换的明暗</b>要小心，并提供“减少闪光/动态”的选项。</p>
+  <p class="src">出处：W3C《Understanding SC 2.3.1: Three Flashes or Below Threshold》，www.w3.org/WAI/WCAG21/Understanding/three-flashes-or-below-threshold.html。该标准针对网页，用于游戏时是参考而非法定要求；游戏平台与行业可能有自己的检测规程。</p>
+
+  <h3>④ 色觉差异：不是少数的少数</h3>
+  <p>红绿色觉缺陷在不同人群里比例不同。据维基百科对文献的整理，在北欧裔人群中，<b>男性约 8%，女性约 0.5%</b>有红绿色觉缺陷；其中最常见的是绿色弱（deuteranomaly，男性约 5%）；蓝黄型（tritan）和全色盲（achromatopsia）都非常罕见（蓝黄型低于 0.01%）。</p>
+  <p>换句话说：<b>每 12 位男性玩家里，平均就约有 1 位“红绿难分”的人</b>。所以红蓝分阵营、红绿血量这类设计，不是边角问题。</p>
+  <p class="src">出处：Wikipedia《Color blindness》条目（Epidemiology 部分，引用多项人群研究）；比例随人群和测量方法不同而变化，这里只做数量级参考。</p>
+
+  <h3>⑤ 认知负荷：无障碍和“好设计”是同一件事</h3>
+  <div class="withimg rev">
+    <span data-illus="c13_load"></span>
+    <div>
+      <p>还记得新手教学为什么要一次只教一件事吗？因为人的工作记忆像一张很小的桌子，同一时刻摆不下几样东西。米勒（George Miller，1956）曾经概括为“7±2 个”，后来内尔森·考恩（Nelson Cowan，2001）重新梳理，认为纯粹的容量更像 4 个左右的“组块”，具体数字至今仍有争论。</p>
+      <p>约翰·斯维勒（John Sweller，1988）把这个想法用到学习上，提出认知负荷理论：任务太杂、信息太散，桌子就满了，再多的东西直接掉下去。游戏还要再加上时间压力：地图、血条、敌人、提示全要看，同时还得按键。</p>
+      <p>对有阅读障碍、注意力难集中的人，或者刚下夜班的人，这张桌子更小。降低负荷的做法，比如清晰的图标、一次只教一件事、可回看的提示、不强迫快速反应，既帮助有认知障碍的玩家，也帮助疲惫的、分心的、第一次玩的人。<b>这就是路缘石效应的认知版本。</b></p>
+    </div>
+  </div>
+  <p class="src">出处：Miller (1956)，《The magical number seven, plus or minus two》，<i>Psychological Review</i> 63；Cowan (2001)，《The magical number 4 in short-term memory》，<i>Behavioral and Brain Sciences</i> 24；Sweller (1988)，《Cognitive load during problem solving》，<i>Cognitive Science</i> 12。</p>
+
+  <h3>⑥ 公平：站在“无知之幕”后面设计</h3>
+  <div class="withimg">
+    <span data-illus="c13_veil"></span>
+    <div>
+      <p>做个思想实验：你要设计一款游戏，但必须在<b>不知道自己将成为哪位玩家</b>的前提下做决定。你可能是双手灵活的老手，也可能只有一只手，或者色觉与别人不同。在这种处境里，你大概会很自然地把选项做足。</p>
+      <p>哲学家约翰·罗尔斯（John Rawls）在《正义论》（1971）里用的就是这种“无知之幕”：公平的规则，是在不知道自己处境的时候定下的。他讨论的是社会制度，搬到设计上只是一个类比，但它回答了“为什么要为少数人做”：因为设计的人没法保证自己永远不是那少数。</p>
+      <p>设计界对应的说法叫通用设计，据说建筑师罗恩·梅斯（Ron Mace）在 1985 年前后提出这个词，主张从一开始就让尽可能多的人能用，而不是做完再补丁。</p>
+    </div>
+  </div>
+  <p class="src">出处：John Rawls，《A Theory of Justice》（1971）；Ron Mace 与通用设计的渊源见 NC State 通用设计中心的介绍（年份各来源略有出入，这里取保守说法）。</p>
+
+  <div class="sec"><span class="n">5</span><h2><span class="tag how">怎么用</span>招牌互动：障碍模拟器</h2></div>
+  <p>下面是一个简化的游戏画面：左上血条、右上小地图、红色的敌人和绿色的友军、底部一条提示文字，还有一个“只靠声音”的威胁。先做预测：<b>如果你选“绿色盲”，哪些信息会丢？</b>然后切换试试，页面会逐项诊断。最后打开“设计加固”，看多通道冗余怎么补上。</p>
+  <div class="board">
+    <div><b>视觉类型（近似模拟）：</b></div>
+    <div class="c13_chips" id="c13_modes"></div>
+    <div class="c13_opts">
+      <label><input type="checkbox" id="c13_big"> 文字放大</label>
+      <label><input type="checkbox" id="c13_hc"> 高对比度</label>
+      <label><input type="checkbox" id="c13_mute"> 声音关闭（听不到）</label>
+      <label><input type="checkbox" id="c13_cap"> 字幕/声音提示</label>
+      <label><input type="checkbox" id="c13_rm"> 减少动态与闪光</label>
+      <label><input type="checkbox" id="c13_fixon"><b> 设计加固（多通道冗余）</b></label>
+    </div>
+    <svg id="c13_scene" viewBox="0 0 640 340" role="img" aria-label="简化的游戏画面，会随选项变化"></svg>
+    <ul class="c13_diag" id="c13_diag"></ul>
+    <div class="msg" id="c13_smsg"></div>
+  </div>
+  <div class="sticky" id="c13_stask">试试看：选“绿色盲（近似）”，数一数丢了几项；再勾“设计加固”，看看丢失能不能归零。成功时这里会出现 ✔。</div>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+    <filter id="c13_f_protan" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="0.152286 1.052583 -0.204868 0 0  0.114503 0.786281 0.099216 0 0  -0.003882 -0.048116 1.051998 0 0  0 0 0 1 0"/></filter>
+    <filter id="c13_f_deutan" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="0.367322 0.860646 -0.227968 0 0  0.280085 0.672501 0.047413 0 0  -0.011820 0.042940 0.968881 0 0  0 0 0 1 0"/></filter>
+    <filter id="c13_f_tritan" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="1.255528 -0.076749 -0.178779 0 0  -0.078411 0.930809 0.147602 0 0  0.004733 0.691367 0.303900 0 0  0 0 0 1 0"/></filter>
+    <filter id="c13_f_mono" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="0.2126 0.7152 0.0722 0 0  0.2126 0.7152 0.0722 0 0  0.2126 0.7152 0.0722 0 0  0 0 0 1 0"/></filter>
+    <filter id="c13_f_blur"><feGaussianBlur stdDeviation="2.6"/></filter>
+    <pattern id="c13_hatch" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="8" height="8" fill="#e0b020"/><rect width="3" height="8" fill="#222"/></pattern>
+  </defs></svg>
+  <p class="small">简化声明：这些滤镜是对色觉缺陷的<b>近似</b>（色盲类型采用常见的颜色矩阵近似法，如 Machado 等人 2009 年提出的一类方法，我没有逐个核对数值，仅作教学示意），真实的感受因人而异，程度也有轻重之分；“低视力”只是高斯模糊。它们只能帮你<b>发现设计问题</b>，不能代替让真实的障碍用户来测试。</p>
+
+  <div class="sec"><span class="n">6</span><h2><span class="tag how">怎么用</span>辅助互动：按键重映射器（含单手检查）</h2></div>
+  <p>先选一个动作（下面的按钮），再点键盘上的键来绑定。选择“单手模式”后，够不着的键会变暗，冲突（一个键绑了两个动作）会标红。试试：<b>只用左手，能不能把所有动作都绑好、没有冲突？</b></p>
+  <div class="board">
+    <div class="row">
+      <span>手的模式：</span>
+      <button class="chip on" data-hand="both">双手</button><button class="chip" data-hand="L">只用左手</button><button class="chip" data-hand="R">只用右手</button>
+    </div>
+    <div class="c13_acts" id="c13_acts"></div>
+    <div class="c13_kbd" id="c13_kbd"></div>
+    <label class="ctl"><input type="checkbox" id="c13_tog"> 冲刺改为“点一下切换”（不用一直按住）</label>
+    <div class="row">
+      <button class="btn alt" id="c13_pdef">默认（双手）</button>
+      <button class="btn alt" id="c13_pL">左手方案</button>
+      <button class="btn alt" id="c13_pR">右手方案</button>
+      <button class="btn pink" id="c13_pclr">清空</button>
+    </div>
+    <div id="c13_rstat"></div>
+    <div class="msg" id="c13_rmsg"></div>
+  </div>
+  <div class="sticky" id="c13_rtask">试试看：点“只用左手”，再点“清空”，自己把 10 个动作都绑到左手够得着的键上，没有冲突。成功时这里会出现 ✔。</div>
+
+  <div class="sec"><span class="n">7</span><h2><span class="tag how">怎么用</span>把无障碍放进流程</h2></div>
+  <p>无障碍最大的成本来自<b>太晚才想起</b>。一条朴素的流程：</p>
+  <div class="chain"><span class="st">概念期：写下“玩家需要同时感知/操作什么”</span><span class="ar">→</span><span class="st">原型期：每个关键提示至少两路</span><span class="ar">→</span><span class="st">制作期：按键可重映射、字幕、缩放进架构</span><span class="ar">→</span><span class="st">测试期：请有相关障碍的玩家真玩</span></div>
+  <div class="grid3">
+    <div class="card y mini"><div class="ico">❓</div><h3>三个问题</h3><p>这条信息只走一条通道吗？这个操作必须同时按住几个键？这个节奏能暂停或放慢吗？</p></div>
+    <div class="card b mini"><div class="ico">🧰</div><h3>起步清单</h3><p>从《游戏可访问性指南》的“基础”档开始：范围广、实现便宜，比如可调字幕、不只靠颜色、按键重映射。</p></div>
+    <div class="card g mini"><div class="ico">🤝</div><h3>和用户一起做</h3><p>障碍用户是专家，不是“被服务的对象”。早期就邀请，比上线后改便宜得多。</p></div>
+  </div>
+  <div class="eg" data-ic="🛗"><span data-illus="c13_braille"></span><div class="egt"><b>日常生活的例子：</b>电梯里的盲文按键对盲人是必需，对在黑暗里摸索的人也是线索；语音助手对运动障碍者是入口，也让开车的人少看一次屏幕。</div></div>
+  <div class="eg bad" data-ic="🔒"><span data-illus="c13_locked"></span><div class="egt"><b>反例：</b>某个游戏把无障碍选项都放在“困难模式之后才解锁的设置”里，或在你开了辅助模式后<b>锁成就</b>。选项在、但用了就被惩罚，等于没有。</div></div>
+
+  <div class="misc">
+    <h3>常见误区</h3>
+    <ul>
+      <li><b>“可访问性 = 简单模式”</b>：难度只是众多选项之一；很多人要的是<b>换一种方式感知/操作</b>，挑战不变（比如可重映射按键、字幕）。</li>
+      <li><b>“只有很少的玩家需要”</b>：除了永久障碍，还有暂时和情境障碍；红绿色觉缺陷在男性里也不算罕见。</li>
+      <li><b>“加个色盲模式就行”</b>：如果只是换了一套颜色，仍是靠颜色；更稳的是颜色之外再加形状、图案、文字。</li>
+      <li><b>“做了选项就算完成”</b>：选项要<b>找得到</b>（首次启动就能设置）、<b>可预览</b>、<b>不惩罚使用者</b>。</li>
+      <li><b>“无障碍会破坏设计”</b>：好的做法常让设计更清晰；真正冲突的情形，需要具体权衡而不是一刀切。</li>
+    </ul>
+  </div>
+
+  <div class="reflect">
+    <h3>反思与争议</h3>
+    <p><b>局限。</b>这里的模拟器和对比度计算都是简化的：不同的人障碍程度、辅助技术和使用习惯差别极大，“符合标准”不等于“好用”。WCAG 也是为网页设计的，搬到游戏里需要判断。</p>
+    <p><b>争议：难度该不该也是无障碍选项？</b>一种观点认为，调低难度、跳过战斗等本身就是重要的可访问手段，不应被污名化；另一种观点认为，某些游戏的核心挑战正是它想表达的内容，随意绕开会改变作品的意图。这里没有标准答案，常见的折中是：<b>提供细粒度的辅助</b>（放慢时间、辅助瞄准、可跳过的段落），并把选择权交给玩家，而不是“一刀切的简单模式”。</p>
+    <p><b>争议：成本与优先级。</b>小团队资源有限，应该先做什么？《游戏可访问性指南》的“按影响面、影响深度和成本排序”提供了一种思路，但依游戏类型而变。</p>
+    <p><b>可能改变你的看法。</b>如果你原来觉得“无障碍是对少数人的照顾”，这一章想换成另一种看法：它更像<b>提高设计的容错度</b>——让游戏在更多的环境、更多的身体和更多的心情下仍然成立。</p>
+  </div>
+
+  <div class="key">
+    <h3>本章要点</h3>
+    <ul>
+      <li>障碍是<b>人与设计的不匹配</b>，分永久、暂时、情境三类；能力分视觉、听觉、运动、认知四大类。</li>
+      <li><b>多通道冗余</b>：重要信息不要只走颜色、只走声音或只靠长按。</li>
+      <li><b>路缘石效应</b>：为边缘人群做的设计，常让所有人受益；障碍在环境里，不在人身上。</li>
+      <li>可量化的底线：普通文字对比度 <b>≥ 4.5:1</b>、大字 <b>≥ 3:1</b>；任意一秒内闪光 <b>不超过 3 次</b>（WCAG）。</li>
+      <li>可访问性要<b>早做</b>、与用户<b>一起做</b>，并用真人测试验证。</li>
+    </ul>
+  </div>
+  <div class="tldr">障碍是人与设计之间的不匹配，而不是人的缺陷——给重要信息多开几条路，门就对更多人开着。</div>
+
+  <div class="sec"><span class="n">8</span><h2>练习</h2></div>
+  <div id="quiz"></div>
+
+  <div class="sec"><span class="n">9</span><h2>你的设计 / 你的思考</h2></div>
+  <div class="card o">
+    <p>挑一个你熟悉的游戏（或你正在做的原型）：列出<b>三条只通过一条通道传达的重要信息</b>（只靠颜色？只靠声音？只靠快速反应？），再为每条补上第二条通道。最后写一写：它对哪些人最有用，对哪些“没有障碍”的人也会有用？</p>
+    <textarea rows="6" data-save="ch13" placeholder="例：血量过低只用红色闪屏提示 → 加上心跳声和血条上的数字……"></textarea>
+  </div>
+</main>
+<script src="js/illus.js"></script><script src="js/illus-ch13.js"></script>
+<script src="js/common.js"></script>
+<script>
+const $ = id => document.getElementById(id);
+
+/* ============ 工具：WCAG 对比度 ============ */
+function c13hex(h) { return [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16)); }
+function c13lin(c) { c /= 255; return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4); }
+function c13lum(rgb) { return 0.2126 * c13lin(rgb[0]) + 0.7152 * c13lin(rgb[1]) + 0.0722 * c13lin(rgb[2]); }
+function c13ratio(a, b) { const la = c13lum(c13hex(a)), lb = c13lum(c13hex(b)); return (Math.max(la, lb) + 0.05) / (Math.min(la, lb) + 0.05); }
+function c13toHex(rgb) { return "#" + rgb.map(v => Math.max(0, Math.min(255, Math.round(v))).toString(16).padStart(2, "0")).join(""); }
+
+/* ============ 猜：路缘石坡道惠及谁 ============ */
+(function () {
+  const info = {
+    wc: ["yes", "设计初衷，也是最直接的受益者。"],
+    st: ["yes", "不用把车抬下路缘。"],
+    lg: ["yes", "拖着箱子过路口更顺。"],
+    cart: ["yes", "送货、搬运都更省力。"],
+    skate: ["yes", "常被提到的受益者之一。"],
+    old: ["yes", "少迈一个台阶，对拄拐、膝盖不好的人是实实在在的帮助。"],
+    blind: ["mixed", "要小心：坡道把路缘的“边缘”抹平，盲杖少了一条提示线索。后来人们加了触感警示铺面（带小圆点的地砖）来补上。设计要和受影响的人一起检验。"],
+    idle: ["no", "基本无关。不是每个人都会受益，路缘石效应并不意味着“全体都受益”。"]
+  };
+  const box = $("c13_guess");
+  function reset() {
+    box.querySelectorAll("label").forEach(l => { l.className = ""; const s = l.querySelector("small"); if (s) s.remove(); l.querySelector("input").checked = false; l.querySelector("input").disabled = false; });
+    $("c13_gmsg").textContent = "先勾选你的预测，再点“揭晓”。";
+  }
+  $("c13_reveal").onclick = () => {
+    let hit = 0, miss = 0, wrong = 0;
+    box.querySelectorAll("label").forEach(l => {
+      const inp = l.querySelector("input"), k = inp.value, t = info[k][0];
+      inp.disabled = true;
+      const old = l.querySelector("small"); if (old) old.remove();
+      const s = document.createElement("small"); s.textContent = info[k][1]; l.appendChild(s);
+      if (t === "yes") { if (inp.checked) { l.className = "hit"; hit++; } else { l.className = "miss"; miss++; } }
+      else if (t === "mixed") { l.className = "miss"; }
+      else { l.className = "no"; if (inp.checked) wrong++; }
+    });
+    $("c13_gmsg").textContent = `你勾对了 ${hit} 类受益者，漏掉 ${miss} 类${wrong ? "，多勾了 " + wrong + " 类无关的" : ""}。绿色是确定受益，黄色是漏猜或需谨慎，灰色是基本无关。`;
+  };
+  $("c13_greset").onclick = reset;
+})();
+
+/* ============ 对比度检查器 ============ */
+(function () {
+  let failed = false;
+  function show() {
+    const f = $("c13_fg").value, b = $("c13_bg").value, r = c13ratio(f, b);
+    const rd = (Math.floor(r * 100) / 100).toFixed(2);
+    $("c13_sw").style.background = b; $("c13_sw").style.color = f;
+    const chip = (ok, t) => `<span class="stat">${t} <b>${ok ? "✔" : "✘"}</b></span>`;
+    $("c13_cstat").innerHTML = `<span class="stat">对比度 <b>${rd}:1</b></span>` + chip(r >= 4.5, "普通文字 AA（4.5）") + chip(r >= 3, "大字/图标 AA（3）") + chip(r >= 7, "普通文字 AAA（7）");
+    if (r < 4.5) failed = true;
+    if (r >= 4.5 && failed) { const t = $("c13_ctask"); t.textContent = "✔ 完成：对比度 " + rd + ":1，普通文字达标。你刚才是靠眼睛，还是靠数字判断的？"; t.style.background = "#eaf9e4"; }
+    $("c13_cmsg").textContent = r >= 4.5 ? "普通文字也能达标。" : r >= 3 ? "只有大号文字（或粗体≥14 磅）达标：小字提示请别用这个组合。" : "太低：很多人会读不出来，哪怕你自己觉得“看得清”。";
+  }
+  $("c13_fg").oninput = show; $("c13_bg").oninput = show;
+  document.querySelectorAll("[data-cpre]").forEach(b => b.onclick = () => { const [f, g] = b.dataset.cpre.split(","); $("c13_fg").value = f; $("c13_bg").value = g; show(); });
+  $("c13_fix").onclick = () => {
+    const f = c13hex($("c13_fg").value), bg = $("c13_bg").value;
+    const toB = c13ratio("#000000", bg), toW = c13ratio("#ffffff", bg);
+    const tgt = toB >= toW ? [0, 0, 0] : [255, 255, 255];
+    if (Math.max(toB, toW) < 4.5) { $("c13_cmsg").textContent = "这个背景下黑或白都达不到 4.5:1，需要先改背景色。"; return; }
+    let out = f;
+    for (let t = 0; t <= 100; t++) {
+      const m = f.map((v, i) => v + (tgt[i] - v) * t / 100), h = c13toHex(m);
+      out = m;
+      if (c13ratio(h, bg) >= 4.5) { $("c13_fg").value = h; show(); $("c13_cmsg").textContent = `已把文字色调到 ${h}（沿着黑/白方向刚好达标）。`; return; }
+    }
+    $("c13_fg").value = c13toHex(out); show();
+  };
+  show();
+})();
+
+/* ============ 障碍模拟器 ============ */
+(function () {
+  const MODES = [
+    ["normal", "正常色觉"], ["protan", "红色盲（近似）"], ["deutan", "绿色盲（近似）"],
+    ["tritan", "蓝黄色盲（近似）"], ["mono", "全色盲（近似）"], ["low", "低视力（模糊）"]
+  ];
+  const S = { mode: "normal", big: false, hc: false, mute: false, cap: false, rm: false, fix: false };
+  const mbox = $("c13_modes");
+  MODES.forEach(([k, t]) => {
+    const b = document.createElement("button"); b.className = "chip" + (k === "normal" ? " on" : ""); b.textContent = t; b.dataset.m = k;
+    b.onclick = () => { S.mode = k; mbox.querySelectorAll(".chip").forEach(x => x.classList.toggle("on", x === b)); render(); };
+    mbox.appendChild(b);
+  });
+  ["big", "hc", "mute", "cap", "rm"].forEach(k => $("c13_" + k).addEventListener("change", e => { S[k] = e.target.checked; render(); }));
+  $("c13_fixon").addEventListener("change", e => { S.fix = e.target.checked; render(); });
+  try { if (window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches) { S.rm = true; $("c13_rm").checked = true; } } catch (e) {}
+
+  const FIL = { normal: "", protan: "url(#c13_f_protan)", deutan: "url(#c13_f_deutan)", tritan: "url(#c13_f_tritan)", mono: "url(#c13_f_mono)", low: "url(#c13_f_blur)" };
+  const hintBase = { fg: "#8d8d7f", bg: "#a8a794" };
+
+  function scene() {
+    const f = S.fix, sc = S.big ? 1.45 : 1;
+    let s = `<rect width="640" height="340" fill="#2f3640"/>`;
+    s += `<defs><pattern id="c13_grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="#3a424e" stroke-width="1"/></pattern></defs><rect width="640" height="340" fill="url(#c13_grid)"/>`;
+    // 敌人（红）与友军（绿）
+    const foe = (x, y) => f ? `<polygon points="${x},${y - 20} ${x + 19},${y + 14} ${x - 19},${y + 14}" fill="#d04a2a" stroke="#fff" stroke-width="3"/><text x="${x}" y="${y + 36}" font-size="16" text-anchor="middle" fill="#fff" font-weight="700">敌</text>` : `<circle cx="${x}" cy="${y}" r="17" fill="#d04a2a"/>`;
+    const ally = (x, y) => f ? `<circle cx="${x}" cy="${y}" r="17" fill="#6aa84f" stroke="#fff" stroke-width="3"/><circle cx="${x}" cy="${y}" r="6" fill="#fff"/><text x="${x}" y="${y + 36}" font-size="16" text-anchor="middle" fill="#fff" font-weight="700">友</text>` : `<circle cx="${x}" cy="${y}" r="17" fill="#6aa84f"/>`;
+    s += foe(410, 140) + foe(480, 235) + ally(230, 210) + ally(330, 110);
+    s += `<rect x="296" y="168" width="28" height="28" fill="#dfe9f5" stroke="#4aa3ff" stroke-width="4" transform="rotate(45 310 182)"/>`;
+    // 血条
+    s += `<rect x="14" y="14" width="186" height="22" fill="#111" stroke="#fff" stroke-width="2"/><rect x="16" y="16" width="${182 * 0.28}" height="18" fill="#e03a2f"${(!S.rm && !f) ? ' class="c13_pulse"' : ""}/>`;
+    s += `<text x="14" y="58" font-size="16" fill="#fff">HP${f ? "  28 / 100  ♥ 低血量" : ""}</text>`;
+    // 低血量提示（红色边缘）
+    if (!S.rm || f) s += `<rect x="3" y="3" width="634" height="334" fill="none" stroke="#e03a2f" stroke-width="${f ? 4 : 8}" opacity="${f ? 0.7 : 1}"${(!S.rm && !f) ? ' class="c13_pulse"' : ""}/>`;
+    // 小地图
+    s += `<rect x="500" y="12" width="60" height="100" fill="#3b7dd8"/><rect x="560" y="12" width="60" height="100" fill="${f ? "url(#c13_hatch)" : "#e0b020"}"/><rect x="500" y="12" width="120" height="100" fill="none" stroke="#fff" stroke-width="2"/>`;
+    s += `<circle cx="530" cy="70" r="5" fill="#fff"/>`;
+    if (f) s += `<text x="530" y="40" font-size="16" fill="#fff" text-anchor="middle">安全</text><text x="590" y="40" font-size="16" fill="#fff" text-anchor="middle" font-weight="700">危险</text>`;
+    s += `<text x="560" y="132" font-size="16" fill="#fff" text-anchor="middle">小地图</text>`;
+    // 声音
+    if (!S.mute) s += `<g stroke="#ffd400" stroke-width="3" fill="none"${S.rm ? "" : ' class="c13_pulse"'}><path d="M10 270 q-10 20 0 40"/><path d="M22 262 q-16 28 0 56"/></g>`;
+    else if (!S.cap && !f) s += `<text x="12" y="296" font-size="16" fill="#aaa">（静音）</text>`;
+    if (f) s += `<g><polygon points="14,200 40,184 40,216" fill="#fff"/><text x="48" y="206" font-size="16" fill="#fff">左后方来敌</text></g>`;
+    // 字幕
+    let y = 312;
+    if (S.cap) {
+      const t = f ? "[脚步声 · 左后方逼近]" : "[脚步声]";
+      const fs = 16 * sc, w = t.length * fs * 0.95 + 24;
+      s += `<rect x="${320 - w / 2}" y="${y - 52 - fs}" width="${w}" height="${fs + 14}" fill="#000" opacity=".8"/><text x="320" y="${y - 52}" font-size="${fs}" text-anchor="middle" fill="#fff">${t}</text>`;
+    }
+    // 提示文字
+    const hi = S.hc || f;
+    const tx = "按 E 拾取箱子", fs2 = (hi ? 18 : 12) * sc, w2 = tx.length * fs2 + 24;
+    const fg = hi ? "#fff" : hintBase.fg, bg = hi ? "#000" : hintBase.bg;
+    s += `<rect x="${320 - w2 / 2}" y="${y - 6 - fs2}" width="${w2}" height="${fs2 + 16}" rx="4" fill="${bg}"/><text x="320" y="${y + 1}" font-size="${fs2}" text-anchor="middle" fill="${fg}"${hi ? ' font-weight="700"' : ""}>${tx}</text>`;
+    return s;
+  }
+
+  function diag() {
+    const f = S.fix, m = S.mode, out = [];
+    const hi = S.hc || f;
+    const ratio = hi ? 21 : c13ratio(hintBase.fg, hintBase.bg);
+    // 敌我
+    if (!f && (m === "protan" || m === "deutan" || m === "mono")) out.push(["lost", "敌我识别（红=敌、绿=友）", "两种颜色在这类色觉下几乎无法区分，而且没有形状或文字作补充。"]);
+    else out.push(["ok", "敌我识别", f ? "颜色之外还有形状（三角/圆）和文字“敌/友”。" : "你的色觉能区分颜色，但这只靠颜色：换个类型就会丢。"]);
+    if (!f && m === "normal") out[out.length - 1][0] = "warn";
+    // 小地图
+    if (!f && (m === "tritan" || m === "mono")) out.push(["lost", "小地图安全区/危险区（蓝/黄）", "蓝黄在这类色觉下容易混淆，且只用颜色。"]);
+    else out.push([!f && m === "normal" ? "warn" : "ok", "小地图安全区/危险区", f ? "危险区加了斜纹与文字。" : "只靠颜色：对蓝黄色觉的人会丢。"]);
+    // 血量
+    if (!f && S.rm) out.push(["lost", "低血量警告", "警告只靠“闪红”这一路；关掉动态后它直接消失了。"]);
+    else if (!f) out.push(["warn", "低血量警告", "只有“闪红”一路，色觉、低视力或光敏玩家可能错过，也不应作为唯一提示。"]);
+    else out.push(["ok", "低血量警告", "有数字、图标和文字，红边框改为静态：不依赖颜色或闪烁。"]);
+    // 提示文字
+    if (m === "low" && !(S.big || f)) out.push(["lost", "提示文字（小号）", `模糊后读不出来；当前文字对比度约 ${(Math.floor(ratio * 100) / 100).toFixed(2)}:1。`]);
+    else if (ratio < 4.5) out.push(["warn", "提示文字", `对比度约 ${(Math.floor(ratio * 100) / 100).toFixed(2)}:1，低于 4.5:1。打开“高对比度”或“设计加固”试试。`]);
+    else out.push(["ok", "提示文字", `对比度约 ${(Math.floor(ratio * 100) / 100).toFixed(1)}:1，达标。`]);
+    // 声音
+    if (S.mute && !S.cap && !f) out.push(["lost", "身后的脚步声", "威胁只通过声音传达，声音关闭后你什么都不知道。"]);
+    else if (S.mute) out.push(["ok", "身后的脚步声", f ? "有字幕与方向箭头。" : "字幕提供了线索，但没有方向信息，可以更好。"]);
+    else out.push(["ok", "身后的脚步声", "你能听到；但这只是一路，换个情境（静音）就会丢。"]);
+    if (!S.mute && !f) out[out.length - 1][0] = "warn";
+    return out;
+  }
+
+  function render() {
+    $("c13_scene").innerHTML = `<g${FIL[S.mode] ? ` filter="${FIL[S.mode]}"` : ""}>${scene()}</g>`;
+    const d = diag(), lost = d.filter(x => x[0] === "lost").length, warn = d.filter(x => x[0] === "warn").length;
+    const ic = { ok: "✔", warn: "⚠", lost: "✖" };
+    $("c13_diag").innerHTML = d.map(x => `<li class="${x[0]}"><b>${ic[x[0]]} ${x[1]}：</b>${x[2]}</li>`).join("");
+    if (lost) window.c13_lostSeen = true;
+    if (!lost && S.fix && window.c13_lostSeen) { const t = $("c13_stask"); t.textContent = "✔ 完成：设计加固之后，所有信息至少有两条通道，当前设置下一项都没丢。"; t.style.background = "#eaf9e4"; }
+    $("c13_smsg").textContent = lost ? `丢失 ${lost} 项关键信息${warn ? "，另有 " + warn + " 项脆弱" : ""}。试试打开“设计加固”。` : warn ? `没有丢失，但有 ${warn} 项只靠单一通道，换个情境就会丢。` : "所有信息都至少有两条通道，当前设置下无一丢失。";
+  }
+  render();
+})();
+
+/* ============ 按键重映射器 ============ */
+(function () {
+  const ACTS = [["up", "上", "前进↑"], ["down", "下", "后退↓"], ["left", "左", "向左←"], ["right", "右", "向右→"], ["jump", "跳", "跳跃"], ["atk", "攻", "攻击"], ["sprint", "冲", "冲刺（按住）"], ["use", "互", "互动"], ["swap", "换", "换武器"], ["pause", "停", "暂停"]];
+  const ROWS = [["Esc", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0"], ["Tab", "Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"], ["A", "S", "D", "F", "G", "H", "J", "K", "L", ";"], ["Shift", "Z", "X", "C", "V", "B", "N", "M", ",", ".", "/"], ["Ctrl", "Space"]];
+  const LK = new Set(["Esc", "1", "2", "3", "4", "5", "Tab", "Q", "W", "E", "R", "T", "A", "S", "D", "F", "G", "Shift", "Z", "X", "C", "V", "B", "Ctrl"]);
+  const RK = new Set(["6", "7", "8", "9", "0", "Y", "U", "I", "O", "P", "H", "J", "K", "L", ";", "N", "M", ",", ".", "/"]);
+  const handOf = k => k === "Space" ? "B" : LK.has(k) ? "L" : "R";
+  const PRESET = {
+    def: { up: "W", down: "S", left: "A", right: "D", jump: "Space", atk: "J", sprint: "Shift", use: "E", swap: "Q", pause: "Esc" },
+    L: { up: "W", down: "S", left: "A", right: "D", jump: "Space", atk: "F", sprint: "Shift", use: "E", swap: "Q", pause: "Tab" },
+    R: { up: "I", down: "K", left: "J", right: "L", jump: "Space", atk: "U", sprint: "N", use: "O", swap: "P", pause: "9" }
+  };
+  let bind = Object.assign({}, PRESET.def), sel = "up", hand = "both";
+  const kbd = $("c13_kbd"), acts = $("c13_acts");
+
+  function reach(k) { return hand === "both" || handOf(k) === "B" || handOf(k) === hand; }
+  function render() {
+    const cnt = {}; Object.values(bind).forEach(k => { if (k) cnt[k] = (cnt[k] || 0) + 1; });
+    const keyAct = {}; ACTS.forEach(([id, ab]) => { const k = bind[id]; if (k) (keyAct[k] = keyAct[k] || []).push(ab); });
+    kbd.innerHTML = ROWS.map(r => `<div class="c13_krow">` + r.map(k => `<button class="c13_key ${k === "Space" ? "space" : k.length > 1 ? "wide" : ""} ${handOf(k)} ${reach(k) ? "" : "dim"} ${cnt[k] > 1 ? "conf" : ""}" data-k="${k}">${k === "Space" ? "空格" : k}<small>${(keyAct[k] || []).join("")}</small></button>`).join("") + `</div>`).join("");
+    kbd.querySelectorAll(".c13_key").forEach(b => b.onclick = () => { bind[sel] = b.dataset.k; const i = ACTS.findIndex(a => a[0] === sel); if (i < ACTS.length - 1 && !(cnt[b.dataset.k] > 0 && false)) sel = ACTS[i + 1][0]; render(); });
+    acts.innerHTML = ACTS.map(([id, ab, nm]) => {
+      const k = bind[id]; const bad = k && (cnt[k] > 1 || !reach(k));
+      return `<button class="c13_act ${id === sel ? "sel" : ""} ${bad ? "bad" : ""}" data-a="${id}">${nm}：<b>${k ? (k === "Space" ? "空格" : k) : "未绑定"}</b></button>`;
+    }).join("");
+    acts.querySelectorAll(".c13_act").forEach(b => b.onclick = () => { sel = b.dataset.a; render(); });
+    document.querySelectorAll("[data-hand]").forEach(b => b.classList.toggle("on", b.dataset.hand === hand));
+
+    const conflicts = Object.keys(cnt).filter(k => cnt[k] > 1);
+    const unb = ACTS.filter(a => !bind[a[0]]).map(a => a[2]);
+    const far = ACTS.filter(a => bind[a[0]] && !reach(bind[a[0]])).map(a => a[2]);
+    const tog = $("c13_tog").checked;
+    const hold = 2 + (tog ? 0 : 1) + 1; // 最多 2 个方向键 + 冲刺(若按住) + 攻击/跳
+    $("c13_rstat").innerHTML = `<span class="stat">冲突 <b>${conflicts.length}</b></span><span class="stat">够不着 <b>${far.length}</b></span><span class="stat">未绑定 <b>${unb.length}</b></span><span class="stat">最多同时按住 <b>${hold}</b> 键</span>`;
+    let m = [];
+    if (conflicts.length) m.push("冲突：" + conflicts.map(k => (k === "Space" ? "空格" : k)).join("、") + " 绑了多个动作。");
+    if (far.length) m.push("单手够不到：" + far.join("、") + "。");
+    if (unb.length) m.push("还有动作没绑：" + unb.join("、") + "。");
+    if (hand !== "both" && !m.length) m.push(`单手可完整操作。最紧张的瞬间要同时按 ${hold} 个键${tog ? "" : "（勾选“冲刺改为切换”可少一个）"}——手指数量有限，这就是为什么“按住改切换”是重要的辅助选项。`);
+    if (hand === "both" && !m.length) m.push("双手模式没有问题。切到“只用左手”或“只用右手”，看看有多少键被点暗，再试着重新分配。");
+    $("c13_rmsg").textContent = m.join(" ");
+    if (hand === "L" && !conflicts.length && !far.length && !unb.length) { const t = $("c13_rtask"); t.textContent = "✔ 完成：只用左手，10 个动作全部绑好，没有冲突。最紧张的时刻要同时按 " + hold + " 个键。"; t.style.background = "#eaf9e4"; }
+  }
+  document.querySelectorAll("[data-hand]").forEach(b => b.onclick = () => { hand = b.dataset.hand; render(); });
+  $("c13_tog").onchange = render;
+  $("c13_pdef").onclick = () => { bind = Object.assign({}, PRESET.def); sel = "up"; render(); };
+  $("c13_pL").onclick = () => { bind = Object.assign({}, PRESET.L); hand = "L"; sel = "up"; render(); };
+  $("c13_pR").onclick = () => { bind = Object.assign({}, PRESET.R); hand = "R"; sel = "up"; render(); };
+  $("c13_pclr").onclick = () => { bind = {}; sel = "up"; render(); };
+  render();
+})();
+
+GD.mountQuiz($("quiz"), [
+  { q: "（为什么）为什么说“为少数人做的设计，常常让所有人受益”？", opts: ["因为少数人的需求总是比多数人更重要", "因为障碍来自环境与设计的不匹配，很多人会在暂时或情境下遇到同样的不匹配", "因为设计越复杂越好", "因为这样可以少做测试"], a: 1, why: "路缘石坡道为轮椅而做，却让推婴儿车、拖行李箱的人同样受益。字幕为听障者而做，也帮到嘈杂环境中的人。永久、暂时、情境三类障碍的“解决办法”常常是同一个。" },
+  { q: "（为什么被发明）电视字幕为什么发展出“隐藏式（可开关）”的形式，而不是一直开放地显示？", opts: ["因为开放式字幕技术上做不到", "因为想让需要的观众使用，同时不打扰不需要的观众，也更容易争取电视台配合", "因为字幕只能给外语节目", "因为隐藏式字幕更便宜得多"], a: 1, why: "开放式字幕会让所有观众都看到，商业电视台不愿意；隐藏式字幕把信号藏在电视信号里，由解码器按需显示。后来法案要求较大的电视机内置解码器，使它成为标配。" },
+  { q: "一个 18 磅的大号标题，对比度是 3.5:1。按 WCAG AA，它的结论是？", opts: ["不达标，必须 4.5:1", "达标：大号文字的 AA 门槛是 3:1", "达标，因为 3.5 大于 1", "无法判断"], a: 1, why: "AA 级：普通文字 ≥ 4.5:1，大号文字（≥18 磅，或 ≥14 磅加粗）≥ 3:1。所以 3.5:1 的大标题达标，但同样配色的小字不达标。" },
+  { q: "一款游戏用“红色=敌人，绿色=队友”区分阵营，且没有其他标记。最好的修复是？", opts: ["换一套更鲜艳的红和绿", "只加一个“色盲模式”开关，里面仍然是红绿", "在颜色之外再加形状、图案或文字等第二条通道", "什么都不做，因为色盲玩家很少"], a: 2, why: "多通道冗余：让信息不只靠颜色。红绿色觉缺陷在部分人群中比例不低（男性约 8% 的量级，来自北欧裔人群的统计整理），换更鲜艳的红绿依然无法解决问题。" },
+  { q: "一个特效在一秒内白屏闪烁 5 次。按 WCAG 2.3.1 的闪光阈值，应该怎么办？", opts: ["没问题，特效就该炫", "超过了“任意一秒内最多 3 次闪光”的底线，应降低频率/面积，或提供减少闪光的选项", "只要不是红色就没问题", "把闪光变成 10 次更安全"], a: 1, why: "WCAG 2.3.1：任意一秒内一般闪光不超过 3 次（红色闪光同理），或闪光区域足够小。超过会增加光敏性癫痫风险，应降频、缩小范围，并提供“减少动态/闪光”选项。" },
+  { q: "（为什么）罗尔斯的“无知之幕”思想实验，对设计有什么启发？", opts: ["设计师应该蒙着眼睛做设计", "如果你不知道自己将是哪位玩家，就更愿意把选项做得让更多人用得上，因为谁都没法保证自己永远不是“少数”", "少数人的需求应该优先于多数人", "公平只关乎法律，与设计无关"], a: 1, why: "罗尔斯（1971）用它讨论制度的公平；搬到设计里是一个类比：人人都可能在某个时刻成为暂时或情境障碍的玩家，所以给更多人开门，其实是在给将来的自己留退路。" }
+]);
+</script>
+</body>
+</html>

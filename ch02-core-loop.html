@@ -1,0 +1,754 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>第2章 核心循环</title>
+<link rel="stylesheet" href="css/style.css">
+<style>
+  .c2leg span{display:inline-block;margin-right:12px;font-size:.9rem}
+  .c2leg i{display:inline-block;width:14px;height:14px;border:2px solid var(--ink);border-radius:50%;vertical-align:middle;margin-right:4px}
+  .c2cmp .rw{display:flex;align-items:center;gap:8px;margin:4px 0}
+  .c2cmp .nm{width:120px;flex:none;font-size:.95rem}
+  .c2cmp .bars{flex:1}
+  .c2cmp .bar{height:15px;border:2px solid var(--ink);border-radius:10px 6px 10px 6px;background:#fff;overflow:hidden;margin:2px 0}
+  .c2cmp .bar i{display:block;height:100%;width:0;transition:width .6s}
+  .c2cmp .lg{font-size:.85rem;color:var(--soft)}
+  .c2node{cursor:pointer}
+  .c2node:focus-visible{outline:3px solid var(--blue)}
+  .c2m{display:flex;align-items:center;gap:8px;margin:5px 0}
+  .c2m .nm{width:150px;flex:none;font-size:.95rem}
+  .c2m .bar{flex:1;height:24px;border:2.5px solid var(--ink);border-radius:14px 8px 14px 8px;background:#fff;overflow:hidden}
+  .c2m .bar i{display:block;height:100%;width:0;transition:width .5s,background .5s}
+  .c2m .v{width:46px;flex:none;text-align:right;font-family:var(--hand);font-size:1.2rem}
+  .c2pr .rw{display:flex;align-items:center;gap:8px;margin:5px 0}
+  .c2pr .nm{width:130px;flex:none;font-size:.95rem}
+  .c2pr .tr{flex:1;position:relative;height:24px;border:2.5px solid var(--ink);border-radius:14px 8px 14px 8px;background:#fff;overflow:hidden}
+  .c2pr .tr::after{content:"";position:absolute;left:50%;top:0;bottom:0;border-left:2px dashed var(--ink)}
+  .c2pr .tr i{position:absolute;top:0;bottom:0;transition:all .4s}
+  .c2pr .v{width:56px;flex:none;text-align:right;font-family:var(--hand);font-size:1.2rem}
+  .c2task.c2done{background:#d9f5cf}
+  .c2task.c2done::before{content:"✅ "}
+  .c2task b.ok{color:#1d6b32}
+  @media(max-width:700px){.c2cmp .nm,.c2m .nm,.c2pr .nm{width:96px}}
+</style>
+</head>
+<body data-ch="2">
+<main class="wrap">
+  <div class="hero">
+    <div class="txt">
+      <span class="badge">第 2 章</span>
+      <h1>核心循环</h1>
+      <p class="sub">让玩家“再玩一局”的发动机，以及它为什么转得起来。</p>
+    </div>
+    <svg viewBox="0 0 190 150" class="rough" aria-hidden="true">
+      <circle cx="95" cy="75" r="50" fill="none" stroke="#2b2b3a" stroke-width="5" stroke-dasharray="14 8"/>
+      <path d="M140 45 l10 -18 l4 22z" fill="#ff8fab" stroke="#2b2b3a" stroke-width="3"/>
+      <circle cx="95" cy="75" r="22" fill="#ffe58a" stroke="#2b2b3a" stroke-width="4"/>
+      <text x="82" y="83" font-size="22">玩</text>
+    </svg>
+  </div>
+
+  <div class="goals">
+    <h3>学习目标</h3>
+    <span class="time">约 50 分钟</span>
+    <ul>
+      <li>读完你能用“动词链”写出一个游戏的核心循环，并通过“断环实验”说清循环里每一环缺了会怎样。</li>
+      <li>读完你能区分四种强化程序，并讲出斯金纳当年为什么要研究“奖励怎么发”。</li>
+      <li>读完你能用“奖励预测误差”（舒尔茨的猴子实验）和“目标梯度”解释：为什么固定奖励很快没感觉，进度条为什么有拉力。</li>
+    </ul>
+  </div>
+
+  <!-- 1 是什么：核心循环 -->
+  <div class="sec"><span class="n">1</span><h2><span class="tag what">是什么</span>核心循环：让你再来一局的那个圈</h2></div>
+  <div class="withimg">
+    <span data-illus="c02_onemore"></span>
+    <div>
+      <p>凌晨一点，你对自己说：最后一局，打完就睡。打完了，你点下的却是“再来一局”。</p>
+      <p>这不全是意志力的问题。上一局的结尾，悄悄递给了你下一局的理由：差一点就赢了，新解锁的角色还没试，血条只剩一格的紧张劲儿还没散。</p>
+      <p>把这种“结尾接着开头”的结构画出来，就是一个圈。玩家在游戏里<b>最常重复的那一串事情</b>，叫<span class="term" tabindex="0" data-def="核心循环：玩家在游戏中反复进行的一串行动，包含行动、反馈、奖励、成长，并回到起点">核心循环</span>。吃豆人是：吃豆 → 躲鬼 → 吃大力丸 → 反吃鬼 → 清场，然后下一关。</p>
+    </div>
+  </div>
+  <p>设计师喜欢用一串动词把它说清楚，这叫<span class="term" tabindex="0" data-def="动词链：用一串动词（如 收集→种植→抵挡→升级）概括核心循环的写法">动词链</span>。还记得第一章里“反馈”那根柱子吗？循环就是把反馈接成一个圈：你做了点什么，游戏回应你，回应带来奖励，奖励让你变强一点，变强之后又冒出新的目标，于是你回到起点。</p>
+
+  <div class="card">
+    <svg viewBox="0 0 700 300" width="100%" role="img" aria-label="核心循环示意图：行动、反馈、奖励、成长、新目标，五个方块用箭头首尾相连，最后回到行动">
+      <defs><marker id="c2_ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M1 1 L9 5 L1 9" fill="none" stroke="#2b2b3a" stroke-width="2"/></marker></defs>
+      <g class="rough" stroke="#2b2b3a" stroke-width="4" stroke-linejoin="round">
+        <rect x="20" y="105" width="150" height="70" rx="22" fill="#ffe58a"/>
+        <rect x="205" y="20" width="150" height="70" rx="22" fill="#a8dcf0"/>
+        <rect x="420" y="20" width="150" height="70" rx="22" fill="#ffb3c6"/>
+        <rect x="530" y="105" width="150" height="70" rx="22" fill="#b6e8a8"/>
+        <rect x="275" y="215" width="150" height="70" rx="22" fill="#d8c8ff"/>
+        <g fill="none" stroke-width="4.5" stroke-linecap="round">
+          <path d="M165 104 Q185 78 200 64" marker-end="url(#c2_ah)"/><path d="M358 55 L390 55" marker-end="url(#c2_ah)"/><path d="M548 64 Q570 76 578 100" marker-end="url(#c2_ah)"/>
+          <path d="M600 180 Q570 245 430 250" marker-end="url(#c2_ah)"/><path d="M270 250 Q110 262 95 180" marker-end="url(#c2_ah)"/>
+        </g>
+      </g>
+      <g font-size="24" text-anchor="middle" fill="#2b2b3a">
+        <text x="95" y="138">① 行动</text><text x="280" y="53">② 反馈</text><text x="470" y="53">③ 奖励</text>
+        <text x="605" y="138">④ 成长</text><text x="350" y="248">⑤ 新目标</text>
+      </g>
+      <g font-size="16" text-anchor="middle" fill="#3f3f50">
+        <text x="95" y="162">点、跳、选择</text><text x="280" y="77">叮！血条减少</text><text x="470" y="77">金币、经验</text>
+        <text x="605" y="162">变强、解锁</text><text x="350" y="272">新关卡、新挑战</text>
+      </g>
+    </svg>
+    <p class="small">箭头围成一个圈：奖励让下一次行动更有力量，或者多出新的选择，所以玩家想再来一次。</p>
+  </div>
+
+  <p>可是游戏里的圈不止一个。你每一秒都在跳、打、躲，每几分钟打完一场，每隔几天才攒够钱换一件新装备。<b>三个圈一层套一层</b>，越往里转得越快：</p>
+  <div class="card">
+    <svg viewBox="0 0 700 320" width="100%" role="img" aria-label="三层嵌套的循环：最里面是秒级微循环，中间是分钟级关卡循环，最外面是天或周级的成长循环；右侧用引线标出每一层">
+      <g class="rough" stroke="#2b2b3a" stroke-width="4">
+        <ellipse id="c2_L0" cx="210" cy="160" rx="190" ry="140" fill="#f1eaff"/>
+        <ellipse id="c2_L1" cx="210" cy="160" rx="130" ry="95" fill="#e8f6fc"/>
+        <ellipse id="c2_L2" cx="210" cy="160" rx="70" ry="48" fill="#ffe58a"/>
+      </g>
+      <g fill="#2b2b3a" stroke="#2b2b3a" stroke-width="2">
+        <circle cx="210" cy="42" r="5"/><circle cx="210" cy="88" r="5"/><circle cx="210" cy="160" r="5"/>
+      </g>
+      <g fill="none" stroke="#2b2b3a" stroke-width="2.5" stroke-linecap="round">
+        <path d="M215 42 H405"/><path d="M215 88 H300 L405 150"/><path d="M215 160 H280 L405 262"/>
+      </g>
+      <g fill="#2b2b3a">
+        <text x="420" y="48" font-size="21">天 / 周：成长循环</text><text x="420" y="72" font-size="16" fill="#3f3f50">角色养成、赛季、剧情推进</text>
+        <text x="420" y="156" font-size="21">分钟：关卡循环</text><text x="420" y="180" font-size="16" fill="#3f3f50">打完一场、通过一关、拿到奖励</text>
+        <text x="420" y="268" font-size="21">秒：微循环</text><text x="420" y="292" font-size="16" fill="#3f3f50">跳一下、打一拳，每秒都有回应</text>
+      </g>
+    </svg>
+    <div>
+      <span class="small">点一层看看：</span>
+      <button class="chip" data-ly="2">⏱️ 秒</button>
+      <button class="chip" data-ly="1">🎯 分钟</button>
+      <button class="chip" data-ly="0">🌱 天 / 周</button>
+    </div>
+    <div class="msg" id="c2_lymsg" style="font-size:1.1rem">外层的奖励要靠里层的行动“喂”。点一层，看它在做什么。</div>
+  </div>
+  <p>这就带来一条设计上的铁律：最里面的微循环如果不好玩，外面再多层也转不起来。没人会为了“每周的赛季奖励”去忍受一个枯燥的跳跃手感。</p>
+
+  <div class="eg" data-ic="🌻"><span data-illus="c02_pvz"></span><div class="egt"><b>《植物大战僵尸》</b>：收集阳光 → 种植物 → 抵挡僵尸 → 得到新植物 → 种出更强的阵型。五个动词首尾相连，每打赢一关，手里的牌就更丰富。</div></div>
+  <div class="eg" data-ic="⛏️"><span data-illus="c02_mc"></span><div class="egt"><b>《我的世界》（生存模式）</b>：采集 → 合成 → 建造 → 去更远的地方探索 → 采集到新材料。远行的动力来自“需要新材料”，圈是靠需求合上的。</div></div>
+  <div class="eg" data-ic="📱"><span data-illus="c02_feed"></span><div class="egt"><b>日常：刷短视频</b>：下滑 → 看一条 → （偶尔）撞见特别对胃口的 → 再下滑。注意那个“偶尔”：奖励不是每次都来，这个细节马上会变得很重要。</div></div>
+  <div class="eg" data-ic="📖"><span data-illus="c02_vocab"></span><div class="egt"><b>日常：背单词打卡</b>：学 20 个 → 小测 → 连续天数 +1 → 想守住连续天数 → 明天再学。App 把“成长”做成了一个不断变长的数字。</div></div>
+  <div class="eg bad" data-ic="🎬"><span data-illus="c02_cutscene"></span><div class="egt"><b>反例：不会回到起点的过场动画</b>：一段只看一次的剧情，看完就完，没有“再来一次”的理由。箭头直直走到终点，没有一根线绕回起点，所以它不是循环。</div></div>
+  <div class="eg bad" data-ic="🖱️"><span data-illus="c02_clicker"></span><div class="egt"><b>反例：行动本身很无聊的循环</b>：点一下 → 得 1 金币 → 买点击力 → 再点。圈是闭合的，可是“点一下”这个动作毫无乐趣，奖励只是在收买玩家。这样的循环有多脆弱，后面的“断环实验”会让你亲眼看到。</div></div>
+
+  <!-- 2 是什么：强化程序 -->
+  <div class="sec"><span class="n">2</span><h2><span class="tag what">是什么</span>奖励怎么发：四种强化程序</h2></div>
+  <p>为什么老虎机比自动售货机更让人停不下来？售货机投币必出货，老虎机却是“可能下一把就中”。两台机器给的东西差不多，差的是奖励<b>来的方式</b>。</p>
+  <p>心理学家把“在什么条件下发奖励”的规则叫作<span class="term" tabindex="0" data-def="强化程序（schedule of reinforcement）：规定在什么条件下给予奖励的规则，如每几次行为一次，或每隔多久一次">强化程序</span>。问两个问题就能把它分成四类：奖励看的是“做了几次”还是“过了多久”？这个数是固定的，还是每次都变？</p>
+  <div class="card">
+    <svg viewBox="0 0 700 320" width="100%" role="img" aria-label="四种强化程序：每一行是一串行动，红色星号表示得到奖励的那一次">
+      <text x="12" y="22" font-size="16" fill="#3f3f50">每个圆点 = 一次行动（点击、击杀……）；红星 = 这一次得到奖励</text>
+      <g font-size="19" fill="#2b2b3a">
+        <text x="12" y="74">固定比率 FR5</text><text x="12" y="144">可变比率 VR5</text><text x="12" y="214">固定间隔 FI</text><text x="12" y="284">可变间隔 VI</text>
+      </g>
+      <g font-size="16" fill="#3f3f50">
+        <text x="12" y="96">每 5 次必给</text><text x="12" y="166">平均 5 次，不定</text><text x="12" y="236">每隔固定时间</text><text x="12" y="306">间隔时间随机</text>
+      </g>
+      <g stroke="#4b4b5e" stroke-width="3" stroke-linecap="round" class="rough">
+        <path d="M200 82h480M200 152h480M200 222h480M200 292h480"/>
+      </g>
+      <g id="c2_ticks" fill="#2b2b3a"></g>
+    </svg>
+    <div>
+      <span class="small">点一种看看：</span>
+      <button class="chip" data-sc="0">FR 固定比率</button><button class="chip" data-sc="1">VR 可变比率</button><button class="chip" data-sc="2">FI 固定间隔</button><button class="chip" data-sc="3">VI 可变间隔</button>
+    </div>
+    <div class="msg" id="c2_scmsg" style="font-size:1.1rem">每一行是同样的 22 次行动，区别只在红星落在哪里。</div>
+  </div>
+  <ul>
+    <li><b>固定比率 FR</b>：每做 N 次给一次。每杀 5 个怪必掉一个宝箱，集 10 个碎片兑一个角色。</li>
+    <li><span class="term" tabindex="0" data-def="可变比率（VR）：奖励需要的行为次数是随机变化的，平均 N 次一次，如抽卡、怪物掉落">可变比率 VR</span>：平均 N 次给一次，可每次都不确定。抽卡、怪物掉落、社交 App 的下拉刷新。</li>
+    <li><b>固定间隔 FI</b>：每隔固定时间，第一次行动换来奖励。体力每 6 小时回满，每日登录领奖。</li>
+    <li><b>可变间隔 VI</b>：间隔时间随机。不定时刷新的稀有 BOSS，随时可能来的消息回复。</li>
+  </ul>
+  <div class="eg bad" data-ic="🥤"><span data-illus="c02_vending"></span><div class="egt"><b>反例：连续强化（每次都给）</b>：自动售货机，“点一下必得 1 金币”。每次都给，反而最容易让人没感觉，一旦哪天不给了，也最先被发现。</div></div>
+  <div class="eg" data-ic="💰"><span data-illus="c02_payday"></span><div class="egt"><b>日常：发工资</b>是 FI：每月固定日期，提前不会来，到了日子一定来。</div></div>
+  <div class="eg" data-ic="🎣"><span data-illus="c02_fishing"></span><div class="egt"><b>日常：钓鱼</b>接近 VI：鱼什么时候咬钩谁也不知道，你只能守着，稳稳地等。</div></div>
+  <div class="eg" data-ic="⚔️"><span data-illus="c02_loot"></span><div class="egt"><b>游戏：打怪爆装备</b>接近 VR：每只怪都有机会掉好东西，可是哪一只会掉，没人知道。</div></div>
+
+  <!-- 3 发明故事：斯金纳 -->
+  <div class="sec"><span class="n">3</span><h2><span class="tag origin">发明故事</span>斯金纳箱：怎样发现“奖励怎么发”这件事？</h2></div>
+  <div class="story">
+    <h3>问题：想弄清奖励怎样塑造行为，可是怎么测？</h3>
+    <p>1898 年，美国心理学家桑代克把饥饿的猫关进“迷笼”，笼外放着鱼，笼里有个门闩。猫乱抓乱挠，碰巧拨开了门闩，下一次就逃得快一点。他由此提出：带来好结果的行为会被保留下来（后来叫<b>效果律</b>）。</p>
+    <p>可迷笼有个毛病：猫逃出来一次，实验员才记下一个时间，还得守在旁边，数据又稀又粗。想研究“奖励到底怎样一点点改变行为”，这样的笼子不够用。</p>
+    <p>B. F. 斯金纳在哈佛读研究生时，换了个思路：在箱子里装一根杠杆，大鼠一按，机器就掉出一粒食物，同时在纸带上自动画一道。没人守着，也不会漏掉任何一次按压，行为头一次能被<b>连续、定量</b>地记录。后来他主要改用鸽子，把杠杆换成能啄的按键。</p>
+    <p>然后出了个意外的小插曲。据斯金纳 1956 年的回忆，那时的食物丸要自己手工做，又累又不够用。他想：别每按一下都给了，每隔一分钟给一粒行不行？结果大鼠没有放弃，反而稳稳地一直按。<b>不是每次都给，行为也撑得住</b>，而且按的节奏和每次都给时很不一样。</p>
+    <p>这让他和同事弗斯特想弄明白：是不是“什么时候给”，比“给多少”更能决定行为？他们在 1949–1955 年左右用鸽子系统试了各种发奖规则，整理成 1957 年出版的《强化程序》。</p>
+    <p>在看结果之前，<b>先预测</b>：奖励<b>全部停掉</b>之后，用四种规则训练出来的动物，各会继续按多久？</p>
+  </div>
+
+  <div class="card">
+    <h3>🔮 先猜后揭晓：停止发奖后，谁坚持得最久？</h3>
+    <p class="small">拖动滑块，写下你的预测（0 = 很快放弃，10 = 坚持很久）。点“揭晓”后会跑一个<b>示意模型</b>，对比你的猜测。</p>
+    <div id="c2_pg"></div>
+    <button class="btn" id="c2_reveal">揭晓：跑 40 位模拟动物</button>
+    <button class="btn alt" id="c2_re">看一次单独的模拟曲线</button>
+    <div class="c2cmp" id="c2_cmp"></div>
+    <canvas id="c2_cv" width="700" height="260" style="width:100%;background:#fffef7;border:3px solid var(--ink);border-radius:12px;margin-top:8px;display:none"></canvas>
+    <div class="c2leg" id="c2_leg" style="display:none"></div>
+    <p class="small" id="c2_note">说明：这是<b>极简示意模型</b>，不是实测数据。前 250 秒有奖励，之后全部停止（竖虚线）。放弃规则：连续没中的次数超过训练时最长“连续没中”的 1.5 倍（至少 6 次）。FR5 每 5 次点击中 1 次，领完先停顿 3 秒；VR5 每次点击有 1/5 概率；FI 间隔 20 秒，越接近越点得猛；VI 平均间隔 20 秒，点击频率平稳。</p>
+  </div>
+  <div class="sticky c2task" id="c2_t1">试试看：先给四个滑块写下你的预测，点“揭晓”，再点两次“看一次单独的模拟曲线”，对比 FR 和 VR 两条线：奖励停掉之后，哪条线更早变平？</div>
+
+  <div class="timeline">
+    <div class="ev hasimg"><span data-illus="c02_thorndike"></span><div><b class="yr">1898</b>　桑代克把猫关进迷笼，记录它逃出来要多久：行为被后果塑造。他后来把结论概括成效果律。</div></div>
+    <div class="ev hasimg"><span data-illus="c02_skinnerbox"></span><div><b class="yr">1930 年代</b>　斯金纳造出“操作箱”：杠杆、自动掉食、自动画纸带，行为第一次能被连续定量地测。</div></div>
+    <div class="ev hasimg"><span data-illus="c02_pigeons"></span><div><b class="yr">1950 年代</b>　斯金纳与弗斯特用鸽子大规模比较“发奖规则”，1957 年出版《强化程序》。</div></div>
+    <div class="ev hasimg"><span data-illus="c02_designers"></span><div><b class="yr">之后</b>　“间歇给奖励比每次给更难熄灭”成为学习心理学的经典结论，游戏设计师把它借去设计掉落、抽卡和计时奖励。</div></div>
+  </div>
+
+  <!-- 4 为什么：强化程序 -->
+  <div class="sec"><span class="n">4</span><h2><span class="tag why">为什么成立</span>可变的奖励为什么更“黏”？</h2></div>
+  <p>回到那几只鸽子。奖励全部停掉之后，一直是“每 5 下必给”的鸽子很快就不啄了，而不知道哪一下会中的鸽子却还在啄。同样是被断了粮，为什么反应差这么多？</p>
+  <div class="why-box">
+    <h3>不确定，让人分不清“暂时没有”还是“永远没有”</h3>
+    <p>在经典动物实验里，可变程序产生的行为<b>更稳定</b>，奖励停止后<b>更久才熄灭</b>。这叫<span class="term" tabindex="0" data-def="消退（extinction）：奖励不再出现后，行为逐渐减少直至停止的过程">消退</span>变慢，教科书里叫“部分强化消退效应”。可变比率还会产生很高、很稳的响应率；固定间隔则常见“刚领完就懒、快到点才猛点”的扇形曲线。</p>
+    <p>一种常见的解释是：如果以前每 5 次必中，那“连续 6 次没中”就是明显的信号——奖励被撤了；可如果以前就是有时很多次才中一次，“又一次没中”就说明不了什么，动物便继续试。你在上面的模拟里看到的，正是这个机制：FR 一停奖很快放弃，VR 撑得更久。</p>
+    <p><b>和循环的联系：</b>核心循环里“奖励”这一环，选哪种发法，整个循环的味道就变了。“点一次得一个”是连续强化；改成“点击有概率掉金蘑菇”，就成了可变比率。</p>
+    <div class="src">出处：C. B. Ferster 与 B. F. Skinner，《强化程序》（Schedules of Reinforcement，Appleton-Century-Crofts，1957）；斯金纳 1956 年的文章 “A case history in scientific method”（《美国心理学家》11：221–233）讲了上文的发现过程，这是斯金纳自己的回忆。这些规律主要来自鸽子和大鼠，在人身上还会受语言、规则和预期的影响，不会完全一样。</div>
+  </div>
+  <div class="eg" data-ic="🎰"><span data-illus="c02_gacha"></span><div class="egt"><b>抽卡 / 开箱</b>：每次是否出稀有品不可预测（VR）。玩家记住的是“上次差点就中了”，而不是“已经抽了几十次”。</div></div>
+  <div class="eg" data-ic="🔄"><span data-illus="c02_pull"></span><div class="egt"><b>社交 App 下拉刷新</b>：不知道这次刷出来的是不是你想看的，于是再刷一次。</div></div>
+  <div class="eg bad" data-ic="📅"><span data-illus="c02_dailybad"></span><div class="egt"><b>反例：每日固定登录礼</b>：固定间隔加连续强化，天天一模一样，很快被预期吸收，领完也没有再留下来的理由。所以游戏常在固定奖励里夹一点随机的惊喜。</div></div>
+
+  <!-- 5 发明故事：舒尔茨 -->
+  <div class="sec"><span class="n">5</span><h2><span class="tag origin">发明故事</span>多巴胺在“算”什么？从意外到预测误差</h2></div>
+  <div class="story">
+    <h3>问题：奖励既然让人开心，为什么天天给同样的奖励就没感觉了？</h3>
+    <p>20 世纪 60 年代末，学习心理学家发现了一件怪事。把灯光和电击配成一对，动物通常会学会“灯亮 = 要挨电”。可如果电击早就被另一个信号<b>完全预告</b>了，再加进来的新信号反而学不会。这叫<b>阻断</b>（Leon Kamin，1969）。</p>
+    <p>也就是说，学习不是“同时出现就记住”，而是<b>“意外”才驱动学习</b>。1972 年，罗伯特·雷斯克拉与艾伦·瓦格纳把这个想法写成一条公式，简化来说：新预期 = 旧预期 + 一小份（实际 − 预期）。差得越多，学得越多；差为零，什么也不用学。</p>
+    <p>可这条公式当时只是数学上的推测，没人在大脑里找到过它的影子。直到 1990 年代，沃尔夫拉姆·舒尔茨（Wolfram Schultz）等人在<b>猴子</b>的多巴胺神经元上记录到了与它对得上的信号：</p>
+    <p>猴子还没学会“灯亮 → 果汁”时，意外的果汁会让这些神经元猛烈放电；学会之后，反应转移到<b>灯亮的瞬间</b>，果汁本身几乎不再引起反应；如果灯亮了果汁却没来，在本该出现果汁的时刻，放电反而<b>低于平常</b>。1997 年，舒尔茨与达扬、蒙塔古在《科学》发表综述，把它讲成“多巴胺信号表示奖励的预测误差”。</p>
+    <p>动手之前，<b>先预测</b>：猴子已经练了很多次，完全熟悉“灯亮 → 果汁”了。这时果汁真的如期到来的那一刻，神经元的反应会怎样？</p>
+  </div>
+
+  <div class="card">
+    <h3>🐒 先猜后揭晓：训练越多，惊喜去了哪里？（示意模型）</h3>
+    <p class="small"><b>这是教学示意</b>，用最简单的学习公式（预期每次向实际奖励靠近一部分）来画，不是舒尔茨的实测曲线。</p>
+    <div>你的预测：果汁在熟练之后如期到来时，神经元的反应——
+      <button class="chip" data-gs="up">比一开始更强</button>
+      <button class="chip" data-gs="same">和一开始差不多</button>
+      <button class="chip" data-gs="zero">几乎没有反应</button></div>
+    <div class="msg" id="c2_gmsg" style="font-size:1.1rem">选一个预测，再拖动下面的滑块。</div>
+    <label class="ctl">已训练次数 <output id="c2_no">0</output><input type="range" id="c2_n" min="0" max="40" step="1" value="0"></label>
+    <div>然后发生了：
+      <button class="chip on" data-ot="ok">灯亮，果汁如期到来</button>
+      <button class="chip" data-ot="none">灯亮，果汁没来</button>
+      <button class="chip" data-ot="dbl">灯亮，果汁多了一倍</button></div>
+    <div class="c2pr" id="c2_pr" style="margin-top:8px"></div>
+    <canvas id="c2_rcv" width="700" height="200" style="width:100%;background:#fffef7;border:3px solid var(--ink);border-radius:12px;margin-top:8px"></canvas>
+    <div class="msg" id="c2_rmsg" style="font-size:1.1rem"></div>
+    <p class="small">上方两条横杠：向右（绿）= 比平常放电多，向左（红）= 比平常少。下方曲线：训练次数越多，“灯亮时”的反应（蓝）越强，“果汁时”的反应（橙）越弱。竖线是你当前的训练次数。</p>
+  </div>
+  <div class="sticky c2task" id="c2_t2">试试看：先选一个预测，把训练次数拖到 30 以上，再依次点“如期到来”“没来”“多了一倍”，看“果汁时刻”那一条怎么变。</div>
+
+  <div class="timeline">
+    <div class="ev hasimg"><span data-illus="c02_kamin"></span><div><b class="yr">1969</b>　Kamin 的阻断实验：已经被预告的刺激，学不进新东西。</div></div>
+    <div class="ev hasimg"><span data-illus="c02_rw"></span><div><b class="yr">1972</b>　雷斯克拉–瓦格纳模型：学习由“预测误差”驱动。</div></div>
+    <div class="ev hasimg"><span data-illus="c02_monkey"></span><div><b class="yr">1990 年代</b>　舒尔茨等在猴子身上发现，多巴胺神经元的放电像是在“报告预测误差”。</div></div>
+    <div class="ev hasimg"><span data-illus="c02_rl"></span><div><b class="yr">1997</b>　舒尔茨、达扬、蒙塔古在《科学》发表综述，与强化学习理论接上了头，后来同时影响了神经科学和人工智能。</div></div>
+  </div>
+
+  <!-- 6 为什么：预测误差 -->
+  <div class="sec"><span class="n">6</span><h2><span class="tag why">为什么成立</span>惊喜才有感觉：奖励预测误差</h2></div>
+  <div class="withimg rev">
+    <span data-illus="c02_surprise"></span>
+    <div>
+      <p>同样一百金币：第一次拿到你很开心；每天都准时拿，一周后几乎没感觉；有一天突然掉了 300，你又“嗨”了。</p>
+      <p>钱没变，变的是你心里的预期。大脑在意的，是<b>“比我预期的好多少”</b>。</p>
+    </div>
+  </div>
+  <div class="card">
+    <svg viewBox="0 0 700 270" width="100%" role="img" aria-label="三种情况的预期与实际对比：实际等于预期时误差为零没感觉；实际远高于预期时是正误差有惊喜；实际为零时是负误差，失望">
+      <rect x="12" y="10" width="14" height="14" fill="#cfd3dc" stroke="#2b2b3a" stroke-width="2"/><text x="32" y="23" font-size="16" fill="#2b2b3a">预期</text>
+      <rect x="92" y="10" width="14" height="14" fill="#ffb3c6" stroke="#2b2b3a" stroke-width="2"/><text x="112" y="23" font-size="16" fill="#2b2b3a">实际</text>
+      <g class="rough" stroke="#2b2b3a" stroke-width="3.5">
+        <rect x="70" y="140" width="40" height="50" fill="#cfd3dc"/><rect x="130" y="140" width="40" height="50" fill="#ffb3c6"/>
+        <rect x="300" y="140" width="40" height="50" fill="#cfd3dc"/><rect x="360" y="40" width="40" height="150" fill="#b6e8a8"/>
+        <rect x="530" y="140" width="40" height="50" fill="#cfd3dc"/><rect x="590" y="188" width="40" height="2" fill="#ff9f9f"/>
+        <path d="M30 190 H670" fill="none"/>
+      </g>
+      <g font-size="16" text-anchor="middle" fill="#2b2b3a">
+        <text x="90" y="132">100</text><text x="150" y="132">100</text><text x="320" y="132">100</text><text x="380" y="32">300</text><text x="550" y="132">100</text><text x="610" y="180">0</text>
+      </g>
+      <g font-size="19" text-anchor="middle" fill="#2b2b3a">
+        <text x="120" y="218">实际 = 预期</text><text x="350" y="218">实际 &gt; 预期</text><text x="580" y="218">实际 &lt; 预期</text>
+        <text x="120" y="248">误差 0：没感觉</text><text x="350" y="248">误差 +200：惊喜</text><text x="580" y="248">误差 −100：失望</text>
+      </g>
+    </svg>
+    <p class="small">同样的“预期 100”，实际是多少，决定了你有没有感觉。</p>
+  </div>
+  <div class="why-box">
+    <h3>惊喜 = 实际 − 预期</h3>
+    <p><span class="term" tabindex="0" data-def="奖励预测误差：实际得到的奖励与预期之差；正误差=比预期好，零=符合预期，负误差=比预期差">奖励预测误差</span>（实际 − 预期）：比预期好是正的，“有惊喜”；刚好符合预期是零，“没感觉”；比预期差是负的，“失望”。而预期会被经验慢慢拉向实际奖励，所以<b>固定奖励会被预期“吃掉”</b>，只有变化与惊喜才能反复制造正误差。</p>
+    <p>神经科学里的主流解释认为，中脑多巴胺神经元的活动与这个“预测误差”高度相关，它更像一个<b>学习信号</b>（“比我想的好，记住它”）。研究者（如 Kent Berridge 和 Terry Robinson）还指出，“<b>想要</b>”和“<b>喜欢</b>”是可以分开的：多巴胺系统更多与“想要”有关，不等于享受本身。所以“多巴胺 = 快乐”是常见的过度简化。</p>
+    <p><b>和循环的联系：</b>这解释了为什么固定的奖励会让循环“变平”，也解释了“成长”为什么必须不断给新东西，否则奖励被预期吃掉。</p>
+    <div class="src">出处：Kamin（1969）阻断实验；Rescorla &amp; Wagner（1972）的学习模型；Wolfram Schultz、Peter Dayan、P. Read Montague，“A Neural Substrate of Prediction and Reward”，《科学》275：1593–1599（1997）；Kent Berridge &amp; Terry Robinson，“Liking, wanting, and the incentive-sensitization theory of addiction”，《美国心理学家》71：670–679（2016）。预测误差假说是目前主流的解释，但并非没有争议。</div>
+  </div>
+  <div class="eg" data-ic="🪙"><span data-illus="c02_hundred"></span><div class="egt"><b>每天固定的 100 金币</b>：一周后预期追上了实际，惊喜趋近于零，玩家“没感觉”。</div></div>
+  <div class="eg" data-ic="🧧"><span data-illus="c02_bonus"></span><div class="egt"><b>日常：月薪与年终奖</b>：月薪到账那天你早就预期到了；可意外的年终奖，会让你开心得多。</div></div>
+  <div class="eg" data-ic="💜"><span data-illus="c02_purple"></span><div class="egt"><b>战利品掉落</b>：大多数时候掉普通货，偶尔掉紫装，那一次惊喜就是正误差。</div></div>
+  <div class="eg bad" data-ic="⛰️"><span data-illus="c02_thousand"></span><div class="egt"><b>反例：奖励大不等于惊喜大</b>：每次都给 1000 金币，预期很快追到 1000，按预测误差的逻辑，反而比“平时 100、偶尔 500”更容易让人没感觉。（这是推演，不是实测。）</div></div>
+
+  <!-- 7 为什么：目标梯度 -->
+  <div class="sec"><span class="n">7</span><h2><span class="tag why">为什么成立</span>延伸：进度条为什么有拉力？目标梯度与赠送进度</h2></div>
+  <div class="withimg">
+    <span data-illus="c02_stampcard"></span>
+    <div>
+      <p>集章卡已经盖了 8 格，你会更想把剩下的 2 格集齐；一件事做到一半被打断，你脑子里总惦记着它。</p>
+      <p>零售商都在发集章卡，却没人知道怎样设计最有效。2006 年，两位营销学者努内斯与德雷泽在一家洗车店做了现场实验：随机发出 300 张卡，一半是“8 个空格，集满换一次免费洗车”，另一半是“<b>10 个空格，但已经预先盖了 2 格</b>”。</p>
+      <p>两种卡<b>都要付费洗 8 次</b>才能兑换。九个月的追踪里，拿到“已盖 2 格”卡的人兑换率约 <b>34%</b>，空白卡约 <b>19%</b>。他们把这叫<b>赠送进度效应</b>：让人觉得任务“已经开了头”，更容易做完。</p>
+    </div>
+  </div>
+  <div class="card">
+    <svg viewBox="0 0 700 250" width="100%" role="img" aria-label="两张集章卡：A 有 8 个空格，B 有 10 个格子且前 2 格已盖章，两张都还要消费 8 次">
+      <g font-size="22" fill="#2b2b3a"><text x="20" y="38">A：空白卡（8 格）</text><text x="20" y="148">B：已送 2 格（共 10 格）</text></g>
+      <g class="rough" stroke="#2b2b3a" stroke-width="3.5">
+        <g fill="#fff">
+          <rect x="30" y="52" width="58" height="46" rx="8"/><rect x="100" y="52" width="58" height="46" rx="8"/><rect x="170" y="52" width="58" height="46" rx="8"/><rect x="240" y="52" width="58" height="46" rx="8"/>
+          <rect x="310" y="52" width="58" height="46" rx="8"/><rect x="380" y="52" width="58" height="46" rx="8"/><rect x="450" y="52" width="58" height="46" rx="8"/><rect x="520" y="52" width="58" height="46" rx="8"/>
+        </g>
+        <g><rect x="30" y="162" width="54" height="46" rx="8" fill="#ffe58a"/><rect x="94" y="162" width="54" height="46" rx="8" fill="#ffe58a"/><rect x="158" y="162" width="54" height="46" rx="8" fill="#fff"/><rect x="222" y="162" width="54" height="46" rx="8" fill="#fff"/><rect x="286" y="162" width="54" height="46" rx="8" fill="#fff"/><rect x="350" y="162" width="54" height="46" rx="8" fill="#fff"/><rect x="414" y="162" width="54" height="46" rx="8" fill="#fff"/><rect x="478" y="162" width="54" height="46" rx="8" fill="#fff"/><rect x="542" y="162" width="54" height="46" rx="8" fill="#fff"/><rect x="606" y="162" width="54" height="46" rx="8" fill="#fff"/></g>
+      </g>
+      <g font-size="26" text-anchor="middle" fill="#2b2b3a"><text x="57" y="195">★</text><text x="121" y="195">★</text></g>
+      <g font-size="18" fill="#3f3f50"><text x="30" y="124">进度 0 / 8，还差 8 次消费（实验中约 19% 兑换）</text><text x="30" y="235">进度 2 / 10，还差 8 次消费（实验中约 34% 兑换）</text></g>
+    </svg>
+    <p class="small">两张卡要花的钱、要跑的次数一模一样，区别只是“看起来已经开了头”。</p>
+  </div>
+  <div class="why-box">
+    <h3>离目标越近越用力，没做完的事放不下</h3>
+    <p><span class="term" tabindex="0" data-def="目标梯度：越接近目标，努力与动力越强的倾向">目标梯度</span>：越接近终点，人（和动物）越使劲。最早由心理学家克拉克·赫尔（Clark Hull）在 1930 年代前后用大鼠提出：离食物越近，跑得越快。2006 年，基维茨等人在咖啡店集点卡的真实数据里也发现：顾客越接近免费一杯，买咖啡的频率越高。</p>
+    <p><span class="term" tabindex="0" data-def="蔡加尼克效应：人对未完成任务的记忆与惦记，常强于已完成的任务；近年研究显示‘记得更牢’部分不稳定">蔡加尼克效应</span>（1927）常被说成“没做完的事记得更牢”，但要小心：2025 年一项元分析（Ghibellini &amp; Meier）发现，“未完成任务记得更牢”这一部分<b>很难稳定复现</b>，而“被打断后<b>倾向回头继续做</b>”（Ovsiankina 效应）则更稳。所以设计时更可靠的说法是：未完成会让人想回来，而不是记得更牢。</p>
+    <p><b>和循环的联系：</b>进度条、经验条、章节清单，是在把“成长”这一环<b>可视化</b>，让每一次小行动都让终点近一点，把短循环接成长循环。它同时也是双刃剑，被滥用时就成了让人停不下来的“钩子”。</p>
+    <div class="src">出处：Clark Hull，目标梯度（1930 年代，具体年份文献说法不一）；Ran Kivetz、Oleg Urminsky、Yuhuang Zheng，《营销研究杂志》43：39–58（2006）；Joseph Nunes &amp; Xavier Drèze，《消费者研究杂志》32：504–512（2006），洗车店实验；Bluma Zeigarnik（1927）；Ghibellini &amp; Meier，《人文社科通讯》（2025，元分析）。洗车店的 34% 与 19% 来自二手转述，未核对原文。</div>
+  </div>
+  <div class="eg" data-ic="☕"><span data-illus="c02_coffee"></span><div class="egt"><b>咖啡店集点卡</b>：越接近免费一杯，来得越勤。</div></div>
+  <div class="eg" data-ic="📈"><span data-illus="c02_xpbar"></span><div class="egt"><b>游戏里的经验条</b>：“再打一局就升级了”，一局接一局。</div></div>
+  <div class="eg" data-ic="📕"><span data-illus="c02_book"></span><div class="egt"><b>日常：被打断的书</b>：读到关键情节被叫去吃饭，吃完你多半会马上回去接着读。不一定是记得更牢，而是想继续。</div></div>
+  <div class="eg bad" data-ic="❓"><span data-illus="c02_noprogress"></span><div class="egt"><b>反例：看不见的进度</b>：长长的任务清单没有进度显示，或者进度条每次都“差一点”又重置，玩家会觉得被耍，而不是被拉动。</div></div>
+
+  <!-- 8 怎么用 招牌 -->
+  <div class="sec"><span class="n">8</span><h2><span class="tag how">怎么用</span>断环实验：拆掉循环的一环会怎样？</h2></div>
+  <p>把核心循环画成一个圈，让光点绕着它跑。<b>点任意一环</b>，它会依次变成“完整 → 削弱 → 拆掉”。观察光点的流动和下方两个“再玩意愿”示意值的变化。</p>
+  <div class="card">
+    <svg id="c2_ring" viewBox="0 0 700 400" width="100%" role="img" aria-label="可交互的核心循环环形图，点击每一环可以削弱或拆掉它">
+      <g class="rough" fill="none" stroke="#2b2b3a" stroke-width="3" stroke-dasharray="2 9" stroke-linecap="round">
+        <path id="c2_ringp" d=""/>
+      </g>
+      <g id="c2_cuts" font-size="30" text-anchor="middle" fill="#e5484d"></g>
+      <g id="c2_dots"></g>
+      <g id="c2_nodes"></g>
+    </svg>
+    <div class="c2m"><div class="nm">⚡ 短期再玩意愿（第 1 小时）</div><div class="bar"><i id="c2_bs"></i></div><div class="v" id="c2_vs">100</div></div>
+    <div class="c2m"><div class="nm">🌱 长期再玩意愿（第 10 小时）</div><div class="bar"><i id="c2_bl"></i></div><div class="v" id="c2_vl">100</div></div>
+    <div class="msg" id="c2_ringmsg" style="font-size:1.1rem"></div>
+    <div>
+      <span class="small">快速试试：</span>
+      <button class="chip" data-rp="boring">行动很无聊，奖励拉满</button>
+      <button class="chip" data-rp="nofb">去掉反馈</button>
+      <button class="chip" data-rp="nogrow">去掉成长</button>
+      <button class="chip" data-rp="nogoal">去掉新目标</button>
+    </div>
+    <button class="btn alt" id="c2_rst">全部恢复</button>
+    <p class="small"><b>“再玩意愿”是教学示意值，不是实测。</b>权重是这里基于设计经验的一种设定：短期更看重行动和反馈，长期更看重成长与新目标。真实游戏里每一环的作用要大得多、也更复杂，你可以不同意这些权重，这正是值得讨论的地方。</p>
+  </div>
+  <div class="sticky c2task" id="c2_t3">试试看：先把“行动”削弱一次，看两条意愿条；再回到完整，把“成长”拆掉。哪一条意愿条掉得更厉害？是短期还是长期？</div>
+  <p>试几次你会发现：<b>行动</b>这一环是地基，拆掉就什么都没有；拆掉<b>成长</b>，短期几乎没影响，长期却会腻，这正是“每一轮都一模一样”的循环。</p>
+
+  <div class="misc">
+    <h3>常见误区</h3>
+    <ul>
+      <li>“奖励越大越好”：预期会吸收奖励，真正推动玩家的是<b>惊喜</b>和<b>可见的进步</b>，而不是单纯的数额。</li>
+      <li>“多巴胺就是快乐”：它更像“预测误差、学习、想要”的信号，和“喜欢”不是一回事。</li>
+      <li>“可变奖励一定好”：它能让人停不下来，也正是过度沉迷和赌博化的机制，要负责任地使用。</li>
+      <li>“蔡加尼克效应：没做完的事记得更牢”：近年的元分析没有稳定复现这一点，更稳的是“被打断后想回去继续”。</li>
+    </ul>
+  </div>
+
+  <div class="reflect">
+    <h3>反思与争议</h3>
+    <p>强化程序的经典结论主要来自动物实验，人的行为还受规则、语言和社会情境影响。这些机制能解释“为什么容易重复”，却不能直接说明“这个游戏好玩”：如果行动本身无聊，再精巧的奖励程序也只是在“拽着”玩家，断环实验里“行动很无聊，奖励拉满”那个预设就是例子。</p>
+    <p>多巴胺的预测误差解释是神经科学里的主流观点，但不是唯一观点，一些学者强调它也与动机、显著性有关；蔡加尼克效应的复现结果也不一致。把它们当作设计灵感，不要当作保证。</p>
+    <p>想一想：如果你的循环靠可变奖励留住玩家，当奖励停掉，玩家还会留下吗？</p>
+  </div>
+
+  <div class="key">
+    <h3>要点</h3>
+    <ul>
+      <li>核心循环是玩家<b>反复做的那件事</b>，用“动词链”描述；循环要完整：<b>行动 → 反馈 → 奖励 → 成长 → 新目标</b>。</li>
+      <li>先把“秒级”的小循环做得好玩，再叠加更长的循环；行动无聊，再多奖励也救不了。</li>
+      <li>奖励的发放规则（强化程序）决定行为的节奏：可变的比固定的更难熄灭，也更容易被滥用。</li>
+      <li>斯金纳的操作箱让“奖励怎么发”第一次能被定量研究。</li>
+      <li>大脑对“比预期更好”的惊喜最敏感（预测误差，舒尔茨的猴子实验）；预期会吸收固定奖励。</li>
+      <li>越接近目标越想完成，赠送进度让人更愿意做完；可见的进度能把短循环接成长循环。</li>
+    </ul>
+  </div>
+  <div class="tldr">好循环靠“有趣的行动”撑起，奖励靠惊喜与进度加分，而不是靠越堆越大的固定金币。</div>
+
+  <div class="sec"><span class="n">9</span><h2><span class="tag think">练习</span>小测验</h2></div>
+  <div id="quiz"></div>
+
+  <div class="sec"><span class="n">10</span><h2><span class="tag how">你的设计</span>写下你的循环</h2></div>
+  <div class="card o">
+    <p>用“动词链”写出你最喜欢的一个游戏的核心循环，再想一想：<b>它的奖励让下一轮变得更有趣了吗？怎么变的？如果把其中一环拆掉，你还会玩吗？</b></p>
+    <textarea rows="5" data-save="ch2" placeholder="例：《植物大战僵尸》：收集阳光 → 种植物 → 抵挡僵尸 → 得到新植物 → 种出更强的阵型……"></textarea>
+  </div>
+</main>
+<script src="js/illus.js"></script>
+<script src="js/illus-ch02.js"></script>
+<script src="js/common.js"></script>
+<script>
+const $ = id => document.getElementById(id);
+const NS = "http://www.w3.org/2000/svg";
+
+/* ===== 试试看任务：完成反馈 ===== */
+const C2DONE = {
+  c2_t1: "完成！你亲眼看到：可变比率撑得更久，固定比率一停奖就放弃。",
+  c2_t2: "完成！果汁越能被预测，“果汁时刻”的反应越小；没来时是负的，多来时又是正的。",
+  c2_t3: "完成！拆掉成长，短期几乎不变，长期掉得明显：循环能转，但转腻了。",
+};
+function c2done(id) {
+  const e = $(id);
+  if (!e || e.classList.contains("c2done")) return;
+  e.classList.add("c2done");
+  e.insertAdjacentHTML("beforeend", " <b class='ok'>" + C2DONE[id] + "</b>");
+}
+
+/* ===== 三层循环：点一层看它在做什么 ===== */
+(function () {
+  const TXT = [
+    "<b>天 / 周：成长循环。</b>攒材料、升角色、打赛季。它决定你明天为什么还回来，奖励要靠里面两层的行动一点点攒出来。",
+    "<b>分钟：关卡循环。</b>打完一场、通过一关、开一次宝箱。每一圈都要有一个看得见的结尾，才有“再来一局”的冲动。",
+    "<b>秒：微循环。</b>跳一下、打一拳、翻一张牌，每一秒都有回应。这一层如果不好玩，外面两层的奖励都只是在收买你。",
+  ];
+  const els = [$("c2_L0"), $("c2_L1"), $("c2_L2")];
+  document.querySelectorAll("[data-ly]").forEach(b => b.addEventListener("click", () => {
+    const k = +b.dataset.ly;
+    document.querySelectorAll("[data-ly]").forEach(x => x.classList.toggle("on", x === b));
+    els.forEach((e, i) => { e.setAttribute("stroke-width", i === k ? 9 : 4); e.setAttribute("stroke", i === k ? "#e5484d" : "#2b2b3a"); });
+    $("c2_lymsg").innerHTML = TXT[k];
+  }));
+})();
+
+/* ===== 强化程序示意图（静态）：用 JS 画点，点一种可高亮 ===== */
+(function () {
+  const g = $("c2_ticks");
+  const rows = [
+    { y: 82, stars: [5, 10, 15, 20] },
+    { y: 152, stars: [3, 9, 12, 19] },
+    { y: 222, stars: [7, 14, 21] },
+    { y: 292, stars: [4, 11, 13, 20] },
+  ];
+  const groups = rows.map(r => {
+    const gr = document.createElementNS(NS, "g"); g.appendChild(gr);
+    for (let i = 1; i <= 22; i++) {
+      const x = 200 + (i - 0.5) * (480 / 22);
+      const star = r.stars.includes(i);
+      if (star) {
+        const t = document.createElementNS(NS, "text");
+        t.setAttribute("x", x); t.setAttribute("y", r.y - 12); t.setAttribute("font-size", "22"); t.setAttribute("text-anchor", "middle"); t.setAttribute("fill", "#e5484d");
+        t.textContent = "★"; gr.appendChild(t);
+      }
+      const c = document.createElementNS(NS, "circle");
+      c.setAttribute("cx", x); c.setAttribute("cy", r.y); c.setAttribute("r", star ? 6 : 4);
+      c.setAttribute("fill", star ? "#e5484d" : "#2b2b3a"); gr.appendChild(c);
+    }
+    return gr;
+  });
+  const TXT = [
+    "<b>FR：</b>红星整整齐齐，每 5 次一颗。你一旦摸清规律，就知道“还差几下”，也知道“已经连续落空了”。",
+    "<b>VR：</b>红星的位置不可预测，有时连着来，有时隔很久。每一次点击都可能是“那一次”，所以停不下来。",
+    "<b>FI：</b>奖励前的一大段时间点了也没用，所以常见“刚领完就懒、快到点才猛点”。",
+    "<b>VI：</b>什么时候“有奖”无法预测，最划算的做法是稳定地、不紧不慢地去看一眼。",
+  ];
+  document.querySelectorAll("[data-sc]").forEach(b => b.addEventListener("click", () => {
+    const k = +b.dataset.sc;
+    document.querySelectorAll("[data-sc]").forEach(x => x.classList.toggle("on", x === b));
+    groups.forEach((gr, i) => gr.setAttribute("opacity", i === k ? 1 : 0.25));
+    $("c2_scmsg").innerHTML = TXT[k];
+  }));
+})();
+
+/* ===== 发明故事 1：先猜后揭晓（强化程序，示意模型） ===== */
+(function () {
+  const TYPES = [
+    ["FR", "固定比率 FR5", "#e5484d"], ["VR", "可变比率 VR5", "#ff9f1c"],
+    ["FI", "固定间隔 FI20", "#3a86ff"], ["VI", "可变间隔 VI20", "#3aa655"],
+  ];
+  const T = 400, EXT = 250, DT = 0.1;
+  function sim(type) {
+    let sinceR = 0, cnt = 0, nextI = 20, clicks = 0, streak = 0, maxStreak = 0, thr = -1, quit = false, postClicks = 0;
+    const cum = [], rew = [];
+    const drawI = () => Math.max(2, -20 * Math.log(1 - Math.random()));
+    if (type === "VI") nextI = drawI();
+    const steps = Math.round(T / DT);
+    for (let i = 0; i < steps; i++) {
+      const t = i * DT;
+      if (t >= EXT && thr < 0) thr = Math.max(6, Math.ceil(1.5 * maxStreak));
+      let rate = 0;
+      if (!quit) {
+        if (type === "FR") rate = sinceR < 3 ? 0 : 2;
+        else if (type === "VR") rate = 2;
+        else if (type === "FI") rate = 0.1 + 2 * Math.pow(Math.min(sinceR / 20, 1), 2);
+        else rate = 0.5;
+      }
+      if (Math.random() < rate * DT) {
+        clicks++;
+        let got = false;
+        if (t < EXT) {
+          if (type === "FR") { cnt++; if (cnt >= 5) got = true; }
+          else if (type === "VR") got = Math.random() < 0.2;
+          else if (type === "FI") got = sinceR >= 20;
+          else got = sinceR >= nextI;
+        } else postClicks++;
+        if (got) {
+          rew.push([t, clicks]); maxStreak = Math.max(maxStreak, streak);
+          streak = 0; sinceR = 0; cnt = 0; if (type === "VI") nextI = drawI();
+        } else {
+          streak++;
+          if (thr >= 0 && streak >= thr) quit = true;
+        }
+      }
+      sinceR += DT;
+      if (i % 10 === 9) cum.push(clicks);
+    }
+    return { cum, rew, postClicks };
+  }
+  const guess = [5, 5, 5, 5];
+  const pg = $("c2_pg");
+  TYPES.forEach((t, i) => {
+    const l = document.createElement("label"); l.className = "ctl";
+    l.innerHTML = '<span style="color:' + t[2] + '">●</span> ' + t[1] + ' 的坚持程度 <output>5</output><input type="range" min="0" max="10" step="1" value="5">';
+    const inp = l.querySelector("input"), out = l.querySelector("output");
+    inp.oninput = () => { guess[i] = +inp.value; out.textContent = inp.value; };
+    pg.appendChild(l);
+  });
+  const cv = $("c2_cv"), g = cv.getContext("2d");
+  function draw(runs) {
+    const W = cv.width, H = cv.height, L = 46, B = 28, Tp = 12, R = 10;
+    g.clearRect(0, 0, W, H);
+    let mx = 10; runs.forEach(r => (mx = Math.max(mx, r.cum[r.cum.length - 1])));
+    mx = Math.ceil(mx / 100) * 100;
+    const X = t => L + (W - L - R) * t / T, Y = c => H - B - (H - B - Tp) * c / mx;
+    g.strokeStyle = "#2b2b3a"; g.lineWidth = 2; g.fillStyle = "#3f3f50"; g.font = "13px sans-serif";
+    g.beginPath(); g.moveTo(L, Tp); g.lineTo(L, H - B); g.lineTo(W - R, H - B); g.stroke();
+    for (let k = 0; k <= 4; k++) { const c = mx * k / 4; g.fillText(Math.round(c), 6, Y(c) + 4); }
+    for (let t = 0; t <= T; t += 100) g.fillText(t + "s", X(t) - 8, H - 8);
+    g.setLineDash([6, 5]); g.beginPath(); g.moveTo(X(EXT), Tp); g.lineTo(X(EXT), H - B); g.stroke(); g.setLineDash([]);
+    g.fillText("奖励停止", X(EXT) + 4, Tp + 12);
+    runs.forEach((r, i) => {
+      g.strokeStyle = TYPES[i][2]; g.lineWidth = 2.5; g.beginPath();
+      r.cum.forEach((c, k) => { const x = X(k + 1), y = Y(c); if (k) g.lineTo(x, y); else g.moveTo(x, y); });
+      g.stroke();
+      g.fillStyle = TYPES[i][2];
+      r.rew.forEach(([t, c], k) => { if (k % 2 === 0 || r.rew.length < 40) { g.beginPath(); g.arc(X(t), Y(c), 2.5, 0, 6.3); g.fill(); } });
+    });
+  }
+  $("c2_leg").innerHTML = TYPES.map(t => '<span><i style="background:' + t[2] + '"></i>' + t[1] + "</span>").join("");
+  function showCanvas() { cv.style.display = "block"; $("c2_leg").style.display = "block"; }
+  let revealed = false, resims = 0;
+  function chk() { if (revealed && resims >= 2) c2done("c2_t1"); }
+  $("c2_re").onclick = () => { showCanvas(); draw(TYPES.map(t => sim(t[0]))); resims++; chk(); };
+  $("c2_reveal").onclick = () => {
+    const n = 40, avg = TYPES.map(t => { let s = 0; for (let i = 0; i < n; i++) s += sim(t[0]).postClicks; return s / n; });
+    const mx = Math.max(...avg, 1);
+    $("c2_cmp").innerHTML = '<div class="small">条形：上 = 你的预测（0–10），下 = 模拟玩家停奖后平均还点的次数（按最大值换算到 0–10）。</div>' +
+      TYPES.map((t, i) => {
+        const sv = avg[i] / mx * 10;
+        return '<div class="rw"><div class="nm">' + t[1] + '</div><div class="bars">' +
+          '<div class="bar"><i style="width:' + guess[i] * 10 + "%;background:" + t[2] + ';opacity:.45"></i></div>' +
+          '<div class="bar"><i style="width:' + sv * 10 + "%;background:" + t[2] + '"></i></div>' +
+          '<div class="lg">你猜 ' + guess[i] + "　模拟 " + sv.toFixed(1) + "（约点 " + Math.round(avg[i]) + " 下）</div></div></div>";
+      }).join("") +
+      '<div class="msg" style="font-size:1.1rem">' + (avg[1] > avg[0] * 1.3 ? "最明显的对比是 FR 与 VR：固定比率一停奖就很快放弃，可变比率能撑更久。" : "这一轮 FR 与 VR 的差距不大，再试一次（随机性）。") +
+      " FI 与 VI 在这个极简模型里差别不大，真实实验中的差异也更复杂。</div>";
+    showCanvas(); draw(TYPES.map(t => sim(t[0])));
+    revealed = true; chk();
+  };
+})();
+
+/* ===== 发明故事 2：先猜后揭晓（预测误差，示意） ===== */
+(function () {
+  const A = 0.15, GS = {
+    up: "你猜“更强”。实验里恰好相反：熟练后如期到来的果汁几乎引不起反应。",
+    same: "你猜“差不多”。实验里并非如此：学会预测之后，果汁本身引起的反应大幅减弱。",
+    zero: "猜对了！这正是舒尔茨等人的发现：果汁已被完全预测，没有“意外”，神经元几乎不改变放电。",
+  };
+  let out = "ok", picked = false; const seen = new Set();
+  const V = n => 1 - Math.pow(1 - A, n);
+  $("c2_pr").innerHTML = '<div class="rw"><div class="nm">灯亮的瞬间</div><div class="tr"><i id="c2_b1"></i></div><div class="v" id="c2_v1"></div></div>' +
+    '<div class="rw"><div class="nm">果汁时刻</div><div class="tr"><i id="c2_b2"></i></div><div class="v" id="c2_v2"></div></div>';
+  function bar(id, vid, x) {
+    const b = $(id), w = Math.min(50, Math.abs(x) * 50 / 2);
+    b.style.left = x >= 0 ? "50%" : (50 - w) + "%"; b.style.width = w + "%";
+    b.style.background = x > 0.03 ? "#3aa655" : x < -0.03 ? "#e5484d" : "#aaa";
+    $(vid).textContent = (x > 0 ? "+" : "") + x.toFixed(2);
+  }
+  const cv = $("c2_rcv"), g = cv.getContext("2d");
+  function render() {
+    const n = +$("c2_n").value; $("c2_no").textContent = n;
+    const v = V(n), r = out === "ok" ? 1 : out === "none" ? 0 : 2;
+    const cue = v, rew = r - v;
+    bar("c2_b1", "c2_v1", cue); bar("c2_b2", "c2_v2", rew);
+    const W = cv.width, H = cv.height, L = 40, B = 24, Tp = 10, R = 10, N = 40;
+    g.clearRect(0, 0, W, H);
+    const X = k => L + (W - L - R) * k / N, Y = y => (H - B) - (H - B - Tp) * ((y + 0.2) / 1.4);
+    g.strokeStyle = "#2b2b3a"; g.lineWidth = 2; g.fillStyle = "#3f3f50"; g.font = "13px sans-serif";
+    g.beginPath(); g.moveTo(L, Tp); g.lineTo(L, H - B); g.lineTo(W - R, H - B); g.stroke();
+    g.setLineDash([4, 4]); g.beginPath(); g.moveTo(L, Y(0)); g.lineTo(W - R, Y(0)); g.stroke(); g.setLineDash([]);
+    g.fillText("0", 22, Y(0) + 4); g.fillText("训练次数 →", W - 90, H - 6);
+    [["#3a86ff", k => V(k)], ["#ff9f1c", k => 1 - V(k)]].forEach(([c, f]) => {
+      g.strokeStyle = c; g.lineWidth = 3; g.beginPath();
+      for (let k = 0; k <= N; k++) { const x = X(k), y = Y(f(k)); if (k) g.lineTo(x, y); else g.moveTo(x, y); }
+      g.stroke();
+    });
+    g.fillStyle = "#1f5fc4"; g.fillText("灯亮时的反应", X(26), Y(V(26)) - 8);
+    g.fillStyle = "#a35a00"; g.fillText("果汁如期到来时的反应", X(14), Y(1 - V(14)) - 8);
+    g.strokeStyle = "#2b2b3a"; g.lineWidth = 2; g.beginPath(); g.moveTo(X(n), Tp); g.lineTo(X(n), H - B); g.stroke();
+    let t;
+    if (n === 0) t = out === "ok" ? "还没学会：果汁完全出乎意料，反应最大（+1.00）。" : out === "none" ? "还没学会，也没有预期，果汁没来也不会失望（0）。" : "还没学会：果汁是意外，而且比平常多，反应很大。";
+    else if (out === "ok") t = n >= 25 ? "已经能完全预测：灯亮时有反应，果汁本身几乎没有（" + rew.toFixed(2) + "）。惊喜从“果汁”转移到了“灯亮”。" : "训练中：灯亮的反应在变强，果汁的反应在变弱。";
+    else if (out === "none") t = "灯亮了却没有果汁：预期是 " + v.toFixed(2) + "，实际是 0，误差为负（" + rew.toFixed(2) + "）——放电低于平常，像在说“比预期差”。";
+    else t = "果汁比预期多：即使已熟练，多出来的部分仍是正误差（" + rew.toFixed(2) + "）。";
+    $("c2_rmsg").textContent = t;
+    if (n >= 25) seen.add(out);
+    if (picked && seen.size >= 3) c2done("c2_t2");
+  }
+  document.querySelectorAll("[data-gs]").forEach(b => b.addEventListener("click", () => {
+    document.querySelectorAll("[data-gs]").forEach(x => x.classList.toggle("on", x === b));
+    $("c2_gmsg").textContent = GS[b.dataset.gs];
+    picked = true;
+    $("c2_n").value = 30; render();
+  }));
+  document.querySelectorAll("[data-ot]").forEach(b => b.addEventListener("click", () => {
+    out = b.dataset.ot; document.querySelectorAll("[data-ot]").forEach(x => x.classList.toggle("on", x === b)); render();
+  }));
+  $("c2_n").oninput = render;
+  render();
+})();
+
+/* ===== 招牌互动：断环实验 ===== */
+(function () {
+  const N = ["① 行动", "② 反馈", "③ 奖励", "④ 成长", "⑤ 新目标"];
+  const FILL = ["#ffe58a", "#a8dcf0", "#ffb3c6", "#b6e8a8", "#d8c8ff"];
+  const WS = [0.45, 0.25, 0.15, 0.05, 0.10], WL = [0.25, 0.10, 0.15, 0.30, 0.20];
+  const S = [1, 1, 1, 1, 1], STATE = ["完整", "削弱", "拆掉"];
+  const CX = 350, CY = 200, RX = 250, RY = 140, SEG = 2 * Math.PI / 5, T0 = -Math.PI / 2;
+  const pos = th => [CX + RX * Math.cos(th), CY + RY * Math.sin(th)];
+  (function () {
+    let d = "", pen = false;
+    for (let k = 0; k <= 360; k++) {
+      const th = k / 360 * 2 * Math.PI + T0, x = CX + RX * Math.cos(th), y = CY + RY * Math.sin(th);
+      let hit = false;
+      for (let i = 0; i < 5; i++) { const [nx, ny] = pos(T0 + i * SEG); if (Math.abs(x - nx) < 84 && Math.abs(y - ny) < 42) hit = true; }
+      if (hit) pen = false; else { d += (pen ? "L" : "M") + x.toFixed(1) + " " + y.toFixed(1); pen = true; }
+    }
+    $("c2_ringp").setAttribute("d", d);
+  })();
+  const nodes = $("c2_nodes"), cuts = $("c2_cuts"), dotsG = $("c2_dots");
+  const task = { weak0: false, nogrow: false };
+  const els = N.map((n, i) => {
+    const [x, y] = pos(T0 + i * SEG);
+    const gEl = document.createElementNS(NS, "g"); gEl.setAttribute("class", "c2node"); gEl.setAttribute("tabindex", "0"); gEl.setAttribute("role", "button");
+    gEl.innerHTML = '<g class="rough" stroke="#2b2b3a" stroke-width="4"><rect x="' + (x - 72) + '" y="' + (y - 30) + '" width="144" height="60" rx="20"/></g>' +
+      '<text x="' + x + '" y="' + (y - 2) + '" font-size="24" text-anchor="middle" fill="#2b2b3a" pointer-events="none">' + n + "</text>" +
+      '<text x="' + x + '" y="' + (y + 21) + '" font-size="16" text-anchor="middle" fill="#3f3f50" pointer-events="none" class="st">完整</text>';
+    nodes.appendChild(gEl);
+    const flip = () => { S[i] = S[i] === 1 ? 0.5 : S[i] === 0.5 ? 0 : 1; update(); };
+    gEl.addEventListener("click", flip);
+    gEl.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); flip(); } });
+    return gEl;
+  });
+  const P = [];
+  for (let k = 0; k < 14; k++) {
+    const c = document.createElementNS(NS, "circle"); c.setAttribute("r", 7); c.setAttribute("fill", "#ff7a59"); c.setAttribute("stroke", "#2b2b3a"); c.setAttribute("stroke-width", 2);
+    dotsG.appendChild(c); P.push({ el: c, th: T0 + k * (2 * Math.PI / 14), id: k });
+  }
+  const TXT = [
+    ["没有可做的事，循环根本转不起来——行动是地基。", "行动很无聊或很笨拙：就算奖励再多，也只是“收买”，这是别处最难补救的一环。"],
+    ["没有反馈：玩家不知道自己做得怎样，行动和奖励之间断了线。", "反馈含糊：“好像有点用？”玩家很难把行动和结果联系起来。"],
+    ["没有奖励：如果行动本身好玩，短期还撑得住，但缺少推动力和成就感。", "奖励寡淡：能玩，但缺少“值得”的感觉。"],
+    ["没有成长：每一轮都和上一轮一模一样，短期没感觉，长期会腻。", "成长缓慢：变强的感觉不明显，长期动力打折。"],
+    ["没有新目标：做完这一轮不知道为什么再来一轮，循环没有“拉力”。", "新目标模糊：玩家不确定下一步该去哪。"],
+  ];
+  function update() {
+    let sh = 0, lo = 0;
+    S.forEach((s, i) => { sh += WS[i] * s; lo += WL[i] * s; });
+    if (S[0] === 0) { sh = 0; lo = 0; }
+    $("c2_bs").style.width = sh * 100 + "%"; $("c2_bl").style.width = lo * 100 + "%";
+    $("c2_bs").style.background = sh > 0.7 ? "#b6e8a8" : sh > 0.4 ? "#ffe58a" : "#ffb3c6";
+    $("c2_bl").style.background = lo > 0.7 ? "#b6e8a8" : lo > 0.4 ? "#ffe58a" : "#ffb3c6";
+    $("c2_vs").textContent = Math.round(sh * 100); $("c2_vl").textContent = Math.round(lo * 100);
+    els.forEach((e, i) => {
+      e.querySelector(".st").textContent = STATE[S[i] === 1 ? 0 : S[i] === 0.5 ? 1 : 2];
+      const r = e.querySelector("rect"); r.setAttribute("fill", S[i] === 0 ? "#e9e9ef" : S[i] === 0.5 ? "#fff0dc" : FILL[i]);
+      r.setAttribute("stroke-dasharray", S[i] === 0 ? "6 6" : S[i] === 0.5 ? "10 4" : "none");
+      e.style.opacity = S[i] === 0 ? 0.6 : 1;
+      e.setAttribute("aria-label", N[i] + "，当前" + STATE[S[i] === 1 ? 0 : S[i] === 0.5 ? 1 : 2] + "，点击切换");
+    });
+    cuts.innerHTML = "";
+    S.forEach((s, i) => {
+      if (s === 0) {
+        const [x, y] = pos(T0 + i * SEG - SEG * 0.5);
+        const t = document.createElementNS(NS, "text"); t.setAttribute("x", x); t.setAttribute("y", y + 10); t.textContent = "✂"; cuts.appendChild(t);
+      }
+    });
+    const lines = [];
+    S.forEach((s, i) => { if (s < 1) lines.push("<b>" + N[i].slice(2) + "</b>：" + TXT[i][s === 0 ? 0 : 1]); });
+    const broken = S.some(s => s === 0);
+    $("c2_ringmsg").innerHTML = lines.length === 0 ? "完整的循环：行动有反馈，奖励带来成长，成长打开新目标，玩家有理由再来一轮。光点流动顺畅。" :
+      (broken ? "✂ 环断了——光点堵在断口前。<br>" : "光点变慢了——每个被削弱的环都是一个“窄口”。<br>") + lines.join("<br>");
+    if (S[0] < 1) task.weak0 = true;
+    if (S[3] === 0 && S[0] === 1) task.nogrow = true;
+    if (task.weak0 && task.nogrow) c2done("c2_t3");
+  }
+  document.querySelectorAll("[data-rp]").forEach(b => b.addEventListener("click", () => {
+    S.fill(1);
+    const k = b.dataset.rp;
+    if (k === "boring") { S[0] = 0.5; S[2] = 1; }
+    if (k === "nofb") S[1] = 0;
+    if (k === "nogrow") S[3] = 0;
+    if (k === "nogoal") S[4] = 0;
+    update();
+  }));
+  $("c2_rst").onclick = () => { S.fill(1); update(); };
+  let last = performance.now();
+  function tick(now) {
+    const dt = Math.min(0.05, (now - last) / 1000); last = now;
+    P.forEach(p => {
+      const u = ((p.th - T0) % (2 * Math.PI) + 2 * Math.PI) % (2 * Math.PI) / SEG;
+      let nxt = Math.ceil(u); if (nxt - u < 1e-6) nxt += 1;
+      const ni = nxt % 5, s = S[ni], dist = (nxt - u) * SEG;
+      let sp = 1.1 * (0.15 + 0.85 * s);
+      if (s === 0) {
+        const lim = 0.5 + (p.id % 7) * 0.07;
+        if (dist < lim) { p.th = T0 + nxt * SEG - lim; sp = 0; }
+      }
+      p.th += sp * dt;
+      const [x, y] = pos(p.th);
+      p.el.setAttribute("cx", x); p.el.setAttribute("cy", y);
+      p.el.setAttribute("opacity", s === 0 && dist < 1.2 ? 0.9 : 1);
+    });
+    requestAnimationFrame(tick);
+  }
+  update();
+  requestAnimationFrame(tick);
+})();
+
+GD.mountQuiz($("quiz"), [
+  { q: "下面哪一条最像“核心循环”的描述？", opts: ["这个游戏有很多精美的角色", "跑酷：奔跑 → 躲避障碍 → 吃金币 → 买道具 → 跑得更远", "游戏的剧情很感人", "游戏每周更新一次"], a: 1, why: "核心循环是玩家反复做的一串动作，并能回到起点。" },
+  { q: "在断环实验里，把“成长”拆掉，通常最先受影响的是哪个示意值？", opts: ["短期再玩意愿", "长期再玩意愿", "两者完全不受影响", "两者同时归零"], a: 1, why: "没有成长，短期的行动和反馈还在，所以短期变化小；但每一轮都一模一样，长期会腻。" },
+  { q: "如果“点击”这个动作本身就很无聊，应该怎么办？", opts: ["加更多奖励", "先改进最小的行动循环，让它本身有趣", "加剧情", "让玩家看广告"], a: 1, why: "基础的行动不好玩，再多奖励也只是在“收买”玩家。" },
+  { q: "“每天登录领奖励”大概属于哪一层循环？", opts: ["秒级微循环", "分钟级关卡循环", "天/周级成长循环", "它不属于循环"], a: 2, why: "按天重复，是长周期的成长循环。" },
+  { q: "【为什么】玩家每天领一模一样的 100 金币，一周后“没感觉”了。用奖励预测误差解释最合理的是？", opts: ["金币贬值了", "预期已经追上实际奖励，惊喜（实际−预期）趋近于 0", "玩家变笨了", "多巴胺用完了"], a: 1, why: "固定奖励会被预期吸收，误差趋零，所以“没感觉”；随机或新增的奖励才能重新制造正误差。" },
+  { q: "【为什么】在经典实验里，奖励停止后，哪一种通常更晚熄灭？", opts: ["固定比率（如每 5 次必给）", "可变比率（平均每 5 次给一次）", "两者完全一样", "不给奖励的组"], a: 1, why: "可变程序让人分不清“暂时没中”还是“永久没了”，所以更晚消退。但这是动物实验得到的规律，对人只是参考。" },
+  { q: "【为什么被发明】斯金纳和同事为什么要系统研究“强化程序”，而不是继续每次都给食物？", opts: ["因为食物太贵", "因为他们发现不是每次都给奖励行为也能维持，而且“什么时候给”会塑造完全不同的行为模式", "因为鸽子不喜欢食物", "因为想证明人和鸽子一样"], a: 1, why: "据斯金纳自己的回忆，食物丸供应紧张，他试着隔一段时间才给，发现行为不但没消失，还有稳定的模式，于是系统比较了各种发奖规则。" },
+  { q: "【为什么被发明】舒尔茨的猴子实验为什么让“多巴胺 = 奖励预测误差”比“多巴胺 = 快乐”更有说服力？", opts: ["因为猴子不会享受果汁", "因为学会预测后，如期到来的果汁几乎不引起反应，而果汁没来时放电反而低于平常——神经元在追踪“与预期的差”", "因为果汁越多放电越多", "因为多巴胺只和饥饿有关"], a: 1, why: "如果多巴胺等于快乐，已被预测的果汁照样快乐、没来时不该有“负反应”。实验显示反应跟着“预期误差”走。" },
+]);
+</script>
+</body>
+</html>

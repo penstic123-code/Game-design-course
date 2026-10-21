@@ -1,0 +1,966 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>第5章 涌现与系统思考</title>
+<link rel="stylesheet" href="css/style.css">
+<style>
+  #life{width:100%;max-width:720px;display:block;margin:8px auto;border:3px solid var(--ink);border-radius:10px;background:#fffef7;touch-action:none;cursor:crosshair}
+  .row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:6px 0}
+  .pp-ctl{display:grid;grid-template-columns:1fr;gap:4px}
+  .c5hands{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:8px 0}
+  @media(max-width:700px){.c5hands{grid-template-columns:1fr}}
+  .c5gw h4{margin:0 0 4px;font-family:var(--hand);font-size:1.25rem;font-weight:400}
+  .c5g{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;max-width:320px;background:var(--ink);padding:2px;border-radius:6px}
+  .c5g div{aspect-ratio:1;background:#fffef7;display:grid;place-items:center;font-size:.8rem;color:var(--soft);user-select:none}
+  .c5g div.live{background:#2b2b3a;color:#fff}
+  .c5g.me div{cursor:pointer}
+  .c5g.me div.guess{background:#ffe58a;box-shadow:inset 0 0 0 3px #2b2b3a}
+  .c5g.me div.ok{background:#b6e8a8;box-shadow:inset 0 0 0 3px #2b2b3a}
+  .c5g.me div.miss{background:#fffef7;box-shadow:inset 0 0 0 3px #e5484d;border:2px dashed #e5484d}
+  .c5g.me div.wrong{background:#ffc9c9;box-shadow:inset 0 0 0 3px #e5484d}
+  .c5tabs{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0}
+  .c5pane{display:none}.c5pane.on{display:block}
+  .c5sv{width:100%;display:block;margin-top:6px}
+  details.c5adv{margin:8px 0;border:2px dashed var(--ink);border-radius:10px;padding:6px 12px;background:#fffef7}
+  details.c5adv summary{cursor:pointer;font-family:var(--hand);font-size:1.15rem}
+  .c5out{margin-top:8px;padding:8px 12px;border:2px dashed var(--ink);border-radius:10px;background:var(--blue);font-size:.98rem}
+  .c5out.ok{background:var(--green)}
+  .c5guess{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:6px 0}
+  #c5hl{width:100%;display:block;touch-action:none;cursor:pointer}
+  .c5ldr rect.hit{fill:transparent;cursor:pointer}
+  .c5ldr rect.hit:hover,.c5ldr rect.hit:focus{stroke:#e5484d;stroke-width:3.5;outline:none}
+</style>
+</head>
+<body data-ch="5">
+<main class="wrap">
+  <div class="hero">
+    <div class="txt">
+      <span class="badge">第 5 章</span>
+      <h1>涌现与系统思考</h1>
+      <p class="sub">你写下的是规则，玩家得到的是另一个世界。</p>
+    </div>
+    <svg viewBox="0 0 190 150" class="rough" aria-hidden="true">
+      <g stroke="#2b2b3a" stroke-width="5" stroke-linejoin="round" stroke-linecap="round">
+        <rect x="30" y="30" width="26" height="26" fill="#ffe58a"/>
+        <rect x="56" y="56" width="26" height="26" fill="#ffe58a"/>
+        <rect x="82" y="82" width="26" height="26" fill="#ffb3c6"/>
+        <rect x="30" y="82" width="26" height="26" fill="#8fd3f4"/>
+        <rect x="56" y="82" width="26" height="26" fill="#8fd3f4"/>
+        <path d="M125 40 q30 -10 40 20 q8 30 -25 38" fill="none"/><path d="M150 92 l-12 8 l16 6" fill="none"/>
+      </g>
+    </svg>
+  </div>
+
+  <div class="goals">
+    <h3>学习目标</h3>
+    <span class="time">约 40 分钟</span>
+    <ul>
+      <li>读完你能用自己的话解释什么是涌现，区分正反馈与负反馈，并说出生命游戏和“捕食者–猎物模型”当初是为了回答什么问题。</li>
+      <li>读完你能解释：为什么带延迟的负反馈会来回摆动，为什么只会“往高处走”的人容易卡在小山头。</li>
+      <li>读完你能判断一个系统问题该“改数值”还是“改反馈结构”，并设计出更容易长出有趣玩法的规则。</li>
+    </ul>
+  </div>
+
+  <!-- 1 涌现 -->
+  <div class="sec"><span class="n">1</span><h2><span class="tag what">是什么</span>涌现：简单规则，复杂整体</h2></div>
+  <div class="withimg">
+    <span data-illus="c05_starlings"></span>
+    <div>
+      <p>黄昏时，一大群椋鸟在天空里翻卷，像一块流动的黑色幕布。你一定会想：谁在指挥它们？</p>
+      <p>常被提到的答案是：没有人。每只鸟只做三件事：别撞上身边的鸟，朝差不多的方向飞，别离群太远。这三条规则都只关心身边那几只，没有哪一条提到“整个鸟群的形状”。可是把几千只这样的鸟放在一起，任何一只鸟都“不知道”的巨大图案就出现了。</p>
+      <p>这就是<span class="term" tabindex="0" data-def="整体表现出的、单看任何一个组成部分都看不出来的模式或行为，它来自部分之间的相互作用。">涌现</span>（emergence）：<b>整体拥有部分所没有的行为，这种行为来自部分之间的相互作用。</b></p>
+    </div>
+  </div>
+  <div class="grid2">
+    <div class="card y"><h3>设计出来的</h3><p>设计师直接写下的东西：规则、数值、素材。你能逐条数清。</p></div>
+    <div class="card p"><h3>涌现出来的</h3><p>规则相互作用后“长”出来的东西：战术、流派、经济泡沫、意外的玩法。你数不清，只能观察。</p></div>
+  </div>
+  <div class="card">
+    <svg viewBox="0 0 700 344" width="100%" role="img" aria-label="涌现层级图：底层是简单的个体规则，中间是相互作用，顶层是整体模式。三列例子：鸟群、生命游戏、捕食者与猎物。">
+      <g class="rough" stroke="#2b2b3a" stroke-width="3.5" stroke-linejoin="round" stroke-linecap="round">
+        <g fill="#ffe58a"><rect x="130" y="250" width="160" height="56" rx="10"/><rect x="310" y="250" width="160" height="56" rx="10"/><rect x="490" y="250" width="160" height="56" rx="10"/></g>
+        <g fill="#a8dcf0"><rect x="130" y="140" width="160" height="56" rx="10"/><rect x="310" y="140" width="160" height="56" rx="10"/><rect x="490" y="140" width="160" height="56" rx="10"/></g>
+        <g fill="#ffb3c6"><rect x="130" y="30" width="160" height="56" rx="10"/><rect x="310" y="30" width="160" height="56" rx="10"/><rect x="490" y="30" width="160" height="56" rx="10"/></g>
+        <g fill="none">
+          <path d="M210 246 V204"/><path d="M202 214 L210 202 L218 214"/><path d="M390 246 V204"/><path d="M382 214 L390 202 L398 214"/><path d="M570 246 V204"/><path d="M562 214 L570 202 L578 214"/>
+          <path d="M210 136 V94"/><path d="M202 104 L210 92 L218 104"/><path d="M390 136 V94"/><path d="M382 104 L390 92 L398 104"/><path d="M570 136 V94"/><path d="M562 104 L570 92 L578 104"/>
+        </g>
+      </g>
+      <g font-size="17" text-anchor="middle" fill="#2b2b3a">
+        <text x="210" y="274">每只鸟：别撞、</text><text x="210" y="296">同向、别离群</text>
+        <text x="390" y="274">每个格子：看 8 个</text><text x="390" y="296">邻居，4 条规则</text>
+        <text x="570" y="274">兔子繁殖、狐狸</text><text x="570" y="296">吃兔子、会饿死</text>
+        <text x="210" y="164">邻居互相影响</text><text x="210" y="186">（局部）</text>
+        <text x="390" y="164">邻居互相影响</text><text x="390" y="186">（局部）</text>
+        <text x="570" y="164">吃与被吃</text><text x="570" y="186">互相牵动</text>
+        <text x="210" y="54">流动的鸟群</text><text x="210" y="76">图案</text>
+        <text x="390" y="54">会走路的滑翔机</text><text x="390" y="76">稳定与振荡图案</text>
+        <text x="570" y="54">周期性涨落</text><text x="570" y="76">的两条波浪</text>
+        <text x="62" y="62" font-weight="700">整体层</text><text x="62" y="172" font-weight="700">相互作用</text><text x="62" y="282" font-weight="700">个体规则</text>
+        <text x="350" y="326" font-size="16">每一层都比下一层“多出”点什么，但没有哪一层是被人直接写下来的</text>
+      </g>
+    </svg>
+  </div>
+
+  <h3>游戏里的涌现</h3>
+  <div class="eg" data-ic="♟️"><span data-illus="c05_chess"></span><div class="egt"><b>棋类</b>。国际象棋的规则一页纸写得下，却长出了开局理论、残局研究和各种流派。没有哪条规则写着“要控制中心”，这是玩家和规则反复碰撞后“发现”的。</div></div>
+  <div class="eg" data-ic="🔴"><span data-illus="c05_redstone"></span><div class="egt"><b>《我的世界》的红石</b>。红石是 2010 年 7 月前后，在测试阶段的一次“秘密更新”里加入的、能传递信号的材料。它的规则很朴素，玩家却用它搭出了逻辑门、计算器，甚至完整的计算机。这些都不在设计清单里。</div></div>
+  <div class="eg" data-ic="🥊"><span data-illus="c05_combo"></span><div class="egt"><b>格斗游戏的连招</b>。《街头霸王 II》的制作人船水纪孝（Noritaka Funamizu）在检查 bug 时发现，特定时机下还能再接上一击。他起初觉得时机太难，只当隐藏技留着；后来团队放宽了判定，把它做成了正式特色。一个没人预料的相互作用，变成了整个类型的基石（各来源对细节的说法略有出入）。</div></div>
+  <h3>游戏之外的涌现</h3>
+  <div class="eg" data-ic="🐦"><span data-illus="c05_boids3"></span><div class="egt"><b>鸟群的电脑版：Boids</b>。Craig Reynolds 在 1986 年前后做了个动画程序，1987 年的 SIGGRAPH 论文《Flocks, Herds, and Schools》介绍了它：每只“boid”只遵守三条局部规则，<b>分离</b>（别太近）、<b>对齐</b>（和邻居同向）、<b>聚合</b>（往邻居中心靠）。没有领队，逼真的鸟群却出来了。</div></div>
+  <div class="eg" data-ic="🚗"><span data-illus="c05_jam"></span><div class="egt"><b>幽灵堵车</b>。2008 年，Sugiyama 等人在日本做了个实验：二十多辆车在一圈环形路上以差不多的速度行驶，没有任何障碍。几分钟后，堵车波自己冒了出来，并且朝车流的反方向传播。他们的结论是：堵车是车辆相互作用的集体现象，路障只是诱因。</div></div>
+  <div class="eg bad" data-ic="👾"><span data-illus="c05_monsters"></span><div class="egt"><b>反例：“一堆东西”不等于涌现</b>。一个关卡里放了 50 个怪物，各自按脚本巡逻，互不理睬。这只是“数量多”。涌现需要相互作用：怪物之间、怪物与玩家、玩家与环境要能互相牵动。</div></div>
+  <div class="eg bad" data-ic="🎲"><span data-illus="c05_dicevslife"></span><div class="egt"><b>反例：“随机”不等于涌现</b>。掷骰子得到的混乱，没有“新的整体结构”。稍后你会玩到的生命游戏完全没有随机，却能长出会走路的滑翔机。这才是涌现。</div></div>
+
+  <!-- 2 反馈循环 -->
+  <div class="sec"><span class="n">2</span><h2><span class="tag what">是什么</span>让整体“活起来”的第一个工具：反馈循环</h2></div>
+  <p>还记得《大富翁》里“收了租、买更多地产、收更多租”的那圈因果吗？像这样结果绕了一圈回头影响原因的结构，叫<span class="term" tabindex="0" data-def="系统的输出又回过头影响输入，形成因果环。分为放大变化的正反馈与抑制变化的负反馈。">反馈循环</span>。它有两种基本形态：</p>
+  <ul>
+    <li><b>正反馈（增强回路）</b>：变化被放大。钱越多，装备越强，赢得越多，钱更多。结果是滚雪球、赢家通吃，或者崩盘。</li>
+    <li><b>负反馈（平衡回路）</b>：变化被抵消，系统被拉向一个目标。体温高了就出汗，体温降下来，出汗就停。</li>
+  </ul>
+  <div class="card">
+    <svg viewBox="0 0 700 250" width="100%" role="img" aria-label="左：正反馈回路，钱越多装备越强，赢得越多钱。右：负反馈回路，落后越多道具越强，差距缩小。">
+      <g class="rough" stroke="#2b2b3a" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="20" y="50" width="120" height="44" rx="12" fill="#fff7cf"/>
+        <rect x="200" y="50" width="120" height="44" rx="12" fill="#fff7cf"/>
+        <rect x="110" y="150" width="120" height="44" rx="12" fill="#fff7cf"/>
+        <path d="M140 72 H198"/><path d="M188 64 L200 72 L188 80"/>
+        <path d="M260 94 Q270 140 232 168"/><path d="M244 168 L230 170 L236 156"/>
+        <path d="M110 172 Q40 160 70 96"/><path d="M60 108 L70 94 L80 106"/>
+        <rect x="380" y="50" width="130" height="44" rx="12" fill="#e8f6fc"/>
+        <rect x="560" y="50" width="120" height="44" rx="12" fill="#e8f6fc"/>
+        <rect x="470" y="150" width="130" height="44" rx="12" fill="#e8f6fc"/>
+        <path d="M510 72 H558"/><path d="M548 64 L560 72 L548 80"/>
+        <path d="M620 94 Q630 140 602 168"/><path d="M614 168 L600 170 L606 156"/>
+        <path d="M470 172 Q400 160 430 96"/><path d="M420 108 L430 94 L440 106"/>
+      </g>
+      <g font-size="17" text-anchor="middle" fill="#2b2b3a">
+        <text x="80" y="78">钱越多</text><text x="260" y="78">装备越强</text><text x="170" y="178">赢得越多</text>
+        <text x="445" y="78">落后越多</text><text x="620" y="78">道具越强</text><text x="535" y="178">差距缩小</text>
+        <text x="170" y="228" font-weight="700">正反馈：越转越大</text>
+        <text x="535" y="228" font-weight="700">负反馈：越转越稳</text>
+      </g>
+    </svg>
+  </div>
+  <div class="card">
+    <svg viewBox="0 0 700 260" width="100%" role="img" aria-label="时间曲线对比：正反馈使数值加速远离起点；负反馈使数值被拉向目标线并稳定">
+      <g class="rough" stroke="#2b2b3a" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M40 220 H320 M40 220 V30"/><path d="M390 220 H670 M390 220 V30"/>
+        <path d="M40 200 Q150 195 200 150 T300 40" stroke="#e5484d" stroke-width="5"/>
+        <path d="M390 205 Q450 80 520 66 T660 62" stroke="#2b9a4a" stroke-width="5"/>
+        <path d="M390 62 H670" stroke-dasharray="7 7"/>
+      </g>
+      <g font-size="17" fill="#2b2b3a" text-anchor="middle">
+        <text x="180" y="248">时间 →　正反馈：越滚越快</text><text x="530" y="248">时间 →　负反馈：被拉向目标</text>
+        <text x="526" y="48" font-size="16">目标</text>
+        <text x="110" y="120" font-size="16">差距在放大</text><text x="590" y="110" font-size="16">差距在缩小</text>
+      </g>
+    </svg>
+  </div>
+  <div class="eg" data-ic="⛄"><span data-illus="c05_snowball"></span><div class="egt"><b>对战游戏的滚雪球</b>。击杀换金币，金币换装备，装备再换更多击杀。第一次领先不大，几分钟后就成了压倒性的优势。</div></div>
+  <div class="eg" data-ic="📱"><span data-illus="c05_video"></span><div class="egt"><b>视频平台的推荐</b>。播放量高的视频被推给更多人，更多人看又让播放量更高。没有人决定“这个视频该火”，回路自己把它推上去。</div></div>
+  <div class="eg" data-ic="🌡️"><span data-illus="c05_thermo"></span><div class="egt"><b>恒温器</b>。房间一热就关暖气，一冷就开暖气，温度总被拉回设定值。这是最典型的负反馈。</div></div>
+  <div class="eg" data-ic="🏎️"><span data-illus="c05_kart"></span><div class="egt"><b>《马力欧赛车》的追赶道具</b>。落后的玩家更容易拿到强力道具，把差距拉回来（具体权重官方没公开，各作也不同）。它让落后的人有机会留在局里。</div></div>
+  <div class="eg bad" data-ic="🪢"><span data-illus="c05_rubber"></span><div class="egt"><b>反例：负反馈用过头</b>。追赶机制太强，领先者的每一分努力都被抹平，玩家会觉得“领先没有意义”。这是“橡皮筋”机制常被批评的地方。负反馈是帮失败的人留在局里，不是替成功的人消灭成功。</div></div>
+
+  <!-- 3 存量与流量 -->
+  <div class="sec"><span class="n">3</span><h2><span class="tag what">是什么</span>存量与流量：为什么大系统转得慢</h2></div>
+  <div class="withimg rev">
+    <span data-illus="c05_bank"></span>
+    <div>
+      <p>看一下你的存款。工资是水龙头，每月流进来一点；房租和饭钱是排水口，每月流出去一点；账户里此刻躺着的总数，才是你的钱。</p>
+      <p>这就是<span class="term" tabindex="0" data-def="某个量在某一时刻积累下来的总量，如血量、金币数、兔子数量；它只能被流入、流出改变。">存量</span>（stock）和<span class="term" tabindex="0" data-def="单位时间内进入或离开存量的速率，如每秒回血、每回合产出金币。">流量</span>（flow）。存量是某一刻攒下的总量，流量是每单位时间流进或流出的速度。游戏里的血量、金币、怪物库存，全都是存量。</p>
+      <p>关键直觉是：存量只能靠流量一点点改变，你没法让浴缸的水位在一瞬间翻倍。所以存量大的系统反应慢，也不容易被一次冲击冲垮。</p>
+    </div>
+  </div>
+  <div class="card">
+    <svg viewBox="0 0 700 236" width="100%" role="img" aria-label="浴缸示意：水龙头流入，水位是存量，排水口流出。游戏对应：挖矿产出、金币数量、花钱消耗。">
+      <g class="rough" stroke="#2b2b3a" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M210 60 V170 Q210 190 230 190 H470 Q490 190 490 170 V60"/>
+        <path d="M212 110 H488 V170 Q488 188 470 188 H232 Q212 188 212 170 Z" fill="#8fd3f4"/>
+        <path d="M120 50 H190 V80"/><path d="M180 70 L190 82 L200 70"/>
+        <path d="M490 150 H560 V190"/><path d="M550 180 L560 192 L570 180"/>
+      </g>
+      <g font-size="17" text-anchor="middle" fill="#2b2b3a">
+        <text x="110" y="38">流入：每秒产出金币</text>
+        <text x="350" y="150" font-weight="700">存量：金币数量</text>
+        <text x="600" y="130">流出：花钱、税</text>
+        <text x="350" y="212">水位变化 = 流入 − 流出（再乘以时间）</text>
+      </g>
+    </svg>
+  </div>
+
+  <!-- 4 滞后与振荡 -->
+  <div class="sec"><span class="n">4</span><h2><span class="tag what">是什么</span>滞后与振荡：好心的调整为什么会越调越晃</h2></div>
+  <p>把负反馈和存量放在一起，会冒出一个反直觉的现象。想想洗澡：水太凉，你把水龙头往热的方向拧；可是水管里还是凉水，没变热，你又拧；等热水终于到了，已经烫手，你赶紧往回拧，水又慢慢变凉……</p>
+  <p>你不是笨，问题出在<b>从动作到结果之间有延迟</b>。这种时间差叫<span class="term" tabindex="0" data-def="行动与其结果显现之间的时间差。负反馈加上滞后，常会导致系统在目标附近来回摆动。">滞后</span>。负反馈再加上滞后，系统就会在目标附近来回摆，这叫<span class="term" tabindex="0" data-def="振荡：数值围绕一个目标或平衡点周期性地涨落，而不是安静地停在目标上。">振荡</span>。</p>
+  <div class="eg" data-ic="🚿"><span data-illus="c05_shower"></span><div class="egt"><b>洗澡的水温</b>。拧开关到热水真正到达有几秒的延迟，你根据“现在”的水温调整，却在影响几秒后的水温，于是凉、烫、凉地来回摆。</div></div>
+  <div class="eg" data-ic="🌊"><span data-illus="c05_tide"></span><div class="egt"><b>游戏经济的潮汐</b>。怪物被打光，掉落减少，玩家转去别处，怪物刷新堆积起来，刷怪点又挤满了人。服务器里的物价、副本热度、职业强弱，常常这样此起彼伏。</div></div>
+  <div class="eg" data-ic="🍺"><span data-illus="c05_beer"></span><div class="egt"><b>啤酒游戏</b>。MIT 的教学游戏，让参与者扮演零售、批发、分销、工厂四站，下订单、等发货，中间有延迟。MIT 的 John Sterman 1989 年用它做实验，发现人们常常忽视自己的订货决定会反过来影响系统，订单的波动一站比一站大。</div></div>
+  <div class="eg bad" data-ic="💧"><span data-illus="c05_instant"></span><div class="egt"><b>反例：没有滞后，就不摆动</b>。如果水龙头一拧水温立刻改变，你很快就能把水温稳在想要的位置。可见摆动的元凶不是负反馈本身，而是它<b>反应得太慢</b>。</div></div>
+
+  <!-- 5 发明故事：生命游戏 -->
+  <div class="sec"><span class="n">5</span><h2><span class="tag origin">发明故事</span>生命游戏：用最简单的规则，能走多远？</h2></div>
+  <div class="story">
+    <h3>一个“没人会去玩”的游戏，为什么成了涌现的标志</h3>
+    <div class="withimg rev">
+      <span data-illus="c05_vn"></span>
+      <div>
+        <p>20 世纪 40 年代，冯·诺依曼（John von Neumann）和乌拉姆（Stanisław Ulam）在研究“元胞自动机”：把世界切成方格，每个格子按规则跟邻居互动。冯·诺依曼想知道一件事：机器能不能<b>造出自己</b>？他设计的那台元胞机器，规则繁复得吓人。</p>
+        <p>20 多年后，剑桥的数学家康威（John Conway）接过这个问题，换了个问法：<b>能不能只用极其简单的规则，也得到出人意料的行为？</b>1968 年起，他用纸笔试了各种二维规则（那时候还没有个人电脑）。1970 年 10 月，马丁·加德纳（Martin Gardner）在《科学美国人》的“数学游戏”专栏介绍了它，标题是《约翰·康威新的单人游戏“生命”的奇妙组合》。读者来信涌来，大家开始研究各种图案。</p>
+        <p>现在，<b>你来当一回康威</b>：下面是 4 条规则和一个 5 格的小图案，先别看答案，自己推。</p>
+      </div>
+    </div>
+  </div>
+  <div class="board">
+    <b>先自己试：手推生命游戏</b>
+    <div class="chain"><span class="st">活 + 邻居 &lt;2</span><span class="ar">→</span><span class="st">死（孤独）</span><span class="st">活 + 邻居 =2或3</span><span class="ar">→</span><span class="st">活</span></div>
+    <div class="chain"><span class="st">活 + 邻居 &gt;3</span><span class="ar">→</span><span class="st">死（拥挤）</span><span class="st">死 + 邻居 =3</span><span class="ar">→</span><span class="st">复活</span></div>
+    <p class="small">邻居＝周围 8 格。左边是“现在”（黑色＝活）。在右边<b>点格子</b>，标出你推出的“下一代”里哪些格子是活的；点“检查”看对不对：绿色＝推对了，红框＝多标了或漏标了。卡住了就打开“显示邻居数”。一共推 4 代。</p>
+    <div class="c5hands">
+      <div class="c5gw"><h4>现在：第 <span id="c5gen">0</span> 代</h4><div class="c5g" id="c5now"></div></div>
+      <div class="c5gw"><h4>你推的第 <span id="c5gen2">1</span> 代</h4><div class="c5g me" id="c5me"></div></div>
+    </div>
+    <div class="row">
+      <button class="btn" id="c5chk">检查我的推演</button>
+      <button class="btn green" id="c5nx" disabled>确认，推下一代 →</button>
+      <button class="btn alt" id="c5hint">显示邻居数</button>
+      <button class="btn pink" id="c5rs">重来</button>
+    </div>
+    <div class="msg" id="c5hmsg" style="font-size:1.1rem;font-family:var(--body)">点右边的格子，标出你认为下一代活着的格子。</div>
+  </div>
+  <div class="sticky">试试看：一直推到第 4 代，看图案和第 0 代有什么关系。</div>
+  <p>规则里没有“移动”这个词，可到第 4 代你会发现，整个图案向右下平移了一格。它后来被叫作<b>滑翔机</b>（glider）。康威当时猜想：<b>没有任何图案能无限增长</b>，还悬赏 50 美元求证。结果同年 11 月，MIT 的戈斯珀（Bill Gosper）小组就找到了一个“滑翔机枪”，每隔 30 代吐出一只滑翔机，猜想被推翻。1982 年的《Winning Ways》又给出论证：生命游戏可以搭出通用计算机。</p>
+  <div class="timeline">
+    <div class="ev hasimg"><span data-illus="c05_vn2"></span><div><b class="yr">20 世纪 40 年代</b>　冯·诺依曼与乌拉姆研究元胞自动机；冯·诺依曼想造“能自我复制的机器”，规则繁复。</div></div>
+    <div class="ev hasimg"><span data-illus="c05_conway"></span><div><b class="yr">1968</b>　康威开始用纸笔试验二维元胞自动机，想找简单得多的规则。</div></div>
+    <div class="ev hasimg"><span data-illus="c05_gardner"></span><div><b class="yr">1970 年 10 月</b>　加德纳的专栏把“生命”介绍给大众，读者涌来。</div></div>
+    <div class="ev hasimg"><span data-illus="c05_gun"></span><div><b class="yr">1970 年 11 月</b>　戈斯珀小组发现滑翔机枪，赢走 50 美元悬赏：简单规则里竟能无限增长。</div></div>
+    <div class="ev hasimg"><span data-illus="c05_computer"></span><div><b class="yr">1982</b>　《Winning Ways》（Berlekamp、Conway、Guy）给出论证：生命游戏可搭出通用计算机。</div></div>
+  </div>
+  <p class="small">出处：Gardner，《Mathematical Games》，《科学美国人》1970 年 10 月；LifeWiki 与维基百科“Conway's Game of Life”词条（悬赏、戈斯珀滑翔机枪：首只滑翔机在第 15 代出现，之后每 30 代一只；《Winning Ways》）。康威受冯·诺依曼的自复制机器启发，各来源一致；他究竟如何选定这 4 条规则，这里不下断言。滑翔机的平移规律是本页用代码核对过的。</p>
+
+  <h3>亲手摆一摆：生命游戏画板</h3>
+  <p>点击或拖动画格子（再碰到活格是擦除）。先放一个“滑翔机”按播放，看它怎么走；再放“R 五格”（R-pentomino，仅 5 个格子），猜猜它会变成什么样。边界是<b>环形</b>：从右边出去的会从左边回来。</p>
+  <div class="board">
+    <canvas id="life" width="720" height="450" aria-label="生命游戏画板，48列30行"></canvas>
+    <div class="row">
+      <button class="btn" id="lplay">▶ 播放</button>
+      <button class="btn alt" id="lstep">单步</button>
+      <button class="btn pink" id="lclear">清空</button>
+    </div>
+    <div class="row">
+      <button class="btn alt" data-pre="glider">滑翔机</button>
+      <button class="btn alt" data-pre="blinker">闪烁器</button>
+      <button class="btn alt" data-pre="block">方块</button>
+      <button class="btn alt" data-pre="rpent">R 五格</button>
+      <button class="btn green" data-pre="random">随机</button>
+    </div>
+    <label class="ctl">速度（越右越快） <output id="lspv">8</output> 代/秒</label>
+    <input type="range" id="lsp" min="1" max="30" step="1" value="8">
+    <div id="lstat"></div>
+    <div class="msg" id="lmsg">在画板上点一点，或选一个预设。</div>
+  </div>
+  <div class="sticky">试试看：放一个滑翔机，让它撞上一个方块，看会发生什么。因为边界是环形的，它绕一圈还会回来。</div>
+
+  <!-- 6 发明故事：兔狐 -->
+  <div class="sec"><span class="n">6</span><h2><span class="tag origin">发明故事</span>亚得里亚海的渔获之谜</h2></div>
+  <div class="story">
+    <h3>不捕鱼了，大鱼为什么反而更多？</h3>
+    <div class="withimg">
+      <span data-illus="c05_adriatic"></span>
+      <div>
+        <p>第一次世界大战期间（1915–1918 年前后），亚得里亚海的渔民几乎没法出海捕鱼。战后，意大利海洋生物学家温贝托·丹科纳（Umberto D'Ancona）整理鱼市场的数据，发现了一件怪事：<b>捕捞少了，渔获里吃别的鱼的鱼（主要是鲨鱼和鳐），占的比例反而变大了。</b>他想不通：不捕鱼，难道不是对所有鱼都有好处吗？</p>
+        <p>他把问题交给了数学家、他的岳父维多·沃尔泰拉（Vito Volterra）。沃尔泰拉建了一个最简的两物种方程，1926 年发表在《自然》上。美国的洛特卡（Alfred Lotka）早在 1925 年的书里就写下了同样的方程，这就是“洛特卡–沃尔泰拉模型”这个名字的来历。</p>
+        <p>在看他怎么解释之前，<b>先猜一猜</b>：如果同时按比例捕走兔子和狐狸（对应“捕捞”），然后<b>停止捕捞</b>，狐狸在全部动物里的占比会变高、变低，还是不变？</p>
+      </div>
+    </div>
+  </div>
+  <div class="board">
+    <b>先猜，再试：停止捕捞，会发生什么？</b>
+    <div class="c5guess"><span>我猜狐狸占比会：</span>
+      <button class="chip" data-g="up">变高</button><button class="chip" data-g="down">变低</button><button class="chip" data-g="same">差不多</button>
+    </div>
+    <div class="row">
+      <button class="btn alt" id="c5war0">战前：捕捞强度 0.20</button>
+      <button class="btn pink" id="c5war1">战时停捕：捕捞强度 0</button>
+    </div>
+    <label class="ctl">捕捞强度（按相同比例同时捕走兔子和狐狸）<output id="ppfv">0.00</output></label>
+    <input type="range" id="ppf" min="0" max="0.5" step="0.02" value="0.2">
+    <svg viewBox="0 0 700 304" width="100%" id="ppsvg" role="img" aria-label="兔子与狐狸数量随时间变化的折线图"></svg>
+    <div id="ppstat"></div>
+    <div class="msg" id="ppmsg"></div>
+    <details class="c5adv"><summary>展开：改动模型的其他参数</summary>
+      <div class="pp-ctl">
+        <label class="ctl">兔子出生率 <output id="ppbv">0.60</output></label>
+        <input type="range" id="ppb" min="0.2" max="1.2" step="0.05" value="0.6">
+        <label class="ctl">狐狸捕食效率 <output id="ppav">0.012</output></label>
+        <input type="range" id="ppa" min="0.004" max="0.03" step="0.001" value="0.012">
+        <label class="ctl">狐狸死亡率 <output id="ppdv">0.40</output></label>
+        <input type="range" id="ppd" min="0.1" max="1.0" step="0.05" value="0.4">
+        <label class="ctl"><input type="checkbox" id="ppcap"> 兔子有食物上限（超过上限后兔子不再增长）　上限 <output id="ppkv">150</output></label>
+        <input type="range" id="ppk" min="80" max="400" step="10" value="150">
+      </div>
+      <div class="row"><button class="btn" id="ppreset">恢复默认</button></div>
+    </details>
+  </div>
+  <div class="sticky">试试看：先选“我猜”，再点“战时停捕”，看狐狸占比是不是和你猜的一样。然后拖动捕捞强度，看占比怎么变。</div>
+  <p class="small">简化声明：离散时间模拟；每一小步，兔子增加 <code>(出生率−捕捞)×兔子</code>，减少 <code>捕食效率×兔子×狐狸</code>；狐狸增加 <code>0.5×捕食效率×兔子×狐狸</code>（0.5 是把吃掉的兔子转换成新狐狸的比例），减少 <code>(死亡率+捕捞)×狐狸</code>。蓝线是兔子，红线是狐狸。没有空间、年龄、随机、别的食物。初始 60 只兔子、30 只狐狸；总长 100 个时间单位；数量低于 0.5 就算灭绝。“占比”按第 40 个时间单位之后的平均值计算。</p>
+  <p>为什么？沃尔泰拉的模型给出的规律是：<b>捕捞同时压低了两个种群，对捕食者的伤害却更大</b>。狐狸的平均数量正比于（兔子出生率 − 捕捞），兔子的平均数量正比于（狐狸死亡率 + 捕捞）。捕捞一停，狐狸的平均值上升，兔子的平均值下降，捕食者占比就变高。这就是后来被称为“沃尔泰拉原理”的结论。</p>
+  <div class="timeline">
+    <div class="ev hasimg"><span data-illus="c05_lotka"></span><div><b class="yr">1925</b>　洛特卡在《Elements of Physical Biology》里提出捕食者–猎物方程。</div></div>
+    <div class="ev hasimg"><span data-illus="c05_volterra"></span><div><b class="yr">1926</b>　沃尔泰拉为解释丹科纳的渔获数据，独立建立模型，发表在《自然》上；洛特卡随后指出自己的优先权，模型因此得名。</div></div>
+    <div class="ev hasimg"><span data-illus="c05_lynx"></span><div><b class="yr">1942</b>　Elton 与 Nicholson 整理哈德逊湾公司的毛皮收购记录，其中猞猁–雪兔的周期被广为引用，猞猁的高峰总比雪兔晚一些。</div></div>
+    <div class="ev hasimg"><span data-illus="c05_kluane"></span><div><b class="yr">1995</b>　Krebs 等人在育空 Kluane 做了八年野外实验，给雪兔加食物、挡掉捕食者，发现雪兔的周期不能只归因于捕食，食物也有份，两样一起操作时，雪兔密度涨到约 11 倍。</div></div>
+  </div>
+  <p class="small">出处：Volterra（1926），《Nature》，10 月 16 日；Lotka（1925），《Elements of Physical Biology》（Lotka 1927 年致《Nature》的信指出其优先权）；D'Ancona 的数据与动机见沃尔泰拉相关史料与教材转述（各来源对具体年份和比例的说法略有出入）。Elton & Nicholson（1942），猞猁毛皮记录。Krebs 等（1995），《Science》269：1112–1115。</p>
+
+  <!-- 7 为什么：知道规则≠知道结果；振荡 -->
+  <div class="sec"><span class="n">7</span><h2><span class="tag why">为什么成立</span>知道规则，为什么还是算不出结果？</h2></div>
+  <div class="withimg">
+    <span data-illus="c05_zoo"></span>
+    <div>
+      <p>生命游戏的 4 条规则，谁都能在一分钟内读完。但从这四条里长出了一个“动物园”。</p>
+      <p><b>稳定态</b>，比如 2×2 的“方块”，每格恰好 3 个邻居，永远不变。<b>振荡器</b>，比如“闪烁器”，三个连成一行，每代在横竖之间翻转。还有会走路的<b>滑翔机</b>，5 个格子，每 4 代沿对角线平移 1 格。“R 五格”只有 5 个格子，在无限大的棋盘上要演化 1103 代才安顿下来，最终有 116 个活格，其中 6 只滑翔机逃走了。</p>
+    </div>
+  </div>
+  <div class="why-box">
+    <h3>知道全部规则，并不等于能预知结果</h3>
+    <p>这是涌现最让人不安的地方：要知道第 200 代是什么样，多数时候你只能老老实实一代一代地跑。规则越简单，反而越不能靠“看规则”来推结局。设计师写下规则，就像放出一粒种子，长成什么样，要看它长。</p>
+    <p class="src">出处：Conway's Game of Life 词条（维基百科 / LifeWiki：R 五格 1103 代、116 个活格、6 只逃逸滑翔机，是在无限大网格上的结果；本页画板是环形边界，结果会不同）。把它推广到游戏设计是这里借用的类比，并非定理。</p>
+  </div>
+  <h3>负反馈加滞后，等于振荡</h3>
+  <p>设想一座岛上有兔子和狐狸。兔子吃草（草无限多），自己会繁殖；狐狸只吃兔子。因果链是这样的：兔子多，狐狸吃得饱、繁殖多；狐狸一多，兔子被吃得多；兔子少了，狐狸又饿死；狐狸少了，兔子又繁殖……</p>
+  <p>这是一个带滞后的负反馈：狐狸这个存量要等兔子多了才慢慢涨起来，所以狐狸总是<b>晚于兔子</b>到达峰值，而且狐狸涨过头时，兔子已经开始下降。两个存量互相追逐，就画出了前后错开的两条波浪。</p>
+  <div class="why-box">
+    <h3>洛特卡–沃尔泰拉模型：说明什么，不说明什么</h3>
+    <p>在最简模型里，种群围绕一个平衡点永远循环，而不是安静地停在平衡点上。小振幅时周期约为 2π/√((出生率−捕捞)×(死亡率+捕捞))。<b>验证实验：</b>回到上面的模拟，展开“其他参数”，把狐狸死亡率调高，看周期变短；再勾选“食物上限”，这是增加了一个<b>额外的负反馈</b>，振荡会逐渐衰减。</p>
+    <p class="src">这是一个刻意简化的模型。现实中的野外数据（如常被引用的“猞猁–雪兔”记录）没这么干净：雪兔的周期被认为同时与捕食和食物有关，学界仍在讨论。模型最稳妥的用途是“解释为什么会出现振荡”，而不是精确预测。</p>
+  </div>
+
+  <!-- 8 为什么：局部最优 -->
+  <div class="sec"><span class="n">8</span><h2><span class="tag why">为什么成立</span>往高处走，为什么会卡在小山头？</h2></div>
+  <p>每次改版之后，玩家社区总会很快“解出”一套最强配置，然后几乎所有人都用它，游戏变得千篇一律。设计师常抱怨玩家“不够有创意”。可是想想大雾里的登山者：他看不到远处，只能看脚下，所以每一步都往更高的地方迈。他爬上了身边的小山头，然后发现四周全是下坡。他没有错，也没法知道另一边还有更高的山。</p>
+  <div class="why-box">
+    <h3>局部最优：每一步都更好，却不是最好</h3>
+    <p>这个形象来自进化生物学。1932 年，遗传学家休厄尔·赖特（Sewall Wright）在国际遗传学大会上提出“适应地形”（adaptive landscape）：把每种可能的基因组合想成地形上的一个点，越适应，海拔越高。自然选择像是只会往高处爬的登山者，容易困在一个<span class="term" tabindex="0" data-def="局部最优：在身边所有选择里是最好的，但并不是整体上最好的。只会往更好的方向小步移动，就容易停在这里。">局部最优</span>上，也就是身边最高、全局却不是最高的那个山头。</p>
+    <p>要走出来，得有一点别的东西：偶尔不照“往高处走”的规矩，去陌生的地方试试。强化学习里把这叫<span class="term" tabindex="0" data-def="探索与利用：利用是用已知最好的做法拿稳回报，探索是尝试没试过的做法，去发现可能更好的。两者要取舍。">探索与利用</span>：利用，是继续用已知最好的做法；探索，是拿一点代价去试没试过的。全靠利用，容易困在小山头；全靠探索，又永远攒不下收获。</p>
+    <p><b>验证实验：</b>下面的小实验里，把登山者放在左边的小山脚，看他卡在哪。再拖动“探索度”，让他偶尔随机跳一下。</p>
+    <p class="src">出处：Sewall Wright，“The roles of mutation, inbreeding, crossbreeding and selection in evolution”，《第六届国际遗传学大会论文集》1：356–366（1932）；Sutton & Barto，《Reinforcement Learning: An Introduction》（探索与利用的经典教材）。适应地形这一比喻本身在生物学界也有争议，这里只借它的形象。</p>
+  </div>
+  <div class="board">
+    <b>⛰️ 大雾里的登山者</b>
+    <p class="small">登山者只比较自己左右各一小步的高度，哪边高往哪边走。点图上的任意位置，把他放到那里，再按“出发”。“探索度”越高，他越常随机跳到别处看看，只在更高时才留下。</p>
+    <svg id="c5hl" viewBox="0 0 700 284" role="img" aria-label="一条有两个山峰的地形线：左边是较矮的小山，右边是更高的主峰；圆点是登山者，点击图可以改变起点"></svg>
+    <label class="ctl">探索度 <output id="c5exv">0%</output></label>
+    <input type="range" id="c5ex" min="0" max="60" step="5" value="0">
+    <div class="row">
+      <button class="btn" id="c5hgo">出发</button>
+      <button class="btn alt" id="c5hl1">起点：左边山脚</button>
+      <button class="btn alt" id="c5hl2">起点：随机</button>
+      <span class="stat">当前高度 <b id="c5hh">0</b></span>
+    </div>
+    <div class="c5out" id="c5hmsg2">点“出发”，看登山者走到哪里。</div>
+  </div>
+  <div class="sticky">试试看：起点放在左边山脚，探索度保持 0，看他卡在哪；再把探索度调到 30% 以上，让他登上右边的主峰。</div>
+  <div class="eg" data-ic="🌫️"><span data-illus="c05_fog"></span><div class="egt"><b>雾里的登山者</b>。每一步都往高处走，没毛病；可惜身边的小山头不是全世界最高的山。</div></div>
+  <div class="eg" data-ic="⚔️"><span data-illus="c05_meta"></span><div class="egt"><b>游戏里的“最强配置”</b>。每个玩家都在试着改进自己的打法，一步步改进，最后大家都落在同一个山头上。设计师想看到多样的玩法，就得有人去鼓励“下山探索”：让别的路线也有出头的机会。</div></div>
+  <div class="eg" data-ic="🍜"><span data-illus="c05_restaurant"></span><div class="egt"><b>总去同一家餐馆</b>。试过几家，选了最好吃的那家，从此天天去。稳妥，但你永远不知道隔壁那家是不是更好。偶尔换一家，就是在探索。</div></div>
+  <div class="eg bad" data-ic="🧺"><span data-illus="c05_good"></span><div class="egt"><b>反例：局部最优不一定是坏事</b>。如果小山头已经够好，不用冒险去爬更高的山，那就在这里野餐。探索要付出代价，值不值，看你要的是什么。</div></div>
+
+  <!-- 9 为什么：杠杆点 -->
+  <div class="sec"><span class="n">9</span><h2><span class="tag why">为什么成立</span>梅多斯的“杠杆点”：干预系统，哪里最有效</h2></div>
+  <p>既然整体是从回路里长出来的，想改变整体，该去拧哪个旋钮？系统动力学作者唐内拉·梅多斯（Donella Meadows）在《Leverage Points: Places to Intervene in a System》里发现，干预系统有许多“位置”，效果差别很大。</p>
+  <div class="why-box">
+    <h3>梅多斯的一种观点：越往结构走，杠杆越大</h3>
+    <p>梅多斯最早列了一份 9 点的短清单，后来扩展成 12 类（1999 年版）。大意是：</p>
+    <ul>
+      <li>最不起眼、最常被调的是<b>参数/数值</b>（税率、血量、掉率），往往对系统行为的改变很小；</li>
+      <li>更有力的是<b>反馈回路的强弱、信息流动的方式、系统的规则</b>，也就是改“结构”；</li>
+      <li>最有力的是<b>系统的目标与背后的思维范式</b>。</li>
+    </ul>
+    <p>她的 12 类（由弱到强）依次是：常数与参数、缓冲、存量–流量结构、延迟、负反馈的强度、正反馈的增益、信息流、规则、自组织、目标、范式、超越范式。点下面的阶梯，看每一层在游戏里对应什么。</p>
+    <p class="src">这是梅多斯的一种经验性观点和分类，不是严格定理；其排序也有人觉得不完全适用于所有情境。但“别只拧旋钮，先看回路”作为设计习惯很有用。</p>
+  </div>
+  <div class="card c5ldr">
+    <svg viewBox="0 0 700 330" width="100%" role="img" aria-label="杠杆点阶梯图：从下往上依次是参数、结构与延迟、反馈回路、信息与规则、自组织与目标、范式；越往上杠杆越大；右侧是游戏中的对应例子">
+      <g class="rough" stroke="#2b2b3a" stroke-width="3.5" stroke-linejoin="round">
+        <rect x="30" y="268" width="220" height="48" fill="#fff7cf"/>
+        <rect x="30" y="220" width="250" height="48" fill="#ffe9ef"/>
+        <rect x="30" y="172" width="280" height="48" fill="#e8f6fc"/>
+        <rect x="30" y="124" width="310" height="48" fill="#eaf9e4"/>
+        <rect x="30" y="76" width="340" height="48" fill="#f1eaff"/>
+        <rect x="30" y="28" width="370" height="48" fill="#ffc9c9"/>
+      </g>
+      <g font-size="17" fill="#2b2b3a">
+        <text x="42" y="298" font-weight="700">参数</text><text x="262" y="298">血量 10%、掉率 5%</text>
+        <text x="42" y="250" font-weight="700">存量–流量结构、延迟</text><text x="290" y="250">加一个“排水口”、改刷新间隔</text>
+        <text x="42" y="202" font-weight="700">反馈回路的强弱</text><text x="320" y="202">追赶机制、滚雪球的增益</text>
+        <text x="42" y="154" font-weight="700">信息流与规则</text><text x="350" y="154">让玩家看到谁在领先；改胜利条件</text>
+        <text x="42" y="106" font-weight="700">自组织与目标</text><text x="380" y="106">开放玩家创作；改“游戏想让人干什么”</text>
+        <text x="42" y="58" font-weight="700">范式</text><text x="410" y="58">“游戏是什么”的想法本身</text>
+        <text x="690" y="318" font-size="16" text-anchor="end">越往上：越难改，但改动越大 ↑</text>
+      </g>
+      <rect class="hit" data-i="0" x="30" y="268" width="220" height="48" tabindex="0" role="button" aria-label="参数层"/>
+      <rect class="hit" data-i="1" x="30" y="220" width="250" height="48" tabindex="0" role="button" aria-label="结构与延迟层"/>
+      <rect class="hit" data-i="2" x="30" y="172" width="280" height="48" tabindex="0" role="button" aria-label="反馈回路层"/>
+      <rect class="hit" data-i="3" x="30" y="124" width="310" height="48" tabindex="0" role="button" aria-label="信息与规则层"/>
+      <rect class="hit" data-i="4" x="30" y="76" width="340" height="48" tabindex="0" role="button" aria-label="自组织与目标层"/>
+      <rect class="hit" data-i="5" x="30" y="28" width="370" height="48" tabindex="0" role="button" aria-label="范式层"/>
+    </svg>
+    <div class="c5out" id="c5ldrmsg">点阶梯上的任意一层。</div>
+    <p class="small">图为示意：梅多斯的 12 类被合并为 6 层，右侧的游戏例子是这里借用的类比，不是她原文的内容。</p>
+  </div>
+
+  <!-- 10 怎么用 -->
+  <div class="sec"><span class="n">10</span><h2><span class="tag how">怎么用</span>杠杆实验台：改数值，还是改结构？</h2></div>
+  <p>回想一下，设计师写的是机制，玩家体验到的是美学，中间隔着动态。涌现告诉我们：<b>你无法直接设计动态，只能设计会长出动态的土壤。</b>下面是两个常见的“系统出问题”场景。先拧<b>数值</b>旋钮，再去动<b>结构</b>，看看结果有什么不同。</p>
+  <div class="board">
+    <div class="c5tabs"><button class="btn" id="c5t1">① 滚雪球</button><button class="btn alt" id="c5t2">② 金币通胀</button></div>
+
+    <div class="c5pane on" id="c5p1">
+      <p class="small">两位玩家资源差不多，A 略领先 5%。<b>领先加成</b>：领先越多，增长越快（正反馈的强度）。图里画的是 A 占双方资源的份额；灰线是几个旧参数的对照（k = 0.2 / 0.5 / 1.0）。</p>
+      <label class="ctl">① 数值：领先加成 k <output id="c5kv">0.50</output></label>
+      <input type="range" id="c5k" min="0" max="1" step="0.05" value="0.5">
+      <label class="ctl" style="display:flex;gap:8px;align-items:center"><input type="checkbox" id="c5cu"> ② 结构：加入“追赶机制”（落后者有额外增长）　强度 c <output id="c5cv">0.70</output></label>
+      <input type="range" id="c5c" min="0" max="1" step="0.05" value="0.7">
+      <svg class="c5sv" id="c5sv1" viewBox="0 0 700 320" role="img" aria-label="领先者资源份额随回合变化的曲线"></svg>
+      <div class="c5out" id="c5o1"></div>
+    </div>
+
+    <div class="c5pane" id="c5p2">
+      <p class="small">一个只有产出、没有足够消耗的游戏经济。<b>产出</b>＝水龙头；<b>固定消耗</b>＝排水口的大小。灰线是默认情况（产出 60、消耗 40，没有比例消耗）。</p>
+      <label class="ctl">① 数值：每回合产出的金币 <output id="c5iv">60</output></label>
+      <input type="range" id="c5i" min="10" max="100" step="1" value="60">
+      <label class="ctl">　　每回合固定消耗 <output id="c5dv">40</output></label>
+      <input type="range" id="c5d" min="0" max="100" step="1" value="40">
+      <label class="ctl" style="display:flex;gap:8px;align-items:center"><input type="checkbox" id="c5tx"> ② 结构：加入“比例消耗”（拍卖税、装备维护：钱越多，花得越多）　比例 <output id="c5tv">2.0%</output></label>
+      <input type="range" id="c5t" min="0.5" max="6" step="0.5" value="2">
+      <svg class="c5sv" id="c5sv2" viewBox="0 0 700 320" role="img" aria-label="金币总量随回合变化的曲线"></svg>
+      <div class="c5out" id="c5o2"></div>
+    </div>
+    <div class="row"><button class="btn pink" id="c5reset">恢复默认</button></div>
+  </div>
+  <div class="sticky">试试看：在“滚雪球”里，先只把 k 调到 0.1，看结局变没变；再勾上追赶机制，让 A 的份额回到 50% 附近。到“金币通胀”里，试着让金币总量停在一个稳定的数上，而不是一直涨。</div>
+  <p>你应该看到：<b>拧数值只改变“多快到达结局”，结局本身没变；改结构才改变结局。</b>这不是巧合。滚雪球里，只要“领先加成”一直是正的，哪怕很小，领先者最终都会赢；通胀里，只要产出大于固定消耗，总量就会一直涨。只有负反馈（追赶、比例消耗）才会把系统拉向一个目标。</p>
+  <p>当然，不是所有问题都要改结构。<b>Boss 血量太少，玩家 10 秒就打完</b>，那就是数值偏小，直接调血量最便宜，也最对；结构性改动成本更高，应在数值已经合理却仍然无趣时再考虑。梅多斯也承认参数是最“低杠杆”的，但不是“无用”。</p>
+
+  <h3>设计出能“长出”好玩法的土壤</h3>
+  <div class="withimg rev">
+    <span data-illus="c05_garden"></span>
+    <div>
+      <p>如果你原来以为“策划就是把每个细节都写出来”，涌现会让你换个姿态：你更像<b>园丁</b>，不是建筑师。你选种子、整理土壤、立好围栏，然后看会长出什么，再修剪。</p>
+      <p>什么样的土壤容易长出好东西？三个特点：规则少而深，系统之间可交互，规则前后一致。</p>
+    </div>
+  </div>
+  <div class="grid3">
+    <div class="card y mini"><div class="ico">🎯</div><h3>规则少而深</h3><p>规则只有几条，但每条都深深牵动全局。规则越多、例外越多，玩家越难“推理—预测”，涌现也变成噪声。</p></div>
+    <div class="card b mini"><div class="ico">🔗</div><h3>系统之间可交互</h3><p>火、水、风、电各自简单，但让它们互相作用（水导电、火点燃草、风吹火），就长出组合玩法。</p></div>
+    <div class="card g mini"><div class="ico">⚖️</div><h3>一致的物理/化学</h3><p>同一条规则在任何地方都成立，玩家才敢“举一反三”。例外越少，玩家的猜想越容易被验证。</p></div>
+  </div>
+  <div class="eg" data-ic="⚫"><span data-illus="c05_go"></span><div class="egt"><b>规则少而深：围棋</b>。规则几行就能写完，棋局的变化却多到没人能算尽。</div></div>
+  <div class="eg" data-ic="🧱"><span data-illus="c05_lego"></span><div class="egt"><b>规则少而深：乐高</b>。几种形状、统一的连接方式，就能搭出无穷多的东西。</div></div>
+  <div class="eg" data-ic="💬"><span data-illus="c05_words"></span><div class="egt"><b>规则少而深：语言</b>。有限的字词加一套语法，能说出从没人说过的句子。</div></div>
+  <div class="eg" data-ic="⚡"><span data-illus="c05_chem"></span><div class="egt"><b>系统可交互：《旷野之息》</b>。金属导电，火焰点燃草地，风带着火走。每个系统都简单，但它们碰到一起，就长出玩家自己琢磨出来的解法。</div></div>
+  <div class="eg bad" data-ic="📦"><span data-illus="c05_isolated"></span><div class="egt"><b>反例：内容很多，但各自隔离</b>。一个游戏有 30 种道具，每种都只在自己的关卡里生效，彼此没有任何相互作用。这是“广度”而不是“深度”，不会长出新玩法。</div></div>
+  <p>再加两条“刹车”的原则。第一，<b>给正反馈留出口</b>：滚雪球机制很刺激，但要有逆转手段，比如追赶机制、可抢夺的资源、胜利所需的额外条件。第二，<b>让经济回路闭合</b>：有产出就要有消耗，“水龙头”和“排水口”要同时设计，否则存量只会涨到失控。有的涌现让游戏更长寿（战术深度、玩家创作），有的会破坏它（无限刷钱漏洞、滚雪球让对局提前结束）。设计的任务不是消灭意外，而是<b>提高好意外的概率，给坏意外装上刹车</b>。</p>
+
+  <div class="misc">
+    <h3>常见误区</h3>
+    <ul>
+      <li><b>“涌现 = 随机/混乱”</b>：生命游戏完全没有随机，每一步都是确定的。涌现的难以预测，来自规则间相互作用的复杂度，不是掷骰子。</li>
+      <li><b>“规则越多，游戏越深”</b>：深度来自规则之间的<em>相互作用</em>，不是规则条数。很多“内容丰富”的游戏其实各系统彼此隔离，只有广度没有涌现。</li>
+      <li><b>“出了漏洞就把数值削掉”</b>：削数值只是治症状。如果漏洞来自正反馈或闭环缺失，数值削再多，玩家换个路径照样绕过去（杠杆实验台里你已经验证过）。</li>
+      <li><b>“玩家都用同一套，是玩家没创意”</b>：很可能是每个人都在合理地往高处走，一起困在了同一个局部最优里。</li>
+    </ul>
+  </div>
+
+  <div class="reflect">
+    <h3>反思与争议</h3>
+    <p><b>局限。</b>生命游戏与洛特卡–沃尔泰拉模型都是极度简化的模型。它们说明“某类现象为何会出现”，但不能直接告诉你自己的游戏里“该调到几”。真实玩家会学习、会模仿、会联手，规则对他们的“反馈”也在变，这比兔子和狐狸难得多。</p>
+    <p><b>争议。</b>“涌现”本身在哲学和科学界就有分歧：有人认为它只是“我们还没算清楚”的另一种说法（弱涌现），也有人认为整体层面确实存在不可还原的新性质（强涌现）。游戏设计里通常只用“弱”的意思，即“很难预测，但规则明确”。另外，梅多斯的杠杆点排序是梅多斯的一种观点，在游戏里“改数值”有时才是正确答案。</p>
+    <p>想一想：你玩过的某个游戏里，有哪些“设计师没写、玩家自己长出来”的玩法？</p>
+  </div>
+
+  <div class="key">
+    <h3>本章要点</h3>
+    <ul>
+      <li><b>涌现</b>：整体行为来自部分之间的相互作用，不是任何一条规则单独写出来的。</li>
+      <li><b>正反馈放大、负反馈稳定</b>；存量靠流量慢慢变化，所以反馈常带<b>滞后</b>，<b>负反馈加滞后就会振荡</b>。</li>
+      <li>生命游戏用 4 条规则展示“<b>知道规则≠知道结果</b>”；沃尔泰拉用方程回答了“为什么捕捞少了，捕食者反而更多”。两个模型都是为了回答一个具体的谜而出现的。</li>
+      <li>只会往高处走，容易卡在<b>局部最优</b>；走出来要靠一点探索。</li>
+      <li>设计要点：规则<b>少而深</b>、系统<b>可交互</b>、物理<b>一致</b>；问题先看<b>反馈结构</b>，再考虑改数值（梅多斯的观点）。</li>
+    </ul>
+  </div>
+  <div class="tldr">你写下的是规则，玩家得到的是规则相互作用后长出来的世界；所以要像园丁一样设计反馈结构，而不是只拧数值旋钮。</div>
+
+  <div class="sec"><span class="n">11</span><h2><span class="tag think">练习</span>小测验</h2></div>
+  <div id="quiz"></div>
+
+  <div class="sec"><span class="n">12</span><h2><span class="tag how">你的设计</span>找出一个游戏里的回路</h2></div>
+  <div class="card o">
+    <p>想一个你熟悉的游戏：它里面有哪一个<b>正反馈</b>回路和哪一个<b>负反馈</b>回路？如果出现过“玩家找到设计者没想到的玩法”，那是哪几条规则相互作用造成的？你会怎么调整结构，而不是数值？</p>
+    <textarea rows="6" data-save="ch5" placeholder="例：在某游戏里，装备越强越容易打到更强的装备（正反馈）；我会加入……"></textarea>
+    <p class="small">✍️ 自动保存在你的浏览器里。</p>
+  </div>
+</main>
+<script src="js/illus.js"></script><script src="js/illus-ch05.js"></script><script src="js/common.js"></script>
+<script>
+const $ = id => document.getElementById(id);
+const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+
+// ================= 手推生命游戏 =================
+(function () {
+  const N = 7;
+  const START = [[1, 0], [2, 1], [0, 2], [1, 2], [2, 2]].map(([x, y]) => [x + 1, y + 1]);
+  let cur, guess, gen, checked, showN;
+  const nowEl = $("c5now"), meEl = $("c5me");
+  const nowC = [], meC = [];
+  for (let i = 0; i < N * N; i++) {
+    const a = document.createElement("div"); nowEl.appendChild(a); nowC.push(a);
+    const b = document.createElement("div"); meEl.appendChild(b); meC.push(b);
+    b.onclick = () => { if (checked) return; guess[i] ^= 1; render(); };
+  }
+  function nb(a, x, y) {
+    let c = 0;
+    for (let dy = -1; dy <= 1; dy++) for (let dx = -1; dx <= 1; dx++) {
+      if (!dx && !dy) continue;
+      const X = x + dx, Y = y + dy;
+      if (X >= 0 && X < N && Y >= 0 && Y < N) c += a[Y * N + X];
+    }
+    return c;
+  }
+  function next(a) {
+    const n = new Uint8Array(N * N);
+    for (let y = 0; y < N; y++) for (let x = 0; x < N; x++) {
+      const c = nb(a, x, y);
+      n[y * N + x] = a[y * N + x] ? (c === 2 || c === 3 ? 1 : 0) : (c === 3 ? 1 : 0);
+    }
+    return n;
+  }
+  function reset() {
+    cur = new Uint8Array(N * N); START.forEach(([x, y]) => cur[y * N + x] = 1);
+    guess = new Uint8Array(N * N); gen = 0; checked = false;
+    $("c5hmsg").textContent = "点右边的格子，标出你认为下一代活着的格子。";
+    $("c5nx").disabled = true; $("c5chk").disabled = false;
+    render();
+  }
+  function render() {
+    $("c5gen").textContent = gen; $("c5gen2").textContent = gen + 1;
+    const truth = next(cur);
+    for (let y = 0; y < N; y++) for (let x = 0; x < N; x++) {
+      const i = y * N + x;
+      nowC[i].className = cur[i] ? "live" : "";
+      nowC[i].textContent = showN ? nb(cur, x, y) : "";
+      let cls = "";
+      if (!checked) { if (guess[i]) cls = "guess"; }
+      else if (guess[i] && truth[i]) cls = "ok";
+      else if (guess[i] && !truth[i]) cls = "wrong";
+      else if (!guess[i] && truth[i]) cls = "miss";
+      meC[i].className = cls;
+      meC[i].textContent = checked && cls === "miss" ? "漏" : checked && cls === "wrong" ? "多" : "";
+    }
+  }
+  $("c5hint").onclick = () => { showN = !showN; $("c5hint").textContent = showN ? "隐藏邻居数" : "显示邻居数"; render(); };
+  $("c5chk").onclick = () => {
+    checked = true; render();
+    const truth = next(cur);
+    let miss = 0, wrong = 0;
+    for (let i = 0; i < N * N; i++) { if (truth[i] && !guess[i]) miss++; if (!truth[i] && guess[i]) wrong++; }
+    $("c5chk").disabled = true; $("c5nx").disabled = false;
+    $("c5hmsg").textContent = (!miss && !wrong) ? "✔ 全对！你推得和规则一模一样。" : "有 " + wrong + " 格多标、" + miss + " 格漏标。绿色是推对的活格，红框是出错的地方——打开“显示邻居数”再对照规则看看。";
+  };
+  $("c5nx").onclick = () => {
+    cur = next(cur); gen++; guess = new Uint8Array(N * N); checked = false;
+    $("c5chk").disabled = false; $("c5nx").disabled = true;
+    if (gen === 4) {
+      $("c5hmsg").innerHTML = "你推到了第 4 代：图案和第 0 代<b>一模一样，只是整体向右下挪了一格</b>。规则里没有“移动”两个字，你刚亲手算出了一个会走路的东西。可以继续推，或点“重来”。";
+    } else $("c5hmsg").textContent = "现在是第 " + gen + " 代，继续标出下一代。";
+    render();
+  };
+  $("c5rs").onclick = reset;
+  showN = false; reset();
+})();
+
+// ================= 生命游戏画板 =================
+(function () {
+  const W = 48, H = 30, CS = 15;
+  const cv = $("life"), ctx = cv.getContext("2d");
+  let g = new Uint8Array(W * H), gen = 0, timer = null, running = false;
+  const idx = (x, y) => y * W + x;
+
+  function step() {
+    const n = new Uint8Array(W * H);
+    for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) {
+      let c = 0;
+      for (let dy = -1; dy <= 1; dy++) for (let dx = -1; dx <= 1; dx++) {
+        if (!dx && !dy) continue;
+        c += g[idx((x + dx + W) % W, (y + dy + H) % H)];
+      }
+      const alive = g[idx(x, y)];
+      n[idx(x, y)] = alive ? (c === 2 || c === 3 ? 1 : 0) : (c === 3 ? 1 : 0);
+    }
+    g = n; gen++;
+  }
+  function count() { let s = 0; for (let i = 0; i < g.length; i++) s += g[i]; return s; }
+  function draw() {
+    ctx.clearRect(0, 0, cv.width, cv.height);
+    ctx.fillStyle = "#fffef7"; ctx.fillRect(0, 0, cv.width, cv.height);
+    ctx.strokeStyle = "rgba(43,43,58,.13)"; ctx.lineWidth = 1;
+    ctx.beginPath();
+    for (let x = 0; x <= W; x++) { ctx.moveTo(x * CS + .5, 0); ctx.lineTo(x * CS + .5, H * CS); }
+    for (let y = 0; y <= H; y++) { ctx.moveTo(0, y * CS + .5); ctx.lineTo(W * CS, y * CS + .5); }
+    ctx.stroke();
+    ctx.fillStyle = "#2b2b3a";
+    for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) if (g[idx(x, y)]) ctx.fillRect(x * CS + 2, y * CS + 2, CS - 3, CS - 3);
+    const a = count();
+    $("lstat").innerHTML = `<span class="stat">代数 <b>${gen}</b></span><span class="stat">存活 <b>${a}</b></span><span class="stat">${running ? "运行中" : "已暂停"}</span>`;
+    if (running && a === 0) { setRun(false); $("lmsg").textContent = "全部死亡了。再画点什么吧。"; }
+  }
+  function setRun(on) {
+    running = on;
+    if (timer) { clearInterval(timer); timer = null; }
+    if (on) timer = setInterval(() => { step(); draw(); }, 1000 / +$("lsp").value);
+    $("lplay").textContent = on ? "⏸ 暂停" : "▶ 播放";
+    draw();
+  }
+  function place(cells, ox, oy) { cells.forEach(([x, y]) => { g[idx((x + ox) % W, (y + oy) % H)] = 1; }); }
+  const PRE = {
+    glider: [[1, 0], [2, 1], [0, 2], [1, 2], [2, 2]],
+    blinker: [[0, 0], [1, 0], [2, 0]],
+    block: [[0, 0], [1, 0], [0, 1], [1, 1]],
+    rpent: [[1, 0], [2, 0], [0, 1], [1, 1], [1, 2]]
+  };
+  const MSG = {
+    glider: "滑翔机：5 个格子，每 4 代沿对角线平移 1 格。按播放看它走。",
+    blinker: "闪烁器：横竖交替，周期 2。单步两下看看。",
+    block: "方块：每个格子恰好有 3 个邻居，所以永远不变（稳定态）。",
+    rpent: "R 五格：只有 5 个格子；在无限大的棋盘上要 1103 代才稳定。这块画板是环形的，逃出的滑翔机会绕回来撞上别的东西，结局会不同。播放看看。",
+    random: "随机约 25% 的格子为活。看看它会收敛成什么：多半是稳定态、振荡器和零星滑翔机。"
+  };
+  document.querySelectorAll("[data-pre]").forEach(b => b.onclick = () => {
+    const k = b.dataset.pre;
+    g = new Uint8Array(W * H); gen = 0;
+    if (k === "random") { for (let i = 0; i < g.length; i++) g[i] = Math.random() < 0.25 ? 1 : 0; }
+    else place(PRE[k], k === "glider" || k === "rpent" ? 20 : 22, 12);
+    $("lmsg").textContent = MSG[k]; draw();
+  });
+  $("lplay").onclick = () => { if (!count()) { $("lmsg").textContent = "先画点活格子。"; return; } setRun(!running); };
+  $("lstep").onclick = () => { setRun(false); step(); draw(); };
+  $("lclear").onclick = () => { setRun(false); g = new Uint8Array(W * H); gen = 0; $("lmsg").textContent = "已清空。"; draw(); };
+  $("lsp").oninput = () => { $("lspv").textContent = $("lsp").value; if (running) setRun(true); };
+
+  let painting = false, val = 1, last = null;
+  function cellAt(e) {
+    const r = cv.getBoundingClientRect();
+    const x = Math.floor((e.clientX - r.left) / r.width * W), y = Math.floor((e.clientY - r.top) / r.height * H);
+    return (x >= 0 && x < W && y >= 0 && y < H) ? [x, y] : null;
+  }
+  function paintLine(a, b) {
+    const n = Math.max(Math.abs(b[0] - a[0]), Math.abs(b[1] - a[1]), 1);
+    for (let i = 0; i <= n; i++) {
+      const x = Math.round(a[0] + (b[0] - a[0]) * i / n), y = Math.round(a[1] + (b[1] - a[1]) * i / n);
+      g[idx(x, y)] = val;
+    }
+  }
+  cv.addEventListener("pointerdown", e => {
+    const c = cellAt(e); if (!c) return;
+    painting = true; cv.setPointerCapture(e.pointerId);
+    val = g[idx(c[0], c[1])] ? 0 : 1; last = c;
+    paintLine(c, c); draw();
+  });
+  cv.addEventListener("pointermove", e => {
+    if (!painting) return;
+    const c = cellAt(e); if (!c) return;
+    paintLine(last, c); last = c; draw();
+  });
+  const end = () => { painting = false; last = null; };
+  cv.addEventListener("pointerup", end); cv.addEventListener("pointercancel", end);
+  draw();
+})();
+
+// ================= 兔子与狐狸（含捕捞） =================
+(function () {
+  const DT = 0.02, T = 100, SUB = 10, CONV = 0.5, R0 = 60, F0 = 30, AVG_FROM = 40;
+  let guess = null;
+  function sim() {
+    const b = +$("ppb").value, a = +$("ppa").value, d = +$("ppd").value, f = +$("ppf").value;
+    const useCap = $("ppcap").checked, K = +$("ppk").value;
+    let R = R0, F = F0;
+    const ts = [0], rs = [R], fs = [F];
+    const steps = Math.round(T / DT);
+    for (let i = 1; i <= steps; i++) {
+      // 半隐式欧拉：先更新兔子，再用新的兔子数更新狐狸（比普通欧拉更不容易数值发散）
+      const growth = useCap ? (b - f) * R * (1 - R / K) : (b - f) * R;
+      R = Math.max(0, R + DT * (growth - a * R * F));
+      F = Math.max(0, F + DT * (CONV * a * R * F - (d + f) * F));
+      if (R < 0.5) R = 0;
+      if (F < 0.5) F = 0;
+      if (i % SUB === 0) { ts.push(i * DT); rs.push(R); fs.push(F); }
+    }
+    return { ts, rs, fs, b, a, d, f, useCap };
+  }
+  function peaks(arr) {
+    const p = [], w = 6;
+    for (let i = w; i < arr.length - w; i++) {
+      let ok = arr[i] > 2;
+      for (let j = i - w; j <= i + w && ok; j++) if (j !== i && arr[j] > arr[i]) ok = false;
+      if (ok && arr[i] > arr[i - w] * 1.02 && arr[i] > arr[i + w] * 1.02) p.push(i);
+    }
+    return p;
+  }
+  function run() {
+    $("ppfv").textContent = (+$("ppf").value).toFixed(2);
+    $("ppbv").textContent = (+$("ppb").value).toFixed(2);
+    $("ppav").textContent = (+$("ppa").value).toFixed(3);
+    $("ppdv").textContent = (+$("ppd").value).toFixed(2);
+    $("ppkv").textContent = $("ppk").value;
+    $("ppk").disabled = !$("ppcap").checked;
+    const s = sim();
+    const mx = Math.max(10, ...s.rs, ...s.fs) * 1.1;
+    const X = t => 50 + t / T * 630, Y = v => 240 - v / mx * 215;
+    let h = '<line x1="50" y1="240" x2="680" y2="240" stroke="#2b2b3a" stroke-width="3"/><line x1="50" y1="20" x2="50" y2="240" stroke="#2b2b3a" stroke-width="3"/>';
+    h += `<rect x="${X(AVG_FROM)}" y="20" width="${X(T) - X(AVG_FROM)}" height="220" fill="#ffe58a" opacity=".25"/><text x="${X(AVG_FROM) + 4}" y="36" font-size="15">统计占比用的时间段</text>`;
+    for (let t = 0; t <= T; t += 20) h += `<text x="${X(t)}" y="262" text-anchor="middle" font-size="16">${t}</text>`;
+    h += `<text x="40" y="32" text-anchor="end" font-size="16">${Math.round(mx)}</text><text x="40" y="250" text-anchor="end" font-size="16">0</text>`;
+    const pl = (arr, col) => `<polyline fill="none" stroke="${col}" stroke-width="4" stroke-linejoin="round" points="${arr.map((v, i) => X(s.ts[i]).toFixed(1) + "," + Y(v).toFixed(1)).join(" ")}"/>`;
+    h += pl(s.rs, "#3b82f6") + pl(s.fs, "#e5484d");
+    h += `<rect x="470" y="8" width="18" height="12" fill="#3b82f6" stroke="#2b2b3a" stroke-width="2"/><text x="494" y="20" font-size="16">兔子</text>`;
+    h += `<rect x="560" y="8" width="18" height="12" fill="#e5484d" stroke="#2b2b3a" stroke-width="2"/><text x="584" y="20" font-size="16">狐狸</text>`;
+    h += `<text x="680" y="284" text-anchor="end" font-size="16">时间 →</text>`;
+    $("ppsvg").innerHTML = h;
+
+    const pr = peaks(s.rs), pf = peaks(s.fs);
+    const dt = s.ts[1];
+    let per = "—", lag = "—";
+    if (pr.length >= 2) per = ((pr[pr.length - 1] - pr[0]) / (pr.length - 1) * dt).toFixed(1);
+    const lags = [];
+    pr.forEach(i => { const j = pf.find(k => k > i); if (j !== undefined) lags.push((j - i) * dt); });
+    if (lags.length) lag = (lags.reduce((a, c) => a + c, 0) / lags.length).toFixed(1);
+    const g0 = Math.round(AVG_FROM / dt);
+    const avg = arr => arr.slice(g0).reduce((a, c) => a + c, 0) / (arr.length - g0);
+    const aR = avg(s.rs), aF = avg(s.fs), share = aR + aF > 0 ? aF / (aR + aF) : 0;
+    const rEnd = s.rs[s.rs.length - 1], fEnd = s.fs[s.fs.length - 1];
+    const gb = s.b - s.f, gd = s.d + s.f;
+    let theo = "不适用";
+    if (!s.useCap && gb > 0) theo = (aF + aR >= 0 ? ((gb / s.a) / (gb / s.a + gd / (CONV * s.a))) * 100 : 0).toFixed(0) + "%";
+    $("ppstat").innerHTML = `<span class="stat">兔子平均 <b>${aR.toFixed(0)}</b></span><span class="stat">狐狸平均 <b>${aF.toFixed(0)}</b></span><span class="stat">狐狸占比 <b>${(share * 100).toFixed(0)}%</b></span><span class="stat">理论占比 <b>${theo}</b></span><span class="stat">峰值间隔 <b>${per}</b></span><span class="stat">狐狸晚约 <b>${lag}</b></span>`;
+    let m;
+    if (rEnd === 0 || fEnd === 0) {
+      const when = s.ts.findIndex((_, i) => (s.rs[i] === 0) || (s.fs[i] === 0));
+      m = (fEnd === 0 ? "狐狸" : "兔子") + `灭绝了（约在时间 ${s.ts[when].toFixed(0)}）。捕食太猛或波动太大时，谷底可能低到回不来：这就是“过度捕食”的崩盘。`;
+    } else if (s.useCap) {
+      const half = Math.floor(s.rs.length / 2);
+      const amp = a => Math.max(...a.slice(half)) - Math.min(...a.slice(half));
+      const amp0 = a => Math.max(...a.slice(0, half)) - Math.min(...a.slice(0, half));
+      m = amp(s.rs) < amp0(s.rs) * 0.5 ? "振荡在衰减：额外的食物上限是一个及时的负反馈，帮系统更快稳下来。" : "仍有明显振荡：试着把上限调小，看看衰减会不会更快。";
+    } else {
+      m = "看红线总落后蓝线：先有兔子多，才有狐狸多。试着改变“捕捞强度”：捕得越狠，狐狸占比越低；停捕后占比升高。";
+    }
+    $("ppmsg").textContent = m;
+    return { share };
+  }
+  ["ppb", "ppa", "ppd", "ppk", "ppcap", "ppf"].forEach(id => $(id).addEventListener("input", run));
+  $("ppcap").addEventListener("change", run);
+  $("ppreset").onclick = () => { $("ppb").value = 0.6; $("ppa").value = 0.012; $("ppd").value = 0.4; $("ppk").value = 150; $("ppcap").checked = false; run(); };
+  document.querySelectorAll("[data-g]").forEach(b => b.onclick = () => {
+    guess = b.dataset.g;
+    document.querySelectorAll("[data-g]").forEach(x => x.classList.toggle("on", x === b));
+  });
+  $("c5war0").onclick = () => { $("ppf").value = 0.2; run(); };
+  $("c5war1").onclick = () => {
+    const before = (+$("ppf").value === 0) ? null : run().share;
+    $("ppf").value = 0; const after = run().share;
+    let t = "";
+    if (before !== null) {
+      t = `占比从 ${(before * 100).toFixed(0)}% 变成 ${(after * 100).toFixed(0)}%：停捕后狐狸（捕食者）占比${after > before ? "变高了" : "没有变高"}。`;
+      if (guess) t += (guess === "up") === (after > before) ? " 你猜对了！" : " 和你的猜测相反——这正是丹科纳当年感到困惑的地方。";
+      else t += " （下次可以先选一个“我猜”再点。）";
+    }
+    t += "原因：捕捞同时压低两种动物，但对捕食者的伤害更大；停捕后捕食者恢复得更多。";
+    $("ppmsg").textContent = t;
+  };
+  run();
+})();
+
+// ================= 杠杆实验台 =================
+(function () {
+  const NS = "http://www.w3.org/2000/svg";
+  $("c5t1").onclick = () => tab(1); $("c5t2").onclick = () => tab(2);
+  function tab(n) {
+    $("c5p1").classList.toggle("on", n === 1); $("c5p2").classList.toggle("on", n === 2);
+    $("c5t1").classList.toggle("alt", n !== 1); $("c5t2").classList.toggle("alt", n !== 2);
+  }
+  function axes(x0, y0, x1, y1, xt, yt, xl) {
+    let s = `<rect x="${x0}" y="${y1}" width="${x1 - x0}" height="${y0 - y1}" fill="#fffef7" stroke="#2b2b3a" stroke-width="3"/>`;
+    xt.forEach(([px, lab]) => s += `<text x="${px}" y="${y0 + 20}" text-anchor="middle" font-size="16">${lab}</text>`);
+    yt.forEach(([py, lab]) => s += `<text x="${x0 - 6}" y="${py + 5}" text-anchor="end" font-size="16">${lab}</text><line x1="${x0}" x2="${x1}" y1="${py}" y2="${py}" stroke="#2b2b3a" stroke-opacity=".15"/>`);
+    s += `<text x="${(x0 + x1) / 2}" y="${y0 + 42}" text-anchor="middle" font-size="16">${xl}</text>`;
+    return s;
+  }
+  const line = (pts, col, w, dash) => `<polyline fill="none" stroke="${col}" stroke-width="${w}" ${dash ? 'stroke-dasharray="6 6"' : ""} stroke-linejoin="round" points="${pts.map(p => p[0].toFixed(1) + "," + p[1].toFixed(1)).join(" ")}"/>`;
+
+  // ---- 滚雪球 ----
+  const TT = 300, R = 0.1;
+  function snow(keff) {
+    let a = 105, b = 100; const out = [];
+    for (let t = 0; t <= TT; t++) {
+      const s = a / (a + b); out.push(s);
+      const e = keff * (2 * s - 1);
+      a *= 1 + R * (1 + e); b *= 1 + R * (1 - e);
+      const z = a + b; a = a / z * 205; b = b / z * 205;
+    }
+    return out;
+  }
+  function draw1() {
+    const k = +$("c5k").value, on = $("c5cu").checked, c = +$("c5c").value;
+    $("c5kv").textContent = k.toFixed(2); $("c5cv").textContent = c.toFixed(2); $("c5c").disabled = !on;
+    const keff = k - (on ? c : 0);
+    const X = t => 60 + t / TT * 620, Y = v => 270 - (v - 0.4) / 0.6 * 250;
+    let s = axes(60, 270, 680, 20, [0, 100, 200, 300].map(t => [X(t), t]), [0.5, 0.6, 0.7, 0.8, 0.9, 1].map(v => [Y(v), Math.round(v * 100) + "%"]), "回合 →　灰虚线：k = 0.2 / 0.5 / 1.0");
+    s += `<line x1="60" x2="680" y1="${Y(0.8)}" y2="${Y(0.8)}" stroke="#e5484d" stroke-dasharray="5 6" stroke-width="2.5"/><text x="676" y="${Y(0.8) - 10}" text-anchor="end" font-size="16" fill="#e5484d">80% = 基本决出胜负</text>`;
+    [[0.2, "k=0.2"], [0.5, "k=0.5"], [1, "k=1.0"]].forEach(([kk, lab]) => {
+      const arr = snow(kk); s += line(arr.map((v, t) => [X(t), Y(v)]), "#9a9aa8", 2.5, true);
+      
+    });
+    const live = snow(keff);
+    s += line(live.map((v, t) => [X(t), Y(Math.max(0.4, v))]), "#e5484d", 5);
+    $("c5sv1").innerHTML = s;
+    const t80 = live.findIndex(v => v >= 0.8), fin = live[TT];
+    let m;
+    if (keff > 0.0001) m = `净回路增益 k${on ? "−c" : ""} = <b>${keff.toFixed(2)} &gt; 0</b>：正反馈占主导，领先者份额一路上升到 100%。` + (t80 >= 0 ? `大约第 <b>${t80}</b> 回合基本决出胜负。` : `300 回合内还没到 80%，但<b>方向已定，只是更慢</b>。`) + (on ? "" : " 试试把 k 调小：只是更晚，终点不变。再勾上“追赶机制”，把 c 调到比 k 大。");
+    else if (Math.abs(keff) <= 0.0001) m = "两个回路<b>刚好抵消</b>：领先优势既不扩大也不缩小，停在原地。";
+    else m = `净回路增益 = <b>${keff.toFixed(2)} &lt; 0</b>：负反馈占主导，差距被拉回，A 的份额收敛到 <b>${(fin * 100).toFixed(0)}%</b>（接近 50%）。注意：追赶太强也有代价——c 远大于 k 时，领先者的努力会被抹平。`;
+    $("c5o1").innerHTML = m;
+  }
+  ["c5k", "c5cu", "c5c"].forEach(id => $(id).addEventListener("input", draw1));
+  $("c5cu").addEventListener("change", draw1);
+
+  // ---- 通胀浴缸 ----
+  const T2 = 200;
+  function eco(I, D, tau) {
+    let g = 0; const out = [0];
+    for (let t = 1; t <= T2; t++) { g = Math.max(0, g + I - D - tau * g); out.push(g); }
+    return out;
+  }
+  function draw2() {
+    const I = +$("c5i").value, D = +$("c5d").value, on = $("c5tx").checked, tau = on ? +$("c5t").value / 100 : 0;
+    $("c5iv").textContent = I; $("c5dv").textContent = D; $("c5tv").textContent = (+$("c5t").value).toFixed(1) + "%"; $("c5t").disabled = !on;
+    const base = eco(60, 40, 0), live = eco(I, D, tau);
+    const mx = Math.max(500, ...base, ...live) * 1.08;
+    const X = t => 60 + t / T2 * 620, Y = v => 270 - v / mx * 250;
+    const yt = [0, 0.25, 0.5, 0.75, 1].map(f => [Y(f * mx / 1.08), Math.round(f * mx / 1.08).toString()]);
+    let s = axes(60, 270, 680, 20, [0, 50, 100, 150, 200].map(t => [X(t), t]), yt, "回合 →　纵轴：金币总量");
+    s += line(base.map((v, t) => [X(t), Y(v)]), "#9a9aa8", 2.5, true) + `<text x="${X(6)}" y="72" font-size="16" fill="#4b4b5e">灰色虚线：默认情况</text>`;
+    s += line(live.map((v, t) => [X(t), Y(v)]), "#3b82f6", 5);
+    $("c5sv2").innerHTML = s;
+    const net = I - D, end = live[T2];
+    let m;
+    if (tau > 0) {
+      const eq = net > 0 ? net / tau : 0;
+      m = net > 0 ? `比例消耗是个<b>随水位变大的排水口</b>：金币越多，流出越多。总量被拉向平衡点 (产出−固定消耗)/比例 ≈ <b>${eq.toFixed(0)}</b>，不再无限上涨（第 200 回合：${end.toFixed(0)}）。` : "产出不超过固定消耗，加上比例消耗，金币总量被压到 0：现在是<b>通缩</b>，没人有钱了。";
+    } else if (net > 0) m = `每回合净流入 <b>${net}</b>，总量<b>一直线性上涨</b>（第 200 回合：${end.toFixed(0)}）。现在把“产出”减少 10%（60→54）试试：仍然大于消耗 40，涨得慢一点，但<b>照样无限涨</b>。勾上“比例消耗”看看。`;
+    else if (net === 0) m = "流入和流出刚好相等：总量不变。但这是刀尖上的平衡，稍有偏差就会涨或跌。";
+    else m = "固定消耗大于产出：总量被抽干到 0，这是反过来的失败（通缩）。可见<b>只靠固定数值，要调到刚好平衡几乎不可能</b>。";
+    $("c5o2").innerHTML = m;
+  }
+  ["c5i", "c5d", "c5tx", "c5t"].forEach(id => $(id).addEventListener("input", draw2));
+  $("c5tx").addEventListener("change", draw2);
+  $("c5reset").onclick = () => {
+    $("c5k").value = 0.5; $("c5cu").checked = false; $("c5c").value = 0.7;
+    $("c5i").value = 60; $("c5d").value = 40; $("c5tx").checked = false; $("c5t").value = 2;
+    draw1(); draw2();
+  };
+  draw1(); draw2();
+})();
+
+
+// ================= 登山者：局部最优 =================
+(function () {
+  const f = x => 20 + 85 * Math.exp(-(((x - 170) / 60) ** 2)) + 190 * Math.exp(-(((x - 520) / 75) ** 2));
+  const Y = x => 262 - f(x);
+  let hx = 120, timer = null, ticks = 0, stuck = 0;
+  const svg = $("c5hl");
+  function render() {
+    let pts = "";
+    for (let x = 0; x <= 700; x += 4) pts += x + "," + Y(x).toFixed(1) + " ";
+    let s = '<polygon points="0,262 ' + pts + '700,262" fill="#b6e8a8" stroke="#2b2b3a" stroke-width="3.5"/>';
+    s += '<text x="170" y="' + (Y(170) - 44) + '" text-anchor="middle" font-size="17">小山头</text>';
+    s += '<text x="520" y="' + (Y(520) - 24) + '" text-anchor="middle" font-size="17">主峰</text>';
+    s += '<text x="20" y="22" font-size="16">点图上任意位置，把登山者放在那里</text>';
+    const cy = Y(hx) - 10;
+    s += '<circle cx="' + hx + '" cy="' + cy + '" r="10" fill="#e5484d" stroke="#2b2b3a" stroke-width="3"/>';
+    s += '<path d="M' + hx + " " + (cy - 10) + " v-16 l12 5 l-12 5\" fill=\"#ffe58a\" stroke=\"#2b2b3a\" stroke-width=\"2\"/>";
+    svg.innerHTML = s;
+    $("c5hh").textContent = Math.round(f(hx));
+  }
+  function stop(msg, ok) {
+    clearInterval(timer); timer = null; $("c5hgo").textContent = "出发";
+    $("c5hmsg2").innerHTML = msg; $("c5hmsg2").classList.toggle("ok", !!ok);
+  }
+  function tick() {
+    ticks++;
+    const e = +$("c5ex").value / 100;
+    let moved = false;
+    if (e > 0 && Math.random() < e * 0.25) {
+      const c = 10 + Math.random() * 680;
+      if (f(c) > f(hx)) { hx = c; moved = true; }
+    }
+    if (!moved) {
+      const a = f(hx + 3), b = f(hx - 3), c0 = f(hx);
+      if (a > c0 && a >= b) { hx = Math.min(690, hx + 3); moved = true; }
+      else if (b > c0) { hx = Math.max(10, hx - 3); moved = true; }
+    }
+    stuck = moved ? 0 : stuck + 1;
+    render();
+    const onMain = Math.abs(hx - 520) < 25, onSmall = Math.abs(hx - 170) < 25;
+    if (stuck >= 12 && onMain) return stop("✔ 登山者登上了<b>主峰</b>（高度 " + Math.round(f(hx)) + "）。" + (e > 0 ? "靠的是那几次随机跳跃，没有它，他会一直待在小山头。" : "这次起点本来就在主峰的山坡上。把起点换到左边山脚再试试。"), true);
+    if (stuck >= 12 && e === 0) return stop("登山者停在了<b>小山头</b>（高度 " + Math.round(f(hx)) + "，主峰是 " + Math.round(f(520)) + "）。他每个方向看过去都是下坡，没有一步能让他更好，这就是局部最优。拖动“探索度”再试一次。", false);
+    if (ticks >= 400) return stop(onMain ? "他最后到了主峰。" : "探索了一阵，这次没有跳到更高的地方，停在高度 " + Math.round(f(hx)) + "。运气不好也是探索的一部分，再出发一次，或把探索度调高。", false);
+  }
+  function go() {
+    if (timer) return stop("已暂停。", false);
+    ticks = 0; stuck = 0; $("c5hmsg2").classList.remove("ok"); $("c5hmsg2").textContent = "出发了……"; $("c5hgo").textContent = "暂停";
+    timer = setInterval(tick, 25);
+  }
+  $("c5hgo").onclick = go;
+  const setStart = x => { if (timer) stop("", false); hx = Math.max(10, Math.min(690, x)); $("c5hmsg2").classList.remove("ok"); $("c5hmsg2").textContent = "已放好，按“出发”。"; render(); };
+  $("c5hl1").onclick = () => setStart(60);
+  $("c5hl2").onclick = () => setStart(20 + Math.random() * 660);
+  svg.addEventListener("pointerdown", e => { const r = svg.getBoundingClientRect(); setStart((e.clientX - r.left) / r.width * 700); });
+  $("c5ex").addEventListener("input", () => { $("c5exv").textContent = $("c5ex").value + "%"; });
+  hx = 60; render();
+})();
+
+// ================= 杠杆阶梯 =================
+(function () {
+  const TXT = [
+    "<b>参数</b>：血量 10%、掉率 5%。最便宜，也最先被想到，但常常只是让系统更快或更慢地走向同一个结局。",
+    "<b>存量–流量结构与延迟</b>：加一个“排水口”（修理费、税），或改刷新间隔。改的是水怎么流、多久后才看到结果。",
+    "<b>反馈回路的强弱</b>：加追赶机制，或调小滚雪球的增益。直接改变“越赢越赢”或“越输越稳”的力度。",
+    "<b>信息流与规则</b>：让玩家看到谁在领先，或改胜利条件。人们是根据看到的信息和规则的边界做决定的。",
+    "<b>自组织与目标</b>：开放玩家创作、模组、自定义房间，或改“这个游戏想让人干什么”。系统自己长出新结构。",
+    "<b>范式</b>：“游戏是什么”“玩家来这里图什么”的想法本身。它一变，上面所有层都跟着变，也最难改。"
+  ];
+  document.querySelectorAll(".c5ldr .hit").forEach(h => {
+    const pick = () => { $("c5ldrmsg").innerHTML = TXT[+h.dataset.i]; };
+    h.addEventListener("click", pick);
+    h.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); pick(); } });
+  });
+})();
+
+GD.mountQuiz($("quiz"), [
+  { q: "下面哪一项最贴近“涌现”的含义？", opts: ["设计师把每个玩法都逐条写进规则里", "整体表现出单个规则里看不到的行为，来自规则间的相互作用", "游戏里使用了随机数", "玩家作弊"], a: 1, why: "涌现是整体层面的新行为，源于部分之间的相互作用。它不依赖随机（生命游戏完全确定），也不是设计师逐条写出来的。" },
+  { q: "【为什么】为什么捕食者–猎物的数量会周期性涨落，而且狐狸的峰总晚于兔子？", opts: ["因为随机数在作怪", "因为带滞后的负反馈：狐狸要等兔子多了才会增多，又会因吃光兔子而下降", "因为兔子学会了躲避", "因为模型里有 bug"], a: 1, why: "兔子多，狐狸增加（有延迟）；兔子被吃少，狐狸饿死（又有延迟）。负反馈加上滞后就产生振荡，不需要随机和“学习”。" },
+  { q: "游戏经济严重通胀（金币只进不出）。按梅多斯的“杠杆点”观点，最值得先考虑哪种改法？", opts: ["把每只怪的掉落金币减少一点点", "增加金币消耗渠道，让流出与流入形成平衡回路（如随存量增大的税、维护费）", "把所有物价提高 1%", "什么也不做，等玩家自己适应"], a: 1, why: "改反馈结构通常比改数值更有力。只减少流入而没有流出，存量仍会涨；加入随水位增大的“排水口”才改变了系统的结构（你在杠杆实验台里亲手验证过）。" },
+  { q: "【为什么】新版本上线后，几乎所有玩家都用同一套最强配置。从“局部最优”的角度看，最可能的原因是：", opts: ["玩家都没有创意", "每个玩家都在一步步改进自己的打法，最后一起爬到了同一个山头", "游戏有 bug", "设计师偏袒这套配置"], a: 1, why: "只往“更好”的方向小步改进，很容易困在身边最高的山头。想要多样性，就得让别的路线也有机会出头，或者鼓励一点探索。" },
+  { q: "【为什么被发明】康威设计生命游戏，主要是想回答什么问题？", opts: ["怎样做出画面最好看的游戏", "能不能用极其简单的规则，得到复杂、难以预测的行为（受冯·诺依曼自复制机器启发）", "怎样让电脑下赢围棋", "怎样给玩家设置难度"], a: 1, why: "康威受冯·诺依曼的自复制机器启发，想找比它简单得多的规则；他还猜想“没有图案能无限增长”，悬赏 50 美元，后来被戈斯珀小组的滑翔机枪推翻。" },
+  { q: "【为什么被发明】一战期间亚得里亚海捕捞减少，渔获中捕食性鱼类的比例反而上升。沃尔泰拉的模型怎样解释？", opts: ["捕食者天生更会躲渔网", "捕捞同时压低了猎物与捕食者，对捕食者的伤害更大；停捕后捕食者恢复得更多", "战争使猎物都死光了", "这是统计误差，无法解释"], a: 1, why: "在最简模型里，捕捞等于同时提高两者的死亡率：猎物的平均数与（捕食者死亡率＋捕捞）成正比，捕食者的平均数与（猎物出生率－捕捞）成正比。所以捕捞减少，捕食者占比上升。这个模型就是为了解释这个谜而提出的。" },
+]);
+
+</script>
+</body>
+</html>

@@ -1,0 +1,684 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>第20章 类型设计套路</title>
+<link rel="stylesheet" href="css/style.css">
+<style>
+  .gtag{display:inline-block;font-size:.9rem;border:2px solid var(--ink);border-radius:12px;padding:0 8px;margin:2px;background:#fff}
+  .halo{paint-order:stroke;stroke:#fff;stroke-width:4px;stroke-linejoin:round}
+  .scroll{overflow-x:auto}
+  /* 雷达 */
+  .rchip{display:inline-flex;align-items:center;gap:6px;font:inherit;font-size:1rem;border:2.5px solid var(--ink);background:#fff;border-radius:20px;padding:2px 12px;cursor:pointer;margin:3px}
+  .rchip i{display:inline-block;width:16px;height:16px;border:2px solid var(--ink);border-radius:50%}
+  .rchip.on{background:var(--green)}
+  /* 划线 */
+  table.dl{border-collapse:collapse;width:100%;font-size:.95rem}
+  table.dl th,table.dl td{border:2.5px solid var(--ink);padding:5px 6px;text-align:center}
+  table.dl th{background:var(--yellow);font-family:var(--hand);font-weight:400;font-size:1.05rem}
+  table.dl td.nm{text-align:left;white-space:nowrap}
+  table.dl td.ok{background:#eaf9e4}table.dl td.no{background:#f3f0e6;color:#999}
+  table.dl tr.pass td.nm{background:#b6e8a8;font-weight:700}
+  table.dl tr.fail td.nm{background:#f0eee6;color:#8a8a8a}
+  .reqrow label{display:inline-block;margin:3px 12px 3px 0;font-size:.98rem;cursor:pointer}
+  /* 飞机 */
+  #c20_plane g.reg{cursor:pointer}
+  #c20_plane g.reg:hover .shape{filter:brightness(.93)}
+  .tbl2{width:100%;border-collapse:collapse;font-size:.95rem;margin:6px 0}
+  .tbl2 th,.tbl2 td{border:2.5px solid var(--ink);padding:4px 8px;text-align:center}
+  .tbl2 th{background:var(--yellow);font-family:var(--hand);font-weight:400}
+  /* 幸存者偏差 */
+  #c20_grid{display:grid;grid-template-columns:repeat(20,1fr);gap:2px;max-width:560px;margin:8px auto}
+  #c20_grid i{aspect-ratio:1;background:#d9d4c3;border:1.5px solid var(--ink);border-radius:3px;transition:opacity .4s,background .4s,transform .3s}
+  #c20_grid i.win{background:#ffd23f;transform:scale(1.12)}
+  #c20_grid i.dim{opacity:.07}
+  .fr{display:grid;grid-template-columns:120px 1fr;gap:8px;align-items:center;margin:6px 0}
+  .fbar{height:20px;background:#fff;border:2.5px solid var(--ink);border-radius:8px;position:relative;overflow:hidden}
+  .fbar span{display:block;height:100%;background:var(--orange)}
+  .fbar.b2 span{background:var(--blue)}
+  .fnum{font-size:.9rem;margin:2px 0 0}
+  .band{position:relative;height:22px;background:#fff;border:2.5px solid var(--ink);border-radius:8px}
+  .band .rg{position:absolute;top:2px;bottom:2px;background:var(--orange);border:1.5px solid var(--ink);border-radius:4px}
+  .band .bs{position:absolute;top:-3px;bottom:-3px;width:4px;background:#2b2b3a}
+  @media(max-width:700px){.fr{grid-template-columns:1fr}}
+  .sticky.done{background:#dff5d4}
+  .c20ok{font-weight:700}
+</style>
+</head>
+<body data-ch="20">
+<main class="wrap">
+  <div class="hero">
+    <div class="txt">
+      <span class="badge">第 20 章</span>
+      <h1>类型设计套路</h1>
+      <p class="sub">类型不是标签，而是一份“循环 + 承诺”的合同。</p>
+    </div>
+    <svg viewBox="0 0 190 150" class="rough" aria-hidden="true">
+      <rect x="20" y="20" width="60" height="45" rx="8" fill="#ffe58a" stroke="#2b2b3a" stroke-width="4"/>
+      <rect x="105" y="20" width="60" height="45" rx="8" fill="#b6e8a8" stroke="#2b2b3a" stroke-width="4"/>
+      <rect x="20" y="85" width="60" height="45" rx="8" fill="#ffb3c6" stroke="#2b2b3a" stroke-width="4"/>
+      <rect x="105" y="85" width="60" height="45" rx="8" fill="#a8dcf0" stroke="#2b2b3a" stroke-width="4"/>
+      <path d="M80 42 H105 M50 65 V85 M135 65 V85 M80 108 H105" stroke="#2b2b3a" stroke-width="4" fill="none"/>
+    </svg>
+  </div>
+
+  <div class="goals">
+    <h3>学习目标</h3>
+    <span class="time">约 45 分钟</span>
+    <ul>
+      <li>读完你能说清五个常见类型各自的“核心循环 + 玩家承诺”，并讲出“类型”这个标签是怎么<b>长出来</b>的。</li>
+      <li>读完你能识别<span class="term" tabindex="0" data-def="幸存者偏差：只观察“活下来的”样本，忽略没活下来的，从而得出错误的因果结论。">幸存者偏差</span>，解释为什么“成功游戏的共同点”不等于“成功的原因”，并知道该补看哪些数据。</li>
+      <li>读完你能用玩家的<span class="term" tabindex="0" data-def="图式（schema）：大脑里关于“这类事物通常是什么样”的预设框架，用来快速理解新信息。">图式</span>与期待，判断一次“打破类型惯例”会带来惊喜还是困惑，并说出为什么同类游戏总会扎堆。</li>
+    </ul>
+  </div>
+
+  <!-- ===== 1 是什么：类型 = 循环 + 承诺 ===== -->
+  <div class="sec"><span class="n">1</span><h2><span class="tag what">是什么</span>类型 = 核心循环 + 玩家承诺</h2></div>
+  <p>你在商店页上看到“肉鸽”两个字，没点开任何截图，就已经猜到了不少：每一局都不太一样，死了会很心疼，多半还会忍不住再来一局。谁告诉你的？没有人，是这个词本身。</p>
+  <p>所以类型对设计者更像一份<b>合同</b>。玩家挑了这个类型，就是在期待某种<b>核心循环</b>（第 2 章讲过，玩家一遍遍重复的那组动作），也在期待某些<b>玩家承诺</b>，也就是“你会得到这种体验”。</p>
+  <div class="grid2">
+    <div class="card y"><h3>🔁 核心循环</h3><p>玩家一遍遍重复的那组动作：例如“跳跃 → 落地 → 前进”，或者“抽牌 → 出牌 → 打赢 → 拿新牌”。</p></div>
+    <div class="card p"><h3>🤝 玩家承诺</h3><p>这个类型默认保证的体验：平台跳跃承诺<b>“失败是我操作的问题”</b>；肉鸽承诺<b>“每一局都不一样”</b>；解谜承诺<b>“想通的那一刻很爽”</b>。</p></div>
+  </div>
+  <div class="card">
+    <svg viewBox="0 0 740 300" width="100%" role="img" aria-label="类型合同示意图：设计者承诺核心循环与玩家承诺，兑现带来信任，违背带来被骗感">
+      <defs><marker id="c20ar" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2b2b3a"/></marker></defs>
+      <g class="rough" stroke="#2b2b3a" stroke-width="3.5">
+        <rect x="10" y="20" width="170" height="90" rx="10" fill="#fff7cf"/>
+        <rect x="560" y="20" width="170" height="90" rx="10" fill="#e8f6fc"/>
+        <rect x="215" y="10" width="310" height="120" rx="6" fill="#fff"/>
+        <rect x="30" y="190" width="320" height="90" rx="10" fill="#eaf9e4"/>
+        <rect x="390" y="190" width="320" height="90" rx="10" fill="#ffe9ef"/>
+        <path d="M180 65 H213 M527 65 H558" fill="none" marker-end="url(#c20ar)"/>
+        <path d="M300 130 L200 188" fill="none" marker-end="url(#c20ar)"/>
+        <path d="M440 130 L540 188" fill="none" marker-end="url(#c20ar)"/>
+      </g>
+      <g font-size="18" fill="#2b2b3a" text-anchor="middle">
+        <text x="95" y="58">设计者</text><text x="95" y="88">“我做的是肉鸽”</text>
+        <text x="645" y="58">玩家</text><text x="645" y="88">“那我期待……”</text>
+        <text x="370" y="42" font-size="20">📜 类型合同</text>
+        <text x="370" y="72">① 核心循环：你会反复做什么</text>
+        <text x="370" y="100">② 玩家承诺：你会得到什么体验</text>
+        <text x="190" y="225">兑现 ✔</text><text x="190" y="255">玩家觉得“就是这个味”，信任</text>
+        <text x="550" y="225">违背 ✘</text><text x="550" y="255">玩家觉得“被骗了”，比内容少更伤人</text>
+      </g>
+    </svg>
+  </div>
+  <div class="eg" data-ic="🏃" data-t="平台跳跃"><span data-illus="c20_coyote"></span><div class="egt"><b>平台跳跃</b>：你买它，是想靠操作越来越准。只要“土狼时间”（走出边缘后一小会儿仍能起跳）这类宽容判定守好，死了你就会想“怪我手残，再来一次”。</div></div>
+  <div class="eg" data-ic="🧩" data-t="解谜"><span data-illus="c20_aha"></span><div class="egt"><b>解谜</b>：承诺是“我能靠想通”。线索够多、又不直接说答案，才会有那一下“啊哈”。</div></div>
+  <div class="eg" data-ic="🌶️" data-t="川菜馆"><span data-illus="c20_chili"></span><div class="egt"><b>走进一家川菜馆</b>：你默认“有辣”。点开一部恐怖片，你默认“会被吓”。菜系和电影类型一样，都是一份没人写下来的合同。</div></div>
+  <div class="eg bad" data-ic="💢" data-t="判定不准"><span data-illus="c20_hitbox"></span><div class="egt"><b>违背承诺</b>：宣传是“精确平台跳跃”，结果判定模糊，明明踩到平台却掉下去。玩家不是嫌它难，而是觉得<b>被骗了</b>，因为“失败是我的错”这条承诺没兑现。</div></div>
+
+  <!-- ===== 2 是什么：五个类型 ===== -->
+  <div class="sec"><span class="n">2</span><h2><span class="tag what">是什么</span>五个类型的设计套路</h2></div>
+  <p>承诺各不相同，兑现承诺的办法也各不相同。下面五个类型，每一个都是围绕自己的承诺长出来的。</p>
+  <div class="card g">
+    <h3>🏃 平台跳跃：精确控制 + 关卡教学</h3>
+    <div class="withimg"><span data-illus="c20_gplat"></span><div>
+      <p><b>承诺：</b>公平的挑战，死了是我的错。</p>
+      <p>手感是地基：跳跃高度、加速度、空中可控性要调到极顺。常见的宽容技巧有<span class="term" tabindex="0" data-def="Coyote time：角色刚走出平台边缘的短暂瞬间里，仍然允许起跳的宽容设计。">土狼时间</span>，以及“输入缓冲”（提前按一下跳也算数）。</p>
+      <p>关卡本身就是教程：先在安全的地方学会一个动作，再加危险，最后组合（第 11 章讲过）。检查点要密、重来要快，让“再试一次”几乎没有成本。</p>
+    </div></div>
+  </div>
+  <div class="card o">
+    <h3>💀 Roguelike（肉鸽）：程序生成 + 永久死亡 + 两种成长</h3>
+    <div class="withimg rev"><span data-illus="c20_grogue"></span><div>
+      <p><b>承诺：</b>每一局都是新故事。名字来自 1980 年前后的老游戏《Rogue》。</p>
+      <p><span class="term" tabindex="0" data-def="用规则和随机数在运行时自动生成地图、敌人、奖励等内容，而不是全部手工摆放。">程序生成</span>让地图、敌人、奖励每局重新拼出来，玩家没法死记套路。<span class="term" tabindex="0" data-def="死亡后进度被清除、从头再来的规则（permadeath）。">永久死亡</span>让每个决定都有分量，因为死了就从头来。</p>
+      <p>局内成长只在这一局里有效，死了就没了；<span class="term" tabindex="0" data-def="死亡后仍保留的永久解锁或强化（meta progression），与只在一局内有效的局内成长相对。">局外成长</span>则在死后仍保留。带局外成长的作品，常被叫作 roguelite。</p>
+    </div></div>
+  </div>
+  <div class="card v">
+    <h3>🃏 卡牌构筑：牌库 + 抽牌随机 + 协同</h3>
+    <div class="withimg"><span data-illus="c20_gdeck"></span><div>
+      <p><b>承诺：</b>我的聪明才智造就了强大的牌库。</p>
+      <p>玩家先<b>构筑</b>牌库（挑哪些牌加入），再在战斗中从牌库<b>随机抽牌</b>。策略在构筑，紧张感来自抽牌。</p>
+      <p><span class="term" tabindex="0" data-def="多个元素组合后的效果大于各自单独之和（synergy）。">协同</span>是乐趣的核心：几张牌放一起，效果大于各自之和，例如“叠加护甲”配“护甲越多伤害越高”。好设计会留出多条协同路线，而不是只有一套最优解。加牌总比删牌诱人，但牌库越厚，核心组合越难抽到，所以“精简牌库”本身就是一个有趣的选择。</p>
+    </div></div>
+  </div>
+  <div class="card b">
+    <h3>🏰 策略 / 4X：经济、扩张、军事的三角</h3>
+    <div class="withimg rev"><span data-illus="c20_g4x"></span><div>
+      <p><b>承诺：</b>我的长期规划能让帝国壮大。<span class="term" tabindex="0" data-def="4X：explore（探索）、expand（扩张）、exploit（开发）、exterminate（征服）四个动词，概括这类策略游戏的核心行为。">4X</span> 指四个动词：探索、扩张、开发、征服。</p>
+      <p>三者互相牵制：只发展经济会被打，只造军队会没钱，只扩张会战线过长。玩家要不断在“现在投资”和“现在安全”之间权衡。</p>
+      <p>复利是核心：早期的经济投入会滚雪球（第 15 章的水龙头与水槽讲过），所以要靠战争、维护费这些“水槽”防止滚雪球过头。回合很长、信息很多，界面和提示几乎和规则一样重要。</p>
+    </div></div>
+  </div>
+  <div class="card y">
+    <h3>🧩 解谜：顿悟 + 线索</h3>
+    <div class="withimg"><span data-illus="c20_gpuzzle"></span><div>
+      <p><b>承诺：</b>我能靠思考想通。核心体验是<b>顿悟</b>：卡住，突然看懂规则，豁然开朗。</p>
+      <p>线索要足够，也要不直接说出答案：太少是瞎猜，太多就没有顿悟。从一个简单规则出发，逐关加入变化，让玩家先在小例子里学会，再在大问题里用出来。</p>
+      <p>还得防着“暴力试错”：把所有选项挨个点一遍就能过，顿悟就没了。卡太久的玩家需要提示，但要由玩家自己决定要不要。</p>
+    </div></div>
+  </div>
+
+  <h3>类型雷达图：叠加比较</h3>
+  <p>把五个类型放到同一组维度上比较，你会看到它们的“性格”差别。<b>勾选下面的类型，一层一层叠上去</b>，下方会告诉你每个维度谁最高。</p>
+  <div class="card">
+    <svg viewBox="0 0 700 420" width="100%" role="img" aria-label="五个游戏类型在五个维度上的雷达图，可勾选叠加">
+      <g id="c20_radar" class="rough" stroke="#2b2b3a" stroke-width="3"></g>
+      <g id="c20_radarLabels" font-size="18" fill="#2b2b3a"></g>
+    </svg>
+    <div id="c20_rchips"></div>
+    <div><button class="btn alt" id="c20_rall">全部叠上</button><button class="btn pink" id="c20_rnone">清空</button></div>
+    <div class="outbox" id="c20_rtext" style="font-size:1rem;margin-top:6px"></div>
+    <p class="small">数值是为了讲解给出的<b>示意评分</b>（0~5），不是统计数据；同一类型里不同作品差别很大。</p>
+  </div>
+  <div class="sticky" id="c20k1">试试看：把“平台跳跃”和“解谜”叠在一起，找出它们在哪个维度上都很高。<span class="c20ok"></span></div>
+
+  <!-- ===== 3 是什么：两种成长 ===== -->
+  <div class="sec"><span class="n">3</span><h2><span class="tag what">是什么</span>肉鸽的两种成长：局内与局外</h2></div>
+  <p>肉鸽有一个矛盾：永久死亡让人紧张，可是死一次就清零，谁受得了？它的解法是把成长拆成两层。</p>
+  <div class="card">
+    <svg id="c20_growth" viewBox="0 0 740 330" width="100%" role="img" aria-label="左图：只有局内成长时每局起点相同；右图：有局外成长时每局起点逐局抬高"></svg>
+    <p class="small">示意图：每条上升线是一局里力量的增长，✖ 是死亡。左边每局都从同一个起点重来；右边失败会留下永久加成，起点越来越高。</p>
+  </div>
+  <div class="grid2">
+    <div class="card g"><h3>局内成长</h3><p>每一局从零开始，带来<b>即时的选择和惊喜</b>。死了就没了，所以决定有重量。</p></div>
+    <div class="card p"><h3>局外成长</h3><p>让失败也有积累，减少挫败；但太多会让新手“靠刷”而不是“靠学”，需要克制。</p></div>
+  </div>
+  <div class="eg" data-ic="🧛" data-t="Vampire Survivors"><span data-illus="c20_vamp"></span><div class="egt"><b>《Vampire Survivors》</b>：用每局赚到的金币购买永久强化，是典型的局外成长，让再差的一局也“有所得”。</div></div>
+  <div class="eg" data-ic="🔥" data-t="Hades"><span data-illus="c20_hades"></span><div class="egt"><b>《Hades》</b>：死亡是剧情的一部分，死后回到起点，用攒下的资源升级永久能力，同时每次出发的房间和祝福组合都不一样。</div></div>
+  <div class="eg" data-ic="🏋️" data-t="健身"><span data-illus="c20_gym"></span><div class="egt"><b>健身</b>：每次训练的状态是“局内”，坚持几个月留下的体能是“局外”。有了局外成长，“今天练得不好”也不白费。</div></div>
+  <div class="eg bad" data-ic="⚔️" data-t="强化给太猛"><span data-illus="c20_op"></span><div class="egt"><b>差一点就对：局外强化给得太猛</b>。几局之后角色强到不用思考，挑战被磨平，玩家的乐趣从“怎么赢”变成“刷够就赢”。局外成长要缓冲挫败，而不是取代技巧。</div></div>
+
+  <!-- ===== 4 发明故事：类型怎么长出来 ===== -->
+  <div class="sec"><span class="n">4</span><h2><span class="tag origin">发明故事</span>“类型”这个词是怎么长出来的</h2></div>
+  <p>没人在某一天宣布“现在开始，世界上有了肉鸽”。类型是<b>先有一批相似的游戏，再有人想给它们起个共同的名字</b>，名字起好了，边界才开始争论。你在第 1 章见过同样的事：“游戏”这个词没有一条公认的定义，只有家族相似。类型也一样，只是更年轻、吵得更凶。</p>
+  <div class="story">
+    <h3>从《Rogue》到“roguelike”</h3>
+    <p><b>当时的问题。</b>1980 年前后，加州大学圣克鲁兹分校的学生 Michael Toy 和 Glenn Wichman 做了一个用字符画地牢的游戏《Rogue》，地图靠 Ken Arnold 写的 curses 库显示在终端上。它随 BSD UNIX 流传，1983 年的 4.2BSD 里就带着它，可是<b>没有附源代码</b>；直到 1986 年的 4.3BSD，源码才可以获得。想玩“类似的东西”的人，只能从零重做。</p>
+    <p><b>早期的尝试。</b>爱好者们做出了 Hack、Moria、Angband 等相似的游戏，玩家分散在不同的 Usenet 讨论组里，互相很难找到对方。</p>
+    <p><b>关键一步。</b>1993 年，有人提议把这些讨论合并到一个总名下。据维基百科的梳理，争论了大约三周，最后选了 <b>rec.games.roguelike.*</b>，理由是《Rogue》是这类游戏里最老的，算是“最不坏的选项”。一个词，就这样把一批游戏框成了“一个类型”。</p>
+    <p><b>然后边界开始漂。</b>2008 年，国际 Roguelike 开发者大会在柏林举行，社区起草了“柏林诠释”。它不是一条定义，而是一份<b>因素清单</b>，高权重的因素包括随机环境生成、永久死亡、回合制、格子移动等；它拿 ADOM、Angband、Linley’s Dungeon Crawl、NetHack、Rogue 这五款当基准，衡量“一个游戏有多像 roguelike”。同一年，独立游戏《Spelunky》问世，它只满足其中一部分因素，却被很多人叫作肉鸽，于是 roguelite 这类说法也跟着出现了。</p>
+  </div>
+  <div class="timeline">
+    <div class="ev hasimg"><span data-illus="c20_rogue"></span><div><b class="yr">1980 前后</b>　《Rogue》（Toy、Wichman，使用 Arnold 的 curses 库）：用字符画出地牢和一个 @ 代表的冒险者。</div></div>
+    <div class="ev hasimg"><span data-illus="c20_bsd"></span><div><b class="yr">1983 / 1986</b>　4.2BSD 带着《Rogue》，但没有源码；4.3BSD 才可获得源码。想做类似游戏的人，只能从零重做，于是出现了一批“长得像”的游戏。</div></div>
+    <div class="ev hasimg"><span data-illus="c20_usenet"></span><div><b class="yr">1993</b>　Usenet 上的几个讨论组合并，命名为 rec.games.roguelike.*。一个名字把一批游戏框成了一个类型。</div></div>
+    <div class="ev hasimg"><span data-illus="c20_berlin"></span><div><b class="yr">2008</b>　柏林诠释：一份因素清单，而不是定义。</div></div>
+    <div class="ev hasimg"><span data-illus="c20_lite"></span><div><b class="yr">2008 起</b>　《Spelunky》等只满足部分因素的作品流行，roguelite 一类说法出现，边界继续争论。</div></div>
+  </div>
+  <p><b>先自己划线，再看别人怎么划。</b>下面是 6 款常被拿来讨论的游戏。第一步，凭直觉标出<b>你觉得哪些算肉鸽</b>；第二步，勾选你认为“肉鸽必须具备”的条件，看按这个定义哪些游戏会被算进去，和你的直觉一致吗？</p>
+  <div class="board" id="c20_draw">
+    <div class="small"><b>第一步：</b>点游戏名，标记“我觉得它算肉鸽”（再点取消）。</div>
+    <div id="c20_gmarks"></div>
+    <div class="small" style="margin-top:8px"><b>第二步：</b>勾选“必须具备”的条件：</div>
+    <div class="reqrow" id="c20_reqs"></div>
+    <div>
+      <button class="btn alt" data-p="strict">严格派（全部）</button>
+      <button class="btn green" data-p="mid">中间派（前两条）</button>
+      <button class="btn pink" data-p="loose">宽松派（只要死了从头来）</button>
+      <button class="btn" data-p="none">清空</button>
+    </div>
+    <div class="scroll"><table class="dl" id="c20_dtab"></table></div>
+    <div class="msg" id="c20_dmsg" style="font-size:1.05rem;font-family:var(--body)"></div>
+  </div>
+  <div class="sticky" id="c20k2">试试看：先点“严格派”，看哪几款落选；再点“宽松派”，看哪几款被放进来。<span class="c20ok"></span></div>
+  <p class="small">这是为了说明“定义会漂移”的<b>示意分类</b>：因素是简化的五条，各作品的判断也有争议（例如《Slay the Spire》只解锁新内容而不加数值，《Vampire Survivors》的关卡是固定的，随机的是升级选项）。它不是权威的类型划分。对设计者的启示：别纠结“我的游戏算不算某类型”，想清楚<b>你向玩家承诺了什么</b>。</p>
+
+  <!-- ===== 5 发明故事：瓦尔德的飞机 ===== -->
+  <div class="sec"><span class="n">5</span><h2><span class="tag origin">发明故事</span>瓦尔德的飞机：“少了谁”才是关键</h2></div>
+  <div class="story">
+    <h3>该给飞机的哪里加装甲？</h3>
+    <div class="withimg rev"><span data-illus="c20_planeback"></span><div>
+      <p><b>当时的问题。</b>第二次世界大战期间，美国军方想给轰炸机加装装甲，可装甲很重，不可能全身都包。该加在哪里？研究者检查<b>返航</b>的飞机，机翼、机身上弹孔密布，发动机附近却很少。直觉很自然：“加固弹孔多的地方。”</p>
+      <p><b>关键一步。</b>在哥伦比亚大学统计研究小组（SRG）工作的 Abraham Wald 看到了另一面：这些是<b>飞回来的</b>飞机。弹孔少的位置，也许恰恰是“中弹就回不来”的位置，那些飞机根本不在样本里。该加固的，是返航飞机上<b>没有弹孔</b>的地方。</p>
+      <p>Wald 1943 年写的一组备忘录，讨论的正是怎样在只看得到幸存者的情况下，估计飞机各部位的存活概率；其中一份题为《A Method of Estimating Plane Vulnerability Based on Damage of Survivors》，后来由海军分析中心在 1980 年重新印行。Mangel 与 Samaniego 在 1984 年的《美国统计学会杂志》里做过通俗介绍。</p>
+    </div></div>
+    <p class="small">流传的“弹孔图”故事在不同转述里细节有出入（谁画的图、具体数据），这里取被广泛接受的要点：<b>分析样本里缺了谁</b>。下面的飞机和数字都是<b>示意</b>，不是史料数据。</p>
+    <div class="timeline">
+      <div class="ev hasimg"><span data-illus="c20_wald"></span><div><b class="yr">1943</b>　Wald 在 SRG 写下一系列飞机生存性的备忘录：别只看飞回来的飞机，要算出没回来的那一部分。</div></div>
+      <div class="ev hasimg"><span data-illus="c20_jasa"></span><div><b class="yr">1984</b>　Mangel &amp; Samaniego，“Abraham Wald’s work on aircraft survivability”，Journal of the American Statistical Association 79(386)：259–267。</div></div>
+      <div class="ev hasimg"><span data-illus="c20_ask"></span><div><b class="yr">今天</b>　“幸存者偏差”成为统计学与行为科学的通用概念：评估成功者时，先问“失败的呢？”。</div></div>
+    </div>
+    <p><b>先自己试：你来决定装甲加在哪。</b>下图是 140 个“返航飞机上的弹孔”（示意：每架飞机随机中弹，各部位被击中后坠毁的概率不同，我们只看到飞回来的）。点飞机上的部位选 <b>2 处</b>加装装甲（每处使“中弹后坠毁概率”减半，示意），再点“揭晓”。</p>
+    <div class="board">
+      <svg id="c20_plane" viewBox="0 0 720 350" width="100%" role="img" aria-label="轰炸机俯视图，返航飞机上的弹孔分布，可点击部位加装装甲"></svg>
+      <div>
+        <span class="stat">已选装甲 <b id="c20_an">0</b> / 2</span>
+        <button class="btn green" id="c20_ago" disabled>🔍 揭晓</button>
+        <button class="btn pink" id="c20_areset">重来</button>
+      </div>
+      <div id="c20_aout"></div>
+    </div>
+    <div class="sticky" id="c20k3">试试看：先照直觉加固弹孔最多的两处，揭晓后，再重来一次，选弹孔最少的两处，比较两个方案降低的坠毁概率。<span class="c20ok"></span></div>
+  </div>
+
+  <!-- ===== 6 为什么：幸存者偏差 ===== -->
+  <div class="sec"><span class="n">6</span><h2><span class="tag why">为什么成立</span>只看成功者会骗人：幸存者偏差</h2></div>
+  <p>你想做“下一个爆款”，于是研究了 20 款最成功的独立游戏，发现“70% 都是像素风”“一半有肉鸽元素”。结论似乎呼之欲出：做个像素风肉鸽！</p>
+  <p>可是你有没有想过，失败的那几千款里，像素风占多少？如果也是 70%，这个“发现”就毫无信息量。Wald 的飞机，就是同一个陷阱。</p>
+  <div class="why-box">
+    <h3>幸存者偏差</h3>
+    <p><b>原理：</b>当我们只观察被筛选留下来的样本，就会把“筛选留下的特征”误当成“成功的原因”。要检验“特征 X 是不是成功的原因”，至少还要看三样东西：<span class="term" tabindex="0" data-def="基础比例（base rate）：某个特征在全体样本里本来占多大比例。">基础比例</span>（X 在所有游戏里本来占多少）、<b>失败样本</b>（有 X 的游戏成功率，比没有 X 的高吗）、<b>样本量</b>（20 个成功者，随机波动有多大）。</p>
+    <p>用符号说：我们看到的是 P(像素风 | 成功)，想知道的是 P(成功 | 像素风)。两者不同，除非你同时知道 P(像素风) 和 P(成功)。</p>
+    <div class="src">出处：Wald 在 Statistical Research Group 的飞机生存性研究（1943 年备忘录；Mangel &amp; Samaniego, 1984, JASA）。“幸存者偏差”是统计学与行为科学里的通用概念，条件概率的区别是概率论的基本内容。</div>
+  </div>
+  <div class="eg" data-ic="🎮" data-t="爆款都联机"><span data-illus="c20_hits"></span><div class="egt"><b>“爆款都有联机，所以做联机”</b>：如果所有游戏里本来就有 40% 联机，成功者里 40% 联机并不说明什么。要比的是有联机和没联机的成功率。</div></div>
+  <div class="eg" data-ic="🎓" data-t="辍学创业"><span data-illus="c20_dropout"></span><div class="egt"><b>“某某辍学创业成了亿万富翁，所以辍学有助于成功”</b>：我们看不到数量多得多的、辍学后默默无闻的人。</div></div>
+  <div class="eg" data-ic="🏛️" data-t="老建筑结实"><span data-illus="c20_oldbuild"></span><div class="egt"><b>“老房子都很结实，现在的房子质量不行”</b>：质量差的老房子早就塌了或被拆了，我们只看到活下来的。</div></div>
+  <div class="eg bad" data-ic="🧪" data-t="做对照"><span data-illus="c20_ab"></span><div class="egt"><b>做对了的例子：做对照</b>。把玩家随机分成两组，只给一组加某个功能，比较两组的留存。没有“筛选”，差异才可能是那个功能带来的。</div></div>
+
+  <!-- ===== 7 为什么：图式 ===== -->
+  <div class="sec"><span class="n">7</span><h2><span class="tag why">为什么成立</span>类型是一份心理预期：打破惯例的惊喜与困惑</h2></div>
+  <p>你点开一个标着“平台跳跃”的游戏，手指已经准备好“按住跳得高”。如果这次按键要等半秒才起跳，你会烦躁；但如果这个游戏在第十分钟让你发现“跳跃键同时也是抓钩”，你会笑出来。两种都是在打破预期，感受却天差地别。</p>
+  <div class="why-box">
+    <h3>图式与期待：类型承诺的心理学</h3>
+    <p><b>原理：</b>心理学里的<span class="term" tabindex="0" data-def="图式（schema）：大脑里关于“这类事物通常是什么样”的预设框架，用来快速理解新信息。">图式</span>，指大脑里关于“这类东西通常是什么样”的预设框架。这一概念常追溯到巴特利特（Bartlett，1932）：他让英国受试者复述一则陌生的北美印第安民间故事（《鬼的战争》），发现人们在复述时会把不合自己文化预期的部分，改写成“说得通”的样子。预期会改造我们对新信息的理解。（这类早期记忆研究的结论强度，后来也有不少讨论。）</p>
+    <p>玩家看到类型名，就启动了一套图式：该怎么操作、该期待什么、什么算公平。符合图式，玩家上手快、省力；违背图式，玩家要重新学习，代价是困惑，收益可能是惊喜。常见的看法是：<b>打破预期、但事后能说得通</b>的东西，最容易让人觉得惊喜；打破预期又<b>说不通</b>（判定不准、违背类型的核心承诺），则让人觉得被骗。</p>
+    <div class="src">出处：Frederic Bartlett，《Remembering》（1932）提出图式概念并用于记忆研究；“期待与惊喜”是游戏行业里常见的设计经验，不是某一条定律。下面“表层 / 核心”的区分是一种设计判断，现实里取决于执行。</div>
+  </div>
+  <div class="card">
+    <svg viewBox="0 0 740 330" width="100%" role="img" aria-label="两层惯例示意：表层惯例打破风险小，核心承诺打破风险大，需要新乐趣补偿；右侧箭头从惊喜指向困惑">
+      <defs><marker id="c20ar2" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2b2b3a"/></marker></defs>
+      <g class="rough" stroke="#2b2b3a" stroke-width="3.5">
+        <rect x="20" y="20" width="540" height="130" rx="12" fill="#e8f6fc"/>
+        <rect x="20" y="170" width="540" height="140" rx="12" fill="#ffe9ef"/>
+        <path d="M640 290 V50" fill="none" marker-end="url(#c20ar2)"/>
+      </g>
+      <g font-size="18" fill="#2b2b3a">
+        <text x="36" y="52" font-size="21">表层惯例：画风、题材、UI 皮肤</text>
+        <text x="36" y="84">例：把平台跳跃的主角从人换成一块果冻</text>
+        <text x="36" y="112">打破 → 多半是“新鲜”，风险小</text>
+        <text x="36" y="138">玩家的承诺没动，只是换了外衣</text>
+        <text x="36" y="202" font-size="21">核心承诺：循环、公平、规则</text>
+        <text x="36" y="234">例：肉鸽每局地图完全一样 / 解谜允许暴力试错</text>
+        <text x="36" y="262">打破 → 玩家觉得“被骗了”，风险大</text>
+        <text x="36" y="288">除非有新的乐趣补偿，并讲清楚</text>
+        <text x="600" y="30" font-size="17">惊喜</text><text x="600" y="316" font-size="17">困惑</text>
+      </g>
+    </svg>
+  </div>
+  <div class="eg" data-ic="🪝" data-t="跳跃键变抓钩"><span data-illus="c20_grapple"></span><div class="egt"><b>跳跃键也是抓钩</b>：打破了操作惯例，但事后说得通，还带来新乐趣，是惊喜。</div></div>
+  <div class="eg" data-ic="👾" data-t="怪物是受害者"><span data-illus="c20_monster"></span><div class="egt"><b>恐怖游戏里“怪物其实是受害者”</b>：打破“怪物＝威胁”的预期。中段有线索铺垫，事后说得通，就是惊喜；毫无铺垫就是突兀。</div></div>
+  <div class="eg" data-ic="🍰" data-t="不辣的甜品"><span data-illus="c20_dessert"></span><div class="egt"><b>川菜馆端上不辣的甜品</b>：多数人会觉得是有趣的收尾；但如果主菜全都不辣，客人会觉得“这根本不是川菜”。</div></div>
+  <div class="eg bad" data-ic="🔁" data-t="每局都一样"><span data-illus="c20_endless"></span><div class="egt"><b>差一点就对：每一局都一样的“肉鸽”</b>。假设有一款叫《无尽塔》的游戏，为了“公平”让每一局的地图、敌人、奖励都完全一样。它破坏了肉鸽“每一局都是新故事”的核心承诺，又没有新乐趣补偿，玩家很快就变成背板。</div></div>
+  <div class="eg bad" data-ic="🖱️" data-t="暴力试错"><span data-illus="c20_brute"></span><div class="egt"><b>差一点就对：能暴力试错的解谜</b>。游戏不惩罚错误，把所有按钮挨个试一遍就能过关。“我能靠想通”的承诺落空，玩家会觉得无聊。</div></div>
+
+  <!-- ===== 8 为什么：局部最优 ===== -->
+  <div class="sec"><span class="n">8</span><h2><span class="tag why">为什么成立</span>同类游戏为什么总扎堆：局部最优</h2></div>
+  <div class="withimg rev">
+    <span data-illus="c20_peaks"></span>
+    <div>
+      <p>一个类型火了以后，大家做出来的游戏会越来越像：同样的核心循环，同样的升级树，同样的画风。没有谁规定要这样，每个人只是在“把已经有效的东西再改好一点”。</p>
+      <p>这像登山者在大雾里找最高点：他只看得见脚下，哪边高就往哪边走。走到四周都是下坡，他就停了。可是雾里的那座山头，也许只是一座矮山，真正更高的那座在山谷的另一边。</p>
+    </div>
+  </div>
+  <div class="why-box">
+    <h3>局部最优与“爬山法”</h3>
+    <p>在一个“地形”上，只靠一小步一小步地改进，很容易困在<span class="term" tabindex="0" data-def="局部最优：周围一小圈里最好、但整体未必最好的位置。只做小步改进的方法走到这里就会停下。">局部最优</span>：周围一圈里最高，但不是全局最高。要到更高的山头，往往得先走下坡，也就是先变差一阵，再变好。进化生物学家 Sewall Wright 在 1932 年首次把这种“适应度地形”画成图；后来这个比喻被广泛借用到优化、产品设计等领域。把“类型扎堆”看成爬山，是本书的一种类比。</p>
+    <div class="src">出处：Sewall Wright，《The roles of mutation, inbreeding, crossbreeding and selection in evolution》，第六届国际遗传学大会论文集，1932。</div>
+  </div>
+  <div class="board">
+    <svg id="c20_hill" viewBox="0 0 700 260" width="100%" style="touch-action:none;cursor:crosshair;background:#fffdf3;border:3px solid var(--ink);border-radius:10px" role="img" aria-label="一条有两座山峰的曲线，矮峰在左，高峰在右；点击曲线选起点，登山者只会往更高的方向走"></svg>
+    <div class="c8row" style="display:flex;flex-wrap:wrap;gap:6px;margin:6px 0">
+      <button class="btn" id="c20_climb">🧗 从这里爬山</button>
+      <button class="btn green" id="c20_rand10">🎲 随机换 10 个起点各爬一次</button>
+      <button class="btn pink" id="c20_hreset">重来</button>
+    </div>
+    <div class="msg" id="c20_hmsg" style="font-size:1.05rem;font-family:var(--body)">点曲线上的任意位置选个起点，再点“从这里爬山”。</div>
+  </div>
+  <div class="sticky" id="c20k4">试试看：把起点放在左边的矮山脚下爬一次，看看登山者停在哪；再点“随机换 10 个起点”，数数有几次爬上了最高峰。<span class="c20ok"></span></div>
+  <p class="small">示意：曲线是为了演示手工画的两座山，不是真实的类型数据。</p>
+
+  <!-- ===== 9 怎么用：招牌 ===== -->
+  <div class="sec"><span class="n">9</span><h2><span class="tag how">怎么用</span>招牌互动：圈出“成功秘诀”，再一键对照全体</h2></div>
+  <p><b>怎么玩：</b>点“生成”，得到 200 款游戏。每款有 6 个设计特征，<b>特征与成功完全无关，纯随机</b>（成功者每次抽 20 款，金色格子）。<b>先只看这 20 个成功者</b>，勾出你认为的“成功秘诀”；然后点<b>“一键对照全体”</b>，看看你的秘诀在失败者里占多少。最后点“重复 200 次”，看看这些“秘诀”是不是每次都在变。</p>
+  <div class="board">
+    <label style="display:block;margin-bottom:6px"><input type="checkbox" id="c20_real"> 🔬 让“联机”在这个世界里<b>真的有用</b>（成功概率约 3 倍）。勾选后重新生成，看看真有关系时，正确的检验方法能不能发现它。</label>
+    <div>
+      <button class="btn" id="c20_gen">🎲 生成 200 款游戏</button>
+      <button class="btn alt" id="c20_view" disabled>👀 一键对照全体</button>
+      <button class="btn green" id="c20_rep" disabled>🔁 重复 200 次</button>
+    </div>
+    <div id="c20_grid"></div>
+    <p class="small" id="c20_hint">先点“生成”。</p>
+    <div id="c20_rows"></div>
+    <div class="msg" id="c20_msg" style="font-size:1.05rem;font-family:var(--body)"></div>
+    <div id="c20_repout"></div>
+  </div>
+  <div class="sticky" id="c20k5">试试看：先在只看成功者的状态下勾出两个“秘诀”，再点“一键对照全体”验证，最后重复 200 次，看秘诀每次是不是都换了。<span class="c20ok"></span></div>
+  <p class="small"><b>说明：</b>这是一个<b>纯随机模拟</b>，不是真实的行业数据。各特征在全体中的比例固定（像素风 70%、肉鸽元素 30%、联机 40%、有剧情 50%、免费 60%、开放世界 20%）。只有 20 个成功样本，每次比例会有约 ±10 个百分点的随机波动。</p>
+  <h3>遇到“成功案例总结”时问这四个问题</h3>
+  <ol>
+    <li>这个特征在<b>所有</b>同类游戏里本来占多少？（基础比例）</li>
+    <li>有它的游戏，成功率比没有它的高吗？（失败样本）</li>
+    <li>样本有多大？换一批会不会变？（随机波动）</li>
+    <li>有没有别的因素（发行、时机、运气）同时在起作用？（混杂）</li>
+  </ol>
+
+  <div class="misc">
+    <h3>常见误区</h3>
+    <ul>
+      <li><b>“成功作品都有 X，所以做 X 就会成功。”</b>忽略了失败作品里 X 也很多（基础比例），以及运气、发行、时机等因素。</li>
+      <li><b>“混合两个热门类型，一定更热门。”</b>两个类型的承诺可能互相冲突（例如“失败是我的错”的精确操作，对上“每次随机”的不确定），要先检查承诺。</li>
+      <li><b>“类型惯例就是要打破的。”</b>惯例是玩家的省力捷径；有目的地打破一两处才有惊喜，全打破就成了让人看不懂的游戏。</li>
+      <li><b>“类型有一条官方定义。”</b>它是社区约定出来的，会漂移，你在划线互动里已经亲手试过。</li>
+    </ul>
+  </div>
+
+  <div class="reflect">
+    <h3>反思与争议</h3>
+    <p>幸存者偏差提醒我们别过度解读成功案例，但这不等于成功案例没有参考价值：结合基础比例和失败样本、再做对照，仍然能学到东西。瓦尔德的故事在不同转述里细节不一，这里取的是被广泛接受的要点。“惊喜还是困惑”的判断因玩家人群而异：老玩家想要新鲜，新玩家可能更需要熟悉，文中的判断只是一种设计经验。局部最优也要换个角度看：矮山头未必不好，它可能意味着一个稳定、有人买账的玩法，把它当成“需要逃离的陷阱”本身就是片面的。至于“类型是社区约定出来的”，是一种常见看法，也有人认为类型对应着稳定的玩法结构。你觉得类型更像“事实”还是“约定”？</p>
+  </div>
+
+  <div class="key">
+    <h3>本章要点</h3>
+    <ul>
+      <li>类型 ＝ <b>核心循环 + 玩家承诺</b>。先想清楚你向玩家承诺了什么体验，再决定用哪个类型。</li>
+      <li>平台跳跃靠<b>手感与关卡教学</b>；解谜靠<b>线索与顿悟</b>；卡牌构筑把策略放在<b>构筑</b>、紧张放在<b>抽牌</b>；4X 的核心是<b>经济、扩张、军事</b>互相牵制；肉鸽靠<b>程序生成 + 永久死亡</b>，局内成长带来戏剧性，局外成长缓冲挫败。</li>
+      <li><b>类型是先有一批相似游戏、后有人起名</b>（如 1993 年为讨论组起名 roguelike）；边界靠社区约定，会漂移。</li>
+      <li><b>幸存者偏差</b>（Wald 的飞机）：分析样本时先问“缺了谁”；要看基础比例、失败样本、样本量。</li>
+      <li>类型是玩家的<b>心理预期</b>：打破表层惯例风险小，打破核心承诺需要新乐趣补偿；一味小步改进，容易困在<b>局部最优</b>，同类游戏因此扎堆。</li>
+    </ul>
+  </div>
+  <div class="tldr">类型是写给玩家的一份预期合同：用它来省力、偶尔有意打破它，但别拿“成功者的共同点”当配方。</div>
+
+  <div class="sec"><span class="n">10</span><h2><span class="tag think">练习</span>检验一下</h2></div>
+  <div id="quiz"></div>
+
+  <div class="sec"><span class="n">11</span><h2><span class="tag how">你的设计</span>混合两个类型</h2></div>
+  <div class="card o">
+    <p>混合两个类型，写一句“<b>玩家承诺</b>”，再写下它的核心循环。例：卡牌构筑 + 平台跳跃——“用手里的牌给跳跃增加技能”？想想：两个类型的承诺会不会互相冲突？你打破了哪一层惯例（表层还是核心）？</p>
+    <textarea rows="5" data-save="ch20" placeholder="类型A + 类型B：承诺是……；核心循环是……；可能的冲突是……"></textarea>
+    <p class="small">✍️ 自动保存在你的浏览器里。</p>
+  </div>
+</main>
+<script src="js/illus.js"></script>
+<script src="js/illus-ch20.js"></script>
+<script src="js/common.js"></script>
+<script>
+const $ = id => document.getElementById("c20_" + id);
+const SVGNS = "http://www.w3.org/2000/svg";
+
+/* ---------- 雷达图（评分为示意） ---------- */
+(function () {
+  const AXES = ["操作精度", "随机性", "长期规划", "重玩价值", "手工设计比重"];
+  const GENRES = [
+    { n: "平台跳跃", c: "#ffd23f", v: [5, 1, 1, 2, 5] },
+    { n: "肉鸽", c: "#ff9f43", v: [3, 4, 3, 5, 1] },
+    { n: "卡牌构筑", c: "#a58be8", v: [1, 4, 4, 4, 2] },
+    { n: "策略/4X", c: "#5bb5dd", v: [1, 2, 5, 3, 2] },
+    { n: "解谜", c: "#6fcf6f", v: [1, 0, 3, 1, 5] },
+  ];
+  const shown = new Set([0, 1]);
+  const CX = 350, CY = 215, R = 150;
+  const ang = i => (-90 + 72 * i) * Math.PI / 180;
+  const pt = (i, val) => [CX + R * val / 5 * Math.cos(ang(i)), CY + R * val / 5 * Math.sin(ang(i))];
+  function draw() {
+    let s = "";
+    for (let lv = 1; lv <= 5; lv++) s += `<polygon points="${AXES.map((_, i) => pt(i, lv).join(",")).join(" ")}" fill="${lv % 2 ? "#fffef7" : "#fff"}" stroke-width="2" stroke="#9a9a9a"/>`;
+    AXES.forEach((_, i) => { s += `<line x1="${CX}" y1="${CY}" x2="${pt(i, 5)[0]}" y2="${pt(i, 5)[1]}" stroke="#9a9a9a" stroke-width="2"/>`; });
+    GENRES.forEach((g, gi) => {
+      if (!shown.has(gi)) return;
+      s += `<polygon points="${g.v.map((v, i) => pt(i, v).join(",")).join(" ")}" fill="${g.c}" fill-opacity=".5" stroke="#2b2b3a" stroke-width="4" stroke-linejoin="round"/>`;
+    });
+    $("radar").innerHTML = s;
+    $("radarLabels").innerHTML = AXES.map((t, i) => {
+      const p = pt(i, 5.9), c = Math.cos(ang(i));
+      return `<text x="${p[0]}" y="${p[1] + 6}" text-anchor="${Math.abs(c) < 0.2 ? "middle" : c > 0 ? "start" : "end"}">${t}</text>`;
+    }).join("");
+    $("rchips").innerHTML = GENRES.map((g, i) => `<button class="rchip ${shown.has(i) ? "on" : ""}" data-i="${i}"><i style="background:${g.c}"></i>${shown.has(i) ? "✔ " : ""}${g.n}</button>`).join("");
+    $("rchips").querySelectorAll("button").forEach(b => (b.onclick = () => { const i = +b.dataset.i; shown.has(i) ? shown.delete(i) : shown.add(i); draw(); }));
+    const sel = [...shown];
+    if (!sel.length) $("rtext").textContent = "还没有叠上任何类型。勾选一个看看。";
+    else if (sel.length === 1) { const g = GENRES[sel[0]]; const mx = Math.max(...g.v); $("rtext").innerHTML = "<b>" + g.n + "</b> 最突出的维度：" + AXES.filter((_, i) => g.v[i] === mx).join("、") + "（" + mx + " 分）。再叠一个类型对比看看。"; }
+    else $("rtext").innerHTML = "<b>每个维度谁最高：</b><br>" + AXES.map((a, i) => { const mx = Math.max(...sel.map(k => GENRES[k].v[i])); return a + "：" + sel.filter(k => GENRES[k].v[i] === mx).map(k => GENRES[k].n).join("、") + "（" + mx + "）"; }).join("<br>");
+  }
+  $("rall").onclick = () => { GENRES.forEach((_, i) => shown.add(i)); draw(); };
+  $("rnone").onclick = () => { shown.clear(); draw(); };
+  draw();
+})();
+
+/* ---------- 局内 / 局外成长示意图 ---------- */
+(function () {
+  const W0 = 40, PW = 320, GAP = 20, Y0 = 280, YH = 220;
+  function panel(ox, meta) {
+    let s = `<rect x="${ox}" y="40" width="${PW}" height="${Y0 - 40}" fill="#fffef7" stroke="#2b2b3a" stroke-width="3"/>`;
+    const runs = 5, seg = PW / runs, ends = [6, 8, 5, 9, 7];
+    for (let r = 0; r < runs; r++) {
+      const base = meta ? 18 + r * 20 : 18, top = base + ends[r] * (meta ? 12 : 14);
+      const x0 = ox + r * seg + 8, x1 = ox + (r + 1) * seg - 16;
+      const yb = Y0 - base, yt = Y0 - Math.min(top, YH - 22);
+      s += `<polyline points="${x0},${yb} ${(x0 + x1) / 2},${yb - (yb - yt) * 0.4} ${x1},${yt}" fill="none" stroke="${meta ? "#3aa655" : "#ff7a59"}" stroke-width="5" stroke-linejoin="round"/>`;
+      s += `<text x="${x1}" y="${yt - 12}" font-size="18" text-anchor="middle" class="halo">✖</text>`;
+      if (meta) s += `<line x1="${x0 - 6}" y1="${yb}" x2="${x0 + 10}" y2="${yb}" stroke="#2b2b3a" stroke-width="3"/>`;
+    }
+    if (meta) s += `<path d="M${ox + 12} ${Y0 - 18} L${ox + PW - 20} ${Y0 - 100}" stroke="#2b2b3a" stroke-width="3" stroke-dasharray="6 5" fill="none"/>`;
+    s += `<text x="${ox + PW / 2}" y="26" font-size="19" text-anchor="middle">${meta ? "有局外成长：起点逐局抬高" : "只有局内成长：每局同一起点"}</text>`;
+    s += `<text x="${ox + PW / 2}" y="${Y0 + 28}" font-size="17" text-anchor="middle">第 1 局 → 第 5 局</text>`;
+    return s;
+  }
+  document.getElementById("c20_growth").innerHTML = panel(W0, false) + panel(W0 + PW + GAP + 20, true);
+})();
+
+/* ---------- 故事一：给肉鸽划线 ---------- */
+(function () {
+  const FACT = ["随机生成地图", "死亡后本局从头来", "回合制", "格子移动", "没有局外永久强化"];
+  const GAMES = [
+    { n: "《Rogue》(1980)", f: [1, 1, 1, 1, 1] },
+    { n: "《NetHack》(1987)", f: [1, 1, 1, 1, 1] },
+    { n: "《Spelunky》(2008)", f: [1, 1, 0, 0, 1] },
+    { n: "《Slay the Spire》", f: [1, 1, 1, 0, 1] },
+    { n: "《Hades》", f: [1, 1, 0, 0, 0] },
+    { n: "《Vampire Survivors》", f: [0, 1, 0, 0, 0] },
+  ];
+  const mark = GAMES.map(() => false), req = FACT.map(() => false);
+  function draw() {
+    $("gmarks").innerHTML = GAMES.map((g, i) => `<button class="chip ${mark[i] ? "on" : ""}" data-i="${i}">${mark[i] ? "✔ " : ""}${g.n}</button>`).join("");
+    $("gmarks").querySelectorAll("button").forEach(b => (b.onclick = () => { mark[+b.dataset.i] = !mark[+b.dataset.i]; draw(); }));
+    $("reqs").innerHTML = FACT.map((t, i) => `<label><input type="checkbox" data-i="${i}" ${req[i] ? "checked" : ""}> ${t}</label>`).join("");
+    $("reqs").querySelectorAll("input").forEach(cb => (cb.onchange = () => { req[+cb.dataset.i] = cb.checked; draw(); }));
+    const any = req.some(Boolean);
+    const pass = GAMES.map(g => any && req.every((r, k) => !r || g.f[k]));
+    $("dtab").innerHTML = "<tr><th>游戏</th>" + FACT.map((t, k) => `<th>${req[k] ? "★ " : ""}${t}</th>`).join("") + "<th>按你的定义</th></tr>" +
+      GAMES.map((g, i) => `<tr class="${any ? (pass[i] ? "pass" : "fail") : ""}"><td class="nm">${mark[i] ? "👈 " : ""}${g.n}</td>` + g.f.map((v, k) => `<td class="${v ? "ok" : "no"}">${v ? "✔" : "✘"}</td>`).join("") + `<td>${any ? (pass[i] ? "✅ 算" : "❌ 不算") : "—"}</td></tr>`).join("");
+    if (!any) { $("dmsg").textContent = "勾选一条或几条“必须具备”的条件，或点上面的预设。"; return; }
+    const n = pass.filter(Boolean).length, agree = GAMES.filter((_, i) => pass[i] === mark[i]).length;
+    let m = "按你的定义，算肉鸽的有 " + n + " / " + GAMES.length + " 款；与你第一步的直觉吻合 " + agree + " / " + GAMES.length + "。";
+    GAMES.forEach((g, i) => { if (pass[i] !== mark[i]) m += (mark[i] ? " 你觉得" : " 你没标但定义放进了") + g.n.replace(/\(.*\)/, "") + (mark[i] ? "算，定义却把它排除了" : "") + "；"; });
+    m += " 这就是“定义漂移”：同一批游戏，换一条线，就是不同的类型。";
+    $("dmsg").textContent = m;
+  }
+  document.querySelectorAll("#c20_draw [data-p]").forEach(b => (b.onclick = () => {
+    const p = b.dataset.p;
+    for (let k = 0; k < req.length; k++) req[k] = p === "strict" ? true : p === "mid" ? k < 2 : p === "loose" ? k === 1 : false;
+    draw();
+  }));
+  draw();
+})();
+
+/* ---------- 故事二：瓦尔德的飞机 ---------- */
+(function () {
+  // 部位：权重 w（占机身“面积”比例）、中弹后坠毁概率 v（示意）
+  const REG = [
+    { k: "nose", n: "机头/驾驶舱", w: 0.10, v: 0.45, rects: [[342, 50, 36, 40]] },
+    { k: "body", n: "机身", w: 0.30, v: 0.12, rects: [[338, 125, 44, 140]] },
+    { k: "wing", n: "机翼", w: 0.30, v: 0.05, rects: [[112, 168, 76, 50], [242, 168, 92, 50], [386, 168, 92, 50], [532, 168, 76, 50]] },
+    { k: "eng", n: "发动机", w: 0.15, v: 0.55, rects: [[196, 158, 40, 70], [484, 158, 40, 70]] },
+    { k: "tail", n: "尾翼", w: 0.15, v: 0.15, rects: [[276, 280, 168, 24]] },
+  ];
+  const K = 140;
+  let seed = 7; const rnd = () => { seed = (seed * 16807) % 2147483647; return seed / 2147483647; };
+  const dots = [], lost = [];
+  REG.forEach(r => {
+    r.back = Math.round(K * r.w * (1 - r.v)); r.gone = Math.round(K * r.w * r.v);
+    const area = r.rects.reduce((s, q) => s + q[2] * q[3], 0);
+    const place = (n, arr) => { for (let i = 0; i < n; i++) { let a = rnd() * area, q = r.rects[0]; for (const t of r.rects) { if (a < t[2] * t[3]) { q = t; break; } a -= t[2] * t[3]; } arr.push([q[0] + rnd() * q[2], q[1] + rnd() * q[3]]); } };
+    place(r.back, dots); place(r.gone, lost);
+  });
+  const armor = new Set(); let revealed = false;
+  const base = REG.reduce((s, r) => s + r.w * r.v, 0);
+  const crash = set => REG.reduce((s, r) => s + r.w * r.v * (set.has(r.k) ? 0.5 : 1), 0);
+  function draw() {
+    const fill = k => armor.has(k) ? "#a8dcf0" : "#e6e6ee";
+    let s = '<g class="rough" stroke="#2b2b3a" stroke-width="3.5">';
+    // 形状
+    s += `<g class="reg" data-k="body"><rect class="shape" x="330" y="108" width="60" height="180" fill="${fill("body")}"/></g>`;
+    s += `<g class="reg" data-k="nose"><ellipse class="shape" cx="360" cy="72" rx="32" ry="40" fill="${fill("nose")}"/></g>`;
+    s += `<g class="reg" data-k="wing"><rect class="shape" x="100" y="160" width="230" height="66" fill="${fill("wing")}"/><rect class="shape" x="390" y="160" width="230" height="66" fill="${fill("wing")}"/></g>`;
+    s += `<g class="reg" data-k="eng"><rect class="shape" x="192" y="150" width="48" height="86" rx="8" fill="${fill("eng")}"/><rect class="shape" x="480" y="150" width="48" height="86" rx="8" fill="${fill("eng")}"/></g>`;
+    s += `<g class="reg" data-k="tail"><rect class="shape" x="268" y="276" width="184" height="32" fill="${fill("tail")}"/></g>`;
+    s += "</g>";
+    // 标签
+    const lab = (t, x, y) => `<text x="${x}" y="${y}" font-size="17" text-anchor="middle" class="halo" style="pointer-events:none">${t}</text>`;
+    s += lab("机头", 360, 22) + lab("机身", 360, 150) + lab("机翼", 150, 152) + lab("机翼", 570, 152) + lab("发动机", 216, 146) + lab("发动机", 504, 146) + lab("尾翼", 360, 326);
+    armor.forEach(k => { const c = { nose: [360, 78], body: [360, 200], wing: [150, 200], eng: [216, 200], tail: [360, 298] }[k]; s += `<text x="${c[0]}" y="${c[1]}" font-size="26" text-anchor="middle" style="pointer-events:none">🛡</text>`; });
+    // 弹孔
+    dots.forEach(d => (s += `<circle cx="${d[0].toFixed(1)}" cy="${d[1].toFixed(1)}" r="3.6" fill="#2b2b3a" style="pointer-events:none"/>`));
+    if (revealed) lost.forEach(d => (s += `<text x="${d[0].toFixed(1)}" y="${(d[1] + 5).toFixed(1)}" font-size="15" text-anchor="middle" fill="#e5484d" font-weight="700" style="pointer-events:none">×</text>`));
+    s += `<text x="20" y="30" font-size="17" fill="#2b2b3a">● 返航飞机上的弹孔${revealed ? "　× 没回来的飞机上的弹孔" : ""}</text>`;
+    $("plane").innerHTML = s;
+    $("plane").querySelectorAll("g.reg").forEach(g => (g.onclick = () => {
+      if (revealed) return; const k = g.dataset.k;
+      if (armor.has(k)) armor.delete(k); else if (armor.size < 2) armor.add(k);
+      draw();
+    }));
+    $("an").textContent = armor.size; $("ago").disabled = armor.size !== 2 || revealed;
+  }
+  $("ago").onclick = () => {
+    revealed = true; draw();
+    const byHoles = REG.slice().sort((a, b) => b.back - a.back).slice(0, 2).map(r => r.k);
+    const byFew = REG.slice().sort((a, b) => a.back / (a.rects.reduce((s, q) => s + q[2] * q[3], 0)) - b.back / (b.rects.reduce((s, q) => s + q[2] * q[3], 0))).slice(0, 2).map(r => r.k);
+    const nm = ks => ks.map(k => REG.find(r => r.k === k).n).join("＋");
+    const cut = set => ((1 - crash(set) / base) * 100).toFixed(0);
+    $("aout").innerHTML = '<table class="tbl2"><tr><th>部位</th><th>返航飞机弹孔数</th><th>没回来的</th><th>中弹后坠毁概率（示意）</th></tr>' +
+      REG.map(r => `<tr><td>${r.n}</td><td>${r.back}</td><td>${r.gone}</td><td>${(r.v * 100).toFixed(0)}%</td></tr>`).join("") + "</table>" +
+      `<div class="outbox"><b>三种方案，每次中弹的坠毁概率降低：</b><br>你的方案（${nm([...armor])}）：<b>${cut(armor)}%</b><br>“加固弹孔最多的两处”（${nm(byHoles)}）：<b>${cut(new Set(byHoles))}%</b><br>“加固返航飞机上弹孔最少的两处”（${nm(byFew)}）：<b>${cut(new Set(byFew))}%</b></div>` +
+      '<div class="msg" style="font-size:1.05rem;font-family:var(--body)">每架飞机被击中的位置在这个模型里是随机的；弹孔最少的部位，恰恰是“中弹就回不来”的部位——红色 × 都在那里。Wald 的思想：<b>样本里缺了谁，比样本里有什么更重要</b>。</div>';
+  };
+  $("areset").onclick = () => { armor.clear(); revealed = false; $("aout").innerHTML = ""; draw(); };
+  draw();
+})();
+
+/* ---------- 招牌：幸存者偏差 ---------- */
+(function () {
+  const FE = [["像素风", 0.7], ["肉鸽元素", 0.3], ["联机", 0.4], ["有剧情", 0.5], ["免费", 0.6], ["开放世界", 0.2]];
+  const N = 200, NS = 20;
+  let games = [], view = "succ", picks = new Set(), real = false;
+  function world(realFlag) {
+    const gs = [];
+    for (let i = 0; i < N; i++) {
+      const f = FE.map(x => Math.random() < x[1]);
+      const w = realFlag && f[2] ? 3 : 1;
+      gs.push({ f, win: false, key: Math.pow(Math.random(), 1 / w) });
+    }
+    gs.slice().sort((a, b) => b.key - a.key).slice(0, NS).forEach(g => (g.win = true));
+    return gs;
+  }
+  function gen() {
+    real = $("real").checked; games = world(real);
+    view = "succ"; picks = new Set(); $("repout").innerHTML = "";
+    $("view").disabled = false; $("rep").disabled = false; draw();
+  }
+  const pct = (a, b) => (b ? (100 * a / b).toFixed(0) : "0") + "%";
+  function draw() {
+    if (!games.length) return;
+    $("view").textContent = view === "succ" ? "👀 一键对照全体" : "↩ 切回只看成功者";
+    $("grid").innerHTML = games.map(g => "<i class='" + (g.win ? "win" : view === "succ" ? "dim" : "") + "'></i>").join("");
+    const wins = games.filter(g => g.win), loses = games.filter(g => !g.win);
+    $("hint").textContent = view === "succ" ? "金色＝成功的 20 款（其余淡出）。点下面的特征，勾出你认为的“成功秘诀”。" : "灰色＝失败的 180 款。对比：成功者的特征比例，和失败者、全体比，有什么不同？";
+    $("rows").innerHTML = FE.map((x, k) => {
+      const w = wins.filter(g => g.f[k]).length, all = games.filter(g => g.f[k]).length, l = loses.filter(g => g.f[k]).length;
+      let extra = "<div class='fbar'><span style='width:" + (100 * w / NS) + "%'></span></div>";
+      if (view === "all") {
+        extra += "<div class='fbar b2'><span style='width:" + (100 * l / loses.length) + "%'></span></div>" +
+          "<div class='fnum'>成功者中 " + pct(w, NS) + "（橙）；失败者中 " + pct(l, loses.length) + "（蓝）；全体 " + pct(all, N) + "。<b>有此特征的成功率 " + pct(w, all) + " ／ 没有的成功率 " + pct(NS - w, N - all) + "</b></div>";
+      } else extra += "<div class='fnum'>成功的 20 款中有 " + w + " 款（" + pct(w, NS) + "）</div>";
+      return "<div class='fr'><button class='chip " + (picks.has(k) ? "on" : "") + "' data-k='" + k + "'>" + (picks.has(k) ? "✔ " : "") + x[0] + "</button><div>" + extra + "</div></div>";
+    }).join("");
+    $("rows").querySelectorAll("button[data-k]").forEach(b => (b.onclick = () => { const k = +b.dataset.k; picks.has(k) ? picks.delete(k) : picks.add(k); draw(); }));
+    if (view === "succ") $("msg").textContent = picks.size ? "你认为的“成功秘诀”：" + [...picks].map(k => FE[k][0]).join("、") + "。现在点“一键对照全体”，验证一下。" : "";
+    else if (!picks.size) $("msg").textContent = "你还没勾选“秘诀”。切回去勾几个，再来验证吧。";
+    else {
+      const names = [...picks].map(k => FE[k][0]).join("、");
+      if (real) {
+        const all = games.filter(g => g.f[2]).length, w = wins.filter(g => g.f[2]).length;
+        $("msg").innerHTML = "你选的 " + names + "。这次世界里“联机”是<b>真的有用</b>的：有联机的成功率 " + pct(w, all) + "，没有的 " + pct(NS - w, N - all) + "。正确方法（比较“有/没有”各自的成功率）能把真信号和随机波动区分开——而“成功者里占多少”做不到。其余特征仍是随机的。";
+      } else $("msg").innerHTML = "你选的 " + names + "：看每一行，失败者中的占比和成功者差不多，“有／没有”的成功率也相近（差异只是 20 个样本带来的随机波动）。<b>特征和成功本来就无关——是模拟里直接设定的。</b>点“生成”再来一次，秘诀会换。";
+    }
+  }
+  $("gen").onclick = gen;
+  $("view").onclick = () => { view = view === "succ" ? "all" : "succ"; draw(); };
+  $("rep").onclick = () => {
+    const T = 200, shares = FE.map(() => []), top = FE.map(() => 0);
+    for (let t = 0; t < T; t++) {
+      const gs = world(real), wins = gs.filter(g => g.win);
+      let bestK = 0, bestD = -1;
+      FE.forEach((x, k) => { const s = wins.filter(g => g.f[k]).length / NS; shares[k].push(s); const d = s - x[1]; if (d > bestD) { bestD = d; bestK = k; } });
+      top[bestK]++;
+    }
+    $("repout").innerHTML = "<p><b>重复 " + T + " 次的结果</b>（黑线 = 该特征在全体中的真实比例；橙色带 = 成功者里占比的 90% 区间）：</p>" +
+      FE.map((x, k) => { const a = shares[k].slice().sort((p, q) => p - q), lo = a[Math.floor(T * 0.05)], hi = a[Math.ceil(T * 0.95) - 1];
+        return "<div class='fr'><span>" + x[0] + "（全体 " + Math.round(x[1] * 100) + "%）</span><div><div class='band'><div class='rg' style='left:" + lo * 100 + "%;width:" + Math.max(1, (hi - lo) * 100) + "%'></div><div class='bs' style='left:" + x[1] * 100 + "%'></div></div><div class='fnum'>成功者里占 " + Math.round(lo * 100) + "%–" + Math.round(hi * 100) + "%；它成为“最像秘诀的那个”（比全体多出最多）的次数：<b>" + top[k] + " / " + T + "</b></div></div></div>"; }).join("") +
+      "<div class='msg' style='font-size:1.05rem;font-family:var(--body)'>" + (real ? "“联机”的橙色带整体偏向右（真的有用），而其他特征的带都围着黑线晃。" : "每个特征的区间都围着黑线上下波动，而且几乎每个特征都有机会成为“头号秘诀”——只看 20 个成功者，你每次都能“发现”一个，但它每次都不同。") + "</div>";
+  };
+})();
+
+/* ---------- 测验 ---------- */
+GD.mountQuiz(document.getElementById("quiz"), [
+  { q: "“类型是核心循环 + 玩家承诺”，下面哪个最能体现“玩家承诺”？", opts: ["平台跳跃游戏有很多关卡", "平台跳跃玩家期待“失败是我操作的问题”，判定必须公平", "游戏的画面是像素风", "游戏卖得便宜"], a: 1, why: "承诺指玩家选这个类型时默认期待的体验。违背它（比如判定不准）比内容少更伤人。" },
+  { q: "肉鸽里“局外成长”的主要作用是：", opts: ["让每一局的地图完全一样", "让失败也有积累，缓冲挫败感", "取消永久死亡", "让游戏不再需要随机"], a: 1, why: "局外成长让死亡后仍有收获；但给得太多会把挑战磨平，要克制。" },
+  { q: "卡牌构筑游戏里，“协同（synergy）”是指：", opts: ["多张牌组合后的效果大于各自单独之和", "每张牌的画面风格一致", "对手出牌的速度", "牌库越大越好"], a: 0, why: "协同是构筑的乐趣来源。好设计会提供多条协同路线，而不是只有一套最优解。" },
+  { q: "（为什么被发明）“roguelike”这个词为什么会在 1993 年前后出现？", opts: ["因为《Rogue》的作者给这类游戏注册了商标", "因为分散在不同讨论组里的相似游戏需要一个共同的名字来合并讨论，而《Rogue》是其中最老的", "因为所有这类游戏都使用同一套引擎", "因为官方发布了类型分类标准"], a: 1, why: "类型是“先有一批相似游戏，后有人起名”。Usenet 上的合并讨论组选用 roguelike，是因为《Rogue》最老，是“最不坏的选项”。名字起好后，边界才开始被争论。" },
+  { q: "为什么“成功游戏里 70% 是像素风”不能说明“像素风让游戏成功”？", opts: ["因为像素风很难做", "因为没有对比：像素风在所有游戏（包括失败的）里可能本来就占 70%，而且被筛选后的样本看不到失败者", "因为成功游戏数量太多", "因为像素风只适合独立游戏"], a: 1, why: "这是幸存者偏差。要比较的是“有这特征的游戏成功率”与“没有这特征的游戏成功率”，并考虑基础比例。" },
+  { q: "（为什么被发明）Wald 为什么建议把装甲加在返航飞机上“没有弹孔”的位置？", opts: ["因为那里的装甲更便宜", "因为我们只能看到飞回来的飞机；没有弹孔的部位，很可能是被击中就回不来的部位，数据里缺的恰恰是它们", "因为弹孔多的地方最安全，不需要保护", "因为军方要求平均分配装甲"], a: 1, why: "关键是“样本里缺了谁”。返航飞机上弹孔多的部位说明“中弹也能飞回来”；致命位置的弹孔都留在了没回来的飞机上。" },
+  { q: "为什么“打破类型惯例”有时是惊喜，有时是灾难？", opts: ["因为玩家的审美不稳定", "因为类型在玩家脑中是一套预期（图式），打破后能说得通、有新乐趣就是惊喜，违背核心承诺又没补偿就是困惑", "因为惊喜只来自画面", "因为所有惯例都不应该被打破"], a: 1, why: "类型承诺是玩家的预期。表层惯例可以大胆打破；核心承诺被破坏时，玩家会觉得被骗，除非用新的乐趣补偿。" },
+  { q: "【为什么】为什么一个类型火了以后，大家做出来的游戏会越来越像？", opts: ["因为法律规定同类游戏必须相似", "因为大家都在已有效的做法上小步改进，容易一起停在同一个局部最优的山头，想去更高的山头得先承受变差", "因为玩家讨厌新东西", "因为引擎只支持一种玩法"], a: 1, why: "只做小步改进的方法会停在周围最好的位置。这是借用“适应度地形”的一种类比，不是严格定律。" },
+]);
+</script>
+<script>
+(function () {
+  const q = id => document.getElementById(id);
+  function done(id, msg) { const e = q(id); if (!e || e.classList.contains("done")) return; e.classList.add("done"); e.querySelector(".c20ok").textContent = " ✅ 完成！" + msg; }
+  new MutationObserver(() => { const t = q("c20_rchips").textContent; if (t.indexOf("✔ 平台跳跃") >= 0 && t.indexOf("✔ 解谜") >= 0) done("c20k1", "只有“手工设计比重”两个都是满分：关卡和谜题都是作者一块块摆出来的，不靠随机，所以重玩价值偏低。"); }).observe(q("c20_rchips"), { childList: true, subtree: true });
+  const seen = {};
+  document.querySelectorAll("#c20_draw [data-p]").forEach(b => b.addEventListener("click", () => { seen[b.dataset.p] = 1; if (seen.strict && seen.loose) done("c20k2", "同一批游戏，换一条线，算肉鸽的数量就变了：定义在漂。"); }));
+  let reveals = 0;
+  q("c20_ago").addEventListener("click", () => { reveals++; if (reveals >= 2) done("c20k3", "弹孔最少的两处，降低的坠毁概率往往最多：那里才是真正致命的位置。"); });
+  new MutationObserver(() => { if (q("c20_repout").textContent.trim()) done("c20k5", "每次“秘诀”都在换，因为 20 个样本只能看到随机波动。要看有和没有的成功率，不要只看成功者里的占比。"); }).observe(q("c20_repout"), { childList: true });
+
+  /* 爬山法 */
+  const NS = "http://www.w3.org/2000/svg", svg = q("c20_hill");
+  const f = x => 0.05 + 0.45 * Math.exp(-Math.pow((x - 0.25) / 0.09, 2)) + 1.0 * Math.exp(-Math.pow((x - 0.74) / 0.1, 2));
+  const X = x => 40 + x * 620, Y = v => 236 - v * 190;
+  let pts = "M" + X(0) + " 244 "; for (let i = 0; i <= 200; i++) { const x = i / 200; pts += "L" + X(x).toFixed(1) + " " + Y(f(x)).toFixed(1) + " "; } pts += "L" + X(1) + " 244 Z";
+  svg.innerHTML = '<path d="' + pts + '" fill="#d8f0cc" stroke="#2b2b3a" stroke-width="4" stroke-linejoin="round"/>' +
+    '<text x="' + X(0.25) + '" y="' + (Y(f(0.25)) - 12) + '" font-size="17" text-anchor="middle" fill="#2b2b3a">矮峰</text>' +
+    '<text x="' + X(0.74) + '" y="' + (Y(f(0.74)) - 12) + '" font-size="17" text-anchor="middle" fill="#2b2b3a">最高峰</text>' +
+    '<g id="c20_hm" style="display:none"><circle r="9" fill="#ffd34d" stroke="#2b2b3a" stroke-width="3"/></g>';
+  const mk = q("c20_hm") || svg.querySelector("#c20_hm");
+  let cx = null, busy = false, lowStop = false, rnd = false;
+  function place(x) { mk.style.display = ""; mk.setAttribute("transform", "translate(" + X(x) + "," + (Y(f(x)) - 9) + ")"); }
+  function climbEnd(x) { let g = 0; while (g++ < 400) { const a = f(x + 0.004), b = f(x - 0.004); if (a > f(x) && a >= b && x < 1) x += 0.004; else if (b > f(x) && x > 0) x -= 0.004; else break; } return x; }
+  svg.addEventListener("pointerdown", e => {
+    if (busy) return; const p = svg.createSVGPoint(); p.x = e.clientX; p.y = e.clientY; const m = p.matrixTransform(svg.getScreenCTM().inverse());
+    cx = Math.max(0, Math.min(1, (m.x - 40) / 620)); place(cx); q("c20_hmsg").textContent = "起点已选好，点“从这里爬山”。";
+  });
+  q("c20_climb").onclick = () => {
+    if (cx === null) { q("c20_hmsg").textContent = "先点一下曲线，选个起点。"; return; }
+    if (busy) return; busy = true;
+    const t = setInterval(() => {
+      const a = f(cx + 0.004), b = f(cx - 0.004);
+      if (a > f(cx) && a >= b && cx < 1) cx += 0.004; else if (b > f(cx) && cx > 0) cx -= 0.004; else { clearInterval(t); busy = false; end(); return; }
+      place(cx);
+    }, 12);
+    function end() {
+      const top = cx > 0.5;
+      q("c20_hmsg").innerHTML = top ? "登顶了：这个起点恰好在高峰一侧。" : "停在了矮峰：四周都是下坡，登山者不会再动，可是最高的山头在右边。要过去，得先走下坡。";
+      if (!top) lowStop = true; if (lowStop && rnd) done("c20k4", "只会往高处走的办法，成败全看起点；想登上最高峰，得换起点，或者愿意先下山。");
+    }
+  };
+  q("c20_rand10").onclick = () => {
+    if (busy) return; let ok = 0; for (let i = 0; i < 10; i++) if (climbEnd(Math.random()) > 0.5) ok++;
+    q("c20_hmsg").textContent = "随机换 10 个起点：有 " + ok + " 次爬上了最高峰，" + (10 - ok) + " 次困在矮峰。多换几次起点，就是在“探索”。"; rnd = true;
+    if (lowStop) done("c20k4", "只会往高处走的办法，成败全看起点；想登上最高峰，得换起点，或者愿意先下山。");
+  };
+  q("c20_hreset").onclick = () => { cx = null; mk.style.display = "none"; q("c20_hmsg").textContent = "点曲线上的任意位置选个起点，再点“从这里爬山”。"; };
+})();
+</script>
+</body>
+</html>

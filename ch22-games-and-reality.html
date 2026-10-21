@@ -1,0 +1,526 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>第22章 游戏与现实</title>
+<link rel="stylesheet" href="css/style.css">
+<style>
+  .pick{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
+  .pick .btn{font-size:1.05rem;padding:4px 12px;background:#fff;margin:0}
+  .pick .btn.sel{background:var(--yellow)}
+  .verdict{font-family:var(--hand);font-size:1.7rem;margin:6px 0}
+  .verdict.good{color:#2f7d32}.verdict.mid{color:#b86e00}.verdict.bad{color:#c2255c}
+  .meter{height:24px;border:2.5px solid var(--ink);border-radius:14px 8px 14px 8px;background:#fff;overflow:hidden;margin:4px 0}
+  .meter i{display:block;height:100%;width:0;transition:width .35s,background .35s}
+  .fix{margin:6px 0;padding:6px 10px;border-left:5px solid var(--pink);background:#fff}
+  .dimrow{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:6px 0}
+  .dimrow .nm{width:5.5em;font-weight:bold}
+  .dimrow input[type=range]{flex:1;min-width:140px;width:auto}
+  .dimrow .ds{flex-basis:100%;font-size:.9rem;color:var(--soft)}
+  .c22q{margin:10px 0;padding:8px 12px;border:2.5px solid var(--ink);border-radius:12px;background:#fff}
+  .c22q .qt{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap}
+  .c22q .ends{display:flex;justify-content:space-between;font-size:.85rem;color:var(--soft)}
+  .c22q .bar{height:8px;border-radius:6px;background:#eee;margin-top:4px;overflow:hidden}
+  .c22q .bar i{display:block;height:100%;transition:width .3s,background .3s}
+
+  .clsrow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:8px 0;padding:6px 10px;border:2.5px solid var(--ink);border-radius:12px;background:#fff}
+  .clsrow .clsq{flex:1 1 220px;font-weight:700}
+  .clsrow .btn{font-size:.95rem;padding:2px 10px;margin:0;background:#fff}
+  .clsrow .btn.ok{background:#b6e8a8}.clsrow .btn.no{background:#ffc9c9}
+  .clsrow .fb{flex-basis:100%;font-size:.97rem}
+  .sticky .stat{margin-left:8px}
+</style>
+</head>
+<body data-ch="22">
+<main class="wrap">
+  <div class="hero">
+    <div class="txt">
+      <span class="badge">第 22 章</span>
+      <h1>游戏与现实</h1>
+      <p class="sub">游戏的边界在哪里？为什么人们要争论“游戏是什么”？</p>
+    </div>
+    <svg viewBox="0 0 190 150" class="rough" aria-hidden="true">
+      <circle cx="95" cy="75" r="52" fill="#fff7cf" stroke="#2b2b3a" stroke-width="4" stroke-dasharray="9 6"/>
+      <rect x="72" y="55" width="22" height="22" fill="#ffb3c6" stroke="#2b2b3a" stroke-width="3.5"/>
+      <circle cx="108" cy="88" r="11" fill="#a8dcf0" stroke="#2b2b3a" stroke-width="3.5"/>
+      <path d="M150 40 Q172 30 178 52" fill="none" stroke="#2b2b3a" stroke-width="4"/>
+      <path d="M170 46 L178 54 L184 44" fill="none" stroke="#2b2b3a" stroke-width="4"/>
+    </svg>
+  </div>
+
+  <div class="goals">
+    <h3>学习目标</h3>
+    <ul>
+      <li>读完你能解释“魔圈”“游戏化”“有限与无限的游戏”各自来自谁，并说出当年的人为什么要提出它们。</li>
+      <li>读完你能说清游戏化为什么有时有效、有时反噬，并用一套问题清单评估一个游戏化方案。</li>
+      <li>读完你能指出“游戏”与“现实”的边界会在金钱、身份、关系、不可逆四个方向上变薄，并形成自己的看法。</li>
+    </ul>
+    <span class="time">约 35 分钟</span>
+  </div>
+
+  <!-- ============ 1 是什么：魔圈 ============ -->
+  <div class="sec"><span class="n">1</span><h2><span class="tag what">是什么</span>魔圈：在现实里划出一块“暂时的世界”</h2></div>
+
+  <div class="withimg">
+    <span data-illus="c22_pretend"></span>
+    <div>
+      <p>一个孩子套上怪兽头套，追着弟弟满院子跑，弟弟尖叫着逃，笑得喘不上气。忽然一条真的野狗从门口蹿进来，弟弟的尖叫一下子变了调：这回是真的怕。</p>
+      <p>两种尖叫，声音差不多，却一个是游戏，一个不是。是什么把它们隔开的？是一个谁也没说出口、人人都懂的约定：现在，我们在玩。约定一破，同样的追逐就成了真的惊吓。</p>
+      <p>荷兰历史学家约翰·赫伊津哈（Johan Huizinga）1938 年的《游戏的人》（<i>Homo Ludens</i>，最初用荷兰语写成）里，把竞技场、棋盘、舞台、庙宇、法庭都看作同一类地方：被圈出来的、暂时的、有自己规矩的场所。他管这种场所叫<span class="term" tabindex="0" data-def="游戏在现实中划出的、暂时的、有自己规则的空间；进入时，大家同意按游戏的规则而不是日常规则行事。">魔圈</span>（magic circle）。圈里有圈里的规矩：“吃掉”对方的棋子不是暴力，输一局也不等于人生失败。</p>
+    </div>
+  </div>
+  <p>2003 年，萨伦与齐默尔曼的《游戏规则》（<i>Rules of Play</i>）把这个词请进了游戏设计领域。所以今天设计师口中的“魔圈”，很大程度上是经他们转述、改造过的版本，比赫伊津哈原来谈的范围窄一些。</p>
+
+  <div class="card">
+    <svg viewBox="0 0 700 320" width="100%" role="img" aria-label="魔圈示意图：圈内是游戏规则，圈外是现实，两侧箭头表示后果可能穿过边界">
+      <g class="rough" stroke="#2b2b3a" stroke-width="4" stroke-linejoin="round">
+        <rect x="10" y="10" width="680" height="300" rx="18" fill="#fdf8ec"/>
+        <circle cx="350" cy="170" r="115" fill="#fff7cf" stroke-dasharray="12 8"/>
+        <rect x="316" y="146" width="36" height="36" fill="#ffb3c6"/>
+        <circle cx="390" cy="188" r="18" fill="#a8dcf0"/>
+      </g>
+      <g font-size="20" fill="#2b2b3a" text-anchor="middle">
+        <text x="350" y="236">圈内：游戏规则</text>
+        <text x="350" y="116">输赢只在圈里算数</text>
+        <text x="110" y="56" font-size="22">现实世界</text>
+        <text x="110" y="86" font-size="18">金钱 · 身份 · 后果</text>
+        <text x="590" y="56" font-size="22">现实世界</text>
+        <text x="590" y="86" font-size="18">时间 · 关系 · 不可逆</text>
+        <text x="130" y="276" font-size="19">魔圈会“漏”吗？</text>
+      </g>
+      <g class="rough" fill="none" stroke="#c2255c" stroke-width="4">
+        <path d="M140 200 Q200 190 228 192"/><path d="M216 182 L230 192 L216 204"/>
+        <path d="M560 200 Q500 190 472 192"/><path d="M484 182 L470 192 L484 204"/>
+      </g>
+    </svg>
+  </div>
+
+  <div class="eg" data-ic="♟️"><span data-illus="c22_chess"></span><div class="egt"><b>一盘象棋</b>：你“吃掉”朋友的皇后，他笑着骂你，一分钟后重新摆棋。圈里的后果留在圈里，圈很完整。</div></div>
+  <div class="eg" data-ic="🥊"><span data-illus="c22_boxing"></span><div class="egt"><b>拳击台</b>：同样一拳，在台上是比赛，在街上是违法。是绳圈和裁判这些“大家同意的约定”，让它在台上合法。</div></div>
+  <div class="eg" data-ic="🎭"><span data-illus="c22_villain"></span><div class="egt"><b>扮演反派</b>：演员在台上张牙舞爪，下了台和对手握手。台上说的狠话，没有人会当成他本人的想法。</div></div>
+  <div class="eg bad" data-ic="💰"><span data-illus="c22_rmt"></span><div class="egt"><b>能卖真钱的网游装备</b>：装备在场外有了价格，圈壁被戳了洞：被盗号、被诈骗，损失是真的。它仍然是游戏，但已经不是纯粹的圈。</div></div>
+
+  <!-- ============ 2 是什么：游戏化 ============ -->
+  <div class="sec"><span class="n">2</span><h2><span class="tag what">是什么</span>游戏化：把游戏元素搬到非游戏的地方</h2></div>
+  <p>打开一个背单词软件，首页最显眼的是一团火焰和“连续打卡 37 天”。你并没有在玩游戏，可你会因为舍不得断掉这个数字而打开它。这种把积分、徽章、排行榜、等级、任务线、连续打卡这些游戏元素，用在学习、健身、工作等非游戏场景的做法，叫<span class="term" tabindex="0" data-def="把游戏设计元素（积分、徽章、排行榜、等级、任务等）用在非游戏的场景，如学习、健身、工作。">游戏化</span>（gamification）。</p>
+  <p>2010 年前后，这个词突然在互联网产品圈流行起来。可大家用得很乱：做个完整的教学游戏叫游戏化吗？给一份周报加上积分算吗？Deterding、Dixon、Khaled、Nacke 四位研究者在 2011 年的 MindTrek 会议论文里，给了一个后来被反复引用的定义：<b>在非游戏情境中使用游戏设计元素</b>。（Deterding 本人后来说，对“什么算游戏设计元素”越来越怀疑。）</p>
+  <p>这个定义的关键，是把它和相邻的几个概念分开。下面这张图把“玩”和“戏”、“整体”和“部分”交叉起来，每个格子住着一类东西。</p>
+
+  <div class="card">
+    <svg viewBox="0 0 700 320" width="100%" role="img" aria-label="游戏化二乘二图：横向分玩和戏，纵向分整体和部分；整体里有玩具和游戏，部分里有玩趣式设计和游戏化">
+      <g class="rough" stroke="#2b2b3a" stroke-width="4" stroke-linejoin="round">
+        <rect x="110" y="44" width="270" height="116" rx="14" fill="#fff7cf"/>
+        <rect x="390" y="44" width="270" height="116" rx="14" fill="#eaf9e4"/>
+        <rect x="110" y="170" width="270" height="116" rx="14" fill="#e8f6fc"/>
+        <rect x="390" y="170" width="270" height="116" rx="14" fill="#ffb3c6"/>
+      </g>
+      <g font-size="22" fill="#2b2b3a" text-anchor="middle">
+        <text x="245" y="30" font-size="19">玩（自由、即兴）</text><text x="525" y="30" font-size="19">戏（有规则、有目标）</text>
+        <text x="50" y="108" font-size="19">整体</text><text x="50" y="234" font-size="19">部分</text>
+        <text x="245" y="92">玩具</text><text x="245" y="128" font-size="17">自由玩耍的物件</text>
+        <text x="525" y="92">游戏</text><text x="525" y="128" font-size="17">完整的、有规则的</text>
+        <text x="245" y="218">玩趣式设计</text><text x="245" y="254" font-size="17">用“玩”的味道做产品</text>
+        <text x="525" y="218" font-weight="bold">游戏化</text><text x="525" y="254" font-size="17">游戏元素用在非游戏里</text>
+      </g>
+    </svg>
+    <p class="small">示意：改自 Deterding 等人论文里“玩耍/游戏 × 整体/部分”的思路，格子里的措辞是为讲解重写的。用来训练飞行员的飞行模拟器是一个完整的游戏，只是用途严肃，叫“严肃游戏”，住在右上格；“积分加徽章”住在右下格。</p>
+  </div>
+
+  <div class="eg" data-ic="🔥"><span data-illus="c22_streak"></span><div class="egt"><b>背单词的连续打卡</b>：把“游戏元素”（连续天数）放进学习，这是典型的游戏化。</div></div>
+  <div class="eg" data-ic="✈️"><span data-illus="c22_flightsim"></span><div class="egt"><b>飞行模拟器</b>：整套东西本身就是一个完整的游戏，只是用来训练。这叫<span class="term" tabindex="0" data-def="完整的游戏，但目的是训练、教学等非娱乐用途，如飞行模拟器。">严肃游戏</span>，不是游戏化。</div></div>
+  <div class="eg" data-ic="🎹"><span data-illus="c22_stairpiano"></span><div class="egt"><b>钢琴楼梯</b>：2009 年大众公司的“趣味理论”活动，在斯德哥尔摩一个地铁站把台阶做成琴键，旁边就是扶梯。活动方称走楼梯的人明显变多了（这是营销活动自己的数字，没有经过同行评议）。它没有积分和排名，只是把“玩”的味道放进楼梯，更接近玩趣式设计。</div></div>
+  <div class="eg bad" data-ic="📊"><span data-illus="c22_ticketboard"></span><div class="egt"><b>客服工单排行榜</b>：积分、排名都有，处理数量压过了质量，大家草草关单。这是游戏化做偏的典型。</div></div>
+
+  <div class="board">
+    <h3>🧩 归类小练习：这算哪一格？</h3>
+    <p class="small">每个例子点一个你认为的归类。点完会告诉你按 Deterding 等人的思路该放哪里，并解释原因。</p>
+    <div id="c22_cls"></div>
+  </div>
+  <div class="sticky">试试看：五个例子都点完，看看你和上面那张 2×2 图的划分一致几个。<span id="c22_clsok" class="stat" style="display:none">✓ 全部归完了。</span></div>
+
+  <!-- ============ 3 是什么（延伸）：有限与无限 ============ -->
+  <div class="sec"><span class="n">3</span><h2><span class="tag what">是什么</span>延伸：有限的游戏与无限的游戏</h2></div>
+  <p>圈既然是大家同意画的，圈里的游戏就有两种活法：为了赢，赢了就散场；或者为了让游戏一直玩下去。宗教学者詹姆斯·卡斯（James P. Carse）1986 年的《有限与无限的游戏》（Free Press）就是这样分的。<b>有限游戏</b>的目的是赢，有明确的参与者、边界和结束时刻；<b>无限游戏</b>的目的是让游戏继续，没有人想结束它，规则可以为了继续而改变。这是卡斯的一种分类法，常被借用到商业、政治、教育的讨论里，其中一部分借用颇有争议。</p>
+  <div class="card">
+    <svg viewBox="0 0 700 300" width="100%" role="img" aria-label="有限游戏与无限游戏对比图：有限游戏有终点，无限游戏的圈会扩张和换规则">
+      <g class="rough" stroke="#2b2b3a" stroke-width="4" stroke-linejoin="round">
+        <rect x="15" y="15" width="320" height="270" rx="16" fill="#e8f6fc"/>
+        <rect x="365" y="15" width="320" height="270" rx="16" fill="#ffe9ef"/>
+        <circle cx="130" cy="130" r="44" fill="#fff"/>
+        <path d="M190 130 H265" fill="none"/><path d="M251 116 L267 130 L251 144" fill="none"/>
+        <circle cx="470" cy="130" r="26" fill="#fff" stroke-dasharray="8 6"/>
+        <circle cx="505" cy="130" r="46" fill="none" stroke-dasharray="8 6"/>
+        <circle cx="545" cy="130" r="64" fill="none" stroke-dasharray="8 6"/>
+      </g>
+      <g font-size="24" fill="#2b2b3a" text-anchor="middle">
+        <text x="175" y="56">有限游戏</text><text x="525" y="56">无限游戏</text>
+      </g>
+      <g font-size="18" fill="#2b2b3a" text-anchor="middle">
+        <text x="175" y="224">目的：赢</text><text x="175" y="250">边界固定，规则固定</text><text x="175" y="274" font-size="17">有人赢 → 结束</text>
+        <text x="525" y="224">目的：让游戏继续</text><text x="525" y="250" font-size="17">边界与规则可以为继续而改</text><text x="525" y="274" font-size="17">没有“终局”</text>
+        <text x="300" y="112" font-size="17">终点</text>
+      </g>
+    </svg>
+  </div>
+  <div class="eg" data-ic="🏆"><span data-illus="c22_final"></span><div class="egt"><b>一场世界杯决赛</b>：有终点和胜负，典型的有限游戏。正因为比赛会结束，每一分钟才这么紧张。</div></div>
+  <div class="eg" data-ic="🏠"><span data-illus="c22_house"></span><div class="egt"><b>孩子的“过家家”</b>：没有赢家，规则随时为了“让游戏继续”而改（“现在你当爸爸”）。</div></div>
+  <div class="eg bad" data-ic="📢"><span data-illus="c22_boss"></span><div class="egt"><b>“公司要玩无限游戏”这句口号</b>：很多商业书把卡斯的分类简化成“有限是坏的、无限是好的”，最后成了“永不下班”。竞争本身并不邪恶，这是对原书的简化。</div></div>
+
+  <!-- ============ 4 发明故事 ============ -->
+  <div class="sec"><span class="n">4</span><h2><span class="tag origin">发明故事</span>“游戏是什么”这场争论为何会发生？</h2></div>
+
+  <div class="story">
+    <h3>问题：一个人人都懂、没人说得清的词</h3>
+    <p>20 世纪初，学者们开始认真研究“玩”：它似乎出现在战争、法律、诗歌、体育里，又好像哪里都不是它的本职。可一旦要研究，就得先回答：到底什么算游戏？每个人下了定义，总有人举出反例。这场争论不是文字游戏。定义决定了你把什么放进“游戏设计”的课程，也决定了你敢不敢把游戏搬进学校和公司。</p>
+    <p><b>先猜一下：</b>设计师天天挂在嘴边的“魔圈”，是谁最早提出来的？</p>
+    <div class="rk" id="c22_guess">
+      <button class="chip" data-g="a">一位游戏设计师</button><button class="chip" data-g="b">一位历史学家</button><button class="chip" data-g="c">一位程序员</button>
+    </div>
+    <div class="msg" id="c22_guessfb" style="font-size:1.05rem;font-family:var(--body)">选一个，看看对不对。</div>
+  </div>
+
+  <p>下面按时间走一遍。每一站都是在回答上一站留下的缺口：圈从哪来，能不能统一定义，游戏的核心是什么，游戏会不会没有终点，圈能不能搬出去。</p>
+  <div class="timeline">
+    <div class="ev hasimg"><span data-illus="c22_huizinga"></span><div><b class="yr">1938</b>　赫伊津哈《游戏的人》。问题：战争、法律、诗歌、仪式……为什么都像在“玩”？他的回答是，游戏是文化的一个基本成分，人在“圈出来的场所”里，按自己的规则暂时生活。可这个圈到底有多严、规则从哪来，他没有说死。</div></div>
+    <div class="ev hasimg"><span data-illus="c22_wittgenstein"></span><div><b class="yr">1953</b>　维特根斯坦《哲学研究》。问题：棋、牌、球、奥运……能找出一条共有的本质吗？他一一摆出来看，找不到，只找到“家族相似”：彼此在不同方面相像，没有一条线穿过全家。新问题：没有统一本质，设计者还能不能有个够用的工具？</div></div>
+    <div class="ev hasimg"><span data-illus="c22_hurdle"></span><div><b class="yr">1978</b>　休茨《蚱蜢》。回答：玩游戏，就是自愿尝试克服不必要的障碍。规则故意把省事的路封死，玩家自愿接受，这就是游戏。他还设想：需求都被满足的乌托邦里，人们仍会玩。这是休茨的一种观点；批评者会问，爱情和艺术也能叫“克服障碍”吗？</div></div>
+    <div class="ev hasimg"><span data-illus="c22_carse"></span><div><b class="yr">1986</b>　卡斯《有限与无限的游戏》。问题：比赛会结束，社区和文化却不会，该怎么区分？回答：有限游戏为了赢，无限游戏为了继续。后来被商业书简化成口号，就失真了。</div></div>
+    <div class="ev hasimg"><span data-illus="c22_salen"></span><div><b class="yr">2003</b>　萨伦与齐默尔曼《游戏规则》。设计者需要一个共同的词来谈“游戏与现实的边界”，于是把赫伊津哈的“圈”改造成设计工具“魔圈”。新问题：数字游戏里金钱、身份大量涌入，圈还成立吗？</div></div>
+    <div class="ev hasimg"><span data-illus="c22_deterding"></span><div><b class="yr">2011</b>　Deterding 等《定义游戏化》。企业和 App 都在往产品里塞积分、徽章，这到底算什么？回答：游戏化是在非游戏情境中使用游戏设计元素，不同于做一个完整的游戏。新问题：效果为什么时好时坏？</div></div>
+  </div>
+  <div class="card">
+    <svg viewBox="0 0 700 330" width="100%" role="img" aria-label="游戏定义的演化图：问题、方案、新问题依次接力">
+      <g class="rough" stroke="#2b2b3a" stroke-width="4" stroke-linejoin="round">
+        <rect x="15" y="20" width="150" height="90" rx="14" fill="#fff7cf"/>
+        <rect x="190" y="20" width="150" height="90" rx="14" fill="#a8dcf0"/>
+        <rect x="365" y="20" width="150" height="90" rx="14" fill="#b6e8a8"/>
+        <rect x="540" y="20" width="145" height="90" rx="14" fill="#ffb3c6"/>
+        <rect x="15" y="210" width="150" height="90" rx="14" fill="#f1eaff"/>
+        <rect x="190" y="210" width="150" height="90" rx="14" fill="#ffe9ef"/>
+        <rect x="365" y="210" width="320" height="90" rx="14" fill="#fff0dc"/>
+        <g fill="none" stroke-width="4.5" stroke-linecap="round">
+          <path d="M165 65 H188"/><path d="M340 65 H363"/><path d="M515 65 H538"/>
+          <path d="M612 112 Q600 160 450 208"/><path d="M165 255 H188"/><path d="M340 255 H363"/>
+        </g>
+      </g>
+      <g font-size="19" fill="#2b2b3a" text-anchor="middle">
+        <text x="90" y="56">1938 赫伊津哈</text><text x="90" y="86" font-size="17">圈出“玩”的空间</text>
+        <text x="265" y="56">1953 维特根斯坦</text><text x="265" y="86" font-size="17">没有统一本质</text>
+        <text x="440" y="56">1978 休茨</text><text x="440" y="86" font-size="17">不必要的障碍</text>
+        <text x="612" y="56">1986 卡斯</text><text x="612" y="86" font-size="17">有限 / 无限</text>
+        <text x="90" y="246">2003 萨伦等</text><text x="90" y="276" font-size="17">魔圈进入设计</text>
+        <text x="265" y="246">2011 Deterding</text><text x="265" y="276" font-size="17">游戏化的定义</text>
+        <text x="525" y="246">新问题：圈会漏，度量会被刷</text><text x="525" y="276" font-size="17">所以要问：为什么、怎么用</text>
+      </g>
+    </svg>
+    <p class="small">每一步都是在回答上一步留下的缺口。</p>
+  </div>
+
+  <!-- ============ 5 为什么 ============ -->
+  <div class="sec"><span class="n">5</span><h2><span class="tag why">为什么成立</span>游戏化为何反噬？</h2></div>
+
+  <p>搬出圈外的第一个麻烦，是奖励。还记得那个给孩子发奖状的实验吗？莱珀、格林与尼斯贝特 1973 年让幼儿园里本来爱画画的孩子，事先被告知“画画能得奖状”，后来自由玩耍时，他们画画的时间比没被许诺的孩子更少。这叫<span class="term" tabindex="0" data-def="本来出于兴趣做的事，被许诺外在奖励后，兴趣和自发去做的意愿反而下降的现象；效果大小因情境而异，研究有争议。">过度理由效应</span>。游戏化恰恰就是在给事情发“奖状”，所以它要面对同样的风险。</p>
+  <div class="eg" data-ic="📈"><span data-illus="c22_progress"></span><div class="egt"><b>放大</b>：背单词时看到“本周比上周多记 30 个”，你更想继续。奖励在说“你进步了”，是反馈。</div></div>
+  <div class="eg" data-ic="🏅"><span data-illus="c22_certificate"></span><div class="egt"><b>替代</b>：本来爱画画的孩子，被承诺奖状后只为奖状画，兴趣被“买走”。奖励在说“照我要的做”，是控制。</div></div>
+  <div class="eg bad" data-ic="🔥"><span data-illus="c22_tapclose"></span><div class="egt"><b>刷数字</b>：为了不断“连续打卡”，每天点开 App 一秒就关掉，什么都没学进去。数字赢了，目的输了。</div></div>
+
+  <div class="why-box">
+    <h3>三条原理，同一个提醒</h3>
+    <p><b>过度理由与自我决定理论</b>（前面聊玩家动机时讲过）：德西与瑞安的自我决定理论认为，奖励如果被感知为<b>控制</b>（“我是为了拿奖才做”），会削弱自主感，降低内在动机；如果被感知为<b>信息</b>（“我做得不错”），反而能增强胜任感。1999 年 Deci、Koestner 与 Ryan 汇总了 128 项实验，认为有形的、事先说好的外在奖励总体上会削弱内在动机；Cameron 与 Pierce 等人用另一套方法分析，结论温和得多，双方至今各执一词。</p>
+    <p><b><span class="term" tabindex="0" data-def="一个指标一旦被当作目标，就会被人优化和钻空子，从而不再是好指标。">古德哈特定律</span></b>（前面聊指标时讲过）：排行榜上的“打卡次数”会被刷，因为人们优化的是数字，而不是数字背后的东西。这是“刷数字”那个例子背后的机制。</p>
+    <p class="src">出处：Lepper, Greene &amp; Nisbett (1973), <i>Journal of Personality and Social Psychology</i> 28(1)：129–137；Deci, Koestner &amp; Ryan (1999), <i>Psychological Bulletin</i> 125(6)：627–668；Deci &amp; Ryan 的自我决定理论；Goodhart (1975)，措辞经 Strathern (1997) 流行。过度理由效应有争议，效果大小因情境而异，是“值得警惕的风险”，不是铁律。</p>
+  </div>
+
+  <div class="withimg rev">
+    <span data-illus="c22_leaderboard"></span>
+    <div>
+      <p>排行榜是游戏化里最常用的零件，它起作用靠的是另一条原理：<b><span class="term" tabindex="0" data-def="人通过和他人比较来评估自己的能力与处境，倾向和与自己相近的人比。">社会比较</span></b>。费斯廷格（Leon Festinger）1954 年提出，人需要拿自己和别人比，才知道自己做得怎么样，而且更爱和与自己相近的人比。</p>
+      <p>这就解释了为什么第 38 名的人盯着第 37 名会拼命，对第 1 名反而没感觉；也解释了为什么全服榜常常只激励榜首的人，让中下游的人更想退出。榜单怎么分段、让谁和谁比，比“有没有榜”重要得多。</p>
+    </div>
+  </div>
+  <p class="small">出处：Leon Festinger, “A Theory of Social Comparison Processes”，《人类关系》7(2)：117–140（1954）。</p>
+  <div class="card">
+    <svg viewBox="0 0 700 280" width="100%" role="img" aria-label="示意图：游戏元素放大动机或替代动机的两条路径">
+      <g class="rough" stroke="#2b2b3a" stroke-width="4" stroke-linejoin="round">
+        <rect x="20" y="105" width="150" height="70" rx="12" fill="#fff7cf"/>
+        <rect x="300" y="25" width="170" height="80" rx="12" fill="#eaf9e4"/>
+        <rect x="300" y="175" width="170" height="80" rx="12" fill="#ffe9ef"/>
+        <rect x="540" y="25" width="140" height="80" rx="12" fill="#b6e8a8"/>
+        <rect x="540" y="175" width="140" height="80" rx="12" fill="#ffb3c6"/>
+      </g>
+      <g font-size="21" text-anchor="middle" fill="#2b2b3a">
+        <text x="95" y="135">加入积分</text><text x="95" y="162">和排行榜</text>
+        <text x="385" y="58">奖励 = 反馈</text><text x="385" y="88">“我进步了”</text>
+        <text x="385" y="208">奖励 = 控制</text><text x="385" y="238">“为了奖才做”</text>
+        <text x="610" y="58">动机被放大</text><text x="610" y="88">坚持更久</text>
+        <text x="610" y="208">动机被挤掉</text><text x="610" y="238">拿完奖就走</text>
+      </g>
+      <g class="rough" fill="none" stroke="#2b2b3a" stroke-width="4">
+        <path d="M170 125 Q235 90 298 72"/><path d="M170 155 Q235 200 298 212"/>
+        <path d="M470 65 H538"/><path d="M470 215 H538"/>
+      </g>
+    </svg>
+    <p class="small">示意：游戏化的成败，常常取决于游戏元素是在“放大”原有的动机，还是在“替代”它。</p>
+  </div>
+  <p>实际效果也确实“看情况”。Hamari、Koivisto 与 Sarsa 2014 年对实证研究的综述发现，游戏化多数时候有正面效果，但强烈依赖具体情境和使用者。</p>
+
+  <h3>魔圈为什么会“漏”？</h3>
+  <div class="withimg">
+    <span data-illus="c22_leak"></span>
+    <div>
+      <p>魔圈是个美好的理想：圈里的一切后果只在圈内有效。可现实里的圈往往不是封闭的。研究虚拟世界经济的爱德华·卡斯特罗诺瓦（Edward Castronova）在 2005 年的《合成世界》（<i>Synthetic Worlds</i>）里，把虚拟世界的边界称为“几乎是魔圈”（almost-magic circle），意思是墙壁是<b>多孔的</b>。</p>
+      <p>漏水有四个方向：<b>金钱</b>（赌场筹码是真钱；《暗黑破坏神 III》2012 年上线过允许玩家用真钱买卖装备的拍卖行，暴雪于 2014 年 3 月关闭，理由是它损害了“打怪掉宝”的核心乐趣）、<b>身份</b>（职业选手的游戏水平就是职业与地位）、<b>社会后果</b>（游戏里的背叛会让现实里的朋友疏远）、<b>不可逆性</b>（赌输的钱、花掉的几年，不能重来）。</p>
+    </div>
+  </div>
+  <p>漏并非全是坏事：电竞让热爱游戏的人有了职业路径，游戏里结下的友谊是真的。问题出在，<b>当后果只有一方承担（玩家承担损失、运营商获利），或参与者没意识到圈已被打破时</b>，“这只是游戏”就成了借口。拖动下面的滑块，亲手“拨”一拨：</p>
+
+  <div class="board">
+    <h3>🔬 魔圈渗透计（招牌互动）</h3>
+    <p class="small">选一个活动，下面四个维度（0 完全在圈内，4 严重渗透）是我给的参考值，<b>你可以拖动滑块改成自己的判断</b>，看它在“游戏↔现实”轴上的位置如何移动。</p>
+    <div class="pick" id="mcPick"></div>
+    <svg viewBox="0 0 700 210" width="100%" role="img" aria-label="游戏到现实的连续轴" id="mcSvg"></svg>
+    <div id="mcDims"></div>
+    <div class="msg" id="mcTxt"></div>
+    <button class="btn alt" id="mcReset">恢复我的参考值</button>
+  </div>
+  <div class="sticky">试试看：选“职业电竞”，只拖动“金钱”滑块到 0，看它在轴上往哪边走；再选“赌场”，想办法让它的总分降到 8 以下。<span id="c22_mcok" class="stat" style="display:none">✓ 你把赌场“拉”回圈里了：这就是靠规则把圈补好的样子。</span></div>
+
+  <!-- ============ 6 怎么用 ============ -->
+  <div class="sec"><span class="n">6</span><h2><span class="tag how">怎么用</span>什么适合游戏化？</h2></div>
+  <p>把上面的原理变成设计时的判断。下面这六个问题，是依据前面各章整理的一套检查清单（不是学术标准，你可以增删）。先读一遍，再去评估器里“拧旋钮”：</p>
+  <div class="grid3">
+    <div class="card y"><h3>① 内在趣味</h3><p>去掉所有积分，还有人愿意做吗？</p></div>
+    <div class="card b"><h3>② 难刷的度量</h3><p>进展能测量，又不容易被刷。</p></div>
+    <div class="card g"><h3>③ 自愿</h3><p>自愿是游戏的要素：被逼的“游戏”只是考核。</p></div>
+    <div class="card p"><h3>④ 失败成本低</h3><p>魔圈的好处是敢试错。</p></div>
+    <div class="card o"><h3>⑤ 奖励是支持而非替代</h3><p>像教练的肯定，而不是“买行为”。</p></div>
+    <div class="card v"><h3>⑥ 参与者认同度量</h3><p>不觉得被监视或被控制。</p></div>
+  </div>
+
+  <div class="board">
+    <h3>🧪 这件事该游戏化吗？（招牌互动）</h3>
+    <p class="small">点一个场景，六个滑块会自动摆到我给的参考位置（示意，你可以不同意）。<b>拖动任何一个滑块</b>，看右边的仪表和“最薄弱环节”怎么变；规则是：内在趣味最重，其次是度量、自愿、奖励性质；自愿太低或“无趣味且奖励在买行为”会触发硬性降级。</p>
+    <div class="pick" id="scPick"></div>
+    <div id="scBody"></div>
+    <div id="scOut"></div>
+  </div>
+  <div class="sticky">试试看：选“客服工单排行榜”，它会被评为“不建议”。只动两个滑块，把它救到“适合”或“小心”。<span id="c22_scok" class="stat" style="display:none">✓ 你救回来了：看看你动的是哪两个旋钮？</span></div>
+
+  <h3>用游戏“表达观点”</h3>
+  <p>游戏化是把游戏“搬出去”，另一个方向是<b>让游戏说话</b>。游戏研究者伊恩·博格斯特（Ian Bogost）2007 年在《有说服力的游戏》（<i>Persuasive Games</i>）里提出<span class="term" tabindex="0" data-def="博格斯特的概念：游戏不只靠文字和画面说服人，更靠规则和系统本身表达观点：你被迫在规则里行动，就在亲身体验一种论点。">程序修辞</span>：文章靠论述说服，游戏靠<b>规则</b>说服。他对游戏化的批评也很尖锐：只贴“积分、徽章”而没有改变规则体验，抓住的只是游戏最表层的东西，他在 2011 年半讽刺地称这类做法为“剥削软件”（exploitationware）。这是他的一种观点，不是公认结论。</p>
+  <div class="eg" data-ic="🏠"><span data-illus="c22_landlord"></span><div class="egt"><b>地主游戏</b>：伊丽莎白·马吉（Elizabeth Magie）的《地主游戏》1904 年获得美国专利，本意是展示土地垄断怎样让地主越来越富、租客越来越穷，并推广土地税。后来的《大富翁》（1935）从它演变而来。观点不在台词里，在规则里：玩一局就明白。</div></div>
+  <div class="eg bad" data-ic="💬"><span data-illus="c22_lecture"></span><div class="egt"><b>把观点写进对话框</b>：游戏弹出一大段说教，玩家的反应是按“跳过”。你想说的话没有改变玩家的任何一次选择，它就没有被玩出来。</div></div>
+  <div class="chain">
+    <span class="st">想表达的观点</span><span class="ar">→</span>
+    <span class="st">这个观点背后的“系统”是什么</span><span class="ar">→</span>
+    <span class="st">把系统变成规则</span><span class="ar">→</span>
+    <span class="st">让玩家在规则里做选择</span><span class="ar">→</span>
+    <span class="st">体验到后果</span>
+  </div>
+  <p>也要警惕：规则本身带着设计者的立场，玩家有可能得出与你相反的结论，甚至从中学到“怎样钻空子”。</p>
+  <p class="small">出处：Elizabeth Magie 的专利为美国专利 748,626（1904 年 1 月 5 日授权）；Parker Brothers 1935 年出版《大富翁》。有关谁“发明”了《大富翁》的细节，不同资料说法不一，这里只说《地主游戏》是已知最早的版本之一。</p>
+
+  <!-- ============ 误区 ============ -->
+  <div class="misc">
+    <h3>常见误区</h3>
+    <ul>
+      <li><b>“加积分、徽章、排行榜就是游戏化。”</b>这些只是游戏最表层的元素。没有目标、选择、反馈的整体设计，表层元素通常撑不了多久。</li>
+      <li><b>“魔圈是一道墙，圈内的事和现实无关。”</b>魔圈更像一层需要不断维护的“共识”：参与者要同意它，设计者要尊重它，一旦金钱和身份大量进入，圈就变薄。</li>
+      <li><b>“游戏必须有严格定义，否则没法研究。”</b>维特根斯坦提醒我们：概念可以靠“家族相似”运转。定义是工具，不是围栏。</li>
+      <li><b>“赫伊津哈发明了游戏设计里的魔圈。”</b>他谈的是更广的“玩”的场所；设计领域常用的魔圈概念，是后人转述改造的。</li>
+    </ul>
+  </div>
+
+  <div class="reflect">
+    <h3>反思与争议</h3>
+    <p><b>休茨的乌托邦：</b>他认为在需求被满足的世界里，游戏仍是有意义的活动。批评者会问：这是不是把“有意义的生活”缩小成了“克服人为障碍”？照顾孩子、艺术、爱情，能被看作“游戏”吗？另一方面，也有人说，如果游戏如此重要，现实里的许多劳动本来也可以更有“游戏性”，这就是游戏化的哲学根源。</p>
+    <p><b>卡斯的分类：</b>很多例子其实在两种之间；许多健康的无限游戏（比如一个社区）也包含大量有限的小游戏。</p>
+    <p><b>关于游戏化：</b>博格斯特的批评是他的一种观点；也有研究者和实践者认为，只要设计得好，游戏化在健身、学习上确有帮助。实际效果与情境、人群、持续时间有关，研究结论并不统一。</p>
+    <p>留给你的问题：如果你有一个孩子，你会希望他的作业、家务、运动被游戏化吗？你的答案里，哪些是“有效性”的考虑，哪些是“价值观”的考虑？</p>
+  </div>
+
+  <div class="key">
+    <h3>本章要点</h3>
+    <ul>
+      <li><b>魔圈</b>（赫伊津哈的“圈出来的场所”，经萨伦与齐默尔曼带入设计）：游戏在现实里划出暂时的、有规则的世界；它靠共识维持，会在金钱、身份、关系、不可逆四个方向上“漏”。</li>
+      <li><b>游戏化</b>（Deterding 等，2011）：在非游戏情境中使用游戏设计元素，不同于严肃游戏和玩趣式设计。成败取决于游戏元素是放大还是替代原有动机（自我决定理论、古德哈特定律、社会比较）。</li>
+      <li><b>卡斯</b>：有限游戏为了赢，无限游戏为了继续；<b>休茨</b>：游戏是自愿克服不必要的障碍。两者都是“一种观点”，可用但可争论。</li>
+      <li><b>为什么被发明：</b>这些概念接力出现，是因为“游戏”人人会用却说不清，每个答案都留下新缺口，直到游戏被搬进现实，才出现“圈会漏、度量会被刷”的新问题。</li>
+      <li><b>程序修辞</b>：游戏用规则说话；好的“有观点的游戏”把观点写进规则，而不是台词。</li>
+    </ul>
+  </div>
+  <div class="tldr">游戏是现实里一圈自愿的、可重来的围栏；搬到现实用之前，先问它是在放大动机，还是在买走动机。</div>
+
+  <div class="sec"><span class="n">7</span><h2><span class="tag think">练习</span>检验一下</h2></div>
+  <div id="quiz"></div>
+
+  <div class="sec"><span class="n">8</span><h2><span class="tag how">你的设计</span>你的思考</h2></div>
+  <div class="card o">
+    <p>选一件你生活里“被游戏化”的事（打卡 App、积分商城、学习排行榜……），用上面的六个问题评估它，并写下：<b>它在放大你的动机，还是替代它？</b>你有没有过“为了数字而做”的瞬间？</p>
+    <textarea rows="6" data-save="ch22" placeholder="例：某背单词软件的连续打卡——①内在趣味：中；②可刷性：高，点开就算；③自愿：是；……我的结论：……"></textarea>
+  </div>
+</main>
+<script src="js/illus.js"></script><script src="js/illus-ch22.js"></script><script src="js/common.js"></script>
+<script>
+const $ = id => document.getElementById(id);
+
+/* ===== 归类小练习 ===== */
+const CLS = [
+  ["背单词软件里的连续打卡", 0, "游戏化：把“连续天数”这个游戏元素放进学习，整个软件并不是游戏。"],
+  ["训练飞行员的飞行模拟器", 1, "严肃游戏：它本身是完整的游戏，只是用途严肃。"],
+  ["把楼梯做成钢琴琴键", 2, "玩趣式设计：只是把“玩”的味道放进日常物件，没有积分、目标和规则。"],
+  ["给公司周报加上积分和徽章", 0, "游戏化：游戏元素用在非游戏的场景里。"],
+  ["专门为教垃圾分类做的一款完整手机游戏", 1, "严肃游戏：完整的游戏，目的是教学。"],
+];
+(function () {
+  const root = $("c22_cls"), NM = ["游戏化", "严肃游戏", "玩趣式设计"]; let done = 0;
+  CLS.forEach(c => {
+    const d = document.createElement("div"); d.className = "clsrow";
+    d.innerHTML = '<span class="clsq">' + c[0] + "</span>" + NM.map((n, k) => '<button class="btn" data-k="' + k + '">' + n + "</button>").join("") + '<span class="fb"></span>';
+    let answered = false;
+    d.querySelectorAll("button").forEach(b => b.onclick = () => {
+      const ok = +b.dataset.k === c[1];
+      d.querySelectorAll("button").forEach(x => x.classList.remove("ok", "no"));
+      b.classList.add(ok ? "ok" : "no");
+      d.querySelector(".fb").innerHTML = (ok ? "✔ " : "✘ 再想想：") + (ok ? c[2] : "它其实属于“" + NM[c[1]] + "”。" + c[2]);
+      if (ok && !answered) { answered = true; done++; if (done === CLS.length) $("c22_clsok").style.display = ""; }
+    });
+    root.appendChild(d);
+  });
+})();
+document.querySelectorAll("#c22_guess .chip").forEach(b => b.onclick = () => {
+  $("c22_guessfb").innerHTML = b.dataset.g === "b" ? "✔ 对。是荷兰历史学家赫伊津哈，1938 年的《游戏的人》。设计领域的“魔圈”经 2003 年萨伦与齐默尔曼的转述才流行，它不是设计师原创的。"
+    : "不是。最早是荷兰历史学家赫伊津哈，1938 年，早于电子游戏几十年；设计师是后来才借来用的。";
+});
+
+/* ===== 实验 B：魔圈渗透计（滑块版） ===== */
+const DIMS = [
+  ["金钱", "圈内的得失是否变成真实的钱？"],
+  ["身份", "圈内的表现是否定义了你是谁（职业、地位）？"],
+  ["社会后果", "圈内的行为是否影响圈外的关系和声誉？"],
+  ["不可逆", "圈内的输赢是否无法重来？"],
+];
+const ACT = [
+  { n: "捉迷藏", v: [0, 0, 0, 0], t: "几乎完全在魔圈内：没有钱、没有职业，被抓到只是游戏的一部分。孩子可以在下一轮重新开始。" },
+  { n: "休闲棋类", v: [0, 1, 1, 0], t: "基本在圈内。可能有一点“我是棋友”的身份，输赢也可能影响朋友间的玩笑，但很容易重来。" },
+  { n: "可交易装备", v: [3, 2, 2, 3], t: "网络游戏里的装备一旦能卖真钱，圈就被穿了孔：玩家的时间有了价格，欺诈、盗号、“打金”工作室随之出现；而且被盗的号很难找回。游戏设计者要同时管理两种经济。" },
+  { n: "赌场", v: [4, 1, 3, 4], t: "赌场有游戏的形式（规则、随机、反馈），但圈的“可重来”被取消了：钱是真的，损失也是真的。间歇性的随机奖励在这里最显眼。" },
+  { n: "职业电竞", v: [4, 4, 3, 2], t: "它几乎同时在金钱、身份、社会后果上渗透，但参与者是自愿的，规则公开，输赢可以重来——所以它是“圈很薄，但仍被认真维护”的例子：裁判、反作弊、选手合同，都是在修补圈的墙。" },
+];
+(function () {
+  const REF = ACT.map(a => a.v.slice());
+  const cur = ACT.map(a => a.v.slice());
+  let sel = 0;
+  const pick = $("mcPick"), svg = $("mcSvg"), dims = $("mcDims"), txt = $("mcTxt");
+  const sum = i => cur[i].reduce((a, b) => a + b, 0);
+  function buildDims() {
+    dims.innerHTML = "";
+    DIMS.forEach((d, di) => {
+      const row = document.createElement("div"); row.className = "dimrow";
+      row.innerHTML = '<span class="nm">' + d[0] + '</span><input type="range" min="0" max="4" step="1" aria-label="' + d[0] + '"><output>' + cur[sel][di] + '</output><span class="ds">' + d[1] + '</span>';
+      const r = row.querySelector("input"), o = row.querySelector("output");
+      r.value = cur[sel][di];
+      r.oninput = () => { cur[sel][di] = +r.value; o.textContent = r.value; draw(); };
+      dims.appendChild(row);
+    });
+  }
+  function drawPick() {
+    pick.innerHTML = "";
+    ACT.forEach((a, i) => {
+      const b = document.createElement("button"); b.className = "btn" + (i === sel ? " sel" : ""); b.textContent = a.n;
+      b.onclick = () => { sel = i; drawPick(); buildDims(); draw(); };
+      pick.appendChild(b);
+    });
+  }
+  function draw() {
+    const order = ACT.map((a, i) => i).sort((x, y) => sum(x) - sum(y));
+    let s = '<g class="rough" stroke="#2b2b3a" stroke-width="4"><line x1="50" y1="105" x2="650" y2="105"/><path d="M638 95 L652 105 L638 115" fill="none"/></g>';
+    s += '<text x="50" y="190" font-size="20" fill="#2b2b3a">游戏（魔圈内）</text><text x="650" y="190" font-size="20" text-anchor="end" fill="#2b2b3a">现实（后果真实）</text>';
+    order.forEach((i, k) => {
+      const x = 60 + sum(i) / 16 * 560, up = k % 2 === 0;
+      s += '<g class="rough"><circle cx="' + x + '" cy="105" r="' + (i === sel ? 17 : 11) + '" fill="' + (i === sel ? "#ffc078" : "#fff") + '" stroke="#2b2b3a" stroke-width="4"/></g>';
+      s += '<text x="' + x + '" y="' + (up ? 62 : 158) + '" font-size="' + (i === sel ? 21 : 18) + '" text-anchor="middle" fill="#2b2b3a"' + (i === sel ? ' font-weight="bold"' : "") + '>' + ACT[i].n + '</text>';
+    });
+    svg.innerHTML = s;
+    if (ACT[sel].n === '赌场' && sum(sel) < 8 && $('c22_mcok')) $('c22_mcok').style.display = '';
+    const changed = cur[sel].some((v, i) => v !== REF[sel][i]);
+    txt.innerHTML = "<b>" + ACT[sel].n + "</b>：渗透总分 " + sum(sel) + " / 16。" + (changed ? "（你已调整了参考值，上面的位置是按你的判断算的。）" : ACT[sel].t);
+  }
+  $("mcReset").onclick = () => { ACT.forEach((a, i) => (cur[i] = REF[i].slice())); buildDims(); draw(); };
+  drawPick(); buildDims(); draw();
+})();
+
+/* ===== 实验 C：该游戏化吗？（滑块评估器） ===== */
+const SQ = [
+  { s: "内在趣味", t: "去掉所有积分和奖励，这件事本身对一些人还有趣味或意义。", w: 3, lo: "毫无趣味", hi: "本身就有意思", fix: "先找到这件事真正的价值（成长、被认可、与人联系）再设计；找不到的话，游戏元素只会是“糖衣”，奖励一停，行为也停。" },
+  { s: "度量难刷", t: "进展能被清楚、公平地测量，而且不容易被“刷”。", w: 2, lo: "极易被刷", hi: "难刷且公平", fix: "指标容易被刷时，人们会优化数字而不是目的（古德哈特定律）。考虑多指标、抽查、同伴确认，或者不要用公开排名。" },
+  { s: "自愿", t: "参与是自愿的，不参加也不会受罚。", w: 2, lo: "被强制", hi: "完全自愿", fix: "强制参与的“游戏”会被当作绩效考核。让参与可选，或保证不参加不影响评价；至少让人能自己设定难度。" },
+  { s: "失败代价低", t: "落后或失败不丢脸、不扣钱、不影响评价。", w: 1, lo: "代价很高", hi: "几乎没有", fix: "把竞争改成与“过去的自己”比较或团队合作，减少公开的末位展示，保留魔圈“可以重来”的好处。" },
+  { s: "奖励是支持", t: "奖励在支持原有动机（给反馈、认可进步），而不是替代它（买行为）。", w: 2, lo: "在买行为", hi: "在给反馈", fix: "把奖励从“你做了所以给你”改成“你进步了、你做得好”的信息；少用现金等外在、可预期的奖励，多用能反映能力的反馈。" },
+  { s: "认同度量", t: "参与者理解并认同这套度量，不觉得被监视或控制。", w: 2, lo: "觉得被监控", hi: "理解并认同", fix: "公开规则、让参与者参与制定、说明数据怎么使用。被感知为控制的度量，会削弱自主感（自我决定理论）。" },
+];
+const SC = [
+  { n: "背单词", v: [6, 5, 9, 8, 5, 7], note: "常见做法是“连续打卡”和排名。注意区分“打开了应用”和“真的记住了”，度量越靠近后者越好。" },
+  { n: "职场周报打卡", v: [2, 2, 1, 3, 2, 2], note: "最容易出问题的场景之一：打卡指标极易被刷，而且员工通常不是自愿参与的，奖励很容易被感知为监控。" },
+  { n: "垃圾分类", v: [4, 5, 7, 7, 4, 5], note: "社区积分兑换小礼品很常见。关键在于能否核实分类是否正确（避免形式主义），以及是否让居民感觉自己被尊重而不是被监督。" },
+  { n: "康复训练", v: [5, 6, 8, 2, 7, 7], note: "游戏化的价值很大（训练枯燥、反馈对坚持很重要），但失败/疼痛的代价高，安全与医嘱必须优先于“得分”。" },
+  { n: "课堂出勤", v: [3, 7, 1, 4, 3, 4], note: "出勤是强制性的，积分排名可能让落后的学生更不想来。可以考虑团队共同目标而非个人排名。" },
+  { n: "公益捐款", v: [7, 6, 9, 6, 3, 5], note: "捐款常被“排行榜”刺激，有时会提高捐款额，但也可能让人把善意变成攀比；奖励与动机的关系需要特别小心。" },
+  { n: "每日运动步数", v: [6, 2, 9, 8, 4, 5], note: "步数很容易被刷（摇手机）；而且“凑够步数”未必等于“更健康”。可以与其他信息配合，让反馈更丰富。" },
+  { n: "客服工单排行榜", v: [4, 3, 2, 2, 2, 2], note: "典型的古德哈特风险：处理数量上升，但质量可能下降（草草关单）。需要加上质量指标，并避免公开羞辱末位。" },
+];
+(function () {
+  const pick = $("scPick"), body = $("scBody"), out = $("scOut");
+  let sc = 0; const val = SC[0].v.slice();
+  const bars = [];
+  SQ.forEach((q, i) => {
+    const d = document.createElement("div"); d.className = "c22q";
+    d.innerHTML = '<div class="qt"><span><b>' + (i + 1) + '. ' + q.s + '</b>　' + q.t + '</span><output>5</output></div>' +
+      '<input type="range" min="0" max="10" step="1" value="5" aria-label="' + q.s + '"><div class="ends"><span>' + q.lo + '</span><span>' + q.hi + '</span></div><div class="bar"><i></i></div>';
+    const r = d.querySelector("input"), o = d.querySelector("output");
+    r.oninput = () => { val[i] = +r.value; o.textContent = r.value; draw(); };
+    bars.push({ r, o, bar: d.querySelector(".bar i") });
+    body.appendChild(d);
+  });
+  function setScene(i) {
+    sc = i; SC[i].v.forEach((v, k) => { val[k] = v; bars[k].r.value = v; bars[k].o.textContent = v; });
+    pick.querySelectorAll(".btn").forEach((x, j) => x.classList.toggle("sel", j === i)); draw();
+  }
+  SC.forEach((s, i) => {
+    const b = document.createElement("button"); b.className = "btn"; b.textContent = s.n; b.onclick = () => setScene(i); pick.appendChild(b);
+  });
+  function draw() {
+    let got = 0, total = 0;
+    SQ.forEach((q, i) => { got += q.w * val[i]; total += q.w * 10; bars[i].bar.style.width = val[i] * 10 + "%"; bars[i].bar.style.background = val[i] >= 7 ? "#6fcf7f" : val[i] >= 4 ? "#ffc078" : "#ff8fab"; });
+    const pct = got / total * 100;
+    let lvl = pct >= 68 ? 2 : pct >= 45 ? 1 : 0; const notes = [];
+    if (val[2] < 3 && lvl === 2) { lvl = 1; notes.push("你的得分不低，但“不自愿”是硬伤，所以最高只能评为“小心”。"); }
+    if (val[0] < 3 && val[4] < 3) { lvl = 0; notes.push("“没有内在趣味”加上“奖励在买行为”，是最容易出现反噬的组合，直接评为“不建议”。"); }
+    const V = [["❌ 不建议", "bad"], ["⚠️ 小心", "mid"], ["✅ 适合", "good"]][lvl];
+    const col = ["#ffb3c6", "#ffc078", "#b6e8a8"][lvl];
+    const fixes = SQ.map((q, i) => ({ q, i, gap: q.w * (6 - val[i]) })).filter(o => val[o.i] < 5).sort((a, b) => b.gap - a.gap);
+    if (SC[sc].n === '客服工单排行榜' && lvl >= 1 && $('c22_scok')) $('c22_scok').style.display = '';
+    out.innerHTML = '<div class="verdict ' + V[1] + '">' + V[0] + '（' + Math.round(pct) + ' / 100）</div>' +
+      '<div class="meter"><i style="background:' + col + ';width:' + pct + '%"></i></div>' +
+      notes.map(n => "<p>" + n + "</p>").join("") +
+      "<p><b>场景提醒（" + SC[sc].n + "）：</b>" + SC[sc].note + "</p>" +
+      (fixes.length ? "<p><b>最该先补的短板（按权重×差距）：</b></p>" + fixes.slice(0, 3).map(o => '<div class="fix"><b>' + o.q.s + '（权重 ' + o.q.w + '，当前 ' + val[o.i] + '）：</b>' + o.q.fix + "</div>").join("") : "<p>没有明显短板。仍然建议先小范围试运行，观察有没有人在“刷”。</p>") +
+      '<p class="small">这是一个简化的规则评估器，权重和阈值是我设定的（示意）；换场景、拖滑块，看结论怎样变化。</p>';
+  }
+  setScene(0);
+})();
+
+GD.mountQuiz($("quiz"), [
+  { q: "赫伊津哈所说的“魔圈”一类场所，最准确的描述是：", opts: ["游戏里的魔法系统", "游戏在现实中划出的暂时的、有规则的世界", "玩家的游戏账号", "游戏公司的商业模式"], a: 1, why: "魔圈指游戏在现实里划出的暂时空间：大家同意按游戏的规则而不是日常规则行事。" },
+  { q: "按卡斯的分类，下面哪个更像“无限游戏”？", opts: ["一局象棋", "世界杯决赛", "小孩的过家家", "一场考试"], a: 2, why: "过家家没有赢家和终点，规则可以为了让游戏继续而改变。其余都有明确的结束和胜负。" },
+  { q: "【为什么】为什么给本来就喜欢画画的孩子承诺“画画有奖”，有时反而让他之后更少画画？", opts: ["孩子被奖励吓到了", "奖励被感知为控制，把“我喜欢”变成“我为了奖而做”，削弱了内在动机", "孩子累了", "奖励一定会提高动机，这是不可能的"], a: 1, why: "这是过度理由效应（自我决定理论的核心）：奖励被感知为控制时，会削弱自主感与内在动机。需注意效果大小因情境而异。" },
+  { q: "下面哪种情况最有可能说明“魔圈漏了”？", opts: ["朋友之间下棋，输了请吃糖", "游戏里的装备可以在场外卖真钱", "孩子在沙坑里堆城堡", "玩家在游戏里扮演反派"], a: 1, why: "当游戏里的物品有了真实价格，金钱后果就穿过了圈壁。其余例子的后果仍留在圈内。" },
+  { q: "【为什么被发明】维特根斯坦提出“家族相似”，是为了回答哪个难题？", opts: ["怎么设计更好的奖励", "为什么棋、牌、球、奥运这些“游戏”找不到一条共有的本质", "游戏该不该收费", "游戏会不会让人上瘾"], a: 1, why: "学者们想给“游戏”下一个人人认可的定义，却总被反例推翻；他的回答是：这类概念靠重叠的相似性运转，而非单一本质。" },
+  { q: "【为什么被发明】Deterding 等人在 2011 年为“游戏化”下定义，当时最主要的动因是？", opts: ["证明游戏化一定有效", "产品里到处加积分徽章，需要把它和“做一个完整的游戏”等概念区分开来", "为了禁止游戏化", "为了发明新的积分系统"], a: 1, why: "他们要澄清术语：游戏化是在非游戏情境中使用游戏设计元素，不同于严肃游戏、玩趣式设计等相邻概念。" },
+  { q: "【为什么】为什么排行榜常常只激励榜首附近的人，让中下游的人想退出？", opts: ["因为排行榜太花哨", "社会比较倾向和与自己相近的人比，离自己太远的榜首对中下游没有参照意义", "因为中下游的人不喜欢游戏", "因为榜单是随机的"], a: 1, why: "费斯廷格的社会比较理论：人更爱和相近的人比。分段榜、好友榜让“下一名”看得见，通常更有激励。" },
+  { q: "目标、规则、反馈、自愿这四根柱子，和“家族相似”是什么关系？", opts: ["四根柱子是对游戏的最终定义", "四根柱子是实用工具，游戏这个概念本身可能没有严格定义", "维特根斯坦证明了游戏不存在", "两者毫无关系"], a: 1, why: "家族相似提醒我们：游戏这类概念没有一条共同本质，所以四根柱子是帮助设计的工具，遇到边缘案例要灵活。" },
+]);
+</script>
+</body>
+</html>

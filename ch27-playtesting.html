@@ -1,0 +1,835 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>第27章 玩家研究与试玩</title>
+<link rel="stylesheet" href="css/style.css">
+<style>
+  .scroll{overflow-x:auto}
+  .c27cap{min-height:2.4em;font-family:var(--hand);font-size:1.3rem;background:#fff;border:2.5px dashed var(--ink);border-radius:10px;padding:4px 12px;margin:6px 0}
+  .c27log{max-height:150px;overflow:auto;background:#fff;border:2.5px solid var(--ink);border-radius:10px;padding:6px 12px;font-size:1rem;line-height:1.6;margin:6px 0}
+  .c27log div{border-bottom:1px dotted #bbb}
+  .c27log b.tm{font-family:var(--hand);font-size:1.05rem;background:none;margin-right:6px}
+  .c27tl{position:relative;height:56px;border:3px solid var(--ink);border-radius:10px;background:#fffef7;margin:6px 0 2px}
+  .c27tl .tick{position:absolute;top:6px;width:10px;height:10px;margin-left:-5px;border:2px solid var(--ink);border-radius:50%;background:#cfd8e3}
+  .c27tl .tick.dead{background:#ff8fa3}
+  .c27tl .flag{position:absolute;top:24px;margin-left:-9px;min-width:18px;height:26px;font-size:.85rem;line-height:22px;text-align:center;border:2.5px solid var(--ink);border-radius:6px;background:#ffd666;cursor:pointer;padding:0 3px}
+  .c27tl .head{position:absolute;top:0;bottom:0;width:3px;margin-left:-1px;background:#e0668a;pointer-events:none}
+  .c27tl .band{position:absolute;top:0;bottom:0;background:rgba(120,200,110,.35);border-left:2px dashed #2a7;border-right:2px dashed #2a7;pointer-events:none}
+  .c27tl .band.decoy{background:rgba(255,180,60,.35);border-color:#c80}
+  .c27scrub{width:100%}
+  .c27row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:6px 0}
+  .c27marks{font-size:1rem;margin:4px 0}
+  .c27marks span{display:inline-block;background:#fff4c4;border:2.5px solid var(--ink);border-radius:14px;padding:0 10px;margin:3px;cursor:pointer}
+  .c27res{background:#fff;border:2.5px dashed var(--ink);border-radius:12px;padding:8px 14px;margin:8px 0;line-height:1.7}
+  .c27res .ok{color:#1f7a3a}.c27res .no{color:#b3262e}.c27res .mid{color:#a86400}
+  .c27res h4{margin:.6em 0 .2em;font-family:var(--hand);font-size:1.25rem}
+  .c27sw{font:inherit;cursor:pointer;border:2.5px solid #e08a1e;background:#fff0dc;border-radius:8px;padding:0 6px;margin:0 1px}
+  .c27sw.on{border-color:#2a9d5c;background:#eaf9e4}
+  .c27q{background:#fff;border:2.5px solid var(--ink);border-radius:12px;padding:8px 14px;margin:10px 0}
+  .c27q .sent{font-size:1.15rem;line-height:2}
+  .c27q .wy{font-size:.98rem;color:var(--soft);min-height:1.6em}
+  .c27q.done{background:#eaf9e4}
+  .c27sb{display:flex;align-items:center;gap:8px;margin:3px 0;font-size:1rem}
+  .c27sb .nm{width:9.5em;flex:none}
+  .c27sb .bar{height:20px;border:2.5px solid var(--ink);border-radius:6px;min-width:3px}
+  .c27sb .v{font-family:var(--hand);font-size:1.1rem;white-space:nowrap}
+  .c27hist{display:flex;align-items:flex-end;gap:2px;height:110px;border-bottom:3px solid var(--ink);margin:8px 0}
+  .c27hist div{flex:1;background:var(--blue);border:2px solid var(--ink);border-bottom:none;border-radius:3px 3px 0 0;min-height:1px}
+  .c27hist div.cur{background:#ffb0c4}
+  .c27lab{display:flex;justify-content:space-between;font-size:.95rem;color:var(--soft)}
+  table.c27t{width:100%;border-collapse:collapse;font-size:1rem}
+  table.c27t th,table.c27t td{border:2.5px solid var(--ink);padding:6px 8px;text-align:left;vertical-align:top}
+  table.c27t th{background:var(--yellow);font-family:var(--hand);font-weight:400;font-size:1.15rem}
+  .c27ty{border:2.5px solid var(--ink);border-radius:20px;background:#fff;font:inherit;font-size:1rem;padding:2px 12px;cursor:pointer;margin:3px}
+  .c27ty.sel{background:var(--green);font-weight:700}
+  .c27win{outline:3px solid #2f8f48;outline-offset:2px}
+</style>
+</head>
+<body data-ch="27">
+<main class="wrap">
+
+  <div class="hero">
+    <div class="txt">
+      <span class="badge">第 27 章</span>
+      <h1>玩家研究与试玩</h1>
+      <p class="sub">你做了三个月的教学关，朋友说“挺好玩的”。可录像里，他卡了四十秒。</p>
+    </div>
+    <svg viewBox="0 0 190 150" class="rough" aria-hidden="true">
+      <g stroke="#2b2b3a" stroke-width="4" fill="#fff">
+        <rect x="20" y="25" width="110" height="70" rx="6" fill="#e8f6fc"/>
+        <path d="M60 100 L50 125 L100 125 L90 100" fill="#fff7cf"/>
+        <circle cx="160" cy="55" r="18" fill="#ffe9ef"/>
+      </g>
+      <path d="M32 78 L55 52 L75 68 L100 38 L120 60" stroke="#d6436f" stroke-width="4" fill="none"/>
+      <circle cx="160" cy="55" r="6" fill="#2b2b3a"/>
+      <text x="136" y="100" font-size="18">?!</text>
+    </svg>
+  </div>
+
+  <div class="goals">
+    <h3>学习目标</h3>
+    <ul>
+      <li>读完你能分清试玩、可用性测试、访谈、问卷、遥测各自能回答什么问题，并为一个具体疑问选对方法。</li>
+      <li>读完你能解释：为什么“人们说的”和“人们做的”常常不一致，为什么你看到的玩家往往只是幸存下来的那一部分，以及怎样用出声思考、中立提问和观察来绕开这些陷阱。</li>
+      <li>读完你能用 1−(1−L)<sup>n</sup> 估算“测几个人够”，并说出这条经验法则的前提，以及小样本为什么会骗人。</li>
+    </ul>
+    <span class="time">约 45 分钟</span>
+  </div>
+
+  <!-- ================= 1 是什么 ================= -->
+  <div class="sec"><span class="n">1</span><h2><span class="tag what">是什么</span>试玩：看人玩，而不是问人喜不喜欢</h2></div>
+
+  <div class="withimg">
+    <span data-illus="c27_silent"></span>
+    <div>
+      <p>设想你给朋友看了自己做的小游戏，他玩了一会儿，笑着说：“挺好玩的！”你很开心。第二天你看了他的屏幕录像：第一关里，他在一扇打不开的门前来回走了四十秒，最后是误打误撞才拿到钥匙。<b>他说的是真心话，也是客气话；录像里的才是事实。</b></p>
+      <p>所以专业的做法是换一个动作：不问，只看。<span class="term" tabindex="0" data-def="让目标玩家真实地玩你的游戏（或原型），设计者在一旁观察、记录，用来发现问题和验证设计假设的研究活动。">试玩</span>（playtest）就是让真正的玩家玩你的东西，你闭嘴观察，把“我觉得”换成“我看到”。原型造出来之后，靠它才知道往哪改。</p>
+      <p>它有个近亲，叫<span class="term" tabindex="0" data-def="让典型用户完成指定任务，观察他们在哪里卡住、出错、困惑，以评估产品是否好学好用的方法。">可用性测试</span>。两者共用一套技巧，只是问的问题不一样。</p>
+    </div>
+  </div>
+
+  <p>可用性测试问的是“用得顺不顺”：给用户一个任务（“买一张票”），看他能不能完成、花多久、错在哪里。试玩问得更宽，除了“顺不顺”，还要问“好不好玩”：挑战对不对胃口、节奏有没有拖、情绪有没有起伏。</p>
+  <div class="scroll"><table class="c27t">
+    <tr><th></th><th>可用性测试</th><th>试玩</th></tr>
+    <tr><td><b>核心问题</b></td><td>能不能完成？哪里卡住？</td><td>想不想继续？哪里无聊、挫败、惊喜？</td></tr>
+    <tr><td><b>“障碍”的意义</b></td><td>多半是缺陷，要消除</td><td>有些障碍是设计（难度、谜题），要区分“好的难”和“糟的卡”</td></tr>
+    <tr><td><b>典型任务</b></td><td>“请找到设置并调低音量”</td><td>“请自由玩，想停就告诉我”（少给任务，看他自己怎么玩）</td></tr>
+  </table></div>
+  <p>“好的难”和“糟的卡”的区别，就是心流里“挑战与技能匹配”的另一种说法：玩家知道自己该做什么、为什么失败、下次怎么改，是好的难；不知道目标、不知道为什么死，就是糟的卡。</p>
+
+  <div class="eg" data-ic="🎯"><span data-illus="c27_deathmap"></span><div class="egt"><b>游戏内：一款射击游戏的试玩</b>：研究者用单向镜观察玩家，同时记录玩家走过的路线、死亡位置，在游戏中隔几分钟弹窗问“你现在有多投入、多挫败”，还请一部分玩家出声思考。据 Wired 2007 年的报道，微软游戏工作室对《光环 3》就是这样做的（二手报道，细节以原文为准）。</div></div>
+  <div class="eg" data-ic="🪑"><span data-illus="c27_ikea"></span><div class="egt"><b>日常：新手组装</b>：给陌生人一份说明书和一堆零件，你站在旁边什么都不说。看他把哪块板装反，比问“说明书清楚吗？”有效十倍。</div></div>
+  <div class="eg" data-ic="✉️"><span data-illus="c27_letter"></span><div class="egt"><b>日常：改求职信</b>：让朋友边读边说想法。他读到第三段停下来问“‘多维度赋能’是什么意思？”你立刻知道哪句话该改。</div></div>
+  <div class="eg bad" data-ic="🙋"><span data-illus="c27_roommate"></span><div class="egt"><b>反例：把游戏发给室友，问“好玩吗？”</b>他是你的朋友（不想伤你），也懂你的想法（知道该怎么玩），也许根本不是目标玩家。这是试玩的形式，没有试玩的内容。</div></div>
+
+  <!-- ================= 2 方法 ================= -->
+  <div class="sec"><span class="n">2</span><h2><span class="tag what">是什么</span>方法光谱：说的 vs 做的，一个 vs 一群</h2></div>
+  <p>既然光听玩家说不够，就得知道有哪些办法可以用。研究方法大致可以放在两根轴上：横轴是“玩家说了什么（自述）”到“玩家做了什么（行为）”，纵轴是“为什么（少量深入）”到“有多少（大量统计）”。</p>
+
+  <div class="card">
+    <svg viewBox="0 0 720 420" width="100%" role="img" aria-label="研究方法光谱：横轴自述到行为，纵轴定性到定量。访谈和焦点小组在自述定性，问卷在自述定量，观察与出声思考在行为定性，遥测与A/B测试在行为定量">
+      <g class="rough" stroke="#2b2b3a" stroke-width="4" fill="none">
+        <path d="M70 360 L690 360"/><path d="M70 360 L70 30"/>
+        <path d="M380 40 L380 350" stroke-width="2" stroke-dasharray="8 8"/><path d="M80 195 L680 195" stroke-width="2" stroke-dasharray="8 8"/>
+      </g>
+      <g font-size="17" fill="#2b2b3a">
+        <text x="85" y="392">玩家说了什么（自述）</text><text x="690" y="392" text-anchor="end">玩家做了什么（行为）</text>
+        <text x="50" y="60" text-anchor="end" transform="rotate(-90 50 60)">定量：有多少</text>
+        <text x="50" y="350" transform="rotate(-90 50 350)">定性：为什么</text>
+      </g>
+      <g class="rough" stroke="#2b2b3a" stroke-width="3.5">
+        <rect x="95" y="255" width="140" height="48" rx="10" fill="#e8f6fc"/>
+        <rect x="245" y="295" width="125" height="48" rx="10" fill="#e8f6fc"/>
+        <rect x="95" y="80" width="140" height="48" rx="10" fill="#fff7cf"/>
+        <rect x="400" y="255" width="140" height="56" rx="10" fill="#eaf9e4"/>
+        <rect x="548" y="295" width="135" height="48" rx="10" fill="#eaf9e4"/>
+        <rect x="415" y="80" width="115" height="48" rx="10" fill="#ffe9ef"/>
+        <rect x="545" y="130" width="135" height="48" rx="10" fill="#ffe9ef"/>
+      </g>
+      <g font-size="17" fill="#2b2b3a" text-anchor="middle">
+        <text x="165" y="285">访谈</text><text x="307" y="325">焦点小组</text>
+        <text x="165" y="110">问卷</text>
+        <text x="470" y="278">观察</text><text x="470" y="299" font-size="16">+出声思考</text>
+        <text x="615" y="325">屏幕录像回放</text>
+        <text x="472" y="110">遥测数据</text><text x="612" y="160">A/B 测试</text>
+      </g>
+      <g font-size="16" fill="#8a3b12">
+        <text x="90" y="230">易受社会期许影响</text>
+        <text x="400" y="230">看得见卡点，但难成规模</text>
+        <text x="400" y="62">知道“哪里”，不知道“为什么”</text>
+      </g>
+    </svg>
+  </div>
+  <p>没有哪个“最好”，它们互相补缺：<b>遥测告诉你“第 3 关有 40% 的人流失”（有多少），观察告诉你“他们是因为看不见那扇门”（为什么），访谈再补一句“我以为那是背景”（他怎么理解的）</b>。</p>
+
+  <div class="grid2">
+    <div class="card b"><h3>👀 观察</h3><p>看玩家在做什么：停顿、重复、犹豫、跳过。最接近“真相”，但你要克制自己不插话。</p></div>
+    <div class="card y"><h3>🗣️ 访谈</h3><p>事后聊：他怎么理解的、期待什么。适合挖动机和心智模型，但他会给出“合理化”的叙述。</p></div>
+    <div class="card p"><h3>📋 问卷</h3><p>一次问很多人，便于比较和量化；但问题怎么问、选项怎么给，就决定了你得到什么。</p></div>
+    <div class="card g"><h3>📈 遥测</h3><p>游戏自己记录事件：死在哪、卡多久、哪关退出。人数多、不打扰，但没有“为什么”。</p></div>
+  </div>
+
+  <h3>出声思考：让脑子里的话变成声音</h3>
+  <p>观察有个麻烦：你看得见他停下来，却看不见他在想什么。<span class="term" tabindex="0" data-def="让被试一边操作一边把脑中正在想的内容说出来，研究者记录这些话，用来了解他当下的理解与困惑。">出声思考</span>（think-aloud）就是为这个麻烦准备的：请玩家一边玩，一边把脑子里的话说出来：“我看到一扇门……打不开……是不是要钥匙？”你不评价、不解释、不帮忙，只在他沉默太久时问一句“你现在在想什么？”。后面的试玩观察室里，字幕条里就是一位虚拟玩家的出声思考。</p>
+
+  <h3>任务设计与中立提问</h3>
+  <ul>
+    <li><b>任务要给“目标”，不给“路线”。</b>说“请想办法通过这一关”，别说“请去左边拿钥匙再开门”。后者等于替他做完了你要测的事。</li>
+    <li><b>提问要中立。</b>问“你觉得怎么样？”而不是“是不是很棒？”；问过去的真实行为，而不是未来的假想（“你上次付费买了什么？”而不是“你会买吗？”）。后面有个“提问改写器”供你练手。</li>
+    <li><b>记录要分层。</b>先记事实（14:32 第 3 次走到门前），再记解释（可能没看到钥匙），两者别混在一个便利贴里。</li>
+  </ul>
+  <p class="small">一个常被问到的问题：测试者自己玩，会不会因为知道被观察而表现不同？会，所以开场要说清“我们测的是游戏，不是你”，开场话术可以直接套用。</p>
+
+  <!-- ================= 3 何时测测谁测几个 ================= -->
+  <div class="sec"><span class="n">3</span><h2>何时测、测谁、测几个人</h2></div>
+  <p>研究不是一次性的“大考”，而是嵌进迭代循环里的小实验。下图标出了它的位置：它把“我猜”变成“我看到”，让下一轮修改有证据可依。</p>
+
+  <div class="card">
+    <svg viewBox="0 0 720 385" width="100%" role="img" aria-label="迭代循环：想法、原型、试玩研究、洞察、修改，再回到原型">
+      <defs><marker id="c27ar" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 z" fill="#2b2b3a"/></marker></defs>
+      <g class="rough" stroke="#2b2b3a" stroke-width="3.5">
+        <rect x="20" y="140" width="120" height="60" rx="12" fill="#fff7cf"/>
+        <rect x="190" y="40" width="130" height="60" rx="12" fill="#e8f6fc"/>
+        <rect x="400" y="40" width="150" height="66" rx="12" fill="#ffe9ef"/>
+        <rect x="560" y="140" width="140" height="60" rx="12" fill="#eaf9e4"/>
+        <rect x="290" y="240" width="140" height="60" rx="12" fill="#f1eaff"/>
+      </g>
+      <g font-size="19" fill="#2b2b3a" text-anchor="middle">
+        <text x="80" y="177">想法/假设</text><text x="255" y="77">做原型</text>
+        <text x="475" y="68">试玩研究</text><text x="475" y="92" font-size="16">观察·访谈·数据</text>
+        <text x="630" y="177">洞察</text><text x="360" y="277">改设计</text>
+      </g>
+      <g class="rough" stroke="#2b2b3a" stroke-width="3.5" fill="none" marker-end="url(#c27ar)">
+        <path d="M80 136 Q100 90 185 75"/><path d="M322 72 L396 72"/><path d="M552 80 Q620 100 630 136"/>
+        <path d="M600 202 Q560 260 434 272"/><path d="M288 272 Q120 280 90 204"/>
+      </g>
+      <g font-size="16" fill="#8a3b12">
+        <text x="400" y="26">研究在这里：把“我猜”变成“我看到”</text>
+        <text x="360" y="350" text-anchor="middle">循环越快，学得越快；早期测纸面原型，后期测可玩版本</text>
+      </g>
+    </svg>
+  </div>
+
+  <h3>何时测</h3>
+  <p><b>越早越好，越粗糙越好。</b>纸上的关卡草图、一个只有方块的灰盒关卡，都可以拿去试玩。越早发现“根本没人看懂目标”，改起来越便宜。到后期，再做平衡、手感和长线体验的测试。</p>
+
+  <h3>测谁：目标玩家，不是朋友</h3>
+  <p>理想的测试者是你的目标玩家：喜欢这类游戏、对你的游戏一无所知、也不认识你。招募时先写一份“筛选条件”（玩过什么类型、每周玩多久）。朋友、同事也可以用，但要清楚：他们会更礼貌，也更懂你的意图（后者叫“知识的诅咒”）。如果你的游戏有明显不同的玩家群（新手 vs 老手），要分别测。</p>
+
+  <h3>测几个人：“5 个就够了”？</h3>
+  <p>这是业界流传最广、也最容易被误用的一条经验法则。它的数学出奇地简单：假设每个问题被<b>任意一个</b>测试者发现的概率是 L，且各人互相独立，那么 <b>n 个人至少有一人发现它</b>的概率是</p>
+  <p style="text-align:center;font-size:1.3rem"><b>1 − (1 − L)<sup>n</sup></b></p>
+  <p>“都没发现”的概率是 (1−L)<sup>n</sup>，取反就是“至少一人发现”。Nielsen 与 Landauer 在 1993 年的论文中，用多个项目的数据拟合，给出 L 的典型值约为 <b>31%</b>。代入：n=5 时 1−0.69<sup>5</sup>≈<b>84%</b>（Nielsen 文章里写作约 85%）；n=15 时已经 ≈99.6%。这就是“5 个人能发现大部分问题”的来历。</p>
+  <p>但 L 是个平均数，它因产品、任务、人群而变，并且遭到了不少质疑。后面你会自己拖滑块、跑模拟，亲眼看到它有多敏感。</p>
+
+  <!-- ================= 4 发明故事 ================= -->
+  <div class="sec"><span class="n">4</span><h2><span class="tag origin">发明故事</span>为什么必须“看人用”？</h2></div>
+
+  <div class="story">
+    <h3>设计者的盲区：做的人最看不见问题</h3>
+    <p>假设你是 20 世纪 80 年代初的软件设计师，写了个很“聪明”的界面。你自己用得飞快，同事也说不错。上线后，用户却大量求助。你怎么办？常见的老办法有三种（这是一类做法，不是某家公司的史实）：多读设计规范；请同事试用；一次做到最好，上线后再说。它们的共同缺陷是，评判者都和你一样了解这个系统，看不到“第一次见到它的人”的世界。</p>
+    <p>要看到那个世界，就得让“第一次的人”来用，并且在他用的时候就观察。可是怎么观察他脑子里发生了什么？这引出了心理学内部的一场争论。</p>
+  </div>
+
+  <h3>先自己试：你觉得 5 个人能发现多少问题？</h3>
+  <p>在看历史之前，先做个预测。假设典型情况下，<b>每个测试者能发现某个给定问题的概率是 31%</b>。你认为 5 个人合起来，能发现全部问题的百分之几？拖动滑块，写下你的直觉，然后揭晓。</p>
+  <div class="board">
+    <label class="ctl">我的猜测：约 <output id="c27_gv">50</output>%</label>
+    <input type="range" id="c27_gs" min="0" max="100" step="1" value="50">
+    <div><button class="btn green" id="c27_gb">揭晓</button><button class="btn pink" id="c27_gr">重猜</button></div>
+    <div id="c27_gout"></div>
+  </div>
+  <div class="sticky">试试看：写下你的猜测并揭晓，看你离理论值差几个百分点。再想一想，为什么直觉常常偏低？</div>
+
+  <h3>从“口头报告”到“可用性测试”：一条时间线</h3>
+  <div class="timeline">
+    <div class="ev hasimg"><span data-illus="c27_nisbett"></span><div><b class="yr">1977</b>　Nisbett 与 Wilson 在《心理学评论》发表《讲得比我们知道的更多》：人们解释“我为什么这么做”时，常常并不是在内省，而是在套用一套关于原因的常识理论。<b>问题：口头报告还能信吗？</b></div></div>
+    <div class="ev hasimg"><span data-illus="c27_aloud"></span><div><b class="yr">1980</b>　Ericsson 与 Simon（同刊）发表《作为数据的口头报告》：当要求被试<b>报告他此刻正在注意的内容</b>时，口头报告可以当数据；当要求他<b>解释原因、推测过程</b>时，就不可靠。照实说出正在注意的内容，一般不会改变思考本身。<b>关键洞察：别问“为什么”，让他说“你在想什么”。</b></div></div>
+    <div class="ev hasimg"><span data-illus="c27_gl"></span><div><b class="yr">1985</b>　Gould 与 Lewis 在《ACM 通讯》发表《为可用性而设计》，提出三条原则：<b>一开始就关注用户并持续关注；实际测量人们怎么用；迭代设计</b>（做原型、测试、修改、再测）。这条路线后来被称为以用户为中心的设计；它的成效叙述也有批评者（如 Cockton 2008）。</div></div>
+    <div class="ev hasimg"><span data-illus="c27_virzi"></span><div><b class="yr">1992–93</b>　Virzi（1992，《人因》）报告：约 4–5 个被试能发现约 80% 的可用性问题，之后边际收益递减，而且最严重的问题往往早早被发现。Nielsen 与 Landauer（1993，INTERCHI）把这个过程写成数学模型 1−(1−L)<sup>n</sup>，并从 11 项研究里估计出 L 的平均约 31%。</div></div>
+    <div class="ev hasimg"><span data-illus="c27_three"></span><div><b class="yr">2000</b>　Nielsen 发表专栏《为什么只需测 5 个用户》，强调与其做一次 15 人的大测试，不如做<b>三轮 5 人的小测试，中间改设计</b>。他同时说明，这个公式只对使用方式相近的同一类用户成立；不同用户群要各测 3–4 人。</div></div>
+    <div class="ev hasimg"><span data-illus="c27_faulkner"></span><div><b class="yr">2001–03</b>　反驳来了：Spool 与 Schroeder（2001）观察 49 个用户在 4 个真实网站上做同一任务，认为要发现 85% 的问题需要远多于 5 人（后人转述：前 5 人只发现约 35%）。Faulkner（2003）对一个工时表应用测了 60 人，再从中随机抽 5 人组：<b>平均接近 85%，但不同 5 人组发现的问题比例从 55% 到 99% 不等</b>；10 人组最低 80%，20 人组最低 95%。</div></div>
+    <div class="ev hasimg"><span data-illus="c27_mirror"></span><div><b class="yr">2007</b>　游戏行业：据 Wired 与 NPR 的报道，微软游戏工作室的用户研究团队在《光环 3》开发中使用单向镜观察、路线与死亡位置统计、随机弹窗问卷和出声思考；NPR 称，不少玩家不知道该做什么后，开发组让目标提示在屏幕上闪现。（二手报道，细节以原文为准。）</div></div>
+  </div>
+
+  <div class="chain"><span class="st">设计者看不见盲区</span><span class="ar">→</span><span class="st">要看新手怎么用</span><span class="ar">→</span><span class="st">问“为什么”不可靠</span><span class="ar">→</span><span class="st">改成观察 + 出声思考</span><span class="ar">→</span><span class="st">要测几个人？</span><span class="ar">→</span><span class="st">小样本 + 多轮迭代</span></div>
+
+  <p>回头看你的猜测：很多人会猜 50% 甚至更低，因为直觉觉得“31% 的人才发现，5 个人加起来怎么也到不了 85%”。可是 31% 是<b>每个人</b>，一个问题被所有人都漏掉的概率会按人数连乘变小，5 个人全漏掉只有 0.69<sup>5</sup>≈16%。这是一类很常见的直觉失误：我们习惯把概率相加，而不是连乘。你也看到了这条法则的争议：它是个漂亮的模型，不是定律，条件很苛刻。想想为什么需要多轮：每一轮修掉的是最明显的问题，下一轮才轮到更隐蔽的。</p>
+
+  <!-- ================= 5 为什么：说与做 ================= -->
+  <div class="sec"><span class="n">5</span><h2><span class="tag why">为什么成立</span>人们说的，常常不是人们做的</h2></div>
+
+  <div class="why-box">
+    <h3>原理一：人对自己的心理过程“知道得比自以为的少”</h3>
+    <p>Nisbett 与 Wilson（1977）综述了大量实验后提出一种观点：人们解释自己行为的原因时，往往依据的是关于“通常是什么原因”的常识理论，而不是对真实过程的直接观察。也就是说，问“你为什么这么做、喜欢什么”，得到的答案常常是<b>一个听起来合理的故事</b>。这篇论文影响很大，也有争议（后续研究的评价好坏参半），所以它更适合当一句警示：问原因要小心，不能理解成“人完全不知道自己在想什么”。</p>
+    <p>Ericsson 与 Simon（1980）的修正为出声思考奠基：<b>“你现在看到、想到什么”</b>反映的是当下注意到的内容，通常可靠；<b>“你为什么”</b>需要事后推理，可靠性差。</p>
+    <p class="src">出处：Nisbett &amp; Wilson (1977) <i>Telling more than we can know</i>, Psychological Review 84, 231–259；Ericsson &amp; Simon (1980) <i>Verbal reports as data</i>, Psychological Review 87；修订成书为 <i>Protocol Analysis</i>（MIT Press, 1993）。</p>
+  </div>
+
+  <div class="card">
+    <svg viewBox="0 0 700 320" width="100%" role="img" aria-label="示意图：玩家自述与实际行为的差距，三组柱对比">
+      <g class="rough" stroke="#2b2b3a" stroke-width="3.5">
+        <path d="M60 250 L680 250" fill="none"/>
+        <rect x="90" y="90" width="70" height="160" fill="#e8f6fc"/><rect x="170" y="160" width="70" height="90" fill="#ffc9c9"/>
+        <rect x="300" y="110" width="70" height="140" fill="#e8f6fc"/><rect x="380" y="195" width="70" height="55" fill="#ffc9c9"/>
+        <rect x="510" y="80" width="70" height="170" fill="#e8f6fc"/><rect x="590" y="170" width="70" height="80" fill="#ffc9c9"/>
+      </g>
+      <g font-size="17" fill="#2b2b3a" text-anchor="middle">
+        <text x="125" y="80">说</text><text x="205" y="150">做</text><text x="335" y="100">说</text><text x="415" y="185">做</text><text x="545" y="70">说</text><text x="625" y="160">做</text>
+        <text x="165" y="280">“教程很清楚”</text><text x="375" y="280">“我会再玩”</text><text x="585" y="280">“难度刚好”</text>
+      </g>
+      <text x="350" y="30" font-size="16" fill="#8a3b12" text-anchor="middle">示意：数值为演示用，不是真实数据。重点是“说”常常高于“做”</text>
+    </svg>
+  </div>
+
+  <div class="why-box">
+    <h3>原理二：偏差，数据在被收集之前就已经歪了</h3>
+    <p>不只是玩家，观察者也会歪。常见的几种（均为心理学通行概念）：</p>
+    <ul>
+      <li><span class="term" tabindex="0" data-def="倾向于寻找、注意并记住支持自己已有看法的证据，忽略不支持的证据。">确认偏误</span>（观察者）：你相信“目标够清楚”，就更容易把玩家的徘徊解释成“他在欣赏风景”。</li>
+      <li><span class="term" tabindex="0" data-def="被访者倾向于给出‘显得好、显得得体’的答案，而不是真实想法。">社会期许偏差</span>（玩家）：面对做游戏的人，大多数人不愿意说“无聊”。朋友更甚。</li>
+      <li><span class="term" tabindex="0" data-def="一旦你知道某件事，就很难想象不知道它的人是什么感受。设计者最容易犯这个错。">知识的诅咒</span>（设计者）：你知道钥匙在木箱后，就觉得“很明显”。</li>
+      <li><b>样本偏差</b>（选人）：只测朋友、只测老玩家、只看活跃用户，会漏掉那些已经被劝退的人，这其实是一个更大的陷阱，叫幸存者偏差。</li>
+    </ul>
+    <p class="src">这些是心理学与用户研究的通行概念，不归于单一出处；“朋友偏差”是社会期许 + 知识的诅咒的合称，并非正式术语。</p>
+  </div>
+
+  <div class="card">
+    <svg viewBox="0 0 720 340" width="100%" role="img" aria-label="偏差关系图：四种偏差分别从观察者、玩家、设计者、选人流向“你看到的数据”，下方是对应的解药">
+      <defs><marker id="c27ab" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 z" fill="#d6436f"/></marker></defs>
+      <g class="rough" stroke="#2b2b3a" stroke-width="3.5">
+        <rect x="10" y="20" width="160" height="60" rx="10" fill="#ffe9ef"/><rect x="190" y="20" width="160" height="60" rx="10" fill="#ffe9ef"/>
+        <rect x="370" y="20" width="160" height="60" rx="10" fill="#ffe9ef"/><rect x="550" y="20" width="160" height="60" rx="10" fill="#ffe9ef"/>
+        <rect x="230" y="130" width="260" height="62" rx="14" fill="#fff7cf"/>
+        <rect x="10" y="246" width="160" height="70" rx="10" fill="#eaf9e4"/><rect x="190" y="246" width="160" height="70" rx="10" fill="#eaf9e4"/>
+        <rect x="370" y="246" width="160" height="70" rx="10" fill="#eaf9e4"/><rect x="550" y="246" width="160" height="70" rx="10" fill="#eaf9e4"/>
+      </g>
+      <g font-size="17" fill="#2b2b3a" text-anchor="middle">
+        <text x="90" y="46">确认偏误</text><text x="90" y="68" font-size="16">（观察者）</text>
+        <text x="270" y="46">社会期许</text><text x="270" y="68" font-size="16">（玩家）</text>
+        <text x="450" y="46">知识的诅咒</text><text x="450" y="68" font-size="16">（设计者）</text>
+        <text x="630" y="46">样本偏差</text><text x="630" y="68" font-size="16">（选人）</text>
+        <text x="360" y="168" font-size="20">你看到的数据</text>
+        <text x="90" y="272" font-size="16">先记事实</text><text x="90" y="296" font-size="16">双人独立标注</text>
+        <text x="270" y="272" font-size="16">看行为·中立问</text><text x="270" y="296" font-size="16">别问“好玩吗”</text>
+        <text x="450" y="272" font-size="16">测完全新的人</text><text x="450" y="296" font-size="16">你闭嘴</text>
+        <text x="630" y="272" font-size="16">招募目标玩家</text><text x="630" y="296" font-size="16">分群测试</text>
+      </g>
+      <g class="rough" stroke="#d6436f" stroke-width="3.5" fill="none" marker-end="url(#c27ab)">
+        <path d="M90 82 Q120 120 228 150"/><path d="M270 82 L300 126"/><path d="M450 82 L420 126"/><path d="M630 82 Q600 120 492 150"/>
+      </g>
+      <g stroke="#2a9d5c" stroke-width="3" fill="none" stroke-dasharray="6 6"><path d="M90 244 L90 84"/><path d="M270 244 L270 84"/><path d="M450 244 L450 84"/><path d="M630 244 L630 84"/></g>
+    </svg>
+  </div>
+
+  <div class="eg" data-ic="🕶️"><span data-illus="c27_confirm"></span><div class="egt"><b>确认偏误：玩家在原地打转</b>：你相信“关卡很有意境”，于是把他的迷路看成“在欣赏风景”。直到你看到录像里他三次回头找出口。</div></div>
+  <div class="eg" data-ic="😅"><span data-illus="c27_polite"></span><div class="egt"><b>社会期许：嘴上说“挺好的”</b>：玩家额头冒汗、手攥得很紧，面对做游戏的人，却还是说“挺好的呀”。行为比答案诚实。</div></div>
+  <div class="eg" data-ic="🔑"><span data-illus="c27_curse"></span><div class="egt"><b>知识的诅咒：钥匙“明明很明显”</b>：你知道钥匙在木箱后，木箱上还闪着光，在你眼里再明显不过；玩家眼里只有一个普通的箱子。</div></div>
+  <div class="eg bad" data-ic="📝"><span data-illus="c27_mixednote"></span><div class="egt"><b>差一点就对：事实和解释写在同一张便利贴</b>：观察记得很认真，可是“他走了三次到门前”和“可能没看到钥匙（我猜的）”混在一起，后来再看，你分不清哪句是看到的、哪句是自己编的。</div></div>
+
+  <!-- ================= 6 为什么：幸存者偏差 ================= -->
+  <div class="sec"><span class="n">6</span><h2><span class="tag why">为什么成立</span>你看到的，只是活下来的那一部分</h2></div>
+  <p>说与做的差距还有个更隐蔽的版本：问题不在玩家怎么回答，而在<b>谁来回答</b>。</p>
+  <div class="why-box">
+    <h3>原理三：幸存者偏差</h3>
+    <p>第二次世界大战期间，美军想给轰炸机加装甲，可是装甲很重，只能加在要害处。军方统计了飞回基地的飞机，发现机翼和机身的弹孔最多，发动机周围弹孔反而最少。直觉的结论是：给弹孔多的地方加装甲。统计学家亚伯拉罕·瓦尔德（Abraham Wald）的看法正好相反：你只看到了<b>飞回来的</b>飞机。发动机被打中的飞机根本没飞回来，所以它们才在你的统计里“没有弹孔”。该加装甲的，是那些看起来没被打到的地方。</p>
+    <p>这就是<span class="term" tabindex="0" data-def="只看到了经过某种筛选后留下来的样本，就以为它代表了全部，从而得出错误结论。">幸存者偏差</span>：被筛选过的样本，会让你误判整体。游戏研究里，它几乎无处不在：你访谈的是还在玩的人，被你吓走的人早就不在了；你看到的是通关录像，没通关的人没有录像。</p>
+    <p class="src">出处：Marc Mangel &amp; Francisco Samaniego，“Abraham Wald’s work on aircraft survivability”，Journal of the American Statistical Association 79(386)：259–267（1984）；Wald 的原始备忘录是 1943 年哥伦比亚大学统计研究组的工作，解决的是“如何估计被击落飞机的存活概率”这个统计问题。弹孔的故事流传很广，常被简化，这里用它作比喻，细节以原文为准。<a href="https://www.ams.org/samplings/feature-column/fc-2016-06" target="_blank" rel="noopener">美国数学会的专栏文章</a>讨论了这个传说的来龙去脉。</p>
+  </div>
+
+  <div class="card b no-print" id="c27_waldbox">
+    <h3>✈️ 加装甲：你会选哪里？</h3>
+    <p class="small">下图是飞回来的飞机，红点是弹孔（示意，不是真实数据）。只能选一处加装甲，先猜，再揭晓。</p>
+    <svg viewBox="0 0 700 250" width="100%" role="img" aria-label="一架飞回来的轰炸机俯视示意图：机翼、机身、尾翼上有很多弹孔，发动机和驾驶舱几乎没有弹孔">
+      <g stroke="#2b2b3a" stroke-width="3.5">
+        <path id="c27_w_wing" d="M300 104 L380 104 L420 40 L340 40 Z M300 156 L380 156 L420 220 L340 220 Z" fill="#cfd3dc"/>
+        <ellipse id="c27_w_body" cx="360" cy="130" rx="230" ry="26" fill="#cfd3dc"/>
+        <path id="c27_w_tail" d="M540 106 L580 52 L610 52 L590 106 Z M540 154 L580 208 L610 208 L590 154 Z" fill="#cfd3dc"/>
+        <circle id="c27_w_eng" cx="360" cy="64" r="14" fill="#cfd3dc"/><circle cx="360" cy="196" r="14" fill="#cfd3dc"/>
+        <circle id="c27_w_cock" cx="170" cy="130" r="16" fill="#cfd3dc"/>
+      </g>
+      <g fill="#d6303a" id="c27_holes"></g>
+      <g font-size="17" fill="#2b2b3a" text-anchor="middle">
+        <text x="440" y="26">机翼</text><text x="590" y="36">尾翼</text><text x="470" y="236">机身</text><text x="290" y="68" text-anchor="end">发动机</text><text x="170" y="86">驾驶舱</text>
+      </g>
+    </svg>
+    <div class="c27row" id="c27_wbtn">
+      <button class="btn" data-w="wing">机翼</button><button class="btn" data-w="body">机身</button><button class="btn" data-w="tail">尾翼</button><button class="btn" data-w="eng">发动机</button><button class="btn" data-w="cock">驾驶舱</button>
+      <button class="btn alt" id="c27_wreset">↺ 重选</button>
+    </div>
+    <div class="msg" id="c27_wmsg">点上面的按钮选一处。</div>
+  </div>
+  <div class="sticky no-print">试试看：先选弹孔最多的地方，看看反馈；再选一个“看起来没被打到”的地方。你能说出理由吗？</div>
+
+  <div class="eg" data-ic="🎮"><span data-illus="c27_activeonly"></span><div class="egt"><b>游戏内：只访谈活跃玩家</b>：你去问仍在玩的人“哪里最好玩”，大家都说“战斗爽”。可是在第三天离开的人不在名单里，他们是被开头那十分钟劝退的。</div></div>
+  <div class="eg" data-ic="🎤"><span data-illus="c27_stage"></span><div class="egt"><b>日常：成功学讲座</b>：台上的人说“我当年辞职创业，所以成功了”。台下看不见的，是和他做了同样决定却没成功的人。他们不开讲座。</div></div>
+  <div class="eg" data-ic="✈️"><span data-illus="c27_wald"></span><div class="egt"><b>经典：飞回来的飞机</b>：弹孔集中在机翼和机身，不代表这里最需要装甲。真正致命的位置，那些飞机根本没飞回来。</div></div>
+  <div class="eg bad" data-ic="📮"><span data-illus="c27_exitsurvey"></span><div class="egt"><b>差一点就对：给流失玩家发退出问卷</b>：想法很好，想去问离开的人。可是一百封只回来三封，回信的又只是爱回复的那一小撮，你听到的仍不是大多数流失玩家的声音。补救的办法是主动招募，再付酬劳。</div></div>
+
+  <!-- ================= 7 为什么：小样本 ================= -->
+  <div class="sec"><span class="n">7</span><h2><span class="tag why">为什么成立</span>人少的时候，运气会冒充规律</h2></div>
+  <div class="withimg rev">
+    <span data-illus="c27_coin"></span>
+    <div>
+      <p>如果你掷五次硬币，四次正面，你会不会怀疑这枚硬币有问题？大概会。可是一枚完全公平的硬币，五次里出现四次或更多正面的概率是 6/32，接近五分之一。五次，根本不足以下任何结论。</p>
+      <p>但人偏偏相信“小样本也应该长得像整体”。Tversky 与 Kahneman 在 1971 年给这种错觉起了个半开玩笑的名字：“小数定律”，对应真正的大数定律，却被我们错当成了真的。</p>
+    </div>
+  </div>
+  <div class="why-box">
+    <h3>原理四：小样本，波动大</h3>
+    <p>Tversky 与 Kahneman（1971）用问卷调查了专业的心理学研究者，发现他们也常常高估小样本的代表性，并据此做出研究决定：样本取得太小，结论就是靠运气撑起来的。这是一种有影响力的观点，后续对“直觉统计”的研究很丰富。</p>
+    <p>落到试玩里：Faulkner 对同一个应用抽了很多个 5 人组，平均发现约 85%，却有的组只发现 55%。<b>平均值是对的，但你手里只有一个 5 人组</b>，不知道自己抽到的是好运还是坏运。所以才要多轮测试，每一轮修完再测。</p>
+    <p>A/B 测试里这个问题更尖锐。一个粗略的估计（Lehr 经验公式，每组约 16·p(1−p)/δ²，对应 80% 把握度、5% 显著性水平）：要可靠地分辨 5% 与 6% 的转化率（δ=0.01），<b>每组大约需要 8000 人</b>。如果每组只有 50 人，“版本 B 多了 2 个人”只是噪声。统计显著只说明“不太像纯运气”，不说明“差别大、值得做”。</p>
+    <p class="src">出处：Amos Tversky &amp; Daniel Kahneman，“Belief in the law of small numbers”，Psychological Bulletin 76(2)：105–110（1971）；Lehr 经验公式见统计学教材中的样本量估算，此处为粗略估计，非精确计算。</p>
+  </div>
+  <div class="eg" data-ic="🎲"><span data-illus="c27_ab"></span><div class="egt"><b>游戏内：A/B 测试，每组 50 人</b>：版本 B 比 A 多了 2 个人点击，团队开了庆功会。其实随机波动就能造成这样的差距。</div></div>
+  <div class="eg" data-ic="🍀"><span data-illus="c27_coin2"></span><div class="egt"><b>日常：连赢三把就“手气来了”</b>：三次是样本，不是规律。运气好的人通常也是随机波动的结果。</div></div>
+  <div class="eg" data-ic="🚪"><span data-illus="c27_five"></span><div class="egt"><b>试玩：5 个人里 4 个人没看到那扇门</b>：这不是定律，但已经足够你去查一查，因为代价低；而“5 个人都没问题”则不能让你放心。</div></div>
+  <div class="eg bad" data-ic="📊"><span data-illus="c27_goodhart"></span><div class="egt"><b>数据不等于洞察：盯着“停留时长”</b>：遥测显示“第 3 关流失 40%”，却没有原因；一旦把停留时长当目标，你可能做出更拖沓的关卡。这正是古德哈特定律的味道。最稳的组合是：遥测发现“哪里”，观察和访谈解释“为什么”，改了再用数据确认。</div></div>
+
+  <h3>自己验证：一个 10 分钟的小实验</h3>
+  <div class="eg" data-ic="🧪"><span data-illus="c27_predict"></span><div class="egt"><b>实验：“预测 vs 实际”。</b>找一个没见过你原型的人，先问他：“你觉得你能在 1 分钟内知道怎么开始吗？会点哪里？”记下。然后让他真玩，你只看。大多数人的预测比实际乐观。把差距写下来：这就是“说与做”的差距在你身上的一次复现。</div></div>
+
+  <!-- ================= 8 怎么用：招牌互动 ================= -->
+  <div class="sec"><span class="n">8</span><h2><span class="tag how">怎么用</span>试玩观察室：看录像，标出卡点</h2></div>
+  <p>下面是一段 60 秒的“录像回放”：一位虚拟玩家在一个小关卡里，从左房间出发，找钥匙开门，穿过尖刺通道，拉杠杆，走到右侧出口。（示意：路线、字幕是编的，用来练习观察，不是真实数据。）</p>
+  <p><b>你的任务：</b>播放（或拖动进度条），读“客观记录”和玩家的出声思考字幕，选一个问题类型，点“标注当前时刻”。看完后点“对比专家标注”。注意要把事实和解释分开：不是每件事都是问题，也不是每个问题都会有声音。</p>
+
+  <div class="board" id="c27_room">
+    <svg id="c27_lv" viewBox="0 0 600 300" width="100%" role="img" aria-label="一个小关卡的俯视图：左房间有木箱和提示牌，中间有锁住的门，尖刺通道，杠杆、坑和出口在右侧；一个圆点表示虚拟玩家的位置，虚线是走位轨迹">
+      <rect x="4" y="4" width="592" height="292" fill="#fffef7"/>
+      <g class="rough" stroke="#2b2b3a" stroke-width="4" fill="#ddd">
+        <rect x="4" y="4" width="592" height="14"/><rect x="4" y="282" width="592" height="14"/>
+        <rect x="244" y="18" width="12" height="108"/><rect x="244" y="174" width="12" height="108"/>
+        <rect x="340" y="18" width="40" height="107" fill="#c9c9d6"/><rect x="340" y="175" width="40" height="107" fill="#c9c9d6"/>
+        <rect x="130" y="233" width="42" height="34" fill="#d9b382"/>
+      </g>
+      <g fill="#d6436f" stroke="#2b2b3a" stroke-width="2"><path d="M345 160 l6 -16 l6 16 z"/><path d="M357 160 l6 -16 l6 16 z"/><path d="M369 160 l6 -16 l6 16 z"/></g>
+      <ellipse cx="440" cy="205" rx="22" ry="14" fill="#555" stroke="#2b2b3a" stroke-width="3"/>
+      <g font-size="22" text-anchor="middle">
+        <text x="110" y="80">🪧</text><text x="150" y="258">📦</text><text x="250" y="156">🔒</text>
+        <text x="480" y="62">🕹️</text><text x="568" y="158">🚪</text>
+      </g>
+      <g font-size="16" fill="#2b2b3a" text-anchor="middle">
+        <text x="60" y="130">出发</text><text x="440" y="244">坑</text><text x="360" y="198">尖刺</text>
+      </g>
+      <g id="c27_trail" fill="#3d7fb8"></g>
+      <g id="c27_deaths" fill="#d6436f" stroke="#2b2b3a" stroke-width="1.5"></g>
+      <circle id="c27_pl" cx="40" cy="150" r="9" fill="#ffb347" stroke="#2b2b3a" stroke-width="3"/>
+    </svg>
+    <div class="c27cap" id="c27_cap">（点“播放”开始）</div>
+    <div class="c27row">
+      <button class="btn green" id="c27_play">▶ 播放</button>
+      <button class="btn alt" id="c27_rst">⏮ 回到开头</button>
+      <label class="ctl" style="margin:0">速度
+        <select id="c27_sp" style="font:inherit;border:2.5px solid var(--ink);border-radius:8px;background:#fffef7;padding:2px 6px"><option value="1">1×</option><option value="2" selected>2×</option><option value="4">4×</option></select>
+      </label>
+      <span class="stat">时间 <b id="c27_tm">0.0</b>/60 秒</span>
+    </div>
+    <div class="c27tl" id="c27_tl"><div class="head" id="c27_hd" style="left:0"></div></div>
+    <input class="c27scrub" type="range" id="c27_sc" min="0" max="60" step="0.1" value="0" aria-label="录像进度">
+    <div class="small">上排灰点 = 客观事件（粉色 = 死亡；画面里尖刺上方的粉点 = 死亡次数），下排黄旗 = 你的标注（点旗可删除）。</div>
+    <h4 style="margin:.6em 0 .2em">客观记录（只写看到的事实）</h4>
+    <div class="c27log" id="c27_log"><div style="color:var(--soft)">（播放后，事实会逐条出现）</div></div>
+    <h4 style="margin:.6em 0 .2em">你的标注：选类型，再点“标注当前时刻”</h4>
+    <div id="c27_types">
+      <button class="c27ty" data-ty="goal">目标不清</button><button class="c27ty" data-ty="ctrl">操作不顺</button><button class="c27ty" data-ty="diff">难度</button><button class="c27ty" data-ty="ui">界面/提示</button><button class="c27ty" data-ty="other">其他/不是问题</button>
+    </div>
+    <div><button class="btn" id="c27_mark">📍 标注当前时刻</button><button class="btn pink" id="c27_clear">清空标注</button><button class="btn alt" id="c27_cmp">🔍 对比专家标注</button></div>
+    <div class="c27marks" id="c27_marks"></div>
+    <div class="msg" id="c27_msg"></div>
+    <div class="c27res" id="c27_res" style="display:none"></div>
+  </div>
+  <div class="sticky">试试看：至少标出 3 个你觉得的卡点，点“对比专家标注”。如果命中 3/4 以上，并且没有把“主动跳坑”标成问题，你就过关了。</div>
+  <p class="small">说明：专家标注也是一种“解读”，不是真理。真实研究里，通常会让两位观察者独立标注再核对一致性，分歧本身就是线索。</p>
+
+  <div class="sec"><span class="n">9</span><h2><span class="tag how">怎么用</span>辅助互动：“几个人够？”模拟器</h2></div>
+  <p>调两个旋钮：<b>L</b>（一个玩家发现某个问题的概率）和<b>n</b>（测试人数）。曲线是理论值 1−(1−L)<sup>n</sup>；柱状图是<b>随机模拟 1000 次</b>的结果：每次让 n 个人各自“发现”每个问题，数一数总共发现了多少个。你会看到：理论是平均数，每一次实验会上下波动。</p>
+  <div class="board">
+    <label class="ctl">L（单人发现某问题的概率）= <output id="c27_lv2">0.31</output></label>
+    <input type="range" id="c27_ls" min="0.05" max="0.6" step="0.01" value="0.31">
+    <label class="ctl">测试人数 n = <output id="c27_nv">5</output></label>
+    <input type="range" id="c27_ns" min="1" max="30" step="1" value="5">
+    <label class="ctl">问题总数 N = <output id="c27_Nv">20</output></label>
+    <input type="range" id="c27_Ns" min="10" max="40" step="1" value="20">
+    <label class="ctl"><input type="checkbox" id="c27_het"> 问题有难有易（三种难度，平均发现概率仍是 L）</label>
+    <canvas id="c27_cv" width="760" height="300" style="width:100%;height:auto;background:#fffef7;border:3px solid var(--ink);border-radius:10px" aria-label="发现问题比例随人数变化的曲线，带模拟区间"></canvas>
+    <div id="c27_stats"></div>
+    <div class="c27hist" id="c27_hist" aria-label="1000 次模拟中发现问题个数的分布"></div>
+    <div class="c27lab"><span>发现 0 个</span><span>柱高 = 1000 次里恰好发现 k 个的次数 → 发现 N 个</span></div>
+    <button class="btn alt" id="c27_re">🎲 重新模拟</button>
+    <div class="msg" id="c27_smsg"></div>
+  </div>
+  <div class="sticky">试试看：①L=0.31、n=5，看理论 84% 周围的波动；②把 L 拉到 0.08（相当于 Spool 与 Schroeder 报告的“前 5 人只发现约 35%”），看 5 人远远不够；③勾选“有难有易”：最难被发现的问题拖后腿，曲线整体低于理论曲线。模型假设每个人互相独立、问题等价，现实中两者都不完全成立。</div>
+
+  <div class="sec"><span class="n">10</span><h2><span class="tag how">怎么用</span>辅助互动：提问改写器</h2></div>
+  <p>下面 5 句提问都有毛病。<b>点击橙色的词，把它改成中立说法</b>，看原因；再点一次可还原。全部改完，这句就成了合格的问题。</p>
+  <div class="c27row"><button class="btn green" id="c27_qall">全部改写</button><button class="btn pink" id="c27_qnone">全部还原</button><span class="stat">已改 <b id="c27_qc">0</b>/5 句</span></div>
+  <div id="c27_qs"></div>
+  <div class="sticky">试试看：只靠自己点，把 5 句全部改写成功；看“已改”计数到 5/5。</div>
+
+  <div class="sec"><span class="n">11</span><h2><span class="tag how">怎么用</span>一场 45 分钟试玩的脚本</h2></div>
+  <div class="grid2">
+    <div class="card y"><h3>① 准备（前一天）</h3><ul><li>写下 2–3 个<b>具体疑问</b>（“新手能不能在 2 分钟内找到钥匙？”）。</li><li>招募 3–5 个目标玩家；备好录屏。</li><li>自己先过一遍，确保不会因 bug 浪费时间。</li></ul></div>
+    <div class="card b"><h3>② 开场话术（2 分钟）</h3><ul><li>“我们测的是游戏，不是你。”</li><li>“卡住、讨厌、看不懂，都是有用的信息。”</li><li>“请边玩边说你在想什么。我不会回答问题，但会记下来。”</li></ul></div>
+    <div class="card g"><h3>③ 观察（25 分钟）</h3><ul><li>你<b>闭嘴</b>。他问“这里怎么玩？”，答“你觉得呢？”。</li><li>记事实：时间、位置、动作。</li><li>沉默太久：“你现在在想什么？”</li></ul></div>
+    <div class="card p"><h3>④ 收尾访谈（8 分钟）</h3><ul><li>开放问：“刚才印象最深的是什么？”</li><li>回看关键片段：“这里你停了一会儿，当时在想什么？”</li><li>最后才问“还有什么想说的”。</li></ul></div>
+  </div>
+  <h3>归纳：亲和图 + 严重度排序</h3>
+  <p><span class="term" tabindex="0" data-def="把大量零散观察写在便利贴上，再按相似性分组、命名，从中看出共同主题的整理方法。">亲和图</span>（affinity diagram）：每条观察写一张便利贴（例：“3/5 人在门前徘徊 >10 秒”），把相似的靠在一起，给每堆起个名字（“目标不清”）。然后给每堆打两个分：<b>多少人遇到（频率）</b>×<b>造成多大后果（严重度：只是不爽 / 卡住 / 放弃）</b>。优先修“高频 × 高严重”的。注意：<b>有些发现只有一个人遇到，也可能是致命的</b>（比如存档丢失），不能只看人数。</p>
+  <div class="eg" data-ic="🔧"><span data-illus="c27_symptom"></span><div class="egt"><b>玩家的建议是症状，不是处方</b>：3 个人说“再简单点”，你若把所有关卡都调简单，就错了。录像显示他们死在同一个尖刺处，真正需要的是“在尖刺前加一个预警”。</div></div>
+  <div class="eg bad" data-ic="🙅"><span data-illus="c27_allfix"></span><div class="egt"><b>反例：全盘照做</b>：玩家说什么就改什么，一轮下来游戏变成了“最大公约数”，原来那个有个性的设计不见了。你的工作是找到病因，而不是执行建议。</div></div>
+
+  <!-- ================= 误区 / 反思 ================= -->
+  <div class="misc">
+    <h3>常见误区</h3>
+    <ul>
+      <li><b>“测 5 个人就够了。”</b>这是对一条有条件的经验法则的简化：它假设玩家群体相近、问题等价、并且你会<b>修完再测</b>。群体不同、产品复杂，5 人远远不够（Faulkner 的 5 人组最低只发现 55%）。</li>
+      <li><b>“玩家说想要，我就做。”</b>玩家擅长说“哪里不爽”，不擅长设计解法。把建议当症状。</li>
+      <li><b>“朋友试过了，没问题。”</b>他们更礼貌、更懂你，等于低估了所有问题。</li>
+      <li><b>“数据显示 X，所以我们就做 X。”</b>数据只告诉你“哪里”，不告诉你“为什么”；盯着一个指标优化，容易掉进古德哈特陷阱。</li>
+      <li><b>“问为什么，让他自己解释。”</b>“为什么”会引出事后合理化。改问“你当时在想什么、看哪里”。</li>
+      <li><b>“我访谈的人都说好。”</b>想想走掉的人：他们不在你的访谈名单里。</li>
+    </ul>
+  </div>
+
+  <div class="reflect">
+    <h3>反思与争议</h3>
+    <ul>
+      <li><b>“5 人”之争。</b>Nielsen 的观点是“多轮小测试比一次大测试划算”。批评者（Spool 与 Schroeder、Faulkner 等）指出：L 并不固定，不同研究里差别很大；不同 5 人组的结果可以天差地别。这是个至今仍被讨论的问题，不是定论。</li>
+      <li><b>L 从哪来。</b>31% 来自 Nielsen 当年研究的项目平均值。Lewis（1994）等指出，小样本估计 L 容易偏高（后人转述）。所以 L 不能拿来就用，要看你自己的项目。</li>
+      <li><b>出声思考会改变玩法吗？</b>Ericsson 与 Simon 的理论认为，只要报告的是正在注意的内容，一般不改变思考；但在游戏里，边说边玩可能让人更专注或更分心，所以有的研究者会同时做“沉默组”对照。</li>
+      <li><b>研究是否扼杀“作者性”？</b>一种观点认为过度依赖测试会把游戏磨成“最大公约数”；另一种观点认为研究只提供证据，决策仍在设计者手里。这是关于设计哲学的分歧，没有标准答案。</li>
+      <li><b>伦理。</b>遥测收集玩家行为数据时，要告知并获得同意，注意隐私。</li>
+    </ul>
+  </div>
+
+  <div class="key">
+    <h3>要点</h3>
+    <ul>
+      <li><b>试玩</b>是让目标玩家真玩、你闭嘴观察；与可用性测试共用技巧，但试玩还要问“好不好玩”。</li>
+      <li>方法互补：<b>遥测</b>知道“哪里、多少”，<b>观察 + 出声思考</b>知道“卡在哪”，<b>访谈</b>知道“他怎么理解”，<b>问卷</b>适合规模比较。</li>
+      <li>人们说的 ≠ 做的：自述受<b>社会期许</b>影响，观察者受<b>确认偏误</b>，设计者受<b>知识的诅咒</b>，样本还可能只剩<b>幸存者</b>；用行为、中立提问、独立标注和主动招募来绕开。</li>
+      <li>出声思考问“你在想什么”，不问“你为什么”；这来自 Ericsson 与 Simon 对口头报告的研究。</li>
+      <li>发现问题的概率模型 <b>1−(1−L)<sup>n</sup></b>：L≈31% 时 5 人约 84%；但 L 因项目而异、各 5 人组结果波动大（小样本会让运气冒充规律）。核心是<b>多轮小测试 + 修完再测</b>。</li>
+    </ul>
+  </div>
+  <div class="tldr">别问玩家好不好玩，看他在哪卡住；留意谁没出现在你的样本里；少量人多测几轮，比一次大测试更能把游戏改好。</div>
+
+  <div class="sec"><span class="n">12</span><h2><span class="tag think">练习</span>练习</h2></div>
+  <div id="quiz"></div>
+
+  <div class="sec"><span class="n">13</span><h2><span class="tag how">你的设计</span>你的试玩计划</h2></div>
+  <div class="card o">
+    <p>为你正在做（或想做）的一个原型，设计一场试玩：① 写下 2–3 个<b>具体疑问</b>（而不是“好不好玩”）；② 选方法（观察/访谈/问卷/遥测）并说明为什么；③ 写 3 个中立的提问；④ 你准备找谁，为什么不是朋友；⑤ 你预计会掉进哪种偏差，怎么防。</p>
+    <textarea rows="7" data-save="ch27" placeholder="原型：纸面的跑酷关卡&#10;疑问：新玩家能在 1 分钟内明白‘要拿钥匙开门’吗？&#10;方法：观察 + 出声思考，5 人，目标玩家……&#10;提问：……"></textarea>
+  </div>
+</main>
+
+<script src="js/illus.js"></script>
+<script src="js/illus-ch27.js"></script>
+<script src="js/common.js"></script>
+<script>
+const $ = id => document.getElementById(id);
+
+/* ================= 发明故事：先猜 5 人能发现多少 ================= */
+(function () {
+  const gs = $("c27_gs"), gv = $("c27_gv"), out = $("c27_gout");
+  gs.oninput = () => { gv.textContent = gs.value; };
+  $("c27_gb").onclick = () => {
+    const g = +gs.value, th = (1 - Math.pow(0.69, 5)) * 100;
+    const rows = [["你的猜测", g, "#ffd666"], ["理论（L=31%，n=5）", th, "#8fd0f0"], ["Faulkner 最差 5 人组", 55, "#ffb0c4"], ["Faulkner 最好 5 人组", 99, "#b6e8a8"], ["Spool 与 Schroeder（转述）", 35, "#ffb0c4"]];
+    out.innerHTML = rows.map(r => '<div class="c27sb"><span class="nm">' + r[0] + '</span><span class="bar" style="width:' + (r[1] * 0.55) + '%;background:' + r[2] + '"></span><span class="v">' + Math.round(r[1]) + '%</span></div>').join("") +
+      '<div class="msg">' + (Math.abs(g - th) <= 10 ? "你的直觉很准——理论值约 " + th.toFixed(1) + "%。" : "理论值约 " + th.toFixed(1) + "%：每个人只有 31%，但“5 个人全漏掉”的概率是 0.69⁵≈16%。") +
+      " 但真实研究里，5 人组的结果相差很大。</div>";
+  };
+  $("c27_gr").onclick = () => { out.innerHTML = ""; gs.value = 50; gv.textContent = 50; };
+})();
+
+/* ================= 招牌互动：试玩观察室 ================= */
+(function () {
+  const KF = [[0,40,150],[4,100,125],[5,110,95],[6,130,125],[9,220,150],[10,238,150],[12,215,112],[14,238,168],[16,208,190],[18,240,135],[20,222,172],[22,190,215],[24,150,248],[26,200,200],[27,238,152],[28,260,150],[29.5,300,150],[30,358,150],[30.3,290,150],[33,330,150],[35,358,150],[35.3,290,150],[38,330,150],[40,358,150],[40.3,290,150],[41,330,150],[41.8,372,150],[43,410,150],[45,470,100],[46,478,85],[47,482,80],[48,477,86],[49,482,81],[50,479,84],[51.5,440,190],[52,440,205],[52.3,430,150],[54,470,100],[55,479,80],[56,480,78],[58,555,150],[60,560,150]];
+  const EV = [
+    [5, "提示框“门要钥匙，钥匙在木箱后面”弹出，0.5 秒后被玩家按键关闭"],
+    [10, "第 1 次走到锁住的门前"],
+    [14, "第 2 次走到门前"],
+    [18, "第 3 次走到门前"],
+    [24, "走到木箱后，拾取钥匙（用时 24 秒）"],
+    [27, "用钥匙开门"],
+    [30, "死亡 #1：尖刺处（358, 150）", 1],
+    [35, "死亡 #2：同一位置", 1],
+    [40, "死亡 #3：同一位置", 1],
+    [41.8, "通过尖刺通道"],
+    [46, "按下交互键，杠杆无反应（第 1 次）"],
+    [48, "按下交互键，杠杆无反应（第 2 次）"],
+    [49, "按下交互键，杠杆无反应（第 3 次）"],
+    [50, "按下交互键，杠杆无反应（第 4 次）"],
+    [52, "走向坑边，主动跳入坑中"],
+    [55, "站得更近，杠杆被激活（第 5 次尝试）"],
+    [58, "到达出口，用时 58 秒"]
+  ];
+  const CAP = [[0,"…这是哪？"],[3,"这个房间挺空的。"],[5,"（瞟了一眼弹出的框，按键关掉）"],[9,"门打不开。"],[13,"所以…我要干嘛？"],[17,"（又走回门前）"],[21,"算了，四处看看。"],[24,"哦！木箱后面有东西？"],[28,"开了！"],[31,"又死了…"],[36,"这个判定也太卡点了吧。"],[41,"过了…刚才那是运气。"],[46,"我明明按了交互键啊。"],[49,"是不是坏了？"],[51,"我跳下去会怎样？哈哈"],[54,"换个位置再试一次。"],[56,"通了！"],[58,"通关了…吧？"]];
+  const TYN = { goal: "目标不清", ctrl: "操作不顺", diff: "难度", ui: "界面/提示", other: "其他" };
+  const EXPERT = [
+    { id: "hint", t0: 4, t1: 6, ty: "ui", title: "提示一闪而过被跳过", what: "唯一告诉玩家“钥匙在木箱后”的提示，弹出 0.5 秒就被按键关掉了。没有死亡、没有声音，是个“沉默的问题”。", fix: "把提示绑定在玩家第一次接近门时出现；提示可在菜单回看；关键信息不用一闪而过的弹窗，改用环境暗示（钥匙发光、镜头短暂扫向木箱）。" },
+    { id: "goal", t0: 10, t1: 21, ty: "goal", title: "在门前徘徊：不知道目标", what: "玩家 3 次回到门前，约 10 秒没有进展，出声思考说“我要干嘛？”。这不是“难”，而是不知道下一步是什么；它是上一条“提示被跳过”的连锁结果。", fix: "门上显示“缺少钥匙”图标；关卡布局让钥匙进入视线（别藏在木箱后）；检测到停留 >8 秒时给轻提示。" },
+    { id: "diff", t0: 30, t1: 41, ty: "diff", title: "同一处连续死亡三次", what: "在同一尖刺位置死了 3 次，玩家说“这个判定也太卡点了”。要判断是“好的难”还是“糟的卡”：他知道为什么死，但时机窗口似乎太窄、没有预警。", fix: "加预警（尖刺前先有声光）、放宽时机窗口、在尖刺前设检查点缩短重试成本。别整体降难度。" },
+    { id: "ctrl", t0: 46, t1: 51, ty: "ctrl", title: "交互键没反应：判定范围太小", what: "玩家连按 4 次交互键杠杆无反应，说“我明明按了”，第 5 次站得更近才成功。问题多半是交互范围过小且没有“还差一点”的反馈。", fix: "扩大交互判定范围；靠近时高亮并显示按键提示；失败时给“再靠近一点”的反馈。" }
+  ];
+  const DECOY = { t0: 51, t1: 53, title: "主动跳坑：玩家在探索", what: "玩家笑着说“我跳下去会怎样？”，是有意识的试探，不是卡住。过度解读这类行为，会把玩家的好奇当成缺陷。" };
+  const TOL = 3;
+  let t = 0, playing = false, last = 0, cur = "", marks = [], nid = 1, compared = false;
+  const pl = $("c27_pl"), tl = $("c27_tl"), sc = $("c27_sc");
+
+  // 时间线刻度
+  EV.forEach(e => { const d = document.createElement("div"); d.className = "tick" + (e[2] ? " dead" : ""); d.style.left = (e[0] / 60 * 100) + "%"; d.title = e[0] + "秒 " + e[1]; tl.appendChild(d); });
+
+  function pos(tt) {
+    for (let i = 0; i < KF.length - 1; i++) {
+      const a = KF[i], b = KF[i + 1];
+      if (tt <= b[0]) {
+        const dt = b[0] - a[0];
+        if (dt <= 0.35) return tt < b[0] ? { x: a[1], y: a[2] } : { x: b[1], y: b[2] };
+        const f = (tt - a[0]) / dt;
+        return { x: a[1] + (b[1] - a[1]) * f, y: a[2] + (b[2] - a[2]) * f };
+      }
+    }
+    const e = KF[KF.length - 1]; return { x: e[1], y: e[2] };
+  }
+  function trailD(tt) {
+    let d = "", prev = null;
+    for (let s = 0; s <= tt + 1e-6; s += 0.2) {
+      const p = pos(s);
+      if (!prev || Math.hypot(p.x - prev.x, p.y - prev.y) > 35) d += "M" + p.x.toFixed(1) + " " + p.y.toFixed(1);
+      else d += "L" + p.x.toFixed(1) + " " + p.y.toFixed(1);
+      prev = p;
+    }
+    const q = pos(tt);
+    if (prev && Math.hypot(q.x - prev.x, q.y - prev.y) <= 35) d += "L" + q.x.toFixed(1) + " " + q.y.toFixed(1);
+    return d;
+  }
+  function render() {
+    const p = pos(t);
+    pl.setAttribute("cx", p.x); pl.setAttribute("cy", p.y);
+    (function () { let h = "", prev = null; for (let s = 0; s <= t + 1e-6; s += 0.35) { const q = pos(s); if (!prev || Math.hypot(q.x - prev.x, q.y - prev.y) > 6) { h += '<circle cx="' + q.x.toFixed(0) + '" cy="' + q.y.toFixed(0) + '" r="2"/>'; prev = q; } } $("c27_trail").innerHTML = h; })();
+    $("c27_deaths").innerHTML = EV.filter(e => e[2] && e[0] <= t).map((e, i) => '<circle cx="' + (346 + i * 14) + '" cy="135" r="5"/>').join("");
+    $("c27_tm").textContent = t.toFixed(1);
+    $("c27_hd").style.left = (t / 60 * 100) + "%";
+    sc.value = t;
+    let c = "（……）"; CAP.forEach(x => { if (x[0] <= t) c = "🗣️ “" + x[1] + "”"; });
+    $("c27_cap").textContent = c;
+    const shown = EV.filter(e => e[0] <= t);
+    $("c27_log").innerHTML = shown.length ? shown.map(e => '<div><b class="tm">' + e[0].toFixed(0).padStart(2, "0") + '″</b>' + e[1] + '</div>').join("") : '<div style="color:var(--soft)">（播放后，事实会逐条出现）</div>';
+    $("c27_log").scrollTop = 1e6;
+  }
+  function tick(ts) {
+    if (!playing) return;
+    const dt = (ts - last) / 1000; last = ts;
+    t = Math.min(60, t + dt * (+$("c27_sp").value));
+    render();
+    if (t >= 60) { playing = false; $("c27_play").textContent = "▶ 播放"; return; }
+    requestAnimationFrame(tick);
+  }
+  $("c27_play").onclick = () => {
+    if (playing) { playing = false; $("c27_play").textContent = "▶ 播放"; return; }
+    if (t >= 60) t = 0;
+    playing = true; $("c27_play").textContent = "⏸ 暂停"; last = performance.now(); requestAnimationFrame(tick);
+  };
+  $("c27_rst").onclick = () => { playing = false; $("c27_play").textContent = "▶ 播放"; t = 0; render(); };
+  sc.oninput = () => { t = +sc.value; render(); };
+  tl.addEventListener("pointerdown", e => {
+    if (e.target.classList.contains("flag")) return;
+    const r = tl.getBoundingClientRect(); t = Math.max(0, Math.min(60, (e.clientX - r.left) / r.width * 60)); render();
+  });
+  document.querySelectorAll("#c27_types .c27ty").forEach(b => b.onclick = () => {
+    cur = b.dataset.ty;
+    document.querySelectorAll("#c27_types .c27ty").forEach(x => x.classList.toggle("sel", x === b));
+  });
+  function drawMarks() {
+    tl.querySelectorAll(".flag").forEach(x => x.remove());
+    marks.forEach(m => {
+      const f = document.createElement("div"); f.className = "flag"; f.style.left = (m.t / 60 * 100) + "%"; f.textContent = TYN[m.ty].slice(0, 1); f.title = "点击删除：" + m.t.toFixed(1) + "秒 " + TYN[m.ty];
+      f.onclick = () => { marks = marks.filter(x => x.id !== m.id); drawMarks(); };
+      tl.appendChild(f);
+    });
+    $("c27_marks").innerHTML = marks.length ? "我的标注：" + marks.slice().sort((a, b) => a.t - b.t).map(m => '<span data-id="' + m.id + '">' + m.t.toFixed(1) + "″ " + TYN[m.ty] + " ✕</span>").join("") : "";
+    $("c27_marks").querySelectorAll("span").forEach(s => s.onclick = () => { marks = marks.filter(x => x.id !== +s.dataset.id); drawMarks(); });
+  }
+  $("c27_mark").onclick = () => {
+    if (!cur) { $("c27_msg").textContent = "先选一个问题类型。"; return; }
+    marks.push({ id: nid++, t: Math.round(t * 10) / 10, ty: cur });
+    $("c27_msg").textContent = "已标注：" + t.toFixed(1) + " 秒 " + TYN[cur] + "。继续看，或点“对比专家标注”。";
+    drawMarks();
+  };
+  function clearBands() { tl.querySelectorAll(".band").forEach(x => x.remove()); }
+  $("c27_clear").onclick = () => { marks = []; drawMarks(); clearBands(); $("c27_res").style.display = "none"; $("c27_msg").textContent = "已清空，可以重新标注。"; };
+  $("c27_cmp").onclick = () => {
+    if (!marks.length) { $("c27_msg").textContent = "你还没有标注。先看一遍录像，标出你觉得的卡点。"; return; }
+    clearBands();
+    const near = (m, e) => m.t >= e.t0 - TOL && m.t <= e.t1 + TOL;
+    const used = new Set();
+    const h = [];
+    let foundN = 0; const bias = [];
+    EXPERT.forEach(e => {
+      const ms = marks.filter(m => near(m, e)); ms.forEach(m => used.add(m.id));
+      const exact = ms.find(m => m.ty === e.ty);
+      let st, cls;
+      if (exact) { st = "✔ 找到了，类型也对"; cls = "ok"; foundN++; }
+      else if (ms.length) { st = "◐ 找到了位置，但你标的类型是“" + TYN[ms[0].ty] + "”，专家归为“" + TYN[e.ty] + "”"; cls = "mid"; foundN += 0.5; }
+      else { st = "✖ 漏掉了"; cls = "no"; }
+      h.push('<h4>' + e.title + '（' + e.t0 + '–' + e.t1 + '″，' + TYN[e.ty] + '）　<span class="' + cls + '">' + st + '</span></h4><div>' + e.what + '</div><div><b>怎么改：</b>' + e.fix + '</div>');
+      const b = document.createElement("div"); b.className = "band"; b.style.left = (e.t0 / 60 * 100) + "%"; b.style.width = ((e.t1 - e.t0) / 60 * 100) + "%"; tl.appendChild(b);
+      if (!ms.length && e.id === "hint") bias.push("<b>显眼事件偏差：</b>死亡很戏剧性，容易被注意；“0.5 秒关掉提示”没有声音、没有后果，最容易被漏掉——可它正是后面徘徊的原因。记住：<b>先找“因”，再看“果”</b>。");
+      if (ms.length && !exact && e.id === "goal" && ms[0].ty === "diff") bias.push("<b>归因错位：</b>把“不知道做什么”当成“太难”。看字幕，他说的是“我要干嘛？”而不是“太难了”。");
+      if (ms.length && !exact && e.id === "diff" && ms[0].ty === "ctrl") bias.push("<b>归因错位：</b>他知道是尖刺杀了他，并抱怨“判定卡点”，更接近难度/时机窗口的问题；不过“反馈不够”也可算操作的一部分，这是个值得讨论的灰区。");
+    });
+    const dm = marks.filter(m => !used.has(m.id) && m.t >= DECOY.t0 - 1 && m.t <= DECOY.t1 + 1);
+    dm.forEach(m => used.add(m.id));
+    h.push('<h4>' + DECOY.title + '（' + DECOY.t0 + '–' + DECOY.t1 + '″）　<span class="' + (dm.length && dm.every(m => m.ty === "other") ? "mid" : dm.length ? "no" : "ok") + '">' + (dm.length ? (dm.every(m => m.ty === "other") ? "◐ 你标注了，并标为“其他”，说明你察觉到了它的特殊" : "✖ 这不是问题") : "✔ 没有标注它（正确）") + '</span></h4><div>' + DECOY.what + '</div>');
+    if (dm.length && !dm.every(m => m.ty === "other")) bias.push("<b>确认偏误 / 过度解读：</b>看到“离开路线”就当成缺陷。先问：他是卡住了，还是在玩？");
+    const fp = marks.filter(m => !used.has(m.id));
+    if (fp.length) { h.push('<h4>多余标注 ' + fp.length + ' 个：<span class="mid">专家没有在这些时刻发现问题</span></h4><div>' + fp.map(m => m.t.toFixed(1) + "″ " + TYN[m.ty]).join("，") + '。不一定错，但要问“证据是什么？”</div>'); if (fp.length >= 2) bias.push("<b>满页都是问题：</b>每个事件都标注，等于没有优先级。试玩后要做的是排序：频率 × 严重度。"); }
+    const dec = Math.round(foundN / EXPERT.length * 100);
+    const box = $("c27_res"); box.style.display = "block";
+    box.innerHTML = '<div style="font-family:var(--hand);font-size:1.4rem">专家问题命中：' + foundN + " / " + EXPERT.length + '（约 ' + dec + '%）</div>' + h.join("") +
+      '<h4>你可能掉进的偏差</h4>' + (bias.length ? "<ul>" + bias.map(x => "<li>" + x + "</li>").join("") + "</ul>" : "<div>这一次你的标注很稳，没有明显的偏差信号。（但偏差往往在你察觉不到时发生，所以真实研究要两个人独立标注。）</div>") +
+      '<div class="small">绿带 = 专家问题时间窗（含 ±3 秒容差）；这份“专家标注”是示意，不是唯一正确答案。</div>';
+    $("c27_msg").textContent = "已对比。可以删除标注重新来一遍，看你能不能一次找全。" + (foundN >= 3 && !(dm.length && !dm.every(m => m.ty === "other")) ? " 🎉 试试看任务完成：命中 " + foundN + "/4，且没有把主动跳坑当成问题。" : "");
+  };
+  render(); drawMarks();
+})();
+
+/* ================= 几个人够？模拟器 ================= */
+(function () {
+  const cv = $("c27_cv"), ctx = cv.getContext("2d");
+  const W = cv.width, H = cv.height, ML = 52, MR = 14, MT = 14, MB = 34, NMAX = 30;
+  let sim = null;
+  function params() { return { L: +$("c27_ls").value, n: +$("c27_ns").value, N: +$("c27_Ns").value, het: $("c27_het").checked }; }
+  function probs(P) { // 每个问题的单人发现概率
+    const arr = [], m = [0.4, 1, 1.6];
+    for (let i = 0; i < P.N; i++) arr.push(P.het ? Math.min(0.99, P.L * m[i % 3]) : P.L);
+    return arr;
+  }
+  function expected(P, nn) { // 精确期望发现比例
+    const pr = probs(P); let s = 0; pr.forEach(p => s += 1 - Math.pow(1 - p, nn)); return s / P.N;
+  }
+  function simulate(P) {
+    const pr = probs(P), S = 1000;
+    const cnt = []; // cnt[n][s]：n 个人时第 s 次模拟发现的问题数
+    for (let n = 0; n <= NMAX; n++) cnt.push(new Array(S).fill(0));
+    for (let s = 0; s < S; s++) {
+      for (let i = 0; i < P.N; i++) {
+        const p = pr[i];
+        // 首个发现该问题的测试者编号（几何分布）
+        const u = 1 - Math.random();
+        const g = Math.ceil(Math.log(u) / Math.log(1 - p));
+        for (let n = Math.max(1, g); n <= NMAX; n++) cnt[n][s]++;
+      }
+    }
+    sim = { cnt, P: Object.assign({}, P) };
+  }
+  function pct(arr, q) { const a = arr.slice().sort((x, y) => x - y); return a[Math.min(a.length - 1, Math.floor(q * a.length))]; }
+  function draw() {
+    const P = params();
+    if (!sim || sim.P.L !== P.L || sim.P.N !== P.N || sim.P.het !== P.het) simulate(P);
+    const X = n => ML + (W - ML - MR) * n / NMAX, Y = v => MT + (H - MT - MB) * (1 - v);
+    ctx.clearRect(0, 0, W, H);
+    ctx.lineWidth = 1.5; ctx.font = "15px sans-serif"; ctx.fillStyle = "#2b2b3a"; ctx.strokeStyle = "#ccc";
+    [0, .25, .5, .75, .85, 1].forEach(v => { ctx.beginPath(); ctx.moveTo(ML, Y(v)); ctx.lineTo(W - MR, Y(v)); ctx.stroke(); ctx.textAlign = "right"; ctx.fillText(Math.round(v * 100) + "%", ML - 6, Y(v) + 5); });
+    ctx.textAlign = "center"; for (let n = 0; n <= NMAX; n += 5) ctx.fillText(n, X(n), H - 18);
+    ctx.fillText("测试人数 n", (W + ML) / 2, H - 2);
+    // 模拟 5%–95% 区间带
+    ctx.fillStyle = "rgba(61,127,184,.2)"; ctx.beginPath();
+    for (let n = 1; n <= NMAX; n++) { const v = pct(sim.cnt[n], 0.95) / P.N; n === 1 ? ctx.moveTo(X(n), Y(v)) : ctx.lineTo(X(n), Y(v)); }
+    for (let n = NMAX; n >= 1; n--) ctx.lineTo(X(n), Y(pct(sim.cnt[n], 0.05) / P.N));
+    ctx.closePath(); ctx.fill();
+    // 理论曲线
+    ctx.strokeStyle = "#3d7fb8"; ctx.lineWidth = 3; ctx.beginPath();
+    for (let n = 0; n <= NMAX; n++) { const v = 1 - Math.pow(1 - P.L, n); n ? ctx.lineTo(X(n), Y(v)) : ctx.moveTo(X(n), Y(v)); } ctx.stroke();
+    if (P.het) { ctx.strokeStyle = "#d6436f"; ctx.setLineDash([7, 5]); ctx.beginPath(); for (let n = 0; n <= NMAX; n++) { const v = expected(P, n); n ? ctx.lineTo(X(n), Y(v)) : ctx.moveTo(X(n), Y(v)); } ctx.stroke(); ctx.setLineDash([]); }
+    // 当前 n
+    const th = 1 - Math.pow(1 - P.L, P.n), ex = expected(P, P.n);
+    ctx.fillStyle = "#ffb347"; ctx.strokeStyle = "#2b2b3a"; ctx.lineWidth = 2.5; ctx.beginPath(); ctx.arc(X(P.n), Y(ex), 7, 0, 7); ctx.fill(); ctx.stroke();
+    ctx.strokeStyle = "#e0668a"; ctx.setLineDash([4, 4]); ctx.beginPath(); ctx.moveTo(X(P.n), Y(0)); ctx.lineTo(X(P.n), Y(1)); ctx.stroke(); ctx.setLineDash([]);
+    ctx.fillStyle = "#2b2b3a"; ctx.textAlign = "left"; ctx.font = "14px sans-serif";
+    ctx.fillText("蓝线：理论 1−(1−L)ⁿ" + (P.het ? "　粉虚线：问题有难有易的期望" : "") + "　淡蓝带：模拟 5%–95%", ML + 8, MT + 14);
+    // 数值
+    const arr = sim.cnt[P.n];
+    const med = pct(arr, .5), lo = pct(arr, .05), hi = pct(arr, .95), mn = Math.min.apply(null, arr);
+    const need = q => Math.ceil(Math.log(1 - q) / Math.log(1 - P.L));
+    $("c27_stats").innerHTML = '<span class="stat">理论 <b>' + (th * 100).toFixed(1) + '%</b></span>' + (P.het ? '<span class="stat">有难有易的期望 <b>' + (ex * 100).toFixed(1) + '%</b></span>' : "") +
+      '<span class="stat">模拟中位数 <b>' + (med / P.N * 100).toFixed(0) + '%</b></span><span class="stat">5%–95% 区间 <b>' + (lo / P.N * 100).toFixed(0) + '%–' + (hi / P.N * 100).toFixed(0) + '%</b></span><span class="stat">最差一次 <b>' + (mn / P.N * 100).toFixed(0) + '%</b></span>' +
+      '<div class="small">在理论模型下，要达到 85% / 95% / 99%，分别需要 n ≥ ' + need(.85) + ' / ' + need(.95) + ' / ' + need(.99) + '（L=' + P.L.toFixed(2) + '）。</div>';
+    const hist = new Array(P.N + 1).fill(0); arr.forEach(c => hist[c]++);
+    const mx = Math.max.apply(null, hist);
+    $("c27_hist").innerHTML = hist.map((c, k) => '<div class="' + (Math.abs(k - ex * P.N) < 0.5 ? "cur" : "") + '" style="height:' + (c / mx * 100) + '%" title="发现 ' + k + ' 个：' + c + ' 次"></div>').join("");
+    $("c27_smsg").textContent = "n=" + P.n + " 时，1000 次模拟里有 5% 的实验发现的问题不到 " + (lo / P.N * 100).toFixed(0) + "%，最差一次只有 " + (mn / P.N * 100).toFixed(0) + "%。" + (P.n < 8 && P.L < 0.2 ? " L 较小时，5 人远远不够。" : "");
+  }
+  function sync() { $("c27_lv2").textContent = (+$("c27_ls").value).toFixed(2); $("c27_nv").textContent = $("c27_ns").value; $("c27_Nv").textContent = $("c27_Ns").value; draw(); }
+  ["c27_ls", "c27_ns", "c27_Ns"].forEach(id => $(id).oninput = sync);
+  $("c27_het").onchange = sync;
+  $("c27_re").onclick = () => { sim = null; draw(); };
+  sync();
+})();
+
+/* ================= 提问改写器 ================= */
+(function () {
+  const Q = [
+    ["你", { b: "是不是觉得", g: "觉得", w: "“是不是”预设了答案，把“肯定”放进了问题里。" }, "这个教程", { b: "很清楚吧？", g: "怎么样？", w: "“……吧？”是在拉人点头；开放式的“怎么样”才不会替他下结论。" }],
+    ["如果上线了，你", { b: "会买这个皮肤吗？", g: "上次在游戏里花钱买过什么？是什么让你决定的？", w: "问假想的未来意愿不可靠；问过去真实发生的行为更可信（说愿意买≠真的买）。" }],
+    ["刚才那场 boss 战，", { b: "是不是太难了？", g: "打的时候你在想什么？", w: "你替他下了“难”的结论，还把这个词塞给了他。让他描述过程。" }],
+    ["刚才你", { b: "有没有看到左上角的血条？", g: "是怎么判断自己还剩多少血的？", w: "你指出了位置，也就是提示了答案；他可能为了显得认真而说“看到了”。" }],
+    ["你为什么", { b: "没有点那个按钮？", g: "当时你的目光在哪里、在想什么？", w: "“为什么”引出事后合理化（Nisbett &amp; Wilson）；问“当时看哪里、想什么”才是 Ericsson &amp; Simon 说的可靠信息。" }]
+  ];
+  const st = Q.map(q => q.map(() => false));
+  const box = $("c27_qs");
+  function build() {
+    box.innerHTML = "";
+    Q.forEach((q, qi) => {
+      const d = document.createElement("div"); d.className = "c27q";
+      const s = document.createElement("div"); s.className = "sent"; const w = document.createElement("div"); w.className = "wy";
+      d.appendChild(s); d.appendChild(w); box.appendChild(d);
+      q.forEach((p, pi) => {
+        if (typeof p === "string") { s.appendChild(document.createTextNode(p)); return; }
+        const b = document.createElement("button"); b.className = "c27sw"; b.onclick = () => { st[qi][pi] = !st[qi][pi]; upd(); };
+        s.appendChild(b);
+      });
+    });
+    upd();
+  }
+  function upd() {
+    let nd = 0;
+    [...box.children].forEach((d, qi) => {
+      const sw = Q[qi].map((p, pi) => ({ p, pi })).filter(x => typeof x.p !== "string");
+      const bs = d.querySelectorAll(".c27sw"); const ws = [];
+      sw.forEach((x, i) => { const on = st[qi][x.pi]; bs[i].textContent = on ? x.p.g : x.p.b; bs[i].classList.toggle("on", on); if (on) ws.push(x.p.w); });
+      const done = sw.every(x => st[qi][x.pi]); if (done) nd++;
+      d.classList.toggle("done", done);
+      d.querySelector(".wy").innerHTML = (done ? "✔ 中立了。" : "") + (ws.length ? " " + ws.join(" ") : "点击橙色的词试试");
+    });
+    $("c27_qc").textContent = nd; if (nd === Q.length) $("c27_qc").textContent = nd + " 🎉 全部改写成功";
+  }
+  $("c27_qall").onclick = () => { st.forEach((r, i) => r.forEach((_, j) => st[i][j] = true)); upd(); };
+  $("c27_qnone").onclick = () => { st.forEach((r, i) => r.forEach((_, j) => st[i][j] = false)); upd(); };
+  build();
+})();
+
+
+/* ================= 幸存者偏差：加装甲 ================= */
+(function () {
+  const holes = [[392,50],[404,76],[420,62],[330,112],[352,140],[400,120],[430,130],[470,126],[500,138],[520,122],[550,134],[300,126],[250,130],[440,100],[380,200],[410,180],[396,160],[600,70],[590,90],[570,200],[596,190],[330,150],[455,148],[480,112],[510,150]];
+  $("c27_holes").innerHTML = holes.map(h => '<circle cx="' + h[0] + '" cy="' + h[1] + '" r="4"/>').join("");
+  const RG = { wing: "c27_w_wing", body: "c27_w_body", tail: "c27_w_tail", eng: "c27_w_eng", cock: "c27_w_cock" };
+  const TXT = {
+    wing: "机翼上弹孔很多，所以你想在这里加装甲？可是机翼被打满了洞，飞机照样飞回来了，说明这里挨打并不致命。",
+    body: "机身弹孔也不少，同样是“挨了打还能飞回来”的地方。把装甲加在这里，等于保护了本来就不太怕打的位置。",
+    tail: "尾翼同理：弹孔多，恰恰说明这里被打中后飞机还能回来。",
+    eng: "✔ 瓦尔德的思路：发动机附近几乎没有弹孔，不是因为没人打到，而是被打中的飞机根本没回来。看不见弹孔的地方，才是你样本里缺失的那一部分。",
+    cock: "✔ 驾驶舱同发动机：弹孔极少，很可能是因为一旦中弹就回不来了。该保护的是“幸存者样本里空白”的要害。"
+  };
+  let done = false;
+  document.querySelectorAll("#c27_wbtn [data-w]").forEach(b => b.onclick = () => {
+    Object.values(RG).forEach(id => { $(id).style.stroke = ""; $(id).style.strokeWidth = ""; });
+    const k = b.dataset.w; $(RG[k]).style.stroke = k === "eng" || k === "cock" ? "#2f8f48" : "#d6303a"; $(RG[k]).style.strokeWidth = "6";
+    $("c27_wmsg").innerHTML = TXT[k] + (k === "eng" || k === "cock" ? "<br>🎉 试试看任务完成。同样的陷阱会出现在试玩里：别只看“回来的人”。" : "");
+    $("c27_waldbox").classList.toggle("c27win", k === "eng" || k === "cock");
+  });
+  $("c27_wreset").onclick = () => {
+    Object.values(RG).forEach(id => { $(id).style.stroke = ""; $(id).style.strokeWidth = ""; });
+    $("c27_wmsg").textContent = "点上面的按钮选一处。"; $("c27_waldbox").classList.remove("c27win");
+  };
+})();
+
+GD.mountQuiz($("quiz"), [
+  { q: "【为什么】为什么“观察玩家卡住的时刻”通常比“问玩家觉得好不好玩”更可靠？", opts: ["因为玩家都爱撒谎", "因为自述受社会期许和事后合理化影响，而行为是在没被组织语言时发生的", "因为观察不需要任何人力", "因为问卷从来没用"], a: 1, why: "人对自己的反应常给出“听起来合理”的解释（Nisbett &amp; Wilson 的观点），面对设计者还会偏向礼貌。行为记录绕开了这两个问题。不是玩家“撒谎”，也不是问卷无用，它们回答的问题不同。" },
+  { q: "【为什么被发明】出声思考法为什么被设计成“请说你在想什么”，而不是“请解释你为什么这么做”？", opts: ["为了让测试更短", "因为 Ericsson 与 Simon 的研究认为，报告当下注意到的内容较可靠，需要事后推理的“为什么”则不可靠", "因为玩家不会解释", "因为这样可以不用录音"], a: 1, why: "这是出声思考的理论基础：口头报告在“报告正在注意的内容”时可当数据，要求推断没被注意的过程时则容易编故事。这也是它被发明出来的原因：要在“看人用”时还能拿到脑中的信息。" },
+  { q: "某问题被任意一个测试者发现的概率 L=0.2。测 5 个人，至少有一人发现它的概率约是？", opts: ["20%", "约 67%", "100%", "约 33%"], a: 1, why: "1−(1−0.2)⁵ = 1−0.8⁵ = 1−0.32768 ≈ 67%。L 越小，需要的人越多；这也说明“5 人 85%”依赖于 L≈31% 这个前提。" },
+  { q: "下面哪一句最像中立的提问？", opts: ["你是不是觉得这一关特别有挑战性？", "这个教程很清楚，对吧？", "刚才这一关，你的感受是怎样的？", "你应该看到那个很明显的按钮了吧？"], a: 2, why: "A、B、D 都把答案或评价放进了问题（预设、拉人点头、指出位置）。开放式的“你的感受是怎样的”才不会诱导。" },
+  { q: "【为什么】为什么“测 5 个人就够了”不能当作放之四海皆准的规则？", opts: ["因为 5 是奇数", "因为 L 因项目而异，不同 5 人组结果可能差很多（Faulkner：55%–99%），且模型假设用户相近、问题等价，并要求修完再测", "因为测试越少越好", "因为公式 1−(1−L)ⁿ 是错的"], a: 1, why: "公式本身在假设下是对的，问题在于假设：L 要符合现实、用户群相近、各人独立。小样本里运气会冒充规律，Nielsen 自己也强调要多轮迭代、不同用户群分别测。" },
+  { q: "你只访谈了仍在玩游戏的老玩家，得到的结论是“新手教程没问题”。这里最可能的问题是？", opts: ["老玩家比新手更诚实", "幸存者偏差：被教程劝退的新手早已不在你的样本里", "访谈永远不可靠", "样本太大"], a: 1, why: "和“只统计飞回来的飞机”一样，你看到的是被筛选过的人。要主动招募新手或流失的玩家。" }
+]);
+</script>
+</body>
+</html>

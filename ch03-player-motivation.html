@@ -1,0 +1,624 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>第3章 玩家动机</title>
+<link rel="stylesheet" href="css/style.css">
+<style>
+  .bar{height:26px;border:2.5px solid var(--ink);border-radius:14px 8px 14px 8px;background:#fff;overflow:hidden;margin:4px 0}
+  .bar i{display:block;height:100%;width:0;transition:width .6s}
+  .c3row{display:flex;align-items:center;gap:8px;margin:4px 0}
+  .c3row .nm{width:150px;flex:none;font-size:.95rem}
+  .c3row .bar{flex:1;margin:0;position:relative}
+  .c3row .val{width:60px;flex:none;font-family:var(--hand);font-size:1.2rem;text-align:right}
+  .c3ply{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:700px){.c3ply{grid-template-columns:1fr}.c3row .nm{width:110px}}
+  .c3tok{cursor:grab}
+  .c3tok:active{cursor:grabbing}
+  .c3gap{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:700px){.c3gap{grid-template-columns:1fr}}
+  .c3task.c3done{background:#d9f5cf}
+  .c3task.c3done::before{content:"✅ "}
+  .c3task b.ok{color:#1d6b32}
+</style>
+</head>
+<body data-ch="3">
+<main class="wrap">
+  <div class="hero">
+    <div class="txt">
+      <span class="badge">第 3 章</span>
+      <h1>玩家动机</h1>
+      <p class="sub">人们为什么愿意花时间在你的游戏里？</p>
+    </div>
+    <svg viewBox="0 0 190 150" class="rough" aria-hidden="true">
+      <circle cx="95" cy="55" r="30" fill="#ffe58a" stroke="#2b2b3a" stroke-width="4"/>
+      <circle cx="85" cy="50" r="3.5" fill="#2b2b3a"/><circle cx="106" cy="50" r="3.5" fill="#2b2b3a"/>
+      <path d="M82 66 Q95 78 108 66" fill="none" stroke="#2b2b3a" stroke-width="4"/>
+      <path d="M40 120 Q95 70 150 120" fill="#ffb3c6" stroke="#2b2b3a" stroke-width="4"/>
+      <text x="22" y="30" font-size="22">❤</text><text x="150" y="40" font-size="22">★</text>
+    </svg>
+  </div>
+
+  <div class="goals">
+    <h3>学习目标</h3>
+    <span class="time">约 55 分钟</span>
+    <ul>
+      <li>读完你能用自主、胜任、关联三种需求分析一个游戏功能，并拖动“动机三角”看出一款游戏押注在哪种需求上。</li>
+      <li>读完你能讲清德西的积木实验为什么会发现“奖励削弱兴趣”，并解释过度理由效应，以及怎样的奖励设计更安全。</li>
+      <li>读完你能说出 Bartle 的玩家类型是怎么从一场争论里归纳出来的，知道它的局限，并能解释排行榜、送礼、公会为什么有效。</li>
+    </ul>
+  </div>
+
+  <!-- 1 是什么 SDT -->
+  <div class="sec"><span class="n">1</span><h2><span class="tag what">是什么</span>三种基本心理需求</h2></div>
+  <div class="withimg">
+    <span data-illus="c03_hook"></span>
+    <div>
+      <p>同样是熬夜，打游戏的人两眼放光，写作业的人哈欠连天。累是一样的，差在哪里？</p>
+      <p>心理学家爱德华·德西和理查德·瑞安给过一个答案，叫“<span class="term" tabindex="0" data-def="自我决定理论（SDT）：德西与瑞安提出的动机理论，认为人有自主、胜任、关联三种基本心理需求，满足它们会带来更持久的内在动机">自我决定理论</span>”。他们认为，人做一件事时，只要三种需求被满足，就会<b>发自内心地想继续做</b>。这种由内而外的动力，叫<span class="term" tabindex="0" data-def="内在动机：因为活动本身有趣、有成就感而去做的动力；与之相对的外在动机来自奖励、惩罚等外部条件">内在动机</span>。</p>
+      <p>几乎所有受欢迎的游戏，都精准地喂饱了其中一两种。</p>
+    </div>
+  </div>
+  <div class="card">
+    <svg viewBox="0 0 700 290" width="100%" role="img" aria-label="三角形：三个顶点分别是自主、胜任、关联，三种需求都满足时产生内在动机">
+      <g class="rough" stroke="#2b2b3a" stroke-width="4" stroke-linejoin="round">
+        <path d="M350 40 L120 200 H580 Z" fill="#fff7cf" stroke="none"/>
+        <path d="M368 53 L562 188 M148 200 H552 M332 53 L146 185" fill="none"/>
+        <circle cx="350" cy="40" r="30" fill="#ffb3c6"/><circle cx="120" cy="200" r="30" fill="#a8dcf0"/><circle cx="580" cy="200" r="30" fill="#b6e8a8"/>
+      </g>
+      <g font-size="26" text-anchor="middle" fill="#2b2b3a">
+        <text x="350" y="49">自</text><text x="120" y="209">胜</text><text x="580" y="209">关</text>
+      </g>
+      <g fill="#2b2b3a">
+        <text x="430" y="48" font-size="22">自主：我能选</text><text x="430" y="72" font-size="16" fill="#3f3f50">路线、装备、玩法由我决定</text>
+        <text x="120" y="262" font-size="22" text-anchor="middle">胜任：我变强了</text><text x="580" y="262" font-size="22" text-anchor="middle">关联：我们在一起</text>
+        <text x="350" y="128" font-size="22" text-anchor="middle">内在动机</text><text x="350" y="160" font-size="16" fill="#3f3f50" text-anchor="middle">三种都满足，人会发自内心想继续</text>
+      </g>
+    </svg>
+  </div>
+  <div class="grid3">
+    <div class="card y mini"><div class="ico">🧭</div><h3>自主</h3><p>开放世界、捏脸、多种通关方式。</p></div>
+    <div class="card b mini"><div class="ico">💪</div><h3>胜任</h3><p>难度曲线、段位、技能树，让人觉得“我变厉害了”。</p></div>
+    <div class="card g mini"><div class="ico">🫂</div><h3>关联</h3><p>组队、公会、送礼、聊天，感觉被他人需要。</p></div>
+  </div>
+  <div class="eg" data-ic="🧭"><span data-illus="c03_botw"></span><div class="egt"><b>自主：《旷野之息》</b>——看到远处的山就可以直接去爬，没有任何东西强迫你先做哪件事。</div></div>
+  <div class="eg" data-ic="💪"><span data-illus="c03_hades"></span><div class="egt"><b>胜任：《哈迪斯》式的动作游戏</b>——每一次死亡都让你熟悉敌人的招式，下一次打到更远。</div></div>
+  <div class="eg" data-ic="🫂"><span data-illus="c03_acnh"></span><div class="egt"><b>关联：《动物森友会》</b>——邻居会记得你，朋友可以来你的岛上做客。</div></div>
+  <div class="eg" data-ic="🎸"><span data-illus="c03_guitar"></span><div class="egt"><b>日常：学吉他</b>——自己挑想弹的歌（自主）、能弹出第一首完整的曲子（胜任）、和朋友合奏（关联）。三种需求都在，所以很容易坚持。</div></div>
+  <div class="eg bad" data-ic="🚧"><span data-illus="c03_tutorial"></span><div class="egt"><b>反例：不能跳过、也不能选择的教程</b>——玩家被一步一步“牵着手走”，自主被剥夺。哪怕内容有趣，也容易让人烦躁。</div></div>
+  <div class="eg bad" data-ic="📲"><span data-illus="c03_invite"></span><div class="egt"><b>反例：必须拉人头才能解锁的活动</b>——“关联”被做成了任务，社交变成了负担。</div></div>
+  <p class="small">研究者拿这个理论分析过电子游戏：2006 年 Ryan、Rigby 与 Przybylski 的几项研究发现，玩家感到自主、胜任、关联得到满足，与游戏中的享受以及继续玩的意愿相关。</p>
+
+  <!-- 2 发明故事 Deci -->
+  <div class="sec"><span class="n">2</span><h2><span class="tag origin">发明故事</span>一个积木实验，怎样发现“奖励会削弱兴趣”？</h2></div>
+  <div class="story">
+    <h3>问题：给人奖励，不就是让他更爱做吗？</h3>
+    <p>20 世纪中叶，主流行为心理学的看法很简单：行为被奖励强化，奖励越多，行为越多。可也有人犯嘀咕：我们做很多事，解谜、画画、玩游戏，并没有人给奖励，难道只是因为“本来就有趣”？那么，<b>在本来就有趣的事情上再加一份奖励，会发生什么？</b></p>
+    <p>爱德华·德西（Edward Deci）还是研究生时，设计了一个干净的测试：让大学生玩一种有趣的 <b>Soma 立体积木</b>谜题，分成三次进行。第二次里，一组人<b>每解出一道题就能拿到钱</b>，另一组没有；第三次不再给任何人钱。</p>
+    <p>关键在每次中间的<b>休息几分钟</b>。实验员借故离开，参与者可以随便做事，看杂志，或者继续摆积木。德西躲在单向镜后面，数他们花了多少<b>自愿</b>的时间摆积木。没人要求，也没有奖励，这段时间就成了兴趣的“量尺”。</p>
+    <p>在看结果之前，<b>先预测</b>：第三次的自由时间里，拿过钱的组和没拿过钱的组，谁会更愿意继续玩？</p>
+  </div>
+
+  <div class="card">
+    <h3>🔮 先猜后揭晓：自由时间里，谁玩得更久？</h3>
+    <p class="small">以第一次的自愿玩耍时间为 100（虚线）。拖动两个滑块，写下你对第三次自由时间的预测，再点“揭晓”。（下面的柱子只是你的猜测，不是实测数值。）</p>
+    <label class="ctl">🅰️ 第二次拿过钱的组 <output id="c3_go1">100</output><input type="range" id="c3_g1" min="0" max="160" step="5" value="100"></label>
+    <label class="ctl">🅱️ 一直没拿钱的组 <output id="c3_go2">100</output><input type="range" id="c3_g2" min="0" max="160" step="5" value="100"></label>
+    <svg viewBox="0 0 700 240" width="100%" role="img" aria-label="两组自由时间预测柱状图，虚线为第一次基线">
+      <g class="rough" stroke="#2b2b3a" stroke-width="3"><path d="M60 20 V190 H660" fill="none"/></g>
+      <path d="M60 80 H660" stroke="#4b4b5e" stroke-width="2.5" stroke-dasharray="7 6" fill="none"/>
+      <text x="76" y="66" font-size="16" fill="#3f3f50">第一次 = 100</text>
+      <g class="rough" stroke="#2b2b3a" stroke-width="3">
+        <rect id="c3_r1" x="170" y="80" width="130" height="110" fill="#ffc078"/>
+        <rect id="c3_r2" x="420" y="80" width="130" height="110" fill="#a8dcf0"/>
+      </g>
+      <g font-size="20" text-anchor="middle" fill="#2b2b3a"><text x="235" y="220">拿过钱的组</text><text x="485" y="220">没拿钱的组</text></g>
+      <g font-size="26" text-anchor="middle" fill="#b3262c" id="c3_arrows"></g>
+    </svg>
+    <button class="btn" id="c3_gre">揭晓</button>
+    <div class="msg" id="c3_gmsg" style="font-size:1.1rem"></div>
+  </div>
+
+  <div class="timeline">
+    <div class="ev hasimg"><span data-illus="c03_soma"></span><div><b class="yr">1971</b>　德西发表《外部奖励对内在动机的影响》（《人格与社会心理学杂志》）：约定“解出一题给钱”的那一组，在之后的自由时间里主动玩积木的时间明显下降；没拿钱的一组没有这种下降。口头表扬（而非钱）倒有提升内在兴趣的迹象。</div></div>
+    <div class="ev hasimg"><span data-illus="c03_kids"></span><div><b class="yr">1973</b>　莱珀、格林与尼斯贝特用学龄前儿童和彩笔复现了类似现象：事先被告知“画画能得奖状”的孩子，之后自由时间里画画更少；意外得到奖励或没有奖励的孩子则没有这样。他们称之为<span class="term" tabindex="0" data-def="过度理由效应（overjustification effect）：当一个人本来出于兴趣做某事，又被给予外部理由（奖励）后，会把行为归因于奖励，奖励撤去后兴趣反而更低">过度理由效应</span>。</div></div>
+    <div class="ev hasimg"><span data-illus="c03_sdt"></span><div><b class="yr">1985–2000</b>　德西与瑞安把这类发现发展为<b>自我决定理论</b>：人有自主、胜任、关联三种基本需求。2000 年的综述（Ryan &amp; Deci）使它成为影响很大的动机理论。</div></div>
+    <div class="ev hasimg"><span data-illus="c03_debate"></span><div><b class="yr">1994–2001</b>　争论：Cameron 与 Pierce 的元分析认为奖励的负面影响有限；德西等人 1999 年的元分析（《心理学公报》）认为实物奖励确实有明显的削弱作用。双方对数据的解读至今仍有分歧。</div></div>
+  </div>
+
+  <!-- 3 为什么 过度理由效应 -->
+  <div class="sec"><span class="n">3</span><h2><span class="tag why">为什么成立</span>被“控制”的感觉，会挤掉“我想做”</h2></div>
+  <div class="withimg rev">
+    <span data-illus="c03_candy"></span>
+    <div>
+      <p>一个本来爱画画的孩子，如果每次画完都被许诺“画一幅给你一颗糖”，久而久之，他可能会觉得“我画画是为了糖”。糖一停，他反而不想画了。</p>
+      <p>还记得第二章里被预期“吃掉”的金币吗？奖励不光会变成预期，还会变成<b>理由</b>。一旦脑子里有了“为了糖”这个理由，“因为我喜欢”就被挤到了角落。</p>
+    </div>
+  </div>
+  <div class="card">
+    <svg viewBox="0 0 700 310" width="100%" role="img" aria-label="流程图：约定好的奖励被感知为控制，自主感下降，撤奖后兴趣更低；传递信息的奖励增强胜任感，兴趣保持">
+      <g class="rough" stroke="#2b2b3a" stroke-width="3.5" stroke-linejoin="round">
+        <rect x="10" y="110" width="150" height="70" rx="16" fill="#fff7cf"/>
+        <rect x="215" y="22" width="190" height="70" rx="16" fill="#ffe9ef"/>
+        <rect x="215" y="198" width="190" height="70" rx="16" fill="#e8f6fc"/>
+        <rect x="455" y="22" width="235" height="70" rx="16" fill="#ffc9c9"/>
+        <rect x="455" y="198" width="235" height="70" rx="16" fill="#eaf9e4"/>
+        <g fill="none" stroke-linecap="round" stroke-width="4"><path d="M160 125 Q185 80 213 62"/><path d="M160 165 Q185 215 213 232"/><path d="M405 57 H453"/><path d="M405 233 H453"/></g>
+      </g>
+      <g font-size="19" text-anchor="middle" fill="#2b2b3a">
+        <text x="85" y="140">本来爱做</text><text x="85" y="165">（有兴趣）</text>
+        <text x="310" y="52">事先说好的奖励</text><text x="310" y="77">被当成“控制”</text>
+        <text x="310" y="228">“你做得好”的信息</text><text x="310" y="253">被当成“反馈”</text>
+        <text x="572" y="52">自主感↓</text><text x="572" y="77">撤奖后兴趣更低</text>
+        <text x="572" y="228">胜任感↑</text><text x="572" y="253">兴趣保持甚至增强</text>
+      </g>
+      <text x="350" y="298" font-size="17" text-anchor="middle" fill="#3f3f50">（这是自我决定理论对过度理由效应的一种解释；效应大小依赖情境。）</text>
+    </svg>
+  </div>
+  <div class="why-box">
+    <h3>奖励的“信号”比“数额”更重要</h3>
+    <p>自我决定理论认为，当外部奖励被感知为<b>控制</b>（“你得这么做才有奖励”）时，会削弱自主感，从而削弱内在动机；相反，如果奖励传递的是<b>信息</b>（“你做得很好”），反而会增强胜任感。常被讨论的影响因素有：奖励是不是事先说好的（更易被当成控制）、是否与表现挂钩、是否同时反馈了能力，以及任务本来是否有趣（对本来无趣的任务，奖励通常不会削弱兴趣）。</p>
+    <p><b>和玩家动机的联系：</b>三种需求里的“自主”和“胜任”正是被挤压或被加强的对象。“内在动机才持久”的设计含义是：别让奖励抢了“好玩”的功劳。</p>
+    <div class="src">出处：Edward Deci，“Effects of externally mediated rewards on intrinsic motivation”，《人格与社会心理学杂志》18(1)：105–115（1971）；Mark Lepper、David Greene、Richard Nisbett，同刊 28(1)：129–137（1973）；Deci、Koestner、Ryan，《心理学公报》125：627–668（1999）；Richard Ryan &amp; Edward Deci，《美国心理学家》55(1)：68–78（2000）。有荟萃分析支持“预先承诺的实物奖励会削弱内在动机”，也有研究者持不同意见，学界仍有争论。</div>
+  </div>
+  <div class="eg" data-ic="📋"><span data-illus="c03_daily"></span><div class="egt"><b>游戏：每日任务清单</b>：本来想玩的游戏，被做成“今天不做就吃亏”的打卡，有玩家会觉得“从玩变成了上班”。</div></div>
+  <div class="eg" data-ic="📚"><span data-illus="c03_reading"></span><div class="egt"><b>日常：给孩子的阅读奖励</b>：一读书就奖励小玩具，有的孩子会变成“为玩具而读”。</div></div>
+  <div class="eg" data-ic="🌟"><span data-illus="c03_praise"></span><div class="egt"><b>安全的做法：“你做得好”的反馈</b>：比如通关后告诉你“你用了一个很少见的打法”，传递的是能力信息，更容易增强胜任感。</div></div>
+  <div class="eg bad" data-ic="🥱"><span data-illus="c03_boring"></span><div class="egt"><b>反例：本来就无聊的任务</b>：对本来无趣的活动，加奖励往往不会削弱兴趣，因为本来就没有多少“内在动机”可以被挤掉。效应有条件，不是铁律。</div></div>
+
+  <div class="card">
+    <h3>🔬 小实验：两位虚拟玩家的“兴趣–奖励”示意模型</h3>
+    <p class="small"><b>这是一个明确声明为示意的简化模型，不是实验数据。</b>玩家 A 本来就爱玩（内在兴趣 70），玩家 B 刚接触（内在兴趣 30）。调节奖励，看“奖励期间的投入”和“奖励撤走后的自愿投入”。</p>
+    <label class="ctl">奖励强度 <output id="c3_ro">6</output><input type="range" id="c3_r" min="0" max="10" step="1" value="6"></label>
+    <div>奖励是否可预期：
+      <button class="chip on" id="c3_exp1">事先说好“做了就给”</button>
+      <button class="chip" id="c3_exp0">事后意外的惊喜</button></div>
+    <div>奖励是否同时反馈能力：
+      <button class="chip on" id="c3_fb0">只发奖励，不评价</button>
+      <button class="chip" id="c3_fb1">同时告诉你哪里做得好</button></div>
+    <div class="c3ply" style="margin-top:10px">
+      <div><b>玩家 A：本来很爱玩（兴趣 70）</b><div id="c3_pa"></div></div>
+      <div><b>玩家 B：刚接触（兴趣 30）</b><div id="c3_pb"></div></div>
+    </div>
+    <div class="msg" id="c3_rmsg"></div>
+    <p class="small">模型规则（示意）：削弱 = 可预期（1，意外为 0.1）× 反馈系数（无反馈 1，有反馈 0.2）× 0.06 × 奖励强度 × 原有兴趣；增强 = 有反馈时 0.02 × 奖励强度 × (100−原有兴趣)；奖励期间投入 = 原有兴趣 + 4×奖励强度（封顶 100）。真实情况复杂得多。</p>
+  </div>
+  <div class="sticky c3task" id="c3_t1">试试看：把奖励强度调到 6 以上，选“事先说好”和“只发奖励”，看玩家 A 撤奖后的投入掉了多少；再换成“同时告诉你哪里做得好”，对比一下。</div>
+
+  <!-- 4 是什么 Bartle -->
+  <div class="sec"><span class="n">4</span><h2><span class="tag what">是什么</span>四种经典玩家类型</h2></div>
+  <p>三种需求说的是“人”共有的底子。可是同一个游戏里，有人只想把图鉴填满，有人一心钻地图边缘找彩蛋，需求被喂饱的方式显然不一样。</p>
+  <p>设计师 Richard Bartle 提出，玩家大致喜欢<b>四种不同的乐趣</b>，即 <span class="term" tabindex="0" data-def="Bartle 玩家类型：成就者、探索者、社交者、竞争者（原文称“杀手”），按“对世界/对玩家”“主动出手/观察互动”两条轴划分">Bartle 玩家类型</span>。同一个人也会混合多种。</p>
+  <div class="card">
+    <svg viewBox="0 0 700 340" width="100%" role="img" aria-label="Bartle 玩家类型四象限图：成就者、竞争者、探索者、社交者">
+      <g stroke="#2b2b3a" stroke-width="3.5" class="rough">
+        <rect x="70" y="15" width="285" height="130" fill="#ffc078"/>
+        <rect x="355" y="15" width="285" height="130" fill="#ffb3c6"/>
+        <rect x="70" y="145" width="285" height="130" fill="#b6e8a8"/>
+        <rect x="355" y="145" width="285" height="130" fill="#a8dcf0"/>
+      </g>
+      <g font-size="28" text-anchor="middle" fill="#2b2b3a">
+        <text x="212" y="72">🏆 成就者</text><text x="497" y="72">⚔️ 竞争者</text>
+        <text x="212" y="202">🗺️ 探索者</text><text x="497" y="202">🎉 社交者</text>
+      </g>
+      <g font-size="17" text-anchor="middle" fill="#2b2b3a">
+        <text x="212" y="100">升级、收集、满成就</text><text x="497" y="100">对战、排名、压制对手</text>
+        <text x="212" y="230">发现秘密、研究机制</text><text x="497" y="230">聊天、合作、一起玩</text>
+      </g>
+      <g font-size="19" text-anchor="middle" fill="#2b2b3a">
+        <text x="212" y="304">← 乐趣对象：游戏世界</text><text x="497" y="304">其他玩家 →</text>
+        <text x="38" y="80" transform="rotate(-90 38 80)">主动出手</text><text x="38" y="215" transform="rotate(-90 38 215)">观察互动</text>
+      </g>
+    </svg>
+    <p class="small">横轴：乐趣主要来自<b>游戏世界</b>还是<b>其他玩家</b>；纵轴：喜欢<b>对对象主动出手</b>（acting on）还是<b>与对象互动</b>（interacting with）。Bartle 原文把“竞争者”称作 killers（杀手），因为在 MUD 里他们喜欢“击败”别的玩家。</p>
+  </div>
+  <div class="grid2">
+    <div class="card o"><span data-illus="c03_achiever"></span><h3>🏆 成就者</h3><p>爱收集、爱满级、爱全成就。<br><b>例：</b>《宝可梦》集全图鉴、《暗黑破坏神》刷毕业装。</p></div>
+    <div class="card g"><span data-illus="c03_explorer"></span><h3>🗺️ 探索者</h3><p>爱找秘密、爱钻地图边缘、爱研究机制。<br><b>例：</b>《旷野之息》里到处试物理组合、研究游戏的 bug。</p></div>
+    <div class="card b"><span data-illus="c03_socializer"></span><h3>🎉 社交者</h3><p>游戏是和朋友相处的场所。<br><b>例：</b>《动物森友会》拜访朋友的岛、MMO 里的公会闲聊。</p></div>
+    <div class="card p"><span data-illus="c03_killer"></span><h3>⚔️ 竞争者</h3><p>爱和别人比拼，赢过对手最爽。<br><b>例：</b>《英雄联盟》冲段位、格斗游戏对战。</p></div>
+  </div>
+  <div class="eg" data-ic="🧳"><span data-illus="c03_tour"></span><div class="egt"><b>日常：同一个旅行团</b>——有人拍打卡照集景点（成就者）、有人偏要钻小巷（探索者）、有人只想和同伴聊天（社交者）、有人比谁抢到的位置更好（竞争者）。</div></div>
+  <div class="eg bad" data-ic="🎭"><span data-illus="c03_context"></span><div class="egt"><b>反例：一个人在不同情境里是不同类型</b>——同一个人刚入坑时是探索者，满级后变成成就者，和朋友开黑时是社交者。分类描述的是“此刻的倾向”，不是固定标签。</div></div>
+
+  <!-- 5 发明故事 Bartle -->
+  <div class="sec"><span class="n">5</span><h2><span class="tag origin">发明故事</span>Bartle 怎样从一场争吵里归纳出四种玩家？</h2></div>
+  <div class="story">
+    <h3>问题：资深玩家们吵翻了——“人们到底想从这个世界里得到什么？”</h3>
+    <p>1978 年前后，英国埃塞克斯大学的 Roy Trubshaw 写出了最早的多人文字冒险 <span class="term" tabindex="0" data-def="MUD：多用户地下城，早期的多人在线文字冒险游戏，可视为今天 MMORPG 的前身">MUD</span>，后来 Richard Bartle 接手并扩充了它。这类游戏让一群陌生人第一次挤在同一个虚拟世界里，运营者很快发现一个麻烦：同样是改一条规则，有人欢呼，有人转身就走。到底该听谁的？</p>
+    <p>据 Bartle 自己的叙述，他 1996 年的论文“源于一场漫长而激烈的讨论”。<b>1989 年 11 月到 1990 年 5 月</b>，一家英国商业 MUD 里经验最丰富的那批玩家，在公告板上发了几百条帖子，争论“人们想从 MUD 里得到什么”，主要参与者约十五人。他们没有问卷，只有大量的观察和争辩。</p>
+    <p>当时担任这家 MUD 首席管理员的 Bartle，把大家提出的观点归拢起来，发现玩家的行为可以放进两条轴里。</p>
+    <p>在看他的结论之前，<b>先自己试一次</b>：下面是 8 种玩家行为。把<b>你觉得相似的</b>放在一起（自由拖动，不用管象限）。</p>
+  </div>
+
+  <div class="card">
+    <h3>🧩 先自己分一分：把相似的行为放一堆</h3>
+    <svg id="c3_svg" viewBox="0 0 700 420" width="100%" style="touch-action:none;user-select:none" role="img" aria-label="可拖动的八种玩家行为卡片">
+      <g class="rough" stroke="#2b2b3a" stroke-width="3.5"><rect x="170" y="30" width="360" height="370" fill="#fffdf3"/></g>
+      <g id="c3_axes" style="display:none" pointer-events="none">
+        <path d="M350 30 V400 M170 215 H530" stroke="#2b2b3a" stroke-width="2.5" stroke-dasharray="7 6"/>
+        <g font-size="19" text-anchor="middle" fill="#2b2b3a">
+          <text x="260" y="62">🏆 成就者</text><text x="440" y="62">⚔️ 竞争者</text><text x="260" y="390">🗺️ 探索者</text><text x="440" y="390">🎉 社交者</text>
+        </g>
+      </g>
+      <g id="c3_toks"></g>
+    </svg>
+    <button class="btn" id="c3_bre">对照 Bartle 的分法</button>
+    <button class="btn alt" id="c3_bsnap" disabled>整理成四象限</button>
+    <button class="btn pink" id="c3_bre0">打乱重来</button>
+    <div class="msg" id="c3_bmsg" style="font-size:1.1rem">拖动卡片，把觉得相似的放近一点。</div>
+  </div>
+  <div class="sticky c3task" id="c3_t2">试试看：把 8 张卡片都挪动一遍，按你的直觉分堆，点“对照 Bartle 的分法”，再点“整理成四象限”，看看你的分法和他的差在哪里。</div>
+
+  <div class="timeline">
+    <div class="ev hasimg"><span data-illus="c03_mud1"></span><div><b class="yr">1978 年前后</b>　Roy Trubshaw 在埃塞克斯大学写出最早的 MUD，Bartle 随后接手扩充，多人在线虚拟世界有了雏形。</div></div>
+    <div class="ev hasimg"><span data-illus="c03_forum"></span><div><b class="yr">1989–1990</b>　英国一家商业 MUD 的资深玩家们在公告板上争论“人们想从 MUD 里得到什么”，几百条帖子。</div></div>
+    <div class="ev hasimg"><span data-illus="c03_suits"></span><div><b class="yr">1996</b>　Bartle 发表《红桃、梅花、方片、黑桃：适合 MUD 的玩家》（《MUD 研究杂志》第 1 卷第 1 期）：用扑克花色命名四种玩家——方片（成就者）、黑桃（探索者）、红桃（社交者）、梅花（杀手）。</div></div>
+    <div class="ev hasimg"><span data-illus="c03_yee"></span><div><b class="yr">2006</b>　Nick Yee 用大规模问卷和因子分析研究在线游戏玩家动机，得到成就、社交、沉浸三大类（共 10 个子成分），为“分类能否被数据支持”提供了另一种视角。</div></div>
+  </div>
+
+  <!-- 6 为什么 Bartle 局限 -->
+  <div class="sec"><span class="n">6</span><h2><span class="tag why">为什么成立</span>玩家分类可靠吗？Bartle 的出处与局限</h2></div>
+  <div class="why-box">
+    <h3>一个来自文字 MUD 的观察，而不是严格的测量</h3>
+    <p>Bartle 的分类来自他对早期文字 MUD 玩家讨论的观察与归纳。它很适合作为“设计时别只想着自己”的提醒，Bartle 自己还提出了不同类型之间会相互影响（例如他认为杀手增多会让社交者减少）。但有几个局限：它基于早期特定游戏里的一小群玩家；类型是粗略归纳，不是用问卷测出来的；同一个人会因为<b>情境</b>在不同类型之间切换。</p>
+    <p>2006 年，Nick Yee 用在线问卷研究大量 MMORPG 玩家，分析得到三大类动机：<b>成就</b>（进阶、机制、竞争）、<b>社交</b>（交友、关系、团队）、<b>沉浸</b>（探索、角色扮演、定制、逃避）。它和 Bartle 的分类有重叠，但划分方式不同，说明“玩家分几类”本身取决于你怎么测。</p>
+    <p><b>和玩家动机的联系：</b>互联网上的“Bartle 测验”只是个小游戏式的倾向测验，不要把它当作对一个人的诊断。</p>
+    <div class="src">出处：Richard Bartle，“Hearts, Clubs, Diamonds, Spades: Players Who Suit MUDs”，《MUD 研究杂志》1(1)（1996）；Nick Yee，“Motivations for Play in Online Games”，《赛博心理学与行为》9(6)：772–775（2006）。</div>
+  </div>
+  <div class="eg" data-ic="🏆"><span data-illus="c03_rankonly"></span><div class="egt"><b>设计里的应用</b>：一款游戏如果只有对战排名，会让探索者和社交者没有位置；加入探索玩法与合作玩法，才能容纳不同的人。</div></div>
+  <div class="eg" data-ic="🃏"><span data-illus="c03_party"></span><div class="egt"><b>日常：派对游戏</b>——有人只想赢（竞争者），有人只想笑（社交者）；规则太重，社交者会离开；太轻，竞争者会觉得无聊。</div></div>
+  <div class="eg bad" data-ic="🏷️"><span data-illus="c03_label"></span><div class="egt"><b>反例：把玩家贴标签</b>——因为一个人上周是成就者，就永远只给他刷成就，可能忽略他这周想和朋友聊天。</div></div>
+
+  <!-- 7 为什么 社会 -->
+  <div class="sec"><span class="n">7</span><h2><span class="tag why">为什么成立</span>排行榜、送礼、公会为什么有效？社会比较、互惠与声誉</h2></div>
+  <div class="withimg">
+    <span data-illus="c03_compare"></span>
+    <div>
+      <p>同样是跑步，一个人跑和看着朋友圈里别人今天跑了多少，感觉很不一样；朋友送你一份小礼物，你会想着“下次回送一个”。</p>
+      <p>这里面有三种社会力量在起作用。它们都不是游戏发明的，游戏只是把它们接进了玩家每天都会碰到的地方。</p>
+    </div>
+  </div>
+  <div class="why-box">
+    <h3>三种社会力量</h3>
+    <ul>
+      <li><span class="term" tabindex="0" data-def="社会比较：人通过和他人比较来评估自己的能力与观点，通常倾向于和与自己相近的人比">社会比较</span>：人通过和别人比较来判断自己做得怎么样，倾向于和<b>与自己相近</b>的人比。所以“离你不远的下一名”比“全服第一”更能激励你。</li>
+      <li><span class="term" tabindex="0" data-def="互惠规范：人倾向于回报别人给予自己的好处，这是许多社会共有的行为规范">互惠</span>：收到好处会想回报。送礼、互赠体力、互相助战都利用了这一点，同时也可能带来“不回礼的压力”。</li>
+      <li><b>声誉</b>：在群体里被看到、被认可是一种强力的社会奖励，如称号、战绩墙、公会贡献榜。</li>
+    </ul>
+    <p><b>和玩家动机的联系：</b>它们主要满足的是“关联”（被看到、被需要）和“胜任”（我比以前强、比同伴强）。但也要小心：排名这种“控制性”的外部目标，可能让人觉得被打分，削弱“自主”，这和前面的过度理由效应是同一个道理。</p>
+    <div class="src">出处：社会比较理论——Leon Festinger，“A Theory of Social Comparison Processes”，《人类关系》7(2)：117–140（1954）；互惠规范——Alvin Gouldner，“The Norm of Reciprocity: A Preliminary Statement”，《美国社会学评论》25(2)：161–178（1960）。下图的“激励/打击”是基于这些理论的<b>设计推演</b>，不是实测数据。</div>
+  </div>
+  <div class="card">
+    <svg viewBox="0 0 700 270" width="100%" role="img" aria-label="三种榜单形式对五类玩家的激励与打击的设计推演表">
+      <g font-size="17" text-anchor="middle" fill="#2b2b3a">
+        <text x="260" y="34">顶尖玩家</text><text x="360" y="34">中游玩家</text><text x="460" y="34">新手</text><text x="560" y="34">社交型</text><text x="650" y="34">休闲玩家</text>
+      </g>
+      <g id="c3_lbm"></g>
+      <g font-size="20" fill="#2b2b3a"><text x="12" y="82">🌍 全服榜</text><text x="12" y="142">👫 好友榜</text><text x="12" y="202">🎚️ 分段榜</text></g>
+      <text x="350" y="258" font-size="16" text-anchor="middle" fill="#3f3f50">绿 = 激励，红 = 打击，数字越大影响越强（设计推演，非实测）</text>
+    </svg>
+    <div class="small" id="c3_lbnote"></div>
+  </div>
+  <div class="eg" data-ic="🌍"><span data-illus="c03_global"></span><div class="egt"><b>全服榜</b>：给顶尖玩家一个舞台，但中游和新手看到的是“遥不可及”的名次。副作用：外挂刷榜、少数人垄断、多数人沉默。</div></div>
+  <div class="eg" data-ic="👫"><span data-illus="c03_friends"></span><div class="egt"><b>好友榜</b>：比较对象是认识的、水平相近的人，激励面最广，也满足“关联”。副作用：没有朋友的人没有榜。</div></div>
+  <div class="eg" data-ic="🎚️"><span data-illus="c03_tiers"></span><div class="egt"><b>分段榜</b>：按水平分组，中游和新手都看得到“下一名”。副作用：掉段焦虑；高手故意压低水平“养小号”打新手。</div></div>
+  <div class="eg" data-ic="🎁"><span data-illus="c03_gift"></span><div class="egt"><b>互赠礼物</b>：利用互惠，让社交型和休闲玩家更有回访理由；但“必须回礼”会变成负担，应允许不回礼而没有惩罚。</div></div>
+  <div class="eg bad" data-ic="🙁"><span data-illus="c03_globalbad"></span><div class="egt"><b>反例：只有全服榜的休闲游戏</b>——大多数玩家永远排在几十万名开外，看一眼就觉得“和我无关”，榜单反而成了劝退点。</div></div>
+
+  <!-- 8 怎么用 招牌 -->
+  <div class="sec"><span class="n">8</span><h2><span class="tag how">怎么用</span>动机三角：拖动一个点，看看你在押注什么</h2></div>
+  <p>三角形的三个顶点是自主、胜任、关联。<b>拖动白点</b>，越靠近某个顶点，说明你的设计越偏重那种需求。右边的雷达图实时变化，下面会给出最匹配的几类游戏和玩家类型。</p>
+  <div class="card">
+    <svg id="c3_tri" viewBox="0 0 700 340" width="100%" style="touch-action:none;user-select:none" role="img" aria-label="可拖动的动机三角和雷达图">
+      <g class="rough" stroke="#2b2b3a" stroke-width="4" stroke-linejoin="round">
+        <path d="M180 50 L40 290 H320 Z" fill="#fff7cf"/>
+      </g>
+      <g id="c3_tgrid" stroke="#e6dcc3" stroke-width="2"></g>
+      <g font-size="22" text-anchor="middle" fill="#2b2b3a">
+        <text x="180" y="28">🧭 自主</text><text x="48" y="322">💪 胜任</text><text x="314" y="322">🫂 关联</text>
+      </g>
+      <g id="c3_radar">
+        <path d="M520 65 L425 230 H615 Z" fill="none" stroke="#2b2b3a" stroke-width="2.5" stroke-dasharray="4 5"/>
+        <path d="M520 120 L472 202 H568 Z" fill="none" stroke="#c9bfa5" stroke-width="2"/>
+        <path d="M520 175 V65 M520 175 L425 230 M520 175 L615 230" stroke="#c9bfa5" stroke-width="2"/>
+        <polygon id="c3_poly" points="520,175 520,175 520,175" fill="rgba(255,122,89,.35)" stroke="#e5484d" stroke-width="3.5" stroke-linejoin="round"/>
+        <g font-size="18" text-anchor="middle" fill="#2b2b3a"><text x="520" y="50">自主</text><text x="420" y="256">胜任</text><text x="620" y="256">关联</text></g>
+      </g>
+      <g id="c3_h" style="cursor:grab">
+        <circle id="c3_hit" r="26" fill="transparent"/>
+        <circle id="c3_pt" r="13" fill="#fff" stroke="#2b2b3a" stroke-width="4"/>
+      </g>
+    </svg>
+    <div>
+      <button class="chip" data-tp="mid">⚖️ 均衡</button>
+      <button class="chip" data-tp="a">偏自主</button>
+      <button class="chip" data-tp="c">偏胜任</button>
+      <button class="chip" data-tp="r">偏关联</button>
+    </div>
+    <div class="c3gap">
+      <div><b>最匹配的游戏类型</b><div id="c3_gen"></div></div>
+      <div><b>可能吸引的玩家类型</b><div id="c3_typ"></div></div>
+    </div>
+    <div class="msg" id="c3_tmsg" style="font-size:1.1rem"></div>
+    <p class="small"><b>说明（示意）：</b>各游戏的“需求配比”和“玩家类型对应”是这里基于设计经验的粗略设定，并非研究结论；玩家类型与三种需求之间也没有一一对应的实证关系。真实的游戏通常同时满足多种需求，且因人而异。这个工具用来训练一个习惯：<b>设计功能前，先问它在满足哪种需求，又冷落了哪种。</b></p>
+  </div>
+  <div class="sticky c3task" id="c3_t3">试试看：把白点拖到“胜任”那个角，看最匹配的游戏类型变成什么；再拖到“关联”那个角，对比一下两边的玩家类型。</div>
+
+  <div class="misc">
+    <h3>常见误区</h3>
+    <ul>
+      <li>“奖励越多越能留住人”：奖励若被感知为控制，可能挤掉内在兴趣；让奖励传递“你做得好”更安全。</li>
+      <li>“全服排行榜最有激励”：它只激励最顶尖的少数，对大多数人可能是打击；分段榜、好友榜往往更友好。</li>
+      <li>“一个人只属于一种玩家类型”：类型随情境、心情、时间变化，也常混合。</li>
+      <li>“三种需求必须均衡”：不一定，一款游戏可以重押一种需求做到极致，但要知道自己在冷落什么。</li>
+    </ul>
+  </div>
+
+  <div class="reflect">
+    <h3>反思与争议</h3>
+    <p>自我决定理论是影响很大的动机理论，但“三种需求是否放之四海皆准”仍有讨论；过度理由效应的大小也依赖情境（奖励类型、任务是否有趣、是否可预期），并非所有研究都得到相同结论。以上互动模型只是教学示意。</p>
+    <p>Bartle 的分类是“<b>一种观点</b>”，来自特定的早期文字游戏环境；今天的手游、社区和电竞玩家是否适用，可以质疑。Yee 的因子分析给出了另一套划分。把它们当作思考工具，而不是玩家画像的标准答案。</p>
+    <p>想一想：你玩过的某个游戏，哪个奖励让你“觉得是被收买”？哪个让你“觉得自己真行”？区别在哪？</p>
+  </div>
+
+  <div class="key">
+    <h3>要点</h3>
+    <ul>
+      <li>三大需求：<b>自主、胜任、关联</b>。设计功能前先问：它满足了哪一个？冷落了哪一个？</li>
+      <li>德西的积木实验发现：事先说好的外部奖励可能被当成“控制”，削弱内在动机（过度理由效应，有情境依赖）；传递“你做得好”的奖励更安全。</li>
+      <li>Bartle 的四种玩家源于一场 MUD 资深玩家的争论：<b>成就者、探索者、社交者、竞争者</b>；它是粗略工具，类型随情境变化，Yee 等人得到了不同的划分。</li>
+      <li>“你喜欢的”不一定是“玩家喜欢的”，要学会站在别的玩家类型上思考。</li>
+      <li>排行榜、送礼、公会靠社会比较、互惠、声誉起作用；榜单形式要匹配玩家类型。</li>
+    </ul>
+  </div>
+  <div class="tldr">让玩家觉得“我想做、我做得到、我们一起”，别用奖励抢走“好玩”的功劳。</div>
+
+  <div class="sec"><span class="n">9</span><h2><span class="tag think">练习</span>小测验</h2></div>
+  <div id="quiz"></div>
+
+  <div class="sec"><span class="n">10</span><h2><span class="tag how">你的设计</span>三种需求的设计</h2></div>
+  <div class="card o">
+    <p>选一个游戏，分别写出它为<b>自主、胜任、关联</b>各做了什么设计。想想它最强的是哪一个？最弱的呢？</p>
+    <textarea rows="5" data-save="ch3" placeholder="例：《动物森友会》——自主：随意布置岛屿；胜任：慢慢还清贷款；关联：拜访朋友的岛……"></textarea>
+  </div>
+</main>
+<script src="js/illus.js"></script>
+<script src="js/illus-ch03.js"></script>
+<script src="js/common.js"></script>
+<script>
+const $ = id => document.getElementById(id);
+const NS = "http://www.w3.org/2000/svg";
+
+/* ===== 试试看任务：完成反馈 ===== */
+const C3DONE = {
+  c3_t1: "完成！同样的奖励，被当成“控制”会挤掉兴趣，带着“你做得好”的信息反而保住了兴趣。",
+  c3_t2: "完成！你的分法和 Bartle 的差在哪里，往往就是你用了不同的标准看游戏。",
+  c3_t3: "完成！偏胜任和偏关联吸引的游戏、玩家类型明显不同。",
+};
+function c3done(id) {
+  const e = $(id);
+  if (!e || e.classList.contains("c3done")) return;
+  e.classList.add("c3done");
+  e.insertAdjacentHTML("beforeend", " <b class='ok'>" + C3DONE[id] + "</b>");
+}
+
+/* ===== 发明故事 1：德西实验，先猜后揭晓 ===== */
+(function () {
+  function bars() {
+    const a = +$("c3_g1").value, b = +$("c3_g2").value;
+    $("c3_go1").textContent = a; $("c3_go2").textContent = b;
+    [["c3_r1", a], ["c3_r2", b]].forEach(([id, v]) => {
+      const h = Math.max(2, v / 100 * 110), r = $(id); r.setAttribute("height", h); r.setAttribute("y", 190 - h);
+    });
+  }
+  $("c3_g1").oninput = bars; $("c3_g2").oninput = bars; bars();
+  $("c3_gre").onclick = () => {
+    const a = +$("c3_g1").value, b = +$("c3_g2").value;
+    $("c3_arrows").innerHTML = '<text x="235" y="60" font-size="22">⬇ 明显下降</text><text x="485" y="60" font-size="22" fill="#1d6b32">➡ 没有下降</text>';
+    $("c3_gmsg").innerHTML = (a < b ? "你的方向猜对了：你预测拿过钱的组更低。" : a === b ? "你预测两组一样。" : "你预测拿过钱的组反而更高——这是很多人直觉上的想法（奖励应该强化行为）。") +
+      "<br>实验的发现是：<b>拿过钱的组</b>在第三次的自由时间里，主动摆积木的时间比第一次<b>明显下降</b>，而<b>没拿钱的组</b>没有这种下降。钱不但没有强化兴趣，反而像是“把玩积木的理由换成了钱”。（图中箭头只表示方向，不是实测数值。）";
+  };
+})();
+
+/* ===== 过度理由效应示意模型 ===== */
+(function () {
+  let expected = 1, fb = 0, sawDrop = false, sawFb = false;
+  function calc(i0, R) {
+    const hit = expected ? 1 : 0.1;
+    const under = hit * (fb ? 0.2 : 1) * 0.06 * R * i0;
+    const boost = fb ? 0.02 * R * (100 - i0) : 0;
+    const after = Math.max(0, Math.min(100, i0 - under + boost));
+    const during = Math.min(100, i0 + 4 * R);
+    return { before: i0, during, after };
+  }
+  function bars(el, r) {
+    const rows = [["奖励前的兴趣", r.before, "#a8dcf0"], ["奖励期间的投入", r.during, "#ffc078"], ["奖励撤走后的自愿投入", r.after, r.after < r.before - 0.5 ? "#ffb3c6" : "#b6e8a8"]];
+    el.innerHTML = rows.map(x => '<div class="c3row"><div class="nm">' + x[0] + '</div><div class="bar"><i style="width:' + x[1] + '%;background:' + x[2] + '"></i></div><div class="val">' + Math.round(x[1]) + "</div></div>").join("");
+  }
+  function over() {
+    const R = +$("c3_r").value; $("c3_ro").textContent = R;
+    const a = calc(70, R), b = calc(30, R);
+    bars($("c3_pa"), a); bars($("c3_pb"), b);
+    const dA = a.after - a.before;
+    $("c3_rmsg").textContent = R === 0 ? "没有奖励，兴趣保持原样。" :
+      dA < -5 ? "玩家 A 撤奖后的自愿投入明显低于从前：奖励被当成了“控制”。玩家 B 本来兴趣就低，损失较小。" :
+      dA > 2 ? "反馈了能力，胜任感上升，撤奖后的自愿投入反而更高。" : "变化不大：意外的奖励或带反馈的奖励较少被当成“控制”。";
+    if (R >= 6 && dA < -5) sawDrop = true;
+    if (R >= 6 && fb === 1 && dA > -2) sawFb = true;
+    if (sawDrop && sawFb) c3done("c3_t1");
+  }
+  function setPair(a, b, onA) { a.classList.toggle("on", onA); b.classList.toggle("on", !onA); }
+  $("c3_exp1").onclick = () => { expected = 1; setPair($("c3_exp1"), $("c3_exp0"), true); over(); };
+  $("c3_exp0").onclick = () => { expected = 0; setPair($("c3_exp1"), $("c3_exp0"), false); over(); };
+  $("c3_fb0").onclick = () => { fb = 0; setPair($("c3_fb0"), $("c3_fb1"), true); over(); };
+  $("c3_fb1").onclick = () => { fb = 1; setPair($("c3_fb0"), $("c3_fb1"), false); over(); };
+  $("c3_r").oninput = over;
+  over();
+})();
+
+/* ===== 发明故事 2：Bartle 分类，自由分堆 ===== */
+(function () {
+  const svg = $("c3_svg"), layer = $("c3_toks");
+  const TY = { A: ["🏆 成就者", "#ffc078"], K: ["⚔️ 竞争者", "#ffb3c6"], E: ["🗺️ 探索者", "#b6e8a8"], S: ["🎉 社交者", "#a8dcf0"] };
+  const REF = { A: [260, 120], K: [440, 120], E: [260, 310], S: [440, 310] };
+  const B = [
+    ["集齐所有成就", "A"], ["冲到满级", "A"], ["击败对手", "K"], ["冲排位段位", "K"],
+    ["找隐藏房间", "E"], ["研究游戏机制", "E"], ["在公会闲聊", "S"], ["陪朋友玩", "S"],
+  ];
+  const toks = B.map((b, i) => {
+    const left = i % 2 === 0, hx = left ? 85 : 615, hy = 55 + Math.floor(i / 2) * 90;
+    const el = document.createElementNS(NS, "g"); el.setAttribute("class", "c3tok");
+    el.innerHTML = '<rect x="-72" y="-19" width="144" height="38" rx="12" fill="#fff" stroke="#2b2b3a" stroke-width="3"/><text y="6" font-size="17" text-anchor="middle" fill="#2b2b3a" pointer-events="none">' + b[0] + "</text>";
+    el.setAttribute("transform", "translate(" + hx + "," + hy + ")");
+    layer.appendChild(el);
+    return { el, hx, hy, x: hx, y: hy, t: b[1], moved: false };
+  });
+  function pt(e) { const p = svg.createSVGPoint(); p.x = e.clientX; p.y = e.clientY; return p.matrixTransform(svg.getScreenCTM().inverse()); }
+  function setPos(t, x, y) { t.x = x; t.y = y; t.el.setAttribute("transform", "translate(" + x + "," + y + ")"); }
+  toks.forEach(t => {
+    let drag = false, dx = 0, dy = 0;
+    t.el.addEventListener("pointerdown", e => { drag = true; t.el.setPointerCapture(e.pointerId); const p = pt(e); dx = t.x - p.x; dy = t.y - p.y; layer.appendChild(t.el); e.preventDefault(); });
+    t.el.addEventListener("pointermove", e => { if (!drag) return; const p = pt(e); setPos(t, Math.max(75, Math.min(625, p.x + dx)), Math.max(22, Math.min(398, p.y + dy))); });
+    const end = () => { if (drag) { drag = false; t.moved = true; hint(); } };
+    t.el.addEventListener("pointerup", end); t.el.addEventListener("pointercancel", end);
+  });
+  let revealed = false;
+  function hint() {
+    if (revealed) return;
+    const n = toks.filter(t => t.moved).length;
+    $("c3_bmsg").textContent = n < 8 ? "已动过 " + n + " / 8 张。继续把相似的放近一点。" : "都摆好了？点“对照 Bartle 的分法”。";
+  }
+  $("c3_bre").onclick = () => {
+    revealed = true;
+    toks.forEach(t => t.el.firstChild.setAttribute("fill", TY[t.t][1]));
+    $("c3_bsnap").disabled = false;
+    let same = 0, ns = 0, diff = 0, nd = 0;
+    for (let i = 0; i < toks.length; i++) for (let j = i + 1; j < toks.length; j++) {
+      const d = Math.hypot(toks[i].x - toks[j].x, toks[i].y - toks[j].y);
+      if (toks[i].t === toks[j].t) { same += d; ns++; } else { diff += d; nd++; }
+    }
+    const moved = toks.some(t => t.moved);
+    const ratio = (same / ns) / (diff / nd);
+    $("c3_bmsg").innerHTML = "颜色 = Bartle 的类型（橙=成就者，粉=竞争者，绿=探索者，蓝=社交者）。<br>" +
+      (!moved ? "你还没有移动过卡片——先试着分一分，再回来对照。" :
+        ratio < 0.8 ? "你自发地把同类行为放得更近了：和 Bartle 的分法很一致 ✔。他的两条轴是“乐趣对象：世界/玩家”和“方式：主动出手/互动”。" :
+        "你的分法和 Bartle 的不太一样——这很正常：分类取决于你用什么标准看（比如按“单人/多人”或“难/易”分）。他的两条轴是“乐趣对象：世界/玩家”和“方式：主动出手/互动”。点“整理成四象限”看他的分法。");
+  };
+  $("c3_bsnap").onclick = () => {
+    $("c3_axes").style.display = "";
+    const cnt = { A: 0, K: 0, E: 0, S: 0 };
+    const targets = toks.map(t => { const k = cnt[t.t]++; return [REF[t.t][0], (t.t === "A" || t.t === "K" ? 100 : 285) + k * 46]; });
+    const from = toks.map(t => [t.x, t.y]), t0 = performance.now();
+    function step(now) {
+      const u = Math.min(1, (now - t0) / 600), e = u * u * (3 - 2 * u);
+      toks.forEach((t, i) => setPos(t, from[i][0] + (targets[i][0] - from[i][0]) * e, from[i][1] + (targets[i][1] - from[i][1]) * e));
+      if (u < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+    $("c3_bmsg").innerHTML = "这就是 Bartle 的四象限：<b>上排</b>是“对对象主动出手”，<b>下排</b>是“与对象互动”；<b>左列</b>乐趣来自游戏世界，<b>右列</b>来自其他玩家。";
+    if (toks.every(t => t.moved)) c3done("c3_t2");
+  };
+  $("c3_bre0").onclick = () => {
+    revealed = false; $("c3_axes").style.display = "none"; $("c3_bsnap").disabled = true;
+    const slots = []; for (let r = 0; r < 4; r++) for (let c = 0; c < 2; c++) slots.push([255 + c * 190, 85 + r * 80]);
+    for (let k = slots.length - 1; k > 0; k--) { const j = Math.floor(Math.random() * (k + 1)); [slots[k], slots[j]] = [slots[j], slots[k]]; }
+    toks.forEach((t, i) => { t.moved = false; t.el.firstChild.setAttribute("fill", "#fff"); setPos(t, slots[i][0], slots[i][1]); });
+    $("c3_bmsg").textContent = "卡片被打乱了，再分一次吧。";
+  };
+})();
+
+/* ===== 榜单设计推演矩阵（静态图） ===== */
+(function () {
+  const P = [[2, -1, -2, 0, -1], [1, 2, 1, 2, 1], [1, 2, 2, 0, 1]], XS = [260, 360, 460, 560, 650], YS = [55, 115, 175];
+  const g = $("c3_lbm"); let h = "";
+  P.forEach((row, r) => row.forEach((v, c) => {
+    const col = v > 0 ? ["#e0f5d8", "#b6e8a8", "#8fd47e"][Math.min(2, v) - 1] : v < 0 ? ["#ffe1e1", "#ffc9c9", "#ff9f9f"][Math.min(2, -v) - 1] : "#f0f0f0";
+    h += '<rect x="' + (XS[c] - 44) + '" y="' + (YS[r] - 6) + '" width="88" height="44" rx="10" fill="' + col + '" stroke="#2b2b3a" stroke-width="2.5"/>' +
+      '<text x="' + XS[c] + '" y="' + (YS[r] + 24) + '" font-size="22" text-anchor="middle" fill="#2b2b3a">' + (v > 0 ? "+" : "") + v + "</text>";
+  }));
+  g.innerHTML = h;
+  $("c3_lbnote").textContent = "叠加“好友互赠礼物”（互惠）：社交型和休闲玩家各 +1。";
+})();
+
+/* ===== 招牌互动：动机三角 ===== */
+(function () {
+  const svg = $("c3_tri");
+  const A = [180, 50], C = [40, 290], R = [320, 290];
+  const RC = [520, 175], RR = 110, ANG = [-Math.PI / 2, 5 * Math.PI / 6, Math.PI / 6]; // 自主 胜任 关联
+  const GENRES = [
+    ["🧱 沙盒建造（如《我的世界》）", [.55, .25, .2]],
+    ["🗺️ 开放世界冒险（如《旷野之息》）", [.5, .35, .15]],
+    ["⚔️ 动作 / 肉鸽（如《哈迪斯》）", [.25, .6, .15]],
+    ["🏆 竞技对战（如《英雄联盟》）", [.15, .5, .35]],
+    ["🏝️ 社交模拟（如《动物森友会》）", [.45, .1, .45]],
+    ["🛡️ 大型多人在线（如魔兽世界类）", [.2, .4, .4]],
+    ["🧩 解谜（如《传送门》）", [.3, .6, .1]],
+    ["🌾 模拟经营（如《星露谷物语》）", [.5, .3, .2]],
+  ];
+  const TYPES = [["🧭→探索者", w => w[0]], ["💪→成就者", w => w[1]], ["🫂→社交者", w => w[2]], ["⚔️→竞争者", w => 0.6 * w[1] + 0.4 * w[2]]];
+  let w = [1 / 3, 1 / 3, 1 / 3], seenC = false, seenR = false;
+  let gl = ""; for (let k = 1; k < 3; k++) { const t = k / 3; const p1 = [A[0] + (C[0] - A[0]) * t, A[1] + (C[1] - A[1]) * t], p2 = [A[0] + (R[0] - A[0]) * t, A[1] + (R[1] - A[1]) * t]; gl += '<path d="M' + p1 + " L" + p2 + '"/>'; }
+  $("c3_tgrid").innerHTML = gl;
+  function xy(w) { return [w[0] * A[0] + w[1] * C[0] + w[2] * R[0], w[0] * A[1] + w[1] * C[1] + w[2] * R[1]]; }
+  function bary(p) {
+    const d = (C[1] - R[1]) * (A[0] - R[0]) + (R[0] - C[0]) * (A[1] - R[1]);
+    let a = ((C[1] - R[1]) * (p[0] - R[0]) + (R[0] - C[0]) * (p[1] - R[1])) / d;
+    let c = ((R[1] - A[1]) * (p[0] - R[0]) + (A[0] - R[0]) * (p[1] - R[1])) / d;
+    let r = 1 - a - c;
+    a = Math.max(0, a); c = Math.max(0, c); r = Math.max(0, r);
+    const s = a + c + r || 1; return [a / s, c / s, r / s];
+  }
+  function pt(e) { const p = svg.createSVGPoint(); p.x = e.clientX; p.y = e.clientY; return p.matrixTransform(svg.getScreenCTM().inverse()); }
+  const NM = ["自主", "胜任", "关联"];
+  function render() {
+    const [x, y] = xy(w);
+    $("c3_pt").setAttribute("cx", x); $("c3_pt").setAttribute("cy", y); $("c3_hit").setAttribute("cx", x); $("c3_hit").setAttribute("cy", y);
+    $("c3_poly").setAttribute("points", w.map((v, i) => { const r = RR * Math.min(1, v * 1.6); return (RC[0] + r * Math.cos(ANG[i])) + "," + (RC[1] + r * Math.sin(ANG[i])); }).join(" "));
+    const sim = GENRES.map(g => [g[0], 1 - 0.5 * g[1].reduce((s, v, i) => s + Math.abs(v - w[i]), 0)]).sort((a, b) => b[1] - a[1]).slice(0, 3);
+    $("c3_gen").innerHTML = sim.map(s => '<div class="c3row"><div class="nm" style="width:190px;font-size:.88rem">' + s[0] + '</div><div class="bar"><i style="width:' + Math.round(s[1] * 100) + '%;background:#ffc078"></i></div><div class="val">' + Math.round(s[1] * 100) + "</div></div>").join("");
+    const tv = TYPES.map(t => [t[0], t[1](w)]), tm = Math.max(...tv.map(t => t[1]), 0.01);
+    $("c3_typ").innerHTML = tv.map(t => '<div class="c3row"><div class="nm" style="width:120px">' + t[0] + '</div><div class="bar"><i style="width:' + Math.round(t[1] / tm * 100) + '%;background:#d8c8ff"></i></div></div>').join("");
+    const ord = w.map((v, i) => [v, i]).sort((a, b) => b[0] - a[0]);
+    const lows = w.map((v, i) => v < 0.15 ? NM[i] : null).filter(Boolean);
+    $("c3_tmsg").innerHTML = "你的设计重心：<b>" + NM[ord[0][1]] + " " + Math.round(ord[0][0] * 100) + "%</b>，其次" + NM[ord[1][1]] + " " + Math.round(ord[1][0] * 100) + "%，" + NM[ord[2][1]] + " " + Math.round(ord[2][0] * 100) + "%。" +
+      (lows.length ? "<br>⚠️ 你几乎没有照顾到【" + lows.join("、") + "】：这不一定是错（可以专注押注一种需求），但要问自己，这部分玩家和这段长期动力你打算放弃吗？" : "<br>三种需求都有照顾，没有明显缺口。");
+    if (w[1] > 0.5) seenC = true;
+    if (w[2] > 0.5) seenR = true;
+    if (seenC && seenR) c3done("c3_t3");
+  }
+  let drag = false;
+  svg.addEventListener("pointerdown", e => {
+    const t = e.target;
+    if (t.id === "c3_pt" || t.id === "c3_hit") { drag = true; svg.setPointerCapture(e.pointerId); e.preventDefault(); }
+  });
+  svg.addEventListener("pointermove", e => { if (!drag) return; w = bary(pt(e)); render(); });
+  const end = () => { drag = false; };
+  svg.addEventListener("pointerup", end); svg.addEventListener("pointercancel", end);
+  const PRESET = { mid: [1 / 3, 1 / 3, 1 / 3], a: [.7, .15, .15], c: [.15, .7, .15], r: [.15, .15, .7] };
+  document.querySelectorAll("[data-tp]").forEach(b => b.addEventListener("click", () => {
+    document.querySelectorAll("[data-tp]").forEach(x => x.classList.toggle("on", x === b));
+    const from = w.slice(), to = PRESET[b.dataset.tp], t0 = performance.now();
+    (function step(now) {
+      const u = Math.min(1, (now - t0) / 350);
+      w = from.map((v, i) => v + (to[i] - v) * u); render();
+      if (u < 1) requestAnimationFrame(step);
+    })(t0);
+  }));
+  render();
+})();
+
+GD.mountQuiz($("quiz"), [
+  { q: "游戏里加入“公会”“组队副本”，主要满足了哪种需求？", opts: ["自主", "胜任", "关联", "金钱"], a: 2, why: "与他人建立联系和归属，是“关联”。" },
+  { q: "一个玩家把所有隐藏房间都找遍，还爱研究 bug 与机制，他最像：", opts: ["成就者", "探索者", "社交者", "竞争者"], a: 1, why: "探索者的乐趣在于发现与理解。" },
+  { q: "设计一款天梯对战游戏，最该重点满足哪类玩家？", opts: ["竞争者", "探索者", "不需要考虑玩家", "只做社交者"], a: 0, why: "对战排名天然吸引竞争者；同时别忘了为其他类型留出空间。" },
+  { q: "“让玩家选择自己的技能搭配”，主要增强了哪种需求？", opts: ["自主", "关联", "付费", "紧张感"], a: 0, why: "有选择、能做主，就是自主。" },
+  { q: "【为什么被发明】德西为什么要设计“休息时的自由时间”这个环节？", opts: ["为了让参与者休息", "为了在没有人要求、也没有奖励的情况下，看参与者是否还愿意主动继续做——用它来测量“内在兴趣”", "为了让参与者看杂志", "为了给奖励"], a: 1, why: "自愿花在谜题上的时间，不受任何奖励或要求影响，因此成为内在动机的行为指标。" },
+  { q: "【为什么】一个本来很爱画画的孩子，被事先许诺“画一幅给一颗糖”，糖停发后画得更少了。按过度理由效应，最可能的原因是？", opts: ["孩子突然不会画了", "奖励被感知为“控制”，削弱了自主感，把“我想画”变成“为了糖而画”", "糖太甜", "所有奖励一定会削弱兴趣，没有例外"], a: 1, why: "这是自我决定理论对过度理由效应的解释；该效应有情境依赖（如对本来无趣的任务通常不削弱），并非“所有奖励必然”。" },
+  { q: "【为什么被发明】Bartle 为什么会提出玩家类型？", opts: ["因为他做了一次全球问卷", "因为 MUD 的资深玩家们在争论“人们想要什么”，需要一个概念工具来解释为什么不同玩家对同一个改动反应如此不同", "因为想给玩家贴标签", "因为是心理学教材要求的"], a: 1, why: "分类源于 1989–1990 年公告板上的讨论与归纳，是观察性的概括，不是问卷测出来的。" },
+  { q: "【为什么】为什么对大多数玩家来说，分段榜往往比全服榜更有激励？", opts: ["因为分段榜更好看", "社会比较更倾向与自己相近的人比，分段榜让中游玩家看得到“下一名”", "因为全服榜违法", "因为分段榜没有任何副作用"], a: 1, why: "社会比较理论认为人倾向于与相近者比较。分段榜也有副作用，例如掉段焦虑和“养小号”。" },
+]);
+</script>
+</body>
+</html>

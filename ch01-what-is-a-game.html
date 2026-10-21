@@ -1,0 +1,558 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>第1章 什么是游戏</title>
+<link rel="stylesheet" href="css/style.css">
+<style>
+  .c1def{display:flex;flex-wrap:wrap;gap:4px;margin:6px 0}
+  .c1row{display:flex;align-items:center;gap:8px;border:2.5px solid var(--ink);border-radius:12px 20px 12px 18px;padding:3px 12px;margin:6px 0;background:#fff;transition:background .25s,transform .25s}
+  .c1row .nm{flex:1;min-width:0}
+  .c1row .vd{flex:none;font-size:.9rem;white-space:nowrap}
+  .c1row.ok{background:#eaf9e4}
+  .c1row.bad{background:#ffe9ef;transform:translateX(4px)}
+  .c1row .tg{flex:none;font-size:.8rem;color:var(--soft);white-space:nowrap}
+  @media(max-width:700px){.c1row{flex-wrap:wrap}.c1row .tg{width:100%}}
+  .c1bars .rw{display:flex;align-items:center;gap:8px;margin:3px 0}
+  .c1bars .rw .nm{width:110px;flex:none;font-size:.95rem}
+  .c1bars .rw .bar{flex:1;margin:0;height:22px;border:2.5px solid var(--ink);border-radius:14px 8px 14px 8px;background:#fff;overflow:hidden}
+  .c1bars .rw .bar i{display:block;height:100%;width:0;transition:width .35s}
+  .c1bars .rw .v{width:48px;flex:none;text-align:right;font-family:var(--hand);font-size:1.15rem}
+  .c1tok{cursor:grab}
+  .c1tok:active{cursor:grabbing}
+</style>
+</head>
+<body data-ch="1">
+<main class="wrap">
+  <div class="hero">
+    <div class="txt">
+      <span class="badge">第 1 章</span>
+      <h1>什么是游戏？</h1>
+      <p class="sub">先弄清我们到底在做什么，以及为什么这个看似简单的问题，难倒过一批哲学家。</p>
+    </div>
+    <svg viewBox="0 0 190 150" class="rough" aria-hidden="true">
+      <path d="M95 18 L170 70 H20 Z" fill="#ffb3c6" stroke="#2b2b3a" stroke-width="4" stroke-linejoin="round"/>
+      <rect x="30" y="70" width="130" height="62" fill="#ffe58a" stroke="#2b2b3a" stroke-width="4"/>
+      <path d="M52 70v62M82 70v62M112 70v62M142 70v62" stroke="#2b2b3a" stroke-width="4"/>
+      <text x="68" y="52" font-size="22">GAME</text>
+    </svg>
+  </div>
+
+  <div class="goals">
+    <h3>学习目标</h3>
+    <span class="time">约 40 分钟</span>
+    <ul>
+      <li>读完你能用“目标、规则、反馈、自愿”四根柱子，判断一个活动算不算游戏，并说出它缺了什么。</li>
+      <li>读完你能讲清：为什么“游戏”至今没有一个公认的定义，哲学家们是怎么争的。</li>
+      <li>读完你能解释：规则为什么要故意让事情变难，孩子和小动物为什么要“玩”，并能用四种乐趣来源给游戏分类。</li>
+    </ul>
+  </div>
+
+  <!-- 1 是什么 -->
+  <div class="sec"><span class="n">1</span><h2><span class="tag what">是什么</span>四根柱子：什么撑起了一个游戏</h2></div>
+  <div class="withimg">
+    <span data-illus="hideseek"></span>
+    <div>
+      <p>先从一个你一定玩过的游戏说起：捉迷藏。一个人闭上眼睛数到十，其他人飞快地躲起来。规则简单到不用解释，却能让一群孩子疯跑整个下午。它凭什么这么好玩？</p>
+      <p>把它拆开看看，里面其实藏着四样东西。找的人要把大家都揪出来，躲的人要不被发现，这是<b>目标</b>。不许跑出院子，数数时不许偷看，这是<b>规则</b>。被抓到时一声尖叫，躲过去时心跳加速，每一刻你都知道自己是赢是输，这是<b>反馈</b>。最后还有一样，也许最重要：谁玩累了都可以说一句“我不玩了”，这是<b>自愿</b>。</p>
+    </div>
+  </div>
+  <p>游戏设计师喜欢把这四样东西叫作游戏的“四根柱子”。它不是哪位学者下的定义，只是一副好用的眼镜：拿到任何一个活动，数一数它有几根柱子；缺的那一根，往往就决定了它会变成什么。</p>
+
+  <div class="grid4">
+    <div class="card y mini"><div class="ico">🚩</div><h3>目标</h3><p>你要去哪儿、要做成什么。没有目标，它就只是个玩具。</p></div>
+    <div class="card p mini"><div class="ico">📏</div><h3><span class="term" tabindex="0" data-def="规定玩家能做什么、不能做什么的约束，目的是制造有趣的挑战">规则</span></h3><p>什么能做、什么不能做。规则制造难度，难度才带来成就感。</p></div>
+    <div class="card b mini"><div class="ico">💡</div><h3><span class="term" tabindex="0" data-def="游戏对玩家行动的回应，让玩家知道自己做得怎么样、离目标多远">反馈</span></h3><p>游戏对你每个动作的回应：你离目标近了，还是远了？</p></div>
+    <div class="card g mini"><div class="ico">🤝</div><h3><span class="term" tabindex="0" data-def="玩家是自己选择参加、也可以随时退出的；被强迫的同一件事往往就不再是游戏">自愿</span></h3><p>你是自己愿意进来的，也随时可以退出。被逼着做，就不好玩了。</p></div>
+  </div>
+
+  <div class="card">
+    <h3>📊 四根柱子对照：谁有、谁没有</h3>
+    <svg viewBox="0 0 700 300" width="100%" role="img" aria-label="四要素对照表：捉迷藏四项齐全，看电影只有自愿，积木有反馈和自愿，作业缺自愿">
+      <g class="rough" stroke="#2b2b3a" stroke-width="3.5" fill="none">
+        <path d="M20 52 H680"/><path d="M215 15 V285"/><path d="M590 15 V285"/>
+        <path d="M20 108 H680"/><path d="M20 164 H680"/><path d="M20 220 H680"/>
+      </g>
+      <g font-size="20" text-anchor="middle" fill="#2b2b3a">
+        <text x="260" y="40">目标</text><text x="330" y="40">规则</text><text x="400" y="40">反馈</text><text x="470" y="40">自愿</text>
+        <text x="640" y="40">算游戏吗</text>
+      </g>
+      <g font-size="22" fill="#2b2b3a">
+        <text x="28" y="90">🙈 捉迷藏</text><text x="28" y="146">🎬 看电影</text><text x="28" y="202">🧱 随便玩积木</text><text x="28" y="258">📝 被要求的作业</text>
+      </g>
+      <g font-size="26" text-anchor="middle">
+        <g fill="#2f8f48"><text x="260" y="92">✔</text><text x="330" y="92">✔</text><text x="400" y="92">✔</text><text x="470" y="92">✔</text>
+          <text x="400" y="204">✔</text><text x="470" y="204">✔</text><text x="470" y="148">✔</text>
+          <text x="260" y="260">✔</text><text x="330" y="260">✔</text><text x="400" y="260">✔</text></g>
+        <g fill="#d6303a"><text x="260" y="148">✘</text><text x="330" y="148">✘</text><text x="400" y="148">✘</text>
+          <text x="260" y="204">✘</text><text x="330" y="204">✘</text><text x="470" y="260">✘</text></g>
+      </g>
+      <g font-size="19" text-anchor="middle" fill="#2b2b3a">
+        <text x="640" y="92">是 🎮</text><text x="640" y="148">不是</text><text x="640" y="204">差目标</text><text x="640" y="260">差自愿</text>
+      </g>
+    </svg>
+    <p class="small">缺的那根柱子，决定了它变成什么：缺目标，是玩具；缺自愿，是任务。</p>
+  </div>
+
+  <div class="eg" data-ic="🙈"><span data-illus="found"></span><div class="egt"><b>捉迷藏</b>：目标是不被找到，规则是不能跑出院子，被发现与否就是反馈，而且谁都可以说一句“我不玩了”。四根柱子站得整整齐齐。</div></div>
+  <div class="eg" data-ic="🧹"><span data-illus="tidy"></span><div class="egt"><b>整理房间变游戏</b>：同样是收拾，如果你加上一句“10 分钟内让地板看得见，每清完一块区域奖励自己一颗星”，目标、规则、反馈就都有了。很多人会发现，自己突然没那么抗拒了。日常小事，也能被“装上”四根柱子。</div></div>
+  <div class="eg" data-ic="🧩"><span data-illus="tetris"></span><div class="egt"><b>俄罗斯方块</b>：目标是消行得分，规则是方块只能下落和旋转，反馈是声音、消行和越来越快的速度。四根柱子都在，而且每一根都很清晰。</div></div>
+  <div class="eg bad" data-ic="🧱"><span data-illus="blocks"></span><div class="egt"><b>随便玩积木</b>：你自愿玩，倒了会哗啦一响（反馈），可是没有目标，也没有规则。差了两根。一旦有人说“来比谁搭得最高，倒了就输”，它立刻变成了游戏。</div></div>
+  <div class="eg bad" data-ic="📝"><span data-illus="homework"></span><div class="egt"><b>被要求的作业</b>：有目标、有规则、有分数反馈，可你没得选。柱子只差一根，味道就从“游戏”变成了“任务”。</div></div>
+  <div class="eg bad" data-ic="🎬"><span data-illus="movie"></span><div class="egt"><b>看电影</b>：你是自愿的，也很享受，可是你不用达成什么，没有规则限制你，你做什么也改变不了剧情。它是享受，不是游戏。</div></div>
+
+  <!-- 2 是什么：凯卢瓦 -->
+  <div class="sec"><span class="n">2</span><h2><span class="tag what">是什么</span>四种好玩：乐趣到底从哪儿来</h2></div>
+  <p>四根柱子告诉我们游戏由什么构成，却没说它为什么让人快乐。象棋和旋转木马都叫“玩”，可前者的快乐在于赢，后者的快乐在于晕，几乎毫无关系。法国学者罗杰·凯卢瓦（Roger Caillois）在 1958 年的《游戏与人》里换了个问法：不问游戏<b>是什么</b>，问人<b>从哪儿得到快乐</b>。他的答案只有四种。</p>
+  <div class="grid4">
+    <div class="card y mini"><span data-illus="agon"></span><h3><span class="term" tabindex="0" data-def="agon（竞争）：在尽量公平的条件下较量技巧或能力，如象棋、足球">竞争</span></h3><p>和别人比，凭本事分高下。<br>象棋、足球、赛跑</p></div>
+    <div class="card b mini"><span data-illus="alea"></span><h3><span class="term" tabindex="0" data-def="alea（运气）：结果由玩家无法控制的偶然因素决定，如掷骰子、抽签">运气</span></h3><p>把结果交给命运。<br>骰子、抽签、抽卡</p></div>
+    <div class="card p mini"><span data-illus="mimicry"></span><h3><span class="term" tabindex="0" data-def="mimicry（模拟）：扮演、假装成别人或进入另一个世界，如过家家、角色扮演">模拟</span></h3><p>假装成另一个人，或走进另一个世界。<br>过家家、角色扮演</p></div>
+    <div class="card g mini"><span data-illus="ilinx"></span><h3><span class="term" tabindex="0" data-def="ilinx（眩晕）：追求短暂打乱感知的晕眩、失控感，如旋转、过山车">眩晕</span></h3><p>追求短暂失控的晕眩。<br>旋转木马、过山车</p></div>
+  </div>
+  <p>有意思的是，大多数游戏是混合的。你在《云顶之弈》里既要拼阵容策略，又要看抽到什么牌；在桌面跑团里，你扮演角色，又靠骰子判定成败。凯卢瓦还画了一条横轴：一头是自由即兴的“嬉戏”（<span class="term" tabindex="0" data-def="paidia：嬉戏，自由、即兴、无固定规则的玩耍，如追逐打闹">paidia</span>），另一头是规则严密的“竞技”（<span class="term" tabindex="0" data-def="ludus：竞技游戏，有明确规则、需要努力和技巧的玩法，如象棋、跳房子">ludus</span>）。同一种乐趣，可以出现在这条轴的任何位置。</p>
+  <div class="card">
+    <svg viewBox="0 0 700 250" width="100%" role="img" aria-label="从嬉戏paidia到竞技ludus的光谱，各种玩法按规则严密程度排列">
+      <g class="rough" stroke="#2b2b3a" stroke-width="4" fill="none" stroke-linecap="round">
+        <path d="M50 130 H650"/><path d="M50 130 l16 -12 M50 130 l16 12"/><path d="M650 130 l-16 -12 M650 130 l-16 12"/>
+      </g>
+      <g font-size="22" fill="#2b2b3a">
+        <text x="50" y="30">嬉戏 paidia</text><text x="50" y="58" font-size="17" fill="#3f3f50">自由、即兴、没规矩</text>
+        <text x="650" y="30" text-anchor="end">竞技 ludus</text><text x="650" y="58" font-size="17" fill="#3f3f50" text-anchor="end">规则严密、需要努力</text>
+      </g>
+      <g font-size="18" text-anchor="middle" fill="#2b2b3a">
+        <circle cx="100" cy="130" r="7" fill="#b6e8a8" stroke="#2b2b3a" stroke-width="3"/><text x="100" y="170">追逐打闹</text>
+        <circle cx="220" cy="130" r="7" fill="#ffb3c6" stroke="#2b2b3a" stroke-width="3"/><text x="220" y="105">过家家</text>
+        <circle cx="330" cy="130" r="7" fill="#a8dcf0" stroke="#2b2b3a" stroke-width="3"/><text x="330" y="170">掷骰子比大小</text>
+        <circle cx="450" cy="130" r="7" fill="#ffe58a" stroke="#2b2b3a" stroke-width="3"/><text x="450" y="105">跳房子</text>
+        <circle cx="560" cy="130" r="7" fill="#d8c8ff" stroke="#2b2b3a" stroke-width="3"/><text x="560" y="170">象棋</text>
+        <circle cx="620" cy="130" r="7" fill="#ffc078" stroke="#2b2b3a" stroke-width="3"/><text x="620" y="105">职业联赛</text>
+      </g>
+      <text x="350" y="228" font-size="18" text-anchor="middle" fill="#3f3f50">追逐打闹也有胜负，象棋只是把它做成了精密的规则。</text>
+    </svg>
+  </div>
+  <div class="eg" data-ic="🎲"><span data-illus="autochess"></span><div class="egt"><b>《云顶之弈》</b>：比阵容搭配的策略是竞争，靠抽牌刷新的手气是运气。一个游戏里装着两种乐趣。</div></div>
+  <div class="eg" data-ic="🎭"><span data-illus="trpg"></span><div class="egt"><b>桌面跑团</b>：你扮演一个角色（模拟），行动成败由骰子决定（运气）。</div></div>
+  <div class="eg bad" data-ic="🤔"><span data-illus="simcity"></span><div class="egt"><b>模拟经营算哪一类？</b>凯卢瓦的分类是为传统游戏设计的，碰到电子游戏就有些勉强。建设一座城，是在“假装当市长”，还是在“和自己较劲”？不同的人会给出不同答案，这很正常。</div></div>
+  <p class="small">出处：罗杰·凯卢瓦，《游戏与人》（Les jeux et les hommes，1958）。他的想法受荷兰学者赫伊津哈《游戏的人》（1938）启发，也和后者有争论。</p>
+
+  <!-- 3 发明故事 -->
+  <div class="sec"><span class="n">3</span><h2><span class="tag origin">发明故事</span>“游戏”为什么这么难说清？</h2></div>
+  <div class="story">
+    <h3>人人都会玩，却没人说得清它是什么</h3>
+    <div class="withimg rev">
+      <span data-illus="thinker"></span>
+      <div>
+        <p>这件事听起来有点荒唐。没人教过你，你也知道捉迷藏是游戏、期末考试不是。可如果让你把“游戏”写成一句话，你多半会卡住。</p>
+        <p>二十世纪的哲学家维特根斯坦就被这个问题绊住过。按我们的直觉，一个词之所以能指向很多东西，是因为这些东西有一条<b>共同的本质</b>，就像所有三角形都有三条边。那么“游戏”呢？总该有一条所有游戏都共有的线才对。</p>
+        <p>在看哲学家怎么做之前，<b>先自己试一次</b>。下面这台“定义检验器”，让你用“必须……”造一个定义，看它会判错哪些活动。</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🧪 定义检验器：你能写出一个零错误的定义吗？</h3>
+    <p class="small">点条件来组合你的定义（勾上的条件同时生效，缺一不可）。每个活动旁边标着常识上它算不算游戏，试着把“错判”降到 0。</p>
+    <div class="c1def" id="c1_crit"></div>
+    <div id="c1_rows"></div>
+    <div class="stat">当前错判 <b id="c1_err">0</b></div>
+    <div class="stat">你的最好成绩 <b id="c1_best">–</b></div>
+    <button class="btn alt" id="c1_clear">清空条件</button>
+    <button class="btn pink" id="c1_rand">随机试一组</button>
+    <div class="msg" id="c1_msg" style="font-size:1.1rem">点上面的条件开始。</div>
+  </div>
+
+  <p>你多半发现了：每加一条“必须”，就会误杀某个明明很像样的游戏；不加，又什么都放进来了。这正是哲学家们几十年来的困境。他们是这样一步步走过来的：</p>
+  <div class="timeline">
+    <div class="ev hasimg"><span data-illus="magiccircle"></span><div><b class="yr">1938</b>　荷兰历史学家赫伊津哈在《游戏的人》里提出，游戏不是文明的副产品，而是文明的源头之一。他还注意到一个现象：一旦开始玩，大家就像在现实里画了一个圈，圈里有另一套规矩，出了圈一切恢复正常。他管这个圈叫“魔圈”。可他的描述更像一份特征清单，圈到底画在哪儿，并没有说死。</div></div>
+    <div class="ev hasimg"><span data-illus="familytraits"></span><div><b class="yr">1953</b>　维特根斯坦遇到了同样的麻烦，但他的办法很特别：别先“想”，去“看”。他把棋类、牌类、球类、奥运会一一摆出来问：它们有什么共同点？有输赢？可小孩对着墙抛球再接住，没有输赢。要对手？一个人玩纸牌接龙就不要。总是有趣？也不一定。找来找去，只找到一张<b>相似之网</b>：A 像 B，B 像 C，A 和 C 却可能毫无相同之处。他把这叫作<span class="term" tabindex="0" data-def="家族相似：一类事物之间没有共同的本质特征，只有交叠、重叠的相似性网络">家族相似</span>，就像一家人，眼睛像爸爸，鼻子像妈妈，却没有哪一个特征是全家人都有的。</div></div>
+    <div class="ev hasimg"><span data-illus="scholar"></span><div><b class="yr">1958</b>　凯卢瓦干脆换了条路：既然找不到共同点，就不问“它是什么”，改问“它好玩在哪”，按快乐的来源把游戏分成四个家族，也就是前面你看到的那四类。</div></div>
+    <div class="ev hasimg"><span data-illus="grasshopper"></span><div><b class="yr">1978</b>　不过不是所有人都服气。哲学家伯纳德·休茨（Bernard Suits）觉得维特根斯坦“看得太快”，游戏其实能定义，抓住一条就够了。他的版本是：玩游戏，就是<b>自愿</b>尝试去克服<b>不必要的障碍</b>。他把这个想法写进了一本古怪又有趣的书，书名叫《蚱蜢》。</div></div>
+    <div class="ev hasimg"><span data-illus="toolbox"></span><div><b class="yr">今天</b>　争论并没有结束。游戏设计师们选了一条务实的路：不追问终极定义，只留下一把趁手的工具，也就是开头那四根柱子。核心案例上它很好用；碰到边缘案例失灵时，那往往恰恰是在提醒你：这里可能藏着有趣的设计空间。</div></div>
+  </div>
+
+  <div class="card">
+    <h3>🕸️ 家族相似：没有一条线穿过所有成员</h3>
+    <svg viewBox="0 0 700 340" width="100%" role="img" aria-label="五种游戏两两之间有不同的相似点，但没有一个特征贯穿全部">
+      <g class="rough" stroke="#2b2b3a" stroke-width="3.5" fill="none" stroke-linecap="round">
+        <path d="M150 105 L290 62"/><path d="M410 62 L550 105"/><path d="M590 160 L520 262"/><path d="M400 292 L300 292"/><path d="M175 265 L108 165"/>
+      </g>
+      <g class="rough" stroke="#2b2b3a" stroke-width="3.5">
+        <ellipse cx="100" cy="125" rx="72" ry="30" fill="#d8c8ff"/>
+        <ellipse cx="350" cy="52" rx="72" ry="30" fill="#ffb3c6"/>
+        <ellipse cx="600" cy="125" rx="72" ry="30" fill="#a8dcf0"/>
+        <ellipse cx="500" cy="292" rx="85" ry="30" fill="#b6e8a8"/>
+        <ellipse cx="205" cy="292" rx="85" ry="30" fill="#ffe58a"/>
+      </g>
+      <g font-size="20" text-anchor="middle" fill="#2b2b3a">
+        <text x="100" y="132">♟️ 象棋</text><text x="350" y="59">⚽ 足球</text><text x="600" y="132">🙈 捉迷藏</text>
+        <text x="500" y="299">🏀 对墙抛球</text><text x="205" y="299">🧩 俄罗斯方块</text>
+      </g>
+      <g font-size="17" text-anchor="middle" fill="#3f3f50">
+        <text x="190" y="62">有输赢</text><text x="520" y="62">要和人对抗</text><text x="618" y="212">不用棋盘</text><text x="618" y="234">要动</text>
+        <text x="350" y="326">一个人也能玩</text><text x="62" y="222">要动脑</text>
+      </g>
+      <text x="350" y="185" font-size="22" text-anchor="middle" fill="#2b2b3a">没有任何一个特征</text>
+      <text x="350" y="212" font-size="22" text-anchor="middle" fill="#2b2b3a">穿过所有成员</text>
+    </svg>
+    <p class="small">连线上标的是相邻两个游戏之间的相似点，是示意，不是严格分类。</p>
+  </div>
+  <div class="withimg">
+    <span data-illus="chairs"></span>
+    <div><p><b>日常里的“家族相似”</b>：什么是“椅子”？三条腿的凳子、软绵绵的沙发、秋千、办公室的转椅……你很难找到一条所有椅子都有的特征，却几乎不会认错。“游戏”也是这样的词。</p></div>
+  </div>
+
+  <div class="why-box">
+    <h3>休茨的回应：把“不必要的障碍”当作游戏的核心</h3>
+    <p>休茨觉得维特根斯坦放弃得太早。他仔细看了很多游戏，发现它们其实有一个共同的结构：先有一个不依赖规则也说得清的目标（比如把球放进洞里）；再用规则把最省事的路堵上（不许走过去直接放，只许用球杆打）；最后，玩家愿意接受这些限制，他把这种心态叫作<span class="term" tabindex="0" data-def="lusory attitude：玩家愿意接受规则带来的“不必要障碍”的态度，正是这种态度让游戏成为游戏">游戏态度</span>。合起来就是一句话：玩游戏，就是自愿尝试去克服不必要的障碍。</p>
+    <p>拿四根柱子对照一下就会发现：他说的“前游戏目标”就是目标，“规则”就是规则，“游戏态度”就是自愿。有意思的是，他的定义里没有“反馈”这一项。</p>
+    <p>当然，也有人不同意。比如，一个为了薪水而踢球的职业球员，算不算在“玩”？休茨的定义不太好回答。这场争论至今没有结论。</p>
+    <div class="src">出处：路德维希·维特根斯坦，《哲学研究》（1953），第 66–67 节；伯纳德·休茨，《蚱蜢：游戏、生活与乌托邦》（The Grasshopper: Games, Life and Utopia，1978）；约翰·赫伊津哈，《游戏的人》（Homo Ludens，1938）。</div>
+  </div>
+
+  <!-- 4 为什么：不必要的障碍 -->
+  <div class="sec"><span class="n">4</span><h2><span class="tag why">为什么成立</span>规则为什么要故意让事情变难？</h2></div>
+  <div class="withimg">
+    <span data-illus="golf"></span>
+    <div>
+      <p>休茨的定义里，最耐人寻味的是“不必要”三个字。爬山明明可以坐缆车，高尔夫明明可以把球直接放进洞里，规则却偏偏把省事的路堵死。这不是捣乱吗？</p>
+      <p>想想看：如果高尔夫允许你拿着球走到洞边放进去，一秒钟就完成了，你不会有任何成就感。正是“只许用球杆”这份不方便，让“进洞”变成了需要技巧和耐心的事，你成功的那一刻才会想“我做到了”。<b>障碍不是游戏的敌人，是它的发动机。</b></p>
+    </div>
+  </div>
+  <div class="why-box">
+    <h3>可是，障碍必须是自愿接受的</h3>
+    <p>同样是爬楼梯，被罚着爬是苦差，为了锻炼而选择爬就是一个小游戏。区别只有一个：你有没有选择权。这就是“自愿”这根柱子的分量：它把同一个障碍，从折磨变成了乐趣。</p>
+    <div class="src">出处：Bernard Suits，《蚱蜢》（1978）。这是休茨的理论，它解释了游戏为什么需要规则，但没有回答“什么样的障碍最好玩”。</div>
+  </div>
+  <div class="eg" data-ic="⛳"><span data-illus="golfswing"></span><div class="egt"><b>高尔夫</b>：规则不许你拿着球走到洞口，只许用球杆打。省事的路被堵死了，进洞才有意义。</div></div>
+  <div class="eg" data-ic="⛰️" data-t="旷野之息爬山"><span data-illus="mountain"></span><div class="egt"><b>《塞尔达传说：旷野之息》的爬山</b>：你完全可以绕路走，但“徒手爬上去”因为有体力条的限制，反而成了一件有挑战、有成就感的事。</div></div>
+  <div class="eg" data-ic="🪜"><span data-illus="stairs"></span><div class="egt"><b>自己选择走楼梯</b>：为了锻炼，你自愿放弃电梯这个更省事的手段，爬楼梯就成了一个小游戏：数着层数，掐着时间。</div></div>
+  <div class="eg bad" data-ic="📋"><span data-illus="forced"></span><div class="egt"><b>公司里繁琐的审批流程</b>：同样是限制，没人觉得好玩。因为没人征求你的同意，它也不是为了给你制造一个有趣的挑战。</div></div>
+
+  <!-- 5 为什么：玩耍 -->
+  <div class="sec"><span class="n">5</span><h2><span class="tag why">为什么成立</span>人和动物为什么要“玩”？</h2></div>
+  <div class="withimg rev">
+    <span data-illus="kitten"></span>
+    <div>
+      <p>小猫会对着一团毛线猛扑，扑到了也不会吃它；幼狮互相摔打，咬得却很轻。它们不是在“工作”，可这些动作和成年后的捕猎、打斗几乎一模一样。</p>
+      <p>大自然为什么要让幼崽把大把时间花在这些看似没用的事情上？</p>
+    </div>
+  </div>
+  <div class="why-box">
+    <h3>玩耍是一个“安全的演练场”</h3>
+    <p>一种很有影响力的看法是：玩耍的功能，是让幼崽在<b>失败代价很低</b>的环境里，提前演练将来要用的本领。德国学者卡尔·格鲁斯（Karl Groos）在《动物的游戏》（1896）和《人的游戏》（1899）里系统提出了这种“练习说”。扑空一次毛线球不会饿死，而真正的猎物只给一次机会。</p>
+    <p>后来的研究者补充了一个有趣的细节：动物玩耍时常常会<b>故意给自己设限</b>，比如强壮的一方放水让着弱小的一方，甚至<b>主动制造小意外</b>。因此，玩耍也许不只是在练具体动作，更是在训练“遇到意外怎么应对”的灵活反应。（这是 2001 年一篇综述提出的观点。）</p>
+    <p>这也说明了规则和反馈为什么对游戏如此重要：它们把现实里代价高昂的过程，变成了可以反复尝试、立刻有回应的低风险版本。</p>
+    <div class="src">出处：Karl Groos，《动物的游戏》（1896）、《人的游戏》（1899）；Marek Špinka、Ruth Newberry、Marc Bekoff，“Mammalian play: training for the unexpected”，《生物学季评》76(2)：141–168（2001）。玩耍的功能至今仍有争论，练习说只是其中之一。</div>
+  </div>
+  <div class="eg" data-ic="🐱"><span data-illus="kittenpounce"></span><div class="egt"><b>小猫扑毛线球</b>：追逐、扑击，是捕猎动作的演练；扑空了也不会饿肚子。</div></div>
+  <div class="eg" data-ic="🦁"><span data-illus="cubs"></span><div class="egt"><b>幼狮互相摔打</b>：咬得很轻，学的是“用力又收力”，知道打到哪里该停。</div></div>
+  <div class="eg" data-ic="🏠"><span data-illus="housekids"></span><div class="egt"><b>孩子玩过家家、捉迷藏</b>：练习扮演角色、商量分工，也在练习猜别人在想什么。</div></div>
+  <div class="eg bad" data-ic="❓"><span data-illus="oddplay"></span><div class="egt"><b>说不太通的玩耍</b>：成年人的纯粹消遣，有些玩耍也看不出要练什么技能。所以练习说只能解释一部分，研究者才会猜玩耍可能有多种功能，甚至有一部分是副产品。</div></div>
+  <div class="card o">
+    <h3>👀 小观察任务（不用任何工具）</h3>
+    <p>这周留意一次真实的玩耍：小孩、宠物，或者你和朋友打闹。看看有没有这几件事：①<b>自我设限</b>（强的一方放水）；②<b>角色互换</b>（追的人变成被追的人）；③<b>“这是在玩”的信号</b>（笑、夸张的动作）；④<b>输了也不严重</b>。四项都有，你就亲眼看到了“低风险演练场”；如果没有，想想为什么。</p>
+  </div>
+
+  <!-- 6 怎么用 招牌 -->
+  <div class="sec"><span class="n">6</span><h2><span class="tag how">怎么用</span>拆房子：少一根柱子会怎样？</h2></div>
+  <p>现在把四根柱子想成一座房子的支撑。亲手拆拆看，也可以直接点下面的“现实对照”，看熟悉的东西缺了哪几根。</p>
+  <div class="card">
+    <h3>🏠 拆掉一根柱子试试</h3>
+    <svg viewBox="0 0 700 250" width="100%" role="img" aria-label="游戏之屋由目标、规则、反馈、自愿四根柱子支撑" id="houseSvg">
+      <g id="hUpper" style="transition:transform .6s cubic-bezier(.3,1.6,.5,1),opacity .6s;transform-origin:350px 85px">
+        <g class="rough" stroke="#2b2b3a" stroke-width="4" stroke-linejoin="round">
+          <path d="M60 85 L350 15 L640 85 Z" fill="#ffb3c6"/>
+          <rect x="70" y="85" width="560" height="22" fill="#ffe58a"/>
+        </g>
+        <text x="350" y="68" font-size="26" text-anchor="middle" fill="#2b2b3a">游戏</text>
+      </g>
+      <g class="rough" stroke="#2b2b3a" stroke-width="4"><rect x="60" y="215" width="580" height="22" fill="#d8c8ff"/></g>
+      <g class="pl" data-i="0" tabindex="0" role="button" aria-label="拆掉目标"><g class="rough" stroke="#2b2b3a" stroke-width="4"><rect x="110" y="107" width="70" height="108" fill="#fff7cf"/></g><text x="145" y="168" font-size="26" text-anchor="middle" fill="#2b2b3a">目标</text></g>
+      <g class="pl" data-i="1" tabindex="0" role="button" aria-label="拆掉规则"><g class="rough" stroke="#2b2b3a" stroke-width="4"><rect x="250" y="107" width="70" height="108" fill="#ffe9ef"/></g><text x="285" y="168" font-size="26" text-anchor="middle" fill="#2b2b3a">规则</text></g>
+      <g class="pl" data-i="2" tabindex="0" role="button" aria-label="拆掉反馈"><g class="rough" stroke="#2b2b3a" stroke-width="4"><rect x="390" y="107" width="70" height="108" fill="#e8f6fc"/></g><text x="425" y="168" font-size="26" text-anchor="middle" fill="#2b2b3a">反馈</text></g>
+      <g class="pl" data-i="3" tabindex="0" role="button" aria-label="拆掉自愿"><g class="rough" stroke="#2b2b3a" stroke-width="4"><rect x="530" y="107" width="70" height="108" fill="#eaf9e4"/></g><text x="565" y="168" font-size="26" text-anchor="middle" fill="#2b2b3a">自愿</text></g>
+    </svg>
+    <p class="small">👆 点任意一根柱子把它拆掉，<b>再点一次装回去</b>。拆得越多，房子越不稳。<span class="stat">已拆 <b id="pillarcount">0</b> / 4</span></p>
+    <div class="msg" id="pillarmsg">现在是一座完整的游戏之屋 🎮</div>
+    <div>
+      <span class="small">现实对照：</span>
+      <button class="chip" data-pre="movie">🎬 看电影</button>
+      <button class="chip" data-pre="homework">📝 被逼的作业</button>
+      <button class="chip" data-pre="blocks">🧱 随便玩积木</button>
+      <button class="chip" data-pre="blind">🙈 看不到结果的游戏</button>
+    </div>
+    <button class="btn alt" id="pillarreset">全部装回</button>
+  </div>
+  <div class="sticky">试试看：先让房子变成一个“玩具”，再只点一次，把它变回游戏。积木就是个例子：它有反馈、自愿，但没有目标。你给它加上“搭一座最高的塔，倒了就输”，它立刻就变成了游戏。</div>
+  <p>当然，房子只是个比喻，它也有失灵的地方。过山车好像没有什么“目标”，人们照样玩得开心。碰到这种情况，就轮到一个更大的概念出场了：<b>玩耍</b>。</p>
+
+  <!-- 7 怎么用 辅助 -->
+  <div class="sec"><span class="n">7</span><h2><span class="tag how">怎么用</span>调味台：把玩法拖到四种“味道”之间</h2></div>
+  <p>方块的四个角分别是四种乐趣来源：左上竞争、右上运气、右下模拟、左下眩晕。把下面的玩法<b>拖进方块</b>，越靠近某个角，那种味道越重；放在两个角之间，就是混合体。放下后会出现一个红色虚线圈，那是一个参考位置，不必完全一致，这里没有标准答案。</p>
+  <div class="card">
+    <svg id="c1_svg" viewBox="0 0 700 540" width="100%" style="touch-action:none;user-select:none" role="img" aria-label="可拖动的四种味道调味台">
+      <g class="rough" stroke="#2b2b3a" stroke-width="4">
+        <rect x="170" y="40" width="360" height="460" fill="#fffdf3"/>
+      </g>
+      <g font-size="19" fill="#2b2b3a" pointer-events="none">
+        <text x="180" y="66">♟️ 竞争</text><text x="520" y="66" text-anchor="end">🎲 运气</text>
+        <text x="520" y="486" text-anchor="end">🎭 模拟</text><text x="180" y="486">🎢 眩晕</text>
+      </g>
+      <g stroke="#d9cfb2" stroke-width="2" stroke-dasharray="6 6" pointer-events="none"><path d="M350 40 V500"/><path d="M170 270 H530"/></g>
+      <circle id="c1_ghost" r="26" cx="0" cy="0" fill="none" stroke="#d6303a" stroke-width="3" stroke-dasharray="5 4" style="display:none" pointer-events="none"/>
+      <text id="c1_ghostt" font-size="16" fill="#d6303a" text-anchor="middle" style="display:none" pointer-events="none">参考</text>
+      <g id="c1_toks"></g>
+    </svg>
+    <div class="c1bars" id="c1_bars"><div class="small">拖一个玩法进方块，这里会显示它的“味道配方”。</div></div>
+    <div class="msg" id="c1_cmsg" style="font-size:1.1rem"></div>
+    <button class="btn alt" id="c1_creset">全部收回</button>
+  </div>
+
+  <div class="misc">
+    <h3>常见误区</h3>
+    <ul>
+      <li><b>“有规则的就是游戏”</b>：交通规则、公司制度也有规则。关键是规则是为了制造<b>有趣的挑战</b>，而且是你自愿接受的。</li>
+      <li><b>“游戏一定要有输赢”</b>：沙盒、互动故事、模拟经营可以没有明确的输赢，目标可以由玩家自己定。你在定义检验器里已经试过了。</li>
+      <li><b>“玩耍只是小孩子的事”</b>：成年人也在玩，也是在低风险的环境里练习技能、建立关系，只是形式不同。</li>
+      <li><b>“四根柱子就是游戏的定义”</b>：它是一个好用的工具，不是定义；真正的边缘案例会让它失灵。</li>
+    </ul>
+  </div>
+
+  <div class="reflect">
+    <h3>反思与争议</h3>
+    <p>“游戏能不能定义”本身就是一场没结束的争论：维特根斯坦一派认为只有家族相似；休茨一派认为可以定义；也有哲学家认为家族相似这个想法本身就有问题。凯卢瓦的四分法同样只是一种看法。玩耍的“练习说”也一样，它很直观，却解释不了成年人为什么也玩。</p>
+    <p>不妨自己想一个<b>让四根柱子失灵</b>的例子，比如没有目标的模拟经营沙盒、电子宠物，再想想：如果你要设计这样一个东西，会怎么做？</p>
+  </div>
+
+  <div class="key">
+    <h3>本章要点</h3>
+    <ul>
+      <li>游戏常被拆成<b>目标、规则、反馈、自愿</b>四根柱子；设计游戏，就是设计这四样东西怎么配合。缺哪根，就变成哪种东西：缺目标是玩具，缺自愿是任务。</li>
+      <li>“游戏”之所以难定义，是因为它是一个<b>家族相似</b>的概念：没有一条特征穿过所有游戏（维特根斯坦）。</li>
+      <li>休茨的回答是：游戏是自愿克服不必要的障碍。规则故意制造障碍，自愿让障碍从折磨变成乐趣。</li>
+      <li>四根柱子是<b>工具而不是定义</b>：核心案例上好用，边缘案例上失灵。</li>
+      <li>玩耍可以看作低风险的演练场；游戏的乐趣大致有四个来源：竞争、运气、模拟、眩晕，多数游戏是混合的。</li>
+    </ul>
+  </div>
+  <div class="tldr">游戏，就是自愿接受规则、朝着目标、不断得到回应的一场低风险演练；四根柱子好用，但它是工具，不是定义。</div>
+
+  <div class="sec"><span class="n">8</span><h2><span class="tag think">练习</span>小测验</h2></div>
+  <div id="quiz"></div>
+
+  <div class="sec"><span class="n">9</span><h2><span class="tag how">你的设计</span>把一件普通的事变成游戏</h2></div>
+  <div class="card o">
+    <p>挑一件<b>普通的事</b>：整理房间、背单词、走路上学……写下它的目标、规则和反馈会是什么，再想想<b>怎样保证它是自愿的</b>。</p>
+    <textarea rows="5" data-save="ch1" placeholder="例：整理房间 → 目标：10分钟内让地板看得见；规则：只能用一只手拿东西；反馈：每清完一块区域，计时器上多加一颗星……"></textarea>
+    <p class="small">✍️ 自动保存在你的浏览器里。</p>
+  </div>
+</main>
+<script src="js/common.js"></script>
+<script>
+/* ===== 1. 游戏之屋（拆柱子） ===== */
+const GONE = [
+  "拆掉【目标】→ 变成<b>玩具</b>：能玩，但不知道玩什么才算成功。",
+  "拆掉【规则】→ 变成<b>随便乱玩</b>：怎么做都行，没有难度，也就没有成就感。",
+  "拆掉【反馈】→ 变成<b>盲操作</b>：玩家不知道自己做得好不好，很快失去兴趣。",
+  "拆掉【自愿】→ 变成<b>任务 / 劳动</b>：同样的事，被迫做就不再是游戏。",
+];
+(function () {
+  const gone = [false, false, false, false], W = [-1.5, -0.5, 0.5, 1.5];
+  const pls = [...document.querySelectorAll(".pl")], up = document.getElementById("hUpper");
+  pls.forEach(p => { p.style.cursor = "pointer"; p.style.transformBox = "fill-box"; p.style.transformOrigin = "50% 100%"; p.style.transition = "transform .55s cubic-bezier(.4,0,.6,1.4),opacity .5s"; });
+  function render(shakeIdx) {
+    const k = gone.filter(Boolean).length;
+    pls.forEach((p, i) => {
+      const side = i < 2 ? -1 : 1;
+      p.style.transform = gone[i] ? "translate(" + side * 10 + "px,95px) rotate(" + side * 55 + "deg)" : "";
+      p.style.opacity = gone[i] ? ".22" : "1";
+      p.setAttribute("aria-label", (gone[i] ? "装回" : "拆掉") + ["目标", "规则", "反馈", "自愿"][i]);
+    });
+    const tilt = gone.reduce((s, g, i) => s + (g ? W[i] : 0), 0) * 1.6;
+    up.style.transform = k === 4 ? "translateY(105px) rotate(7deg)" : "translateY(" + k * 9 + "px) rotate(" + tilt + "deg)";
+    up.style.opacity = k === 4 ? ".55" : "1";
+    document.getElementById("pillarcount").textContent = k;
+    const msg = document.getElementById("pillarmsg");
+    msg.innerHTML = k === 0 ? "现在是一座完整的游戏之屋 🎮"
+      : k === 4 ? "💥 四根柱子全拆了——房子塌了，这已经完全不是游戏。"
+      : gone.map((g, i) => (g ? GONE[i] : "")).filter(Boolean).join("<br>") + (k >= 2 ? "<br>🏚️ 房子摇摇欲坠……" : "");
+    if (shakeIdx !== undefined && !gone[shakeIdx]) pls[shakeIdx].animate([{ transform: "translateX(0)" }, { transform: "translateX(-6px)" }, { transform: "translateX(6px)" }, { transform: "translateX(0)" }], 250);
+  }
+  pls.forEach((p, i) => {
+    const flip = () => { gone[i] = !gone[i]; render(i); };
+    p.addEventListener("click", flip);
+    p.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); flip(); } });
+  });
+  const PRE = { movie: [1, 1, 1, 0], homework: [0, 0, 0, 1], blocks: [1, 1, 0, 0], blind: [0, 0, 1, 0] };
+  const PRENOTE = {
+    movie: "🎬 看电影：没有要达成的目标、没有规则限制你、你的行动也不影响结果，只剩“自愿”。很享受，但不是游戏。",
+    homework: "📝 被逼的作业：目标、规则、反馈都在，只缺“自愿”——它是任务，不是游戏。",
+    blocks: "🧱 随便玩积木：有反馈、自愿，但没有目标和规则。给它加上“搭最高的塔”就变游戏了。",
+    blind: "🙈 看不到结果的游戏：玩家不知道自己做得怎样，再有趣的目标也很快让人失去兴趣。",
+  };
+  document.querySelectorAll("[data-pre]").forEach(b => b.addEventListener("click", () => {
+    PRE[b.dataset.pre].forEach((v, i) => { gone[i] = !!v; });
+    render();
+    const m = document.getElementById("pillarmsg"); m.innerHTML = PRENOTE[b.dataset.pre] + "<br><span class='small'>（可以继续点柱子装回去，看加上哪一根它变回游戏。）</span>";
+  }));
+  document.getElementById("pillarreset").onclick = () => { gone.fill(false); render(); };
+})();
+
+/* ===== 2. 定义检验器（发明故事互动） ===== */
+(function () {
+  const $ = id => document.getElementById(id);
+  const CR = ["必须有输赢", "必须有对手", "必须有明文规则", "必须有道具", "必须有明确目标", "必须是自愿的", "必须没有实际用处"];
+  // 属性顺序同 CR；g=常识上是否算游戏
+  const AC = [
+    ["♟️ 象棋", [1, 1, 1, 1, 1, 1, 1], 1, "各项齐全。"],
+    ["🙈 捉迷藏", [1, 1, 1, 0, 1, 1, 1], 1, "不需要任何道具。"],
+    ["🧩 俄罗斯方块", [0, 0, 1, 0, 1, 1, 1], 1, "你只能“输”，没法真正“赢”；也没有对手。"],
+    ["🏀 一个人对墙抛球接球", [0, 0, 0, 1, 0, 1, 1], 1, "维特根斯坦提到的类似例子：输赢这一条在这里消失了。"],
+    ["🏙️ 模拟城市式沙盒", [0, 0, 1, 0, 0, 1, 1], 1, "没有输赢，目标靠自己定（见下方边缘案例）。"],
+    ["🏠 过家家", [0, 0, 1, 1, 0, 1, 1], 1, "“你当妈妈我当宝宝”的约定就是规则；没有输赢。"],
+    ["📖 单人数独", [1, 0, 1, 1, 1, 1, 1], 1, "有人觉得“谜题”不算游戏，这里按日常说法算。"],
+    ["⚽ 职业足球赛（对球员是工作）", [1, 1, 1, 1, 1, 1, 0], 1, "有实际用处（赚钱），但仍然叫“比赛”。"],
+    ["⚖️ 打官司", [1, 1, 1, 0, 1, 0, 0], 0, "有输赢有对手有规则，但没人说它是游戏。"],
+    ["📝 期末考试", [1, 0, 1, 1, 1, 0, 0], 0, "被要求的、有后果的。"],
+    ["⚔️ 真实战争", [1, 1, 0, 1, 1, 0, 0], 0, "有输赢有对手，但不是自愿，后果极严重。"],
+    ["🎬 看电影", [0, 0, 0, 0, 0, 1, 1], 0, "自愿，但没有目标和规则。"],
+  ];
+  const on = CR.map(() => 0);
+  const crit = $("c1_crit"), rows = $("c1_rows");
+  const chips = CR.map((t, k) => {
+    const c = document.createElement("button"); c.className = "chip"; c.textContent = t;
+    c.onclick = () => { on[k] ^= 1; c.classList.toggle("on", !!on[k]); update(); };
+    crit.appendChild(c); return c;
+  });
+  const els = AC.map(a => {
+    const d = document.createElement("div"); d.className = "c1row";
+    d.innerHTML = '<span class="nm">' + a[0] + '</span><span class="vd"></span><span class="tg">常识：' + (a[2] ? "是游戏" : "不是游戏") + "</span>";
+    rows.appendChild(d); return d;
+  });
+  function errOf(mask) {
+    let e = 0;
+    AC.forEach(a => { const pass = mask.every((m, k) => !m || a[1][k]); if ((pass ? 1 : 0) !== a[2]) e++; });
+    return e;
+  }
+  let bestAll = 99;
+  for (let m = 0; m < (1 << CR.length); m++) bestAll = Math.min(bestAll, errOf(CR.map((_, k) => (m >> k) & 1)));
+  let best = null;
+  function update() {
+    let e = 0, kill = [], leak = [];
+    AC.forEach((a, i) => {
+      const pass = on.every((m, k) => !m || a[1][k]);
+      const wrong = (pass ? 1 : 0) !== a[2];
+      els[i].classList.toggle("ok", !wrong); els[i].classList.toggle("bad", wrong);
+      els[i].querySelector(".vd").textContent = pass ? "你的定义：算游戏" : "你的定义：不算";
+      if (wrong) { e++; (a[2] ? kill : leak).push(a); }
+    });
+    $("c1_err").textContent = e;
+    const any = on.some(Boolean);
+    if (any && (best === null || e < best)) best = e;
+    $("c1_best").textContent = best === null ? "–" : best;
+    let msg;
+    if (!any) msg = "你还没写任何条件：于是什么都算游戏，“误放”了 " + leak.length + " 个。点条件试试。";
+    else if (e === 0) msg = "🎉 零错判！不过注意：这只是针对这 12 个活动、7 个条件的结果。换几个更刁钻的例子（比如过山车、电子宠物），就未必成立了。";
+    else {
+      msg = "";
+      if (kill.length) msg += "<b>误杀</b>（真游戏被拒）：" + kill.map(a => a[0].replace(/（.*）/, "") + "——" + a[3]).join("；") + "<br>";
+      if (leak.length) msg += "<b>误放</b>（不是游戏却被放进来）：" + leak.map(a => a[0]).join("、") + "<br>";
+    }
+    msg += '<span class="small">在这 7 个条件的全部 128 种“必须”组合里，错得最少的也要错 ' + bestAll + " 个。" + (bestAll > 0 ? "这就是“家族相似”想说的：想靠一串“必须”圈住所有游戏，行不通。" : "") + "</span>";
+    $("c1_msg").innerHTML = msg;
+  }
+  $("c1_clear").onclick = () => { on.fill(0); chips.forEach(c => c.classList.remove("on")); update(); };
+  $("c1_rand").onclick = () => { for (let k = 0; k < on.length; k++) { on[k] = Math.random() < 0.35 ? 1 : 0; chips[k].classList.toggle("on", !!on[k]); } update(); };
+  update();
+})();
+
+/* ===== 3. 调味台（凯卢瓦，拖动） ===== */
+(function () {
+  const $ = id => document.getElementById(id);
+  const svg = $("c1_svg"), layer = $("c1_toks"), ghost = $("c1_ghost"), ghostt = $("c1_ghostt");
+  const SQ = { x: 170, y: 40, w: 360, h: 460 };
+  const NM = ["竞争 agon", "运气 alea", "模拟 mimicry", "眩晕 ilinx"], CL = ["#ffc078", "#a8dcf0", "#ffb3c6", "#b6e8a8"];
+  // [emoji, 名字, 参考u, 参考v, 说明]  u,v∈[0,1]；角：左上竞争 右上运气 右下模拟 左下眩晕
+  const G = [
+    ["♟️", "象棋", .06, .08, "纯粹比技巧，几乎没有运气：竞争。"],
+    ["🎰", "抽卡", .94, .06, "结果由概率决定：运气。"],
+    ["🏠", "过家家", .94, .94, "假装成别人：模拟。"],
+    ["🎢", "过山车", .06, .94, "追求失控的晕眩：眩晕。"],
+    ["🎲", "大富翁", .5, .1, "骰子决定走位（运气），又在争输赢（竞争）：竞争与运气的混合。"],
+    ["🃏", "德州扑克", .38, .1, "发牌靠运气，下注和心理战靠技巧：竞争略重的竞争+运气混合。"],
+    ["🎭", "桌面跑团", .94, .5, "扮演角色（模拟）+ 骰子判定（运气）。"],
+    ["⛷️", "滑雪竞速", .06, .5, "和别人比速度（竞争），同时享受高速下滑的晕眩感（眩晕）。"],
+    ["🎪", "化装嘉年华", .5, .94, "扮成别人（模拟），又沉浸在狂欢的晕眩里（眩晕）。"],
+  ];
+  const NS = "http://www.w3.org/2000/svg";
+  const toks = G.map((g, i) => {
+    const hx = i < 5 ? 68 : 632, hy = 64 + (i < 5 ? i : i - 5) * 100;
+    const el = document.createElementNS(NS, "g"); el.setAttribute("class", "c1tok");
+    el.innerHTML = '<circle r="27" fill="#fff" stroke="#2b2b3a" stroke-width="3"/><text y="10" font-size="28" text-anchor="middle">' + g[0] + '</text><text y="48" font-size="16" text-anchor="middle" fill="#2b2b3a">' + g[1] + "</text>";
+    const t = { el, hx, hy, x: hx, y: hy, placed: false };
+    el.setAttribute("transform", "translate(" + hx + "," + hy + ")");
+    layer.appendChild(el); return t;
+  });
+  function pt(e) {
+    const p = svg.createSVGPoint(); p.x = e.clientX; p.y = e.clientY;
+    return p.matrixTransform(svg.getScreenCTM().inverse());
+  }
+  function weights(u, v) { return [(1 - u) * (1 - v), u * (1 - v), u * v, (1 - u) * v]; }
+  function show(i, close) {
+    const t = toks[i], g = G[i], u = (t.x - SQ.x) / SQ.w, v = (t.y - SQ.y) / SQ.h, w = weights(u, v);
+    $("c1_bars").innerHTML = "<b>" + g[0] + " " + g[1] + " 的“味道配方”（按你放的位置）</b>" + w.map((x, k) =>
+      '<div class="rw"><div class="nm">' + NM[k] + '</div><div class="bar"><i style="width:' + Math.round(x * 100) + "%;background:" + CL[k] + '"></i></div><div class="v">' + Math.round(x * 100) + "%</div></div>").join("");
+    const rx = SQ.x + g[2] * SQ.w, ry = SQ.y + g[3] * SQ.h;
+    ghost.setAttribute("cx", rx); ghost.setAttribute("cy", ry); ghost.style.display = "";
+    ghostt.setAttribute("x", rx); ghostt.setAttribute("y", ry - 32); ghostt.style.display = "";
+    const d = Math.hypot(u - g[2], v - g[3]);
+    $("c1_cmsg").innerHTML = (d < 0.2 ? "和参考位置（红色虚线圈）很接近 ✔。" : "你的位置和参考位置（红色虚线圈）有些距离。这没有标准答案，能说出你的理由更重要。") + "<br>" + g[4] +
+      '<br><span class="small">已放入 ' + toks.filter(x => x.placed).length + " / " + G.length + "。注意：方块是简化的二维摆放，现实里的游戏混合方式比这更复杂。</span>";
+  }
+  toks.forEach((t, i) => {
+    let drag = false, dx = 0, dy = 0;
+    t.el.addEventListener("pointerdown", e => {
+      drag = true; t.el.setPointerCapture(e.pointerId);
+      const p = pt(e); dx = t.x - p.x; dy = t.y - p.y;
+      layer.appendChild(t.el); e.preventDefault();
+    });
+    t.el.addEventListener("pointermove", e => {
+      if (!drag) return;
+      const p = pt(e); t.x = p.x + dx; t.y = p.y + dy;
+      t.el.setAttribute("transform", "translate(" + t.x + "," + t.y + ")");
+    });
+    const end = e => {
+      if (!drag) return; drag = false;
+      const inside = t.x > SQ.x - 12 && t.x < SQ.x + SQ.w + 12 && t.y > SQ.y - 12 && t.y < SQ.y + SQ.h + 12;
+      if (inside) {
+        t.x = Math.max(SQ.x, Math.min(SQ.x + SQ.w, t.x)); t.y = Math.max(SQ.y, Math.min(SQ.y + SQ.h, t.y));
+        t.placed = true; t.el.setAttribute("transform", "translate(" + t.x + "," + t.y + ")"); show(i);
+      } else {
+        t.placed = false; t.x = t.hx; t.y = t.hy;
+        t.el.animate([{ opacity: .4 }, { opacity: 1 }], 250);
+        t.el.setAttribute("transform", "translate(" + t.hx + "," + t.hy + ")");
+      }
+    };
+    t.el.addEventListener("pointerup", end); t.el.addEventListener("pointercancel", end);
+  });
+  $("c1_creset").onclick = () => {
+    toks.forEach(t => { t.placed = false; t.x = t.hx; t.y = t.hy; t.el.setAttribute("transform", "translate(" + t.hx + "," + t.hy + ")"); });
+    ghost.style.display = "none"; ghostt.style.display = "none";
+    $("c1_bars").innerHTML = '<div class="small">拖一个玩法进方块，这里会显示它的“味道配方”。</div>'; $("c1_cmsg").textContent = "";
+  };
+})();
+
+GD.mountQuiz(document.getElementById("quiz"), [
+  { q: "“跳房子”里，用粉笔画格子并规定“单脚跳、不能踩线”，这属于哪个要素？", opts: ["目标", "规则", "反馈", "自愿"], a: 1, why: "规则限定了玩家能做什么，制造了难度。" },
+  { q: "玩家点击按钮后，屏幕上出现“+100”并伴随清脆音效。这是在做什么？", opts: ["设定目标", "增加规则", "给出反馈", "让玩家自愿"], a: 2, why: "反馈让玩家立刻知道自己的行动产生了什么效果。" },
+  { q: "下面哪个最不像游戏？", opts: ["限时挑战的拼图", "在地铁里随便刷到的一条视频", "和朋友玩的“你画我猜”", "象棋对局"], a: 1, why: "看视频没有目标、没有规则、你的行动也无法影响结果。" },
+  { q: "【为什么】为什么游戏要故意设置规则让事情变难？（按休茨的观点）", opts: ["为了让设计者省事", "规则排除了更高效的手段，让达成目标成为需要技巧和努力的事，才有成就感", "因为玩家喜欢被惩罚", "没有为什么"], a: 1, why: "休茨认为游戏是自愿克服不必要的障碍；如果直接按个按钮就通关，就没有挑战，也没有成就感。" },
+  { q: "【为什么】小猫反复扑毛线球，按“练习说”最合理的解释是？", opts: ["毛线球是真正的猎物", "在低风险环境里练习将来需要的捕猎动作", "它想得到奖励", "纯粹没有任何功能，这个观点已被证实"], a: 1, why: "练习说认为玩耍让幼崽在失败代价很小的情况下练习技能。但它只是一种有影响力的观点，并非定论。" },
+  { q: "【为什么被发明】维特根斯坦为什么提出“家族相似”这个概念？", opts: ["为了给游戏下一个更严格的定义", "他试图找出所有游戏的共同特征，却发现找不到，只有交叠的相似", "为了证明游戏没有规则", "为了批评凯卢瓦的分类"], a: 1, why: "他邀请人们“别想，去看”，结果发现输赢、对手、娱乐……都不是所有游戏共有的，于是用“家族相似”描述这类概念。" },
+  { q: "【为什么被发明】既然四要素不是定义，为什么游戏设计课仍然用它？", opts: ["因为它已被证明是唯一正确的", "因为它是一个好用的思考工具：在核心案例上帮你找出缺了什么，失灵的边缘案例反而提示设计空间", "因为没有别的办法", "因为休茨规定的"], a: 1, why: "设计师需要的是“能指导行动”的框架，而不是“无懈可击的定义”。工具有边界，知道边界才用得对。" },
+  { q: "《云顶之弈》既拼策略又靠抽牌运气，用凯卢瓦的分类应该怎么说？", opts: ["纯 agon", "纯 alea", "agon 与 alea 的混合", "ilinx"], a: 2, why: "多数游戏是混合的：竞争技巧是 agon，随机抽牌是 alea。" },
+]);
+</script>
+</body>
+</html>

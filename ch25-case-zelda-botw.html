@@ -1,0 +1,646 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>第25章 案例：塞尔达传说 旷野之息</title>
+<link rel="stylesheet" href="css/style.css">
+<style>
+  .dx{display:grid;grid-template-columns:190px 1fr;gap:14px;align-items:start}
+  .dx .c25chips{display:flex;flex-direction:column}
+  .dx .chip{text-align:left;margin:3px 0}
+  .dx .panel{margin:0;min-height:170px}
+  .dx .panel h3{margin:0 0 4px}
+  @media(max-width:700px){.dx{grid-template-columns:1fr}.dx .c25chips{flex-direction:row;flex-wrap:wrap}}
+  #mc{display:block;width:100%;height:auto;background:#eaf9e4;border:3px solid var(--ink);border-radius:8px;cursor:crosshair;touch-action:none}
+  .c25tools{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:8px}
+  .c25tools .chip{font-size:1rem}
+  .c25els{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
+  .c25els .btn{margin:0;font-size:1.3rem}
+  .c25els .btn.sel{background:var(--green);transform:rotate(-2deg) scale(1.06)}
+  .c25slot{display:inline-block;min-width:120px;text-align:center;border:3px dashed var(--ink);border-radius:14px;padding:6px 14px;margin:4px;font-family:var(--hand);font-size:1.5rem;background:#fff}
+  .c25res{border:3px solid var(--ink);border-radius:12px;background:#fffdf3;padding:10px 14px;min-height:80px;margin-top:6px}
+  .c25goalrow .chip.done{background:var(--green)}
+  .c25pr{margin:12px 0}
+  .c25pr .pool{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
+  .c25pr .pk{font:inherit;border:2.5px solid var(--ink);background:#fff;border-radius:16px 8px 16px 8px;padding:3px 14px;cursor:pointer}
+  .c25pr .pk.sel{background:var(--yellow);transform:rotate(-2deg)}
+  .c25pr .it{display:block;width:100%;text-align:left;font:inherit;border:2.5px solid var(--ink);border-radius:12px 20px 12px 18px;padding:8px 14px;background:#fffef7;cursor:pointer}
+  .c25pr .it.ok{background:var(--green);cursor:default}
+  .c25pr .it.bad{background:#ffd9d9;animation:c25shake .3s}
+  .c25pr .it.over{outline:3px dashed var(--blue)}
+  .c25pr .fb{font-size:.92rem;margin:3px 0 10px 6px;min-height:1.2em}
+  @keyframes c25shake{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+  .c25fig{background:#fff;border:3px solid var(--ink);border-radius:14px 30px 14px 26px;padding:10px 12px;margin:14px 0}
+  .c25fig svg{display:block}
+  .c25guess{margin:10px 0}
+  .c25guess .chip.right{background:var(--green)}
+  .c25guess .chip.wrong{background:#ffc9c9}
+  .c25guess .c25fb{margin-top:8px;padding:8px 14px;border:2.5px dashed var(--ink);border-radius:12px;background:#fff7cf;display:none}
+  .c25guess.done .c25fb{display:block}
+  .c25task.ok{background:var(--green)}
+  .c25calc label{display:block;margin:6px 0}
+  .c25calc input[type=range]{width:100%;accent-color:#e5484d;height:28px}
+  .c25calc .big{font-family:var(--hand);font-size:1.6rem}
+  svg text{font-family:var(--body)}
+</style>
+</head>
+<body data-ch="25">
+<main class="wrap">
+  <div class="hero">
+    <div class="txt">
+      <span class="badge">第 25 章 · 案例</span>
+      <h1>塞尔达传说：旷野之息</h1>
+      <p class="sub">看见的地方就能走到，规则处处一致，玩法自己长出来。</p>
+    </div>
+    <svg viewBox="0 0 190 150" class="rough" aria-hidden="true">
+      <g stroke="#2b2b3a" stroke-width="4" stroke-linejoin="round">
+        <path d="M10 130 L70 40 L120 130z" fill="#b6e8a8"/><path d="M80 130 L135 60 L185 130z" fill="#a8dcf0"/>
+        <rect x="128" y="20" width="12" height="42" fill="#ffe58a"/><path d="M122 20 L134 4 L146 20z" fill="#ffb3c6"/>
+      </g>
+    </svg>
+  </div>
+
+  <div class="goals"><span class="time">约 40 分钟</span><h3>学习目标</h3><ul>
+    <li>读完你能说清团队当年面对的问题（传统塞尔达“被动”），以及“视线引导”“乘法式玩法”“武器会坏”各自是为了解决什么。</li>
+    <li>读完你能用涌现、自主感、信息缺口、机会成本、反馈循环这几条原理，解释“为什么这个设计有效”，并分清哪些是开发者说的、哪些是我们的推断。</li>
+    <li>读完你能提醒自己：成功的开放世界不代表“照做就能成”，并写出小团队借鉴时最该砍掉什么。</li>
+  </ul></div>
+
+  <!-- ============ 1 速写 ============ -->
+  <div class="sec"><span class="n">1</span><h2><span class="tag what">是什么</span>一座山，一座塔，你想去看看</h2></div>
+  <div class="withimg">
+    <span data-illus="c25_hill"></span>
+    <div>
+      <p>你小时候大概也爬过家附近的某座小山。没人要求你上去，你只是看见山顶有个东西，就想知道山那边是什么。</p>
+      <p>《塞尔达传说：旷野之息》（2017 年 3 月 3 日在 Wii U 和 Switch 上发行，任天堂）想让玩家一直处在这种状态里。你从一座高台出发，基本可以直接走向任何一个看得见的地方，没人催你去做任务。总监是藤林秀麿（Hidemaro Fujibayashi），制作人是青沼英二（Eiji Aonuma）。</p>
+      <p>它值得拆开看的设计思路有三条：<b>用视线和地形吸引玩家探索</b>；<b>让物理与“化学”规则在整个世界里保持一致</b>，于是玩家会想出设计者没有逐条写出的玩法；<b>让武器会坏</b>，逼玩家取舍。开发者在公开分享里把第二条称为“乘法式玩法”（multiplicative gameplay）。</p>
+    </div>
+  </div>
+  <p>把玩家的一般状态连起来，是一个<span class="term" tabindex="0" data-def="核心循环：玩家反复进行的“行动→反馈→奖励”的最小闭环。">核心循环</span>：<b>看见远处的地标 → 前往 → 沿途与世界的规则互动 → 有所发现 → 登高再看，找到下一个想去的地方</b>。</p>
+
+  <div class="c25fig">
+    <svg viewBox="0 0 700 270" width="100%" role="img" aria-label="旷野之息探索循环：看见、前往、互动、发现、登高再看">
+      <g class="rough" stroke="#2b2b3a" stroke-width="4" stroke-linejoin="round">
+        <rect x="20" y="95" width="130" height="70" rx="22" fill="#ffe58a"/>
+        <rect x="205" y="20" width="130" height="70" rx="22" fill="#a8dcf0"/>
+        <rect x="385" y="20" width="130" height="70" rx="22" fill="#ffb3c6"/>
+        <rect x="550" y="95" width="130" height="70" rx="22" fill="#b6e8a8"/>
+        <rect x="285" y="190" width="150" height="62" rx="22" fill="#d8c8ff"/>
+        <g fill="none" stroke-width="4.5" stroke-linecap="round">
+          <path d="M150 115 Q175 75 203 62"/><path d="M335 55 L383 55"/><path d="M515 62 Q545 70 565 93"/>
+          <path d="M615 167 Q560 225 437 222"/><path d="M283 222 Q120 235 80 167"/>
+        </g>
+      </g>
+      <g font-size="26" text-anchor="middle" fill="#2b2b3a">
+        <text x="85" y="130">① 看见</text><text x="270" y="63">② 前往</text><text x="450" y="63">③ 互动</text>
+        <text x="615" y="130">④ 发现</text><text x="360" y="228">⑤ 登高再看</text>
+      </g>
+      <g font-size="17" text-anchor="middle" fill="#2b2b3a">
+        <text x="85" y="156">山、塔、烟</text><text x="270" y="116">自己选路线</text><text x="450" y="116">火、风、水、电</text>
+        <text x="615" y="156" font-size="15">神庙、种子、素材</text>
+      </g>
+    </svg>
+    <p class="small">循环的起点由玩家自己的好奇触发，而不是任务列表。</p>
+  </div>
+
+  <!-- ============ 2 视线引导：是什么 ============ -->
+  <div class="sec"><span class="n">2</span><h2><span class="tag what">是什么</span>视线引导：山是遮挡，塔尖是邀请</h2></div>
+  <p>开放世界有一个老问题：什么都能去，反而不知道去哪。于是设计师得让世界自己“说话”。《旷野之息》的做法是用地形：任天堂的开发者在 2017 年日本的 CEDEC 大会上讲过一条“三角形规则”（据 Matt Walker 的英文翻译和多篇转述）：把障碍物想成三角形，玩家面对它们总有两个选择：翻过去，或绕过去；同时三角形会挡住视线，所以后面的东西可以留作惊喜。</p>
+  <div class="c25fig">
+    <svg viewBox="0 0 700 270" width="100%" role="img" aria-label="三角形规则示意：大三角形是远处也看得见的地标，中三角形遮挡视线，小三角形控制行走节奏">
+      <g class="rough" stroke="#2b2b3a" stroke-width="4" stroke-linejoin="round">
+        <path d="M20 210 L680 210" fill="none"/>
+        <path d="M40 210 L150 70 L260 210z" fill="#a8dcf0"/>
+        <path d="M290 210 L360 130 L430 210z" fill="#b6e8a8"/>
+        <path d="M470 210 L505 175 L540 210z" fill="#ffe58a"/>
+        <path d="M570 210 L592 188 L614 210z" fill="#ffe9ef"/>
+      </g>
+      <g font-size="18" fill="#2b2b3a" text-anchor="middle">
+        <text x="150" y="28" font-weight="700">大：地标</text><text x="150" y="50" font-size="16">很远就能看见</text>
+        <text x="360" y="84" font-weight="700">中：遮挡</text><text x="360" y="106" font-size="16">挡住后面的东西</text>
+        <text x="520" y="150" font-weight="700">小：节奏</text><text x="520" y="240">改变脚步快慢</text>
+      </g>
+    </svg>
+    <p class="small">三种尺寸各司其职，据 CEDEC 2017 演讲的转述：最大的是地标，中等的遮挡视线，最小的调节行走节奏。图为示意。</p>
+  </div>
+  <div class="c25fig">
+    <svg viewBox="0 0 700 250" width="100%" role="img" aria-label="视线引导示意：玩家看到山后探出的塔尖">
+      <g class="rough" stroke="#2b2b3a" stroke-width="4" stroke-linejoin="round">
+        <path d="M20 210 L680 210" fill="none"/>
+        <path d="M150 210 L260 110 L370 210z" fill="#b6e8a8"/>
+        <rect x="456" y="65" width="22" height="145" fill="#ffe58a"/><path d="M447 65 L467 35 L487 65z" fill="#ffb3c6"/>
+        <path d="M530 210 L600 150 L670 210z" fill="#d8c8ff"/>
+        <circle cx="70" cy="190" r="12" fill="#ff8fab"/>
+      </g>
+      <path d="M82 188 L467 48" stroke="#c4202a" stroke-width="3" stroke-dasharray="8 7" fill="none"/>
+      <g font-size="18" fill="#2b2b3a">
+        <text x="30" y="238">玩家</text><text x="195" y="198">遮挡：山</text><text x="520" y="50">塔尖露出来</text><text x="520" y="238">另一座山后面…</text>
+      </g>
+    </svg>
+    <p class="small">地形一起一伏：既遮住了全部答案，又留下一个够高的目标。</p>
+  </div>
+  <div class="eg" data-ic="🗼"><span data-illus="c25_peek"></span><div class="egt"><b>塔尖探出山头（游戏）</b>山遮住一半，塔尖高过山头，你远远就看见一个想去的地方，又不知道那里有什么。目标是你自己选的，没有任务在催。</div></div>
+  <div class="eg" data-ic="🌳"><span data-illus="c25_bend"></span><div class="egt"><b>公园里拐弯的小路（日常）</b>好的园林小路不会让你一眼看到终点：拐个弯，树后露出一角屋顶，你就想往前走。道理和塔尖是同一个。</div></div>
+  <div class="eg bad" data-ic="🏜️"><span data-illus="c25_flat"></span><div class="egt"><b>反例：一眼望到头</b>如果地形完全平坦，所有地标全都看得见，没有任何遮挡，就没有悬念，也没有“走过去看看”的理由。这正是三角形要避免的。</div></div>
+  <div class="eg bad" data-ic="🚧"><span data-illus="c25_unreach"></span><div class="egt"><b>反例：看得见，去不了</b>地标放在远处却被看不见的墙拦住，玩家会很快意识到这个世界的“承诺”不算数。远处的目标必须有路可以走到，“看见就能去”才站得住。</div></div>
+
+  <!-- ============ 3 乘法式玩法 ============ -->
+  <div class="sec"><span class="n">3</span><h2><span class="tag what">是什么</span>乘法式玩法：少量规则，大量组合</h2></div>
+  <p>第二条思路和地形无关，讲的是“物体怎么互相反应”。如果游戏里有 N 种元素（火、风、水、电……）和 M 种物体（草、木、金属……），而且规则对它们<b>处处成立</b>，就能产生大约 N×M 种互动，而设计者只需要做 N+M 份东西，不必为每个场景手写一个机关。开发者管这叫乘法式玩法。</p>
+  <div class="c25fig">
+    <svg viewBox="0 0 700 200" width="100%" role="img" aria-label="乘法式玩法示意：元素乘以物体，得到许多组合">
+      <g class="rough" stroke="#2b2b3a" stroke-width="4" stroke-linejoin="round">
+        <rect x="30" y="30" width="190" height="60" rx="14" fill="#ffb3c6"/><rect x="30" y="110" width="190" height="60" rx="14" fill="#a8dcf0"/>
+        <rect x="300" y="30" width="140" height="60" rx="14" fill="#ffe58a"/><rect x="300" y="110" width="140" height="60" rx="14" fill="#ffe58a"/>
+        <rect x="520" y="55" width="150" height="90" rx="20" fill="#b6e8a8"/>
+      </g>
+      <g font-size="20" text-anchor="middle" fill="#2b2b3a">
+        <text x="125" y="67">元素：火 风 水…</text><text x="125" y="147">物体：草 木 金属</text>
+        <text x="370" y="67">× 规则一致</text><text x="370" y="147">= 组合</text>
+        <text x="595" y="105">涌现玩法</text>
+      </g>
+      <g font-size="40" fill="#2b2b3a"><text x="244" y="108">×</text><text x="466" y="108">→</text></g>
+    </svg>
+  </div>
+  <div class="eg" data-ic="🔥"><span data-illus="c25_updraft"></span><div class="egt"><b>火 × 草 → 上升气流（游戏）</b>火烧草地，热空气向上，你张开滑翔伞就能飞起来。设计者没有专门做这个关卡，是规则相乘“长”出来的。</div></div>
+  <div class="eg" data-ic="🧱"><span data-illus="c25_lego"></span><div class="egt"><b>乐高积木（日常）</b>只有几种基础积木和一条“能扣在一起”的规则，孩子却能搭出塔、桥、房子，没有一个是说明书里规定的。</div></div>
+  <div class="eg bad" data-ic="🔑"><span data-illus="c25_oneoff"></span><div class="egt"><b>反例：一次性机关</b>“钥匙开这扇门”是手工做的单次谜题：解法唯一，用完就没有价值，做 100 个谜题就要做 100 份。解法越单一，玩家越没有发明的余地。</div></div>
+  <div class="eg bad" data-ic="❓"><span data-illus="c25_inconsistent"></span><div class="egt"><b>反例：规则前后不一致</b>同样的草，这里一点就着，那里怎么烧都烧不起来。玩家的推测就没有价值，也就不敢实验。规则一致是这套设计的前提。</div></div>
+
+  <!-- ============ 4 取舍 ============ -->
+  <div class="sec"><span class="n">4</span><h2><span class="tag what">是什么</span>武器会坏：让每一次出手都要想一想</h2></div>
+  <p>第三条思路最有争议：武器有耐久，用到头就碎。你用它砍普通怪，就少了留给强敌的。每一次出手都在“现在用”和“以后用”之间取舍，选择因此有了分量。</p>
+  <div class="eg" data-ic="🗡️"><span data-illus="c25_weapon"></span><div class="egt"><b>武器见底（游戏）</b>手里的剑还剩一点耐久，前面是一只更强的敌人。是继续砍眼前的小怪，还是留着？没有标准答案，玩家得自己权衡。</div></div>
+  <div class="eg" data-ic="🎒"><span data-illus="c25_backpack"></span><div class="egt"><b>背包只能装三样（日常）</b>出门爬山，背包有限，你得决定带水、带伞，还是带零食。放进去一样，就等于放弃了另一样。</div></div>
+  <div class="eg bad" data-ic="♾️"><span data-illus="c25_infinite"></span><div class="egt"><b>反例：永不损坏的神器</b>如果有一把永远不坏的最强武器，玩家当然只会用它，选择也就消失了。每个敌人都用同一招，打久了就只剩重复。</div></div>
+  <p>开发者怎么解释的？2017 年底，Fujibayashi 在《Nintendo Power Podcast》的访谈里说，团队想让玩家被吸进这片开阔的世界里去冒险，如果让玩家随心所欲，大家反而不知道该做什么，所以让不同敌人掉落不同武器，引导玩家去找它们。Aonuma 则说，耐久让战斗更有策略，玩家不能只靠自己最喜欢的那招。玩家的反应分得很开：有人喜欢这种取舍，有人觉得烦，Game Informer 当年就有一篇文章批评它。</p>
+
+  <!-- ============ 5 发明故事 ============ -->
+  <div class="sec"><span class="n">5</span><h2><span class="tag origin">发明故事</span>团队当年面对什么问题，又为什么这样改？</h2></div>
+  <div class="story">
+    <h3>从“被动”到“主动”</h3>
+    <p><b>问题。</b>《旷野之息》的开发在《天空之剑》（2011）之后启动。2017 年 3 月 GDC（游戏开发者大会）上，Fujibayashi 与美术总监 Satoru Takizawa、技术总监 Takuhiro Dohta 一起讲了团队的出发点：塞尔达系列是一个很“被动”的游戏，事件顺序预先定好，路上有过不去的墙，玩家看似自由，其实是在走预定的路线。他们想把它改成“主动”的游戏。</p>
+    <p><b>先猜一下。</b>要让一个几十人的团队很快理解“物体会互相反应”到底好玩在哪，你觉得他们最先做了什么？</p>
+    <div class="c25guess" id="c25g1" data-ok="1">
+      <button class="chip" data-fb="没有，这样太慢，而且还看不出好不好玩。">先做一整片完整的 3D 地图</button>
+      <button class="chip" data-fb="对。">做一个外表像 2D 老塞尔达的小原型</button>
+      <button class="chip" data-fb="没有，文档说不明白“好玩”。">先写一份很厚的设计文档</button>
+      <div class="c25fb"></div>
+    </div>
+    <div class="timeline">
+      <div class="ev hasimg"><span data-illus="c25_walls"></span><div><b class="yr">起点</b>　传统塞尔达有“顺序”和“墙”，玩家因此总是被牵着走。Fujibayashi 说，这是自由的假象。于是他们把墙变成可以爬的，把天空变成可以滑翔回来的路，“去哪里”才开始由玩家决定。</div></div>
+      <div class="ev hasimg"><span data-illus="c25_proto"></span><div><b class="yr">原型</b>　Fujibayashi 回头玩了最初的《塞尔达传说》，印象最深的一点是：“每次屏幕一滚动，就有新东西可发现。”他们做了一个外表像 8 位老塞尔达的 2D 小原型，目的是快速向同事演示“物体会互相反应”。后来团队说明，这个“2D”原型其实跑在 3D 引擎上，后台就是游戏最终使用的物理和化学系统。</div></div>
+      <div class="ev hasimg"><span data-illus="c25_chem"></span><div><b class="yr">乘法</b>　过去的谜题大多是一个个单独做的机关，很费人力。他们想要的是少量机制，在整个世界里反复相乘：物体对玩家有反应，物体之间也互相有反应。原型里只有一条简单规则：“有个目标，你能走到吗？”</div></div>
+      <div class="ev hasimg"><span data-illus="c25_art"></span><div><b class="yr">美术</b>　规则一致还不够，玩家得“一眼看懂”它。美术总监 Takizawa 在《风之杖 HD》的基础上改风格，觉得原来过度夸张的卡通感反而不容易让人联想到物理和化学玩法。有些表现故意不写实：原木被砍断，立刻变成一捆绑好的柴；食物在锅里像橡皮球一样弹跳。他后来说，自己看到这种“荒谬”，感到的是有趣。</div></div>
+      <div class="ev hasimg"><span data-illus="c25_gravity"></span><div><b class="yr">世界</b>　最后是怎么把玩家引向广阔的世界。据 CEDEC 2017 演讲的转述，塔最初让人觉得是一条直线：玩家总被塔牵着走。团队用热力图找到玩家卡住或无聊的地方，调整塔的位置，又精心安排塔与塔之间的小建筑，让它们把玩家往世界深处“吸”。他们把这叫作“引力”。</div></div>
+    </div>
+    <p><b>关键洞察。</b>他们没有“设计一个更大的世界”，而是想清楚了一件事：自由不是把门全部打开，而是让玩家的每个愿望都能落地。看得见的目标要去得了，做过的实验要有一致的结果，要用的东西得有分量。三条设计都是在回答这一个问题。</p>
+  </div>
+
+  <div class="card">
+    <h3>🧲 小实验：没有“引力”和有“引力”，人流会怎样？</h3>
+    <p class="small">图里有一座山和一座塔。切换两种布局，看人流走哪里。（示意，不是真实热力图。）</p>
+    <svg viewBox="0 0 700 316" width="100%" id="c25gsvg" role="img" aria-label="人流示意：没有引力时，所有人沿一条直线走向塔；有引力时，人流绕着几个地标分散">
+      <g class="rough" stroke="#2b2b3a" stroke-width="4" stroke-linejoin="round">
+        <path d="M20 270 L680 270" fill="none"/>
+        <path d="M280 270 L380 150 L480 270z" fill="#b6e8a8"/>
+        <rect x="375" y="90" width="14" height="62" fill="#ffe58a"/>
+        <path d="M120 270 L160 225 L200 270z" fill="#ffe9ef"/><path d="M560 270 L600 215 L640 270z" fill="#d8c8ff"/>
+        <circle cx="50" cy="250" r="13" fill="#ff8fab"/>
+      </g>
+      <g id="c25g_a" fill="none" stroke="#c4202a" stroke-linecap="round">
+        <path d="M64 246 L370 100" stroke-width="16" opacity=".55"/>
+      </g>
+      <g id="c25g_b" fill="none" stroke="#c4202a" stroke-linecap="round" style="display:none">
+        <path d="M64 246 Q100 180 160 205" stroke-width="7" opacity=".45"/><path d="M160 205 Q250 130 330 170" stroke-width="7" opacity=".45"/>
+        <path d="M64 252 Q300 296 560 230" stroke-width="7" opacity=".45"/><path d="M330 170 Q360 120 372 102" stroke-width="7" opacity=".45"/>
+        <path d="M560 230 Q520 170 470 150" stroke-width="7" opacity=".45"/>
+      </g>
+      <g font-size="18" fill="#2b2b3a" text-anchor="middle"><text x="50" y="304">出发</text><text x="382" y="80">塔</text></g>
+    </svg>
+    <button class="btn alt" id="c25g_btn1">只有塔：一条路</button>
+    <button class="btn green" id="c25g_btn2">加上“引力”</button>
+    <div class="msg" id="c25g_msg">只有一座塔时，人流都挤在一条直线上。</div>
+  </div>
+
+  <!-- ============ 6 回头看 ============ -->
+  <div class="sec"><span class="n">6</span><h2><span class="tag why">为什么</span>回头看：前面学过的工具怎么拆它</h2></div>
+  <p>先用前面各部分学过的概念拆一遍。六个标签都点开看看。</p>
+  <div class="dx">
+    <div class="c25chips" id="chips"></div>
+    <div class="card y panel" id="panel"><h3>👈 先点一个标签</h3><p>每个标签对应前面学过的一个工具。</p></div>
+  </div>
+  <div class="small" id="dxcount">已看 0 / 6</div>
+
+  <!-- ============ 7 为什么成立 ============ -->
+  <div class="sec"><span class="n">7</span><h2><span class="tag why">为什么成立</span>为什么这个设计有效？</h2></div>
+  <p>下面五条解释都标了出处。它们是<b>用原理回头解释</b>，不是设计者的原话，也不是对“照做必成”的保证。</p>
+  <div class="why-box"><h3>① <span class="term" tabindex="0" data-def="涌现：简单规则相互作用后，产生设计者没有逐条写出的整体行为。">涌现</span>与规则的一致性</h3>
+    <div class="withimg">
+      <span data-illus="c25_ants"></span>
+      <div>
+        <p>蚂蚁是最常被拿来讲涌现的例子：一只蚂蚁只会走路、留下气味、顺着气味走，没有哪只蚂蚁知道整条觅食路线。可是一群蚂蚁一起，就“长”出了一条通向食物的路。物理学家 P. W. Anderson 1972 年有一篇很短的文章，题目就叫《More Is Different》（多则异）：每升一个层级，就会出现下一层不能简单从上一层推出来的新性质。</p>
+        <p>游戏里同理：火、草、风、金属各有几条简单规则，规则相乘，就冒出“借上升气流飞起来”这样没人专门设计的玩法。但涌现要成立有个前提：<b>规则必须一致</b>。火在这里能烧、在那里不能，玩家的猜测就没有价值。游戏研究者 Jesper Juul 把游戏的结构分成“涌现式”和“渐进式”，这款游戏常被拿来当前者的代表（这是常见的一种分类，不是唯一分法）。</p>
+      </div>
+    </div>
+    <p class="src">原理出处：P. W. Anderson, “More Is Different”, <i>Science</i> 177(4047): 393–396（1972）；Jesper Juul, <i>Half-Real</i>（MIT Press, 2005）对涌现与渐进的区分。</p></div>
+  <div class="why-box"><h3>② <span class="term" tabindex="0" data-def="Deci 与 Ryan 提出：人有自主、胜任、关联三种基本心理需求，满足时动机更持久。">自我决定理论</span>：自主感</h3>
+    <p>还记得讲玩家动机时那三种需求吗？其中一种就是自主：觉得“这是我自己选的”，内在动机更强。看到塔、自己决定去哪，没有任务列表催促，给的正是自主感。这个理论是对动机的解释框架，用它去说某款游戏的销量就是推断了。</p>
+    <p class="src">原理出处：Deci &amp; Ryan, <i>Intrinsic Motivation and Self-Determination in Human Behavior</i>（1985）。</p></div>
+  <div class="why-box"><h3>③ 好奇心的<span class="term" tabindex="0" data-def="信息缺口：Loewenstein（1994）提出，当人意识到“知道的”与“想知道的”之间有差距，会产生好奇。">信息缺口</span>：山后面露出的塔尖</h3>
+    <p>信息缺口理论认为，好奇心来自“我知道一点，但不知道全部”。山遮住一半、塔尖露出一半，正是一个<b>刚好</b>的缺口：太小没兴趣，太大又不知从何问起。这个理论有较好的实验研究支持，落到具体的关卡布置上，就是解读了。</p>
+    <p class="src">原理出处：George Loewenstein, “The psychology of curiosity: A review and reinterpretation”, <i>Psychological Bulletin</i> 116(1): 75–98（1994）。</p></div>
+  <div class="why-box"><h3>④ <span class="term" tabindex="0" data-def="机会成本：选了一个选项，就放弃了次优选项能带来的价值。">机会成本</span>：武器会坏</h3>
+    <p>武器有耐久：用来砍普通怪，就少了留给强敌的。每次出手都让玩家在“现在用”和“以后用”之间取舍，选择因此有分量。前面说过，玩家对这个设计的反应分得很开，所以“有效”是因人而异的。</p>
+    <p class="src">原理出处：经济学中的机会成本概念；开发者的解释见 Fujibayashi 与 Aonuma 2017 年底的《Nintendo Power Podcast》访谈（据 Zelda Dungeon 的转述）。</p></div>
+  <div class="why-box"><h3>⑤ <span class="term" tabindex="0" data-def="反馈循环：系统的输出又回过头影响输入。调节环让偏离被拉回，强化环让变化越滚越大。">反馈循环</span>：用热力图校准世界</h3>
+    <p>塔引导人流，人流被热力图记录，团队据此挪塔、加小建筑，新的人流又被重新记录。这是一个<b>调节环</b>：偏离（人流太挤在一条线）被一次次拉回。它和玩家在游戏里“猜 → 试 → 看结果”的小循环是同一种结构：先有输出，再被观察，再回头改输入。</p>
+    <p class="src">原理出处：Donella Meadows, <i>Thinking in Systems</i>（Chelsea Green, 2008）对调节环与强化环的区分；热力图的做法据 CEDEC 2017 演讲的转述。</p></div>
+
+  <h3>互动：原理—证据 配对</h3>
+  <p>先点（或拖）一张原理卡，再点它对应的现象。系统会判断并解释，配错会给提示。原理卡可重复使用。</p>
+  <div class="card b c25pr" id="c25pair"></div>
+  <div class="small" id="c25paircnt"></div>
+  <div class="sticky c25task" id="c25task3">试试看：把五个现象全部配对成功，中间配错的不限次数。</div>
+
+  <!-- ============ 8 怎么用：沙盘 ============ -->
+  <div class="sec"><span class="n">8</span><h2><span class="tag how">怎么用</span>招牌互动一：视线引导沙盘</h2></div>
+  <p>绿色的圆斑是山丘（中间的三角形是山顶，越高越能挡住视线）。你是红点。不同的地标有不同的“高度”：塔和烟柱远处就能看到，树和遗迹要靠近才露出来。<b>放几个地标，再点地图让红点走一走</b>，观察哪些被山挡住、哪些让你“想过去看看”。</p>
+  <div class="board">
+    <div class="c25tools" id="tools"></div>
+    <canvas id="mc" width="640" height="400" aria-label="视线引导沙盘"></canvas>
+    <div style="margin-top:6px">
+      <span class="stat">看得见 <b id="vis">0</b> / <b id="tot">0</b></span>
+      <span class="stat">已到访 <b id="vst">0</b></span>
+      <label class="ctl" style="display:inline-block;margin-left:8px"><input type="checkbox" id="god" checked> 上帝视角（淡淡显示被挡住的）</label>
+      <button class="btn alt" id="rnd">随机地形</button>
+      <button class="btn pink" id="clr">清空地标</button>
+    </div>
+    <div class="msg" id="mmsg"></div>
+  </div>
+  <div class="sticky c25task" id="c25task1">试试看：把上帝视角关掉，先朝你看得见的地标走去；到访 3 个地标，看看新的地标是不是一个接一个从山后露出来。</div>
+
+  <!-- ============ 9 怎么用：化学引擎 ============ -->
+  <div class="sec"><span class="n">9</span><h2><span class="tag how">怎么用</span>招牌互动二：化学引擎组合器</h2></div>
+  <p>点选两种元素，看看会发生什么。<b>注意：这是为了教学做的简化规则表，不等于游戏里的全部规则</b>。重点是体会：规则是<b>一致</b>的，不是为每一个场景单独写脚本。</p>
+  <div class="board">
+    <div class="c25els" id="els"></div>
+    <div><span class="c25slot" id="sa">？</span> + <span class="c25slot" id="sb">？</span></div>
+    <div class="c25res" id="res">先点两个元素。</div>
+    <div style="margin-top:6px">
+      <span class="stat">发现的反应 <b id="found">0</b> / 12</span>
+      <span class="stat">试过的组合 <b id="tried">0</b> / 21</span>
+      <button class="btn" id="elclr">重选</button>
+    </div>
+  </div>
+
+  <h3>涌现挑战：一个目标，多种解法</h3>
+  <p>选一个目标，再用上面的组合器去“解决”它。看看每个目标有几种解法。</p>
+  <div class="card o">
+    <div class="c25goalrow" id="goals"></div>
+    <div class="msg" id="gm" style="min-height:2.4em"></div>
+    <div class="small" id="gcount"></div>
+  </div>
+  <div class="sticky c25task" id="c25task2">试试看：选“过河”，找出两种不同的解法。设计者只给了规则，没有给答案。</div>
+
+  <div class="card g c25calc">
+    <h3>🧮 乘法的威力：拖一拖，看看差距</h3>
+    <label>元素种类 N：<b id="c25n_v">4</b><input type="range" id="c25n" min="1" max="8" value="4"></label>
+    <label>物体种类 M：<b id="c25m_v">5</b><input type="range" id="c25m" min="1" max="12" value="5"></label>
+    <p>手工为每个场景写一份：约 <span class="big" id="c25add">9</span> 份。规则一致，互动约有 <span class="big" id="c25mul">20</span> 种。</p>
+    <p class="small">示意：假设每个组合都有意义。前面的规则表里，21 个组合只有 12 个有反应，另外 9 个故意留空，克制能让有反应的组合更醒目。每加一条规则，要测试的组合也会成倍增长，这是它的代价。</p>
+  </div>
+
+  <h3>可偷师的设计技巧</h3>
+  <div class="grid2">
+    <div class="card y"><h3>① “看得见，就去得了”</h3><p>把目标放在远处的显眼位置，并让玩家有办法到达（爬、滑翔、跑）。承诺要能兑现，玩家才信任世界。</p></div>
+    <div class="card b"><h3>② 少而一致的规则</h3><p>与其写一百个特例，不如做十条处处成立的规则。一致性让玩家敢于“猜测并验证”。</p></div>
+    <div class="card g"><h3>③ 让玩家当“发明者”</h3><p>设计者不必写出所有解法，只需要保证“有路可走”。多种解法让每个人的故事不同。</p></div>
+    <div class="card p"><h3>④ 用数据校准“引力”</h3><p>别靠感觉摆地标：看热力图，找到玩家挤在一条线上的地方，再调整，再测。</p></div>
+  </div>
+
+  <div class="key">
+    <h3>本章要点</h3>
+    <ul>
+      <li><b>问题</b>：传统塞尔达“被动”，顺序固定、墙挡路。团队想做“主动”的游戏，让玩家自己决定去哪、做什么。</li>
+      <li><b>视线引导</b>：用高低错落的地形遮挡与露出，让玩家自己给自己设定目标，对应探索者动机、自主性与信息缺口。</li>
+      <li><b>系统化规则</b>产生<b>涌现</b>：同样的机制在不同情境组合，动态远多于设计者列出的清单；规则一致是前提，玩家才敢实验。</li>
+      <li><b>武器会坏</b>让选择有分量，但玩家反应两极；热力图和“引力”让世界的人流分散，是一个反馈循环。</li>
+      <li>引导不是强制：设计者做的是“铺路、点灯”，而不是“拽着你走”。</li>
+    </ul>
+  </div>
+
+  <div class="misc">
+    <h3>常见误区</h3>
+    <ul>
+      <li><b>“系统化就是想做什么都行”</b>：规则一致需要极强的纪律；每加一条规则，互动数都会成倍增长，测试也成倍增长。</li>
+      <li><b>“开放世界 = 什么都不用设计”</b>：自由的背后是大量的“引导”（视线、地形、物体摆放）。</li>
+      <li><b>“案例说明了唯一正确的做法”</b>：这是一种方向；线性叙事、强引导的游戏同样可以很出色。</li>
+      <li><b>“上面的化学规则表就是游戏真实规则”</b>：那只是教学用的简化版。</li>
+    </ul>
+  </div>
+
+  <div class="reflect">
+    <h3>想一想：幸存者偏差</h3>
+    <p>我们读到的是《旷野之息》<b>成功</b>的故事（它拿下了 2017 年 The Game Awards 的年度游戏）。无数尝试“开放世界 + 物理化学系统”的游戏没有取得同样的结果，我们很少拿它们当案例。因此“它这么设计所以成功”可能带有<span class="term" tabindex="0" data-def="幸存者偏差：只看到成功的样本，就会高估某种做法的成功率，因为失败的样本没有被讲述。">幸存者偏差</span>：团队规模、时机、品牌、整体打磨同样重要。</p>
+    <p>请你写一句：<b>如果你的小团队想借鉴它的“系统化规则”，最需要提前砍掉或简化什么？</b></p>
+    <textarea rows="3" data-save="ch25reflect" placeholder="例：只保留两三条规则，并保证它们在所有物体上都成立……"></textarea>
+  </div>
+
+  <div class="tldr">《旷野之息》靠“一致的少量规则”催生涌现，靠视线与信息缺口激发好奇，靠热力图校准世界，靠自主感与取舍让选择有分量——它是被反复讨论的成功案例，不是通用配方。</div>
+
+  <div class="sec"><span class="n">10</span><h2><span class="tag think">练习</span>练习</h2></div>
+  <div id="quiz"></div>
+
+  <div class="sec"><span class="n">11</span><h2><span class="tag think">反思</span>你的拆解</h2></div>
+  <div class="card o">
+    <p>想一个你玩过的游戏，找出它里面<b>最像“系统驱动的玩法”</b>的一个例子（例如《我的世界》的红石，《文明》的地形与资源）。写出：<b>它有哪些规则？这些规则在哪里“相乘”，产生了你没想到的玩法？</b></p>
+    <textarea rows="6" data-save="ch25" placeholder="例：《我的世界》：方块有重力、水会流动、红石能传信号……三条规则一组合，就有了自动门和自动农场……"></textarea>
+  </div>
+</main>
+<script src="js/illus.js"></script>
+<script src="js/illus-ch25.js"></script>
+<script src="js/common.js"></script>
+<script>
+const $ = id => document.getElementById(id);
+function c25done(id, text) {
+  const el = $(id); if (!el || el.classList.contains("ok")) return;
+  el.classList.add("ok"); el.insertAdjacentHTML("beforeend", " <b>✅ " + text + "</b>");
+}
+
+/* ===== 先猜后揭晓 ===== */
+(function () {
+  const g = $("c25g1"), ok = +g.dataset.ok, fb = g.querySelector(".c25fb"), chips = [...g.querySelectorAll(".chip")];
+  const reveal = "<b>揭晓：</b>他们做了一个外表像初代塞尔达的 2D 小原型，用来快速向同事演示“物体会互相反应”。后来团队说明，这个“2D”其实跑在 3D 引擎上，后台就是游戏最终的物理和化学系统（GDC 2017，据 Nintendo of America 的现场转述）。";
+  chips.forEach((c, i) => c.onclick = () => {
+    chips.forEach(x => x.classList.remove("right", "wrong"));
+    c.classList.add(i === ok ? "right" : "wrong"); chips[ok].classList.add("right");
+    fb.innerHTML = (i === ok ? "猜对了。" : c.dataset.fb + "<br>") + reveal; g.classList.add("done");
+  });
+})();
+
+/* ===== 引力小实验 ===== */
+(function () {
+  const a = $("c25g_a"), b = $("c25g_b"), m = $("c25g_msg");
+  $("c25g_btn1").onclick = () => { a.style.display = ""; b.style.display = "none"; m.textContent = "只有一座塔时，人流都挤在一条直线上：世界大部分地方没人去。"; };
+  $("c25g_btn2").onclick = () => { a.style.display = "none"; b.style.display = ""; m.textContent = "加上“引力”（绕着地标的碗形地形和小建筑）：人流被分散到不同路线，每个人的路不一样。"; };
+})();
+
+/* ===== 拆解面板 ===== */
+const DX = [
+  ["核心循环", "看见→前往→发现", "循环从“我想去看看”开始，而不是从任务开始。中间穿插战斗、采集、解谜，终点又是新的视野。整个循环是<b>玩家自己驱动</b>的，设计者只负责持续提供“看得见的下一个目标”。"],
+  ["玩家动机", "探索者·自主", "按 Bartle 的分类，这可以看作为<b>探索者</b>做的游戏：地图本身就是奖励。同时它给了高度的<b>自主性</b>（自我决定理论）：去哪、怎么去、先做什么，都由玩家决定。胜任感来自一次次实验成功，关联则来自与世界和角色的感情。"],
+  ["规则与 MDA", "规则→涌现", "<b>机制</b>：物理与元素的少量一致规则。<b>动态</b>：玩家用火烧草借上升气流、用金属引雷、用风推筏子……<b>美学</b>：发现的乐趣、自由感、小小的“我真聪明”。设计者把力气花在机制层，动态是玩家“长”出来的。"],
+  ["心流与难度", "自选难度", "开放世界里，难度并不是一条固定曲线：玩家可以选择先去哪、先挑战什么，遇到太强的敌人就绕开或先去变强。<b>让玩家自己调节挑战</b>，是保持心流的另一种办法。"],
+  ["有意义的选择", "多种解法", "同一个障碍有多种解法：爬、飞、冻、烧、绕。选择之间没有“标准答案”，各有后果，所以有意义。这不是靠手写分支，而是系统规则自然提供的。"],
+  ["关卡与教学", "无文字教学", "起始区的高台就是一座小教学场：你会学会爬、拿东西、遇到水与火的小互动。随后用地形和视线暗示下一步。“引入 → 练习 → 变化”被放进了一个很大的开放空间。"],
+];
+const seen = new Set();
+DX.forEach((d, i) => {
+  const b = document.createElement("button");
+  b.className = "chip"; b.textContent = d[0];
+  b.onclick = () => {
+    document.querySelectorAll("#chips .chip").forEach(x => x.classList.remove("on"));
+    b.classList.add("on");
+    $("panel").innerHTML = "<h3>" + d[0] + " · " + d[1] + "</h3><p>" + d[2] + "</p>";
+    seen.add(i); $("dxcount").textContent = "已看 " + seen.size + " / " + DX.length + (seen.size === DX.length ? " ✔ 全部拆完！" : "");
+  };
+  $("chips").appendChild(b);
+});
+
+/* ===== 乘法计算 ===== */
+(function () {
+  function upd() {
+    const n = +$("c25n").value, m = +$("c25m").value;
+    $("c25n_v").textContent = n; $("c25m_v").textContent = m;
+    $("c25add").textContent = n + m; $("c25mul").textContent = n * m;
+  }
+  $("c25n").addEventListener("input", upd); $("c25m").addEventListener("input", upd); upd();
+})();
+
+/* ===== 视线引导沙盘 ===== */
+const mc = $("mc"), g = mc.getContext("2d"), W = 640, H = 400;
+let hills = [{ x: 150, y: 260, r: 120, h: 1.0 }, { x: 370, y: 160, r: 130, h: 1.3 }, { x: 520, y: 300, r: 95, h: 0.9 }, { x: 250, y: 80, r: 80, h: 0.7 }];
+const LT = {
+  tower: { name: "高塔", icon: "🗼", h: 1.0 },
+  tree: { name: "大树", icon: "🌳", h: 0.25 },
+  ruin: { name: "遗迹", icon: "🏛️", h: 0.15 },
+  smoke: { name: "烟柱", icon: "💨", h: 0.7 },
+};
+let marks = [{ t: "tower", x: 590, y: 70 }, { t: "smoke", x: 330, y: 40 }, { t: "ruin", x: 440, y: 340 }, { t: "tree", x: 220, y: 345 }];
+let you = { x: 50, y: 350, tx: 50, ty: 350 }, tool = "walk", visited = new Set(), tick = 0;
+function terr(x, y) { let m = 0; for (const h of hills) { const d = Math.hypot(x - h.x, y - h.y); if (d < h.r) m = Math.max(m, h.h * (1 - d / h.r)); } return m; }
+function visible(m) {
+  const lt = LT[m.t], d = Math.hypot(m.x - you.x, m.y - you.y);
+  if (d > 180 + lt.h * 260) return false;
+  const e = terr(you.x, you.y) + 0.15, top = terr(m.x, m.y) + lt.h;
+  for (let i = 1; i < 40; i++) {
+    const t = i / 40; if (t > 0.94) break;
+    if (terr(you.x + (m.x - you.x) * t, you.y + (m.y - you.y) * t) > e + (top - e) * t - 0.02) return false;
+  }
+  return true;
+}
+const tools = [["walk", "👣 走过去"], ["tower", "🗼 放高塔"], ["tree", "🌳 放大树"], ["ruin", "🏛️ 放遗迹"], ["smoke", "💨 放烟柱"], ["erase", "🧽 擦除"]];
+tools.forEach(t => {
+  const b = document.createElement("button"); b.className = "chip" + (t[0] === "walk" ? " on" : ""); b.textContent = t[1];
+  b.onclick = () => { tool = t[0]; document.querySelectorAll("#tools .chip").forEach(x => x.classList.remove("on")); b.classList.add("on"); };
+  $("tools").appendChild(b);
+});
+mc.addEventListener("pointerdown", e => {
+  const r = mc.getBoundingClientRect(), x = (e.clientX - r.left) * W / r.width, y = (e.clientY - r.top) * H / r.height;
+  if (tool === "walk") { you.tx = x; you.ty = y; }
+  else if (tool === "erase") { let bi = -1, bd = 30; marks.forEach((m, i) => { const d = Math.hypot(m.x - x, m.y - y); if (d < bd) { bd = d; bi = i; } }); if (bi >= 0) marks.splice(bi, 1); }
+  else { if (marks.length >= 12) { $("mmsg").textContent = "地标够多了（最多 12 个）。"; return; } marks.push({ t: tool, x, y }); }
+});
+$("rnd").onclick = () => {
+  hills = Array.from({ length: 4 }, () => ({ x: 80 + Math.random() * 480, y: 70 + Math.random() * 260, r: 70 + Math.random() * 70, h: 0.6 + Math.random() * 0.8 }));
+  visited.clear();
+};
+$("clr").onclick = () => { marks = []; visited.clear(); };
+function drawMap() {
+  tick++;
+  g.clearRect(0, 0, W, H);
+  g.fillStyle = "#eaf9e4"; g.fillRect(0, 0, W, H);
+  // 等高线
+  hills.forEach(h => {
+    for (let k = 4; k >= 1; k--) {
+      g.beginPath(); g.arc(h.x, h.y, h.r * k / 4, 0, 7);
+      g.fillStyle = "rgba(120,170,110," + (0.10 + (4 - k) * 0.07) + ")"; g.fill();
+      g.strokeStyle = "rgba(43,43,58,.25)"; g.lineWidth = 1.5; g.stroke();
+    }
+  });
+  hills.forEach(h => {
+    const s = 14 + h.h * 14; g.beginPath(); g.moveTo(h.x - s, h.y + s * .6); g.lineTo(h.x, h.y - s); g.lineTo(h.x + s, h.y + s * .6); g.closePath();
+    g.fillStyle = "#b6d9a0"; g.fill(); g.strokeStyle = "#2b2b3a"; g.lineWidth = 3; g.stroke();
+  });
+  // 玩家移动
+  const dx = you.tx - you.x, dy = you.ty - you.y, d = Math.hypot(dx, dy);
+  if (d > 2) { const sp = Math.min(d, 2.2); you.x += dx / d * sp; you.y += dy / d * sp; }
+  let nv = 0;
+  g.textAlign = "center"; g.textBaseline = "middle";
+  const god = $("god").checked;
+  marks.forEach(m => {
+    const v = visible(m); if (v) nv++;
+    if (Math.hypot(m.x - you.x, m.y - you.y) < 22 && !m.seen) { m.seen = true; visited.add(m); }
+    if (!v && !god && !m.seen) return;
+    if (v) {
+      g.beginPath(); g.arc(m.x, m.y, 20 + Math.sin(tick / 12) * 3, 0, 7); g.fillStyle = "rgba(255,229,138,.85)"; g.fill();
+      g.strokeStyle = "#c4202a"; g.setLineDash([7, 6]); g.lineWidth = 2; g.beginPath(); g.moveTo(you.x, you.y); g.lineTo(m.x, m.y); g.stroke(); g.setLineDash([]);
+    }
+    g.globalAlpha = v || m.seen ? 1 : 0.3; g.font = "28px sans-serif"; g.fillStyle = "#2b2b3a"; g.fillText(LT[m.t].icon, m.x, m.y);
+    if (m.seen) { g.font = "16px sans-serif"; g.fillText("✔", m.x + 16, m.y - 14); }
+    g.globalAlpha = 1;
+  });
+  // 玩家
+  g.beginPath(); g.arc(you.x, you.y, 9, 0, 7); g.fillStyle = "#ff5a7a"; g.fill(); g.strokeStyle = "#2b2b3a"; g.lineWidth = 3; g.stroke();
+  const nseen = marks.filter(m => m.seen).length;
+  $("vis").textContent = nv; $("tot").textContent = marks.length; $("vst").textContent = nseen;
+  if (nseen >= 3) c25done("c25task1", "到访 " + nseen + " 个地标，你已经被“看得见的下一个目标”牵着走了。");
+  if (tick % 20 === 0) {
+    $("mmsg").textContent = !marks.length ? "还没有地标。选一种地标，点地图放下。" : nv === 0 ? "你什么也看不见——没有目标，就没有探索的欲望。" :
+      nv < marks.length ? "你看见 " + nv + " 个地标，另外还有 " + (marks.length - nv) + " 个被挡住，等你绕过去发现。" : "所有地标都看得见——没有悬念了。";
+  }
+  requestAnimationFrame(drawMap);
+}
+drawMap();
+
+/* ===== 化学引擎 ===== */
+const EL = [["fire", "🔥 火"], ["grass", "🌿 草"], ["wind", "💨 风"], ["water", "💧 水"], ["ice", "❄️ 冰"], ["elec", "⚡ 电"], ["metal", "🔩 金属"]];
+const NAME = Object.fromEntries(EL.map(e => [e[0], e[1]]));
+const key = (a, b) => [a, b].sort().join("+");
+const RULES = {
+  [key("fire", "grass")]: "草被点燃，火势蔓延；热空气向上形成<b>上升气流</b>。",
+  [key("fire", "wind")]: "风把火吹向下风方向，蔓延得更快。",
+  [key("fire", "water")]: "火被扑灭，只剩一缕水汽。",
+  [key("fire", "ice")]: "冰被融化成水。",
+  [key("grass", "elec")]: "电火花可能引燃干草。",
+  [key("grass", "water")]: "草被淋湿，更难点燃（本表规则）。",
+  [key("water", "ice")]: "水面冻结成冰块，可以当<b>台阶或桥</b>。",
+  [key("water", "elec")]: "电沿着水传导，水里的目标都会受影响。",
+  [key("elec", "metal")]: "金属导电，还容易引来雷电——雷雨天别拿着它。",
+  [key("wind", "water")]: "风推动水面上的物体，木筏可以被吹着走。",
+  [key("wind", "grass")]: "风吹得草叶摇动，轻的东西会被吹走（本表简化）。",
+  [key("metal", "water")]: "金属沉到水底。",
+};
+const GOALS = [
+  { id: "cliff", name: "爬上高崖", sol: [key("fire", "grass"), key("water", "ice")], hint: { [key("fire", "grass")]: "借上升气流飞上去", [key("water", "ice")]: "冻出冰块当台阶" } },
+  { id: "river", name: "过河", sol: [key("water", "ice"), key("wind", "water")], hint: { [key("water", "ice")]: "冻出冰桥", [key("wind", "water")]: "借风吹木筏过河" } },
+  { id: "foes", name: "对付草丛里的敌人", sol: [key("fire", "grass"), key("grass", "elec"), key("fire", "wind")], hint: { [key("fire", "grass")]: "放火烧草", [key("grass", "elec")]: "电火花引燃草丛", [key("fire", "wind")]: "借风势把火送过去" } },
+];
+let pick = [], foundSet = new Set(), triedSet = new Set(), goal = null; const solved = {};
+GOALS.forEach(g0 => solved[g0.id] = new Set());
+EL.forEach(e => {
+  const b = document.createElement("button"); b.className = "btn"; b.textContent = e[1]; b.dataset.id = e[0];
+  b.onclick = () => {
+    if (pick.length === 2) pick = [];
+    pick.push(e[0]); evalPick();
+  };
+  $("els").appendChild(b);
+});
+$("elclr").onclick = () => { pick = []; evalPick(); };
+function evalPick() {
+  document.querySelectorAll("#els .btn").forEach(b => b.classList.toggle("sel", pick.includes(b.dataset.id)));
+  $("sa").textContent = pick[0] ? NAME[pick[0]] : "？"; $("sb").textContent = pick[1] ? NAME[pick[1]] : "？";
+  if (pick.length < 2) { $("res").innerHTML = pick.length ? "再点一个元素。" : "先点两个元素。"; return; }
+  const k = key(pick[0], pick[1]); let html;
+  if (pick[0] === pick[1]) { html = "同样的元素叠加——没有新变化。"; }
+  else {
+    triedSet.add(k);
+    if (RULES[k]) { foundSet.add(k); html = "<b>有反应！</b> " + RULES[k]; }
+    else html = "<b>没有明显反应。</b>并不是每种组合都需要结果——留白能让有反应的组合更醒目。";
+  }
+  $("res").innerHTML = html;
+  $("found").textContent = foundSet.size; $("tried").textContent = triedSet.size;
+  if (goal) {
+    const G = GOALS.find(x => x.id === goal);
+    if (G.sol.includes(k)) { solved[G.id].add(k); $("gm").innerHTML = "✔ 目标“" + G.name + "”的一种解法：<b>" + G.hint[k] + "</b>。"; }
+    else if (RULES[k]) $("gm").textContent = "这个反应是真的，但对“" + G.name + "”帮不上忙。再想想？";
+    else $("gm").textContent = "什么也没发生，换个组合试试。";
+    goalUI();
+  }
+}
+function goalUI() {
+  $("goals").innerHTML = "";
+  GOALS.forEach(G => {
+    const b = document.createElement("button");
+    b.className = "chip" + (goal === G.id ? " on" : "") + (solved[G.id].size ? " done" : "");
+    b.textContent = G.name + "（" + solved[G.id].size + "/" + G.sol.length + "）";
+    b.onclick = () => { goal = G.id; $("gm").textContent = "目标：" + G.name + "。用上面的组合器试试。"; goalUI(); };
+    $("goals").appendChild(b);
+  });
+  const total = GOALS.reduce((a, G) => a + solved[G.id].size, 0), all = GOALS.reduce((a, G) => a + G.sol.length, 0);
+  $("gcount").textContent = "已找到解法 " + total + " / " + all + (total === all ? " ✔ 全部找到！注意：同一个目标有好几种解法。" : "");
+  if (solved.river.size >= 2) c25done("c25task2", "“过河”你找到了两种不同的解法。");
+}
+goalUI();
+
+GD.mountQuiz($("quiz"), [
+  { q: "为什么在远处放一座“比山高”的塔，能促进探索？", opts: ["因为塔很好看", "它在远处可见，给玩家一个自己选择的目标；山又遮住了其余内容，留下悬念", "因为塔会发出声音", "因为塔会自动带你过去"], a: 1, why: "可见的目标制造“我想去看看”的好奇；遮挡让世界保留惊喜。" },
+  { q: "【为什么】“规则必须一致”为什么是涌现玩法成立的前提？", opts: ["因为这样程序员写得更少", "规则不一致，玩家就无法归纳推测，实验也就失去价值", "因为一致的规则会让关卡更长", "因为这样更容易付费"], a: 1, why: "涌现依赖玩家“猜 → 试 → 验证”的循环；规则处处不同，猜测就不可靠，循环断了。" },
+  { q: "“乘法式玩法”的核心想法是？", opts: ["把难度乘以二", "让少量元素与大量物体按一致规则组合，产生数量远多于手工设计的互动", "多人组队", "增加敌人血量"], a: 1, why: "N 个元素 × M 个物体，就有约 N×M 种互动，而设计成本只有 N+M。" },
+  { q: "【为什么被发明】团队为什么先做了一个外表像 2D、实际跑在 3D 引擎上的原型？", opts: ["为了省钱，其实游戏就是 2D", "为了快速向同事演示“物体会互相反应”到底好玩在哪，同时验证最终要用的物理和化学系统", "因为玩家喜欢像素画面", "为了推迟发售"], a: 1, why: "目标是用最小的代价验证“主动式、规则相乘”的玩法；外表简单，后台就是最终的引擎。" },
+  { q: "【为什么被发明】团队为什么要用热力图，并提出“引力”的概念？", opts: ["因为塔最初让玩家觉得是一条直线，大部分世界没人去", "因为玩家抱怨画面太暗", "为了增加战斗数量", "为了让玩家更快通关"], a: 0, why: "人流集中在几条路上，说明塔把玩家“牵”成了一条线；团队用数据找到问题，再用地标和小建筑分散人流。" },
+  { q: "“山后面露出一座塔尖”能激发探索，用信息缺口理论解释最贴切的是？", opts: ["塔尖很好看", "它让玩家意识到“知道一点、又不知道全部”，好奇心被拉起", "塔尖会自动带玩家过去", "因为任务列表要求如此"], a: 1, why: "信息缺口理论：当玩家意识到所知与想知之间的差距，就会产生想要弥补的好奇。" },
+]);
+
+/* ===== 原理—证据 配对 ===== */
+(function () {
+  var P = ["涌现与规则一致性", "自我决定理论：自主感", "好奇心的信息缺口", "机会成本", "反馈循环（调节环）"];
+  var items = [
+    { t: "火烧草地产生上升气流，玩家借它飞起来——设计者没有专门为此做一个关卡。", a: 0, why: "少量一致的规则（火、热空气、滑翔）在不同情境里相乘，产生了设计者没逐条列出的玩法。", hint: "关键词是“没逐条设计，却自己长出来”。" },
+    { t: "看到远处的塔，没有任何任务提示，玩家自己决定“先去那里看看”。", a: 1, why: "目标由玩家自己设定，满足了自主感；自主感是自我决定理论里的三种基本心理需求之一。", hint: "想想：这个决定是“谁”做出的？" },
+    { t: "山后面露出一角陌生的建筑，看不全，玩家忍不住爬上山去看个究竟。", a: 2, why: "“我知道有东西，但不知道是什么”就是一个信息缺口，好奇心由此驱动。", hint: "关键词是“知道一点，又不全知道”。" },
+    { t: "武器会损坏：用它砍小怪，就少了留给强敌的耐久。每次出手都放弃了别的用法。", a: 3, why: "把有限资源花在这里，就失去了花在别处的机会，这就是机会成本；它让每一次选择都带着取舍。", hint: "想想：选了这个，放弃了什么？" },
+    { t: "团队用热力图发现玩家都被塔牵成一条线，于是挪塔、加小建筑，再测，再调。", a: 4, why: "输出（人流）被观察，再回头改输入（地标位置），偏离被一次次拉回，这是调节环。", hint: "关键词是“观察结果，再回头调整”。" }
+  ];
+  var root = document.getElementById("c25pair"), cnt = document.getElementById("c25paircnt");
+  var sel = -1, done = 0, miss = 0, got = [];
+  var h = '<div class="pool" id="c25pool">';
+  P.forEach(function (p, i) { h += '<button type="button" class="pk" draggable="true" data-p="' + i + '">' + p + '</button>'; });
+  h += '</div>';
+  items.forEach(function (it, i) { h += '<div><button type="button" class="it" data-i="' + i + '">' + it.t + '</button><div class="fb" id="c25fb' + i + '" aria-live="polite"></div></div>'; });
+  root.innerHTML = h;
+  function upd() {
+    cnt.textContent = "已配对 " + done + " / " + items.length + "　失误 " + miss + (done === items.length ? "　✔ 全部配对完成！" : "");
+    if (done === items.length) c25done("c25task3", "五个现象全部配对。");
+  }
+  function assign(i, p) {
+    if (got[i]) return;
+    var btn = root.querySelector('.it[data-i="' + i + '"]'), fb = document.getElementById("c25fb" + i), it = items[i];
+    if (it.a === p) {
+      got[i] = true; done++; btn.classList.remove("bad"); btn.classList.add("ok");
+      fb.innerHTML = "✅ <b>" + P[p] + "</b>：" + it.why;
+    } else {
+      miss++; btn.classList.remove("bad"); void btn.offsetWidth; btn.classList.add("bad");
+      fb.textContent = "❌ 「" + P[p] + "」不太贴切。提示：" + it.hint;
+    }
+    upd();
+  }
+  root.querySelectorAll(".pk").forEach(function (b) {
+    b.onclick = function () {
+      sel = (sel === +b.dataset.p) ? -1 : +b.dataset.p;
+      root.querySelectorAll(".pk").forEach(function (x) { x.classList.toggle("sel", +x.dataset.p === sel); });
+    };
+    b.addEventListener("dragstart", function (e) { e.dataTransfer.setData("text/plain", b.dataset.p); sel = +b.dataset.p; });
+  });
+  root.querySelectorAll(".it").forEach(function (b) {
+    var i = +b.dataset.i;
+    b.onclick = function () {
+      if (got[i]) return;
+      if (sel < 0) { document.getElementById("c25fb" + i).textContent = "👆 先在上面选一张原理卡，再点这里。"; return; }
+      assign(i, sel);
+    };
+    b.addEventListener("dragover", function (e) { e.preventDefault(); b.classList.add("over"); });
+    b.addEventListener("dragleave", function () { b.classList.remove("over"); });
+    b.addEventListener("drop", function (e) {
+      e.preventDefault(); b.classList.remove("over");
+      var v = parseInt(e.dataTransfer.getData("text/plain"), 10);
+      if (!isNaN(v)) assign(i, v);
+    });
+  });
+  upd();
+})();
+</script>
+</body>
+</html>
