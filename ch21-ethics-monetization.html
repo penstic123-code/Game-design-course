@@ -332,7 +332,7 @@
   <div class="board">
     <p>同一件商品，三种促销文案。先点“可接受”或“操纵”给出判断，再切换下面的两个条件，看规则怎么给出结论。</p>
     <div id="c21fcs"></div>
-    <p class="small"><b>本书使用的判断规则（一种立场，现实中有争议）：</b>信息必须属实；且玩家不买或错过时不会受到惩罚（不会因此失去已投入的进度）。两条都满足，才算“可接受”；否则就是在利用框架操纵。</p>
+    <p class="small"><b>这里使用的判断规则（一种立场，现实中有争议）：</b>信息必须属实；且玩家不买或错过时不会受到惩罚（不会因此失去已投入的进度）。两条都满足，才算“可接受”；否则就是在利用框架操纵。</p>
   </div>
   <div class="board c21form">
     <b>默认值小实验：</b>你正在结账，买一个 6 元的礼包。
@@ -363,10 +363,10 @@
     </div>
     <div class="msg" id="rmsgs"></div>
   </div>
-  <p class="small"><b>说明：</b>这是本书自拟的<b>示意公式</b>，仅用来体会“哪些因素影响哪个节点”，和任何真实游戏、行业数据都无关。大意：首日体验主要决定次日留存的高度；每日奖励和社交主要托起长期的“底部”并减缓流失；断签惩罚会让曲线好看一些，但满意度被它拉低。</p>
+  <p class="small"><b>说明：</b>这是自拟的<b>示意公式</b>，仅用来体会“哪些因素影响哪个节点”，和任何真实游戏、行业数据都无关。大意：首日体验主要决定次日留存的高度；每日奖励和社交主要托起长期的“底部”并减缓流失；断签惩罚会让曲线好看一些，但满意度被它拉低。</p>
   <div class="sticky c21try" id="c21_tr">试试看：不用断签惩罚（保持 0），把 30 日留存拉到 15% 以上，同时让玩家满意度不低于 60。</div>
 
-  <p>第二个试验台：下面有 8 个设计。请判断它们是<b>健康</b>、<b>可疑</b>（要看细节）还是<b>不合适</b>，点选后会揭晓理由。这些判断体现的是本书的立场，现实中也有争议，重点是理解理由。</p>
+  <p>第二个试验台：下面有 8 个设计。请判断它们是<b>健康</b>、<b>可疑</b>（要看细节）还是<b>不合适</b>，点选后会揭晓理由。这些判断只是一种立场，现实中也有争议，重点是理解理由。</p>
   <div class="board">
     <div class="small" id="jprog"></div>
     <div class="judge" id="jtext"></div>
@@ -378,7 +378,7 @@
     <div class="jres" id="jres"></div>
     <button class="btn alt" id="jnext" style="display:none">下一个 →</button>
   </div>
-  <div class="sticky c21try" id="c21_tj">试试看：判完全部 8 个，并至少和本书的判断一致 6 个。不一致的，读读理由，想想是哪个细节改变了结论。</div>
+  <div class="sticky c21try" id="c21_tj">试试看：判完全部 8 个，并至少和参考判断一致 6 个。不一致的，读读理由，想想是哪个细节改变了结论。</div>
 
   <div class="sec"><span class="n">11</span><h2><span class="tag how">怎么用</span>设计者的自查清单</h2></div>
   <p>把上面的原理变成动作：对着想做的游戏（或正在做的游戏）逐条打勾。每一条都是“<b>我能不能坦然地让玩家看到</b>”的版本。打勾状态会保存在浏览器里。</p>
@@ -389,7 +389,7 @@
     <div class="c21bar"><span id="c21fill" style="width:0"></span></div>
     <div class="msg" id="c21cr" style="font-size:1.05rem;font-family:var(--body)"></div>
   </div>
-  <p class="small">这份清单是本书整理的实用自检，不是法律条文，也不保证合规；各地对概率公示、未成年人消费、订阅取消等有不同法规，请查当地规定。</p>
+  <p class="small">这份清单是一份实用自检，不是法律条文，也不保证合规；各地对概率公示、未成年人消费、订阅取消等有不同法规，请查当地规定。</p>
 
   <div class="key">
     <h3>要点</h3>
@@ -522,10 +522,10 @@ function showCard() {
   $("jbtns").querySelectorAll("button").forEach(b => (b.disabled = false));
   if (ji >= CARDS.length) {
     $("jprog").textContent = "完成";
-    $("jtext").innerHTML = `<b>全部看完！</b>你和本书的判断一致 ${jscore} / ${CARDS.length} 题。记住：重点不在对错，而在理由。`;
+    $("jtext").innerHTML = `<b>全部看完！</b>你和参考判断一致 ${jscore} / ${CARDS.length} 题。记住：重点不在对错，而在理由。`;
     $("jbtns").style.display = "none";
     $("jnext").style.display = "inline-block"; $("jnext").textContent = "再玩一遍";
-    if (jscore >= 6) tryDone("c21_tj", "你和本书一致 " + jscore + " / 8。");
+    if (jscore >= 6) tryDone("c21_tj", "你和参考判断一致 " + jscore + " / 8。");
     return;
   }
   $("jbtns").style.display = "flex";
@@ -536,7 +536,7 @@ $("jbtns").querySelectorAll("button").forEach(b => (b.onclick = () => {
   const v = +b.dataset.v, c = CARDS[ji], ok = v === c.a;
   if (ok) jscore++;
   $("jres").className = "jres show " + (ok ? "good" : "bad");
-  $("jres").innerHTML = (ok ? "👍 与本书判断一致：" : "本书的判断是 <b>" + JN[c.a] + "</b>。") + (ok ? JN[c.a] + "。" : "") + "<br>" + c.why;
+  $("jres").innerHTML = (ok ? "👍 与参考判断一致：" : "参考判断是 <b>" + JN[c.a] + "</b>。") + (ok ? JN[c.a] + "。" : "") + "<br>" + c.why;
   $("jbtns").querySelectorAll("button").forEach(x => (x.disabled = true));
   $("jnext").style.display = "inline-block"; $("jnext").textContent = ji === CARDS.length - 1 ? "看结果" : "下一个 →";
 }));

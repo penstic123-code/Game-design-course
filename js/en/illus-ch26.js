@@ -55,7 +55,7 @@ ILLUS_EN_ADD({
 ]
 },
 "c26_armello": {
-"a": "Behind a screen two hosts peek out and place hidden pieces by hand, while two players play in front of the screen: people simulating the computer",
+"a": "A divider stands in the middle of the table: two players on this side look at the pieces on the table, and two hosts behind the divider place hidden pieces by hand, so people are simulating the computer",
 "t": [
 "Backstage: hands replace the computer"
 ]

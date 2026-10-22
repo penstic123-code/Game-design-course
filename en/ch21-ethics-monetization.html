@@ -332,7 +332,7 @@
   <div class="board">
     <p>Three promotional copies for the same item. First click “Acceptable” or “Manipulative” to give your judgment, then toggle the two conditions below and see how the rules reach a verdict.</p>
     <div id="c21fcs"></div>
-    <p class="small"><b>The judgment rule used in this course (one position, disputed in reality):</b> the information must be true; and the player must suffer no penalty if they don’t buy or miss out (not losing progress they have already put in). Only if both hold is it “acceptable”; otherwise it is manipulating through framing.</p>
+    <p class="small"><b>The judgment rule used here (one position, disputed in reality):</b> the information must be true; and the player must suffer no penalty if they don’t buy or miss out (not losing progress they have already put in). Only if both hold is it “acceptable”; otherwise it is manipulating through framing.</p>
   </div>
   <div class="board c21form">
     <b>A small default experiment:</b>You are at checkout, buying a 6-yuan gift pack.
@@ -363,10 +363,10 @@
     </div>
     <div class="msg" id="rmsgs"></div>
   </div>
-  <p class="small"><b>Note:</b> this is a <b>schematic formula</b> made up for this course, only for getting a feel for “which factor affects which point,” and it has nothing to do with any real game or industry data. The gist: first-day experience mostly decides the height of day 1; daily rewards and social ties mostly hold up the long-term “floor” and slow the losses; streak penalties make the curve look a bit better, but drag satisfaction down.</p>
+  <p class="small"><b>Note:</b> this is a <b>schematic formula</b> made up here, only for getting a feel for “which factor affects which point,” and it has nothing to do with any real game or industry data. The gist: first-day experience mostly decides the height of day 1; daily rewards and social ties mostly hold up the long-term “floor” and slow the losses; streak penalties make the curve look a bit better, but drag satisfaction down.</p>
   <div class="sticky c21try" id="c21_tr">Try it: without streak penalties (keep at 0), pull day-30 retention above 15% while keeping player satisfaction no lower than 60.</div>
 
-  <p>The second test bench: here are 8 designs. Judge whether each is <b>healthy</b>, <b>suspicious</b> (depends on the details) or <b>inappropriate</b>, and the reason is revealed after you click. These judgments express this course’s position, which is also disputed in reality; the point is to understand the reasons.</p>
+  <p>The second test bench: here are 8 designs. Judge whether each is <b>healthy</b>, <b>suspicious</b> (depends on the details) or <b>inappropriate</b>, and the reason is revealed after you click. These judgments are one position, which is also disputed in reality; the point is to understand the reasons.</p>
   <div class="board">
     <div class="small" id="jprog"></div>
     <div class="judge" id="jtext"></div>
@@ -378,7 +378,7 @@
     <div class="jres" id="jres"></div>
     <button class="btn alt" id="jnext" style="display:none">Next →</button>
   </div>
-  <div class="sticky c21try" id="c21_tj">Try it: judge all 8, with at least 6 matching this course’s judgment. For those that differ, read the reasons and think which detail changed the conclusion.</div>
+  <div class="sticky c21try" id="c21_tj">Try it: judge all 8, with at least 6 matching the reference judgment. For those that differ, read the reasons and think which detail changed the conclusion.</div>
 
   <div class="sec"><span class="n">11</span><h2><span class="tag how">How to use it</span>A designer’s self-check list</h2></div>
   <p>Turn the principles above into action: tick them off one by one against the game you want to make (or are making). Each item is a version of “<b>can I let the player see this with a clear conscience</b>.” The tick states are saved in your browser.</p>
@@ -389,7 +389,7 @@
     <div class="c21bar"><span id="c21fill" style="width:0"></span></div>
     <div class="msg" id="c21cr" style="font-size:1.05rem;font-family:var(--body)"></div>
   </div>
-  <p class="small">This list is a practical self-check put together for this course, not legal text, and does not guarantee compliance; regions have different laws on odds disclosure, minors’ spending, subscription cancellation and so on, so check local rules.</p>
+  <p class="small">This list is a practical self-check, not legal text, and does not guarantee compliance; regions have different laws on odds disclosure, minors’ spending, subscription cancellation and so on, so check local rules.</p>
 
   <div class="key">
     <h3>Key points</h3>
@@ -523,10 +523,10 @@ function showCard() {
   $("jbtns").querySelectorAll("button").forEach(b => (b.disabled = false));
   if (ji >= CARDS.length) {
     $("jprog").textContent = "Done";
-    $("jtext").innerHTML = `<b>All viewed!</b> You agree with this course on ${jscore} of ${CARDS.length}. Remember: the point is not right or wrong but the reasons.`;
+    $("jtext").innerHTML = `<b>All viewed!</b> You agree with the reference judgment on ${jscore} of ${CARDS.length}. Remember: the point is not right or wrong but the reasons.`;
     $("jbtns").style.display = "none";
     $("jnext").style.display = "inline-block"; $("jnext").textContent = "Play again";
-    if (jscore >= 6) tryDone("c21_tj", "You agree with this course on " + jscore + "  of 8.");
+    if (jscore >= 6) tryDone("c21_tj", "You agree with the reference judgment on " + jscore + "  of 8.");
     return;
   }
   $("jbtns").style.display = "flex";
@@ -537,7 +537,7 @@ $("jbtns").querySelectorAll("button").forEach(b => (b.onclick = () => {
   const v = +b.dataset.v, c = CARDS[ji], ok = v === c.a;
   if (ok) jscore++;
   $("jres").className = "jres show " + (ok ? "good" : "bad");
-  $("jres").innerHTML = (ok ? "👍 Agrees with this course:" : "This course’s judgment is <b>" + JN[c.a] + "</b>.") + (ok ? JN[c.a] + "." : "") + "<br>" + c.why;
+  $("jres").innerHTML = (ok ? "👍 Matches the reference judgment:" : "The reference judgment is <b>" + JN[c.a] + "</b>.") + (ok ? JN[c.a] + "." : "") + "<br>" + c.why;
   $("jbtns").querySelectorAll("button").forEach(x => (x.disabled = true));
   $("jnext").style.display = "inline-block"; $("jnext").textContent = ji === CARDS.length - 1 ? "See results" : "Next →";
 }));

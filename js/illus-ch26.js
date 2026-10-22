@@ -48,11 +48,13 @@
     '<path d="M80 90 H62 M120 90 H138" stroke-width="2.5"/><path d="M62 90 l6 -5 M62 90 l6 5 M138 90 l-6 -5 M138 90 l-6 5" stroke-width="2.5" fill="none"/>',
     T(100, 54, 13, "120 张牌", "middle") + T(100, 24, 12, "糙：随机发牌直接玩", "middle"));
 
-  illusAdd("c26_armello", "屏风后面两个主持人探出头、用手摆放隐藏的棋子，屏风前两个玩家在玩，等于人在模拟电脑",
-    person(32, 62, { arms: "hold", face: "smile" }) + person(170, 62, { arms: "hold", face: "smile" }) +
-    '<rect x="78" y="52" width="44" height="74" fill="#cfd3dc"/><path d="M78 74 H122 M78 96 H122" stroke-width="2"/>' +
-    '<circle cx="90" cy="42" r="9" fill="' + SK + '"/><circle cx="110" cy="42" r="9" fill="' + SK + '"/>' + eye(87, 40) + eye(93, 40) + eye(107, 40) + eye(113, 40) +
-    '<path d="M86 46 q4 3 8 0 M106 46 q4 3 8 0" fill="none" stroke-width="2"/><path d="M80 38 L66 30 M120 38 L134 30" stroke-width="3" fill="none"/><circle cx="64" cy="29" r="4" fill="#ffb3c6"/><circle cx="136" cy="29" r="4" fill="#a8dcf0"/>',
+  illusAdd("c26_armello", "桌子中间立着一块挡板：桌子这边两个玩家看着摆在桌面上的棋子，挡板后面两个主持人用手摆放看不见的隐藏棋子，等于人在模拟电脑",
+    person(88, 40, { arms: "none", s: 0.85, face: "grin" }) + person(112, 40, { arms: "none", s: 0.85, face: "grin" }) +
+    '<rect x="14" y="96" width="172" height="6" fill="#c99a5a"/><path d="M22 102 V126 M178 102 V126" stroke-width="4"/>' +
+    '<path d="M76 96 V58 H124 V96 M92 58 V96 M108 58 V96" fill="#cfd3dc" stroke-width="2.4"/>' +
+    '<circle cx="60" cy="91.5" r="4.5" fill="#ffb3c6"/><circle cx="69" cy="91.5" r="4.5" fill="#a8dcf0"/>' +
+    '<rect x="127" y="87" width="9" height="9" fill="#ffe58a"/><rect x="138" y="87" width="9" height="9" fill="#8fd694"/>' +
+    person(34, 62, { arms: "desk", face: "smile", look: 1 }) + person(166, 62, { arms: "desk", face: "smile", look: -1 }),
     T(100, 20, 12, "幕后：人手代替电脑", "middle"));
 
   illusAdd("c26_taste", "一个人拿勺子尝锅里的汤，旁边说“先放一点，尝一口再加”",

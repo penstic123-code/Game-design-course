@@ -19,7 +19,7 @@ ILLUS_EN_ADD({
 ]
 },
 "c24_e_piano": {
-"a": "Only one hand plays on the piano keys while the other is still free, and a stick figure points saying one hand first",
+"a": "A person sits at a keyboard with only the right hand on the keys and the left hand resting on the lap, while a stick figure points at it saying one hand first",
 "t": [
 "One hand first, both once it’s smooth"
 ]

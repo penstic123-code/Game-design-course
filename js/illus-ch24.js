@@ -24,11 +24,12 @@
   illusAdd("c24_e_drive", "空旷的场地里，一个火柴人开着小车，只放了几个路锥，先练起步和停车",
     ground + person(94, 58, { s: 0.7, arms: "none", legs: "none", face: "smile" }) + rc(60, 78, 70, 26, "#a8dcf0") + '<circle cx="78" cy="108" r="9" fill="#fff"/><circle cx="114" cy="108" r="9" fill="#fff"/>' +
     '<path d="M150 124 l8 -26 8 26 Z" fill="#ffc078"/><path d="M174 124 l7 -22 7 22 Z" fill="#ffc078"/>', T(100, 22, 13, "空场地，先练起步停车", "middle"));
-  illusAdd("c24_e_piano", "钢琴的琴键上只有一只手在弹，另一只手还空着，火柴人指着说先单手",
-    ground + person(28, 62, { arms: "point", face: "smile" }) + rc(60, 88, 120, 34, "#fff") +
-    '<path d="M80 88 V122 M100 88 V122 M120 88 V122 M140 88 V122 M160 88 V122" stroke-width="2"' + none + '/>' +
-    rc(72, 88, 12, 20, INK, ' stroke-width="1"') + rc(108, 88, 12, 20, INK, ' stroke-width="1"') + rc(132, 88, 12, 20, INK, ' stroke-width="1"') +
-    '<circle cx="106" cy="76" r="8" fill="#ffd9b0"/><path d="M100 82 V90 M106 84 V90 M112 82 V90" stroke-width="2.5"' + none + '/>', T(120, 40, 13, "先单手，熟了再双手", "middle"));
+  illusAdd("c24_e_piano", "一个人坐在琴前，只有右手按在琴键上，左手放在腿上；旁边的火柴人指着琴说先单手",
+    ground + person(22, 62, { arms: "point", face: "smile" }) + person(156, 62, { arms: "none", legs: "sit", face: "smile", look: -1 }) +
+    '<path d="M70 112 L62 126 M130 112 L138 126" stroke-width="3" fill="none"/>' + rc(60, 90, 80, 22, "#fff") +
+    '<path d="M76 90 V112 M92 90 V112 M108 90 V112 M124 90 V112" stroke-width="2"' + none + '/>' +
+    rc(118, 90, 16, 22, "#ffe58a", ' stroke-width="2"') + rc(72, 90, 8, 13, INK, ' stroke-width="1"') + rc(88, 90, 8, 13, INK, ' stroke-width="1"') + rc(104, 90, 8, 13, INK, ' stroke-width="1"') +
+    '<path d="M156 77 L142 86 L128 90 M156 77 L160 90 L152 100" stroke-width="2.6" fill="none"/>', T(110, 40, 13, "先单手，熟了再双手", "middle"));
   illusAdd("c24_e_wall", "新手一进游戏，屏幕上同时弹出十个提示框，火柴人捂着头不知所措",
     ground + person(34, 62, { arms: "cover", face: "shout" }) +
     '<g transform="rotate(-8 100 60)"><rect x="70" y="30" width="48" height="30" fill="#fff"/><path d="M76 40 h36 M76 48 h26" stroke-width="2"' + none + '/></g>' +
