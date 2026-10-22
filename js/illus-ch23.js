@@ -104,7 +104,7 @@
     '<rect x="50" y="20" width="100" height="100" fill="#fffdf3"/>' +
     '<path d="M62 36 H132 V60 H72 V84 H134 V104 H88" stroke-width="12" stroke="#9bdc8f"' + none + ' stroke-linecap="round" stroke-linejoin="round"/>' +
     '<circle cx="84" cy="104" r="9" fill="#9bdc8f"/><circle cx="82" cy="102" r="1.8" fill="' + INK + '" stroke="none"/><circle cx="87" cy="102" r="1.8" fill="' + INK + '" stroke="none"/>' +
-    '<circle cx="62" cy="36" r="0.1" fill="none"/>' + person(172, 62, { s: 0.7, face: "flat", arms: "chin" }),
+    '<circle cx="62" cy="36" r="0.1" fill="none"/>' + person(172, 81, { s: 0.7, face: "flat", arms: "chin" }) + ground,
     T(100, 14, 13, "越长，越难绕开自己", "middle"));
 
   illusAdd("c23_e_pong", "发球机朝火柴人连续打出网球，球的速度一发比一发快",
