@@ -92,7 +92,7 @@
     T(100, 24, 13, "战棋：打完就收", "middle"));
 
   add("c16_blackmoor", "裁判坐在挡板后面，随口告诉玩家“你升级了”，玩家们高举双手",
-    ground + rect(60, 62, 70, 64, OR) + person(95, 40, { s: 0.7, arms: "desk", legs: "none", face: "smile", glasses: true }) +
+    ground + person(95, 40, { s: 0.7, arms: "desk", legs: "none", face: "smile", glasses: true }) + rect(60, 62, 70, 64, OR) +
     person(26, 81, { s: 0.7, arms: "up", face: "shout" }) + person(172, 81, { s: 0.7, arms: "up", face: "shout" }),
     T(100, 24, 13, "“你升级了！”", "middle") + T(95, 112, 13, "杀怪记点数", "middle"));
 

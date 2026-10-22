@@ -81,6 +81,7 @@
   add("c06_bike", "教孩子骑车：大人在后面扶着车座，手只轻轻搭着，孩子骑得摇摇晃晃却很开心",
     ground + circ(90, 112, 14, WH) + circ(138, 112, 14, WH) +
     path("M90 112 L104 84 L138 112 M104 84 L124 84 L122 98", "none") + path("M96 84 h16", "none", 'stroke-width="5"') +
+    path("M112 82 L124 96 L116 108 M112 82 L104 98 L110 110", "none") +
     person(112, 54, { s: 0.75, arms: "hold", legs: "none", face: "grin" }) +
     person(64, 63, { arms: "hold", face: "smile" }),
     T(6, 20, 13, "手一点点松开"));

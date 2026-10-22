@@ -91,8 +91,8 @@
     T(76, 22, 13, "兜圈撞靶得分", "middle") + T(178, 128, 12, "终点", "middle"));
 
   illusAdd("c04_callcenter", "设想：客服只按通话时长考核，于是有人干脆把电话挂断，数字漂亮但问题没解决",
+    G(66, 0.85, { arms: "none", legs: "none", face: "grin" }) +
     R(20, 90, 136, 8, "#c98f5a") + P("M30 98 V126 M146 98 V126", "none", ' stroke-width="4"') +
-    G(66, 0.85, { arms: "desk", legs: "none", face: "grin" }) +
     R(112, 76, 36, 14, "#e8e8f0") + P("M116 76 q14 -14 28 0", "none", ' stroke-width="3"') +
     bub(150, 30, 46, 16) + P("M170 108 l12 -10 M182 108 l-12 -10", "none", ' stroke="' + RED + '" stroke-width="3"'),
     T(150, 35, 12, "通话越短越好", "middle") + T(100, 122, 12, "挂断了！", "middle"));
