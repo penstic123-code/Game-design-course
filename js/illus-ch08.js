@@ -20,7 +20,7 @@
     T(119, 108, 12, "2", "middle") + T(147, 96, 12, "4", "middle") + T(175, 72, 12, "8", "middle") + T(190, 40, 16, "…", "middle") + T(36, 30, 12, "直到正面", "middle"));
 
   add("c08_letter", "1713年：火柴人在桌前写信，旁边的信封里写着奖金2的n次方",
-    R(14, 86, 96, 8, "#c99a5a") + R(22, 94, 6, 32, "#c99a5a") + R(96, 94, 6, 32, "#c99a5a") + person(58, 46, { arms: "desk", face: "smile", glasses: true }) +
+    person(58, 54, { arms: "none", legs: "none", face: "smile", glasses: true }) + R(14, 86, 96, 8, "#c99a5a") + R(22, 94, 6, 32, "#c99a5a") + R(96, 94, 6, 32, "#c99a5a") + R(40, 80, 24, 6, "#fffdf3") +
     R(126, 62, 62, 40, "#fffdf3") + P("M126 62 L157 84 L188 62", "none"),
     T(120, 30, 13, "致 Montmort", "middle") + T(157, 96, 13, "2ⁿ 元", "middle"));
 
